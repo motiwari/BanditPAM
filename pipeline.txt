@@ -1,0 +1,16 @@
+pipeline.txt
+
+
+naive k mediods
+
+plotting functionality
+
+ucb k mediods
+
+add support for arbitrary metrics naive/ucb
+add support for arbitrary matrix types naive/ucb
+
+open mp naive k mediods <- maybe skip
+open mp ucb k mediods
+
+full mlpack integration (python/command line) ucb

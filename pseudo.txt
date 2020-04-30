@@ -1,0 +1,7 @@
+METHOD build sample for targets (imgs, targets, batch_size, best_distances)
+
+METHOD UCB_build(args, imgs, sigma)
+
+METHOD swamp sample for targets
+
+METHOD UCB_Swap
