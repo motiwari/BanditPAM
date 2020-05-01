@@ -2,10 +2,11 @@ pipeline.txt
 
 
 naive k mediods
-
 plotting functionality
 
 ucb k mediods
+
+switch to cmake
 
 add support for arbitrary metrics naive/ucb
 add support for arbitrary matrix types naive/ucb
