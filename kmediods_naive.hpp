@@ -14,25 +14,26 @@
 
 class KMediods
 {
-    public:
-
+public:
     KMediods(size_t maxIterations = 1000);
 
-    void cluster(const arma::mat& data,
-        const size_t clusters,
-        arma::Row<size_t>& assignments);
+    void cluster(const arma::mat &data,
+                 const size_t clusters,
+                 arma::Row<size_t> &assignments);
 
-    private:
+private:
+    void build(const arma::mat &data,
+               const size_t clusters,
+               arma::Row<size_t> &centroid_indicies);
 
-    void build(const arma::mat& data,
-        arma::mat& mediods,
-        const size_t clusters,
-        arma::Row<size_t>& assignments);
+    void swap(const arma::mat &data,
+              const size_t clusters,
+              arma::Row<size_t> &assignments,
+              arma::Row<size_t> &centroid_indicies);
 
-    void swap(const arma::mat& data,
-        arma::mat& mediods,
-        const size_t clusters,
-        arma::Row<size_t>& assignments);
+    double calc_loss(const arma::mat &data,
+                     const size_t clusters,
+                     arma::Row<size_t> &centroid_indicies);
 
     size_t maxIterations;
 };
