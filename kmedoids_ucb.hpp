@@ -13,6 +13,10 @@
 #include <iostream>
 #include <armadillo>
 
+// switch all naming to camelCase
+// switch to armadillo typedefs
+// switch to rowvec
+// most typedefs are 64 bits, overkill?
 class KMediods
 {
 public:
@@ -26,6 +30,13 @@ private:
     arma::Row<double> build_target(const arma::mat& data, arma::uvec& targets, size_t batch_size, arma::Row<double>& best_distances );
 
     void build(const arma::mat &data,
+                     const size_t clusters,
+                     arma::Row<size_t> &medoid_indicies,
+                     arma::mat& medoids);
+
+    arma::Row<double> swap_target(const arma::mat& data, arma::uvec& targets, size_t batch_size, arma::Row<double>& best_distances );
+
+    void swap(const arma::mat &data,
                      const size_t clusters,
                      arma::Row<size_t> &medoid_indicies,
                      arma::mat& medoids);
