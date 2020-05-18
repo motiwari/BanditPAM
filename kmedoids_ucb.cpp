@@ -17,6 +17,12 @@ void KMediods::cluster(const arma::mat &data,
     // build clusters
     KMediods::build(data, clusters, medoid_indicies, medoids);
     std::cout << medoid_indicies << std::endl;
+    std::cout << "data size, rows:" << data.n_rows << " cols:" << data.n_cols << std::endl;
+    std::cout << "########################### SWAP ##############################" << std::endl;
+
+    KMediods::swap(data, clusters, medoid_indicies, medoids);
+    std::cout << medoid_indicies << std::endl;
+
 
     /*size_t i = 0;
     bool medoid_change = true;
@@ -69,18 +75,15 @@ void KMediods::build(const arma::mat &data,
             size_t this_batch_size = original_batch_size; //need to add scaling batch size
 
             arma::umat compute_exactly = (T_samples + this_batch_size) >= N_mat;
-            std::cout << compute_exactly << std::endl;
 
             compute_exactly = compute_exactly != exact_mask; //check this
-            std::cout << compute_exactly << std::endl;
             if (arma::accu(compute_exactly) > 0)
             {
-                std::cout << "Computing exactly on step count " << step_count << std::endl;
                 uvec targets = find(compute_exactly);
-                std::cout << targets << std::endl;
+                std::cout << "Computing exactly for " << targets.n_rows << " on step count " << step_count << std::endl;
+
 
                 arma::Row<double> result = build_target(data, targets, N, best_distances);
-                std::cout << result << std::endl;
                 std::cout << "setting estimates" << std::endl;
 
                 estimates.cols(targets) = result;
@@ -105,7 +108,7 @@ void KMediods::build(const arma::mat &data,
             arma::Row<double> result = build_target(data, targets, this_batch_size, best_distances);
             estimates.cols(targets) = ((T_samples.cols(targets) % estimates.cols(targets)) + (result * this_batch_size)) / (this_batch_size + T_samples.cols(targets));
             T_samples.cols(targets) += this_batch_size;
-            arma::Row<double> adjust(targets.n_cols);
+            arma::Row<double> adjust(targets.n_rows);
             adjust.fill(std::log(1 / p));
             arma::Row<double> cb_delta = sigma * arma::sqrt(adjust / T_samples.cols(targets));
 
@@ -144,11 +147,9 @@ arma::Row<double> KMediods::build_target(const arma::mat &data, arma::uvec &targ
     //uvec tmp_refs = randi<uvec>(batch_size, distr_param(0, N - 1)); //with replacement
     uvec tmp_refs = randperm(N, batch_size); //without replacement, requires updated version of armadillo
     double total = 0;
-    std::cout << "trying to calculate element thing" << std::endl;
     for (size_t i = 0; i < target.n_rows; i++)
     {
-        estimates(i) = KMediods::cost_fn(data, target(i), tmp_refs, best_distances);
-        std::cout << "estimate " << i << " :" << estimates(i) << std::endl;
+        estimates(i) = KMediods::cost_fn_build(data, target(i), tmp_refs, best_distances);
     }
     return estimates;
 }
@@ -164,7 +165,7 @@ double KMediods::cost_fn_build(const arma::mat &data, arma::uword target, arma::
     return total;
 }
 
-arma::Row<double> KMediods::swap_target(
+arma::vec KMediods::swap_target(
     const arma::mat &data,
     const arma::mat &medoids,
     arma::uvec &targets,
@@ -173,6 +174,8 @@ arma::Row<double> KMediods::swap_target(
     arma::Row<double> &second_best_distances,
     arma::urowvec &assignments)
 {
+    // targets is a vector containing integers. For some integer n
+    // data point is n % 
     // targets, data, medoids, best_distances
     // pick 20 random points
     // for each target point
@@ -180,37 +183,51 @@ arma::Row<double> KMediods::swap_target(
     //      for each ref point
     //          total += best_distance
     size_t N = data.n_cols;
-    arma::Row<double> estimates(targets.n_rows, arma::fill::zeros);
+    std::cout << "targets size " << targets.n_rows << std::endl;
+    arma::vec estimates(targets.n_rows, arma::fill::zeros);
     uvec tmp_refs = arma::randperm(N, batch_size); //without replacement, requires updated version of armadillo
 
-    for (size_t i = 0; i < targets.n_rows, i++)
+    // for each considered swap
+    for (size_t i = 0; i < targets.n_rows; i++)
     {
         double total = 0;
+        // extract medoid of swap
+        //size_t k = targets(i) % medoids.n_cols;
+            
+        // extract data point of swap
+        size_t k = targets(i) / N;
+        size_t n = targets(i) - (k * N);
+        //std::cout << "testing setting data point " << n << " to medoid " << k << std::endl;
+        
+        // calculate total loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++)
         {
-            size_t k = targets(i) % medoids.n_cols;
-            size_t n = targets(i) - (N * (targets(i) / N));
+
             double cost = arma::norm(data.col(n) - data.col(tmp_refs(j)), 2);
+            
+            // the swap makes a better medoid
             if (cost < best_distances(tmp_refs(j)))
             {
-                // the swap makes a better medoid
                 total += cost;
             }
+
+            // the swap is not a better mediod, and replaced
+            // the previous medoid
             else if (k == assignments(n))
             {
-                // the swap makes a better mediod, but replaces
-                // the medoid it was previously assigned to
                 total += second_best_distances(tmp_refs(j));
             }
+
+            // the swap is not the current medoid and it not better
+            // than the current medoid
             else
             {
-                // the swap is not the current medoid and it not better
-                // than the current medoid
                 total += best_distances(tmp_refs(j));
             }
         }
+        // total currently depends on the batch size, which seems distinctly wrong. maybe.
         estimates(i) = total;
-        std::cout << "estimate " << i << " :" << estimates(i) << std::endl;
+        //std::cout << "estimate " << i << " :" << estimates(i) << std::endl;
     }
     return estimates;
 }
@@ -251,10 +268,12 @@ void KMediods::swap(const arma::mat &data,
                     arma::mat &medoids)
 {
     size_t N = data.n_cols;
-    double p = 1 / (N * clusters * 1000);
+    double p = (N * clusters * 1000);
     arma::Row<double> best_distances(N);
     arma::Row<double> second_distances(N);
     arma::urowvec assignments(N);
+
+    // does this need to be calculated in every iteration?
     get_best_distances(data, medoids, best_distances, second_distances, assignments);
     double loss = arma::mean(best_distances);
     size_t iter = 0;
@@ -262,10 +281,14 @@ void KMediods::swap(const arma::mat &data,
     while (swap_performed && iter < maxIterations)
     {
         iter++;
-        arma::umat candidates(clusters, N, arma::fill::zeros);
+        std::cout << iter << std::endl;
+        // one hot encoding of candidates to try
+        arma::umat candidates(clusters, N, arma::fill::ones);
         arma::mat estimates(clusters, N);
         arma::mat lcbs(clusters, N);
         arma::mat ucbs(clusters, N);
+        lcbs.fill(0);
+        ucbs.fill(1000);
 
         arma::umat T_samples(clusters, N, arma::fill::zeros);
         arma::umat exact_mask(clusters, N, arma::fill::zeros);
@@ -273,43 +296,71 @@ void KMediods::swap(const arma::mat &data,
         size_t original_batch_size = 20;
 
         size_t step_count = 0;
+        // while there is at least one candidate (double comparison issues)
         while (arma::accu(candidates) > 0.5)
         {
+            std::cout << T_samples << std::endl;
+            // batch size is currently constant
             size_t this_batch_size = original_batch_size;
+
+            // compute exactly if it's been samples more than N times and hasn't been computed exactly already
             arma::umat compute_exactly = ((T_samples + this_batch_size) >= N) != exact_mask;
             arma::uvec targets = arma::find(compute_exactly);
+            std::cout << "candidates size " << arma::accu(candidates) << std::endl;
+            std::cout << "exact mask size " << arma::accu(exact_mask) << std::endl;
+            std::cout << "samples size " << arma::accu(T_samples) << std::endl;
             if (targets.n_rows > 0)
             {
-                std::cout << "computing exactly" << std::endl;
-                arma::rowvec result = swap_target(data, targets, medoids, N);
+                std::cout << "COMPUTING EXACTLY " << targets.n_rows << std::endl;
+                arma::vec result = swap_target(data, medoids, targets, N, best_distances, second_distances, assignments);
                 estimates.elem(targets) = result;
                 ucbs.elem(targets) = result;
                 lcbs.elem(targets) = result;
                 exact_mask.elem(targets).fill(1);
                 T_samples.elem(targets) += N;
 
-                candidates = (lcbs < ucbs.min()) != exact_mask;
-                targets = arma::find(compute_exactly);
+                candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
+
+
+            // this is my own modification?
             }
-            if (targets.n_rows == 0)
+            if (arma::accu(candidates) < 0.5)
             {
-                continue;
+                std::cout << "yeeting away" << std::endl;
+                break;
             }
-
-            arma::rowvec result = swap_target(data, targets, medoids, N);
+            targets = arma::find(candidates);
+            arma::vec result = swap_target(data, medoids, targets, this_batch_size, best_distances, second_distances, assignments);
             estimates.elem(targets) = ((T_samples.elem(targets) % estimates.elem(targets)) + (result * this_batch_size)) / (this_batch_size + T_samples.elem(targets));
-
-            arma::Row<double> adjust(targets.n_rows);
-            adjust.fill(std::log(1 / p));
-            arma::Row<double> cb_delta = sigma * arma::sqrt(adjust / T_samples.elem(targets));
+            T_samples.elem(targets) += this_batch_size;
+            //std::cout << "estimates:" << arma::mean(arma::mean(estimates)) << std::endl;
+            arma::vec adjust(targets.n_rows);
+            //std::cout << "result of log " << ::log(p) << std::endl;
+            adjust.fill(::log(p));
+            arma::vec cb_delta = sigma * arma::sqrt(adjust / T_samples.elem(targets));
+            //std::cout << "cb_delta:" << arma::mean(arma::mean(cb_delta)) << std::endl;
 
             ucbs.elem(targets) = estimates.elem(targets) + cb_delta;
             lcbs.elem(targets) = estimates.elem(targets) - cb_delta;
-            candidates = (lcbs < ucbs.min()) != exact_mask;
-            targets = arma::find(compute_exactly);
+            //std::cout << "ucbs:" << arma::mean(arma::mean(ucbs)) << " lcbs:" << arma::mean(arma::mean(lcbs)) << std::endl;
+            candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
+            targets = arma::find(candidates);
             step_count++;
         }
+        // now switch medoids
+        uword new_medoid = lcbs.index_min();
+        // extract medoid of swap
+        size_t k = new_medoid % medoids.n_cols;
+            
+        // extract data point of swap
+        size_t n = new_medoid - (N * (new_medoid / N));
+        swap_performed = medoid_indicies(k) != n;
+        std::cout << (swap_performed ? ("swap performed") : ("no swap performed")) << std::endl;
+        medoid_indicies(k) = n;
+        medoids.col(k) = data.col(medoid_indicies(k));
+
     }
+    // done with swaps at this point
 }
 
 double KMediods::calc_loss(const arma::mat &data,

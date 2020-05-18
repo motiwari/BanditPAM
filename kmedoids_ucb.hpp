@@ -27,21 +27,34 @@ public:
                  arma::Row<size_t> &assignments);
 
 private:
-    arma::Row<double> build_target(const arma::mat& data, arma::uvec& targets, size_t batch_size, arma::Row<double>& best_distances );
+    arma::Row<double> build_target(
+        const arma::mat &data,
+        arma::uvec &targets,
+        size_t batch_size,
+        arma::Row<double> &best_distances);
 
     void build(const arma::mat &data,
-                     const size_t clusters,
-                     arma::Row<size_t> &medoid_indicies,
-                     arma::mat& medoids);
+               const size_t clusters,
+               arma::Row<size_t> &medoid_indicies,
+               arma::mat &medoids);
 
-    arma::Row<double> swap_target(const arma::mat& data, arma::uvec& targets, size_t batch_size, arma::Row<double>& best_distances );
+    double cost_fn_build(const arma::mat &data, arma::uword target, arma::uvec &tmp_refs, arma::Row<double> &best_distances);
+
+    arma::vec swap_target(
+        const arma::mat &data,
+        const arma::mat &medoids,
+        arma::uvec &targets,
+        size_t batch_size,
+        arma::Row<double> &best_distances,
+        arma::Row<double> &second_best_distances,
+        arma::urowvec &assignments);
 
     void swap(const arma::mat &data,
-                     const size_t clusters,
-                     arma::Row<size_t> &medoid_indicies,
-                     arma::mat& medoids);
+              const size_t clusters,
+              arma::Row<size_t> &medoid_indicies,
+              arma::mat &medoids);
 
-    double cost_fn(const arma::mat &data, arma::uword target,  arma::uvec& tmp_refs, arma::Row<double>& best_distances);
+    double cost_fn(const arma::mat &data, arma::uword target, arma::uvec &tmp_refs, arma::Row<double> &best_distances);
 
     double calc_loss(const arma::mat &data,
                      const size_t clusters,
