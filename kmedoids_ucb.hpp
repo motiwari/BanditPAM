@@ -42,7 +42,7 @@ private:
 
     arma::vec swap_target(
         const arma::mat &data,
-        arma::mat &medoids,
+        arma::Row<size_t> &medoid_indices,
         arma::uvec &targets,
         size_t batch_size,
         arma::Row<double> &best_distances,
@@ -58,7 +58,7 @@ private:
 
     double calc_loss(const arma::mat &data,
                      const size_t clusters,
-                     arma::mat &medoids);
+                     arma::Row<size_t> &medoid_indicies);
 
     double sigma = 0.1;
     size_t maxIterations;
