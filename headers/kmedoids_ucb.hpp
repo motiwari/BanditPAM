@@ -27,11 +27,19 @@ public:
                  arma::Row<size_t> &assignments);
 
 private:
+    void build_sigma(
+        const arma::mat &data,
+        arma::rowvec &best_distances,
+        arma::rowvec &sigma,
+        arma::uword batch_size,
+        bool use_absolute);
+
     arma::Row<double> build_target(
         const arma::mat &data,
-        arma::uvec &targets,
+        arma::uvec &target,
         size_t batch_size,
-        arma::Row<double> &best_distances);
+        arma::Row<double> &best_distances,
+        bool use_absolute);
 
     void build(const arma::mat &data,
                const size_t clusters,
@@ -54,13 +62,19 @@ private:
               arma::Row<size_t> &medoid_indicies,
               arma::mat &medoids);
 
-    double cost_fn(const arma::mat &data, arma::uword target, arma::uvec &tmp_refs, arma::Row<double> &best_distances);
-
     double calc_loss(const arma::mat &data,
                      const size_t clusters,
                      arma::Row<size_t> &medoid_indicies);
 
-    double sigma = 0.1;
+    void swap_sigma(
+        const arma::mat &data,
+        arma::mat &sigma,
+        size_t batch_size,
+        arma::Row<double> &best_distances,
+        arma::Row<double> &second_best_distances,
+        arma::urowvec &assignments);
+
+    double sigma_const = 0.1;
     size_t maxIterations;
 };
 
