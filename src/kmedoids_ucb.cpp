@@ -9,10 +9,10 @@ KMediods::KMediods(size_t maxIterations)
 
 void KMediods::cluster(const arma::mat &data,
                        const size_t clusters,
-                       arma::urowvec &assignments)
+                       arma::urowvec &assignments,
+                       arma::urowvec &medoid_indicies)
 {
     arma::mat medoids(data.n_rows, clusters);
-    arma::urowvec medoid_indicies(clusters);
 
     // build clusters
     std::cout << "beginning build step" << std::endl;

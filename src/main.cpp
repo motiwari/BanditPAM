@@ -22,9 +22,9 @@ int main(int argc, char * argv[]) {
 
     arma::urowvec assignments(n);
     arma::urowvec medoid_indices(k);
-    
+
     KMediods kmed;
-    kmed.cluster(data, k, assignments);
+    kmed.cluster(data, k, assignments, medoid_indices);
 
     //data.load('data1.csv', csv_ascii);
 }

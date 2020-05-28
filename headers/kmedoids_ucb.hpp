@@ -25,7 +25,8 @@ public:
 
     void cluster(const arma::mat &data,
                  const size_t clusters,
-                 arma::urowvec &assignments);
+                 arma::urowvec &assignments,
+                 arma::urowvec &medoid_indicies);
 
 private:
     void build_sigma(
