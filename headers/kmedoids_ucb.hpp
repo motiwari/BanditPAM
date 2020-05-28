@@ -12,6 +12,7 @@
 #include <math.h>
 #include <iostream>
 #include <armadillo>
+#include <omp.h>
 
 // switch all naming to camelCase
 // switch to armadillo typedefs
@@ -24,7 +25,7 @@ public:
 
     void cluster(const arma::mat &data,
                  const size_t clusters,
-                 arma::Row<size_t> &assignments);
+                 arma::urowvec &assignments);
 
 private:
     void build_sigma(
@@ -34,44 +35,44 @@ private:
         arma::uword batch_size,
         bool use_absolute);
 
-    arma::Row<double> build_target(
+    arma::rowvec build_target(
         const arma::mat &data,
         arma::uvec &target,
         size_t batch_size,
-        arma::Row<double> &best_distances,
+        arma::rowvec &best_distances,
         bool use_absolute);
 
     void build(const arma::mat &data,
                const size_t clusters,
-               arma::Row<size_t> &medoid_indicies,
+               arma::urowvec &medoid_indicies,
                arma::mat &medoids);
 
-    double cost_fn_build(const arma::mat &data, arma::uword target, arma::uvec &tmp_refs, arma::Row<double> &best_distances);
+    double cost_fn_build(const arma::mat &data, arma::uword target, arma::uvec &tmp_refs, arma::rowvec &best_distances);
 
     arma::vec swap_target(
         const arma::mat &data,
-        arma::Row<size_t> &medoid_indices,
+        arma::urowvec &medoid_indices,
         arma::uvec &targets,
         size_t batch_size,
-        arma::Row<double> &best_distances,
-        arma::Row<double> &second_best_distances,
+        arma::rowvec &best_distances,
+        arma::rowvec &second_best_distances,
         arma::urowvec &assignments);
 
     void swap(const arma::mat &data,
               const size_t clusters,
-              arma::Row<size_t> &medoid_indicies,
+              arma::urowvec &medoid_indicies,
               arma::mat &medoids);
 
     double calc_loss(const arma::mat &data,
                      const size_t clusters,
-                     arma::Row<size_t> &medoid_indicies);
+                     arma::urowvec &medoid_indicies);
 
     void swap_sigma(
         const arma::mat &data,
         arma::mat &sigma,
         size_t batch_size,
-        arma::Row<double> &best_distances,
-        arma::Row<double> &second_best_distances,
+        arma::rowvec &best_distances,
+        arma::rowvec &second_best_distances,
         arma::urowvec &assignments);
 
     double sigma_const = 0.1;

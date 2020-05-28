@@ -71,7 +71,8 @@ if __name__ == "__main__":
     print("here are medoids")
     print(medoids)
     if (input("Save dataset? (y)es or (n)o:") == "y"):
-        np.savetxt("data1.csv", data, delimiter=",")
-        np.savetxt("data1_medoids.csv", medoids, delimiter=",")
-        np.savetxt("data1_indices.csv", medoid_indices, fmt = "%i", delimiter=",")
-        np.savetxt("data1_assignments.csv", assignments, fmt = "%i", delimiter=",")
+        prefix = input("save prefix:")
+        np.savetxt(f"{prefix}.csv", data, delimiter=",")
+        np.savetxt(f"{prefix}_medoids.csv", medoids, delimiter=",")
+        np.savetxt(f"{prefix}_indices.csv", medoid_indices, fmt = "%i", delimiter=",")
+        np.savetxt(f"{prefix}_assignments.csv", assignments, fmt = "%i", delimiter=",")

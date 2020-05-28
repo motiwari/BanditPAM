@@ -9,37 +9,47 @@ KMediods::KMediods(size_t maxIterations)
 
 void KMediods::cluster(const arma::mat &data,
                        const size_t clusters,
-                       arma::Row<size_t> &assignments)
+                       arma::urowvec &assignments)
 {
     arma::mat medoids(data.n_rows, clusters);
-    arma::Row<size_t> medoid_indicies(clusters);
+    arma::urowvec medoid_indicies(clusters);
 
     // build clusters
+    std::cout << "beginning build step" << std::endl;
     KMediods::build(data, clusters, medoid_indicies, medoids);
-
+    std::cout << "Medoid assignments:" << std::endl;
     std::cout << medoid_indicies << std::endl;
-    std::cout << "########################### SWAP ##############################" << std::endl;
 
+    std::cout << "beginning swap step" << std::endl;
     KMediods::swap(data, clusters, medoid_indicies, medoids);
+    std::cout << "Medoid assignments:" << std::endl;
     std::cout << medoid_indicies << std::endl;
 }
 
 void KMediods::build(const arma::mat &data,
                      const size_t clusters,
-                     arma::Row<size_t> &medoid_indicies,
+                     arma::urowvec &medoid_indicies,
                      arma::mat &medoids)
 {
     // Parameters
     size_t N = data.n_cols;
-    arma::Row<size_t> N_mat(N);
+    arma::urowvec N_mat(N);
     N_mat.fill(N);
-    double p = 1 / (N * 10);
+    double p = 1 / (1000 * N); //decide whether or not to use reciprocal. Because apparently it makes a difference?
     bool use_absolute = true;
-    arma::Row<size_t> num_samples(N, arma::fill::zeros);
-    arma::Row<double> estimates(N, arma::fill::zeros);
+    arma::urowvec num_samples(N, arma::fill::zeros);
+    arma::rowvec estimates(N, arma::fill::zeros);
 
-    arma::Row<double> best_distances(N);
+    arma::rowvec best_distances(N);
     arma::rowvec sigma(N);
+
+    arma::urowvec candidates(N, arma::fill::ones); // one hot encoding of candidates;
+    arma::rowvec lcbs(N);
+    arma::rowvec ucbs(N);
+    arma::urowvec T_samples(N, arma::fill::zeros);
+    arma::urowvec exact_mask(N, arma::fill::zeros);
+
+    size_t original_batch_size = 20;
 
     best_distances.fill(std::numeric_limits<double>::infinity());
     //best_distances.fill(1000000000);
@@ -47,45 +57,30 @@ void KMediods::build(const arma::mat &data,
     for (size_t k = 0; k < clusters; k++)
     {
         size_t step_count = 0;
-        arma::urowvec candidates(N, arma::fill::ones); // one hot encoding of candidates;
-        arma::Row<double> lcbs(N);
-        arma::Row<double> ucbs(N);
-        //lcbs.fill(1000); //Is it safe to make the assumption that something will always be overwriting this?
-        //ucbs.fill(1000);
-        arma::Row<size_t> T_samples(N, arma::fill::zeros);
-        arma::Row<size_t> exact_mask(N, arma::fill::zeros);
+        candidates.fill(1);
+        T_samples.fill(0);
+        exact_mask.fill(0);
 
         size_t original_batch_size = 20;
 
-        //sigma.fill(.1);
-        std::cout << "filling the sigma " << std::endl;
         KMediods::build_sigma(data, best_distances, sigma, original_batch_size, use_absolute);
-        std::cout << "filled the sigma" << std::endl;
 
         size_t base = 1;
 
-        while (arma::sum(candidates) > 0.1)
+        while (arma::sum(candidates) > 0.1) //double comparison
         {
-            std::cout << "Step count" << step_count << std::endl;
-            size_t this_batch_size = original_batch_size; //need to add scaling batch size
+            size_t this_batch_size = original_batch_size; //need to finalize this
 
-            arma::umat compute_exactly = (T_samples + this_batch_size) >= N_mat;
+            arma::umat compute_exactly = ((T_samples + this_batch_size) >= N_mat) != exact_mask;
 
-            compute_exactly = compute_exactly != exact_mask; //check this
+            // switch this to taking the length of targets
             if (arma::accu(compute_exactly) > 0)
             {
                 uvec targets = find(compute_exactly);
-                //std::cout << "Computing exactly for " << targets.n_rows << " on step count " << step_count << std::endl;
-
-                arma::Row<double> result = build_target(data, targets, N, best_distances, use_absolute);
-                //std::cout << "setting estimates" << std::endl;
-
+                std::cout << "Computing exactly for " << targets.n_rows << " out of " << data.n_cols << std::endl;
+                arma::rowvec result = build_target(data, targets, N, best_distances, use_absolute);
                 estimates.cols(targets) = result;
-                //std::cout << "setting ucbs" << std::endl;
-
                 ucbs.cols(targets) = result;
-                //std::cout << "setting lcbs" << std::endl;
-
                 lcbs.cols(targets) = result;
 
                 exact_mask.cols(targets).fill(1);
@@ -98,13 +93,13 @@ void KMediods::build(const arma::mat &data,
                 continue;
             }
             uvec targets = find(candidates);
-            arma::Row<double> result = build_target(data, targets, this_batch_size, best_distances, use_absolute);
+            arma::rowvec result = build_target(data, targets, this_batch_size, best_distances, use_absolute);
             estimates.cols(targets) = ((T_samples.cols(targets) % estimates.cols(targets)) + (result * this_batch_size)) / (this_batch_size + T_samples.cols(targets));
             T_samples.cols(targets) += this_batch_size;
-            arma::Row<double> adjust(targets.n_rows);
+            arma::rowvec adjust(targets.n_rows);
             adjust.fill(std::log(1 / p));
-            //arma::Row<double> cb_delta = sigma.cols(targets) % arma::sqrt(adjust / T_samples.cols(targets));
-            arma::Row<double> cb_delta = 0.1 * arma::sqrt(adjust / T_samples.cols(targets));
+            arma::rowvec cb_delta = sigma.cols(targets) % arma::sqrt(adjust / T_samples.cols(targets));
+            //arma::rowvec cb_delta = 0.1 * arma::sqrt(adjust / T_samples.cols(targets));
 
             ucbs.cols(targets) = estimates.cols(targets) + cb_delta;
             lcbs.cols(targets) = estimates.cols(targets) - cb_delta;
@@ -121,13 +116,11 @@ void KMediods::build(const arma::mat &data,
         //multithread, decompose
         for (int i = 0; i < N; i++)
         {
-            for (int j = 0; j <= k; j++)
+            // is accessing the mediods array faster?
+            double cost = norm(data.col(i) - data.col(medoid_indicies(k)), 2);
+            if (cost < best_distances(i))
             {
-                double cost = norm(data.col(i) - data.col(medoid_indicies(j)), 2);
-                if (cost < best_distances(i))
-                {
-                    best_distances(i) = cost;
-                }
+                best_distances(i) = cost;
             }
         }
         std::cout << "found new medoid" << new_medoid << std::endl;
@@ -146,7 +139,8 @@ void KMediods::build_sigma(
     uvec tmp_refs = arma::randperm(N, batch_size); //without replacement, requires updated version of armadillo
 
     arma::rowvec sample(batch_size);
-    // for each possible swap
+// for each possible swap
+#pragma omp parallel for
     for (size_t i = 0; i < N; i++)
     {
 
@@ -154,13 +148,15 @@ void KMediods::build_sigma(
         for (size_t j = 0; j < batch_size; j++)
         {
             double cost = arma::norm(data.col(i) - data.col(tmp_refs(j)));
-            if (use_absolute) {
+            if (use_absolute)
+            {
                 sample(j) = cost;
-            } else {
+            }
+            else
+            {
                 sample(j) = cost < best_distances(tmp_refs(j)) ? cost : best_distances(tmp_refs(j));
                 sample(j) -= best_distances(tmp_refs(j));
             }
-            
         }
         sigma(i) = arma::stddev(sample);
     }
@@ -168,44 +164,46 @@ void KMediods::build_sigma(
 
 // switch this to a difference
 // forcibly inline this in the future and directly write to estimates
-arma::Row<double> KMediods::build_target(
+arma::rowvec KMediods::build_target(
     const arma::mat &data,
     arma::uvec &target,
     size_t batch_size,
-    arma::Row<double> &best_distances,
+    arma::rowvec &best_distances,
     bool use_absolute)
 {
     size_t N = data.n_cols;
-    arma::Row<double> estimates(target.n_rows, arma::fill::zeros);
+    arma::rowvec estimates(target.n_rows, arma::fill::zeros);
     //uvec tmp_refs = randi<uvec>(batch_size, distr_param(0, N - 1)); //with replacement
     uvec tmp_refs = arma::randperm(N, batch_size); //without replacement, requires updated version of armadillo
     double total = 0;
+#pragma omp parallel for
     for (size_t i = 0; i < target.n_rows; i++)
     {
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++)
         {
             double cost = arma::norm(data.col(tmp_refs(j)) - data.col(target(i)), 2);
-            if (use_absolute) {
+            if (use_absolute)
+            {
                 total += cost;
-            } else {
+            }
+            else
+            {
                 total += cost < best_distances(tmp_refs(j)) ? cost : best_distances(tmp_refs(j));
                 total -= best_distances(tmp_refs(j));
             }
         }
-        estimates(i) =total;
+        estimates(i) = total;
     }
     return estimates;
 }
-
-
 
 void KMediods::swap_sigma(
     const arma::mat &data,
     arma::mat &sigma,
     size_t batch_size,
-    arma::Row<double> &best_distances,
-    arma::Row<double> &second_best_distances,
+    arma::rowvec &best_distances,
+    arma::rowvec &second_best_distances,
     arma::urowvec &assignments)
 {
     size_t N = data.n_cols;
@@ -215,7 +213,8 @@ void KMediods::swap_sigma(
 
     arma::vec sample(batch_size); // declare in outer loop, single allocation
 
-    // for each considered swap
+// for each considered swap
+#pragma omp parallel for
     for (size_t i = 0; i < K * N; i++)
     {
         // extract data point of swap
@@ -257,18 +256,19 @@ void KMediods::swap_sigma(
 
 arma::vec KMediods::swap_target(
     const arma::mat &data,
-    arma::Row<size_t> &medoid_indices,
+    arma::urowvec &medoid_indices,
     arma::uvec &targets,
     size_t batch_size,
-    arma::Row<double> &best_distances,
-    arma::Row<double> &second_best_distances,
+    arma::rowvec &best_distances,
+    arma::rowvec &second_best_distances,
     arma::urowvec &assignments)
 {
     size_t N = data.n_cols;
     arma::vec estimates(targets.n_rows, arma::fill::zeros);
     uvec tmp_refs = arma::randperm(N, batch_size); //without replacement, requires updated version of armadillo
 
-    // for each considered swap
+// for each considered swap
+#pragma omp parallel for
     for (size_t i = 0; i < targets.n_rows; i++)
     {
         double total = 0;
@@ -304,15 +304,7 @@ arma::vec KMediods::swap_target(
             }
             total -= best_distances(tmp_refs(j));
         }
-        // total currently depends on the batch size, which seems distinctly wrong. maybe.
-        uword temp = medoid_indices(k);
-        medoid_indices(k) = n;
-        //estimates(i) = calc_loss(data, medoid_indices.n_cols, medoid_indices);
         estimates(i) = total;
-        medoid_indices(k) = temp;
-
-        //estimates(i) = total;
-        //std::cout << "estimate for n->k " << n << "->" << k << " :" << estimates(i) << " " << total << std::endl;
     }
     return estimates;
 }
@@ -320,10 +312,11 @@ arma::vec KMediods::swap_target(
 void calc_best_distances_swap(
     const arma::mat &data,
     const arma::mat &medoids,
-    arma::Row<double> &best_distances,
-    arma::Row<double> &second_distances,
+    arma::rowvec &best_distances,
+    arma::rowvec &second_distances,
     arma::urowvec &assignments)
 {
+#pragma omp parallel for
     for (size_t i = 0; i < data.n_cols; i++)
     {
         double best = std::numeric_limits<double>::infinity();
@@ -349,18 +342,18 @@ void calc_best_distances_swap(
 
 void KMediods::swap(const arma::mat &data,
                     const size_t clusters,
-                    arma::Row<size_t> &medoid_indicies,
+                    arma::urowvec &medoid_indicies,
                     arma::mat &medoids)
 {
 
     size_t N = data.n_cols;
     size_t this_batch_size = 20;
-    double p = (10);
+    double p = 1 / (N * clusters * 1000); //reciprocal
 
     arma::mat sigma(clusters, N);
 
-    arma::Row<double> best_distances(N);
-    arma::Row<double> second_distances(N);
+    arma::rowvec best_distances(N);
+    arma::rowvec second_distances(N);
     arma::urowvec assignments(N);
 
     // does this need to be calculated in every iteration?
@@ -407,7 +400,6 @@ void KMediods::swap(const arma::mat &data,
             {
                 size_t n = targets(0) / medoids.n_cols;
                 size_t k = targets(0) % medoids.n_cols;
-                std::cout << "n, k -> " << n << " " << k << std::endl;
                 std::cout << "COMPUTING EXACTLY " << targets.size() << " out of " << candidates.size() << std::endl;
                 arma::vec result = swap_target(data, medoid_indicies, targets, N, best_distances, second_distances, assignments);
                 estimates.elem(targets) = result;
@@ -422,7 +414,7 @@ void KMediods::swap(const arma::mat &data,
             }
             if (arma::accu(candidates) < 0.5)
             {
-                std::cout << "yeeting away" << std::endl;
+                //std::cout << "yeeting away" << std::endl;
                 break;
             }
             targets = arma::find(candidates);
@@ -432,7 +424,7 @@ void KMediods::swap(const arma::mat &data,
             //std::cout << "estimates:" << arma::mean(arma::mean(estimates)) << std::endl;
             arma::vec adjust(targets.n_rows);
             //std::cout << "result of log " << ::log(p) << std::endl;
-            adjust.fill(::log(p));
+            adjust.fill(::log(1 / p));
             arma::vec cb_delta = sigma.elem(targets) % arma::sqrt(adjust / T_samples.elem(targets));
             //std::cout << "cb_delta:" << arma::mean(arma::mean(cb_delta)) << std::endl;
 
@@ -452,21 +444,21 @@ void KMediods::swap(const arma::mat &data,
         size_t n = new_medoid / medoids.n_cols;
         swap_performed = medoid_indicies(k) != n;
         std::cout << (swap_performed ? ("swap performed") : ("no swap performed")) << std::endl;
-        std::cout << "lcbs means is " << lcbs.min() << std::endl;
+        //std::cout << "lcbs means is " << lcbs.min() << std::endl;
         medoid_indicies(k) = n;
         medoids.col(k) = data.col(medoid_indicies(k));
-        std::cout << medoid_indicies << std::endl;
+        //std::cout << medoid_indicies << std::endl;
         calc_best_distances_swap(data, medoids, best_distances, second_distances, assignments);
-        std::cout << "best distance sum:" << arma::accu(best_distances) << std::endl;
-        std::cout << "calced distance:" << calc_loss(data, medoids.n_cols, medoid_indicies) << std::endl;
-        std::cout << "medoids shape" << medoids.n_rows << " cols:" << medoids.n_cols << std::endl;
+        //std::cout << "best distance sum:" << arma::accu(best_distances) << std::endl;
+        //std::cout << "calced distance:" << calc_loss(data, medoids.n_cols, medoid_indicies) << std::endl;
+        //std::cout << "medoids shape" << medoids.n_rows << " cols:" << medoids.n_cols << std::endl;
     }
     // done with swaps at this point
 }
 
 double KMediods::calc_loss(const arma::mat &data,
                            const size_t clusters,
-                           arma::Row<size_t> &medoid_indices)
+                           arma::urowvec &medoid_indices)
 {
     double total = 0;
 
