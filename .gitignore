@@ -1,0 +1,4 @@
+.DS_Store
+.project
+data/MNIST_CSV.csv
+data/MNIST-10k.csv
