@@ -35,7 +35,7 @@ void KMediods::build(const arma::mat &data,
     size_t N = data.n_cols;
     arma::urowvec N_mat(N);
     N_mat.fill(N);
-    double p = 1 / (1000 * N); //decide whether or not to use reciprocal. Because apparently it makes a difference?
+    int p = (1000 * N); //decide whether or not to use reciprocal. Because apparently it makes a difference?
     bool use_absolute = true;
     arma::urowvec num_samples(N, arma::fill::zeros);
     arma::rowvec estimates(N, arma::fill::zeros);
@@ -64,6 +64,7 @@ void KMediods::build(const arma::mat &data,
         size_t original_batch_size = 20;
 
         KMediods::build_sigma(data, best_distances, sigma, original_batch_size, use_absolute);
+        std::cout << "sigma mean is " << arma::mean(sigma) << std::endl;
 
         size_t base = 1;
 
@@ -97,9 +98,14 @@ void KMediods::build(const arma::mat &data,
             estimates.cols(targets) = ((T_samples.cols(targets) % estimates.cols(targets)) + (result * this_batch_size)) / (this_batch_size + T_samples.cols(targets));
             T_samples.cols(targets) += this_batch_size;
             arma::rowvec adjust(targets.n_rows);
-            adjust.fill(std::log(1 / p));
+            adjust.fill(p);
+            cout << "p is" << p << endl;
+            adjust = arma::log(adjust);
+            cout << "mean adjust value is " << arma::mean(adjust) << "and first value is " << adjust(0) << endl;
             arma::rowvec cb_delta = sigma.cols(targets) % arma::sqrt(adjust / T_samples.cols(targets));
             //arma::rowvec cb_delta = 0.1 * arma::sqrt(adjust / T_samples.cols(targets));
+            cout << "build cb_delta mean is " << arma::mean(cb_delta) << std::endl;
+
 
             ucbs.cols(targets) = estimates.cols(targets) + cb_delta;
             lcbs.cols(targets) = estimates.cols(targets) - cb_delta;
@@ -138,7 +144,7 @@ void KMediods::build_sigma(
     size_t N = data.n_cols;
     uvec tmp_refs = arma::randperm(N, batch_size); //without replacement, requires updated version of armadillo
 
-    arma::rowvec sample(batch_size);
+    arma::vec sample(batch_size);
 // for each possible swap
 #pragma omp parallel for
     for (size_t i = 0; i < N; i++)
@@ -230,22 +236,22 @@ void KMediods::swap_sigma(
             {
                 if (cost < second_best_distances(tmp_refs(j)))
                 {
-                    sample(j) += cost;
+                    sample(j) = cost;
                 }
                 else
                 {
-                    sample(j) += second_best_distances(tmp_refs(j));
+                    sample(j) = second_best_distances(tmp_refs(j));
                 }
             }
             else
             {
                 if (cost < best_distances(tmp_refs(j)))
                 {
-                    sample(j) += cost;
+                    sample(j) = cost;
                 }
                 else
                 {
-                    sample(j) += best_distances(tmp_refs(j));
+                    sample(j) = best_distances(tmp_refs(j));
                 }
             }
             sample(j) -= best_distances(tmp_refs(j));
@@ -266,6 +272,8 @@ arma::vec KMediods::swap_target(
     size_t N = data.n_cols;
     arma::vec estimates(targets.n_rows, arma::fill::zeros);
     uvec tmp_refs = arma::randperm(N, batch_size); //without replacement, requires updated version of armadillo
+    //arma::vec sample(batch_size); // declare in outer loop, single allocation
+    //arma::vec sigmas(targets.n_rows);
 
 // for each considered swap
 #pragma omp parallel for
@@ -347,10 +355,10 @@ void KMediods::swap(const arma::mat &data,
 {
 
     size_t N = data.n_cols;
-    size_t this_batch_size = 20;
-    double p = 1 / (N * clusters * 1000); //reciprocal
+    size_t this_batch_size = 100;
+    int p = (N * clusters * 1000); //reciprocal
 
-    arma::mat sigma(clusters, N);
+    arma::mat sigma(clusters, N, arma::fill::zeros);
 
     arma::rowvec best_distances(N);
     arma::rowvec second_distances(N);
@@ -377,6 +385,7 @@ void KMediods::swap(const arma::mat &data,
         calc_best_distances_swap(data, medoids, best_distances, second_distances, assignments);
 
         swap_sigma(data, sigma, this_batch_size, best_distances, second_distances, assignments);
+        //cout << "swap sigma mean is " << arma::mean(arma::mean(sigma)) << std::endl;
 
         candidates.fill(1);
         exact_mask.fill(0);
@@ -424,9 +433,11 @@ void KMediods::swap(const arma::mat &data,
             //std::cout << "estimates:" << arma::mean(arma::mean(estimates)) << std::endl;
             arma::vec adjust(targets.n_rows);
             //std::cout << "result of log " << ::log(p) << std::endl;
-            adjust.fill(::log(1 / p));
+            adjust.fill(p);
+            adjust = arma::log(adjust);
             arma::vec cb_delta = sigma.elem(targets) % arma::sqrt(adjust / T_samples.elem(targets));
             //std::cout << "cb_delta:" << arma::mean(arma::mean(cb_delta)) << std::endl;
+
 
             ucbs.elem(targets) = estimates.elem(targets) + cb_delta;
             lcbs.elem(targets) = estimates.elem(targets) - cb_delta;
