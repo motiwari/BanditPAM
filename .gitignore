@@ -1,4 +1,6 @@
 .DS_Store
 .project
+.vscode/
 data/MNIST_CSV.csv
 data/MNIST-10k.csv
+build/

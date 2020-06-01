@@ -10,9 +10,16 @@ if __name__ == "__main__":
         ucbs = [float(num) for num in [num for num in lines[i].split(' ')if not num.strip() == ""]]
         estimates = [float(num) for num in [num for num in lines[i + 1].split(' ')if not num.strip() == ""]]
         lcbs = [float(num) for num in [num for num in lines[i + 2].split(' ')if not num.strip() == ""]]
-        plt.scatter(range(len(lcbs)), estimates, c = 'blue')
+        plt.scatter(range(len(lcbs)), estimates, c = 'blue', marker = '.')
         plt.scatter(range(len(lcbs)), ucbs, c = 'green')
         plt.scatter(range(len(lcbs)), lcbs, c = 'red')
+        x = []
+        y = []
+        for i in range(len(ucbs)):
+            if (ucbs[i] - lcbs[i])**2 < .0001:
+                x.append(i)
+                y.append(estimates[i])
+        plt.scatter(x, y, c = "cyan", marker='s')
 
         plt.show()
         for num in ucbs:
