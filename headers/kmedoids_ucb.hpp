@@ -13,6 +13,7 @@
 #include <iostream>
 #include <armadillo>
 #include <omp.h>
+#include <fstream>
 
 // switch all naming to camelCase
 // switch to armadillo typedefs

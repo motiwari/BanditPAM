@@ -1,4 +1,5 @@
 #include <armadillo>
+#include <chrono>
 #include "kmedoids_ucb.hpp"
 using namespace arma;
 int main(int argc, char * argv[]) {
@@ -24,7 +25,10 @@ int main(int argc, char * argv[]) {
     arma::urowvec medoid_indices(k);
 
     KMediods kmed;
+    auto start = std::chrono::steady_clock::now();
     kmed.cluster(data, k, assignments, medoid_indices);
+    auto end = std::chrono::steady_clock::now();
+    cout << "Took " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " milliseconds" << endl;
 
     //data.load('data1.csv', csv_ascii);
 }

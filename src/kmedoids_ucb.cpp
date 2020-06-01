@@ -36,6 +36,7 @@ void KMediods::build(const arma::mat &data,
     arma::urowvec N_mat(N);
     N_mat.fill(N);
     int p = (1000 * N); //decide whether or not to use reciprocal. Because apparently it makes a difference?
+
     bool use_absolute = true;
     arma::urowvec num_samples(N, arma::fill::zeros);
     arma::rowvec estimates(N, arma::fill::zeros);
@@ -49,7 +50,7 @@ void KMediods::build(const arma::mat &data,
     arma::urowvec T_samples(N, arma::fill::zeros);
     arma::urowvec exact_mask(N, arma::fill::zeros);
 
-    size_t original_batch_size = 20;
+    size_t original_batch_size = 100;
 
     best_distances.fill(std::numeric_limits<double>::infinity());
     //best_distances.fill(1000000000);
@@ -60,8 +61,8 @@ void KMediods::build(const arma::mat &data,
         candidates.fill(1);
         T_samples.fill(0);
         exact_mask.fill(0);
+        estimates.fill(0);
 
-        size_t original_batch_size = 20;
 
         KMediods::build_sigma(data, best_distances, sigma, original_batch_size, use_absolute);
         std::cout << "sigma mean is " << arma::mean(sigma) << std::endl;
@@ -72,7 +73,7 @@ void KMediods::build(const arma::mat &data,
         {
             size_t this_batch_size = original_batch_size; //need to finalize this
 
-            arma::umat compute_exactly = ((T_samples + this_batch_size) >= N_mat) != exact_mask;
+            arma::umat compute_exactly = ((T_samples + this_batch_size) >= N) != exact_mask;
 
             // switch this to taking the length of targets
             if (arma::accu(compute_exactly) > 0)
@@ -89,29 +90,41 @@ void KMediods::build(const arma::mat &data,
                 candidates.cols(targets).fill(0);
             }
 
-            if (sum(candidates) < 0.5)
+            if (arma::sum(candidates) < 0.5)
             {
-                continue;
+                break;
             }
             uvec targets = find(candidates);
+            //cout << "num candidates" << targets.n_rows << endl;
+            //cout << "num candidates other" << sum(candidates) << endl;
+
             arma::rowvec result = build_target(data, targets, this_batch_size, best_distances, use_absolute);
             estimates.cols(targets) = ((T_samples.cols(targets) % estimates.cols(targets)) + (result * this_batch_size)) / (this_batch_size + T_samples.cols(targets));
             T_samples.cols(targets) += this_batch_size;
             arma::rowvec adjust(targets.n_rows);
             adjust.fill(p);
-            cout << "p is" << p << endl;
             adjust = arma::log(adjust);
-            cout << "mean adjust value is " << arma::mean(adjust) << "and first value is " << adjust(0) << endl;
             arma::rowvec cb_delta = sigma.cols(targets) % arma::sqrt(adjust / T_samples.cols(targets));
+            //arma::rowvec cb_delta = arma::mean(sigma) * arma::sqrt(adjust / T_samples.cols(targets));
             //arma::rowvec cb_delta = 0.1 * arma::sqrt(adjust / T_samples.cols(targets));
-            cout << "build cb_delta mean is " << arma::mean(cb_delta) << std::endl;
+            //cout << "build cb_delta mean is " << arma::mean(cb_delta) << std::endl;
 
 
             ucbs.cols(targets) = estimates.cols(targets) + cb_delta;
             lcbs.cols(targets) = estimates.cols(targets) - cb_delta;
-
+            //cout << "ucbs min " << ucbs.min() << " and mean lcbd " << arma::mean(lcbs) << endl;
+            //if (use_absolute) cout << "estimates min " << arma::sort(estimates) << endl;
             candidates = (lcbs < ucbs.min()) != exact_mask;
             step_count++;
+            if (use_absolute){
+                cout << "WRITING TO FILE" << endl;
+                std::ofstream file;
+                file.open("bounds.txt", std::ios::app);
+                file << ucbs;
+                file << estimates;
+                file << lcbs;
+                file.close();
+            }
         }
 
         arma::uword new_medoid = lcbs.index_min();
@@ -130,6 +143,7 @@ void KMediods::build(const arma::mat &data,
             }
         }
         std::cout << "found new medoid" << new_medoid << std::endl;
+        std::cout << "loss is " << arma::accu(best_distances) << std::endl;
         use_absolute = false; //use difference of loss for sigma and sampling, not absolute
     }
 }
@@ -153,7 +167,7 @@ void KMediods::build_sigma(
         //gather a sample of points
         for (size_t j = 0; j < batch_size; j++)
         {
-            double cost = arma::norm(data.col(i) - data.col(tmp_refs(j)));
+            double cost = arma::norm(data.col(i) - data.col(tmp_refs(j)), 2);
             if (use_absolute)
             {
                 sample(j) = cost;
@@ -199,7 +213,7 @@ arma::rowvec KMediods::build_target(
                 total -= best_distances(tmp_refs(j));
             }
         }
-        estimates(i) = total;
+        estimates(i) = total/target.n_rows;
     }
     return estimates;
 }
@@ -312,7 +326,7 @@ arma::vec KMediods::swap_target(
             }
             total -= best_distances(tmp_refs(j));
         }
-        estimates(i) = total;
+        estimates(i) = total/tmp_refs.n_rows;
     }
     return estimates;
 }
@@ -454,7 +468,7 @@ void KMediods::swap(const arma::mat &data,
         // extract data point of swap
         size_t n = new_medoid / medoids.n_cols;
         swap_performed = medoid_indicies(k) != n;
-        std::cout << (swap_performed ? ("swap performed") : ("no swap performed")) << std::endl;
+        std::cout << (swap_performed ? ("swap performed") : ("no swap performed")) << " " << medoid_indicies(k)  << "to" << n<< std::endl;
         //std::cout << "lcbs means is " << lcbs.min() << std::endl;
         medoid_indicies(k) = n;
         medoids.col(k) = data.col(medoid_indicies(k));
