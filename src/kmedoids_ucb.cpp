@@ -64,7 +64,7 @@ void KMediods::build(const arma::mat &data,
         estimates.fill(0);
 
         KMediods::build_sigma(data, best_distances, sigma, original_batch_size, use_absolute);
-        std::cout << "sigma mean is " << arma::mean(sigma) << std::endl;
+        //std::cout << "sigma mean is " << arma::mean(sigma) << std::endl;
 
         size_t base = 1;
 
@@ -79,19 +79,20 @@ void KMediods::build(const arma::mat &data,
             {
                 uvec targets = find(compute_exactly);
 
-                std::cout << "Computing exactly for " << targets.n_rows << " out of " << data.n_cols << std::endl;
+                if (verbosity > 0) 
+                {
+                    std::cout << "Computing exactly for " << targets.n_rows << " out of " << data.n_cols << std::endl;
+                }
                 arma::rowvec result = build_target(data, targets, N, best_distances, use_absolute);
                 estimates.cols(targets) = result;
                 ucbs.cols(targets) = result;
                 lcbs.cols(targets) = result;
-
 
                 exact_mask.cols(targets).fill(1);
 
                 T_samples.cols(targets) += N;
 
                 candidates.cols(targets).fill(0);
-
             }
 
             if (arma::sum(candidates) < 0.5)
@@ -99,10 +100,6 @@ void KMediods::build(const arma::mat &data,
                 break;
             }
             uvec targets = arma::find(candidates);
-            //for (size_t i = 0; i < targets.n_rows; i++) {
-            //   cout << "canddidate: " << targets(i) << " sampled " << T_samples(targets(i)) << std::endl;
-            //}
-            //cout << "num candidates other" << sum(candidates) << endl;
 
             arma::rowvec result = build_target(data, targets, this_batch_size, best_distances, use_absolute);
             estimates.cols(targets) = ((T_samples.cols(targets) % estimates.cols(targets)) + (result * this_batch_size)) / (this_batch_size + T_samples.cols(targets));
@@ -111,56 +108,42 @@ void KMediods::build(const arma::mat &data,
             adjust.fill(p);
             adjust = arma::log(adjust);
             arma::rowvec cb_delta = sigma.cols(targets) % arma::sqrt(adjust / T_samples.cols(targets));
-            //arma::rowvec cb_delta = arma::mean(sigma) * arma::sqrt(adjust / T_samples.cols(targets));
-            //arma::rowvec cb_delta = 0.1 * arma::sqrt(adjust / T_samples.cols(targets));
-            //cout << "build cb_delta mean is " << arma::mean(cb_delta) << std::endl;
 
             ucbs.cols(targets) = estimates.cols(targets) + cb_delta;
             lcbs.cols(targets) = estimates.cols(targets) - cb_delta;
-            //cout << "ucbs min " << ucbs.min() << " and mean lcbd " << arma::mean(lcbs) << endl;
-            //if (use_absolute) cout << "estimates min " << arma::sort(estimates) << endl;
             candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
 
             step_count++;
-            for (size_t i = 0; i < N; i++)
-            {
-                if (T_samples(i) >= N && exact_mask(i) == 0)
-                {
-                    cout << "SOMETHING HAS GONE TERRIBLY WRONG" << std::endl;
-                }
-            }
             //cout << "WRITING TO FILE" << endl;
             //cout << "mean estimate " << arma::mean(estimates) << " mean sigma " << arma::mean(sigma) << endl;
             //cout << "total samples " << arma::accu(T_samples) << std::endl;
-            /*if (use_absolute)
-            {
 
-                std::ofstream file;
-                file.open("bounds.txt", std::ios::app);
-                file << ucbs;
-                file << estimates;
-                file << lcbs;
-                file.close();
-            }*/
+            //std::ofstream file;
+            //file.open("bounds.txt", std::ios::app);
+            //file << "Iteration:" << k << "\n";
+            //file << ucbs;
+            //file << estimates;
+            //file << lcbs;
+            //file.close();
         }
 
         arma::uword new_medoid = lcbs.index_min();
-        medoid_indicies(k) = lcbs.index_min();
-        medoids.col(k) = data.col(medoid_indicies(k));
+        medoid_indicies.at(k) = lcbs.index_min();
+        medoids.unsafe_col(k) = data.unsafe_col(medoid_indicies(k));
 
         // don't need to do this on final iteration
         //multithread, decompose
         for (int i = 0; i < N; i++)
         {
             // is accessing the mediods array faster?
-            double cost = norm(data.col(i) - data.col(medoid_indicies(k)), 2);
+            double cost = norm(data.unsafe_col(i) - data.unsafe_col(medoid_indicies(k)), 2);
             if (cost < best_distances(i))
             {
                 best_distances(i) = cost;
             }
         }
-        std::cout << "found new medoid" << new_medoid << std::endl;
-        std::cout << "loss is " << arma::accu(best_distances) << std::endl;
+        //std::cout << "found new medoid: " << new_medoid << std::endl;
+        //std::cout << "loss is " << arma::mean(best_distances) << std::endl;
         use_absolute = false; //use difference of loss for sigma and sampling, not absolute
     }
 }
@@ -448,7 +431,10 @@ void KMediods::swap(const arma::mat &data,
             {
                 size_t n = targets(0) / medoids.n_cols;
                 size_t k = targets(0) % medoids.n_cols;
-                std::cout << "COMPUTING EXACTLY " << targets.size() << " out of " << candidates.size() << std::endl;
+                if (verbosity > 0)
+                {
+                    std::cout << "COMPUTING EXACTLY " << targets.size() << " out of " << candidates.size() << std::endl;
+                }
                 arma::vec result = swap_target(data, medoid_indicies, targets, N, best_distances, second_distances, assignments);
                 estimates.elem(targets) = result;
                 ucbs.elem(targets) = result;
@@ -489,16 +475,16 @@ void KMediods::swap(const arma::mat &data,
         // extract data point of swap
         size_t n = new_medoid / medoids.n_cols;
         swap_performed = medoid_indicies(k) != n;
-        std::cout << (swap_performed ? ("swap performed") : ("no swap performed")) << " " << medoid_indicies(k) << "to" << n << std::endl;
-        //std::cout << "lcbs means is " << lcbs.min() << std::endl;
+        if (verbosity > 0)
+        {
+            std::cout << (swap_performed ? ("swap performed") : ("no swap performed")) << " " << medoid_indicies(k) << "to" << n << std::endl;
+        }
         medoid_indicies(k) = n;
         medoids.col(k) = data.col(medoid_indicies(k));
-        //std::cout << medoid_indicies << std::endl;
         calc_best_distances_swap(data, medoids, best_distances, second_distances, assignments);
-        //std::cout << "best distance sum:" << arma::accu(best_distances) << std::endl;
-        //std::cout << "calced distance:" << calc_loss(data, medoids.n_cols, medoid_indicies) << std::endl;
-        //std::cout << "medoids shape" << medoids.n_rows << " cols:" << medoids.n_cols << std::endl;
     }
+    std::cout << "final swap loss: " << arma::mean(arma::mean(best_distances)) << std::endl;
+
     // done with swaps at this point
 }
 

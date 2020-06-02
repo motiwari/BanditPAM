@@ -79,6 +79,7 @@ private:
 
     double sigma_const = 0.1;
     size_t maxIterations;
+    int verbosity = 0;
 };
 
 #endif
