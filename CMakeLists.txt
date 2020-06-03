@@ -3,9 +3,12 @@ project(pam VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_BUILD_TYPE Release)
 
 include_directories(headers)
-add_library(KMedoids_UCB src/kmedoids_ucb.cpp)
 
 add_executable(pam src/main.cpp)
+
+add_library(KMedoids_UCB src/kmedoids_ucb.cpp)
+target_link_libraries(pam PUBLIC KMedoids_UCB)
+
 
 # include openMP
 find_package(OpenMP REQUIRED)
@@ -16,4 +19,3 @@ find_package(Armadillo REQUIRED)
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 target_link_libraries(pam PUBLIC ${ARMADILLO_LIBRARIES})
 
-target_link_libraries(pam PUBLIC KMedoids_UCB)
