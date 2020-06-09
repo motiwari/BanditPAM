@@ -18,4 +18,3 @@ target_link_libraries(pam PUBLIC OpenMP::OpenMP_CXX)
 find_package(Armadillo REQUIRED)
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 target_link_libraries(pam PUBLIC ${ARMADILLO_LIBRARIES})
-
