@@ -1,28 +1,47 @@
+'''
+Debugging function that can be used for visualizing the update of
+confidence bounds and estimates on successive iterations of the swap
+or build steps.
+'''
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn_extra.cluster import KMedoids
 
-if __name__ == "__main__":
+def parse_raw(line):
+    tokens = [num for num in lines[i].split(' ')if not num.strip() == ""]
+    numbers = [float(num) for num in tokens]
+    return numbers
+
+def main():
+    # read in all lines
     lines = []
     with open("build/bounds.txt", 'r') as f:
         lines = f.readlines()
+    
+    # process all lines
     for i in range(0, len(lines), 3):
-        ucbs = [float(num) for num in [num for num in lines[i].split(' ')if not num.strip() == ""]]
-        estimates = [float(num) for num in [num for num in lines[i + 1].split(' ')if not num.strip() == ""]]
-        lcbs = [float(num) for num in [num for num in lines[i + 2].split(' ')if not num.strip() == ""]]
-        plt.scatter(range(len(lcbs)), estimates, c = 'blue', marker = '.')
-        plt.scatter(range(len(lcbs)), ucbs, c = 'green')
-        plt.scatter(range(len(lcbs)), lcbs, c = 'red')
+        # parse in lines
+        ucbs = parse_raw(lines[i])
+        estimates = parse_raw(lines[i + 1])
+        lcbs = parse_raw(lines[i + 2])
+
+        # plot bounds and estimates
+        N = len(estimates)
+        plt.scatter(range(N), estimates, c = 'blue', marker = '.')
+        plt.scatter(range(N), ucbs, c = 'green')
+        plt.scatter(range(N), lcbs, c = 'red')
+        
+        # plot converged points
         x = []
         y = []
         for i in range(len(ucbs)):
-            if (ucbs[i] - lcbs[i])**2 < .0001:
+            if (ucbs[i] - lcbs[i]) < .0001:
                 x.append(i)
                 y.append(estimates[i])
         plt.scatter(x, y, c = "cyan", marker='s')
 
         plt.show()
-        for num in ucbs:
-            print(num)
-    #plt.scatter(data[:, 0], data[:, 1], c = assignments)
-    #plt.show()
+
+if __name__ == "__main__":
+    main()
