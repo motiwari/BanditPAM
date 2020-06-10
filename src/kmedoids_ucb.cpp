@@ -37,7 +37,7 @@ void KMediods::build(const arma::mat &data, const size_t clusters,
     size_t N = data.n_cols;
     arma::urowvec N_mat(N);
     N_mat.fill(N);
-    int p = (1000 * N); // reciprocal of
+    int p = (k_buildConfidence * N); // reciprocal of
     bool use_absolute = true;
     arma::urowvec num_samples(N, arma::fill::zeros);
     arma::rowvec estimates(N, arma::fill::zeros);
@@ -53,7 +53,6 @@ void KMediods::build(const arma::mat &data, const size_t clusters,
     arma::urowvec T_samples(N, arma::fill::zeros);
     arma::urowvec exact_mask(N, arma::fill::zeros);
 
-    size_t original_batch_size = 100;
 
     best_distances.fill(std::numeric_limits<double>::infinity());
 
@@ -64,17 +63,14 @@ void KMediods::build(const arma::mat &data, const size_t clusters,
         exact_mask.fill(0);
         estimates.fill(0);
 
-        KMediods::build_sigma(data, best_distances, sigma, original_batch_size,
+        KMediods::build_sigma(data, best_distances, sigma, k_batchSize,
                               use_absolute);
         size_t base = 1;
 
-        while (arma::sum(candidates) > 0.1) // double comparison
+        while (arma::sum(candidates) > k_doubleComparisonLimit) // double comparison
         {
-            size_t this_batch_size =
-                original_batch_size; // need to finalize this
-
             arma::umat compute_exactly =
-                ((T_samples + this_batch_size) >= N_mat) != exact_mask;
+                ((T_samples + k_batchSize) >= N_mat) != exact_mask;
 
             if (arma::accu(compute_exactly) > 0) {
                 uvec targets = find(compute_exactly);
@@ -96,18 +92,18 @@ void KMediods::build(const arma::mat &data, const size_t clusters,
                 candidates.cols(targets).fill(0);
             }
 
-            if (arma::sum(candidates) < 0.5) {
+            if (arma::sum(candidates) < k_doubleComparisonLimit) {
                 break;
             }
             uvec targets = arma::find(candidates);
 
-            arma::rowvec result = build_target(data, targets, this_batch_size,
+            arma::rowvec result = build_target(data, targets, k_batchSize,
                                                best_distances, use_absolute);
             estimates.cols(targets) =
                 ((T_samples.cols(targets) % estimates.cols(targets)) +
-                 (result * this_batch_size)) /
-                (this_batch_size + T_samples.cols(targets));
-            T_samples.cols(targets) += this_batch_size;
+                 (result * k_batchSize)) /
+                (k_batchSize + T_samples.cols(targets));
+            T_samples.cols(targets) += k_batchSize;
             arma::rowvec adjust(targets.n_rows);
             adjust.fill(p);
             adjust = arma::log(adjust);
@@ -311,8 +307,7 @@ void calc_best_distances_swap(const arma::mat &data, const arma::mat &medoids,
 void KMediods::swap(const arma::mat &data, const size_t clusters,
                     arma::urowvec &medoid_indicies, arma::mat &medoids, arma::urowvec& assignments) {
     size_t N = data.n_cols;
-    size_t this_batch_size = 100;
-    int p = (N * clusters * 1000); // reciprocal
+    int p = (N * clusters * k_swapConfidence); // reciprocal
 
     arma::mat sigma(clusters, N, arma::fill::zeros);
 
@@ -337,7 +332,7 @@ void KMediods::swap(const arma::mat &data, const size_t clusters,
         calc_best_distances_swap(data, medoids, best_distances,
                                  second_distances, assignments);
 
-        swap_sigma(data, sigma, this_batch_size, best_distances,
+        swap_sigma(data, sigma, k_batchSize, best_distances,
                    second_distances, assignments);
 
         candidates.fill(1);
@@ -345,7 +340,6 @@ void KMediods::swap(const arma::mat &data, const size_t clusters,
         estimates.fill(0);
         T_samples.fill(0);
 
-        size_t original_batch_size = 100;
         size_t step_count = 0;
 
         // while there is at least one candidate (double comparison issues)
@@ -356,7 +350,7 @@ void KMediods::swap(const arma::mat &data, const size_t clusters,
             // compute exactly if it's been samples more than N times and hasn't
             // been computed exactly already
             arma::umat compute_exactly =
-                ((T_samples + this_batch_size) >= N) != (exact_mask);
+                ((T_samples + k_batchSize) >= N) != (exact_mask);
             arma::uvec targets = arma::find(compute_exactly);
 
             if (targets.size() > 0) {
@@ -377,18 +371,18 @@ void KMediods::swap(const arma::mat &data, const size_t clusters,
 
                 candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
             }
-            if (arma::accu(candidates) < 0.5) {
+            if (arma::accu(candidates) < k_doubleComparisonLimit) {
                 break;
             }
             targets = arma::find(candidates);
             arma::vec result =
-                swap_target(data, medoid_indicies, targets, this_batch_size,
+                swap_target(data, medoid_indicies, targets, k_batchSize,
                             best_distances, second_distances, assignments);
             estimates.elem(targets) =
                 ((T_samples.elem(targets) % estimates.elem(targets)) +
-                 (result * this_batch_size)) /
-                (this_batch_size + T_samples.elem(targets));
-            T_samples.elem(targets) += this_batch_size;
+                 (result * k_batchSize)) /
+                (k_batchSize + T_samples.elem(targets));
+            T_samples.elem(targets) += k_batchSize;
             arma::vec adjust(targets.n_rows);
             adjust.fill(p);
             adjust = arma::log(adjust);

@@ -162,7 +162,18 @@ class KMediods {
                     arma::rowvec &second_best_distances,
                     arma::urowvec &assignments);
 
-    double sigma_const = 0.1;
     size_t maxIterations;
+
+    // constant that affects the sensitiviy of build confidence bounds
+    static const size_t k_buildConfidence = 1000;
+
+    // constant that affects the sensitiviy of swap confidence bounds
+    static const size_t k_swapConfidence = 1000;
+
+    // bound for double comparison
+    const double k_doubleComparisonLimit = 0.01;
+
+    // batch size for build and swap iterations
+    const size_t k_batchSize = 100;
     int verbosity = 0;
 };
