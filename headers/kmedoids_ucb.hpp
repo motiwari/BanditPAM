@@ -1,8 +1,6 @@
 /**
  * @file kmedoids_ucb.hpp
- * @author james mayclin (jam.mayc@sgmail.com)
- * @brief 
- * @version 1.0
+ * @author james mayclin (jam.mayc@gmail.com)
  * @date 2020-06-08
  * 
  * This header file specifies the implementation of a KMedoids algorithm
