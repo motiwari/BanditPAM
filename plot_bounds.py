@@ -2,14 +2,20 @@
 Debugging function that can be used for visualizing the update of
 confidence bounds and estimates on successive iterations of the swap
 or build steps.
+
+Expected format of bounds.txt is triplets of lines where the first line
+is a space separated list of lcbs, second line is a space separated list
+of estimates, and third line is a space separated list of ucbs.
 '''
 
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn_extra.cluster import KMedoids
 
+DOUBLE_COMPARISON_BOUND = 0.001
+
 def parse_raw(line):
-    tokens = [num for num in lines[i].split(' ')if not num.strip() == ""]
+    tokens = [num for num in lines[i].split(' ')if num.strip() != ""]
     numbers = [float(num) for num in tokens]
     return numbers
 
@@ -36,7 +42,7 @@ def main():
         x = []
         y = []
         for i in range(len(ucbs)):
-            if (ucbs[i] - lcbs[i]) < .0001:
+            if (ucbs[i] - lcbs[i]) < DOUBLE_COMPARISON_BOUND:
                 x.append(i)
                 y.append(estimates[i])
         plt.scatter(x, y, c = "cyan", marker='s')
