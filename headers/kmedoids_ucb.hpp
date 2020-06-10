@@ -9,7 +9,6 @@
 #include <armadillo>
 #include <fstream>
 #include <iostream>
-#include <math.h>
 #include <omp.h>
 
 class KMediods {
