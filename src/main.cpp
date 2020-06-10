@@ -1,3 +1,15 @@
+/**
+ * @file main.cpp
+ * @author James Mayclin (jmayclin@stanford.edu)
+ * @date 2020-06-10
+ * 
+ * This file defines a command line program that can be used
+ * to run the BanditPAM KMedoids algorithim.
+ * 
+ * Usage
+ * ./pam [path/to/input] [number of clusters] -a
+ */
+
 #include "kmedoids_ucb.hpp"
 #include <armadillo>
 #include <chrono>
@@ -9,8 +21,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     std::string input_name = argv[1];
-    std::string output_name = argv[2];
-    int k = std::stoi(argv[3]);
+    int k = std::stoi(argv[2]);
+    bool print_assignments = argc == 4;
 
     arma::mat data;
     data.load(input_name);
@@ -31,9 +43,17 @@ int main(int argc, char *argv[]) {
     auto start = std::chrono::steady_clock::now();
     kmed.cluster(data, k, assignments, medoid_indices);
     auto end = std::chrono::steady_clock::now();
-    cout << "Took "
+    std::cout << "Took "
          << std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                 .count()
-         << " milliseconds" << endl;
+         << " milliseconds" << std::endl;
+
+    // printing out assigments
+    if (print_assignments) {
+        for (size_t i = 0; i < n; i++) {
+            std::cout << assignments(i) << ", ";
+        }
+        std::cout << std::endl;
+    }
 
 }

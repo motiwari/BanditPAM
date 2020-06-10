@@ -27,7 +27,7 @@ void KMediods::cluster(const arma::mat &data, const size_t clusters,
 
     // iterate swap steps
     std::cout << "beginning swap step" << std::endl;
-    KMediods::swap(data, clusters, medoid_indicies, medoids);
+    KMediods::swap(data, clusters, medoid_indicies, medoids, assignments);
     std::cout << "Medoid assignments:" << std::endl;
     std::cout << medoid_indicies << std::endl;
 }
@@ -310,7 +310,7 @@ void calc_best_distances_swap(const arma::mat &data, const arma::mat &medoids,
 }
 
 void KMediods::swap(const arma::mat &data, const size_t clusters,
-                    arma::urowvec &medoid_indicies, arma::mat &medoids) {
+                    arma::urowvec &medoid_indicies, arma::mat &medoids, arma::urowvec& assignments) {
     size_t N = data.n_cols;
     size_t this_batch_size = 100;
     int p = (N * clusters * 1000); // reciprocal
@@ -319,7 +319,6 @@ void KMediods::swap(const arma::mat &data, const size_t clusters,
 
     arma::rowvec best_distances(N);
     arma::rowvec second_distances(N);
-    arma::urowvec assignments(N);
 
     size_t iter = 0;
     bool swap_performed = true;

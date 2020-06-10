@@ -131,7 +131,7 @@ class KMediods {
      * @param medoids column major matrix of medoids
      */
     void swap(const arma::mat &data, const size_t clusters,
-              arma::urowvec &medoid_indicies, arma::mat &medoids);
+              arma::urowvec &medoid_indicies, arma::mat &medoids, arma::urowvec& assignments);
 
     /**
      * @brief debugging function for checking absolute loss of some given
