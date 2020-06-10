@@ -1,6 +1,5 @@
 /**
  * @file main.cpp
- * @author James Mayclin (jmayclin@stanford.edu)
  * @date 2020-06-10
  * 
  * This file defines a command line program that can be used

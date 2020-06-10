@@ -1,6 +1,5 @@
 /**
  * @file kmedoids_ucb.cpp
- * @author James Mayclin (jam.mayc@gmail.com)
  * @date 2020-06-09
  *
  * This file contains the implementation details for the confidence
