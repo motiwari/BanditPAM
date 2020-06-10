@@ -39,18 +39,14 @@ we could run the following command.
 ```
 
 ## future development
-* Things to fix
 * should data be a parameter that is passed into the constructor?
 * medoid_indices should be private class variable?
-* does the medoid matrix actually help things?
-* To just consider n - k for swaps, just change candidate vector?
-* generic matrix type
+* test medoid matrix vs medoid indicies performance?
+* To consider n - k for swaps -> change candidate vector?
 * generic metric type
 * error checking for number of clusters >= unique data points
 * should the mediods be index numbers or the mediods themselves?
 * switch all naming to camelCase
-* switch to armadillo typedefs
-* switch to rowvec
 * most typedefs are 64 bits, overkill?
 * check if N in build targets, then just iterate?
 * should loss function be a template object?

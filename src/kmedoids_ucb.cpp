@@ -20,6 +20,7 @@ void KMediods::cluster(const arma::mat &data,
     std::cout << "Medoid assignments:" << std::endl;
     std::cout << medoid_indicies << std::endl;
 
+    // iterate swap steps
     std::cout << "beginning swap step" << std::endl;
     KMediods::swap(data, clusters, medoid_indicies, medoids);
     std::cout << "Medoid assignments:" << std::endl;
@@ -35,8 +36,7 @@ void KMediods::build(const arma::mat &data,
     size_t N = data.n_cols;
     arma::urowvec N_mat(N);
     N_mat.fill(N);
-    int p = (1000 * N); //decide whether or not to use reciprocal. Because apparently it makes a difference?
-
+    int p = (1000 * N); //reciprocal of 
     bool use_absolute = true;
     arma::urowvec num_samples(N, arma::fill::zeros);
     arma::rowvec estimates(N, arma::fill::zeros);
@@ -53,7 +53,6 @@ void KMediods::build(const arma::mat &data,
     size_t original_batch_size = 100;
 
     best_distances.fill(std::numeric_limits<double>::infinity());
-    //best_distances.fill(1000000000);
 
     for (size_t k = 0; k < clusters; k++)
     {
@@ -64,8 +63,6 @@ void KMediods::build(const arma::mat &data,
         estimates.fill(0);
 
         KMediods::build_sigma(data, best_distances, sigma, original_batch_size, use_absolute);
-        //std::cout << "sigma mean is " << arma::mean(sigma) << std::endl;
-
         size_t base = 1;
 
         while (arma::sum(candidates) > 0.1) //double comparison
@@ -74,7 +71,6 @@ void KMediods::build(const arma::mat &data,
 
             arma::umat compute_exactly = ((T_samples + this_batch_size) >= N_mat) != exact_mask;
 
-            // switch this to taking the length of targets
             if (arma::accu(compute_exactly) > 0)
             {
                 uvec targets = find(compute_exactly);
@@ -114,17 +110,6 @@ void KMediods::build(const arma::mat &data,
             candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
 
             step_count++;
-            //cout << "WRITING TO FILE" << endl;
-            //cout << "mean estimate " << arma::mean(estimates) << " mean sigma " << arma::mean(sigma) << endl;
-            //cout << "total samples " << arma::accu(T_samples) << std::endl;
-
-            //std::ofstream file;
-            //file.open("bounds.txt", std::ios::app);
-            //file << "Iteration:" << k << "\n";
-            //file << ucbs;
-            //file << estimates;
-            //file << lcbs;
-            //file.close();
         }
 
         arma::uword new_medoid = lcbs.index_min();
@@ -132,18 +117,14 @@ void KMediods::build(const arma::mat &data,
         medoids.unsafe_col(k) = data.unsafe_col(medoid_indicies(k));
 
         // don't need to do this on final iteration
-        //multithread, decompose
         for (int i = 0; i < N; i++)
         {
-            // is accessing the mediods array faster?
-            double cost = norm(data.unsafe_col(i) - data.unsafe_col(medoid_indicies(k)), 2);
+            double cost = arma::norm(data.unsafe_col(i) - data.unsafe_col(medoid_indicies(k)), 2);
             if (cost < best_distances(i))
             {
                 best_distances(i) = cost;
             }
         }
-        //std::cout << "found new medoid: " << new_medoid << std::endl;
-        //std::cout << "loss is " << arma::mean(best_distances) << std::endl;
         use_absolute = false; //use difference of loss for sigma and sampling, not absolute
     }
 }
@@ -163,7 +144,6 @@ void KMediods::build_sigma(
 #pragma omp parallel for
     for (size_t i = 0; i < N; i++)
     {
-
         //gather a sample of points
         for (size_t j = 0; j < batch_size; j++)
         {
@@ -182,7 +162,6 @@ void KMediods::build_sigma(
     }
 }
 
-// switch this to a difference
 // forcibly inline this in the future and directly write to estimates
 arma::rowvec KMediods::build_target(
     const arma::mat &data,
@@ -193,7 +172,6 @@ arma::rowvec KMediods::build_target(
 {
     size_t N = data.n_cols;
     arma::rowvec estimates(target.n_rows, arma::fill::zeros);
-    //uvec tmp_refs = randi<uvec>(batch_size, distr_param(0, N - 1)); //with replacement
     uvec tmp_refs = arma::randperm(N, batch_size); //without replacement, requires updated version of armadillo
     double total = 0;
 #pragma omp parallel for
@@ -205,7 +183,6 @@ arma::rowvec KMediods::build_target(
             double cost = arma::norm(data.col(tmp_refs(j)) - data.col(target(i)), 2);
             if (use_absolute)
             {
-                //cout << " c:" << cost << std::flush;
                 total += cost;
             }
             else
@@ -237,10 +214,8 @@ void KMediods::swap_sigma(
     size_t N = data.n_cols;
     size_t K = sigma.n_rows;
     uvec tmp_refs = arma::randperm(N, batch_size); //without replacement, requires updated version of armadillo
-    //uvec tmp_refs = arma::randperm(N, N); //without replacement, requires updated version of armadillo
 
-    arma::vec sample(batch_size); // declare in outer loop, single allocation
-
+    arma::vec sample(batch_size);
 // for each considered swap
 #pragma omp parallel for
     for (size_t i = 0; i < K * N; i++)
@@ -294,8 +269,6 @@ arma::vec KMediods::swap_target(
     size_t N = data.n_cols;
     arma::vec estimates(targets.n_rows, arma::fill::zeros);
     uvec tmp_refs = arma::randperm(N, batch_size); //without replacement, requires updated version of armadillo
-    //arma::vec sample(batch_size); // declare in outer loop, single allocation
-    //arma::vec sigmas(targets.n_rows);
 
 // for each considered swap
 #pragma omp parallel for
@@ -309,7 +282,6 @@ arma::vec KMediods::swap_target(
         for (size_t j = 0; j < batch_size; j++)
         {
             double cost = arma::norm(data.col(n) - data.col(tmp_refs(j)), 2);
-            // the swap makes a better medoid
             if (k == assignments(tmp_refs(j)))
             {
                 if (cost < second_best_distances(tmp_refs(j)))
@@ -386,11 +358,9 @@ void KMediods::swap(const arma::mat &data,
     arma::rowvec second_distances(N);
     arma::urowvec assignments(N);
 
-    // does this need to be calculated in every iteration?
     size_t iter = 0;
     bool swap_performed = true;
 
-    // initialize matrices -> should move declaration outside of loop
     arma::umat candidates(clusters, N, arma::fill::ones);
     arma::umat exact_mask(clusters, N, arma::fill::zeros);
     arma::mat estimates(clusters, N, arma::fill::zeros);
@@ -407,7 +377,6 @@ void KMediods::swap(const arma::mat &data,
         calc_best_distances_swap(data, medoids, best_distances, second_distances, assignments);
 
         swap_sigma(data, sigma, this_batch_size, best_distances, second_distances, assignments);
-        //cout << "swap sigma mean is " << arma::mean(arma::mean(sigma)) << std::endl;
 
         candidates.fill(1);
         exact_mask.fill(0);
@@ -425,7 +394,6 @@ void KMediods::swap(const arma::mat &data,
             // compute exactly if it's been samples more than N times and hasn't been computed exactly already
             arma::umat compute_exactly = ((T_samples + this_batch_size) >= N) != (exact_mask);
             arma::uvec targets = arma::find(compute_exactly);
-            //cout << "targets for compute exactly "<< targets << std::endl;
 
             if (targets.size() > 0)
             {
@@ -443,12 +411,9 @@ void KMediods::swap(const arma::mat &data,
                 T_samples.elem(targets) += N;
 
                 candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
-
-                // this is my own modification?
             }
             if (arma::accu(candidates) < 0.5)
             {
-                //std::cout << "yeeting away" << std::endl;
                 break;
             }
             targets = arma::find(candidates);
@@ -462,7 +427,6 @@ void KMediods::swap(const arma::mat &data,
 
             ucbs.elem(targets) = estimates.elem(targets) + cb_delta;
             lcbs.elem(targets) = estimates.elem(targets) - cb_delta;
-            //std::cout << "ucbs:" << arma::mean(arma::mean(ucbs)) << " lcbs:" << arma::mean(arma::mean(lcbs)) << std::endl;
             candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
             targets = arma::find(candidates);
             step_count++;
