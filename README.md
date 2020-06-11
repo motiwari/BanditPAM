@@ -4,9 +4,12 @@ C++ implmentation of PAM with confidence bounds.
 ## installation
 ### requirements
 Building this repository requires three external requirements: 
+
 Cmake >= 3.17
+
 Armadillo >= 9.7
-openMP
+
+openMP >= 2.5
 
 Armadillo is a C++ library for linear algebra and matrix operations, and OpenMP is 
 a language/package used for multithreading.
