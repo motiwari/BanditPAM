@@ -10,19 +10,37 @@
  */
 
 #include "kmedoids_ucb.hpp"
+#include <unistd.h>
 #include <armadillo>
 #include <chrono>
 #include <fstream>
 
 int main(int argc, char *argv[]) {
-    if (argc < 3 || argc > 4) {
-        std::cout << "incorrect usage" << std::endl;
-        return 1;
-    }
-    std::string input_name = argv[1];
-    int k = std::stoi(argv[2]);
-    bool print_assignments = argc == 4;
-
+    std::string input_name;
+    int k;
+    bool print_assignments = false;
+    int opt; 
+    while((opt = getopt(argc, argv, "f:k:a")) != -1)  
+    {  
+        switch(opt)  
+        {
+            case 'a':  
+                print_assignments = true; 
+                break;  
+            case 'f':  
+                input_name = optarg;
+                break;  
+            case 'k':  
+                k = std::stoi(optarg);
+                break;  
+            case ':':  
+                printf("option needs a value\n");  
+                return 1;  
+            case '?':  
+                printf("unknown option: %c\n", optopt); 
+                return 1;
+        }  
+    }  
     arma::mat data;
     data.load(input_name);
     data = arma::trans(data);
