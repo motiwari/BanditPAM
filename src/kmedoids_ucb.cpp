@@ -7,8 +7,6 @@
  */
 #include "kmedoids_ucb.hpp"
 
-using namespace arma;
-
 KMediods::KMediods(size_t maxIterations)
 {
     this->maxIterations = maxIterations;
@@ -49,10 +47,9 @@ KMediods::build(const arma::mat& data,
     bool use_absolute = true;
     arma::urowvec num_samples(N, arma::fill::zeros);
     arma::rowvec estimates(N, arma::fill::zeros);
-
     arma::rowvec best_distances(N);
+    best_distances.fill(std::numeric_limits<double>::infinity());
     arma::rowvec sigma(N);
-
     arma::urowvec candidates(
       N,
       arma::fill::ones); // one hot encoding of candidates;
@@ -61,28 +58,22 @@ KMediods::build(const arma::mat& data,
     arma::urowvec T_samples(N, arma::fill::zeros);
     arma::urowvec exact_mask(N, arma::fill::zeros);
 
-    best_distances.fill(std::numeric_limits<double>::infinity());
-
     for (size_t k = 0; k < clusters; k++) {
         size_t step_count = 0;
         candidates.fill(1);
         T_samples.fill(0);
         exact_mask.fill(0);
         estimates.fill(0);
-
         KMediods::build_sigma(
           data, best_distances, sigma, k_batchSize, use_absolute);
-        size_t base = 1;
 
         while (arma::sum(candidates) >
                k_doubleComparisonLimit) // double comparison
         {
             arma::umat compute_exactly =
               ((T_samples + k_batchSize) >= N_mat) != exact_mask;
-
             if (arma::accu(compute_exactly) > 0) {
-                uvec targets = find(compute_exactly);
-
+                arma::uvec targets = find(compute_exactly);
                 if (verbosity > 0) {
                     std::cout << "Computing exactly for " << targets.n_rows
                               << " out of " << data.n_cols << std::endl;
@@ -92,18 +83,15 @@ KMediods::build(const arma::mat& data,
                 estimates.cols(targets) = result;
                 ucbs.cols(targets) = result;
                 lcbs.cols(targets) = result;
-
                 exact_mask.cols(targets).fill(1);
-
                 T_samples.cols(targets) += N;
-
                 candidates.cols(targets).fill(0);
             }
 
             if (arma::sum(candidates) < k_doubleComparisonLimit) {
                 break;
             }
-            uvec targets = arma::find(candidates);
+            arma::uvec targets = arma::find(candidates);
 
             arma::rowvec result = build_target(
               data, targets, k_batchSize, best_distances, use_absolute);
@@ -118,11 +106,9 @@ KMediods::build(const arma::mat& data,
             arma::rowvec cb_delta =
               sigma.cols(targets) %
               arma::sqrt(adjust / T_samples.cols(targets));
-
             ucbs.cols(targets) = estimates.cols(targets) + cb_delta;
             lcbs.cols(targets) = estimates.cols(targets) - cb_delta;
             candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
-
             step_count++;
         }
 
@@ -151,10 +137,9 @@ KMediods::build_sigma(const arma::mat& data,
                       bool use_absolute)
 {
     size_t N = data.n_cols;
-    uvec tmp_refs = arma::randperm(N,
+    arma::uvec tmp_refs = arma::randperm(N,
                                    batch_size); // without replacement, requires
                                                 // updated version of armadillo
-
     arma::vec sample(batch_size);
 // for each possible swap
 #pragma omp parallel for
@@ -185,7 +170,7 @@ KMediods::build_target(const arma::mat& data,
 {
     size_t N = data.n_cols;
     arma::rowvec estimates(target.n_rows, arma::fill::zeros);
-    uvec tmp_refs = arma::randperm(N,
+    arma::uvec tmp_refs = arma::randperm(N,
                                    batch_size); // without replacement, requires
                                                 // updated version of armadillo
     double total = 0;
@@ -204,11 +189,7 @@ KMediods::build_target(const arma::mat& data,
                 total -= best_distances(tmp_refs(j));
             }
         }
-        if (use_absolute) {
-            estimates(i) = total / batch_size;
-        } else {
-            estimates(i) = total / batch_size;
-        }
+        estimates(i) = total / batch_size;
     }
     return estimates;
 }
@@ -223,7 +204,7 @@ KMediods::swap_sigma(const arma::mat& data,
 {
     size_t N = data.n_cols;
     size_t K = sigma.n_rows;
-    uvec tmp_refs = arma::randperm(N,
+    arma::uvec tmp_refs = arma::randperm(N,
                                    batch_size); // without replacement, requires
                                                 // updated version of armadillo
 
@@ -269,7 +250,7 @@ KMediods::swap_target(const arma::mat& data,
 {
     size_t N = data.n_cols;
     arma::vec estimates(targets.n_rows, arma::fill::zeros);
-    uvec tmp_refs = arma::randperm(N,
+    arma::uvec tmp_refs = arma::randperm(N,
                                    batch_size); // without replacement, requires
                                                 // updated version of armadillo
 
@@ -343,10 +324,8 @@ KMediods::swap(const arma::mat& data,
 
     arma::rowvec best_distances(N);
     arma::rowvec second_distances(N);
-
     size_t iter = 0;
     bool swap_performed = true;
-
     arma::umat candidates(clusters, N, arma::fill::ones);
     arma::umat exact_mask(clusters, N, arma::fill::zeros);
     arma::mat estimates(clusters, N, arma::fill::zeros);
@@ -438,7 +417,7 @@ KMediods::swap(const arma::mat& data,
             step_count++;
         }
         // now switch medoids
-        uword new_medoid = lcbs.index_min();
+        arma::uword new_medoid = lcbs.index_min();
         // extract medoid of swap
         size_t k = new_medoid % medoids.n_cols;
 

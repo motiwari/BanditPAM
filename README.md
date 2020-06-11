@@ -1,5 +1,5 @@
 # BanditPAM
-C++ implmentation of BanditPAM with confidence bounds.
+C++ implementation of BanditPAM with confidence bounds.
 
 ## Installation
 ### Requirements
@@ -32,9 +32,9 @@ line program that takes in three arguments: the dataset, the number of clusters,
 indicating whether or not to output data point assignments. 
 
 ```
-./BanditPAM -i [path/to/input.csv] -k [number of clusters] -a
+./BanditPAM -f [path/to/input.csv] -k [number of clusters] -a
 ```
-* `-i` is mandatory, and has a mandatory argument that specifies the path to the dataset to load in.
+* `-f` is mandatory, and has a mandatory argument that specifies the path to the dataset to load in.
 * `-k` is mandatory, and specifies the number of clusters to fit the data to.
 * `-a` is optional, and if this flag is specified then the cluster assignments will be printed to standard out
 
@@ -42,5 +42,5 @@ To run the KMedoids algorithim on the MNIST dataset that is contained in a file 
 `mnist.csv` contained in a `data` folder, and we wish to fit our data to 5 clusters then
 we could run the following command.
 ```
-/BanditPAM/build$ ./BanditPAM -i ../data/mnist.csv -k 5
+/BanditPAM/build$ ./BanditPAM -f ../data/mnist.csv -k 5
 ```
