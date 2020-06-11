@@ -12,23 +12,28 @@
 #include <armadillo>
 #include <iostream>
 
-class KMediods {
+class KMediods
+{
   public:
     KMediods(size_t maxIterations = 1000);
 
-    void cluster(const arma::mat &data, const size_t clusters,
-                 arma::Row<size_t> &assignments);
+    void cluster(const arma::mat& data,
+                 const size_t clusters,
+                 arma::Row<size_t>& assignments);
 
   private:
-    void build(const arma::mat &data, const size_t clusters,
-               arma::Row<size_t> &centroid_indicies);
+    void build(const arma::mat& data,
+               const size_t clusters,
+               arma::Row<size_t>& centroid_indices);
 
-    void swap(const arma::mat &data, const size_t clusters,
-              arma::Row<size_t> &assignments,
-              arma::Row<size_t> &centroid_indicies);
+    void swap(const arma::mat& data,
+              const size_t clusters,
+              arma::Row<size_t>& assignments,
+              arma::Row<size_t>& centroid_indices);
 
-    double calc_loss(const arma::mat &data, const size_t clusters,
-                     arma::Row<size_t> &centroid_indicies);
+    double calc_loss(const arma::mat& data,
+                     const size_t clusters,
+                     arma::Row<size_t>& centroid_indices);
 
     size_t maxIterations;
 };

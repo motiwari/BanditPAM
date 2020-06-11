@@ -44,7 +44,7 @@ we could run the following command.
 ## future development
 * should data be a parameter that is passed into the constructor?
 * medoid_indices should be private class variable?
-* test medoid matrix vs medoid indicies performance?
+* test medoid matrix vs medoid indices performance?
 * To consider n - k for swaps -> change candidate vector?
 * generic metric type
 * error checking for number of clusters >= unique data points

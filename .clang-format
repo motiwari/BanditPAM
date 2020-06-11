@@ -1,2 +1,2 @@
-BasedOnStyle: LLVM
+BasedOnStyle: mozilla
 IndentWidth: 4

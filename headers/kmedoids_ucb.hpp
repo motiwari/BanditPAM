@@ -6,12 +6,14 @@
  * that makes use of theory specified in a paper submitted to NeurIPS
  */
 
+#include <omp.h>
+
 #include <armadillo>
 #include <fstream>
 #include <iostream>
-#include <omp.h>
 
-class KMediods {
+class KMediods
+{
   public:
     /**
      * @brief Construct a new KMediods object
@@ -29,10 +31,12 @@ class KMediods {
      * @param clusters number of clusters to fit data to
      * @param assignments vector which indicates the cluster that data point i
      * belonds to
-     * @param medoid_indicies vector where indices(i) is the medoid of cluster i
+     * @param medoid_indices vector where indices(i) is the medoid of cluster i
      */
-    void cluster(const arma::mat &data, const size_t clusters,
-                 arma::urowvec &assignments, arma::urowvec &medoid_indicies);
+    void cluster(const arma::mat& data,
+                 const size_t clusters,
+                 arma::urowvec& assignments,
+                 arma::urowvec& medoid_indices);
 
   private:
     /**
@@ -54,8 +58,10 @@ class KMediods {
      * @param use_absolute boolean valute indicating whether to use absolute
      * loss or difference of loss. Set to true on first iteration, false after.
      */
-    void build_sigma(const arma::mat &data, arma::rowvec &best_distances,
-                     arma::rowvec &sigma, arma::uword batch_size,
+    void build_sigma(const arma::mat& data,
+                     arma::rowvec& best_distances,
+                     arma::rowvec& sigma,
+                     arma::uword batch_size,
                      bool use_absolute);
 
     /**
@@ -75,8 +81,10 @@ class KMediods {
      * @return arma::rowvec containing the estimates of the loss for the target
      * points
      */
-    arma::rowvec build_target(const arma::mat &data, arma::uvec &target,
-                              size_t batch_size, arma::rowvec &best_distances,
+    arma::rowvec build_target(const arma::mat& data,
+                              arma::uvec& target,
+                              size_t batch_size,
+                              arma::rowvec& best_distances,
                               bool use_absolute);
 
     /**
@@ -85,15 +93,19 @@ class KMediods {
      * @param data column major dataset that the kmedoids algorithim will be run
      * on
      * @param clusters number of clusters to select
-     * @param medoid_indicies indicies in data of the selected medoids
+     * @param medoid_indices indices in data of the selected medoids
      * @param medoids matrix containing the selected medoids in column major
      * format
      */
-    void build(const arma::mat &data, const size_t clusters,
-               arma::urowvec &medoid_indicies, arma::mat &medoids);
+    void build(const arma::mat& data,
+               const size_t clusters,
+               arma::urowvec& medoid_indices,
+               arma::mat& medoids);
 
-    double cost_fn_build(const arma::mat &data, arma::uword target,
-                         arma::uvec &tmp_refs, arma::rowvec &best_distances);
+    double cost_fn_build(const arma::mat& data,
+                         arma::uword target,
+                         arma::uvec& tmp_refs,
+                         arma::rowvec& best_distances);
 
     /**
      * @brief calculate estimates of the difference in loss for targets in the
@@ -112,11 +124,13 @@ class KMediods {
      * @return arma::vec containing the estimates of loss difference for the
      * specified targets.
      */
-    arma::vec swap_target(const arma::mat &data, arma::urowvec &medoid_indices,
-                          arma::uvec &targets, size_t batch_size,
-                          arma::rowvec &best_distances,
-                          arma::rowvec &second_best_distances,
-                          arma::urowvec &assignments);
+    arma::vec swap_target(const arma::mat& data,
+                          arma::urowvec& medoid_indices,
+                          arma::uvec& targets,
+                          size_t batch_size,
+                          arma::rowvec& best_distances,
+                          arma::rowvec& second_best_distances,
+                          arma::urowvec& assignments);
 
     /**
      * @brief iteratively swap medoids until convergence or maxIterations
@@ -124,12 +138,15 @@ class KMediods {
      * @param data column major dataset that the kmedoids algorithim will be run
      * on
      * @param clusters number of clusters to fit data to
-     * @param medoid_indicies indiceies of data points that are serving as
+     * @param medoid_indices indiceies of data points that are serving as
      * medoids
      * @param medoids column major matrix of medoids
      */
-    void swap(const arma::mat &data, const size_t clusters,
-              arma::urowvec &medoid_indicies, arma::mat &medoids, arma::urowvec& assignments);
+    void swap(const arma::mat& data,
+              const size_t clusters,
+              arma::urowvec& medoid_indices,
+              arma::mat& medoids,
+              arma::urowvec& assignments);
 
     /**
      * @brief debugging function for checking absolute loss of some given
@@ -137,11 +154,12 @@ class KMediods {
      *
      * @param data column major dataset
      * @param clusters number of clusters to use
-     * @param medoid_indicies vector containing indicies of medoids
+     * @param medoid_indices vector containing indices of medoids
      * @return double indicating total loss
      */
-    double calc_loss(const arma::mat &data, const size_t clusters,
-                     arma::urowvec &medoid_indicies);
+    double calc_loss(const arma::mat& data,
+                     const size_t clusters,
+                     arma::urowvec& medoid_indices);
 
     /**
      * @brief calculate sigma for swap iteration
@@ -157,10 +175,12 @@ class KMediods {
      * @param assignments vector containing the current cluster assignments for
      * each data point
      */
-    void swap_sigma(const arma::mat &data, arma::mat &sigma, size_t batch_size,
-                    arma::rowvec &best_distances,
-                    arma::rowvec &second_best_distances,
-                    arma::urowvec &assignments);
+    void swap_sigma(const arma::mat& data,
+                    arma::mat& sigma,
+                    size_t batch_size,
+                    arma::rowvec& best_distances,
+                    arma::rowvec& second_best_distances,
+                    arma::urowvec& assignments);
 
     size_t maxIterations;
 
