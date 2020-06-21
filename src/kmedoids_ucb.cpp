@@ -459,3 +459,7 @@ KMediods::calc_loss(const arma::mat& data,
     }
     return total;
 }
+
+double lossFn(arma::vec& p1, arma::vec& p2) {
+    return arma::norm(p1 - p2, 2);
+}

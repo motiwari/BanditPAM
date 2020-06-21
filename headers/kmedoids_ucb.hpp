@@ -38,6 +38,38 @@ class KMediods
                  arma::urowvec& assignments,
                  arma::urowvec& medoid_indices);
 
+
+    /**
+     * @brief Select the initial medoids using a greedy initialization
+     *
+     * @param data column major dataset that the kmedoids algorithim will be run
+     * on
+     * @param clusters number of clusters to select
+     * @param medoid_indices indices in data of the selected medoids
+     * @param medoids matrix containing the selected medoids in column major
+     * format
+     */
+    void build(const arma::mat& data,
+               const size_t clusters,
+               arma::urowvec& medoid_indices,
+               arma::mat& medoids);
+
+    /**
+     * @brief iteratively swap medoids until convergence or maxIterations
+     *
+     * @param data column major dataset that the kmedoids algorithim will be run
+     * on
+     * @param clusters number of clusters to fit data to
+     * @param medoid_indices indiceies of data points that are serving as
+     * medoids
+     * @param medoids column major matrix of medoids
+     */
+    void swap(const arma::mat& data,
+              const size_t clusters,
+              arma::urowvec& medoid_indices,
+              arma::mat& medoids,
+              arma::urowvec& assignments);
+
   private:
     /**
      * @brief build the sigma vector for the build step
@@ -87,20 +119,7 @@ class KMediods
                               arma::rowvec& best_distances,
                               bool use_absolute);
 
-    /**
-     * @brief Select the initial medoids using a greedy initialization
-     *
-     * @param data column major dataset that the kmedoids algorithim will be run
-     * on
-     * @param clusters number of clusters to select
-     * @param medoid_indices indices in data of the selected medoids
-     * @param medoids matrix containing the selected medoids in column major
-     * format
-     */
-    void build(const arma::mat& data,
-               const size_t clusters,
-               arma::urowvec& medoid_indices,
-               arma::mat& medoids);
+
 
     double cost_fn_build(const arma::mat& data,
                          arma::uword target,
@@ -131,22 +150,6 @@ class KMediods
                           arma::rowvec& best_distances,
                           arma::rowvec& second_best_distances,
                           arma::urowvec& assignments);
-
-    /**
-     * @brief iteratively swap medoids until convergence or maxIterations
-     *
-     * @param data column major dataset that the kmedoids algorithim will be run
-     * on
-     * @param clusters number of clusters to fit data to
-     * @param medoid_indices indiceies of data points that are serving as
-     * medoids
-     * @param medoids column major matrix of medoids
-     */
-    void swap(const arma::mat& data,
-              const size_t clusters,
-              arma::urowvec& medoid_indices,
-              arma::mat& medoids,
-              arma::urowvec& assignments);
 
     /**
      * @brief debugging function for checking absolute loss of some given
@@ -181,6 +184,8 @@ class KMediods
                     arma::rowvec& best_distances,
                     arma::rowvec& second_best_distances,
                     arma::urowvec& assignments);
+
+    double lossFn(arma::vec& p1, arma::vec& p2);
 
     size_t maxIterations;
 

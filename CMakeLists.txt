@@ -5,17 +5,17 @@ set(CMAKE_CXX_STANDARD 11)
 
 #include_directories(headers)
 
-#add_executable(BanditPAM src/main.cpp)
+#add_executable(cluster src/main.cpp)
 
-#add_library(KMedoids_UCB src/kmedoids_ucb.cpp)
-#target_link_libraries(BanditPAM PUBLIC KMedoids_UCB)
+#add_library(BanditPAM src/kmedoids_ucb.cpp)
+#target_link_libraries(cluster PUBLIC BanditPAM)
 
 #find_package(OpenMP REQUIRED)
-#target_link_libraries(BanditPAM PUBLIC OpenMP::OpenMP_CXX)
+#target_link_libraries(cluster PUBLIC OpenMP::OpenMP_CXX)
 
 #find_package(Armadillo REQUIRED)
 #include_directories(${ARMADILLO_INCLUDE_DIRS})
-#target_link_libraries(BanditPAM PUBLIC ${ARMADILLO_LIBRARIES})
+#target_link_libraries(cluster PUBLIC ${ARMADILLO_LIBRARIES})
 
 add_subdirectory(src)
 
