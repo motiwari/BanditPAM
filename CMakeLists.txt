@@ -3,16 +3,21 @@ project(BanditPAM VERSION 1.0 LANGUAGES CXX)
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 11)
 
-include_directories(headers)
+#include_directories(headers)
 
-add_executable(BanditPAM src/main.cpp)
+#add_executable(BanditPAM src/main.cpp)
 
-add_library(KMedoids_UCB src/kmedoids_ucb.cpp)
-target_link_libraries(BanditPAM PUBLIC KMedoids_UCB)
+#add_library(KMedoids_UCB src/kmedoids_ucb.cpp)
+#target_link_libraries(BanditPAM PUBLIC KMedoids_UCB)
 
-find_package(OpenMP REQUIRED)
-target_link_libraries(BanditPAM PUBLIC OpenMP::OpenMP_CXX)
+#find_package(OpenMP REQUIRED)
+#target_link_libraries(BanditPAM PUBLIC OpenMP::OpenMP_CXX)
 
-find_package(Armadillo REQUIRED)
-include_directories(${ARMADILLO_INCLUDE_DIRS})
-target_link_libraries(BanditPAM PUBLIC ${ARMADILLO_LIBRARIES})
+#find_package(Armadillo REQUIRED)
+#include_directories(${ARMADILLO_INCLUDE_DIRS})
+#target_link_libraries(BanditPAM PUBLIC ${ARMADILLO_LIBRARIES})
+
+add_subdirectory(src)
+
+enable_testing()
+add_subdirectory(tests)
