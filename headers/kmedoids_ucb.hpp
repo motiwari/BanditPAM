@@ -20,7 +20,7 @@ class KMediods
      *
      * @param maxIterations the maximum number of iterations for the swap step
      */
-    KMediods(size_t maxIterations = 1000);
+    KMediods(arma::mat data, size_t maxIterations = 1000): data(data), maxIterations(maxIterations) {};
 
     /**
      * @brief main method for kmedoids algorithm. Builds initial medoids then
@@ -33,7 +33,7 @@ class KMediods
      * belonds to
      * @param medoid_indices vector where indices(i) is the medoid of cluster i
      */
-    void cluster(const arma::mat& data,
+    void cluster(
                  const size_t clusters,
                  arma::urowvec& assignments,
                  arma::urowvec& medoid_indices);
@@ -49,7 +49,7 @@ class KMediods
      * @param medoids matrix containing the selected medoids in column major
      * format
      */
-    void build(const arma::mat& data,
+    void build(
                const size_t clusters,
                arma::urowvec& medoid_indices,
                arma::mat& medoids);
@@ -64,7 +64,7 @@ class KMediods
      * medoids
      * @param medoids column major matrix of medoids
      */
-    void swap(const arma::mat& data,
+    void swap(
               const size_t clusters,
               arma::urowvec& medoid_indices,
               arma::mat& medoids,
@@ -90,7 +90,7 @@ class KMediods
      * @param use_absolute boolean valute indicating whether to use absolute
      * loss or difference of loss. Set to true on first iteration, false after.
      */
-    void build_sigma(const arma::mat& data,
+    void build_sigma(
                      arma::rowvec& best_distances,
                      arma::rowvec& sigma,
                      arma::uword batch_size,
@@ -113,7 +113,7 @@ class KMediods
      * @return arma::rowvec containing the estimates of the loss for the target
      * points
      */
-    arma::rowvec build_target(const arma::mat& data,
+    arma::rowvec build_target(
                               arma::uvec& target,
                               size_t batch_size,
                               arma::rowvec& best_distances,
@@ -121,7 +121,7 @@ class KMediods
 
 
 
-    double cost_fn_build(const arma::mat& data,
+    double cost_fn_build(
                          arma::uword target,
                          arma::uvec& tmp_refs,
                          arma::rowvec& best_distances);
@@ -143,7 +143,7 @@ class KMediods
      * @return arma::vec containing the estimates of loss difference for the
      * specified targets.
      */
-    arma::vec swap_target(const arma::mat& data,
+    arma::vec swap_target(
                           arma::urowvec& medoid_indices,
                           arma::uvec& targets,
                           size_t batch_size,
@@ -160,7 +160,7 @@ class KMediods
      * @param medoid_indices vector containing indices of medoids
      * @return double indicating total loss
      */
-    double calc_loss(const arma::mat& data,
+    double calc_loss(
                      const size_t clusters,
                      arma::urowvec& medoid_indices);
 
@@ -178,7 +178,7 @@ class KMediods
      * @param assignments vector containing the current cluster assignments for
      * each data point
      */
-    void swap_sigma(const arma::mat& data,
+    void swap_sigma(
                     arma::mat& sigma,
                     size_t batch_size,
                     arma::rowvec& best_distances,
@@ -186,14 +186,18 @@ class KMediods
                     arma::urowvec& assignments);
 
     void
-    calc_best_distances_swap(const arma::mat& data,
-                         const arma::mat& medoids,
+    calc_best_distances_swap(
+                         arma::urowvec& medoid_indices,
                          arma::rowvec& best_distances,
                          arma::rowvec& second_distances,
                          arma::urowvec& assignments);
-    double lossFn(arma::Col<double>const & p1, arma::Col<double>const & p2);
+    double lossFn(int i, int j);
 
     size_t maxIterations;
+
+    const arma::mat data;
+
+
 
     // constant that affects the sensitiviy of build confidence bounds
     static const size_t k_buildConfidence = 1000;

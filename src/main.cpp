@@ -53,9 +53,9 @@ main(int argc, char* argv[])
     arma::urowvec assignments(n);
     arma::urowvec medoid_indices(k);
 
-    KMediods kmed;
+    KMediods kmed(data);
     auto start = std::chrono::steady_clock::now();
-    kmed.cluster(data, k, assignments, medoid_indices);
+    kmed.cluster(k, assignments, medoid_indices);
     auto end = std::chrono::steady_clock::now();
     std::cout << "Took "
               << std::chrono::duration_cast<std::chrono::milliseconds>(end -

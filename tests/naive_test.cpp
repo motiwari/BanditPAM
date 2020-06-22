@@ -13,16 +13,16 @@ void harness(int k, std::string filename, arma::urowvec buildIndicies, arma::uro
     arma::urowvec assignments(n);
     arma::urowvec medoid_indices(k);
 
-    KMediods kmed;
+    KMediods kmed(data);
 
     arma::mat medoids(data.n_rows, k);
-    kmed.build(data, k, medoid_indices, medoids);
+    kmed.build(k, medoid_indices, medoids);
     // check that all build indicies match. order is meaninful.
     for (int i = 0; i < k; i++) {
         EXPECT_EQ(buildIndicies(i), medoid_indices(i));
     }
 
-    kmed.cluster(data, k, assignments, medoid_indices);
+    kmed.cluster(k, assignments, medoid_indices);
     // check that all final indices match. order is not meaninful
     // so the vectors are sorted.
     medoid_indices = arma::sort(medoid_indices);

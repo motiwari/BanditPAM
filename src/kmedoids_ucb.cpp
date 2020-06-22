@@ -7,14 +7,8 @@
  */
 #include "kmedoids_ucb.hpp"
 
-KMediods::KMediods(size_t maxIterations)
-{
-    this->maxIterations = maxIterations;
-}
-
 void
-KMediods::cluster(const arma::mat& data,
-                  const size_t clusters,
+KMediods::cluster(const size_t clusters,
                   arma::urowvec& assignments,
                   arma::urowvec& medoid_indices)
 {
@@ -22,19 +16,19 @@ KMediods::cluster(const arma::mat& data,
 
     // build clusters
     std::cout << "beginning build step" << std::endl;
-    KMediods::build(data, clusters, medoid_indices, medoids);
+    KMediods::build(clusters, medoid_indices, medoids);
     std::cout << "Medoid assignments:" << std::endl;
     std::cout << medoid_indices << std::endl;
 
     // iterate swap steps
     std::cout << "beginning swap step" << std::endl;
-    KMediods::swap(data, clusters, medoid_indices, medoids, assignments);
+    KMediods::swap(clusters, medoid_indices, medoids, assignments);
     std::cout << "Medoid assignments:" << std::endl;
     std::cout << medoid_indices << std::endl;
 }
 
 void
-KMediods::build(const arma::mat& data,
+KMediods::build(
                 const size_t clusters,
                 arma::urowvec& medoid_indices,
                 arma::mat& medoids)
@@ -65,7 +59,7 @@ KMediods::build(const arma::mat& data,
         exact_mask.fill(0);
         estimates.fill(0);
         KMediods::build_sigma(
-          data, best_distances, sigma, k_batchSize, use_absolute);
+           best_distances, sigma, k_batchSize, use_absolute);
 
         while (arma::sum(candidates) >
                k_doubleComparisonLimit) // double comparison
@@ -79,7 +73,7 @@ KMediods::build(const arma::mat& data,
                               << " out of " << data.n_cols << std::endl;
                 }
                 arma::rowvec result =
-                  build_target(data, targets, N, best_distances, use_absolute);
+                  build_target(targets, N, best_distances, use_absolute);
                 estimates.cols(targets) = result;
                 ucbs.cols(targets) = result;
                 lcbs.cols(targets) = result;
@@ -94,7 +88,7 @@ KMediods::build(const arma::mat& data,
             arma::uvec targets = arma::find(candidates);
 
             arma::rowvec result = build_target(
-              data, targets, k_batchSize, best_distances, use_absolute);
+              targets, k_batchSize, best_distances, use_absolute);
             estimates.cols(targets) =
               ((T_samples.cols(targets) % estimates.cols(targets)) +
                (result * k_batchSize)) /
@@ -118,7 +112,7 @@ KMediods::build(const arma::mat& data,
 
         // don't need to do this on final iteration
         for (int i = 0; i < N; i++) {
-            double cost = lossFn(data.col(i), data.col(medoid_indices(k)));
+            double cost = lossFn(i, medoid_indices(k));
             if (cost < best_distances(i)) {
                 best_distances(i) = cost;
             }
@@ -129,7 +123,7 @@ KMediods::build(const arma::mat& data,
 }
 
 void
-KMediods::build_sigma(const arma::mat& data,
+KMediods::build_sigma(
                       arma::rowvec& best_distances,
                       arma::rowvec& sigma,
                       arma::uword batch_size,
@@ -145,7 +139,7 @@ KMediods::build_sigma(const arma::mat& data,
     for (size_t i = 0; i < N; i++) {
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = lossFn(data.col(i),data.col(tmp_refs(j)));
+            double cost = lossFn(i,tmp_refs(j));
             if (use_absolute) {
                 sample(j) = cost;
             } else {
@@ -161,7 +155,7 @@ KMediods::build_sigma(const arma::mat& data,
 
 // forcibly inline this in the future and directly write to estimates
 arma::rowvec
-KMediods::build_target(const arma::mat& data,
+KMediods::build_target(
                        arma::uvec& target,
                        size_t batch_size,
                        arma::rowvec& best_distances,
@@ -178,7 +172,7 @@ KMediods::build_target(const arma::mat& data,
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
             double cost =
-              lossFn(data.col(tmp_refs(j)),data.col(target(i)));
+              lossFn(tmp_refs(j),target(i));
             if (use_absolute) {
                 total += cost;
             } else {
@@ -194,7 +188,7 @@ KMediods::build_target(const arma::mat& data,
 }
 
 void
-KMediods::swap_sigma(const arma::mat& data,
+KMediods::swap_sigma(
                      arma::mat& sigma,
                      size_t batch_size,
                      arma::rowvec& best_distances,
@@ -217,7 +211,7 @@ KMediods::swap_sigma(const arma::mat& data,
 
         // calculate change in loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = lossFn(data.col(n),data.col(tmp_refs(j)));
+            double cost = lossFn(n,tmp_refs(j));
 
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
@@ -239,7 +233,7 @@ KMediods::swap_sigma(const arma::mat& data,
 }
 
 arma::vec
-KMediods::swap_target(const arma::mat& data,
+KMediods::swap_target(
                       arma::urowvec& medoid_indices,
                       arma::uvec& targets,
                       size_t batch_size,
@@ -262,7 +256,7 @@ KMediods::swap_target(const arma::mat& data,
         size_t k = targets(i) % medoid_indices.n_cols;
         // calculate total loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = lossFn(data.col(n), data.col(tmp_refs(j)));
+            double cost = lossFn(n, tmp_refs(j));
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
                     total += cost;
@@ -284,8 +278,8 @@ KMediods::swap_target(const arma::mat& data,
 }
 
 void
-KMediods::calc_best_distances_swap(const arma::mat& data,
-                         const arma::mat& medoids,
+KMediods::calc_best_distances_swap(
+                         arma::urowvec& medoid_indices,
                          arma::rowvec& best_distances,
                          arma::rowvec& second_distances,
                          arma::urowvec& assignments)
@@ -294,8 +288,8 @@ KMediods::calc_best_distances_swap(const arma::mat& data,
     for (size_t i = 0; i < data.n_cols; i++) {
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
-        for (size_t k = 0; k < medoids.n_cols; k++) {
-            double cost = lossFn(data.col(i),medoids.col(k));
+        for (size_t k = 0; k < medoid_indices.n_cols; k++) {
+            double cost = lossFn(medoid_indices(k), i);
             if (cost < best) {
                 assignments(i) = k;
                 second = best;
@@ -310,7 +304,7 @@ KMediods::calc_best_distances_swap(const arma::mat& data,
 }
 
 void
-KMediods::swap(const arma::mat& data,
+KMediods::swap(
                const size_t clusters,
                arma::urowvec& medoid_indices,
                arma::mat& medoids,
@@ -338,10 +332,9 @@ KMediods::swap(const arma::mat& data,
 
         // calculate quantities needed for swap, best_distances and sigma
         calc_best_distances_swap(
-          data, medoids, best_distances, second_distances, assignments);
+          medoid_indices, best_distances, second_distances, assignments);
 
-        swap_sigma(data,
-                   sigma,
+        swap_sigma(sigma,
                    k_batchSize,
                    best_distances,
                    second_distances,
@@ -357,7 +350,7 @@ KMediods::swap(const arma::mat& data,
         // while there is at least one candidate (double comparison issues)
         while (arma::accu(candidates) > 0.5) {
             calc_best_distances_swap(
-              data, medoids, best_distances, second_distances, assignments);
+              medoid_indices, best_distances, second_distances, assignments);
 
             // compute exactly if it's been samples more than N times and hasn't
             // been computed exactly already
@@ -372,8 +365,7 @@ KMediods::swap(const arma::mat& data,
                     std::cout << "COMPUTING EXACTLY " << targets.size()
                               << " out of " << candidates.size() << std::endl;
                 }
-                arma::vec result = swap_target(data,
-                                               medoid_indices,
+                arma::vec result = swap_target(medoid_indices,
                                                targets,
                                                N,
                                                best_distances,
@@ -391,8 +383,7 @@ KMediods::swap(const arma::mat& data,
                 break;
             }
             targets = arma::find(candidates);
-            arma::vec result = swap_target(data,
-                                           medoid_indices,
+            arma::vec result = swap_target(medoid_indices,
                                            targets,
                                            k_batchSize,
                                            best_distances,
@@ -431,7 +422,7 @@ KMediods::swap(const arma::mat& data,
         medoid_indices(k) = n;
         medoids.col(k) = data.col(medoid_indices(k));
         calc_best_distances_swap(
-          data, medoids, best_distances, second_distances, assignments);
+          medoid_indices, best_distances, second_distances, assignments);
     }
     std::cout << "final swap loss: " << arma::mean(arma::mean(best_distances))
               << std::endl;
@@ -440,7 +431,7 @@ KMediods::swap(const arma::mat& data,
 }
 
 double
-KMediods::calc_loss(const arma::mat& data,
+KMediods::calc_loss(
                     const size_t clusters,
                     arma::urowvec& medoid_indices)
 {
@@ -449,7 +440,7 @@ KMediods::calc_loss(const arma::mat& data,
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < clusters; k++) {
-            double currCost = lossFn(data.col(medoid_indices(k)),data.col(i));
+            double currCost = lossFn(medoid_indices(k), i);
             if (currCost < cost) {
                 cost = currCost;
             }
@@ -459,6 +450,7 @@ KMediods::calc_loss(const arma::mat& data,
     return total;
 }
 
-double KMediods::lossFn(const arma::Col<double> &p1, const arma::Col<double> & p2) {
-    return arma::norm(p1 - p2, 2);
+inline
+double KMediods::lossFn(int i, int j) {
+    return arma::norm(data.col(i) - data.col(j), 2);
 }
