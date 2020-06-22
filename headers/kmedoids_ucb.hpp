@@ -185,7 +185,13 @@ class KMediods
                     arma::rowvec& second_best_distances,
                     arma::urowvec& assignments);
 
-    double lossFn(arma::vec& p1, arma::vec& p2);
+    void
+    calc_best_distances_swap(const arma::mat& data,
+                         const arma::mat& medoids,
+                         arma::rowvec& best_distances,
+                         arma::rowvec& second_distances,
+                         arma::urowvec& assignments);
+    double lossFn(arma::Col<double>const & p1, arma::Col<double>const & p2);
 
     size_t maxIterations;
 

@@ -118,8 +118,7 @@ KMediods::build(const arma::mat& data,
 
         // don't need to do this on final iteration
         for (int i = 0; i < N; i++) {
-            double cost = arma::norm(
-              data.unsafe_col(i) - data.unsafe_col(medoid_indices(k)), 2);
+            double cost = lossFn(data.col(i), data.col(medoid_indices(k)));
             if (cost < best_distances(i)) {
                 best_distances(i) = cost;
             }
@@ -146,7 +145,7 @@ KMediods::build_sigma(const arma::mat& data,
     for (size_t i = 0; i < N; i++) {
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = arma::norm(data.col(i) - data.col(tmp_refs(j)), 2);
+            double cost = lossFn(data.col(i),data.col(tmp_refs(j)));
             if (use_absolute) {
                 sample(j) = cost;
             } else {
@@ -179,7 +178,7 @@ KMediods::build_target(const arma::mat& data,
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
             double cost =
-              arma::norm(data.col(tmp_refs(j)) - data.col(target(i)), 2);
+              lossFn(data.col(tmp_refs(j)),data.col(target(i)));
             if (use_absolute) {
                 total += cost;
             } else {
@@ -218,7 +217,7 @@ KMediods::swap_sigma(const arma::mat& data,
 
         // calculate change in loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = arma::norm(data.col(n) - data.col(tmp_refs(j)), 2);
+            double cost = lossFn(data.col(n),data.col(tmp_refs(j)));
 
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
@@ -263,7 +262,7 @@ KMediods::swap_target(const arma::mat& data,
         size_t k = targets(i) % medoid_indices.n_cols;
         // calculate total loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = arma::norm(data.col(n) - data.col(tmp_refs(j)), 2);
+            double cost = lossFn(data.col(n), data.col(tmp_refs(j)));
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
                     total += cost;
@@ -285,7 +284,7 @@ KMediods::swap_target(const arma::mat& data,
 }
 
 void
-calc_best_distances_swap(const arma::mat& data,
+KMediods::calc_best_distances_swap(const arma::mat& data,
                          const arma::mat& medoids,
                          arma::rowvec& best_distances,
                          arma::rowvec& second_distances,
@@ -296,7 +295,7 @@ calc_best_distances_swap(const arma::mat& data,
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < medoids.n_cols; k++) {
-            double cost = arma::norm(data.col(i) - medoids.col(k), 2);
+            double cost = lossFn(data.col(i),medoids.col(k));
             if (cost < best) {
                 assignments(i) = k;
                 second = best;
@@ -450,9 +449,9 @@ KMediods::calc_loss(const arma::mat& data,
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < clusters; k++) {
-            if (arma::norm(data.col(medoid_indices(k)) - data.col(i), 2) <
-                cost) {
-                cost = arma::norm(data.col(medoid_indices(k)) - data.col(i), 2);
+            double currCost = lossFn(data.col(medoid_indices(k)),data.col(i));
+            if (currCost < cost) {
+                cost = currCost;
             }
         }
         total += cost;
@@ -460,6 +459,6 @@ KMediods::calc_loss(const arma::mat& data,
     return total;
 }
 
-double lossFn(arma::vec& p1, arma::vec& p2) {
+double KMediods::lossFn(const arma::Col<double> &p1, const arma::Col<double> & p2) {
     return arma::norm(p1 - p2, 2);
 }
