@@ -11,6 +11,7 @@
 #include <armadillo>
 #include <fstream>
 #include <iostream>
+#include <chrono>
 
 class KMediods
 {
@@ -20,7 +21,9 @@ class KMediods
      *
      * @param maxIterations the maximum number of iterations for the swap step
      */
-    KMediods(arma::mat data, size_t maxIterations = 1000): data(data), maxIterations(maxIterations) {};
+    KMediods(arma::mat data, size_t maxIterations = 1000, int verbosity = 1, std::string loss = "L2");
+
+    ~KMediods();
 
     /**
      * @brief main method for kmedoids algorithm. Builds initial medoids then
@@ -191,11 +194,23 @@ class KMediods
                          arma::rowvec& best_distances,
                          arma::rowvec& second_distances,
                          arma::urowvec& assignments);
-    double lossFn(int i, int j);
+
+    double L1(int i, int j) const;
+    
+    double L2(int i, int j) const;
+
+    double manhattan(int i, int j) const;
+
+    double cos(int i, int j) const;
+
+    double (KMediods::*lossFn)(int i, int j) const;
+
+    std::ofstream logFile;
 
     size_t maxIterations;
 
     const arma::mat data;
+
 
 
 

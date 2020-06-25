@@ -7,6 +7,38 @@
  */
 #include "kmedoids_ucb.hpp"
 
+KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::string loss): data(data), maxIterations(maxIterations), verbosity(verbosity) {
+    // open filepointer if logging
+    if (verbosity > 0) {
+        std::string logName = "BanditPam_log";
+        logFile.open(logName);
+    }
+    std::cout << "verbosity is " << verbosity << std::endl;
+
+
+    // set loss function
+    if (loss == "manhattan") {
+        lossFn = &KMediods::manhattan;
+    } else if (loss == "cos") {
+        lossFn = &KMediods::cos;
+    } else if (loss == "L1") {
+        lossFn = &KMediods::L1;
+    } else if (loss == "L2"){
+        lossFn = &KMediods::L2;
+    } else {
+        throw "unrecognized loss function";
+    }
+
+    // set loss function
+    std::cout << "loss function is" << std::endl;
+}
+
+KMediods::~KMediods() {
+    if (verbosity > 0) {
+        logFile.close();
+    }
+}
+
 void
 KMediods::cluster(const size_t clusters,
                   arma::urowvec& assignments,
@@ -112,7 +144,7 @@ KMediods::build(
 
         // don't need to do this on final iteration
         for (int i = 0; i < N; i++) {
-            double cost = lossFn(i, medoid_indices(k));
+            double cost = (this->*lossFn)(i, medoid_indices(k));
             if (cost < best_distances(i)) {
                 best_distances(i) = cost;
             }
@@ -139,7 +171,7 @@ KMediods::build_sigma(
     for (size_t i = 0; i < N; i++) {
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = lossFn(i,tmp_refs(j));
+            double cost = (this->*lossFn)(i,tmp_refs(j));
             if (use_absolute) {
                 sample(j) = cost;
             } else {
@@ -172,7 +204,7 @@ KMediods::build_target(
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
             double cost =
-              lossFn(tmp_refs(j),target(i));
+              (this->*lossFn)(tmp_refs(j),target(i));
             if (use_absolute) {
                 total += cost;
             } else {
@@ -211,7 +243,7 @@ KMediods::swap_sigma(
 
         // calculate change in loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = lossFn(n,tmp_refs(j));
+            double cost = (this->*lossFn)(n,tmp_refs(j));
 
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
@@ -256,7 +288,7 @@ KMediods::swap_target(
         size_t k = targets(i) % medoid_indices.n_cols;
         // calculate total loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = lossFn(n, tmp_refs(j));
+            double cost = (this->*lossFn)(n, tmp_refs(j));
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
                     total += cost;
@@ -289,7 +321,7 @@ KMediods::calc_best_distances_swap(
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < medoid_indices.n_cols; k++) {
-            double cost = lossFn(medoid_indices(k), i);
+            double cost = (this->*lossFn)(medoid_indices(k), i);
             if (cost < best) {
                 assignments(i) = k;
                 second = best;
@@ -440,7 +472,7 @@ KMediods::calc_loss(
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < clusters; k++) {
-            double currCost = lossFn(medoid_indices(k), i);
+            double currCost = (this->*lossFn)(medoid_indices(k), i);
             if (currCost < cost) {
                 cost = currCost;
             }
@@ -450,7 +482,18 @@ KMediods::calc_loss(
     return total;
 }
 
-inline
-double KMediods::lossFn(int i, int j) {
+double KMediods::L1(int i, int j) const {
+    return arma::norm(data.col(i) - data.col(j), 1);
+}
+
+double KMediods::L2(int i, int j) const {
     return arma::norm(data.col(i) - data.col(j), 2);
+}
+
+double KMediods::cos(int i, int j) const {
+    return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i)) * arma::norm(data.col(j)));
+}
+
+double KMediods::manhattan(int i, int j) const {
+    return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
