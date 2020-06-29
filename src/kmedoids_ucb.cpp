@@ -482,6 +482,13 @@ KMediods::calc_loss(
     return total;
 }
 
+void KMediods::log(std::string info, int priority) {
+    if (verbosity < priority) {
+        return;
+    }
+    logFile << info << std::flush;
+}
+
 double KMediods::L1(int i, int j) const {
     return arma::norm(data.col(i) - data.col(j), 1);
 }

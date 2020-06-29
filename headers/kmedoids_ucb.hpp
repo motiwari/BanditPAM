@@ -195,6 +195,9 @@ class KMediods
                          arma::rowvec& second_distances,
                          arma::urowvec& assignments);
 
+    void log(std::string info, int priority);
+
+
     double L1(int i, int j) const;
     
     double L2(int i, int j) const;
@@ -225,5 +228,9 @@ class KMediods
 
     // batch size for build and swap iterations
     const size_t k_batchSize = 100;
+
+    // 0 no log file
+    // 1 log build and final medoids
+    // 2 
     int verbosity = 0;
 };
