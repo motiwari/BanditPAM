@@ -195,8 +195,7 @@ class KMediods
                          arma::rowvec& second_distances,
                          arma::urowvec& assignments);
 
-    void log(std::string info, int priority);
-
+    void log(int priority);
 
     double L1(int i, int j) const;
     
@@ -209,6 +208,8 @@ class KMediods
     double (KMediods::*lossFn)(int i, int j) const;
 
     std::ofstream logFile;
+
+    std::stringstream logBuffer;
 
     size_t maxIterations;
 

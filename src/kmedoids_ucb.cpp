@@ -13,7 +13,8 @@ KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::str
         std::string logName = "BanditPam_log";
         logFile.open(logName);
     }
-    std::cout << "verbosity is " << verbosity << std::endl;
+    logBuffer << "verbosity is " << verbosity << '\n';
+    log(1);
 
 
     // set loss function
@@ -30,7 +31,8 @@ KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::str
     }
 
     // set loss function
-    std::cout << "loss function is" << std::endl;
+    logBuffer << "loss function is" << '\n';
+    log(1);
 }
 
 KMediods::~KMediods() {
@@ -47,16 +49,20 @@ KMediods::cluster(const size_t clusters,
     arma::mat medoids(data.n_rows, clusters);
 
     // build clusters
-    std::cout << "beginning build step" << std::endl;
+    logBuffer << "beginning build step" << '\n';
+    log(1);
     KMediods::build(clusters, medoid_indices, medoids);
-    std::cout << "Medoid assignments:" << std::endl;
-    std::cout << medoid_indices << std::endl;
+    logBuffer << "Medoid assignments:" << '\n';
+    logBuffer << medoid_indices << '\n';
+    log(1);
 
     // iterate swap steps
-    std::cout << "beginning swap step" << std::endl;
+    logBuffer << "beginning swap step" << '\n';
+    log(1);
     KMediods::swap(clusters, medoid_indices, medoids, assignments);
-    std::cout << "Medoid assignments:" << std::endl;
-    std::cout << medoid_indices << std::endl;
+    logBuffer << "Medoid assignments:" << '\n';
+    logBuffer << medoid_indices << '\n';
+    log(1);
 }
 
 void
@@ -100,10 +106,9 @@ KMediods::build(
               ((T_samples + k_batchSize) >= N_mat) != exact_mask;
             if (arma::accu(compute_exactly) > 0) {
                 arma::uvec targets = find(compute_exactly);
-                if (verbosity > 0) {
-                    std::cout << "Computing exactly for " << targets.n_rows
-                              << " out of " << data.n_cols << std::endl;
-                }
+                logBuffer << "Computing exactly for " << targets.n_rows
+                          << " out of " << data.n_cols << '\n';
+                log(2);
                 arma::rowvec result =
                   build_target(targets, N, best_distances, use_absolute);
                 estimates.cols(targets) = result;
@@ -393,10 +398,9 @@ KMediods::swap(
             if (targets.size() > 0) {
                 size_t n = targets(0) / medoids.n_cols;
                 size_t k = targets(0) % medoids.n_cols;
-                if (verbosity > 0) {
-                    std::cout << "COMPUTING EXACTLY " << targets.size()
-                              << " out of " << candidates.size() << std::endl;
-                }
+                logBuffer << "COMPUTING EXACTLY " << targets.size()
+                          << " out of " << candidates.size() << '\n';
+                log(2);
                 arma::vec result = swap_target(medoid_indices,
                                                targets,
                                                N,
@@ -446,18 +450,18 @@ KMediods::swap(
         // extract data point of swap
         size_t n = new_medoid / medoids.n_cols;
         swap_performed = medoid_indices(k) != n;
-        if (verbosity > 0) {
-            std::cout << (swap_performed ? ("swap performed")
+            logBuffer << (swap_performed ? ("swap performed")
                                          : ("no swap performed"))
-                      << " " << medoid_indices(k) << "to" << n << std::endl;
-        }
+                      << " " << medoid_indices(k) << "to" << n << '\n';
+        log(2);
         medoid_indices(k) = n;
         medoids.col(k) = data.col(medoid_indices(k));
         calc_best_distances_swap(
           medoid_indices, best_distances, second_distances, assignments);
     }
-    std::cout << "final swap loss: " << arma::mean(arma::mean(best_distances))
-              << std::endl;
+    logBuffer << "final swap loss: " << arma::mean(arma::mean(best_distances))
+              << '\n';
+    log(2);
 
     // done with swaps at this point
 }
@@ -482,11 +486,12 @@ KMediods::calc_loss(
     return total;
 }
 
-void KMediods::log(std::string info, int priority) {
-    if (verbosity < priority) {
-        return;
+void KMediods::log(int priority) {
+    // if it won't be logged
+    if (priority > verbosity) {
+        logFile << logBuffer.rdbuf();
     }
-    logFile << info << std::flush;
+    logFile.clear();
 }
 
 double KMediods::L1(int i, int j) const {
