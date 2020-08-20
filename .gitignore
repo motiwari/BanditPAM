@@ -3,4 +3,8 @@
 .vscode/
 data/MNIST_CSV.csv
 data/MNIST-10k.csv
+data/MNIST-60k.csv
+data/MNIST-65k.csv
+data/MNIST-70k.csv
 build/
+data/data.csv

@@ -32,7 +32,7 @@ void harness(int k, std::string filename, arma::urowvec buildIndicies, arma::uro
     }
 }
 
-TEST(BanditPAM, mnist_small) {
+TEST(BanditPAM, mnist_small_k_5) {
     int k = 5;
     std::string filename = "../../data/mnist.csv";
     arma::urowvec buildIndicies = {16, 32, 70, 87, 24};
@@ -41,7 +41,16 @@ TEST(BanditPAM, mnist_small) {
     harness(k, filename, buildIndicies, finalIndicies);
 }
 
-TEST(BanditPAM, mnist_1k) {
+TEST(BanditPAM, mnist_small_k_10) {
+    int k = 10;
+    std::string filename = "../../data/mnist.csv";
+    arma::urowvec buildIndicies = {16, 32, 70, 87, 24, 90, 49, 99, 82, 94};
+    arma::urowvec finalIndicies = {16, 63, 70, 25, 31, 90, 49, 99, 82, 94};
+
+    harness(k, filename, buildIndicies, finalIndicies);
+}
+
+TEST(BanditPAM, mnist_1k_k_5) {
     int k = 5;
     std::string filename = "../../data/MNIST-1k.csv";
     arma::urowvec buildIndicies = {891, 392, 354, 714, 23};

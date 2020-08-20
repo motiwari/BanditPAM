@@ -10,7 +10,7 @@
 KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::string loss): data(data), maxIterations(maxIterations), verbosity(verbosity) {
     // open filepointer if logging
     if (verbosity > 0) {
-        std::string logName = "BanditPam_log";
+        std::string logName = "BanditPam_log"; // TODO: better logfile name
         logFile.open(logName);
     }
     logBuffer << "verbosity is " << verbosity << '\n';
@@ -31,7 +31,7 @@ KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::str
     }
 
     // set loss function
-    logBuffer << "loss function is" << '\n';
+    logBuffer << "loss function is " << loss << '\n';
     log(1);
 }
 
@@ -62,7 +62,7 @@ KMediods::cluster(const size_t clusters,
     KMediods::swap(clusters, medoid_indices, medoids, assignments);
     logBuffer << "Medoid assignments:" << '\n';
     logBuffer << medoid_indices << '\n';
-    log(1);
+    log(2);
 }
 
 void
@@ -118,7 +118,6 @@ KMediods::build(
                 T_samples.cols(targets) += N;
                 candidates.cols(targets).fill(0);
             }
-
             if (arma::sum(candidates) < k_doubleComparisonLimit) {
                 break;
             }
@@ -156,6 +155,10 @@ KMediods::build(
         }
         use_absolute = false; // use difference of loss for sigma and sampling,
                               // not absolute
+        logBuffer << "Loss: " << arma::mean(arma::mean(best_distances)) << '\n';
+        log(2);
+        logBuffer << "p: " << (float)1/(float)p << '\n';
+        log(2);
     }
 }
 
@@ -188,6 +191,15 @@ KMediods::build_sigma(
         }
         sigma(i) = arma::stddev(sample);
     }
+    arma::rowvec P = {0.25, 0.5, 0.75};
+    arma::rowvec Q = arma::quantile(sigma, P);
+    logBuffer << "Sigma: min: " << arma::min(sigma)
+              << ", 25th: " << Q(0)
+              << ", median: " << Q(1)
+              << ", 75th: " << Q(2)
+              << ", max: " << arma::max(sigma)
+              << ", mean: " << arma::mean(sigma) << '\n';
+    log(2);
 }
 
 // forcibly inline this in the future and directly write to estimates
@@ -267,6 +279,15 @@ KMediods::swap_sigma(
         }
         sigma(k, n) = arma::stddev(sample);
     }
+    // arma::rowvec P = {0.25, 0.5, 0.75};
+    // arma::rowvec Q = arma::quantile(sigma, P);
+    // logBuffer << "Sigma: min: " << sigma.min()
+    //           << ", 25th: " << Q(0)
+    //           << ", median: " << Q(1)
+    //           << ", 75th: " << Q(2)
+    //           << ", max: " << sigma.max() << '\n';
+    //           // << ", mean: " << arma::mean(arma::mean(sigma)) << '\n';
+    // log(2);
 }
 
 arma::vec
@@ -458,10 +479,23 @@ KMediods::swap(
         medoids.col(k) = data.col(medoid_indices(k));
         calc_best_distances_swap(
           medoid_indices, best_distances, second_distances, assignments);
+        arma::rowvec P = {0.25, 0.5, 0.75};
+        // arma::rowvec Q = arma::quantile(sigma.elem(targets), P);
+        logBuffer << "Sigma: min: " << sigma.min()
+        // << ", 25th: " << Q(0)
+        // << ", median: " << Q(1)
+        // << ", 75th: " << Q(2)
+        << ", max: " << sigma.max()
+        << ", mean: " << arma::mean(arma::mean(sigma)) << '\n';
+        log(2);
+        logBuffer << "Loss: " << arma::mean(arma::mean(best_distances)) << '\n';
+        log(2);
+        logBuffer << "p: " << (float)1/(float)p << '\n';
+        log(2);
     }
-    logBuffer << "final swap loss: " << arma::mean(arma::mean(best_distances))
-              << '\n';
-    log(2);
+    // logBuffer << "final swap loss: " << arma::mean(arma::mean(best_distances))
+    //           << '\n';
+    // log(1);
 
     // done with swaps at this point
 }
