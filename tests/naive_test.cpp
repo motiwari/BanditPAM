@@ -55,6 +55,7 @@ TEST(BanditPAM, mnist_1k_k_5) {
     std::string filename = "../../data/MNIST-1k.csv";
     arma::urowvec buildIndicies = {891, 392, 354, 714, 23};
     arma::urowvec finalIndicies = {714, 694, 765, 507, 737};
+    
 
     harness(k, filename, buildIndicies, finalIndicies);
 }
