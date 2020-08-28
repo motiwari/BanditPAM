@@ -32,29 +32,56 @@ void harness(int k, std::string filename, arma::urowvec buildIndicies, arma::uro
     }
 }
 
-TEST(BanditPAM, mnist_small_k_5) {
+TEST(BanditPAM, mnist_60k_k_5) {
     int k = 5;
-    std::string filename = "../../data/mnist.csv";
+    std::string filename = "../../data/MNIST-60k.csv";
     arma::urowvec buildIndicies = {16, 32, 70, 87, 24};
     arma::urowvec finalIndicies = {70, 99, 30, 49, 23};
 
     harness(k, filename, buildIndicies, finalIndicies);
 }
 
-TEST(BanditPAM, mnist_small_k_10) {
+TEST(BanditPAM, mnist_60k_k_10) {
     int k = 10;
-    std::string filename = "../../data/mnist.csv";
+    std::string filename = "../../data/MNIST-60k.csv";
     arma::urowvec buildIndicies = {16, 32, 70, 87, 24, 90, 49, 99, 82, 94};
     arma::urowvec finalIndicies = {16, 63, 70, 25, 31, 90, 49, 99, 82, 94};
 
     harness(k, filename, buildIndicies, finalIndicies);
 }
 
-TEST(BanditPAM, mnist_1k_k_5) {
+TEST(BanditPAM, mnist_65k_k_5) {
     int k = 5;
-    std::string filename = "../../data/MNIST-1k.csv";
-    arma::urowvec buildIndicies = {891, 392, 354, 714, 23};
-    arma::urowvec finalIndicies = {714, 694, 765, 507, 737};
+    std::string filename = "../../data/MNIST-65k.csv";
+    arma::urowvec buildIndicies = {16, 32, 70, 87, 24};
+    arma::urowvec finalIndicies = {70, 99, 30, 49, 23};
+
+    harness(k, filename, buildIndicies, finalIndicies);
+}
+
+TEST(BanditPAM, mnist_65k_k_10) {
+    int k = 10;
+    std::string filename = "../../data/MNIST-65k.csv";
+    arma::urowvec buildIndicies = {16, 32, 70, 87, 24, 90, 49, 99, 82, 94};
+    arma::urowvec finalIndicies = {16, 63, 70, 25, 31, 90, 49, 99, 82, 94};
+
+    harness(k, filename, buildIndicies, finalIndicies);
+}
+
+TEST(BanditPAM, mnist_70k_k_5) {
+    int k = 5;
+    std::string filename = "../../data/MNIST-70k.csv";
+    arma::urowvec buildIndicies = {16, 32, 70, 87, 24};
+    arma::urowvec finalIndicies = {70, 99, 30, 49, 23};
+
+    harness(k, filename, buildIndicies, finalIndicies);
+}
+
+TEST(BanditPAM, mnist_70k_k_10) {
+    int k = 10;
+    std::string filename = "../../data/MNIST-70k.csv";
+    arma::urowvec buildIndicies = {16, 32, 70, 87, 24, 90, 49, 99, 82, 94};
+    arma::urowvec finalIndicies = {16, 63, 70, 25, 31, 90, 49, 99, 82, 94};
 
     harness(k, filename, buildIndicies, finalIndicies);
 }
