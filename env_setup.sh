@@ -15,4 +15,4 @@ head -1000 data/MNIST-70k.csv > data/MNIST-1k.csv
 
 ######### Run scripts #########
 sh ./build_docker.sh
-sh ./install-hooks.sh
+sh scripts/install-hooks.sh
