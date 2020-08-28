@@ -22,7 +22,9 @@ main(int argc, char* argv[])
     int k;
     bool print_assignments = false;
     int opt;
-    while ((opt = getopt(argc, argv, "f:k:a")) != -1) {
+    int verbosity = 0;
+
+    while ((opt = getopt(argc, argv, "f:k:av:")) != -1) {
         switch (opt) {
             case 'a':
                 print_assignments = true;
@@ -33,6 +35,9 @@ main(int argc, char* argv[])
             case 'k':
                 k = std::stoi(optarg);
                 break;
+            case 'v':
+            	verbosity = std::stoi(optarg);
+            	break;
             case ':':
                 printf("option needs a value\n");
                 return 1;
@@ -47,8 +52,11 @@ main(int argc, char* argv[])
 
     arma::uword n = data.n_cols;
     arma::uword d = data.n_rows;
-    std::cout << "Read in " << n << " data points of dimension " << d
+    if (verbosity >= 1)
+    {
+    	std::cout << "Read in " << n << " data points of dimension " << d
               << std::endl;
+    }
 
     arma::urowvec assignments(n);
     arma::urowvec medoid_indices(k);
@@ -57,13 +65,16 @@ main(int argc, char* argv[])
     auto start = std::chrono::steady_clock::now();
     kmed.cluster(k, assignments, medoid_indices);
     auto end = std::chrono::steady_clock::now();
+
+    if (verbosity >= 1)
+    {
     std::cout << "Took "
               << std::chrono::duration_cast<std::chrono::milliseconds>(end -
                                                                        start)
                    .count()
               << " milliseconds" << std::endl;
+    }
 
-    // printing out assigments
     if (print_assignments) {
         for (size_t i = 0; i < n; i++) {
             std::cout << assignments(i) << ", ";
