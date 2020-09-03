@@ -23,6 +23,7 @@ main(int argc, char* argv[])
     bool print_assignments = false;
     int opt;
     int verbosity = 0;
+    std::string loss;
 
     while ((opt = getopt(argc, argv, "f:k:av:")) != -1) {
         switch (opt) {
@@ -35,6 +36,8 @@ main(int argc, char* argv[])
             case 'k':
                 k = std::stoi(optarg);
                 break;
+            case 'l':
+                loss = optarg;
             case 'v':
             	verbosity = std::stoi(optarg);
             	break;

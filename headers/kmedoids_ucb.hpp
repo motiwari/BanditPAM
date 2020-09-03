@@ -198,10 +198,12 @@ class KMediods
     void log(int priority);
 
     double L1(int i, int j) const;
-    
+
     double L2(int i, int j) const;
 
     double manhattan(int i, int j) const;
+
+    double Lp(int i, int j) const;
 
     double cos(int i, int j) const;
 
@@ -232,6 +234,6 @@ class KMediods
 
     // 0 no log file
     // 1 log build and final medoids
-    // 2 
+    // 2
     int verbosity = 0;
 };

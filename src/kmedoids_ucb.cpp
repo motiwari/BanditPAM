@@ -6,6 +6,9 @@
  * bound improvement of the kmedoids PAM algorithim.
  */
 #include "kmedoids_ucb.hpp"
+#include "pybind11/pybind11.h"
+
+namespace py = pybind11
 
 KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::string loss): data(data), maxIterations(maxIterations), verbosity(verbosity) {
     // open filepointer if logging
@@ -528,6 +531,10 @@ void KMediods::log(int priority) {
     logFile.clear();
 }
 
+double KMediods::Lp(int i, int j) const {
+  return arma::norm(data.col(i) - data.col(j), 1);
+}
+
 double KMediods::L1(int i, int j) const {
     return arma::norm(data.col(i) - data.col(j), 1);
 }
@@ -542,4 +549,10 @@ double KMediods::cos(int i, int j) const {
 
 double KMediods::manhattan(int i, int j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
+}
+
+PYBIND11_MODULE(bpam, m) {
+    py::class_<KMediods>(m, "kmeds")
+        .def(py::init<const st::string &name>())
+        .def("cluster", &KMediods::cluster);
 }
