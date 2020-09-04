@@ -11,6 +11,7 @@ TEST(BanditPAM, time_scaling_test_MNIST) {
       "../../data/MNIST-40k.csv",
       "../../data/MNIST-70k.csv"
     };
+    std::string 
 
     // RUN BASELINE 10K DATA AND CLUSTER
     arma::mat base_data;
