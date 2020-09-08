@@ -7,13 +7,14 @@
  */
 
 #include "kmedoids_ucb.hpp"
+#include <unordered_map>
 // #include "pybind11.h"
 //
 // namespace py = pybind11
 
 KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::string loss, std::string logFilename_): data(data), maxIterations(maxIterations), verbosity(verbosity) {
     std::string logFilename = logFilename_;
-    
+
     if (verbosity > 0) {
         logFile.open(logFilename);
     }
@@ -43,6 +44,7 @@ KMediods::~KMediods() {
         logFile.close();
     }
 }
+
 
 void
 KMediods::cluster(const size_t clusters,

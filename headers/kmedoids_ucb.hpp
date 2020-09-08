@@ -217,9 +217,6 @@ class KMediods
 
     const arma::mat data;
 
-
-
-
     // constant that affects the sensitiviy of build confidence bounds
     static const size_t k_buildConfidence = 1000;
 
