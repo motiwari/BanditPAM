@@ -11,15 +11,14 @@
 //
 // namespace py = pybind11
 
-KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::string loss): data(data), maxIterations(maxIterations), verbosity(verbosity) {
-    // open filepointer if logging
+KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::string loss, std::string logFilename_): data(data), maxIterations(maxIterations), verbosity(verbosity) {
+    std::string logFilename = logFilename_;
+    
     if (verbosity > 0) {
-        std::string logName = "BanditPam_log"; // TODO: better logfile name
-        logFile.open(logName);
+        logFile.open(logFilename);
     }
     logBuffer << "verbosity is " << verbosity << '\n';
     log(1);
-
 
     // set loss function
     if (loss == "manhattan") {

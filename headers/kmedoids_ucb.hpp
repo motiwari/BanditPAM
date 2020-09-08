@@ -21,7 +21,7 @@ class KMediods
      *
      * @param maxIterations the maximum number of iterations for the swap step
      */
-    KMediods(arma::mat data, size_t maxIterations = 1000, int verbosity = 1, std::string loss = "L2");
+    KMediods(arma::mat data, size_t maxIterations = 1000, int verbosity = 1, std::string loss = "L2", std::string logFilename_ = "BanditPAM_logfile");
 
     ~KMediods();
 
