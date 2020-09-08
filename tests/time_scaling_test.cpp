@@ -11,7 +11,7 @@ TEST(BanditPAM, time_scaling_test_MNIST) {
       "../../data/MNIST-40k.csv",
       "../../data/MNIST-70k.csv"
     };
-    std::string 
+    std::string
 
     // RUN BASELINE 10K DATA AND CLUSTER
     arma::mat base_data;
@@ -19,7 +19,7 @@ TEST(BanditPAM, time_scaling_test_MNIST) {
     base_data = arma::trans(base_data);
     arma::uword n = base_data.n_cols;
 
-    KMediods base_med(base_data);
+    KMedoids base_med(base_data);
     arma::urowvec base_assignments(n);
     arma::urowvec base_indices(k);
 
@@ -34,7 +34,7 @@ TEST(BanditPAM, time_scaling_test_MNIST) {
         test_data = arma::trans(test_data);
         arma::uword n = test_data.n_cols;
 
-        KMediods test_med(test_data);
+        KMedoids test_med(test_data);
         arma::urowvec test_assignments(n);
         arma::urowvec test_indices(k);
 

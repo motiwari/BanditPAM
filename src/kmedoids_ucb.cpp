@@ -12,7 +12,7 @@
 //
 // namespace py = pybind11
 
-KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::string loss, std::string logFilename_): data(data), maxIterations(maxIterations), verbosity(verbosity) {
+KMedoids::KMedoids(arma::mat data, size_t maxIterations, int verbosity, std::string loss, std::string logFilename_): data(data), maxIterations(maxIterations), verbosity(verbosity) {
     std::string logFilename = logFilename_;
 
     if (verbosity > 0) {
@@ -23,13 +23,13 @@ KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::str
 
     // set loss function
     if (loss == "manhattan") {
-        lossFn = &KMediods::manhattan;
+        lossFn = &KMedoids::manhattan;
     } else if (loss == "cos") {
-        lossFn = &KMediods::cos;
+        lossFn = &KMedoids::cos;
     } else if (loss == "L1") {
-        lossFn = &KMediods::L1;
+        lossFn = &KMedoids::L1;
     } else if (loss == "L2"){
-        lossFn = &KMediods::L2;
+        lossFn = &KMedoids::L2;
     } else {
         throw "unrecognized loss function";
     }
@@ -39,7 +39,7 @@ KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::str
     log(1);
 }
 
-KMediods::~KMediods() {
+KMedoids::~KMedoids() {
     if (verbosity > 0) {
         logFile.close();
     }
@@ -47,7 +47,7 @@ KMediods::~KMediods() {
 
 
 void
-KMediods::cluster(const size_t clusters,
+KMedoids::cluster(const size_t clusters,
                   arma::urowvec& assignments,
                   arma::urowvec& medoid_indices)
 {
@@ -56,7 +56,7 @@ KMediods::cluster(const size_t clusters,
     // build clusters
     logBuffer << "beginning build step" << '\n';
     log(1);
-    KMediods::build(clusters, medoid_indices, medoids);
+    KMedoids::build(clusters, medoid_indices, medoids);
     logBuffer << "Medoid assignments:" << '\n';
     logBuffer << medoid_indices << '\n';
     log(1);
@@ -64,14 +64,14 @@ KMediods::cluster(const size_t clusters,
     // iterate swap steps
     logBuffer << "beginning swap step" << '\n';
     log(1);
-    KMediods::swap(clusters, medoid_indices, medoids, assignments);
+    KMedoids::swap(clusters, medoid_indices, medoids, assignments);
     logBuffer << "Medoid assignments:" << '\n';
     logBuffer << medoid_indices << '\n';
     log(2);
 }
 
 void
-KMediods::build(
+KMedoids::build(
                 const size_t clusters,
                 arma::urowvec& medoid_indices,
                 arma::mat& medoids)
@@ -101,7 +101,7 @@ KMediods::build(
         T_samples.fill(0);
         exact_mask.fill(0);
         estimates.fill(0);
-        KMediods::build_sigma(
+        KMedoids::build_sigma(
            best_distances, sigma, k_batchSize, use_absolute);
 
         while (arma::sum(candidates) >
@@ -168,7 +168,7 @@ KMediods::build(
 }
 
 void
-KMediods::build_sigma(
+KMedoids::build_sigma(
                       arma::rowvec& best_distances,
                       arma::rowvec& sigma,
                       arma::uword batch_size,
@@ -209,7 +209,7 @@ KMediods::build_sigma(
 
 // forcibly inline this in the future and directly write to estimates
 arma::rowvec
-KMediods::build_target(
+KMedoids::build_target(
                        arma::uvec& target,
                        size_t batch_size,
                        arma::rowvec& best_distances,
@@ -242,7 +242,7 @@ KMediods::build_target(
 }
 
 void
-KMediods::swap_sigma(
+KMedoids::swap_sigma(
                      arma::mat& sigma,
                      size_t batch_size,
                      arma::rowvec& best_distances,
@@ -296,7 +296,7 @@ KMediods::swap_sigma(
 }
 
 arma::vec
-KMediods::swap_target(
+KMedoids::swap_target(
                       arma::urowvec& medoid_indices,
                       arma::uvec& targets,
                       size_t batch_size,
@@ -341,7 +341,7 @@ KMediods::swap_target(
 }
 
 void
-KMediods::calc_best_distances_swap(
+KMedoids::calc_best_distances_swap(
                          arma::urowvec& medoid_indices,
                          arma::rowvec& best_distances,
                          arma::rowvec& second_distances,
@@ -367,7 +367,7 @@ KMediods::calc_best_distances_swap(
 }
 
 void
-KMediods::swap(
+KMedoids::swap(
                const size_t clusters,
                arma::urowvec& medoid_indices,
                arma::mat& medoids,
@@ -506,7 +506,7 @@ KMediods::swap(
 }
 
 double
-KMediods::calc_loss(
+KMedoids::calc_loss(
                     const size_t clusters,
                     arma::urowvec& medoid_indices)
 {
@@ -525,7 +525,7 @@ KMediods::calc_loss(
     return total;
 }
 
-void KMediods::log(int priority) {
+void KMedoids::log(int priority) {
     // if it won't be logged
     if (priority > verbosity) {
         logFile << logBuffer.rdbuf();
@@ -533,28 +533,28 @@ void KMediods::log(int priority) {
     logFile.clear();
 }
 
-double KMediods::Lp(int i, int j) const {
+double KMedoids::Lp(int i, int j) const {
   return arma::norm(data.col(i) - data.col(j), 1);
 }
 
-double KMediods::L1(int i, int j) const {
+double KMedoids::L1(int i, int j) const {
     return arma::norm(data.col(i) - data.col(j), 1);
 }
 
-double KMediods::L2(int i, int j) const {
+double KMedoids::L2(int i, int j) const {
     return arma::norm(data.col(i) - data.col(j), 2);
 }
 
-double KMediods::cos(int i, int j) const {
+double KMedoids::cos(int i, int j) const {
     return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i)) * arma::norm(data.col(j)));
 }
 
-double KMediods::manhattan(int i, int j) const {
+double KMedoids::manhattan(int i, int j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
 
 // PYBIND11_MODULE(bpam, m) {
-//     py::class_<KMediods>(m, "kmeds")
+//     py::class_<KMedoids>(m, "kmeds")
 //         .def(py::init<const st::string &name>())
-//         .def("cluster", &KMediods::cluster);
+//         .def("cluster", &KMedoids::cluster);
 // }
