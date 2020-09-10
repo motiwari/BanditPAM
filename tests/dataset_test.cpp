@@ -13,7 +13,7 @@ void harness(int k, std::string filename, arma::urowvec buildIndicies, arma::uro
     arma::urowvec assignments(n);
     arma::urowvec medoid_indices(k);
 
-    KMediods kmed(data);
+    KMedoids kmed(data);
 
     arma::mat medoids(data.n_rows, k);
     kmed.build(k, medoid_indices, medoids);

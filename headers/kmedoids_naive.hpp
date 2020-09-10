@@ -12,10 +12,10 @@
 #include <armadillo>
 #include <iostream>
 
-class KMediods
+class KMedoids
 {
   public:
-    KMediods(size_t maxIterations = 1000);
+    KMedoids(size_t maxIterations = 1000);
 
     void cluster(const arma::mat& data,
                  const size_t clusters,

@@ -13,17 +13,17 @@
 #include <iostream>
 #include <chrono>
 
-class KMediods
+class KMedoids
 {
   public:
     /**
-     * @brief Construct a new KMediods object
+     * @brief Construct a new KMedoids object
      *
      * @param maxIterations the maximum number of iterations for the swap step
      */
-    KMediods(arma::mat data, size_t maxIterations = 1000, int verbosity = 1, std::string loss = "L2");
+    KMedoids(arma::mat data, size_t maxIterations = 1000, int verbosity = 1, std::string loss = "L2", std::string logFilename_ = "BanditPAM_logfile");
 
-    ~KMediods();
+    ~KMedoids();
 
     /**
      * @brief main method for kmedoids algorithm. Builds initial medoids then
@@ -207,7 +207,7 @@ class KMediods
 
     double cos(int i, int j) const;
 
-    double (KMediods::*lossFn)(int i, int j) const;
+    double (KMedoids::*lossFn)(int i, int j) const;
 
     std::ofstream logFile;
 
@@ -216,9 +216,6 @@ class KMediods
     size_t maxIterations;
 
     const arma::mat data;
-
-
-
 
     // constant that affects the sensitiviy of build confidence bounds
     static const size_t k_buildConfidence = 1000;

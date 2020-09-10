@@ -1,25 +1,25 @@
-#include "kmediods_naive.hpp"
+#include "KMedoids_naive.hpp"
 
-KMediods::KMediods(size_t maxIterations)
+KMedoids::KMedoids(size_t maxIterations)
 {
     this->maxIterations = maxIterations;
 }
 
 void
-KMediods::cluster(const arma::mat& data,
+KMedoids::cluster(const arma::mat& data,
                   const size_t clusters,
                   arma::Row<size_t>& assignments)
 {
     arma::Row<size_t> centroidIndices(clusters);
     // build clusters
-    KMediods::build(data, clusters, centroidIndices);
+    KMedoids::build(data, clusters, centroidIndices);
     std::cout << centroidIndices << std::endl;
 
     size_t i = 0;
     bool medoidChange = true;
     while (i < this->maxIterations && medoidChange) {
         auto previous(centroidIndices);
-        KMediods::swap(data, clusters, assignments, centroidIndices);
+        KMedoids::swap(data, clusters, assignments, centroidIndices);
         std::cout << centroidIndices << std::endl;
         medoidChange = arma::any(centroidIndices != previous);
         std::cout << "mediod change is " << medoidChange << std::endl;
@@ -28,7 +28,7 @@ KMediods::cluster(const arma::mat& data,
 }
 
 void
-KMediods::build(const arma::mat& data,
+KMedoids::build(const arma::mat& data,
                 const size_t clusters,
                 arma::Row<size_t>& centroidIndices)
 {
@@ -59,7 +59,7 @@ KMediods::build(const arma::mat& data,
 }
 
 void
-KMediods::swap(const arma::mat& data,
+KMedoids::swap(const arma::mat& data,
                const size_t clusters,
                arma::Row<size_t>& assignments,
                arma::Row<size_t>& centroidIndices)
@@ -96,7 +96,7 @@ KMediods::swap(const arma::mat& data,
 }
 
 double
-KMediods::calc_loss(const arma::mat& data,
+KMedoids::calc_loss(const arma::mat& data,
                     const size_t clusters,
                     arma::Row<size_t>& centroidIndices)
 {
