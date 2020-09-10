@@ -1,8 +1,8 @@
 include_directories(${PROJECT_SOURCE_DIR}/headers)
 
-add_executable(cluster main.cpp)
+add_executable(cluster main2.cpp)
 
-add_library(BanditPAM kmedoids_ucb.cpp)
+add_library(BanditPAM kmedoids_ucb_updated.cpp)
 target_link_libraries(cluster PUBLIC BanditPAM)
 
 find_package(OpenMP REQUIRED)

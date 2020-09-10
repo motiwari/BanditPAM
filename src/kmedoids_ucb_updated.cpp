@@ -5,12 +5,9 @@
  * This file contains the implementation details for the confidence
  * bound improvement of the kmedoids PAM algorithim.
  */
-#include "kmedoids_ucb.hpp"
-// #include "pybind11/pybind11.h"
+#include "kmedoids_ucb_updated.hpp"
 
-// namespace py = pybind11
-
-KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::string loss): data(data), maxIterations(maxIterations), verbosity(verbosity) {
+KMediods::KMediods(size_t clusters, size_t maxIterations, std::string loss, int verbosity): clusters(clusters), maxIterations(maxIterations), loss(loss), verbosity(verbosity) {
     // open filepointer if logging
     if (verbosity > 0) {
         std::string logName = "BanditPam_log"; // TODO: better logfile name
@@ -19,6 +16,7 @@ KMediods::KMediods(arma::mat data, size_t maxIterations, int verbosity, std::str
     logBuffer << "verbosity is " << verbosity << '\n';
     log(1);
 
+    arma::urowvec medoid_indices_final(clusters);
 
     // set loss function
     if (loss == "manhattan") {
@@ -44,36 +42,33 @@ KMediods::~KMediods() {
     }
 }
 
-void
-KMediods::cluster(const size_t clusters,
-                  arma::urowvec& assignments,
-                  arma::urowvec& medoid_indices)
-{
+void KMediods::fit(arma::mat input_data) {
+    KMediods::set_data(input_data);
+    KMediods::set_assignments(data.n_cols);
     arma::mat medoids(data.n_rows, clusters);
-
-    // build clusters
     logBuffer << "beginning build step" << '\n';
     log(1);
-    KMediods::build(clusters, medoid_indices, medoids);
+    KMediods::build(clusters, medoid_indices_final, medoids);
     logBuffer << "Medoid assignments:" << '\n';
-    logBuffer << medoid_indices << '\n';
+    logBuffer << medoid_indices_final << '\n';
     log(1);
+
 
     // iterate swap steps
     logBuffer << "beginning swap step" << '\n';
     log(1);
-    KMediods::swap(clusters, medoid_indices, medoids, assignments);
+    KMediods::swap(clusters, medoid_indices_final, medoids, assignments_final);
     logBuffer << "Medoid assignments:" << '\n';
-    logBuffer << medoid_indices << '\n';
+    logBuffer << medoid_indices_final << '\n';
     log(2);
-}
+  }
 
-void
-KMediods::build(
-                const size_t clusters,
-                arma::urowvec& medoid_indices,
-                arma::mat& medoids)
-{
+  void
+  KMediods::build(
+                  size_t clusters,
+                  arma::urowvec& medoid_indices,
+                  arma::mat& medoids)
+  {
     // Parameters
     size_t N = data.n_cols;
     arma::urowvec N_mat(N);
@@ -503,8 +498,20 @@ KMediods::swap(
     // done with swaps at this point
 }
 
-double
-KMediods::calc_loss(
+void KMediods::set_data(arma::mat input_data) {
+  data = input_data;
+}
+
+void KMediods::set_assignments(size_t n_cols) {
+  arma::urowvec temp(n_cols);
+  assignments_final = temp;
+}
+
+arma::urowvec KMediods::get_medoids() {
+  return medoid_indices_final;
+}
+
+double KMediods::calc_loss(
                     const size_t clusters,
                     arma::urowvec& medoid_indices)
 {
@@ -550,9 +557,3 @@ double KMediods::cos(int i, int j) const {
 double KMediods::manhattan(int i, int j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
-
-// PYBIND11_MODULE(bpam, m) {
-//     py::class_<KMediods>(m, "kmeds")
-//         .def(py::init<const st::string &name>())
-//         .def("cluster", &KMediods::cluster);
-// }
