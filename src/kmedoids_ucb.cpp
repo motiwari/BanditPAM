@@ -7,11 +7,6 @@
  */
 
 #include "kmedoids_ucb.hpp"
-<<<<<<< HEAD
-// #include "pybind11/pybind11.h"
-
-// namespace py = pybind11
-=======
 #include <unordered_map>
 // #include "pybind11.h"
 //
@@ -19,7 +14,6 @@
 
 KMedoids::KMedoids(arma::mat data, size_t maxIterations, int verbosity, std::string loss, std::string logFilename_): data(data), maxIterations(maxIterations), verbosity(verbosity) {
     std::string logFilename = logFilename_;
->>>>>>> ea8a8e5cd96a0f5ccc36c16688d97cf83e97fee3
 
     if (verbosity > 0) {
         logFile.open(logFilename);
@@ -560,13 +554,7 @@ double KMedoids::manhattan(int i, int j) const {
 }
 
 // PYBIND11_MODULE(bpam, m) {
-<<<<<<< HEAD
-//     py::class_<KMediods>(m, "kmeds")
-//         .def(py::init<const st::string &name>())
-//         .def("cluster", &KMediods::cluster);
-=======
 //     py::class_<KMedoids>(m, "kmeds")
 //         .def(py::init<const st::string &name>())
 //         .def("cluster", &KMedoids::cluster);
->>>>>>> ea8a8e5cd96a0f5ccc36c16688d97cf83e97fee3
 // }
