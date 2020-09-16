@@ -5,76 +5,64 @@
  * This file contains the implementation details for the confidence
  * bound improvement of the kmedoids PAM algorithim.
  */
-
-#include "kmedoids_ucb.hpp"
+#include "kmedoids_ucb_updated.hpp"
+#include <armadillo>
 #include <unordered_map>
-// #include "pybind11.h"
-//
-// namespace py = pybind11
 
-KMedoids::KMedoids(arma::mat data, size_t maxIterations, int verbosity, std::string loss, std::string logFilename_): data(data), maxIterations(maxIterations), verbosity(verbosity) {
-    std::string logFilename = logFilename_;
+KMedoids::KMedoids(size_t n_medoids, std::string algorithm, size_t max_iter, std::string loss, int verbosity, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
+  if (verbosity > 0) {
+    logFile.open(logFilename);
+  }
+  logBuffer << "verbosity is " << verbosity << '\n';
+  log(1);
 
-    if (verbosity > 0) {
-        logFile.open(logFilename);
-    }
-    logBuffer << "verbosity is " << verbosity << '\n';
-    log(1);
+  // set loss function
+  if (loss == "manhattan") {
+      lossFn = &KMedoids::manhattan;
+  } else if (loss == "cos") {
+      lossFn = &KMedoids::cos;
+  } else if (loss == "L1") {
+      lossFn = &KMedoids::L1;
+  } else if (loss == "L2"){
+      lossFn = &KMedoids::L2;
+  } else {
+      throw "unrecognized loss function";
+  }
 
-    // set loss function
-    if (loss == "manhattan") {
-        lossFn = &KMedoids::manhattan;
-    } else if (loss == "cos") {
-        lossFn = &KMedoids::cos;
-    } else if (loss == "L1") {
-        lossFn = &KMedoids::L1;
-    } else if (loss == "L2"){
-        lossFn = &KMedoids::L2;
-    } else {
-        throw "unrecognized loss function";
-    }
-
-    // set loss function
-    logBuffer << "loss function is " << loss << '\n';
-    log(1);
+  // set loss function
+  logBuffer << "loss function is " << loss << '\n';
+  log(1);
 }
 
 KMedoids::~KMedoids() {
-    if (verbosity > 0) {
-        logFile.close();
-    }
+  if (verbosity > 0) {
+    logFile.close();
+  }
 }
 
+void KMedoids::fit(arma::mat input_data) {
+  data = input_data;
+  arma::mat medoids_mat(data.n_rows, n_medoids);
+  arma::urowvec medoid_indices(n_medoids);
+  // build clusters
+  logBuffer << "Beginning build step" << '\n';
+  log(1);
+  KMedoids::build(medoid_indices, medoids_mat);
+  logBuffer << "Medoid assignments:" << '\n';
+  logBuffer << medoid_indices << '\n';
 
-void
-KMedoids::cluster(const size_t clusters,
-                  arma::urowvec& assignments,
-                  arma::urowvec& medoid_indices)
-{
-    arma::mat medoids(data.n_rows, clusters);
-
-    // build clusters
-    logBuffer << "beginning build step" << '\n';
-    log(1);
-    KMedoids::build(clusters, medoid_indices, medoids);
-    logBuffer << "Medoid assignments:" << '\n';
-    logBuffer << medoid_indices << '\n';
-    log(1);
-
-    // iterate swap steps
-    logBuffer << "beginning swap step" << '\n';
-    log(1);
-    KMedoids::swap(clusters, medoid_indices, medoids, assignments);
-    logBuffer << "Medoid assignments:" << '\n';
-    logBuffer << medoid_indices << '\n';
-    log(2);
+  arma::urowvec assignments(data.n_cols);
+  logBuffer << "beginning swap step" << '\n';
+  log(1);
+  KMedoids::swap(medoid_indices, medoids_mat, assignments);
+  logBuffer << "Medoid assignments:" << '\n';
+  logBuffer << medoid_indices << '\n';
+  log(2);
+  medoids = medoid_indices;
+  labels = assignments;
 }
 
-void
-KMedoids::build(
-                const size_t clusters,
-                arma::urowvec& medoid_indices,
-                arma::mat& medoids)
+void KMedoids::build(arma::urowvec& medoid_indices, arma::mat& medoids)
 {
     // Parameters
     size_t N = data.n_cols;
@@ -95,7 +83,7 @@ KMedoids::build(
     arma::urowvec T_samples(N, arma::fill::zeros);
     arma::urowvec exact_mask(N, arma::fill::zeros);
 
-    for (size_t k = 0; k < clusters; k++) {
+    for (size_t k = 0; k < n_medoids; k++) {
         size_t step_count = 0;
         candidates.fill(1);
         T_samples.fill(0);
@@ -127,7 +115,6 @@ KMedoids::build(
                 break;
             }
             arma::uvec targets = arma::find(candidates);
-
             arma::rowvec result = build_target(
               targets, k_batchSize, best_distances, use_absolute);
             estimates.cols(targets) =
@@ -167,13 +154,7 @@ KMedoids::build(
     }
 }
 
-void
-KMedoids::build_sigma(
-                      arma::rowvec& best_distances,
-                      arma::rowvec& sigma,
-                      arma::uword batch_size,
-                      bool use_absolute)
-{
+void KMedoids::build_sigma(arma::rowvec& best_distances, arma::rowvec& sigma, arma::uword batch_size, bool use_absolute) {
     size_t N = data.n_cols;
     arma::uvec tmp_refs = arma::randperm(N,
                                    batch_size); // without replacement, requires
@@ -207,14 +188,7 @@ KMedoids::build_sigma(
     log(2);
 }
 
-// forcibly inline this in the future and directly write to estimates
-arma::rowvec
-KMedoids::build_target(
-                       arma::uvec& target,
-                       size_t batch_size,
-                       arma::rowvec& best_distances,
-                       bool use_absolute)
-{
+arma::rowvec KMedoids::build_target(arma::uvec& target, size_t batch_size, arma::rowvec& best_distances, bool use_absolute) {
     size_t N = data.n_cols;
     arma::rowvec estimates(target.n_rows, arma::fill::zeros);
     arma::uvec tmp_refs = arma::randperm(N,
@@ -368,29 +342,28 @@ KMedoids::calc_best_distances_swap(
 
 void
 KMedoids::swap(
-               const size_t clusters,
                arma::urowvec& medoid_indices,
                arma::mat& medoids,
                arma::urowvec& assignments)
 {
     size_t N = data.n_cols;
-    int p = (N * clusters * k_swapConfidence); // reciprocal
+    int p = (N * n_medoids * k_swapConfidence); // reciprocal
 
-    arma::mat sigma(clusters, N, arma::fill::zeros);
+    arma::mat sigma(n_medoids, N, arma::fill::zeros);
 
     arma::rowvec best_distances(N);
     arma::rowvec second_distances(N);
     size_t iter = 0;
     bool swap_performed = true;
-    arma::umat candidates(clusters, N, arma::fill::ones);
-    arma::umat exact_mask(clusters, N, arma::fill::zeros);
-    arma::mat estimates(clusters, N, arma::fill::zeros);
-    arma::mat lcbs(clusters, N);
-    arma::mat ucbs(clusters, N);
-    arma::umat T_samples(clusters, N, arma::fill::zeros);
+    arma::umat candidates(n_medoids, N, arma::fill::ones);
+    arma::umat exact_mask(n_medoids, N, arma::fill::zeros);
+    arma::mat estimates(n_medoids, N, arma::fill::zeros);
+    arma::mat lcbs(n_medoids, N);
+    arma::mat ucbs(n_medoids, N);
+    arma::umat T_samples(n_medoids, N, arma::fill::zeros);
 
     // continue making swaps while loss is decreasing
-    while (swap_performed && iter < maxIterations) {
+    while (swap_performed && iter < max_iter) {
         iter++;
 
         // calculate quantities needed for swap, best_distances and sigma
@@ -507,14 +480,13 @@ KMedoids::swap(
 
 double
 KMedoids::calc_loss(
-                    const size_t clusters,
                     arma::urowvec& medoid_indices)
 {
     double total = 0;
 
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
-        for (size_t k = 0; k < clusters; k++) {
+        for (size_t k = 0; k < n_medoids; k++) {
             double currCost = (this->*lossFn)(medoid_indices(k), i);
             if (currCost < cost) {
                 cost = currCost;
@@ -526,15 +498,11 @@ KMedoids::calc_loss(
 }
 
 void KMedoids::log(int priority) {
-    // if it won't be logged
-    if (priority > verbosity) {
-        logFile << logBuffer.rdbuf();
-    }
-    logFile.clear();
-}
-
-double KMedoids::Lp(int i, int j) const {
-  return arma::norm(data.col(i) - data.col(j), 1);
+  // if it won't be logged
+  if (priority > verbosity) {
+      logFile << logBuffer.rdbuf();
+  }
+  logFile.clear();
 }
 
 double KMedoids::L1(int i, int j) const {
@@ -552,9 +520,3 @@ double KMedoids::cos(int i, int j) const {
 double KMedoids::manhattan(int i, int j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
-
-// PYBIND11_MODULE(bpam, m) {
-//     py::class_<KMedoids>(m, "kmeds")
-//         .def(py::init<const st::string &name>())
-//         .def("cluster", &KMedoids::cluster);
-// }
