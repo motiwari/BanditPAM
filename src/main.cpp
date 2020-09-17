@@ -9,7 +9,7 @@
  * ./pam [path/to/input] [number of clusters] -a
  */
 
-#include "kmedoids_ucb_updated.hpp"
+#include "kmedoids_ucb.hpp"
 #include <armadillo>
 #include <chrono>
 #include <fstream>

@@ -6,3 +6,4 @@ data/MNIST-*.csv
 data/scrna*
 build/
 data/data.csv
+.egg/

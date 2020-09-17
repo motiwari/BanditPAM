@@ -4,6 +4,13 @@
 #include <iostream>
 #include <chrono>
 
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
+#include <pybind11/stl.h>
+#include <carma/carma.h>
+
+namespace py = pybind11;
+
 class KMedoids
 {
   public:
@@ -15,6 +22,10 @@ class KMedoids
 
     void fit(arma::mat data);
 
+    void fit_python(py::array_t<double> & arr);
+
+    py::array_t<double> getMedoidsPython();
+
     void build(arma::urowvec& medoid_indices, arma::mat& medoids);
 
     void swap(arma::urowvec& medoid_indices, arma::mat& medoids, arma::urowvec& assignments);
@@ -25,6 +36,8 @@ class KMedoids
     // assignments
     arma::urowvec labels;
   private:
+    // arma::urowvec medoids;
+
     void build_sigma(arma::rowvec& best_distances, arma::rowvec& sigma, arma::uword batch_size, bool use_absolute);
 
     arma::rowvec build_target(arma::uvec& target, size_t batch_size, arma::rowvec& best_distances, bool use_absolute);

@@ -20,15 +20,16 @@ class get_pybind_include(object):
 
 ext_modules = [
     Extension(
-        'kmeds',
+        'banditPAM',
         # Sort input source files to ensure bit-for-bit reproducible builds
         # (https://github.com/pybind/python_example/pull/53)
         sorted(['src/kmedoids_ucb.cpp']),
         include_dirs=[
             # Path to pybind11 headers
             get_pybind_include(),
-            'headers'
+            'headers/'
         ],
+        libraries=['armadillo'],
         language='c++'
     ),
 ]
@@ -101,9 +102,8 @@ class BuildExt(build_ext):
             ext.extra_link_args = link_opts
         build_ext.build_extensions(self)
 
-
 setup(
-    name='bandit_pam',
+    name='banditPAM',
     version=__version__,
     author='Eric Frankel',
     author_email='ericsf@stanford.edu',

@@ -5,9 +5,16 @@
  * This file contains the implementation details for the confidence
  * bound improvement of the kmedoids PAM algorithim.
  */
-#include "kmedoids_ucb_updated.hpp"
+#include "kmedoids_ucb.hpp"
 #include <armadillo>
 #include <unordered_map>
+
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
+#include <pybind11/stl.h>
+#include <carma/carma.h>
+
+namespace py = pybind11;
 
 KMedoids::KMedoids(size_t n_medoids, std::string algorithm, size_t max_iter, std::string loss, int verbosity, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
   if (verbosity > 0) {
@@ -32,12 +39,23 @@ KMedoids::KMedoids(size_t n_medoids, std::string algorithm, size_t max_iter, std
   // set loss function
   logBuffer << "loss function is " << loss << '\n';
   log(1);
+
+  arma::urowvec medoids(n_medoids);
 }
 
 KMedoids::~KMedoids() {
   if (verbosity > 0) {
     logFile.close();
   }
+}
+
+void KMedoids::fit_python(py::array_t<double> & arr) {
+  arma::Mat<double> data_mat = carma::arr_to_mat<double>(arr);
+  KMedoids::fit(data_mat);
+}
+
+py::array_t<double> getMedoidsPython() {
+  return carma::mat_to_arr(medoids);
 }
 
 void KMedoids::fit(arma::mat input_data) {
@@ -134,12 +152,11 @@ void KMedoids::build(arma::urowvec& medoid_indices, arma::mat& medoids)
             step_count++;
         }
 
-        arma::uword new_medoid = lcbs.index_min();
         medoid_indices.at(k) = lcbs.index_min();
         medoids.unsafe_col(k) = data.unsafe_col(medoid_indices(k));
 
         // don't need to do this on final iteration
-        for (int i = 0; i < N; i++) {
+        for (size_t i = 0; i < N; i++) {
             double cost = (this->*lossFn)(i, medoid_indices(k));
             if (cost < best_distances(i)) {
                 best_distances(i) = cost;
@@ -194,7 +211,6 @@ arma::rowvec KMedoids::build_target(arma::uvec& target, size_t batch_size, arma:
     arma::uvec tmp_refs = arma::randperm(N,
                                    batch_size); // without replacement, requires
                                                 // updated version of armadillo
-    double total = 0;
 #pragma omp parallel for
     for (size_t i = 0; i < target.n_rows; i++) {
         double total = 0;
@@ -395,8 +411,6 @@ KMedoids::swap(
             arma::uvec targets = arma::find(compute_exactly);
 
             if (targets.size() > 0) {
-                size_t n = targets(0) / medoids.n_cols;
-                size_t k = targets(0) % medoids.n_cols;
                 logBuffer << "COMPUTING EXACTLY " << targets.size()
                           << " out of " << candidates.size() << '\n';
                 log(2);
@@ -497,6 +511,118 @@ KMedoids::calc_loss(
     return total;
 }
 
+// ########################## NAIVE CODE ########################################
+// void
+// KMedoids::cluster_naive(const arma::mat& data,
+//                   const size_t clusters,
+//                   arma::Row<size_t>& assignments)
+// {
+//     arma::Row<size_t> centroidIndices(clusters);
+//     // build clusters
+//     KMedoids::build(data, clusters, centroidIndices);
+//     std::cout << centroidIndices << std::endl;
+//
+//     size_t i = 0;
+//     bool medoidChange = true;
+//     while (i < this->maxIterations && medoidChange) {
+//         auto previous(centroidIndices);
+//         KMedoids::swap(data, clusters, assignments, centroidIndices);
+//         std::cout << centroidIndices << std::endl;
+//         medoidChange = arma::any(centroidIndices != previous);
+//         std::cout << "mediod change is " << medoidChange << std::endl;
+//         i++;
+//     }
+// }
+//
+// void
+// KMedoids::build_naive(const arma::mat& data,
+//                 const size_t clusters,
+//                 arma::Row<size_t>& centroidIndices)
+// {
+//     for (size_t k = 0; k < clusters; k++) {
+//         double minDistance = std::numeric_limits<double>::infinity();
+//         size_t best = 0;
+//         for (size_t i = 0; i < data.n_cols; i++) {
+//             double total = 0;
+//             for (size_t j = 0; j < data.n_cols; j++) {
+//                 double cost = arma::norm(data.col(i) - data.col(j), 2);
+//                 for (size_t mediod = 0; mediod < k; mediod++) {
+//                     double current = arma::norm(
+//                       data.col(centroidIndices(mediod)) - data.col(j), 2);
+//                     if (current < cost) {
+//                         cost = current;
+//                     }
+//                 }
+//                 total += cost;
+//             }
+//             if (total < minDistance) {
+//                 minDistance = total;
+//                 best = i;
+//             }
+//         }
+//         std::cout << best << " and " << minDistance << std::endl;
+//         centroidIndices(k) = best;
+//     }
+// }
+//
+// void
+// KMedoids::swap_naive(const arma::mat& data,
+//                const size_t clusters,
+//                arma::Row<size_t>& assignments,
+//                arma::Row<size_t>& centroidIndices)
+// {
+//     double minDistance = std::numeric_limits<double>::infinity();
+//     size_t best = 0;
+//     size_t medoid_to_swap = 0;
+//     for (size_t k = 0; k < clusters; k++) {
+//         for (size_t i = 0; i < data.n_cols; i++) {
+//             double total = 0;
+//             for (size_t j = 0; j < data.n_cols; j++) {
+//                 double cost = arma::norm(data.col(i) - data.col(j), 2);
+//                 for (size_t mediod = 0; mediod < clusters; mediod++) {
+//                     if (mediod == k) {
+//                         continue;
+//                     }
+//                     double current = arma::norm(
+//                       data.col(centroidIndices(mediod)) - data.col(j), 2);
+//                     if (current < cost) {
+//                         cost = current;
+//                     }
+//                 }
+//                 total += cost;
+//             }
+//             if (total < minDistance) {
+//                 minDistance = total;
+//                 best = i;
+//                 medoid_to_swap = k;
+//             }
+//         }
+//     }
+//     std::cout << best << " mindistance is now" << minDistance << std::endl;
+//     centroidIndices(medoid_to_swap) = best;
+// }
+//
+// double
+// KMedoids::calc_loss_naive(const arma::mat& data,
+//                     const size_t clusters,
+//                     arma::Row<size_t>& centroidIndices)
+// {
+//     double total = 0;
+//     for (size_t i = 0; i < data.n_cols; i++) {
+//         double cost = std::numeric_limits<double>::infinity();
+//         for (size_t mediod = 0; mediod < clusters; mediod++) {
+//             double current =
+//               arma::norm(data.col(centroidIndices(mediod)) - data.col(i), 2);
+//             if (current < cost) {
+//                 cost = current;
+//             }
+//         }
+//         total += cost;
+//     }
+//     return total;
+// }
+// ############################# END NAIVE CODE ####################################
+
 void KMedoids::log(int priority) {
   // if it won't be logged
   if (priority > verbosity) {
@@ -519,4 +645,13 @@ double KMedoids::cos(int i, int j) const {
 
 double KMedoids::manhattan(int i, int j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
+}
+
+PYBIND11_MODULE(banditPAM, m) {
+  py::class_<KMedoids>(m, "KMedoids")
+    .def(py::init<>())
+    .def(py::init<size_t, std::string, size_t, std::string, int, std::string>())
+    .def_property_readonly("medoids", &KMedoids::getMedoidsPython)
+    // .def_readwrite("medoids", &KMedoids::medoids)
+    .def("fit", &KMedoids::fit_python);
 }
