@@ -1,4 +1,3 @@
-
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import sys
@@ -23,11 +22,12 @@ ext_modules = [
         'banditPAM',
         # Sort input source files to ensure bit-for-bit reproducible builds
         # (https://github.com/pybind/python_example/pull/53)
-        sorted(['src/kmedoids_ucb.cpp']),
+        sorted(['src/kmedoids_ucb.cpp',
+                'src/kmeds_pywrapper.cpp']),
         include_dirs=[
             # Path to pybind11 headers
             get_pybind_include(),
-            'headers/'
+            'headers'
         ],
         libraries=['armadillo'],
         language='c++'
@@ -102,13 +102,14 @@ class BuildExt(build_ext):
             ext.extra_link_args = link_opts
         build_ext.build_extensions(self)
 
+
 setup(
     name='banditPAM',
     version=__version__,
     author='Eric Frankel',
     author_email='ericsf@stanford.edu',
-    url='https://github.com/jmayclin/BanditPAM',
-    description='Implementation of BanditPAM',
+    url='https://github.com/pybind/python_example',
+    description='A test project using pybind11',
     long_description='',
     ext_modules=ext_modules,
     setup_requires=['pybind11>=2.5.0'],
