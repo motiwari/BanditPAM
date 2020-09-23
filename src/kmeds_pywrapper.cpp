@@ -14,15 +14,15 @@ public:
     KMedoids::fit(carma::arr_to_mat<double>(input_data));
   }
 
-  py::array_t<int> getMedoidsFinalPython() {
+  py::array_t<double> getMedoidsFinalPython() {
     return carma::row_to_arr<double>(KMedoids::getMedoidsFinal()).squeeze();
   }
 
-  py::array_t<int> getMedoidsBuildPython() {
+  py::array_t<double> getMedoidsBuildPython() {
     return carma::row_to_arr<double>(KMedoids::getMedoidsBuild()).squeeze();
   }
 
-  py::array_t<int> getLabelsPython() {
+  py::array_t<double> getLabelsPython() {
     return carma::row_to_arr<double>(KMedoids::getLabels()).squeeze();
   }
 };
