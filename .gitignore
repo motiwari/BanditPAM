@@ -7,3 +7,4 @@ data/scrna*
 build/
 data/data.csv
 .egg/
+__pycache__

@@ -3,12 +3,13 @@ C++ implementation of BanditPAM with confidence bounds.
 
 ## Installation
 ### Requirements
-Building this repository requires three external requirements: 
+Building this repository requires three external requirements:
 * Cmake >= 3.17
 * Armadillo >= 9.7
 * openMP >= 2.5
+* CARMA 
 
-Armadillo is a C++ library for linear algebra and matrix operations, and OpenMP is 
+Armadillo is a C++ library for linear algebra and matrix operations, and OpenMP is
 a language/package used for multithreading.
 
 * Armadillo: http://arma.sourceforge.net/download.html
@@ -27,9 +28,9 @@ can be built with the following steps.
 ```
 
 ## Usage
-The easiest way to use the program is with the compiled `BanditPAM` binary. This is a command 
+The easiest way to use the program is with the compiled `BanditPAM` binary. This is a command
 line program that takes in three arguments: the dataset, the number of clusters, and a parameter
-indicating whether or not to output data point assignments. 
+indicating whether or not to output data point assignments.
 
 ```
 ./BanditPAM -f [path/to/input.csv] -k [number of clusters] -a
@@ -38,7 +39,7 @@ indicating whether or not to output data point assignments.
 * `-k` is mandatory, and specifies the number of clusters to fit the data to.
 * `-a` is optional, and if this flag is specified then the cluster assignments will be printed to standard out
 
-To run the KMedoids algorithim on the MNIST dataset that is contained in a file called 
+To run the KMedoids algorithim on the MNIST dataset that is contained in a file called
 `mnist.csv` contained in a `data` folder, and we wish to fit our data to 5 clusters then
 we could run the following command.
 ```

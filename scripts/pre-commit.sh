@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
+cd "${0%/*}/.."
+echo 'Running tests'
 
-echo "Running pre-commit hook"
-./scripts/pre-commit-run-tests.sh
-
+git stashi > /dev/null
+python3 -m unittest discover -p '*_commit.py'
 if [ $? -ne 0 ]; then
- echo "Tests must pass before commit!"
- exit 1
+	echo 'Aborting commit (Attempting to commit a repository where the test suite fails)'
+	echo 'Bypass with git commit --no-verify'
+	git stash pop > /dev/null
+	exit 1
 fi
+git stash pop > /dev/null
+
+exit 0
