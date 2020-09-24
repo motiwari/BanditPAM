@@ -9,28 +9,22 @@
 #include <armadillo>
 #include <unordered_map>
 
-KMedoids::KMedoids(int n_medoids, std::string algorithm, int max_iter, std::string loss, int verbosity, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
+KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_iter, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
   if (verbosity > 0) {
     logFile.open(logFilename);
   }
   logBuffer << "verbosity is " << verbosity << '\n';
   log(1);
 
-  // set loss function
-  if (loss == "manhattan") {
-      lossFn = &KMedoids::manhattan;
-  } else if (loss == "cos") {
-      lossFn = &KMedoids::cos;
-  } else if (loss == "L1") {
-      lossFn = &KMedoids::L1;
-  } else if (loss == "L2"){
-      lossFn = &KMedoids::L2;
+  // set algorithm
+  if (algorithm == "BanditPAM") {
+    fitFn = &KMedoids::fit_bpam;
+  } else if (algorithm == "naive") {
+    fitFn = &KMedoids::fit_naive;
   } else {
-      throw "unrecognized loss function";
+    throw "unrecognized algorithm";
   }
-
-  // set loss function
-  logBuffer << "loss function is " << loss << '\n';
+  logBuffer << "algorithm is " << algorithm << '\n';
   log(1);
 }
 
@@ -52,7 +46,29 @@ arma::rowvec KMedoids::getLabels() {
   return labels;
 }
 
-void KMedoids::fit(arma::mat input_data) {
+int KMedoids::getSteps() {
+  return steps;
+}
+
+void KMedoids::fit(arma::mat input_data, std::string loss) {
+  // set loss function
+  if (loss == "manhattan") {
+      lossFn = &KMedoids::manhattan;
+  } else if (loss == "cos") {
+      lossFn = &KMedoids::cos;
+  } else if (loss == "L1") {
+      lossFn = &KMedoids::L1;
+  } else if (loss == "L2"){
+      lossFn = &KMedoids::L2;
+  } else {
+      throw "unrecognized loss function";
+  }
+
+  // run the actual fit
+  (this->*fitFn)(input_data);
+}
+
+void KMedoids::fit_bpam(arma::mat input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::mat medoids_mat(data.n_rows, n_medoids);
@@ -63,6 +79,7 @@ void KMedoids::fit(arma::mat input_data) {
   KMedoids::build(medoid_indices, medoids_mat);
   logBuffer << "Medoid assignments:" << '\n';
   logBuffer << medoid_indices << '\n';
+  steps = 1;
 
   medoid_indices_build = medoid_indices;
   arma::rowvec assignments(data.n_cols);
@@ -74,6 +91,100 @@ void KMedoids::fit(arma::mat input_data) {
   log(2);
   medoid_indices_final = medoid_indices;
   labels = assignments;
+}
+
+void KMedoids::fit_naive(arma::mat input_data) {
+  data = input_data;
+  data = arma::trans(data);
+  arma::rowvec medoid_indices(n_medoids);
+  // build clusters
+  // logBuffer << "Beginning build step" << '\n';
+  // std::cout << "Beginning build step" << std::endl;
+  log(1);
+  KMedoids::build_naive(medoid_indices);
+  // std::cout << medoid_indices << std::endl;
+  logBuffer << "Medoid assignments:" << '\n';
+  logBuffer << medoid_indices << '\n';
+  steps = 1;
+
+  medoid_indices_build = medoid_indices;
+  // logBuffer << "beginning swap step" << '\n';
+  // std::cout << "beginning swap step" << std::endl;
+  log(1);
+  // TODO: make assignments in naive code too!
+  size_t i = 0;
+  bool medoidChange = true;
+  while (i < max_iter && medoidChange) {
+    auto previous(medoid_indices);
+    KMedoids::swap_naive(medoid_indices);
+    // std::cout << medoid_indices << std::endl;
+    medoidChange = arma::any(medoid_indices != previous);
+    // std::cout << "mediod change is " << medoidChange << std::endl;
+    i++;
+  }
+  logBuffer << "Medoid assignments:" << '\n';
+  logBuffer << medoid_indices << '\n';
+  log(2);
+  medoid_indices_final = medoid_indices;
+}
+
+void KMedoids::build_naive(
+  arma::rowvec& medoid_indices)
+{
+  for (size_t k = 0; k < n_medoids; k++) {
+    double minDistance = std::numeric_limits<double>::infinity();
+    int best = 0;
+    for (int i = 0; i < data.n_cols; i++) {
+      double total = 0;
+      for (size_t j = 0; j < data.n_cols; j++) {
+        double cost = (this->*lossFn)(i, j);
+        for (size_t medoid = 0; medoid < k; medoid++) {
+          double current = (this->*lossFn)(medoid_indices(medoid), j);
+          if (current < cost) {
+            cost = current;
+          }
+        }
+        total += cost;
+      }
+      if (total < minDistance) {
+        minDistance = total;
+        best = i;
+      }
+    }
+    medoid_indices(k) = best;
+  }
+}
+
+void KMedoids::swap_naive(
+  arma::rowvec& medoid_indices)
+{
+  double minDistance = std::numeric_limits<double>::infinity();
+  size_t best = 0;
+  size_t medoid_to_swap = 0;
+  for (size_t k = 0; k < n_medoids; k++) {
+    for (size_t i = 0; i < data.n_cols; i++) {
+      double total = 0;
+      for (size_t j = 0; j < data.n_cols; j++) {
+        double cost = (this->*lossFn)(i, j);
+        for (size_t medoid = 0; medoid < n_medoids; medoid++) {
+          if (medoid == k) {
+            continue;
+          }
+          double current = (this->*lossFn)(medoid_indices(medoid), j);
+          if (current < cost) {
+            cost = current;
+          }
+        }
+        total += cost;
+      }
+      if (total < minDistance) {
+        minDistance = total;
+        best = i;
+        medoid_to_swap = k;
+      }
+    }
+  }
+  medoid_indices(medoid_to_swap) = best;
 }
 
 void KMedoids::build(
@@ -279,8 +390,6 @@ void KMedoids::swap(
         estimates.fill(0);
         T_samples.fill(0);
 
-        size_t step_count = 0;
-
         // while there is at least one candidate (double comparison issues)
         while (arma::accu(candidates) > 0.5) {
             calc_best_distances_swap(
@@ -335,7 +444,7 @@ void KMedoids::swap(
             lcbs.elem(targets) = estimates.elem(targets) - cb_delta;
             candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
             targets = arma::find(candidates);
-            step_count++;
+            steps++;
         }
         // now switch medoids
         arma::uword new_medoid = lcbs.index_min();

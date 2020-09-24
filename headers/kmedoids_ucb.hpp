@@ -10,21 +10,31 @@
 class KMedoids
 {
 public:
-  KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int max_iter = 1000, std::string loss = "L2", int verbosity = 0, std::string logFilename = "KMedoidsLogfile");
+  KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000, std::string logFilename = "KMedoidsLogfile");
 
   KMedoids(const KMedoids &kmed);
 
   ~KMedoids();
 
-  void fit(arma::mat input_data);
+  void fit(arma::mat input_data, std::string loss);
 
   arma::rowvec getMedoidsFinal();
 
   arma::rowvec getMedoidsBuild();
 
   arma::rowvec getLabels();
+
+  int getSteps();
 private:
   // ###################### Supporting BanditPAM Functions ######################
+  void fit_bpam(arma::mat input_data);
+
+  void fit_naive(arma::mat input_data);
+
+  void build_naive(arma::rowvec& medoid_indices);
+
+  void swap_naive(arma::rowvec& medoid_indices);
+
   void build(
     arma::rowvec& medoid_indices,
     arma::mat& medoids);
@@ -115,11 +125,17 @@ private:
   // loss fucntion
   double (KMedoids::*lossFn)(int i, int j) const;
 
+  // fit function
+  void (KMedoids::*fitFn)(arma::mat input_data);
+
   // logfile that's being written
   std::ofstream logFile;
 
   // log buffer
   std::stringstream logBuffer;
+
+  // number of steps
+  int steps;
 
   // ###################### Hyperparameters ######################
   // constant that affects the sensitiviy of build confidence bounds

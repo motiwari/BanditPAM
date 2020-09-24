@@ -23,7 +23,7 @@ main(int argc, char* argv[])
     bool print_assignments = false;
     int opt;
     int verbosity = 0;
-    std::string loss;
+    std::string loss = "L2";
 
     while ((opt = getopt(argc, argv, "f:k:av:")) != -1) {
         switch (opt) {
@@ -62,12 +62,16 @@ main(int argc, char* argv[])
     }
 
     KMedoids kmed;
-    kmed.fit(data);
+    kmed.fit(data, loss);
+
+    arma::rowvec meds;
+    meds = kmed.getMedoidsFinal();
 
     if (print_assignments) {
       for (size_t i = 0; i < k; i++) {
-        std::cout << kmed.medoids(i) << ", ";
+        std::cout << meds(i) << ", ";
       }
       std::cout << std::endl;
     }
+    std::cout << kmed.getSteps() << std::endl;
 }
