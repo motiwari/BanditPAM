@@ -9,36 +9,36 @@ mnist_70k = pd.read_csv('./data/MNIST-70k.csv', sep=' ', header=None)
 
 scrna = pd.read_csv('./data/scrna_reformat.csv.gz', header=None)
 
-def onFly(k, data):
+def onFly(k, data, loss):
     kmed_bpam = KMedoids(k = k, algorithm = "BanditPAM")
     kmed_naive = KMedoids(k = k, algorithm = "naive")
-    kmed_bpam.fit(data)
-    kmed_naive.fit(data)
-    # TODO: do we need to check build?
+    kmed_bpam.fit(data, loss)
+    kmed_naive.fit(data, loss)
+    # TODO: do we need to check build? -- yes
     if (kmed_bpam.final_medoids == kmed_naive.final_medoids):
         return 1
     else:
         return 0
 
 class PythonTests(unittest.TestCase):
-    def large_on_fly_test_cases(self):
+    def test_large_on_fly_cases(self):
         count = 0
         k_schedule = [4, 6, 8, 10] * 25
         size_schedule = [1000, 2000, 3000, 4000, 5000] * 20
         for i in range(50): #arbitrary heuristic
             data = mnist_70k.sample(n = size_schedule[i])
-            count += onFly(k = k_schedule[i], data = data)
+            count += onFly(k = k_schedule[i], data = data, loss = "L2")
 
         for i in range(50, 100):
             data = scrna.sample(n = size_schedule[i])
-            count += onFly(k = k_schedule[i], data = data)
+            count += onFly(k = k_schedule[i], data = data, loss = "L1")
 
         self.assertTrue(count >= 95)
 
-    def time_test_cases(self):
+    def test_time_cases(self):
         MNIST_10k = mnist_70k.head(10000).to_numpy()
         kmed1 = KMedoids(n_medoids = 5, algorithm = "BanditPAM", verbosity = 0)
-        kmed1.fit(MNIST_10k)
+        kmed1.fit(MNIST_10k, "L2")
 
         MNIST_schedule = [20, 40, 70]
         kmed2 = KMedoids(n_medoids = 5, algorithm = "BanditPAM", verbosity = 0)
@@ -48,7 +48,7 @@ class PythonTests(unittest.TestCase):
             self.assertTrue(kmed2.steps < ((num/10) ** 1.2) * kmed1.steps)
 
         SCRNA_10k = scrna.head(10000).to_numpy()
-        kmed1.fit(SCRNA_10k)
+        kmed1.fit(SCRNA_10k, 'L1')
 
         scrna_schedule = [20, 30, 40]
         for num in scrna_schedule:
