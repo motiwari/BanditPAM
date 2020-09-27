@@ -18,18 +18,15 @@
 int
 main(int argc, char* argv[])
 {
-    std::string input_name = "./data/MNIST-1k.csv";
+    std::string input_name;
     int k;
-    bool print_assignments = false;
     int opt;
     int verbosity = 0;
     std::string loss = "L2";
 
-    while ((opt = getopt(argc, argv, "f:k:av:")) != -1) {
+    while ((opt = getopt(argc, argv, "f:k:v:")) != -1) {
+        std::cout << "opt" << opt << std::endl;
         switch (opt) {
-            case 'a':
-                print_assignments = true;
-                break;
             case 'f':
                 input_name = optarg;
                 break;
@@ -63,15 +60,13 @@ main(int argc, char* argv[])
 
     KMedoids kmed;
     kmed.fit(data, loss);
-
     arma::rowvec meds;
     meds = kmed.getMedoidsFinal();
 
-    if (print_assignments) {
-      for (size_t i = 0; i < k; i++) {
-        std::cout << meds(i) << ", ";
-      }
-      std::cout << std::endl;
+
+
+    for (size_t i = 0; i < k; i++) {
+      std::cout << meds(i) << ", ";
     }
-    std::cout << kmed.getSteps() << std::endl;
+    std::cout << "Steps:" << kmed.getSteps() << std::endl;
 }

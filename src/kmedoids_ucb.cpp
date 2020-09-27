@@ -10,13 +10,10 @@
 #include <unordered_map>
 
 KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_iter, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
-  if (verbosity > 0) {
-    logFile.open(logFilename);
-  }
+  logFile.open(logFilename);
   logBuffer << "verbosity is " << verbosity << '\n';
   log(1);
 
-  // set algorithm
   if (algorithm == "BanditPAM") {
     fitFn = &KMedoids::fit_bpam;
   } else if (algorithm == "naive") {
@@ -29,9 +26,7 @@ KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_
 }
 
 KMedoids::~KMedoids() {
-  if (verbosity > 0) {
-    logFile.close();
-  }
+  logFile.close();
 }
 
 arma::rowvec KMedoids::getMedoidsFinal() {
@@ -621,10 +616,7 @@ double KMedoids::calc_loss(
 // ###################### Loss/misc. functions ######################
 
 void KMedoids::log(int priority) {
-  // if it won't be logged
-  if (priority > verbosity) {
-      logFile << logBuffer.rdbuf();
-  }
+  logFile << logBuffer.rdbuf();
   logFile.clear();
 }
 

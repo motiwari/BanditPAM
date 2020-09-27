@@ -1,5 +1,5 @@
 import unittest
-from BanditPAM import KMedoids
+from banditPAM import KMedoids
 import pandas as pd
 import numpy as np
 
