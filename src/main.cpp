@@ -25,7 +25,6 @@ main(int argc, char* argv[])
     std::string loss = "L2";
 
     while ((opt = getopt(argc, argv, "f:k:v:")) != -1) {
-        std::cout << "opt" << opt << std::endl;
         switch (opt) {
             case 'f':
                 input_name = optarg;
@@ -48,7 +47,6 @@ main(int argc, char* argv[])
     }
     arma::mat data;
     data.load(input_name);
-    data = arma::trans(data);
 
     arma::uword n = data.n_cols;
     arma::uword d = data.n_rows;
