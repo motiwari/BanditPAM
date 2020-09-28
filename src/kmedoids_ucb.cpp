@@ -190,9 +190,7 @@ void KMedoids::build(
         KMedoids::build_sigma(
            best_distances, sigma, batchSize, use_absolute);
 
-        while (arma::sum(candidates) >
-               precision) // double comparison
-        {
+        while (arma::sum(candidates) > precision) {
             arma::umat compute_exactly =
               ((T_samples + batchSize) >= N_mat) != exact_mask;
             if (arma::accu(compute_exactly) > 0) {
@@ -258,9 +256,8 @@ void KMedoids::build_sigma(
   bool use_absolute)
 {
     size_t N = data.n_cols;
-    arma::uvec tmp_refs = arma::randperm(N,
-                                   batch_size); // without replacement, requires
-                                                // updated version of armadillo
+    // without replacement, requires updated version of armadillo
+    arma::uvec tmp_refs = arma::randperm(N, batch_size);
     arma::vec sample(batch_size);
 // for each possible swap
 #pragma omp parallel for
@@ -589,7 +586,7 @@ double KMedoids::calc_loss(
     return total;
 }
 
-// ###################### Loss/misc. functions ######################
+// Loss and miscellaneous functions
 
 void KMedoids::log(int priority) {
   logFile << logBuffer.rdbuf();
