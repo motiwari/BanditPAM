@@ -26,6 +26,8 @@ class KMedoids
 
     void setLossFn(std::string loss);
 
+    void checkAlgorithm(std::string algorithm);
+
     int getSteps();
 
   private:

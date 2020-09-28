@@ -5,15 +5,21 @@
  * This file contains the implementation details for the confidence
  * bound improvement of the kmedoids PAM algorithim.
  */
+
 #include "kmedoids_ucb.hpp"
 #include <armadillo>
 #include <unordered_map>
 
 KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_iter, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
   logFile.open(logFilename);
-  logBuffer << "verbosity is " << verbosity << '\n';
-  log(1);
+  KMedoids::checkAlgorithm(algorithm);
+}
 
+KMedoids::~KMedoids() {
+  logFile.close();
+}
+
+void KMedoids::checkAlgorithm(std::string algorithm) {
   if (algorithm == "BanditPAM") {
     fitFn = &KMedoids::fit_bpam;
   } else if (algorithm == "naive") {
@@ -21,12 +27,6 @@ KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_
   } else {
     throw "unrecognized algorithm";
   }
-  logBuffer << "algorithm is " << algorithm << '\n';
-  log(1);
-}
-
-KMedoids::~KMedoids() {
-  logFile.close();
 }
 
 arma::rowvec KMedoids::getMedoidsFinal() {
@@ -64,63 +64,23 @@ void KMedoids::fit(arma::mat input_data, std::string loss) {
   (this->*fitFn)(input_data);
 }
 
-void KMedoids::fit_bpam(arma::mat input_data) {
-  data = input_data;
-  data = arma::trans(data);
-  arma::mat medoids_mat(data.n_rows, n_medoids);
-  arma::rowvec medoid_indices(n_medoids);
-  // build clusters
-  logBuffer << "Beginning build step" << '\n';
-  log(1);
-  KMedoids::build(medoid_indices, medoids_mat);
-  logBuffer << "Medoid assignments:" << '\n';
-  logBuffer << medoid_indices << '\n';
-  steps = 1;
-
-  medoid_indices_build = medoid_indices;
-  arma::rowvec assignments(data.n_cols);
-  logBuffer << "beginning swap step" << '\n';
-  log(1);
-  KMedoids::swap(medoid_indices, medoids_mat, assignments);
-  logBuffer << "Medoid assignments:" << '\n';
-  logBuffer << medoid_indices << '\n';
-  log(2);
-  medoid_indices_final = medoid_indices;
-  labels = assignments;
-}
-
 void KMedoids::fit_naive(arma::mat input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::rowvec medoid_indices(n_medoids);
-  // build clusters
-  // logBuffer << "Beginning build step" << '\n';
-  // std::cout << "Beginning build step" << std::endl;
-  log(1);
   KMedoids::build_naive(medoid_indices);
-  // std::cout << medoid_indices << std::endl;
-  logBuffer << "Medoid assignments:" << '\n';
-  logBuffer << medoid_indices << '\n';
   steps = 1;
 
   medoid_indices_build = medoid_indices;
-  // logBuffer << "beginning swap step" << '\n';
-  // std::cout << "beginning swap step" << std::endl;
-  log(1);
   // TODO: make assignments in naive code too!
   size_t i = 0;
   bool medoidChange = true;
   while (i < max_iter && medoidChange) {
     auto previous(medoid_indices);
     KMedoids::swap_naive(medoid_indices);
-    // std::cout << medoid_indices << std::endl;
     medoidChange = arma::any(medoid_indices != previous);
-    // std::cout << "mediod change is " << medoidChange << std::endl;
     i++;
   }
-  logBuffer << "Medoid assignments:" << '\n';
-  logBuffer << medoid_indices << '\n';
-  log(2);
   medoid_indices_final = medoid_indices;
 }
 
@@ -181,6 +141,21 @@ void KMedoids::swap_naive(
     }
   }
   medoid_indices(medoid_to_swap) = best;
+}
+
+void KMedoids::fit_bpam(arma::mat input_data) {
+  data = input_data;
+  data = arma::trans(data);
+  arma::mat medoids_mat(data.n_rows, n_medoids);
+  arma::rowvec medoid_indices(n_medoids);
+  KMedoids::build(medoid_indices, medoids_mat);
+  steps = 1;
+
+  medoid_indices_build = medoid_indices;
+  arma::rowvec assignments(data.n_cols);
+  KMedoids::swap(medoid_indices, medoids_mat, assignments);
+  medoid_indices_final = medoid_indices;
+  labels = assignments;
 }
 
 void KMedoids::build(
