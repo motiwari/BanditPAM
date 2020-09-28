@@ -15,8 +15,7 @@
 #include <fstream>
 #include <unistd.h>
 
-int
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
     std::string input_name;
     int k;
@@ -47,22 +46,17 @@ main(int argc, char* argv[])
     }
     arma::mat data;
     data.load(input_name);
-
     arma::uword n = data.n_cols;
     arma::uword d = data.n_rows;
-    if (verbosity >= 1)
-    {
-    	std::cout << "Read in " << n << " data points of dimension " << d
-              << std::endl;
-    }
 
     KMedoids kmed;
     kmed.fit(data, loss);
-    arma::rowvec meds;
-    meds = kmed.getMedoidsFinal();
+    arma::rowvec meds = kmed.getMedoidsFinal();
 
+    std::cout << "Medoids:";
     for (size_t i = 0; i < k; i++) {
       std::cout << meds(i) << ", ";
     }
+    std::cout << std::endl;
     std::cout << "Steps:" << kmed.getSteps() << std::endl;
 }
