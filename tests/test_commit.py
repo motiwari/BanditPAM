@@ -9,7 +9,7 @@ mnist_70k = pd.read_csv('./data/MNIST-70k.csv', sep=' ', header=None)
 
 scrna = pd.read_csv('./data/scrna_reformat.csv.gz', header=None)
 
-def onFly(k, data, loss):
+def on_the_fly(k, data, loss):
     kmed_bpam = KMedoids(k = k, algorithm = "BanditPAM")
     kmed_naive = KMedoids(k = k, algorithm = "naive")
     kmed_bpam.fit(data, loss)
@@ -26,11 +26,11 @@ class PythonTests(unittest.TestCase):
         k_schedule = [4, 6, 8, 10] * 5
         for i in range(10): #arbitrary heuristic
             data = mnist_70k.sample(n = 1000).to_numpy()
-            count += onFly(k = k_schedule[i], data = data, loss = "L2")
+            count += on_the_fly(k = k_schedule[i], data = data, loss = "L2")
 
         for i in range(10): #arbitrary heuristic
             data = scrna.sample(n = 1000).to_numpy()
-            count += onFly(k = k_schedule[i], data = data, loss = "L1")
+            count += on_the_fly(k = k_schedule[i], data = data, loss = "L1")
         self.assertTrue(count >= 19)
 
     def test_small_cases(self):
