@@ -10,8 +10,8 @@ mnist_70k = pd.read_csv('./data/MNIST-70k.csv', sep=' ', header=None)
 scrna = pd.read_csv('./data/scrna_reformat.csv.gz', header=None)
 
 def onFly(k, data, loss):
-    kmed_bpam = KMedoids(k = k, algorithm = "BanditPAM")
-    kmed_naive = KMedoids(k = k, algorithm = "naive")
+    kmed_bpam = KMedoids(n_medoids = k, algorithm = "BanditPAM", verbosity = 0)
+    kmed_naive = KMedoids(n_medoids = k, algorithm = "naive", verbosity = 0)
     kmed_bpam.fit(data, loss)
     kmed_naive.fit(data, loss)
     # TODO: do we need to check build? -- yes
