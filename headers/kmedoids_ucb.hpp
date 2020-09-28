@@ -1,5 +1,5 @@
-#ifndef _kmeds_inc_h_
-#define _kmeds_inc_h_
+#ifndef KMEDOIDS_UCB_H_
+#define KMEDOIDS_UCB_H_
 
 #include <omp.h>
 #include <armadillo>
@@ -151,4 +151,4 @@ private:
   const size_t k_batchSize = 100;
 };
 
-#endif
+#endif // KMEDOIDS_UCB_H_
