@@ -61,8 +61,6 @@ main(int argc, char* argv[])
     arma::rowvec meds;
     meds = kmed.getMedoidsFinal();
 
-
-
     for (size_t i = 0; i < k; i++) {
       std::cout << meds(i) << ", ";
     }

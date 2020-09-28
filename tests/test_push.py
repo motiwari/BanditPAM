@@ -9,13 +9,13 @@ mnist_70k = pd.read_csv('./data/MNIST-70k.csv', sep=' ', header=None)
 
 scrna = pd.read_csv('./data/scrna_reformat.csv.gz', header=None)
 
-def onFly(k, data, loss):
+def on_the_fly(k, data, loss):
     kmed_bpam = KMedoids(k = k, algorithm = "BanditPAM")
     kmed_naive = KMedoids(k = k, algorithm = "naive")
     kmed_bpam.fit(data, loss)
     kmed_naive.fit(data, loss)
-    # TODO: do we need to check build? -- yes
-    if (kmed_bpam.final_medoids == kmed_naive.final_medoids):
+    if (kmed_bpam.final_medoids == kmed_naive.final_medoids and
+        kmed_bpam.build_medoids == kmed_naive.build_medoids):
         return 1
     else:
         return 0
@@ -25,13 +25,13 @@ class PythonTests(unittest.TestCase):
         count = 0
         k_schedule = [4, 6, 8, 10] * 25
         size_schedule = [1000, 2000, 3000, 4000, 5000] * 20
-        for i in range(50): #arbitrary heuristic
+        for i in range(50):
             data = mnist_70k.sample(n = size_schedule[i])
-            count += onFly(k = k_schedule[i], data = data, loss = "L2")
+            count += on_the_fly(k = k_schedule[i], data = data, loss = "L2")
 
         for i in range(50, 100):
             data = scrna.sample(n = size_schedule[i])
-            count += onFly(k = k_schedule[i], data = data, loss = "L1")
+            count += on_the_fly(k = k_schedule[i], data = data, loss = "L1")
 
         self.assertTrue(count >= 95)
 

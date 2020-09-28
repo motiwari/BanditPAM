@@ -19,7 +19,7 @@ class get_pybind_include(object):
 
 ext_modules = [
     Extension(
-        'banditPAM',
+        'BanditPAM',
         # Sort input source files to ensure bit-for-bit reproducible builds
         # (https://github.com/pybind/python_example/pull/53)
         sorted(['src/kmedoids_ucb.cpp',
@@ -104,7 +104,7 @@ class BuildExt(build_ext):
 
 
 setup(
-    name='banditPAM',
+    name='BanditPAM',
     version=__version__,
     author='Eric Frankel',
     author_email='ericsf@stanford.edu',
