@@ -190,7 +190,7 @@ void KMedoids::build(
     size_t N = data.n_cols;
     arma::rowvec N_mat(N);
     N_mat.fill(N);
-    int p = (k_buildConfidence * N); // reciprocal of
+    int p = (buildConfidence * N); // reciprocal of
     bool use_absolute = true;
     arma::rowvec num_samples(N, arma::fill::zeros);
     arma::rowvec estimates(N, arma::fill::zeros);
@@ -212,13 +212,13 @@ void KMedoids::build(
         exact_mask.fill(0);
         estimates.fill(0);
         KMedoids::build_sigma(
-           best_distances, sigma, k_batchSize, use_absolute);
+           best_distances, sigma, batchSize, use_absolute);
 
         while (arma::sum(candidates) >
-               k_doubleComparisonLimit) // double comparison
+               precision) // double comparison
         {
             arma::umat compute_exactly =
-              ((T_samples + k_batchSize) >= N_mat) != exact_mask;
+              ((T_samples + batchSize) >= N_mat) != exact_mask;
             if (arma::accu(compute_exactly) > 0) {
                 arma::uvec targets = find(compute_exactly);
                 logBuffer << "Computing exactly for " << targets.n_rows
@@ -233,17 +233,17 @@ void KMedoids::build(
                 T_samples.cols(targets) += N;
                 candidates.cols(targets).fill(0);
             }
-            if (arma::sum(candidates) < k_doubleComparisonLimit) {
+            if (arma::sum(candidates) < precision) {
                 break;
             }
             arma::uvec targets = arma::find(candidates);
             arma::rowvec result = build_target(
-              targets, k_batchSize, best_distances, use_absolute);
+              targets, batchSize, best_distances, use_absolute);
             estimates.cols(targets) =
               ((T_samples.cols(targets) % estimates.cols(targets)) +
-               (result * k_batchSize)) /
-              (k_batchSize + T_samples.cols(targets));
-            T_samples.cols(targets) += k_batchSize;
+               (result * batchSize)) /
+              (batchSize + T_samples.cols(targets));
+            T_samples.cols(targets) += batchSize;
             arma::rowvec adjust(targets.n_rows);
             adjust.fill(p);
             adjust = arma::log(adjust);
@@ -351,7 +351,7 @@ void KMedoids::swap(
   arma::rowvec& assignments)
 {
     size_t N = data.n_cols;
-    int p = (N * n_medoids * k_swapConfidence); // reciprocal
+    int p = (N * n_medoids * swapConfidence); // reciprocal
 
     arma::mat sigma(n_medoids, N, arma::fill::zeros);
 
@@ -375,7 +375,7 @@ void KMedoids::swap(
           medoid_indices, best_distances, second_distances, assignments);
 
         swap_sigma(sigma,
-                   k_batchSize,
+                   batchSize,
                    best_distances,
                    second_distances,
                    assignments);
@@ -393,7 +393,7 @@ void KMedoids::swap(
             // compute exactly if it's been samples more than N times and hasn't
             // been computed exactly already
             arma::umat compute_exactly =
-              ((T_samples + k_batchSize) >= N) != (exact_mask);
+              ((T_samples + batchSize) >= N) != (exact_mask);
             arma::uvec targets = arma::find(compute_exactly);
 
             if (targets.size() > 0) {
@@ -414,21 +414,21 @@ void KMedoids::swap(
 
                 candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
             }
-            if (arma::accu(candidates) < k_doubleComparisonLimit) {
+            if (arma::accu(candidates) < precision) {
                 break;
             }
             targets = arma::find(candidates);
             arma::vec result = swap_target(medoid_indices,
                                            targets,
-                                           k_batchSize,
+                                           batchSize,
                                            best_distances,
                                            second_distances,
                                            assignments);
             estimates.elem(targets) =
               ((T_samples.elem(targets) % estimates.elem(targets)) +
-               (result * k_batchSize)) /
-              (k_batchSize + T_samples.elem(targets));
-            T_samples.elem(targets) += k_batchSize;
+               (result * batchSize)) /
+              (batchSize + T_samples.elem(targets));
+            T_samples.elem(targets) += batchSize;
             arma::vec adjust(targets.n_rows);
             adjust.fill(p);
             adjust = arma::log(adjust);

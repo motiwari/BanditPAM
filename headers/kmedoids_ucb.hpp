@@ -130,15 +130,15 @@ class KMedoids
 
     // Hyperparameters
     // constant that affects the sensitivity of build confidence bounds
-    static const size_t k_buildConfidence = 1000;
+    static const size_t buildConfidence = 1000;
 
     // constant that affects the sensitiviy of swap confidence bounds
-    static const size_t k_swapConfidence = 1000;
+    static const size_t swapConfidence = 1000;
 
     // bound for double comparison precision
-    const double k_doubleComparisonLimit = 0.001;
+    const double precision = 0.001;
 
-    const size_t k_batchSize = 100;
+    const size_t batchSize = 100;
 };
 
 #endif // KMEDOIDS_UCB_H_
