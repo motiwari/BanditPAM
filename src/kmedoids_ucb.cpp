@@ -45,8 +45,7 @@ int KMedoids::getSteps() {
   return steps;
 }
 
-void KMedoids::fit(arma::mat input_data, std::string loss) {
-  // set loss function
+void KMedoids::setLossFn(std::string loss) {
   if (loss == "manhattan") {
       lossFn = &KMedoids::manhattan;
   } else if (loss == "cos") {
@@ -58,6 +57,9 @@ void KMedoids::fit(arma::mat input_data, std::string loss) {
   } else {
       throw "unrecognized loss function";
   }
+}
+void KMedoids::fit(arma::mat input_data, std::string loss) {
+  setLossFn(loss)
 
   // run the actual fit
   (this->*fitFn)(input_data);
