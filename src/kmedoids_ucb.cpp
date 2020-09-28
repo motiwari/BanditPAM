@@ -59,9 +59,8 @@ void KMedoids::setLossFn(std::string loss) {
   }
 }
 void KMedoids::fit(arma::mat input_data, std::string loss) {
-  setLossFn(loss)
+  KMedoids::setLossFn(loss);
 
-  // run the actual fit
   (this->*fitFn)(input_data);
 }
 

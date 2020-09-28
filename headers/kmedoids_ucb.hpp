@@ -24,6 +24,8 @@ class KMedoids
 
     arma::rowvec getLabels();
 
+    void setLossFn(std::string loss);
+
     int getSteps();
 
   private:
