@@ -31,8 +31,8 @@ public:
   }
 };
 
-PYBIND11_MODULE(banditPAM, m) {
-  m.doc() = "BanditPAM Test";
+PYBIND11_MODULE(BanditPAM, m) {
+  m.doc() = "BanditPAM Python library, implemented in C++";
   py::class_<KMedsWrapper>(m, "KMedoids")
       .def(py::init<int, std::string, int, int, std::string>(),
         py::arg("n_medoids") = 5,
