@@ -15,19 +15,18 @@ def onFly(k, data, loss):
     kmed_bpam.fit(data, loss)
     kmed_naive.fit(data, loss)
 
-    if kmed_bpam.final_medoids.tolist() == kmed_naive.final_medoids.tolist() and
-       kmed_bpam.build_medoids.tolist() == kmed_naive.build_medoids.tolist():
+    if (kmed_bpam.final_medoids.tolist() == kmed_naive.final_medoids.tolist()) and \
+       (kmed_bpam.build_medoids.tolist() == kmed_naive.build_medoids.tolist()):
         return 1
     else:
         return 0
 
 class PythonTests(unittest.TestCase):
-    def __init__(self):
-        self.small_mnist = pd.read_csv('./data/mnist.csv', header=None).to_numpy()
+    small_mnist = pd.read_csv('./data/mnist.csv', header=None).to_numpy()
 
-        self.mnist_70k = pd.read_csv('./data/MNIST-70k.csv', sep=' ', header=None)
+    mnist_70k = pd.read_csv('./data/MNIST-70k.csv', sep=' ', header=None)
 
-        self.scrna = pd.read_csv('./data/scrna_reformat.csv.gz', header=None)
+    scrna = pd.read_csv('./data/scrna_reformat.csv.gz', header=None)
 
     def test_small_on_fly_mnist(self):
         '''

@@ -44,7 +44,5 @@ PYBIND11_MODULE(BanditPAM, m) {
       .def_property_readonly("build_medoids", &KMedsWrapper::getMedoidsBuildPython)
       .def_property_readonly("labels", &KMedsWrapper::getLabelsPython)
       .def_property_readonly("steps", &KMedsWrapper::getStepsPython)
-      .def("fit", [](const py::array_t<double>)
-
-      &KMedsWrapper::fitPython);
+      .def("fit", &KMedsWrapper::fitPython);
 }
