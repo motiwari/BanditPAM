@@ -1,0 +1,5 @@
+scikit_learn_extra==0.1.0b2
+pandas==0.24.1
+pybind11==2.5.0
+numpy==1.16.2
+matplotlib==3.2.1
