@@ -31,8 +31,7 @@ public:
   }
 };
 
-PYBIND11_MODULE(banditPAM, m) {
-  m.doc() = "BanditPAM Test";
+PYBIND11_MODULE(BanditPAM, m) {
   py::class_<KMedsWrapper>(m, "KMedoids")
       .def(py::init<int, std::string, int, int, std::string>(),
         py::arg("n_medoids") = 5,
@@ -45,5 +44,7 @@ PYBIND11_MODULE(banditPAM, m) {
       .def_property_readonly("build_medoids", &KMedsWrapper::getMedoidsBuildPython)
       .def_property_readonly("labels", &KMedsWrapper::getLabelsPython)
       .def_property_readonly("steps", &KMedsWrapper::getStepsPython)
-      .def("fit", &KMedsWrapper::fitPython);
+      .def("fit", [](const py::array_t<double>)
+
+      &KMedsWrapper::fitPython);
 }
