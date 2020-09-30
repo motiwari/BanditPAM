@@ -1,52 +1,96 @@
 import unittest
-from banditPAM import KMedoids
+from BanditPAM import KMedoids
 import pandas as pd
 import numpy as np
 
-small_mnist = pd.read_csv('./data/mnist.csv', header=None).to_numpy()
-
-mnist_70k = pd.read_csv('./data/MNIST-70k.csv', sep=' ', header=None)
-
-scrna = pd.read_csv('./data/scrna_reformat.csv.gz', header=None)
-
-def on_the_fly(k, data, loss):
-    kmed_bpam = KMedoids(k = k, algorithm = "BanditPAM")
-    kmed_naive = KMedoids(k = k, algorithm = "naive")
+def onFly(k, data, loss):
+    kmed_bpam = KMedoids(
+        n_medoids = k,
+        algorithm = "BanditPAM",
+    )
+    kmed_naive = KMedoids(
+        n_medoids = k,
+        algorithm = "naive",
+    )
     kmed_bpam.fit(data, loss)
     kmed_naive.fit(data, loss)
-    # TODO: do we need to check build
-    if (kmed_bpam.final_medoids.tolist() == kmed_naive.final_medoids.tolist()):
+
+    if (kmed_bpam.final_medoids.tolist() == kmed_naive.final_medoids.tolist()) and \
+       (kmed_bpam.build_medoids.tolist() == kmed_naive.build_medoids.tolist()):
         return 1
     else:
         return 0
 
 class PythonTests(unittest.TestCase):
-    def test_small_on_fly_cases(self):
+    small_mnist = pd.read_csv('./data/mnist.csv', header=None).to_numpy()
+
+    mnist_70k = pd.read_csv('./data/MNIST-70k.csv', sep=' ', header=None)
+
+    scrna = pd.read_csv('./data/scrna_reformat.csv.gz', header=None)
+
+    def test_small_on_fly_mnist(self):
+        '''
+        Test 10 on-the-fly generated samples of 1000 datapoints from mnist-70k dataset
+        '''
         count = 0
-        k_schedule = [4, 6, 8, 10] * 5
-        for i in range(10): #arbitrary heuristic
-            data = mnist_70k.sample(n = 1000).to_numpy()
-            count += on_the_fly(k = k_schedule[i], data = data, loss = "L2")
+        k_schedule = [4, 6, 8, 10] * 3
+        for i in range(10):
+            data = self.mnist_70k.sample(n = 1000).to_numpy()
+            count += onFly(k = k_schedule[i], data = data, loss = "L2")
+        self.assertTrue(count >= 9)
 
-        for i in range(10): #arbitrary heuristic
-            data = scrna.sample(n = 1000).to_numpy()
-            count += on_the_fly(k = k_schedule[i], data = data, loss = "L1")
-        self.assertTrue(count >= 19)
+    def test_small_on_fly_scrna(self):
+        '''
+        Test 10 on-the-fly generated samples of 1000 datapoints from scrna dataset
+        '''
+        count = 0
+        k_schedule = [4, 6, 8, 10] * 3
+        for i in range(10):
+            data = self.scrna.sample(n = 1000).to_numpy()
+            count += onFly(k = k_schedule[i], data = data, loss = "L1")
+        self.assertTrue(count >= 9)
 
-    def test_small_cases(self):
+    def test_small_cases_mnist(self):
+        '''
+        Test BanditPAM algorithm at 5 and 10 medoids on mnist dataset with known medoids
+        '''
         kmed_5 = KMedoids(
             n_medoids = 5,
             algorithm = "BanditPAM",
             max_iter = 1000,
             verbosity = 0,
-            logFilename = "KMedoidsLogfile"
+            logFilename = "KMedoidsLogfile",
         )
-        kmed_5.fit(small_mnist, "L2")
-        # TODO FINISH
+        kmed_5.fit(self.small_mnist, "L2")
+
         self.assertEqual(kmed_5.build_medoids.tolist(), np.array([16, 32, 70, 87, 24]).tolist())
         self.assertEqual(kmed_5.final_medoids.tolist(), np.array([30, 99, 70, 23, 49]).tolist())
 
-        kmed_5.fit(scrna.head(1000).to_numpy(), "L1")
+        kmed_10 = KMedoids(
+            n_medoids = 10,
+            algorithm = "BanditPAM",
+            max_iter = 1000,
+            verbosity = 0,
+            logFilename = "KMedoidsLogfile",
+        )
+        kmed_10.fit(self.small_mnist, "L2")
+
+        self.assertEqual(kmed_10.build_medoids.tolist(), np.array([16, 32, 70, 87, 24, 90, 49, 99, 82, 94]).tolist())
+        self.assertEqual(kmed_10.final_medoids.tolist(), np.array([16, 63, 70, 25, 31, 90, 49, 99, 82, 94]).tolist())
+
+    def test_small_cases_scrna(self):
+        '''
+        Test BanditPAM algorithm at 5 and 10 medoids on scrna dataset with known medoids
+        '''
+        kmed_5 = KMedoids(
+            n_medoids = 5,
+            algorithm = "BanditPAM",
+            max_iter = 1000,
+            verbosity = 0,
+            logFilename = "KMedoidsLogfile",
+        )
+        kmed_5.fit(self.scrna.head(1000).to_numpy(), "L1")
+
         self.assertEqual(kmed_5.build_medoids.tolist(), np.array([377, 267, 276, 762, 394]).tolist())
         self.assertEqual(kmed_5.final_medoids.tolist(), np.array([377, 267, 276, 762, 394]).tolist())
 
@@ -55,19 +99,17 @@ class PythonTests(unittest.TestCase):
             algorithm = "BanditPAM",
             max_iter = 1000,
             verbosity = 0,
-            logFilename = "KMedoidsLogfile"
+            logFilename = "KMedoidsLogfile",
         )
-        kmed_10.fit(small_mnist, "L2")
-        # TODO FINISH
-        self.assertEqual(kmed_10.build_medoids.tolist(), np.array([16, 32, 70, 87, 24, 90, 49, 99, 82, 94]).tolist())
-        self.assertEqual(kmed_10.final_medoids.tolist(), np.array([16, 63, 70, 25, 31, 90, 49, 99, 82, 94]).tolist())
+        kmed_10.fit(self.scrna.head(1000).to_numpy(), "L1")
 
-        kmed_10.fit(scrna.head(1000).to_numpy(), "L1")
-        # TODO FINISH
         self.assertEqual(kmed_10.build_medoids.tolist(), np.array([377, 267, 276, 762, 394, 311, 663, 802, 422, 20]).tolist())
         self.assertEqual(kmed_10.final_medoids.tolist(), np.array([377, 267, 276, 762, 394, 311, 663, 802, 422, 20]).tolist())
 
     def test_edge_cases(self):
+        '''
+        Test BanditPAM algorithm on edge cases
+        '''
         kmed = KMedoids()
 
         # initialized to empty
@@ -76,8 +118,6 @@ class PythonTests(unittest.TestCase):
 
         # error on trying to fit on empty
         self.assertRaises(RuntimeError, kmed.fit(np.array([])), "L2")
-
-        # TODO: error if the number of medoids larger than num data points
 
 if __name__ == '__main__':
     unittest.main()
