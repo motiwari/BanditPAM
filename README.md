@@ -35,30 +35,18 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 from BanditPAM import KMedoids
 import numpy as np
 import matplotlib.pyplot as plt
-```
 
-Generate data from a Gaussian Mixture Model with the given means:
-
-
-```python
+# Generate data from a Gaussian Mixture Model with the given means:
 np.random.seed(0)
 n_per_cluster = 40
 means = np.array([[0,0], [-5,5], [5,5]])
 X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
-```
 
-Fit the data with BanditPAM:
-
-
-```python
+# Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids = 3, algorithm = "BanditPAM")
 kmed.fit(X, 'L2')
-```
 
-Visualize the data and the medoids:
-
-
-```python
+# Visualize the data and the medoids:
 for p_idx, point in enumerate(X):
     if p_idx in map(int, kmed.final_medoids):
         plt.scatter(X[p_idx, 0], X[p_idx, 1], color='red', s = 40)
@@ -68,7 +56,7 @@ plt.show()
 ```
 
 
-![png](README_files/README_13_0.png)
+![png](README_files/README_7_0.png)
 
 
 ### Example 2: MNIST and its medoids visualized via t-SNE
@@ -80,39 +68,23 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
-```
 
-Load the 1000-point subset of MNIST and calculate its t-SNE embeddings for visualization:
-
-
-```python
+# Load the 1000-point subset of MNIST and calculate its t-SNE embeddings for visualization:
 X = pd.read_csv('data/MNIST-1k.csv', sep=' ', header=None).to_numpy()
 X_tsne = TSNE(n_components = 2).fit_transform(X)
-```
 
-Fit the data with BanditPAM:
-
-
-```python
+# Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids = 10, algorithm = "BanditPAM")
 kmed.fit(X, 'L2')
-```
 
-Visualize the data and the medoids via t-SNE:
-
-
-```python
- for p_idx, point in enumerate(X):
+# Visualize the data and the medoids via t-SNE:
+for p_idx, point in enumerate(X):
     if p_idx in map(int, kmed.final_medoids):
         plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='red', s = 40)
     else:
         plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='blue', s = 5)
 plt.show()
 ```
-
-
-![png](README_files/README_21_0.png)
-
 
 ## Building the C++ executable from source
 
@@ -132,7 +104,7 @@ which will start a Docker instance with the necessary dependencies. Then:
 
 ```
 /BanditPAM$ mkdir build && cd build
-/BanditPAM$ cmake .. && make
+/BanditPAM/build$ cmake .. && make
 ```
 
 This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
@@ -148,7 +120,7 @@ Ensure all the requirements above are installed and then run:
 
 ```
 /BanditPAM$ mkdir build && cd build
-/BanditPAM$ cmake .. && make
+/BanditPAM/build$ cmake .. && make
 ```
 
 This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
@@ -157,7 +129,7 @@ This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
 Once the executable has been built, it can be invoked with: 
 ```
-./BanditPAM -f [path/to/input.csv] -k [number of clusters] -v [verbosity level]
+/BanditPAM/build/src/BanditPAM -f [path/to/input.csv] -k [number of clusters] -v [verbosity level]
 ```
 
 * `-f` is mandatory and specifies the path to the dataset
@@ -167,5 +139,5 @@ Once the executable has been built, it can be invoked with:
 For example, if you ran `./env_setup.sh` and downloaded the MNIST dataset, you could run:
 
 ```
-/BanditPAM/build$ ./BanditPAM -f ../data/MNIST-1k.csv -k 10
+/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10
 ```
