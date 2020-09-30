@@ -15,8 +15,8 @@ def onFly(k, data, loss):
     kmed_bpam.fit(data, loss)
     kmed_naive.fit(data, loss)
 
-    if (kmed_bpam.final_medoids.tolist() == kmed_naive.final_medoids.tolist())
-        and (kmed_bpam.build_medoids.tolist() == kmed_naive.build_medoids.tolist()):
+    if kmed_bpam.final_medoids.tolist() == kmed_naive.final_medoids.tolist() and
+       kmed_bpam.build_medoids.tolist() == kmed_naive.build_medoids.tolist():
         return 1
     else:
         return 0
@@ -118,7 +118,7 @@ class PythonTests(unittest.TestCase):
         self.assertEqual([], kmed.build_medoids.tolist())
 
         # error on trying to fit on empty
-        self.assertRaises(RuntimeError, kmed.fit(np.array([]), "L2"))
+        self.assertRaises(RuntimeError, kmed.fit(np.array([])), "L2")
 
 if __name__ == '__main__':
     unittest.main()
