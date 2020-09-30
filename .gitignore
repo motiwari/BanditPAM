@@ -8,3 +8,4 @@ build/
 data/data.csv
 .egg/
 __pycache__
+.ipynb_checkpoints/
