@@ -1,5 +1,5 @@
-#ifndef _kmeds_inc_h_
-#define _kmeds_inc_h_
+#ifndef KMEDOIDS_UCB_H_
+#define KMEDOIDS_UCB_H_
 
 #include <omp.h>
 #include <armadillo>
@@ -9,146 +9,140 @@
 
 class KMedoids
 {
-public:
-  KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000, std::string logFilename = "KMedoidsLogfile");
+  public:
+    KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000, std::string logFilename = "KMedoidsLogfile");
 
-  KMedoids(const KMedoids &kmed);
+    KMedoids(const KMedoids &kmed);
 
-  ~KMedoids();
+    ~KMedoids();
 
-  void fit(arma::mat input_data, std::string loss);
+    void fit(arma::mat input_data, std::string loss);
 
-  arma::rowvec getMedoidsFinal();
+    arma::rowvec getMedoidsFinal();
 
-  arma::rowvec getMedoidsBuild();
+    arma::rowvec getMedoidsBuild();
 
-  arma::rowvec getLabels();
+    arma::rowvec getLabels();
 
-  int getSteps();
-private:
-  // ###################### Supporting BanditPAM Functions ######################
-  void fit_bpam(arma::mat input_data);
+    void setLossFn(std::string loss);
 
-  void fit_naive(arma::mat input_data);
+    void checkAlgorithm(std::string algorithm);
 
-  void build_naive(arma::rowvec& medoid_indices);
+    int getSteps();
 
-  void swap_naive(arma::rowvec& medoid_indices);
+  private:
+    // The functions below are PAM's constituent functions
+    void fit_bpam(arma::mat input_data);
 
-  void build(
-    arma::rowvec& medoid_indices,
-    arma::mat& medoids);
+    void fit_naive(arma::mat input_data);
 
-  void build_sigma(
-    arma::rowvec& best_distances,
-    arma::rowvec& sigma,
-    arma::uword batch_size,
-    bool use_absolute);
+    void build_naive(arma::rowvec& medoid_indices);
 
-  arma::rowvec build_target(
-    arma::uvec& target,
-    size_t batch_size,
-    arma::rowvec& best_distances,
-    bool use_absolute);
+    void swap_naive(arma::rowvec& medoid_indices);
 
-  void swap(
-    arma::rowvec& medoid_indices,
-    arma::mat& medoids,
-    arma::rowvec& assignments);
+    void build(
+      arma::rowvec& medoid_indices,
+      arma::mat& medoids
+    );
 
-  void calc_best_distances_swap(
-    arma::rowvec& medoid_indices,
-    arma::rowvec& best_distances,
-    arma::rowvec& second_distances,
-    arma::rowvec& assignments);
+    void build_sigma(
+      arma::rowvec& best_distances,
+      arma::rowvec& sigma,
+      arma::uword batch_size,
+      bool use_absolute
+    );
 
-  arma::vec swap_target(
-    arma::rowvec& medoid_indices,
-    arma::uvec& targets,
-    size_t batch_size,
-    arma::rowvec& best_distances,
-    arma::rowvec& second_best_distances,
-    arma::rowvec& assignments);
+    arma::rowvec build_target(
+      arma::uvec& target,
+      size_t batch_size,
+      arma::rowvec& best_distances,
+      bool use_absolute
+    );
 
-  void swap_sigma(
-    arma::mat& sigma,
-    size_t batch_size,
-    arma::rowvec& best_distances,
-    arma::rowvec& second_best_distances,
-    arma::rowvec& assignments);
+    void swap(
+      arma::rowvec& medoid_indices,
+      arma::mat& medoids,
+      arma::rowvec& assignments
+    );
 
-  double calc_loss(arma::rowvec& medoid_indices);
+    void calc_best_distances_swap(
+      arma::rowvec& medoid_indices,
+      arma::rowvec& best_distances,
+      arma::rowvec& second_distances,
+      arma::rowvec& assignments
+    );
 
-  // ###################### Loss/misc. functions ######################
-  double L1(int i, int j) const;
+    arma::vec swap_target(
+      arma::rowvec& medoid_indices,
+      arma::uvec& targets,
+      size_t batch_size,
+      arma::rowvec& best_distances,
+      arma::rowvec& second_best_distances,
+      arma::rowvec& assignments
+    );
 
-  double L2(int i, int j) const;
+    void swap_sigma(
+      arma::mat& sigma,
+      size_t batch_size,
+      arma::rowvec& best_distances,
+      arma::rowvec& second_best_distances,
+      arma::rowvec& assignments
+    );
 
-  double cos(int i, int j) const;
+    double calc_loss(arma::rowvec& medoid_indices);
 
-  double manhattan(int i, int j) const;
+    // Loss functions
+    double L1(int i, int j) const;
 
-  void log(int priority);
+    double L2(int i, int j) const;
 
-  // ###################### Constructor Parameters ######################
-  // number of medoids for use in algorithm
-  int n_medoids;
+    double cos(int i, int j) const;
 
-  // options: "naive" and "BanditPAM"
-  std::string algorithm;
+    double manhattan(int i, int j) const;
 
-  // maximum number of iterations to run algorithm for
-  int max_iter;
+    void log(int priority);
 
-  // verbosity of the algorithm. Breakdown is as follows:
-  // 0: no logfile
-  // 1: logfile built and final medoids printed
-  // TODO: see if we want to do additional stuff?
-  int verbosity;
+    // Constructor parameters
+    int n_medoids; // TODO (@Mo): Rename this to k
 
-  // name of the log file to save
-  std::string logFilename;
+    std::string algorithm; // options: "naive" and "BanditPAM"
 
-  // ###################### Class Properties ######################
-  // labels of the data to each medoid
-  arma::rowvec labels;
+    int max_iter;
 
-  // post-build medoid indices
-  arma::rowvec medoid_indices_build;
+    int verbosity;
 
-  // final medoid indices
-  arma::rowvec medoid_indices_final;
+    std::string logFilename;
 
-  // data input from the user
-  arma::mat data;
+    // Properties of the KMedoids instance
+    arma::mat data;
 
-  // loss fucntion
-  double (KMedoids::*lossFn)(int i, int j) const;
+    arma::rowvec labels; // assignments of each datapoint to its medoid
 
-  // fit function
-  void (KMedoids::*fitFn)(arma::mat input_data);
+    arma::rowvec medoid_indices_build; // Medoids at the end of build step
 
-  // logfile that's being written
-  std::ofstream logFile;
+    arma::rowvec medoid_indices_final;
 
-  // log buffer
-  std::stringstream logBuffer;
+    double (KMedoids::*lossFn)(int i, int j) const;
 
-  // number of steps
-  int steps;
+    void (KMedoids::*fitFn)(arma::mat input_data); // Function to use (from algorithm)
 
-  // ###################### Hyperparameters ######################
-  // constant that affects the sensitiviy of build confidence bounds
-  static const size_t k_buildConfidence = 1000;
+    std::ofstream logFile;
 
-  // constant that affects the sensitiviy of swap confidence bounds
-  static const size_t k_swapConfidence = 1000;
+    std::stringstream logBuffer;
 
-  // bound for double comparison
-  const double k_doubleComparisonLimit = 0.01;
+    int steps; // number of actual swap iterations taken by the algorithm
 
-  // batch size for build and swap iterations
-  const size_t k_batchSize = 100;
+    // Hyperparameters
+    // constant that affects the sensitivity of build confidence bounds
+    static const size_t buildConfidence = 1000;
+
+    // constant that affects the sensitiviy of swap confidence bounds
+    static const size_t swapConfidence = 1000;
+
+    // bound for double comparison precision
+    const double precision = 0.001;
+
+    const size_t batchSize = 100;
 };
 
-#endif
+#endif // KMEDOIDS_UCB_H_

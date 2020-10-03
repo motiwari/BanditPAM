@@ -5,32 +5,27 @@
  * This file contains the implementation details for the confidence
  * bound improvement of the kmedoids PAM algorithim.
  */
+
 #include "kmedoids_ucb.hpp"
 #include <armadillo>
 #include <unordered_map>
 
 KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_iter, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
-  if (verbosity > 0) {
-    logFile.open(logFilename);
-  }
-  logBuffer << "verbosity is " << verbosity << '\n';
-  log(1);
+  logFile.open(logFilename);
+  KMedoids::checkAlgorithm(algorithm);
+}
 
-  // set algorithm
+KMedoids::~KMedoids() {
+  logFile.close();
+}
+
+void KMedoids::checkAlgorithm(std::string algorithm) {
   if (algorithm == "BanditPAM") {
     fitFn = &KMedoids::fit_bpam;
   } else if (algorithm == "naive") {
     fitFn = &KMedoids::fit_naive;
   } else {
     throw "unrecognized algorithm";
-  }
-  logBuffer << "algorithm is " << algorithm << '\n';
-  log(1);
-}
-
-KMedoids::~KMedoids() {
-  if (verbosity > 0) {
-    logFile.close();
   }
 }
 
@@ -50,8 +45,7 @@ int KMedoids::getSteps() {
   return steps;
 }
 
-void KMedoids::fit(arma::mat input_data, std::string loss) {
-  // set loss function
+void KMedoids::setLossFn(std::string loss) {
   if (loss == "manhattan") {
       lossFn = &KMedoids::manhattan;
   } else if (loss == "cos") {
@@ -63,68 +57,30 @@ void KMedoids::fit(arma::mat input_data, std::string loss) {
   } else {
       throw "unrecognized loss function";
   }
-
-  // run the actual fit
-  (this->*fitFn)(input_data);
 }
+void KMedoids::fit(arma::mat input_data, std::string loss) {
+  KMedoids::setLossFn(loss);
 
-void KMedoids::fit_bpam(arma::mat input_data) {
-  data = input_data;
-  data = arma::trans(data);
-  arma::mat medoids_mat(data.n_rows, n_medoids);
-  arma::rowvec medoid_indices(n_medoids);
-  // build clusters
-  logBuffer << "Beginning build step" << '\n';
-  log(1);
-  KMedoids::build(medoid_indices, medoids_mat);
-  logBuffer << "Medoid assignments:" << '\n';
-  logBuffer << medoid_indices << '\n';
-  steps = 1;
-
-  medoid_indices_build = medoid_indices;
-  arma::rowvec assignments(data.n_cols);
-  logBuffer << "beginning swap step" << '\n';
-  log(1);
-  KMedoids::swap(medoid_indices, medoids_mat, assignments);
-  logBuffer << "Medoid assignments:" << '\n';
-  logBuffer << medoid_indices << '\n';
-  log(2);
-  medoid_indices_final = medoid_indices;
-  labels = assignments;
+  (this->*fitFn)(input_data);
 }
 
 void KMedoids::fit_naive(arma::mat input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::rowvec medoid_indices(n_medoids);
-  // build clusters
-  // logBuffer << "Beginning build step" << '\n';
-  // std::cout << "Beginning build step" << std::endl;
-  log(1);
   KMedoids::build_naive(medoid_indices);
-  // std::cout << medoid_indices << std::endl;
-  logBuffer << "Medoid assignments:" << '\n';
-  logBuffer << medoid_indices << '\n';
   steps = 1;
 
   medoid_indices_build = medoid_indices;
-  // logBuffer << "beginning swap step" << '\n';
-  // std::cout << "beginning swap step" << std::endl;
-  log(1);
   // TODO: make assignments in naive code too!
   size_t i = 0;
   bool medoidChange = true;
   while (i < max_iter && medoidChange) {
     auto previous(medoid_indices);
     KMedoids::swap_naive(medoid_indices);
-    // std::cout << medoid_indices << std::endl;
     medoidChange = arma::any(medoid_indices != previous);
-    // std::cout << "mediod change is " << medoidChange << std::endl;
     i++;
   }
-  logBuffer << "Medoid assignments:" << '\n';
-  logBuffer << medoid_indices << '\n';
-  log(2);
   medoid_indices_final = medoid_indices;
 }
 
@@ -187,6 +143,21 @@ void KMedoids::swap_naive(
   medoid_indices(medoid_to_swap) = best;
 }
 
+void KMedoids::fit_bpam(arma::mat input_data) {
+  data = input_data;
+  data = arma::trans(data);
+  arma::mat medoids_mat(data.n_rows, n_medoids);
+  arma::rowvec medoid_indices(n_medoids);
+  KMedoids::build(medoid_indices, medoids_mat);
+  steps = 1;
+
+  medoid_indices_build = medoid_indices;
+  arma::rowvec assignments(data.n_cols);
+  KMedoids::swap(medoid_indices, medoids_mat, assignments);
+  medoid_indices_final = medoid_indices;
+  labels = assignments;
+}
+
 void KMedoids::build(
   arma::rowvec& medoid_indices,
   arma::mat& medoids)
@@ -195,7 +166,7 @@ void KMedoids::build(
     size_t N = data.n_cols;
     arma::rowvec N_mat(N);
     N_mat.fill(N);
-    int p = (k_buildConfidence * N); // reciprocal of
+    int p = (buildConfidence * N); // reciprocal of
     bool use_absolute = true;
     arma::rowvec num_samples(N, arma::fill::zeros);
     arma::rowvec estimates(N, arma::fill::zeros);
@@ -217,13 +188,11 @@ void KMedoids::build(
         exact_mask.fill(0);
         estimates.fill(0);
         KMedoids::build_sigma(
-           best_distances, sigma, k_batchSize, use_absolute);
+           best_distances, sigma, batchSize, use_absolute);
 
-        while (arma::sum(candidates) >
-               k_doubleComparisonLimit) // double comparison
-        {
+        while (arma::sum(candidates) > precision) {
             arma::umat compute_exactly =
-              ((T_samples + k_batchSize) >= N_mat) != exact_mask;
+              ((T_samples + batchSize) >= N_mat) != exact_mask;
             if (arma::accu(compute_exactly) > 0) {
                 arma::uvec targets = find(compute_exactly);
                 logBuffer << "Computing exactly for " << targets.n_rows
@@ -238,17 +207,17 @@ void KMedoids::build(
                 T_samples.cols(targets) += N;
                 candidates.cols(targets).fill(0);
             }
-            if (arma::sum(candidates) < k_doubleComparisonLimit) {
+            if (arma::sum(candidates) < precision) {
                 break;
             }
             arma::uvec targets = arma::find(candidates);
             arma::rowvec result = build_target(
-              targets, k_batchSize, best_distances, use_absolute);
+              targets, batchSize, best_distances, use_absolute);
             estimates.cols(targets) =
               ((T_samples.cols(targets) % estimates.cols(targets)) +
-               (result * k_batchSize)) /
-              (k_batchSize + T_samples.cols(targets));
-            T_samples.cols(targets) += k_batchSize;
+               (result * batchSize)) /
+              (batchSize + T_samples.cols(targets));
+            T_samples.cols(targets) += batchSize;
             arma::rowvec adjust(targets.n_rows);
             adjust.fill(p);
             adjust = arma::log(adjust);
@@ -287,9 +256,8 @@ void KMedoids::build_sigma(
   bool use_absolute)
 {
     size_t N = data.n_cols;
-    arma::uvec tmp_refs = arma::randperm(N,
-                                   batch_size); // without replacement, requires
-                                                // updated version of armadillo
+    // without replacement, requires updated version of armadillo
+    arma::uvec tmp_refs = arma::randperm(N, batch_size);
     arma::vec sample(batch_size);
 // for each possible swap
 #pragma omp parallel for
@@ -356,7 +324,7 @@ void KMedoids::swap(
   arma::rowvec& assignments)
 {
     size_t N = data.n_cols;
-    int p = (N * n_medoids * k_swapConfidence); // reciprocal
+    int p = (N * n_medoids * swapConfidence); // reciprocal
 
     arma::mat sigma(n_medoids, N, arma::fill::zeros);
 
@@ -380,7 +348,7 @@ void KMedoids::swap(
           medoid_indices, best_distances, second_distances, assignments);
 
         swap_sigma(sigma,
-                   k_batchSize,
+                   batchSize,
                    best_distances,
                    second_distances,
                    assignments);
@@ -398,7 +366,7 @@ void KMedoids::swap(
             // compute exactly if it's been samples more than N times and hasn't
             // been computed exactly already
             arma::umat compute_exactly =
-              ((T_samples + k_batchSize) >= N) != (exact_mask);
+              ((T_samples + batchSize) >= N) != (exact_mask);
             arma::uvec targets = arma::find(compute_exactly);
 
             if (targets.size() > 0) {
@@ -419,21 +387,21 @@ void KMedoids::swap(
 
                 candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
             }
-            if (arma::accu(candidates) < k_doubleComparisonLimit) {
+            if (arma::accu(candidates) < precision) {
                 break;
             }
             targets = arma::find(candidates);
             arma::vec result = swap_target(medoid_indices,
                                            targets,
-                                           k_batchSize,
+                                           batchSize,
                                            best_distances,
                                            second_distances,
                                            assignments);
             estimates.elem(targets) =
               ((T_samples.elem(targets) % estimates.elem(targets)) +
-               (result * k_batchSize)) /
-              (k_batchSize + T_samples.elem(targets));
-            T_samples.elem(targets) += k_batchSize;
+               (result * batchSize)) /
+              (batchSize + T_samples.elem(targets));
+            T_samples.elem(targets) += batchSize;
             arma::vec adjust(targets.n_rows);
             adjust.fill(p);
             adjust = arma::log(adjust);
@@ -618,13 +586,10 @@ double KMedoids::calc_loss(
     return total;
 }
 
-// ###################### Loss/misc. functions ######################
+// Loss and miscellaneous functions
 
 void KMedoids::log(int priority) {
-  // if it won't be logged
-  if (priority > verbosity) {
-      logFile << logBuffer.rdbuf();
-  }
+  logFile << logBuffer.rdbuf();
   logFile.clear();
 }
 

@@ -15,21 +15,16 @@
 #include <fstream>
 #include <unistd.h>
 
-int
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
-    std::string input_name = "./data/MNIST-1k.csv";
+    std::string input_name;
     int k;
-    bool print_assignments = false;
     int opt;
     int verbosity = 0;
     std::string loss = "L2";
 
-    while ((opt = getopt(argc, argv, "f:k:av:")) != -1) {
+    while ((opt = getopt(argc, argv, "f:k:v:")) != -1) {
         switch (opt) {
-            case 'a':
-                print_assignments = true;
-                break;
             case 'f':
                 input_name = optarg;
                 break;
@@ -51,27 +46,17 @@ main(int argc, char* argv[])
     }
     arma::mat data;
     data.load(input_name);
-    data = arma::trans(data);
-
     arma::uword n = data.n_cols;
     arma::uword d = data.n_rows;
-    if (verbosity >= 1)
-    {
-    	std::cout << "Read in " << n << " data points of dimension " << d
-              << std::endl;
-    }
 
     KMedoids kmed;
     kmed.fit(data, loss);
+    arma::rowvec meds = kmed.getMedoidsFinal();
 
-    arma::rowvec meds;
-    meds = kmed.getMedoidsFinal();
-
-    if (print_assignments) {
-      for (size_t i = 0; i < k; i++) {
-        std::cout << meds(i) << ", ";
-      }
-      std::cout << std::endl;
+    std::cout << "Medoids:";
+    for (size_t i = 0; i < k; i++) {
+      std::cout << meds(i) << ", ";
     }
-    std::cout << kmed.getSteps() << std::endl;
+    std::cout << std::endl;
+    std::cout << "Steps:" << kmed.getSteps() << std::endl;
 }
