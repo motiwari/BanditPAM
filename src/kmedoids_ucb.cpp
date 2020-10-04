@@ -74,7 +74,7 @@ void KMedoids::fit_naive(arma::mat input_data) {
   data = arma::trans(data);
   arma::rowvec medoid_indices(n_medoids);
   KMedoids::build_naive(medoid_indices);
-  steps = 1;
+  steps = 0;
 
   medoid_indices_build = medoid_indices;
   // TODO: make assignments in naive code too!
@@ -154,7 +154,7 @@ void KMedoids::fit_bpam(arma::mat input_data) {
   arma::mat medoids_mat(data.n_rows, n_medoids);
   arma::rowvec medoid_indices(n_medoids);
   KMedoids::build(medoid_indices, medoids_mat);
-  steps = 1;
+  steps = 0;
 
   medoid_indices_build = medoid_indices;
   arma::rowvec assignments(data.n_cols);
