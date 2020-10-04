@@ -31,6 +31,9 @@ ext_modules = [
             '/sailhome/motiwari/armadillo_build/include',
             '/sailhome/motiwari/carma_build/include',
         ],
+        library_dirs=[
+            '/sailhome/motiwari/armadillo_build/lib',
+        ],
         libraries=['armadillo'],
         language='c++'
     ),
