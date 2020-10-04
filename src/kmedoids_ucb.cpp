@@ -11,11 +11,13 @@
 #include <unordered_map>
 
 KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_iter, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
+  logHelper.init(n_medoids);
   logFile.open(logFilename);
   KMedoids::checkAlgorithm(algorithm);
 }
 
 KMedoids::~KMedoids() {
+  logHelper.close();
   logFile.close();
 }
 
@@ -62,6 +64,9 @@ void KMedoids::fit(arma::mat input_data, std::string loss) {
   KMedoids::setLossFn(loss);
 
   (this->*fitFn)(input_data);
+  logBuffer << "Swap Steps:" << steps << '\n';
+  log(2);
+  // logHelper.writeProfile(medoid_indices_build, medoid_indices_final, 4, 7.44);
 }
 
 void KMedoids::fit_naive(arma::mat input_data) {
@@ -412,7 +417,6 @@ void KMedoids::swap(
             lcbs.elem(targets) = estimates.elem(targets) - cb_delta;
             candidates = (lcbs < ucbs.min()) && (exact_mask == 0);
             targets = arma::find(candidates);
-            steps++;
         }
         // now switch medoids
         arma::uword new_medoid = lcbs.index_min();
@@ -422,6 +426,9 @@ void KMedoids::swap(
         // extract data point of swap
         size_t n = new_medoid / medoids.n_cols;
         swap_performed = medoid_indices(k) != n;
+        if (swap_performed) {
+          steps++;
+        }
             logBuffer << (swap_performed ? ("swap performed")
                                          : ("no swap performed"))
                       << " " << medoid_indices(k) << "to" << n << '\n';

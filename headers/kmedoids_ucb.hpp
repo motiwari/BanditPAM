@@ -7,6 +7,40 @@
 #include <iostream>
 #include <chrono>
 
+struct LogHelper {
+    std::ofstream hlogFile;
+    std::string filename;
+    int k;
+
+    void init(int input_k, std::string input_filename = "HKMedoidsLogfile") {
+      k = input_datak;
+      filename = input_filename;
+    }
+
+    void close() {
+      hlogFile.close();
+      std::cout << "finished closing" << std::endl;
+    }
+
+    void writeProfile(arma::rowvec b_medoids, arma::rowvec f_medoids, int steps, double loss) {
+      hlogFile << "Built:";
+      for (size_t i = 0; i < k; i++) {
+        if (i == (k - 1)) {
+          hlogFile << b_medoids(i) << '\n';
+        }
+      }
+      hlogFile << "Swapped:";
+      for (size_t i = 0; i < k; i++) {
+        if (i == (k - 1)) {
+          hlogFile << f_medoids(i) << '\n';
+        }
+      }
+      hlogFile << "Num Swaps: " << steps << '\n';
+      hlogFile << "Final Loss: " << loss << '\n';
+      std::cout << "finished writing" << std::endl;
+    }
+};
+
 class KMedoids
 {
   public:
@@ -125,6 +159,8 @@ class KMedoids
     double (KMedoids::*lossFn)(int i, int j) const;
 
     void (KMedoids::*fitFn)(arma::mat input_data); // Function to use (from algorithm)
+
+    LogHelper logHelper;
 
     std::ofstream logFile;
 
