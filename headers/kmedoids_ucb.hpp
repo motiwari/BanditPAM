@@ -136,6 +136,10 @@ class KMedoids
 
     std::stringstream logBuffer;
 
+    std::ofstream swapLogfile;
+
+    std::stringstream swapLogBuffer;
+
     int steps; // number of actual swap iterations taken by the algorithm
 
     // Hyperparameters

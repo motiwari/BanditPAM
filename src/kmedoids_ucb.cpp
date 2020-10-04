@@ -453,6 +453,12 @@ void KMedoids::swap(
         logBuffer << "p: " << (float)1/(float)p << '\n';
         log(2);
     }
+
+    // Write iter to logfilename
+    swapLogBuffer << "Swaps: " << iter << '\n';
+    swapLogfile.open("S-" + logFilename);
+    swapLogfile << swapLogBuffer.rdbuf();
+    swapLogfile.clear();
 }
 
 void KMedoids::calc_best_distances_swap(
