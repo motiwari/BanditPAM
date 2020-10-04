@@ -27,7 +27,9 @@ ext_modules = [
         include_dirs=[
             # Path to pybind11 headers
             get_pybind_include(),
-            'headers'
+            'headers',
+            '/sailhome/motiwari/armadillo_build/include',
+            '/sailhome/motiwari/carma_build/include',
         ],
         libraries=['armadillo'],
         language='c++'
