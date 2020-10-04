@@ -53,6 +53,13 @@ int main(int argc, char* argv[])
     kmed.fit(data, loss);
     arma::rowvec meds = kmed.getMedoidsFinal();
 
+    kmed.setNMedoids(10);
+    std::cout << kmed.n_medoids << std::endl;
+
+    kmed.setLogFilename("hellologfile");
+    std::cout << kmed.logFilename << std::endl;
+
+
     std::cout << "Medoids:";
     for (size_t i = 0; i < k; i++) {
       std::cout << meds(i) << ", ";
