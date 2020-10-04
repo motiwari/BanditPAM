@@ -13,7 +13,7 @@ struct LogHelper {
     int k;
 
     void init(int input_k, std::string input_filename = "HKMedoidsLogfile") {
-      k = input_datak;
+      k = input_k;
       filename = input_filename;
     }
 
