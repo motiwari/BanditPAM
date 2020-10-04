@@ -87,7 +87,9 @@ def run_exp(args, prof_fname):
     kmed.fit(imgs, 'L2', args.num_medoids, prof_fname)
     end = timer()
     print(end - start)
-    with open(prof_fname, 'w+') as fout:
+    slash_idx = prof_fname.find('/')
+    t_name = os.path.join('profiles', 't' + prof_fname[slash_idx + 2:]) # Ignore the /-
+    with open(t_name, 'w+') as fout:
         fout.write("Runtime:" + str(end - start) + "\n")
     print("Done Fitting")
 

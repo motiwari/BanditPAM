@@ -11,8 +11,6 @@
 #include <unordered_map>
 
 KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_iter, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
-  logHelper.init(n_medoids);
-  logFile.open(logFilename);
   KMedoids::checkAlgorithm(algorithm);
 }
 
@@ -28,7 +26,6 @@ void KMedoids::setNMedoids(int k) {
 void KMedoids::setLogFilename(std::string l) {
   logFilename = l;
 }
-
 
 void KMedoids::checkAlgorithm(std::string algorithm) {
   if (algorithm == "BanditPAM") {
@@ -158,6 +155,8 @@ void KMedoids::swap_naive(
 }
 
 void KMedoids::fit_bpam(arma::mat input_data) {
+  logHelper.init(n_medoids);
+  logFile.open(logFilename);
   data = input_data;
   data = arma::trans(data);
   arma::mat medoids_mat(data.n_rows, n_medoids);
@@ -435,12 +434,12 @@ void KMedoids::swap(
         // extract data point of swap
         size_t n = new_medoid / medoids.n_cols;
         swap_performed = medoid_indices(k) != n;
-        if (swap_performed) {
-          steps++;
-        }
-            logBuffer << (swap_performed ? ("swap performed")
-                                         : ("no swap performed"))
-                      << " " << medoid_indices(k) << "to" << n << '\n';
+        steps++;
+
+        logBuffer << (swap_performed ? ("swap performed")
+                                     : ("no swap performed"))
+                                     << " " << medoid_indices(k) << "to" << n
+                                     << '\n';
         log(2);
         medoid_indices(k) = n;
         medoids.col(k) = data.col(medoid_indices(k));
