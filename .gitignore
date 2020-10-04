@@ -9,3 +9,4 @@ data/data.csv
 .egg/
 __pycache__
 .ipynb_checkpoints/
+python_generate_plots/__pycache__
