@@ -19,6 +19,15 @@ KMedoids::~KMedoids() {
   logFile.close();
 }
 
+void KMedoids::setNMedoids(int k) {
+  n_medoids = k;
+}
+
+void KMedoids::setLogFilename(std::string l) {
+  logFilename = l;
+}
+
+
 void KMedoids::checkAlgorithm(std::string algorithm) {
   if (algorithm == "BanditPAM") {
     fitFn = &KMedoids::fit_bpam;

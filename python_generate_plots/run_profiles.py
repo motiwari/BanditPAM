@@ -84,7 +84,7 @@ def run_exp(args, prof_fname):
 
     print("Fitting...")
     start = timer()
-    kmed.fit(imgs, 'L2')
+    kmed.fit(imgs, 'L2', args.num_medoids, prof_fname)
     end = timer()
     print(end - start)
     with open(prof_fname, 'w+') as fout:

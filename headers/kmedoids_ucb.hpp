@@ -16,6 +16,10 @@ class KMedoids
 
     ~KMedoids();
 
+    void setNMedoids(int k);
+
+    void setLogFilename(std::string l);
+
     void fit(arma::mat input_data, std::string loss);
 
     arma::rowvec getMedoidsFinal();
@@ -29,6 +33,12 @@ class KMedoids
     void checkAlgorithm(std::string algorithm);
 
     int getSteps();
+
+    // Constructor parameters
+    int n_medoids; // TODO (@Mo): Rename this to k, make this private
+
+    std::string logFilename; // TODO: Make this private
+
 
   private:
     // The functions below are PAM's constituent functions
@@ -102,16 +112,12 @@ class KMedoids
 
     void log(int priority);
 
-    // Constructor parameters
-    int n_medoids; // TODO (@Mo): Rename this to k
-
+    // Constructor params
     std::string algorithm; // options: "naive" and "BanditPAM"
 
     int max_iter;
 
     int verbosity;
-
-    std::string logFilename;
 
     // Properties of the KMedoids instance
     arma::mat data;

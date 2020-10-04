@@ -10,7 +10,9 @@ class KMedsWrapper : public KMedoids {
 public:
   using KMedoids::KMedoids;
 
-  void fitPython(py::array_t<double> input_data, std::string loss) {
+  void fitPython(py::array_t<double> input_data, std::string loss, int k, std::string logFilename) {
+    KMedoids::setNMedoids(k);
+    KMedoids::setLogFilename(logFilename);
     KMedoids::fit(carma::arr_to_mat<double>(input_data), loss);
   }
 
