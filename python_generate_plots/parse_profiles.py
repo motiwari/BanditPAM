@@ -214,20 +214,20 @@ def main():
     # dir_ = 'MNIST_L2_k5_paper'
 
     ### for MNIST L2, k = 10
-    dataset = 'MNIST'
-    metric = 'L2'
-    Ns = [10000, 20000, 40000, 70000]
-    ks = [10]
-    seeds = range(10)
-    dir_ = 'MNIST_L2_k10_paper_badram'
+    # dataset = 'MNIST'
+    # metric = 'L2'
+    # Ns = [10000, 20000, 40000, 70000]
+    # ks = [10]
+    # seeds = range(10)
+    # dir_ = 'MNIST_L2_k10_paper_badram'
 
     ##### for MNIST COSINE
-    # dataset = 'MNIST'
-    # metric = 'COSINE'
-    # Ns = [3000, 10000, 20000, 40000]
-    # ks = [5]
-    # seeds = range(42, 52)
-    # dir_ = 'MNIST_COSINE_k5_paper'
+    dataset = 'MNIST'
+    metric = 'cos'
+    Ns = [10000, 20000, 40000, 70000]
+    ks = [5]
+    seeds = range(10)
+    dir_ = 'MNIST_COSINE_k5_paper'
 
     #### for scRNAPCA, L2, K = 10
     # dataset = 'SCRNAPCA'

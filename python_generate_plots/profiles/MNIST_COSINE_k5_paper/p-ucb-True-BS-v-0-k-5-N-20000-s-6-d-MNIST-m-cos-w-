@@ -1,0 +1,46 @@
+Sigma: min: 0.488424, 25th: 0.966182, median: 1.11729, 75th: 1.33164, max: 1.95844, mean: 1.16519
+Computing exactly for 6 out of 20000
+Loss: 8.82523
+p: 5e-08
+Sigma: min: 0, 25th: 0.286996, median: 0.375768, 75th: 0.491363, max: 1.46329, mean: 0.413199
+Computing exactly for 305 out of 20000
+Loss: 8.51063
+p: 5e-08
+Sigma: min: 0, 25th: 0.224537, median: 0.317324, 75th: 0.419814, max: 1.18596, mean: 0.325909
+Computing exactly for 62 out of 20000
+Loss: 8.27246
+p: 5e-08
+Sigma: min: 0, 25th: 0.14528, median: 0.234467, 75th: 0.361379, max: 1.20037, mean: 0.26751
+Computing exactly for 212 out of 20000
+Loss: 8.07315
+p: 5e-08
+Sigma: min: 0, 25th: 0.12382, median: 0.196478, 75th: 0.289887, max: 1.11185, mean: 0.216587
+Computing exactly for 3 out of 20000
+Loss: 8.04123
+p: 5e-08
+COMPUTING EXACTLY 737 out of 100000
+swap performed 709to16655
+Sigma: min: 0, max: 1.4387, mean: 0.55488
+Loss: 7.94654
+p: 1e-08
+COMPUTING EXACTLY 258 out of 100000
+swap performed 8114to1305
+Sigma: min: 0, max: 1.41618, mean: 0.506463
+Loss: 7.9183
+p: 1e-08
+COMPUTING EXACTLY 168 out of 100000
+swap performed 10879to6903
+Sigma: min: 0, max: 1.40367, mean: 0.566658
+Loss: 7.90393
+p: 1e-08
+COMPUTING EXACTLY 38 out of 100000
+swap performed 971to14126
+Sigma: min: 0, max: 1.45224, mean: 0.614256
+Loss: 7.89531
+p: 1e-08
+COMPUTING EXACTLY 29 out of 100000
+no swap performed 1305to1305
+Sigma: min: 0, max: 1.57472, mean: 0.735383
+Loss: 7.89531
+p: 1e-08
+Swap Steps:5
