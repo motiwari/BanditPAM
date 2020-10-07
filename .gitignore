@@ -10,3 +10,4 @@ data/data.csv
 __pycache__
 .ipynb_checkpoints/
 python_generate_plots/__pycache__
+python_generate_plots/scrna_data/*

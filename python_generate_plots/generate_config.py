@@ -22,18 +22,18 @@ def main():
     seeds = range(10)
 
     ####### MNIST, L2 distance, k = 5 and k = 10
-    # dataset = 'MNIST'
-    # #Ns = [1000]#, 10000, 20000, 40000, 70000]
-    # Ns = [3000, 10000, 20000, 40000, 70000]
-    # #ks = [5, 10, 30, 50, 100, 200]
-    # ks = [10]
-    # metric = 'L2'
+    dataset = 'MNIST'
+    #Ns = [1000]#, 10000, 20000, 40000, 70000]
+    Ns = [3000, 10000, 20000, 40000, 70000]
+    #ks = [5, 10, 30, 50, 100, 200]
+    ks = [10]
+    metric = 'L2'
 
     ######## MNIST, Cosine distance, k = 5
-    dataset = 'MNIST'
-    Ns = [3000, 10000, 20000, 40000, 70000]
-    ks = [5]
-    metric = 'cos'
+    # dataset = 'MNIST'
+    # Ns = [3000, 10000, 20000, 40000, 70000]
+    # ks = [5]
+    # metric = 'cos'
 
     ######## SCRNA, L1 distance, k = 5
     # dataset = 'SCRNA'

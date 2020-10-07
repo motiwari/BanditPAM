@@ -73,7 +73,7 @@ def load_data(args):
         # Normalizing images
         return total_images.reshape(N, m * m) / 255, total_labels, sigma
     elif args.dataset == "SCRNA":
-        file = 'person1/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices/NUMPY_OUT/np_data.npy'
+        file = 'scrna_data/np_data.npy'
         data_ = np.load(file)
         sigma = 25
         return data_, None, sigma
