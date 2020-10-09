@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fitpython',['fitPython',['../classKMedsWrapper.html#ac0311bd5d2aef638cf794e4412426d3c',1,'KMedsWrapper']]]
+  ['checkalgorithm',['checkAlgorithm',['../classKMedoids.html#af5b9331755cd049afb05af8ecee3aeb5',1,'KMedoids']]]
 ];

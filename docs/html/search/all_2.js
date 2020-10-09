@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['kmedoids_5fucb_2ecpp',['kmedoids_ucb.cpp',['../kmedoids__ucb_8cpp.html',1,'']]],
-  ['kmeds_5fpywrapper_2ecpp',['kmeds_pywrapper.cpp',['../kmeds__pywrapper_8cpp.html',1,'']]],
-  ['kmedswrapper',['KMedsWrapper',['../classKMedsWrapper.html',1,'']]]
+  ['fit',['fit',['../classKMedoids.html#ab68f7ee100ab2a15bc6ee0ba28f128ba',1,'KMedoids']]],
+  ['fitpython',['fitPython',['../classKMedsWrapper.html#ac0311bd5d2aef638cf794e4412426d3c',1,'KMedsWrapper']]]
 ];
