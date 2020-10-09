@@ -1,23 +1,53 @@
+/**
+ * @file kmedoids_ucb.cpp
+ * @date 2020-06-10
+ *
+ * This file contains the main C++ implementation of the BanditPAM code.
+ *
+ */
 #include "kmedoids_ucb.hpp"
 #include <armadillo>
 #include <unordered_map>
 
+/**
+ *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
+ *  for a particular set of input data.
+ *
+ *  @param n_medoids Number of medoids to identify
+ *  @param algorithm Algorithm to use to find medoids; options are "BanditPAM" for
+ *  this paper's iplementation, or "naive" to use the naive method
+ *  @param verbosity Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file
+ *  @param max_iter The maximum number of iterations to run the algorithm for
+ *  @param logFilename The name of the output log file
+ */
 KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_iter, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
   KMedoids::checkAlgorithm(algorithm);
 }
 
+/**
+ * This function is the destructor for the KMedoids class.
+ */
 KMedoids::~KMedoids() {
   logFile.close();
 }
 
+/**
+ * This function sets the KMedoids object's medoids
+ */
 void KMedoids::setNMedoids(int k) {
   n_medoids = k;
 }
 
+/**
+ * This function sets the log file name
+ */
 void KMedoids::setLogFilename(std::string l) {
   logFilename = l;
 }
 
+/**
+ * This function sets the algorithm the KMedoids object will use
+ */
 void KMedoids::checkAlgorithm(std::string algorithm) {
   if (algorithm == "BanditPAM") {
     fitFn = &KMedoids::fit_bpam;
@@ -28,22 +58,38 @@ void KMedoids::checkAlgorithm(std::string algorithm) {
   }
 }
 
+/**
+ * This function returns the final medoids for a KMedoids object.
+ */
 arma::rowvec KMedoids::getMedoidsFinal() {
   return medoid_indices_final;
 }
 
+/**
+ * This function returns the build medoids for a KMedoids object.
+ */
 arma::rowvec KMedoids::getMedoidsBuild() {
   return medoid_indices_build;
 }
 
+/**
+ * This function returns the labels/medoids assignments for each datapoint after the final
+ * medoids are identified.
+ */
 arma::rowvec KMedoids::getLabels() {
   return labels;
 }
 
+/**
+ * This function returns the number of swap steps that took place during the computation
+ */
 int KMedoids::getSteps() {
   return steps;
 }
 
+/**
+ * This function sets the loss function the KMedoids object will use
+ */
 void KMedoids::setLossFn(std::string loss) {
   if (loss == "manhattan") {
       lossFn = &KMedoids::manhattan;
@@ -57,6 +103,14 @@ void KMedoids::setLossFn(std::string loss) {
       throw "unrecognized loss function";
   }
 }
+
+/**
+ * This is the main function of the KMedoids object: this finds the build and swap
+ * medoids for the desired data
+ *
+ * @param input_data Input data to find the medoids of
+ * @param loss The loss function used during medoid computation
+ */
 void KMedoids::fit(arma::mat input_data, std::string loss) {
   logHelper.init(n_medoids, logFilename);
   KMedoids::setLossFn(loss);
@@ -67,6 +121,13 @@ void KMedoids::fit(arma::mat input_data, std::string loss) {
   logHelper.close();
 }
 
+
+/**
+ * This function will run the naive PAM algorithm to identify a datasets medoids.
+ *
+ * @param input_data Input data to find the medoids of
+ * @param loss The loss function used during medoid computation
+ */
 void KMedoids::fit_naive(arma::mat input_data) {
   data = input_data;
   data = arma::trans(data);
@@ -87,6 +148,9 @@ void KMedoids::fit_naive(arma::mat input_data) {
   medoid_indices_final = medoid_indices;
 }
 
+/**
+ * Build step for the naive algorithm
+ */
 void KMedoids::build_naive(
   arma::rowvec& medoid_indices)
 {
@@ -114,6 +178,9 @@ void KMedoids::build_naive(
   }
 }
 
+/**
+ * Swap step for the naive algorithm
+ */
 void KMedoids::swap_naive(
   arma::rowvec& medoid_indices)
 {
@@ -146,6 +213,11 @@ void KMedoids::swap_naive(
   medoid_indices(medoid_to_swap) = best;
 }
 
+/**
+ * This function will run the BanditPAM algorithm to identify a datasets medoids.
+ *
+ * @param input_data Input data to find the medoids of
+ */
 void KMedoids::fit_bpam(arma::mat input_data) {
   // logFile.open(logFilename);
   data = input_data;
