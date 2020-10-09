@@ -3,6 +3,7 @@
 
 #include <omp.h>
 #include <armadillo>
+#include <vector>
 #include <fstream>
 #include <iostream>
 #include <chrono>
@@ -12,9 +13,22 @@ struct LogHelper {
     std::string filename;
     int k;
 
+    std::vector<double> comp_exact_build;
+    std::vector<double> comp_exact_swap;
+
+    std::vector<double> loss_build;
+    std::vector<double> loss_swap;
+
+    std::vector<double> p_build;
+    std::vector<double> p_swap;
+
+    std::vector<std::string> sigma_build;
+    std::vector<std::string> sigma_swap;
+
     void init(int input_k, std::string input_filename = "HKMedoidsLogfile") {
       k = input_k;
       filename = input_filename;
+      hlogFile.open(filename);
     }
 
     void close() {
@@ -24,20 +38,57 @@ struct LogHelper {
 
     void writeProfile(arma::rowvec b_medoids, arma::rowvec f_medoids, int steps, double loss) {
       hlogFile << "Built:";
-      for (size_t i = 0; i < k; i++) {
+      for (size_t i = 0; i < b_medoids.n_cols; i++) {
         if (i == (k - 1)) {
           hlogFile << b_medoids(i) << '\n';
+        } else {
+          hlogFile << b_medoids(i) << ',';
         }
       }
       hlogFile << "Swapped:";
-      for (size_t i = 0; i < k; i++) {
+      for (size_t i = 0; i < f_medoids.n_cols; i++) {
         if (i == (k - 1)) {
           hlogFile << f_medoids(i) << '\n';
+        } else {
+          hlogFile << f_medoids(i) << ',';
         }
       }
       hlogFile << "Num Swaps: " << steps << '\n';
       hlogFile << "Final Loss: " << loss << '\n';
-      std::cout << "finished writing" << std::endl;
+      hlogFile << "Build Logstring:" << '\n';
+      hlogFile << "\t\tcompute_exactly:\n";
+      for (size_t i = 0; i < k; i++) {
+        hlogFile << "\t\t\t\t" << i << ": " << comp_exact_build.at(i) << '\n';
+      }
+      hlogFile << "\t\tloss:\n";
+      for (size_t i = 0; i < k; i++) {
+        hlogFile << "\t\t\t\t" << i << ": " << loss_build.at(i) << '\n';
+      }
+      hlogFile << "\t\tp:\n";
+      for (size_t i = 0; i < k; i++) {
+        hlogFile << "\t\t\t\t" << i << ": " << p_build.at(i) << '\n';
+      }
+      hlogFile << "\t\tsigma:\n";
+      for (size_t i = 0; i < k; i++) {
+        hlogFile << "\t\t\t\t" << i << ": " << sigma_build.at(i) << '\n';
+      }
+      hlogFile << "Swap Logstring:" << '\n';
+      hlogFile << "\t\tcompute_exactly:\n";
+      for (size_t i = 0; i < k; i++) {
+        hlogFile << "\t\t\t\t" << i << ": " << comp_exact_swap.at(i) << '\n';
+      }
+      hlogFile << "\t\tloss:\n";
+      for (size_t i = 0; i < k; i++) {
+        hlogFile << "\t\t\t\t" << i << ": " << loss_swap.at(i) << '\n';
+      }
+      hlogFile << "\t\tp:\n";
+      for (size_t i = 0; i < k; i++) {
+        hlogFile << "\t\t\t\t" << i << ": " << p_swap.at(i) << '\n';
+      }
+      hlogFile << "\t\tsigma:\n";
+      for (size_t i = 0; i < k; i++) {
+        hlogFile << "\t\t\t\t" << i << ": " << sigma_swap.at(i) << '\n';
+      }
     }
 };
 

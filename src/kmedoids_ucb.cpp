@@ -1,11 +1,3 @@
-/**
- * @file kmedoids_ucb.cpp
- * @date 2020-06-09
- *
- * This file contains the implementation details for the confidence
- * bound improvement of the kmedoids PAM algorithim.
- */
-
 #include "kmedoids_ucb.hpp"
 #include <armadillo>
 #include <unordered_map>
@@ -15,7 +7,6 @@ KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_
 }
 
 KMedoids::~KMedoids() {
-  logHelper.close();
   logFile.close();
 }
 
@@ -67,12 +58,13 @@ void KMedoids::setLossFn(std::string loss) {
   }
 }
 void KMedoids::fit(arma::mat input_data, std::string loss) {
+  logHelper.init(n_medoids, logFilename);
   KMedoids::setLossFn(loss);
-
   (this->*fitFn)(input_data);
   logBuffer << "Swap Steps:" << steps << '\n';
   log(2);
-  // logHelper.writeProfile(medoid_indices_build, medoid_indices_final, 4, 7.44);
+  logHelper.writeProfile(medoid_indices_build, medoid_indices_final, 4, 7.44);
+  logHelper.close();
 }
 
 void KMedoids::fit_naive(arma::mat input_data) {
@@ -155,8 +147,7 @@ void KMedoids::swap_naive(
 }
 
 void KMedoids::fit_bpam(arma::mat input_data) {
-  logHelper.init(n_medoids);
-  logFile.open(logFilename);
+  // logFile.open(logFilename);
   data = input_data;
   data = arma::trans(data);
   arma::mat medoids_mat(data.n_rows, n_medoids);
@@ -210,7 +201,8 @@ void KMedoids::build(
                 arma::uvec targets = find(compute_exactly);
                 logBuffer << "Computing exactly for " << targets.n_rows
                           << " out of " << data.n_cols << '\n';
-                log(2);
+                // log(2);
+                logHelper.comp_exact_build.push_back(targets.n_rows);
                 arma::rowvec result =
                   build_target(targets, N, best_distances, use_absolute);
                 estimates.cols(targets) = result;
@@ -255,10 +247,12 @@ void KMedoids::build(
         }
         use_absolute = false; // use difference of loss for sigma and sampling,
                               // not absolute
-        logBuffer << "Loss: " << arma::mean(arma::mean(best_distances)) << '\n';
-        log(2);
-        logBuffer << "p: " << (float)1/(float)p << '\n';
-        log(2);
+        logHelper.loss_build.push_back(arma::mean(arma::mean(best_distances)));
+        logHelper.p_build.push_back((float)1/(float)p);
+        // logBuffer << "Loss: " << arma::mean(arma::mean(best_distances)) << '\n';
+        // log(2);
+        // logBuffer << "p: " << (float)1/(float)p << '\n';
+        // log(2);
     }
 }
 
@@ -291,12 +285,14 @@ void KMedoids::build_sigma(
     }
     arma::rowvec P = {0.25, 0.5, 0.75};
     arma::rowvec Q = arma::quantile(sigma, P);
-    logBuffer << "Sigma: min: " << arma::min(sigma)
+    std::ostringstream sigma_out;
+    sigma_out << "min: " << arma::min(sigma)
               << ", 25th: " << Q(0)
               << ", median: " << Q(1)
               << ", 75th: " << Q(2)
               << ", max: " << arma::max(sigma)
-              << ", mean: " << arma::mean(sigma) << '\n';
+              << ", mean: " << arma::mean(sigma);
+    logHelper.sigma_build.push_back(sigma_out.str());
     log(2);
 }
 
@@ -383,9 +379,10 @@ void KMedoids::swap(
             arma::uvec targets = arma::find(compute_exactly);
 
             if (targets.size() > 0) {
-                logBuffer << "COMPUTING EXACTLY " << targets.size()
-                          << " out of " << candidates.size() << '\n';
-                log(2);
+                // logBuffer << "COMPUTING EXACTLY " << targets.size()
+                //           << " out of " << candidates.size() << '\n';
+                // log(2);
+                logHelper.comp_exact_swap.push_back(targets.size());
                 arma::vec result = swap_target(medoid_indices,
                                                targets,
                                                N,
@@ -436,35 +433,28 @@ void KMedoids::swap(
         swap_performed = medoid_indices(k) != n;
         steps++;
 
-        logBuffer << (swap_performed ? ("swap performed")
-                                     : ("no swap performed"))
-                                     << " " << medoid_indices(k) << "to" << n
-                                     << '\n';
-        log(2);
+        // logBuffer << (swap_performed ? ("swap performed")
+        //                              : ("no swap performed"))
+        //                              << " " << medoid_indices(k) << "to" << n
+        //                              << '\n';
+        // log(2);
         medoid_indices(k) = n;
         medoids.col(k) = data.col(medoid_indices(k));
         calc_best_distances_swap(
           medoid_indices, best_distances, second_distances, assignments);
         // arma::rowvec P = {0.25, 0.5, 0.75};
         // arma::rowvec Q = arma::quantile(sigma.elem(targets), P);
-        logBuffer << "Sigma: min: " << sigma.min()
+        std::ostringstream sigma_out;
+        sigma_out << "Sigma: min: " << sigma.min()
         // << ", 25th: " << Q(0)
         // << ", median: " << Q(1)
         // << ", 75th: " << Q(2)
         << ", max: " << sigma.max()
-        << ", mean: " << arma::mean(arma::mean(sigma)) << '\n';
-        log(2);
-        logBuffer << "Loss: " << arma::mean(arma::mean(best_distances)) << '\n';
-        log(2);
-        logBuffer << "p: " << (float)1/(float)p << '\n';
-        log(2);
+        << ", mean: " << arma::mean(arma::mean(sigma));
+        logHelper.sigma_swap.push_back(sigma_out.str());
+        logHelper.loss_swap.push_back(arma::mean(arma::mean(best_distances)));
+        logHelper.p_swap.push_back((float)1/(float)p);
     }
-
-    // Write iter to logfilename
-    swapLogBuffer << "Swaps: " << iter << '\n';
-    swapLogfile.open("S-" + logFilename);
-    swapLogfile << swapLogBuffer.rdbuf();
-    swapLogfile.clear();
 }
 
 void KMedoids::calc_best_distances_swap(
@@ -578,15 +568,6 @@ void KMedoids::swap_sigma(
         }
         sigma(k, n) = arma::stddev(sample);
     }
-    // arma::rowvec P = {0.25, 0.5, 0.75};
-    // arma::rowvec Q = arma::quantile(sigma, P);
-    // logBuffer << "Sigma: min: " << sigma.min()
-    //           << ", 25th: " << Q(0)
-    //           << ", median: " << Q(1)
-    //           << ", 75th: " << Q(2)
-    //           << ", max: " << sigma.max() << '\n';
-    //           // << ", mean: " << arma::mean(arma::mean(sigma)) << '\n';
-    // log(2);
 }
 
 double KMedoids::calc_loss(

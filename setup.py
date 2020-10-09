@@ -28,12 +28,12 @@ ext_modules = [
             # Path to pybind11 headers
             get_pybind_include(),
             'headers',
-            '/sailhome/motiwari/armadillo_build/include',
-            '/sailhome/motiwari/carma_build/include',
+            # '/sailhome/motiwari/armadillo_build/include',
+            # '/sailhome/motiwari/carma_build/include',
         ],
-        library_dirs=[
-            '/sailhome/motiwari/armadillo_build/lib',
-        ],
+        # library_dirs=[
+        #     '/sailhome/motiwari/armadillo_build/lib',
+        # ],
         libraries=['armadillo'],
         language='c++'
     ),
