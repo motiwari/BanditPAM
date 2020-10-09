@@ -57,41 +57,52 @@ struct LogHelper {
       hlogFile << "Final Loss: " << loss << '\n';
       hlogFile << "Build Logstring:" << '\n';
       hlogFile << "\t\tcompute_exactly:\n";
-      for (size_t i = 0; i < k; i++) {
+      for (size_t i = 0; i < comp_exact_build.size(); i++) {
         hlogFile << "\t\t\t\t" << i << ": " << comp_exact_build.at(i) << '\n';
       }
       hlogFile << "\t\tloss:\n";
-      for (size_t i = 0; i < k; i++) {
+      for (size_t i = 0; i < loss_build.size(); i++) {
         hlogFile << "\t\t\t\t" << i << ": " << loss_build.at(i) << '\n';
       }
       hlogFile << "\t\tp:\n";
-      for (size_t i = 0; i < k; i++) {
+      for (size_t i = 0; i < p_build.size(); i++) {
         hlogFile << "\t\t\t\t" << i << ": " << p_build.at(i) << '\n';
       }
       hlogFile << "\t\tsigma:\n";
-      for (size_t i = 0; i < k; i++) {
+      for (size_t i = 0; i < sigma_build.size(); i++) {
         hlogFile << "\t\t\t\t" << i << ": " << sigma_build.at(i) << '\n';
       }
       hlogFile << "Swap Logstring:" << '\n';
       hlogFile << "\t\tcompute_exactly:\n";
-      for (size_t i = 0; i < k; i++) {
+      for (size_t i = 0; i < comp_exact_swap.size(); i++) {
         hlogFile << "\t\t\t\t" << i << ": " << comp_exact_swap.at(i) << '\n';
       }
       hlogFile << "\t\tloss:\n";
-      for (size_t i = 0; i < k; i++) {
+      for (size_t i = 0; i < loss_swap.size(); i++) {
         hlogFile << "\t\t\t\t" << i << ": " << loss_swap.at(i) << '\n';
       }
       hlogFile << "\t\tp:\n";
-      for (size_t i = 0; i < k; i++) {
+      for (size_t i = 0; i < p_swap.size(); i++) {
         hlogFile << "\t\t\t\t" << i << ": " << p_swap.at(i) << '\n';
       }
       hlogFile << "\t\tsigma:\n";
-      for (size_t i = 0; i < k; i++) {
+      for (size_t i = 0; i < sigma_swap.size(); i++) {
         hlogFile << "\t\t\t\t" << i << ": " << sigma_swap.at(i) << '\n';
       }
     }
 };
 
+/**
+ *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
+ *  for a particular set of input data.
+ *
+ *  @param n_medoids Number of medoids to identify
+ *  @param algorithm Algorithm to use to find medoids; options are "BanditPAM" for
+ *  this paper's iplementation, or "naive" to use the naive method
+ *  @param verbosity Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file
+ *  @param max_iter The maximum number of iterations to run the algorithm for
+ *  @param logFilename The name of the output log file
+ */
 class KMedoids
 {
   public:
