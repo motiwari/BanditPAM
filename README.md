@@ -1,4 +1,3 @@
-
 # BanditPAM: Almost Linear-Time k-Medoids Clustering
 
 This repo contains a high-performance implementation of BanditPAM from https://arxiv.org/abs/2006.06856. The code can be called directly from Python or C++.
@@ -44,7 +43,8 @@ X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 
 # Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids = 3, algorithm = "BanditPAM")
-kmed.fit(X, 'L2')
+# Writes results to gmm_log
+kmed.fit(X, 'L2', 3, "gmm_log")
 
 # Visualize the data and the medoids:
 for p_idx, point in enumerate(X):
@@ -75,7 +75,7 @@ X_tsne = TSNE(n_components = 2).fit_transform(X)
 
 # Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids = 10, algorithm = "BanditPAM")
-kmed.fit(X, 'L2')
+kmed.fit(X, 'L2', 10, "mnist_log")
 
 # Visualize the data and the medoids via t-SNE:
 for p_idx, point in enumerate(X):
@@ -85,6 +85,8 @@ for p_idx, point in enumerate(X):
         plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='blue', s = 5)
 plt.show()
 ```
+The corresponding logfile for this run, `mnist_log`, will contain the run's results
+and additional statistics in a format that can be easily read into json.
 
 ## Building the C++ executable from source
 
@@ -127,7 +129,7 @@ This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
 ## Usage
 
-Once the executable has been built, it can be invoked with: 
+Once the executable has been built, it can be invoked with:
 ```
 /BanditPAM/build/src/BanditPAM -f [path/to/input.csv] -k [number of clusters] -v [verbosity level]
 ```
