@@ -2,11 +2,11 @@
  * @file main.cpp
  * @date 2020-06-10
  *
- * This file defines a command line program that can be used
- * to run the BanditPAM KMedoids algorithim.
+ * Defines a command line program that can be used
+ * to run the BanditPAM KMedoids algorithm.
  *
- * Usage
- * ./pam [path/to/input] [number of clusters] -a
+ * Usage (from home repo directory):
+ * ./cluster -f [path/to/input] -k [number of clusters]
  */
 
 #include "kmedoids_ucb.hpp"
@@ -25,14 +25,18 @@ int main(int argc, char* argv[])
 
     while ((opt = getopt(argc, argv, "f:k:v:")) != -1) {
         switch (opt) {
+            // path to the data file to be read in
             case 'f':
                 input_name = optarg;
                 break;
+            // number of clusters to create
             case 'k':
                 k = std::stoi(optarg);
                 break;
+            // type of loss/distance function to use
             case 'l':
                 loss = optarg;
+            // set the verbosity of the algorithm
             case 'v':
             	verbosity = std::stoi(optarg);
             	break;
