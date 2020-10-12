@@ -33,7 +33,6 @@ struct LogHelper {
 
     void close() {
       hlogFile.close();
-      std::cout << "finished closing" << std::endl;
     }
 
     void writeProfile(arma::rowvec b_medoids, arma::rowvec f_medoids, int steps, double loss) {

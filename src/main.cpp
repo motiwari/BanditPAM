@@ -55,19 +55,16 @@ int main(int argc, char* argv[])
 
     KMedoids kmed;
     kmed.fit(data, loss);
-    arma::rowvec meds = kmed.getMedoidsFinal();
 
-    kmed.setNMedoids(10);
-    std::cout << kmed.n_medoids << std::endl;
-
-    kmed.setLogFilename("hellologfile");
-    std::cout << kmed.logFilename << std::endl;
-
-
-    std::cout << "Medoids:";
-    for (size_t i = 0; i < k; i++) {
-      std::cout << meds(i) << ", ";
+    if (verbosity > 0) {
+      arma::rowvec meds = kmed.getMedoidsFinal();
+      std::cout << "Medoids: ";
+      for (size_t i = 0; i < k; i++) {
+        if (i == (k-1)) {
+          std::cout << meds(i) << std::endl;
+        } else {
+          std::cout << meds(i) << ", ";
+        }
+      }
     }
-    std::cout << std::endl;
-    std::cout << "Steps:" << kmed.getSteps() << std::endl;
 }
