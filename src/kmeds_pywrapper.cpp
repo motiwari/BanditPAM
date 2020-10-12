@@ -77,6 +77,11 @@ PYBIND11_MODULE(BanditPAM, m) {
         py::arg("max_iter") = 1000,
         py::arg("logFilename") = "KMedoidsLogfile"
       )
+      .def_property("n_medoids", &KMedsWrapper::getNMedoids, &KMedsWrapper::setNMedoids)
+      .def_property("algorithm", &KMedsWrapper::getAlgorithm, &KMedsWrapper::setAlgorithm)
+      .def_property("verbosity", &KMedsWrapper::getVerbosity, &KMedsWrapper::setVerbosity)
+      .def_property("max_iter", &KMedsWrapper::getMaxIter, &KMedsWrapper::setMaxIter)
+      .def_property("logFilename", &KMedsWrapper::getLogfileName, &KMedsWrapper::setLogFilename)
       .def_property_readonly("final_medoids", &KMedsWrapper::getMedoidsFinalPython)
       .def_property_readonly("build_medoids", &KMedsWrapper::getMedoidsBuildPython)
       .def_property_readonly("labels", &KMedsWrapper::getLabelsPython)

@@ -103,8 +103,7 @@ struct LogHelper {
  *  @param max_iter The maximum number of iterations to run the algorithm for
  *  @param logFilename The name of the output log file
  */
-class KMedoids
-{
+class KMedoids {
   public:
     KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000, std::string logFilename = "KMedoidsLogfile");
 
@@ -112,11 +111,9 @@ class KMedoids
 
     ~KMedoids();
 
-    void setNMedoids(int k);
-
-    void setLogFilename(std::string l);
-
     void fit(arma::mat input_data, std::string loss);
+
+    // The functions below are "get" functions for read-only attributes
 
     arma::rowvec getMedoidsFinal();
 
@@ -124,18 +121,31 @@ class KMedoids
 
     arma::rowvec getLabels();
 
-    void setLossFn(std::string loss);
-
-    void checkAlgorithm(std::string algorithm);
-
     int getSteps();
 
-    // Constructor parameters
-    int n_medoids; // TODO (@Mo): Rename this to k, make this private
+    // The functions below are get/set functions for attributes
 
-    std::string logFilename; // TODO: Make this private
+    int getNMedoids();
 
+    void setNMedoids(int new_num);
 
+    std::string getAlgorithm();
+
+    void setAlgorithm(std::string new_alg);
+
+    int getVerbosity();
+
+    void setVerbosity(int new_ver);
+
+    int getMaxIter();
+
+    void setMaxIter(int new_max);
+
+    std::string getLogfileName();
+
+    void setLogFilename(std::string new_lname);
+
+    void setLossFn(std::string loss);
   private:
     // The functions below are PAM's constituent functions
     void fit_bpam(arma::mat input_data);
@@ -208,12 +218,18 @@ class KMedoids
 
     void log(int priority);
 
+    void checkAlgorithm(std::string algorithm);
+
     // Constructor params
     std::string algorithm; // options: "naive" and "BanditPAM"
 
     int max_iter;
 
     int verbosity;
+
+    int n_medoids;
+
+    std::string logFilename;
 
     // Properties of the KMedoids instance
     arma::mat data;

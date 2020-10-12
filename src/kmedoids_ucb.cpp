@@ -32,20 +32,6 @@ KMedoids::~KMedoids() {
 }
 
 /**
- * This function sets the KMedoids object's medoids
- */
-void KMedoids::setNMedoids(int k) {
-  n_medoids = k;
-}
-
-/**
- * This function sets the log file name
- */
-void KMedoids::setLogFilename(std::string l) {
-  logFilename = l;
-}
-
-/**
  * This function sets the algorithm the KMedoids object will use
  */
 void KMedoids::checkAlgorithm(std::string algorithm) {
@@ -105,6 +91,76 @@ void KMedoids::setLossFn(std::string loss) {
 }
 
 /**
+ * This function gets the number of clusters for the KMedoids object
+ */
+int KMedoids::getNMedoids() {
+  return n_medoids;
+}
+
+/**
+ * This function sets the number of clusters for the KMedoids object
+ */
+void KMedoids::setNMedoids(int new_num) {
+  n_medoids = new_num;
+}
+
+/**
+ * This function gets the algorithm for the KMedoids object
+ */
+std::string KMedoids::getAlgorithm() {
+  return algorithm;
+}
+
+/**
+ * This function sets the algorithm for the KMedoids object
+ */
+void KMedoids::setAlgorithm(std::string new_alg) {
+  algorithm = new_alg;
+}
+
+/**
+ * This function gets the verbosity for the KMedoids object
+ */
+int KMedoids::getVerbosity() {
+  return verbosity;
+}
+
+/**
+ * This function sets the verbosity for the KMedoids object
+ */
+void KMedoids::setVerbosity(int new_ver) {
+  verbosity = new_ver;
+}
+
+/**
+ * This function gets the maximum number of iterations for the KMedoids object
+ */
+int KMedoids::getMaxIter() {
+  return max_iter;
+}
+
+/**
+ * This function sets the maximum number of iterations for the KMedoids object
+ */
+void KMedoids::setMaxIter(int new_max) {
+  max_iter = new_max;
+}
+
+/**
+ * This function gets the log filename for the KMedoids object
+ */
+std::string KMedoids::getLogfileName() {
+  return logFilename;
+}
+
+/**
+ * This function sets the log filename for the KMedoids object
+ */
+void KMedoids::setLogFilename(std::string new_lname) {
+  logFilename = new_lname;
+}
+
+/**
  * This is the main function of the KMedoids object: this finds the build and swap
  * medoids for the desired data
  *
@@ -115,15 +171,13 @@ void KMedoids::fit(arma::mat input_data, std::string loss) {
   logHelper.init(n_medoids, logFilename);
   KMedoids::setLossFn(loss);
   (this->*fitFn)(input_data);
-  logBuffer << "Swap Steps:" << steps << '\n';
-  log(2);
   logHelper.writeProfile(medoid_indices_build, medoid_indices_final, 4, 7.44);
   logHelper.close();
 }
 
 
 /**
- * This function will run the naive PAM algorithm to identify a datasets medoids.
+ * This function will run the naive PAM algorithm to identify a dataset's medoids.
  *
  * @param input_data Input data to find the medoids of
  * @param loss The loss function used during medoid computation
@@ -214,7 +268,7 @@ void KMedoids::swap_naive(
 }
 
 /**
- * This function will run the BanditPAM algorithm to identify a datasets medoids.
+ * This function will run the BanditPAM algorithm to identify a dataset's medoids.
  *
  * @param input_data Input data to find the medoids of
  */
