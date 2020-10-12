@@ -1,13 +1,15 @@
+import sys
+import os
+import tempfile
+import setuptools
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
-import sys
-import setuptools
 
 __version__ = '0.0.1'
 
 
 class get_pybind_include(object):
-    """Helper class to determine the pybind11 include path
+    r"""Helper class to determine the pybind11 include path
     The purpose of this class is to postpone importing pybind11
     until it is actually installed, so that the ``get_include()``
     method can be invoked. """
@@ -20,33 +22,22 @@ class get_pybind_include(object):
 ext_modules = [
     Extension(
         'BanditPAM',
-        # Sort input source files to ensure bit-for-bit reproducible builds
-        # (https://github.com/pybind/python_example/pull/53)
         sorted(['src/kmedoids_ucb.cpp',
                 'src/kmeds_pywrapper.cpp']),
         include_dirs=[
-            # Path to pybind11 headers
             get_pybind_include(),
             'headers',
-            # '/sailhome/motiwari/armadillo_build/include',
-            # '/sailhome/motiwari/carma_build/include',
         ],
-        # library_dirs=[
-        #     '/sailhome/motiwari/armadillo_build/lib',
-        # ],
         libraries=['armadillo'],
         language='c++'
     ),
 ]
 
 
-# cf http://bugs.python.org/issue26689
 def has_flag(compiler, flagname):
-    """Return a boolean indicating whether a flag name is supported on
+    r"""Return a boolean indicating whether a flag name is supported on
     the specified compiler.
     """
-    import tempfile
-    import os
     with tempfile.NamedTemporaryFile('w', suffix='.cpp', delete=False) as f:
         f.write('int main (int argc, char **argv) { return 0; }')
         fname = f.name
@@ -63,7 +54,7 @@ def has_flag(compiler, flagname):
 
 
 def cpp_flag(compiler):
-    """Return the -std=c++[11/14/17] compiler flag.
+    r"""Return the -std=c++[11/14/17] compiler flag.
     The newer version is prefered over c++11 (when it is available).
     """
     flags = ['-std=c++17', '-std=c++14', '-std=c++11']
@@ -77,7 +68,7 @@ def cpp_flag(compiler):
 
 
 class BuildExt(build_ext):
-    """A custom build extension for adding compiler-specific options."""
+    r"""A custom build extension for adding compiler-specific options."""
     c_opts = {
         'msvc': ['/EHsc'],
         'unix': [],
@@ -95,6 +86,7 @@ class BuildExt(build_ext):
     def build_extensions(self):
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
+        opts.append('-Wno-register')
         link_opts = self.l_opts.get(ct, [])
         if ct == 'unix':
             opts.append(cpp_flag(self.compiler))
@@ -111,11 +103,12 @@ class BuildExt(build_ext):
 setup(
     name='BanditPAM',
     version=__version__,
-    author='Eric Frankel',
+    author='James Mayclin and Eric Frankel, Mo Tiwari',
+    maintainer="Eric Frankel",
     author_email='ericsf@stanford.edu',
-    url='https://github.com/pybind/python_example',
-    description='A test project using pybind11',
-    long_description='',
+    url='https://github.com/jmayclin/BanditPAM/issues/55',
+    description='C++ implementation of BanditPAM algorithm with Python Bindings',
+    long_description='This repo contains a high-performance implementation of BanditPAM from https://arxiv.org/abs/2006.06856. The code can be called directly from Python or C++.',
     ext_modules=ext_modules,
     setup_requires=['pybind11>=2.5.0'],
     cmdclass={'build_ext': BuildExt},
