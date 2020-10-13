@@ -13,14 +13,14 @@
  *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
  *  for a particular set of input data.
  *
- *  @param n_medoids Number of medoids to identify
+ *  @param nMedoids Number of medoids to identify
  *  @param algorithm Algorithm to use to find medoids; options are "BanditPAM" for
  *  this paper's iplementation, or "naive" to use the naive method
  *  @param verbosity Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file
- *  @param max_iter The maximum number of iterations to run the algorithm for
+ *  @param maxIter The maximum number of iterations to run the algorithm for
  *  @param logFilename The name of the output log file
  */
-KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity, int max_iter, std::string logFilename): n_medoids(n_medoids), algorithm(algorithm), max_iter(max_iter), verbosity(verbosity), logFilename(logFilename) {
+KMedoids::KMedoids(int nMedoids, std::string algorithm, int verbosity, int maxIter, std::string logFilename): nMedoids(nMedoids), algorithm(algorithm), maxIter(maxIter), verbosity(verbosity), logFilename(logFilename) {
   KMedoids::checkAlgorithm(algorithm);
 }
 
@@ -48,14 +48,14 @@ void KMedoids::checkAlgorithm(std::string algorithm) {
  * This function returns the final medoids for a KMedoids object.
  */
 arma::rowvec KMedoids::getMedoidsFinal() {
-  return medoid_indices_final;
+  return medoidIndicesFinal;
 }
 
 /**
  * This function returns the build medoids for a KMedoids object.
  */
 arma::rowvec KMedoids::getMedoidsBuild() {
-  return medoid_indices_build;
+  return medoidIndicesBuild;
 }
 
 /**
@@ -94,14 +94,14 @@ void KMedoids::setLossFn(std::string loss) {
  * This function gets the number of clusters for the KMedoids object
  */
 int KMedoids::getNMedoids() {
-  return n_medoids;
+  return nMedoids;
 }
 
 /**
  * This function sets the number of clusters for the KMedoids object
  */
 void KMedoids::setNMedoids(int new_num) {
-  n_medoids = new_num;
+  nMedoids = new_num;
 }
 
 /**
@@ -136,14 +136,14 @@ void KMedoids::setVerbosity(int new_ver) {
  * This function gets the maximum number of iterations for the KMedoids object
  */
 int KMedoids::getMaxIter() {
-  return max_iter;
+  return maxIter;
 }
 
 /**
  * This function sets the maximum number of iterations for the KMedoids object
  */
 void KMedoids::setMaxIter(int new_max) {
-  max_iter = new_max;
+  maxIter = new_max;
 }
 
 /**
@@ -168,10 +168,10 @@ void KMedoids::setLogFilename(std::string new_lname) {
  * @param loss The loss function used during medoid computation
  */
 void KMedoids::fit(arma::mat input_data, std::string loss) {
-  logHelper.init(n_medoids, logFilename);
+  logHelper.init(nMedoids, logFilename);
   KMedoids::setLossFn(loss);
   (this->*fitFn)(input_data);
-  logHelper.writeProfile(medoid_indices_build, medoid_indices_final, 4, 7.44);
+  logHelper.writeProfile(medoidIndicesBuild, medoidIndicesFinal, 4, 7.44);
   logHelper.close();
 }
 
@@ -185,21 +185,21 @@ void KMedoids::fit(arma::mat input_data, std::string loss) {
 void KMedoids::fit_naive(arma::mat input_data) {
   data = input_data;
   data = arma::trans(data);
-  arma::rowvec medoid_indices(n_medoids);
+  arma::rowvec medoid_indices(nMedoids);
   KMedoids::build_naive(medoid_indices);
   steps = 0;
 
-  medoid_indices_build = medoid_indices;
+  medoidIndicesBuild = medoid_indices;
   // TODO: make assignments in naive code too!
   size_t i = 0;
   bool medoidChange = true;
-  while (i < max_iter && medoidChange) {
+  while (i < maxIter && medoidChange) {
     auto previous(medoid_indices);
     KMedoids::swap_naive(medoid_indices);
     medoidChange = arma::any(medoid_indices != previous);
     i++;
   }
-  medoid_indices_final = medoid_indices;
+  medoidIndicesFinal = medoid_indices;
 }
 
 /**
@@ -208,7 +208,7 @@ void KMedoids::fit_naive(arma::mat input_data) {
 void KMedoids::build_naive(
   arma::rowvec& medoid_indices)
 {
-  for (size_t k = 0; k < n_medoids; k++) {
+  for (size_t k = 0; k < nMedoids; k++) {
     double minDistance = std::numeric_limits<double>::infinity();
     int best = 0;
     for (int i = 0; i < data.n_cols; i++) {
@@ -241,12 +241,12 @@ void KMedoids::swap_naive(
   double minDistance = std::numeric_limits<double>::infinity();
   size_t best = 0;
   size_t medoid_to_swap = 0;
-  for (size_t k = 0; k < n_medoids; k++) {
+  for (size_t k = 0; k < nMedoids; k++) {
     for (size_t i = 0; i < data.n_cols; i++) {
       double total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         double cost = (this->*lossFn)(i, j);
-        for (size_t medoid = 0; medoid < n_medoids; medoid++) {
+        for (size_t medoid = 0; medoid < nMedoids; medoid++) {
           if (medoid == k) {
             continue;
           }
@@ -276,15 +276,15 @@ void KMedoids::fit_bpam(arma::mat input_data) {
   // logFile.open(logFilename);
   data = input_data;
   data = arma::trans(data);
-  arma::mat medoids_mat(data.n_rows, n_medoids);
-  arma::rowvec medoid_indices(n_medoids);
+  arma::mat medoids_mat(data.n_rows, nMedoids);
+  arma::rowvec medoid_indices(nMedoids);
   KMedoids::build(medoid_indices, medoids_mat);
   steps = 0;
 
-  medoid_indices_build = medoid_indices;
+  medoidIndicesBuild = medoid_indices;
   arma::rowvec assignments(data.n_cols);
   KMedoids::swap(medoid_indices, medoids_mat, assignments);
-  medoid_indices_final = medoid_indices;
+  medoidIndicesFinal = medoid_indices;
   labels = assignments;
 }
 
@@ -311,7 +311,7 @@ void KMedoids::build(
     arma::rowvec T_samples(N, arma::fill::zeros);
     arma::rowvec exact_mask(N, arma::fill::zeros);
 
-    for (size_t k = 0; k < n_medoids; k++) {
+    for (size_t k = 0; k < nMedoids; k++) {
         size_t step_count = 0;
         candidates.fill(1);
         T_samples.fill(0);
@@ -459,23 +459,23 @@ void KMedoids::swap(
   arma::rowvec& assignments)
 {
     size_t N = data.n_cols;
-    int p = (N * n_medoids * swapConfidence); // reciprocal
+    int p = (N * nMedoids * swapConfidence); // reciprocal
 
-    arma::mat sigma(n_medoids, N, arma::fill::zeros);
+    arma::mat sigma(nMedoids, N, arma::fill::zeros);
 
     arma::rowvec best_distances(N);
     arma::rowvec second_distances(N);
     size_t iter = 0;
     bool swap_performed = true;
-    arma::umat candidates(n_medoids, N, arma::fill::ones);
-    arma::umat exact_mask(n_medoids, N, arma::fill::zeros);
-    arma::mat estimates(n_medoids, N, arma::fill::zeros);
-    arma::mat lcbs(n_medoids, N);
-    arma::mat ucbs(n_medoids, N);
-    arma::umat T_samples(n_medoids, N, arma::fill::zeros);
+    arma::umat candidates(nMedoids, N, arma::fill::ones);
+    arma::umat exact_mask(nMedoids, N, arma::fill::zeros);
+    arma::mat estimates(nMedoids, N, arma::fill::zeros);
+    arma::mat lcbs(nMedoids, N);
+    arma::mat ucbs(nMedoids, N);
+    arma::umat T_samples(nMedoids, N, arma::fill::zeros);
 
     // continue making swaps while loss is decreasing
-    while (swap_performed && iter < max_iter) {
+    while (swap_performed && iter < maxIter) {
         iter++;
 
         // calculate quantities needed for swap, best_distances and sigma
@@ -703,7 +703,7 @@ double KMedoids::calc_loss(
 
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
-        for (size_t k = 0; k < n_medoids; k++) {
+        for (size_t k = 0; k < nMedoids; k++) {
             double currCost = (this->*lossFn)(medoid_indices(k), i);
             if (currCost < cost) {
                 cost = currCost;

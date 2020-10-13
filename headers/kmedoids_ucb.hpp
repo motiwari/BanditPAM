@@ -95,22 +95,22 @@ struct LogHelper {
  *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
  *  for a particular set of input data.
  *
- *  @param n_medoids Number of medoids to identify
+ *  @param nMedoids Number of medoids to identify
  *  @param algorithm Algorithm to use to find medoids; options are "BanditPAM" for
  *  this paper's iplementation, or "naive" to use the naive method
  *  @param verbosity Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file
- *  @param max_iter The maximum number of iterations to run the algorithm for
+ *  @param maxIter The maximum number of iterations to run the algorithm for
  *  @param logFilename The name of the output log file
  */
 class KMedoids {
   public:
-    KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000, std::string logFilename = "KMedoidsLogfile");
+    KMedoids(int nMedoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int maxIter = 1000, std::string logFilename = "KMedoidsLogfile");
 
     KMedoids(const KMedoids &kmed);
 
     ~KMedoids();
 
-    void fit(arma::mat input_data, std::string loss);
+    void fit(arma::mat inputData, std::string loss);
 
     // The functions below are "get" functions for read-only attributes
 
@@ -147,16 +147,16 @@ class KMedoids {
     void setLossFn(std::string loss);
   private:
     // The functions below are PAM's constituent functions
-    void fit_bpam(arma::mat input_data);
+    void fit_bpam(arma::mat inputData);
 
-    void fit_naive(arma::mat input_data);
+    void fit_naive(arma::mat inputData);
 
-    void build_naive(arma::rowvec& medoid_indices);
+    void build_naive(arma::rowvec& medoidIndices);
 
-    void swap_naive(arma::rowvec& medoid_indices);
+    void swap_naive(arma::rowvec& medoidIndices);
 
     void build(
-      arma::rowvec& medoid_indices,
+      arma::rowvec& medoidIndices,
       arma::mat& medoids
     );
 
@@ -175,20 +175,20 @@ class KMedoids {
     );
 
     void swap(
-      arma::rowvec& medoid_indices,
+      arma::rowvec& medoidIndices,
       arma::mat& medoids,
       arma::rowvec& assignments
     );
 
     void calc_best_distances_swap(
-      arma::rowvec& medoid_indices,
+      arma::rowvec& medoidIndices,
       arma::rowvec& best_distances,
       arma::rowvec& second_distances,
       arma::rowvec& assignments
     );
 
     arma::vec swap_target(
-      arma::rowvec& medoid_indices,
+      arma::rowvec& medoidIndices,
       arma::uvec& targets,
       size_t batch_size,
       arma::rowvec& best_distances,
@@ -204,7 +204,7 @@ class KMedoids {
       arma::rowvec& assignments
     );
 
-    double calc_loss(arma::rowvec& medoid_indices);
+    double calc_loss(arma::rowvec& medoidIndices);
 
     // Loss functions
     double L1(int i, int j) const;
@@ -222,11 +222,11 @@ class KMedoids {
     // Constructor params
     std::string algorithm; // options: "naive" and "BanditPAM"
 
-    int max_iter;
+    int maxIter;
 
     int verbosity;
 
-    int n_medoids;
+    int nMedoids;
 
     std::string logFilename;
 
@@ -235,13 +235,13 @@ class KMedoids {
 
     arma::rowvec labels; // assignments of each datapoint to its medoid
 
-    arma::rowvec medoid_indices_build; // Medoids at the end of build step
+    arma::rowvec medoidIndicesBuild; // Medoids at the end of build step
 
-    arma::rowvec medoid_indices_final;
+    arma::rowvec medoidIndicesFinal;
 
     double (KMedoids::*lossFn)(int i, int j) const;
 
-    void (KMedoids::*fitFn)(arma::mat input_data); // Function to use (from algorithm)
+    void (KMedoids::*fitFn)(arma::mat inputData); // Function to use (from algorithm)
 
     LogHelper logHelper;
 
