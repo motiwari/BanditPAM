@@ -22,7 +22,7 @@ def onFly(k, data, loss):
         return 0
 
 class PythonTests(unittest.TestCase):
-    small_mnist = pd.read_csv('./data/mnist.csv', header=None).to_numpy()
+    small_mnist = pd.read_csv('./data/MNIST.csv', header=None).to_numpy()
 
     mnist_70k = pd.read_csv('./data/MNIST-70k.csv', sep=' ', header=None)
 

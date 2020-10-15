@@ -4,6 +4,3 @@ set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 11)
 
 add_subdirectory(src)
-
-#enable_testing()
-#add_subdirectory(tests)
