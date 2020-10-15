@@ -170,4 +170,16 @@ The expected output in the command line will be\+:
 \begin{DoxyCode}
 Medoids: 694,168,306,714,324,959,527,251,800,737
 \end{DoxyCode}
- A file called {\ttfamily K\+Medoids\+Logfile} with detailed logs during the process will also be present. 
+ A file called {\ttfamily K\+Medoids\+Logfile} with detailed logs during the process will also be present.
+
+\subsection*{Testing}
+
+To run the full suite of tests, run in the root directory\+:
+
+
+\begin{DoxyCode}
+/BanditPAM$ python -m unittest discover -s tests
+\end{DoxyCode}
+
+
+Alternatively, to run a \char`\"{}smaller\char`\"{} set of tests, from the main repo folder run {\ttfamily python tests/test\+\_\+commit.\+py} or {\ttfamily python tests/test\+\_\+push.\+py} to run a set of longer, more intensive tests. 

@@ -95,7 +95,10 @@ $(function() {
 <li><code>-v</code> is optional and specifies the verbosity level.</li>
 </ul>
 <p>For example, if you ran <code>./env_setup.sh</code> and downloaded the MNIST dataset, you could run:</p>
-<div class="fragment"><div class="line">/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10 -v 1</div></div><!-- fragment --><p>The expected output in the command line will be: </p><div class="fragment"><div class="line">Medoids: 694,168,306,714,324,959,527,251,800,737</div></div><!-- fragment --><p> A file called <code>KMedoidsLogfile</code> with detailed logs during the process will also be present. </p>
+<div class="fragment"><div class="line">/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10 -v 1</div></div><!-- fragment --><p>The expected output in the command line will be: </p><div class="fragment"><div class="line">Medoids: 694,168,306,714,324,959,527,251,800,737</div></div><!-- fragment --><p> A file called <code>KMedoidsLogfile</code> with detailed logs during the process will also be present.</p>
+<h2>Testing</h2>
+<p>To run the full suite of tests, run in the root directory:</p>
+<div class="fragment"><div class="line">/BanditPAM$ python -m unittest discover -s tests</div></div><!-- fragment --><p>Alternatively, to run a "smaller" set of tests, from the main repo folder run <code>python tests/test_commit.py</code> or <code>python tests/test_push.py</code> to run a set of longer, more intensive tests. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
