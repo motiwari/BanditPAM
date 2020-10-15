@@ -10,6 +10,8 @@
 #include <unordered_map>
 
 /**
+ *  \brief Class implementation for running KMedoids methods.
+ *
  *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
  *  for a particular set of input data.
  *

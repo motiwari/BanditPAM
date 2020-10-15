@@ -9,6 +9,8 @@
 #include <chrono>
 
 /**
+ *  \brief Logging class for structured KMedoids logs.
+ *
  *  LogHelper class. Assists the KMedoids class in structured logging.
  */
 struct LogHelper {
@@ -75,14 +77,17 @@ struct LogHelper {
 };
 
 /**
+ *  \brief Class implementation for running KMedoids methods.
+ *
  *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
  *  for a particular set of input data.
  *
- *  @param nMedoids Number of medoids to identify
- *  @param algorithm Algorithm to use to find medoids; options are "BanditPAM" for
- *  this paper's iplementation, or "naive" to use the naive method
- *  @param verbosity Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file
- *  @param maxIter The maximum number of iterations to run the algorithm for
+ *  @param nMedoids Number of medoids/clusters to create
+ *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
+ *  the "Bandit-PAM" algorithm, or "naive" to use the naive method
+ *  @param verbosity Verbosity of the algorithm, 0 will have no log file
+ *  emitted, 1 will emit a log file
+ *  @param maxIter The maximum number of iterations the algorithm runs for
  *  @param logFilename The name of the output log file
  */
 class KMedoids {
