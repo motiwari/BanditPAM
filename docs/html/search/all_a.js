@@ -1,11 +1,8 @@
 var searchData=
 [
-  ['setalgorithm',['setAlgorithm',['../classKMedoids.html#a1a6dbc45f5d83bded48bf86cbc2690ad',1,'KMedoids']]],
-  ['setlogfilename',['setLogFilename',['../classKMedoids.html#a45f89770245bff638e25bcd39ab52013',1,'KMedoids']]],
-  ['setlossfn',['setLossFn',['../classKMedoids.html#ab442bf7198be7a48a7eb5901ac7ca571',1,'KMedoids']]],
-  ['setmaxiter',['setMaxIter',['../classKMedoids.html#ae1a84d5509090d31cd1c04616fd615f3',1,'KMedoids']]],
-  ['setnmedoids',['setNMedoids',['../classKMedoids.html#ad28860f50c0b5a4968f99d103b3de06f',1,'KMedoids']]],
-  ['setverbosity',['setVerbosity',['../classKMedoids.html#a8d03726bbd66ffc6d2c202d2a3cf40d5',1,'KMedoids']]],
-  ['sigma_5fbuild',['sigma_build',['../structLogHelper.html#a835a54928567970dd564d9eaed87597c',1,'LogHelper']]],
-  ['sigma_5fswap',['sigma_swap',['../structLogHelper.html#afee211952d9a61c217622557e91c1275',1,'LogHelper']]]
+  ['main_2ecpp',['main.cpp',['../main_8cpp.html',1,'']]],
+  ['manhattan',['manhattan',['../classKMedoids.html#a08aecc8d7107b61d85bff4b4d5d73ebd',1,'KMedoids']]],
+  ['maxiter',['maxIter',['../classKMedoids.html#a42d3da6b39908d44ed383c6beea55668',1,'KMedoids']]],
+  ['medoidindicesbuild',['medoidIndicesBuild',['../classKMedoids.html#a9e2922bc8e5da2e9c56c993eb8498b32',1,'KMedoids']]],
+  ['medoidindicesfinal',['medoidIndicesFinal',['../classKMedoids.html#a02da30e8be63abfae08283cfdb0fa36f',1,'KMedoids']]]
 ];

@@ -130,8 +130,6 @@ class KMedoids {
   public:
     KMedoids(int nMedoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int maxIter = 1000, std::string logFilename = "KMedoidsLogfile");
 
-    KMedoids(const KMedoids &kmed);
-
     ~KMedoids();
 
     void fit(arma::mat inputData, std::string loss);
@@ -242,52 +240,41 @@ class KMedoids {
     void checkAlgorithm(std::string algorithm);
 
     // Constructor params
-    std::string algorithm; // options: "naive" and "BanditPAM"
+    std::string algorithm; ///< options: "naive" and "BanditPAM"
 
-    int maxIter;
+    int maxIter; ///< maximum number of iterations during KMedoids::fit
 
-    int verbosity;
+    int verbosity; ///< determines whether KMedoids::fit outputs a logfile
 
-    int nMedoids;
+    int nMedoids; ///< number of medoids identified for a given dataset
 
-    std::string logFilename;
+    std::string logFilename; ///< name of the logfile output (verbosity permitting)
 
     // Properties of the KMedoids instance
-    arma::mat data;
+    arma::mat data; ///< input data used during KMedoids::fit
 
-    arma::rowvec labels; // assignments of each datapoint to its medoid
+    arma::rowvec labels; ///< assignments of each datapoint to its medoid
 
-    arma::rowvec medoidIndicesBuild; // Medoids at the end of build step
+    arma::rowvec medoidIndicesBuild; ///< medoids at the end of build step
 
-    arma::rowvec medoidIndicesFinal;
+    arma::rowvec medoidIndicesFinal; ///< medoids at the end of the swap step
 
-    double (KMedoids::*lossFn)(int i, int j) const;
+    double (KMedoids::*lossFn)(int i, int j) const; ///< loss function used during KMedoids::fit
 
-    void (KMedoids::*fitFn)(arma::mat inputData); // Function to use (from algorithm)
+    void (KMedoids::*fitFn)(arma::mat inputData); ///< function used for finding medoids (from algorithm)
 
-    LogHelper logHelper;
+    LogHelper logHelper; ///< helper object for making formatted logs
 
-    std::ofstream logFile;
-
-    std::stringstream logBuffer;
-
-    std::ofstream swapLogfile;
-
-    std::stringstream swapLogBuffer;
-
-    int steps; // number of actual swap iterations taken by the algorithm
+    int steps; ///< number of actual swap iterations taken by the algorithm
 
     // Hyperparameters
-    // constant that affects the sensitivity of build confidence bounds
-    static const size_t buildConfidence = 1000;
+    static const size_t buildConfidence = 1000; ///< constant that affects the sensitivity of build confidence bounds
 
-    // constant that affects the sensitiviy of swap confidence bounds
-    static const size_t swapConfidence = 1000;
+    static const size_t swapConfidence = 1000; ///< constant that affects the sensitiviy of swap confidence bounds
 
-    // bound for double comparison precision
-    const double precision = 0.001;
+    const double precision = 0.001; ///< bound for double comparison precision
 
-    const size_t batchSize = 100;
+    const size_t batchSize = 100; ///< batch size for computation steps
 };
 
 #endif // KMEDOIDS_UCB_H_

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['writelogstringline',['writeLogStringLine',['../structLogHelper.html#ad1bb80fa2bd8b1dfcd944ea19c4e8e06',1,'LogHelper']]],
-  ['writeprofile',['writeProfile',['../structLogHelper.html#a15b3f49bf98956a0585f036801e25dbe',1,'LogHelper']]],
-  ['writesummaryline',['writeSummaryLine',['../structLogHelper.html#a5b1a8ff2ae2ce6e3293e3b34085e3b86',1,'LogHelper']]]
+  ['l1',['L1',['../classKMedoids.html#a1333d47c27674c7fde7a1d557edaef3a',1,'KMedoids']]],
+  ['l2',['L2',['../classKMedoids.html#aa92fa87d17f16b85010b9215c21e0093',1,'KMedoids']]]
 ];

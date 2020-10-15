@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7ekmedoids',['~KMedoids',['../classKMedoids.html#a82710100b6fb5820c10bc3f796ed62ff',1,'KMedoids']]]
+  ['manhattan',['manhattan',['../classKMedoids.html#a08aecc8d7107b61d85bff4b4d5d73ebd',1,'KMedoids']]]
 ];

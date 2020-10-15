@@ -34,16 +34,18 @@ KMedoids::KMedoids(int nMedoids, std::string algorithm, int verbosity,
 }
 
 /**
- * Destructor for the KMedoids class.
+ *  \brief Destroys KMedoids object.
+ *
+ *  Destructor for the KMedoids class.
  */
-KMedoids::~KMedoids() {
-  logFile.close();
-}
+KMedoids::~KMedoids() {;}
 
 /**
- * Checks the algorithm input by the user.
+ *  \brief Checks whether algorithm input is valid
  *
- * @param algorithm Name of the algorithm input by the user.
+ *  Checks whether the user's selected algorithm is a valid option.
+ *
+ *  @param algorithm Name of the algorithm input by the user.
  */
 void KMedoids::checkAlgorithm(std::string algorithm) {
   if (algorithm == "BanditPAM") {
@@ -56,36 +58,51 @@ void KMedoids::checkAlgorithm(std::string algorithm) {
 }
 
 /**
- * Returns the final medoids for a KMedoids object.
+ *  \brief Returns the final medoids
+ *
+ *  Returns the final medoids at the end of the SWAP step after KMedoids::fit
+ *  has been called.
  */
 arma::rowvec KMedoids::getMedoidsFinal() {
   return medoidIndicesFinal;
 }
 
 /**
- * Returns the build medoids for a KMedoids object.
+ *  \brief Returns the build medoids
+ *
+ *  Returns the build medoids at the end of the BUILD step after KMedoids::fit
+ *  has been called.
  */
 arma::rowvec KMedoids::getMedoidsBuild() {
   return medoidIndicesBuild;
 }
 
 /**
- * Returns the labels/medoids assignments for each datapoint after the final
- * medoids are identified.
+ *  \brief Returns the medoid assignments for each datapoint
+ *
+ *  Returns the medoid each input datapoint is assigned to after KMedoids::fit
+ *  has been called and the final medoids have been identified
  */
 arma::rowvec KMedoids::getLabels() {
   return labels;
 }
 
 /**
- * Returns the number of swap steps that took place during the computation.
+ *  \brief Returns the number of swap steps
+ *
+ *  Returns the number of SWAP steps completed during the last call to
+ *  KMedoids::fit
  */
 int KMedoids::getSteps() {
   return steps;
 }
 
 /**
- * Sets the loss function used by the KMedoids object.
+ *  \brief Sets the loss function
+ *
+ *  Sets the loss function used during KMedoids::fit
+ *
+ *  @param loss Loss function to be used e.g. L2
  */
 void KMedoids::setLossFn(std::string loss) {
   if (loss == "manhattan") {
@@ -102,78 +119,113 @@ void KMedoids::setLossFn(std::string loss) {
 }
 
 /**
- * Gets the number of clusters for the KMedoids object
+ *  \brief Returns the number of medoids
+ *
+ *  Returns the number of medoids to be identified during KMedoids::fit
  */
 int KMedoids::getNMedoids() {
   return nMedoids;
 }
 
 /**
- * This function sets the number of clusters for the KMedoids object
+ *  \brief Sets the number of medoids
+ *
+ *  Sets the number of medoids to be identified during KMedoids::fit
  */
 void KMedoids::setNMedoids(int new_num) {
   nMedoids = new_num;
 }
 
 /**
- * This function gets the algorithm for the KMedoids object
+ *  \brief Returns the algorithm for KMedoids
+ *
+ *  Returns the algorithm used for identifying the medoids during KMedoids::fit
  */
 std::string KMedoids::getAlgorithm() {
   return algorithm;
 }
 
 /**
- * This function sets the algorithm for the KMedoids object
+ *  \brief Sets the algorithm for KMedoids
+ *
+ *  Sets the algorithm used for identifying the medoids during KMedoids::fit
+ *
+ *  @param new_alg New algorithm to use
  */
 void KMedoids::setAlgorithm(std::string new_alg) {
   algorithm = new_alg;
 }
 
 /**
- * This function gets the verbosity for the KMedoids object
+ *  \brief Returns the verbosity for KMedoids
+ *
+ *  Returns the verbosity used during KMedoids::fit, with 0 not creating a
+ *  logfile, and >0 creating a detailed logfile.
  */
 int KMedoids::getVerbosity() {
   return verbosity;
 }
 
 /**
- * This function sets the verbosity for the KMedoids object
+ *  \brief Sets the verbosity for KMedoids
+ *
+ *  Sets the verbosity used during KMedoids::fit, with 0 not creating a
+ *  logfile, and >0 creating a detailed logfile.
+ *
+ *  @param new_ver New verbosity to use
  */
 void KMedoids::setVerbosity(int new_ver) {
   verbosity = new_ver;
 }
 
 /**
- * This function gets the maximum number of iterations for the KMedoids object
+ *  \brief Returns the maximum number of iterations for KMedoids
+ *
+ *  Returns the maximum number of iterations that can be run during
+ *  KMedoids::fit
  */
 int KMedoids::getMaxIter() {
   return maxIter;
 }
 
 /**
- * This function sets the maximum number of iterations for the KMedoids object
+ *  \brief Sets the maximum number of iterations for KMedoids
+ *
+ *  Sets the maximum number of iterations that can be run during KMedoids::fit
+ *
+ *  @param new_max New maximum number of iterations to use
  */
 void KMedoids::setMaxIter(int new_max) {
   maxIter = new_max;
 }
 
 /**
- * This function gets the log filename for the KMedoids object
+ *  \brief Returns the log filename for KMedoids
+ *
+ *  Returns the name of the logfile that will be output at the end of
+ *  KMedoids::fit if verbosity is >0
  */
 std::string KMedoids::getLogfileName() {
   return logFilename;
 }
 
 /**
- * This function sets the log filename for the KMedoids object
+ *  \brief Sets the log filename for KMedoids
+ *
+ *  Sets the name of the logfile that will be output at the end of
+ *  KMedoids::fit if verbosity is >0
+ *
+ *  @param new_lname New logfile name
  */
 void KMedoids::setLogFilename(std::string new_lname) {
   logFilename = new_lname;
 }
 
 /**
- * This is the main function of the KMedoids object: this finds the build and swap
- * medoids for the desired data
+ * \brief Finds medoids for the input data under identified loss function
+ *
+ * Primary function of the KMedoids class. Identifies medoids for input dataset
+ * after both the SWAP and BUILD steps, and outputs logs if verbosity is >0
  *
  * @param input_data Input data to find the medoids of
  * @param loss The loss function used during medoid computation
@@ -191,15 +243,17 @@ void KMedoids::fit(arma::mat input_data, std::string loss) {
 
 
 /**
- * This function will run the naive PAM algorithm to identify a dataset's medoids.
+ * \brief Runs naive PAM algorithm.
+ *
+ * Run the naive PAM algorithm to identify a dataset's medoids.
  *
  * @param input_data Input data to find the medoids of
- * @param loss The loss function used during medoid computation
  */
 void KMedoids::fit_naive(arma::mat input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::rowvec medoid_indices(nMedoids);
+  // runs build step
   KMedoids::build_naive(medoid_indices);
   steps = 0;
 
@@ -208,6 +262,7 @@ void KMedoids::fit_naive(arma::mat input_data) {
   bool medoidChange = true;
   while (i < maxIter && medoidChange) {
     auto previous(medoid_indices);
+    // runs swa step as necessary
     KMedoids::swap_naive(medoid_indices);
     medoidChange = arma::any(medoid_indices != previous);
     i++;
@@ -216,7 +271,14 @@ void KMedoids::fit_naive(arma::mat input_data) {
 }
 
 /**
- * Build step for the naive algorithm
+ * \brief Build step for the naive algorithm
+ *
+ * Runs build step for the naive PAM algorithm. Loops over all datapoint and
+ * checks its distance from every other datapoint in the dataset, then checks if
+ * the total cost is less than that of the medoid (if a medoid exists yet).
+ *
+ * @param medoid_indices Uninitialized array of medoids that is modified in place
+ * as medoids are identified
  */
 void KMedoids::build_naive(
   arma::rowvec& medoid_indices)
@@ -224,12 +286,15 @@ void KMedoids::build_naive(
   for (size_t k = 0; k < nMedoids; k++) {
     double minDistance = std::numeric_limits<double>::infinity();
     int best = 0;
+    // fixes a base datapoint
     for (int i = 0; i < data.n_cols; i++) {
       double total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
+        // computes distance between base and all other points
         double cost = (this->*lossFn)(i, j);
         for (size_t medoid = 0; medoid < k; medoid++) {
           double current = (this->*lossFn)(medoid_indices(medoid), j);
+          // compares this for cost of the medoid
           if (current < cost) {
             cost = current;
           }
@@ -241,12 +306,20 @@ void KMedoids::build_naive(
         best = i;
       }
     }
+    // updates the medoid index for that of lowest cost.
     medoid_indices(k) = best;
   }
 }
 
 /**
- * Swap step for the naive algorithm
+ * \brief Swap step for the naive algorithm
+ *
+ * Runs build step for the naive PAM algorithm. Loops over all datapoint and
+ * checks its distance from every other datapoint in the dataset, then checks if
+ * the total cost is less than that of the medoid.
+ *
+ * @param medoid_indices Array of medoid indices created from the build step
+ * that is modified in place as better medoids are identified
  */
 void KMedoids::swap_naive(
   arma::rowvec& medoid_indices)
@@ -254,10 +327,13 @@ void KMedoids::swap_naive(
   double minDistance = std::numeric_limits<double>::infinity();
   size_t best = 0;
   size_t medoid_to_swap = 0;
+  // iterate across the current medoids
   for (size_t k = 0; k < nMedoids; k++) {
+    // for every point in our dataset, let it serve as a "base" point
     for (size_t i = 0; i < data.n_cols; i++) {
       double total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
+        // compute distance between base point and every other datapoint
         double cost = (this->*lossFn)(i, j);
         for (size_t medoid = 0; medoid < nMedoids; medoid++) {
           if (medoid == k) {
@@ -270,6 +346,8 @@ void KMedoids::swap_naive(
         }
         total += cost;
       }
+      // if total distance for new base point is better than that of the medoid,
+      // update the best index identified so far
       if (total < minDistance) {
         minDistance = total;
         best = i;
@@ -281,26 +359,42 @@ void KMedoids::swap_naive(
 }
 
 /**
- * This function will run the BanditPAM algorithm to identify a dataset's medoids.
+ * \brief Runs BanditPAM algorithm.
+ *
+ * Run the BanditPAM algorithm to identify a dataset's medoids.
  *
  * @param input_data Input data to find the medoids of
  */
 void KMedoids::fit_bpam(arma::mat input_data) {
-  // logFile.open(logFilename);
   data = input_data;
   data = arma::trans(data);
   arma::mat medoids_mat(data.n_rows, nMedoids);
   arma::rowvec medoid_indices(nMedoids);
+  // runs build step
   KMedoids::build(medoid_indices, medoids_mat);
   steps = 0;
 
   medoidIndicesBuild = medoid_indices;
   arma::rowvec assignments(data.n_cols);
+  // runs swap step
   KMedoids::swap(medoid_indices, medoids_mat, assignments);
   medoidIndicesFinal = medoid_indices;
   labels = assignments;
 }
 
+/**
+ * \brief Build step for BanditPAM
+ *
+ * Runs build step for the BanditPAM algorithm. Draws batch sizes with replacement
+ * from reference set, and uses the estimated reward of the potential medoid
+ * solutions on the reference set to update the reward confidence intervals and
+ * accordingly narrow the solution set.
+ *
+ * @param medoid_indices Uninitialized array of medoids that is modified in place
+ * as medoids are identified
+ * @param medoids Matrix of possible medoids that is updated as the bandit
+ * learns which datapoints will be unlikely to be good candidates
+ */
 void KMedoids::build(
   arma::rowvec& medoid_indices,
   arma::mat& medoids)
@@ -325,6 +419,7 @@ void KMedoids::build(
     arma::rowvec exact_mask(N, arma::fill::zeros);
 
     for (size_t k = 0; k < nMedoids; k++) {
+        // instantiate medoids one-by-online
         size_t step_count = 0;
         candidates.fill(1);
         T_samples.fill(0);
@@ -388,6 +483,18 @@ void KMedoids::build(
     }
 }
 
+/**
+ * \brief Calculates confidence intervals in build step
+ *
+ * Calculates the confidence intervals about the reward for each arm
+ *
+ * @param sigma Dispersion paramater for each datapoint
+ * @param batch_size Number of datapoints sampled for updating confidence
+ * intervals
+ * @param best_distances Array of best distances from each point to previous set
+ * of medoids
+ * @param use_aboslute Determines whether the absolute cost is added to the total
+ */
 void KMedoids::build_sigma(
   arma::rowvec& best_distances,
   arma::rowvec& sigma,
@@ -427,6 +534,19 @@ void KMedoids::build_sigma(
     logHelper.sigma_build.push_back(sigma_out.str());
 }
 
+/**
+ * \brief Estimates the mean reward for each arm in build step
+ *
+ * Estimates the mean reward (or loss) for each arm in the identified targets
+ * in the build step and returns a list of the estimated reward.
+ *
+ * @param target Set of target datapoints to be estimated
+ * @param batch_size Number of datapoints sampled for updating confidence
+ * intervals
+ * @param best_distances Array of best distances from each point to previous set
+ * of medoids
+ * @param use_absolute Determines whether the absolute cost is added to the total
+ */
 arma::rowvec KMedoids::build_target(
   arma::uvec& target,
   size_t batch_size,
@@ -458,6 +578,21 @@ arma::rowvec KMedoids::build_target(
     return estimates;
 }
 
+/**
+ * \brief Swap step for BanditPAM
+ *
+ * Runs Swap step for the BanditPAM algorithm. Draws batch sizes with replacement
+ * from reference set, and uses the estimated reward of the potential medoid
+ * solutions on the reference set to update the reward confidence intervals and
+ * accordingly narrow the solution set.
+ *
+ * @param medoid_indices Array of medoid indices created from the build step
+ * that is modified in place as better medoids are identified
+ * @param medoids Matrix of possible medoids that is updated as the bandit
+ * learns which datapoints will be unlikely to be good candidates
+ * @param assignments Uninitialized array of indices corresponding to each
+ * datapoint assigned the index of the medoid it is closest to
+ */
 void KMedoids::swap(
   arma::rowvec& medoid_indices,
   arma::mat& medoids,
@@ -575,6 +710,19 @@ void KMedoids::swap(
     }
 }
 
+/**
+ * \brief Calculates distances in swap step
+ *
+ * Calculates the best and second best distances for each datapoint to one of
+ * the medoids in the current medoid set.
+ *
+ * @param medoid_indices Array of medoid indices corresponding to dataset entries
+ * @param best_distances Array of best distances from each point to previous set
+ * of medoids
+ * @param second_best_distances Array of second smallest distances from each
+ * point to previous set of medoids
+ * @param assignments Assignments of datapoints to their closest medoid
+ */
 void KMedoids::calc_best_distances_swap(
   arma::rowvec& medoid_indices,
   arma::rowvec& best_distances,
@@ -600,6 +748,22 @@ void KMedoids::calc_best_distances_swap(
     }
 }
 
+/**
+ * \brief Estimates the mean reward for each arm in swap step
+ *
+ * Estimates the mean reward (or loss) for each arm in the identified targets
+ * in the swap step and returns a list of the estimated reward.
+ *
+ * @param sigma Dispersion paramater for each datapoint
+ * @param targets Set of target datapoints to be estimated
+ * @param batch_size Number of datapoints sampled for updating confidence
+ * intervals
+ * @param best_distances Array of best distances from each point to previous set
+ * of medoids
+ * @param second_best_distances Array of second smallest distances from each
+ * point to previous set of medoids
+ * @param assignments Assignments of datapoints to their closest medoid
+ */
 arma::vec KMedoids::swap_target(
   arma::rowvec& medoid_indices,
   arma::uvec& targets,
@@ -644,6 +808,20 @@ arma::vec KMedoids::swap_target(
     return estimates;
 }
 
+/**
+ * \brief Calculates confidence intervals in swap step
+ *
+ * Calculates the confidence intervals about the reward for each arm
+ *
+ * @param sigma Dispersion paramater for each datapoint
+ * @param batch_size Number of datapoints sampled for updating confidence
+ * intervals
+ * @param best_distances Array of best distances from each point to previous set
+ * of medoids
+ * @param second_best_distances Array of second smallest distances from each
+ * point to previous set of medoids
+ * @param assignments Assignments of datapoints to their closest medoid
+ */
 void KMedoids::swap_sigma(
   arma::mat& sigma,
   size_t batch_size,
@@ -688,6 +866,14 @@ void KMedoids::swap_sigma(
     }
 }
 
+/**
+ * \brief Calculate loss for medoids
+ *
+ * Calculates the loss under the previously identified loss function of the
+ * medoid indices.
+ *
+ * @param medoid_indices Indices of the medoids in the dataset.
+ */
 double KMedoids::calc_loss(
   arma::rowvec& medoid_indices)
 {
@@ -708,19 +894,53 @@ double KMedoids::calc_loss(
 
 // Loss and miscellaneous functions
 
+/**
+ * \brief L1 loss
+ *
+ * Calculates the L1 loss between the datapoints at index i and j of the dataset
+ *
+ * @param i Index of first datapoint
+ * @param j Index of second datapoint
+ */
 double KMedoids::L1(int i, int j) const {
     return arma::norm(data.col(i) - data.col(j), 1);
 }
 
+/**
+ * \brief L2 loss
+ *
+ * Calculates the L2 loss between the datapoints at index i and j of the dataset
+ *
+ * @param i Index of first datapoint
+ * @param j Index of second datapoint
+ */
 double KMedoids::L2(int i, int j) const {
     return arma::norm(data.col(i) - data.col(j), 2);
 }
 
+/**
+ * \brief cos loss
+ *
+ * Calculates the cosine loss between the datapoints at index i and j of the
+ * dataset
+ *
+ * @param i Index of first datapoint
+ * @param j Index of second datapoint
+ */
 double KMedoids::cos(int i, int j) const {
     return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i))
                                                     * arma::norm(data.col(j)));
 }
 
+/**
+ * \brief Manhattan loss
+ *
+ * Calculates the Manhattan loss between the datapoints at index i and j of the
+ * dataset
+ *
+ * @param i Index of first datapoint
+ * @param j Index of second datapoint
+ */
 double KMedoids::manhattan(int i, int j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
