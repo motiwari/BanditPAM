@@ -405,18 +405,17 @@ void KMedoids::build(
     N_mat.fill(N);
     int p = (buildConfidence * N); // reciprocal of
     bool use_absolute = true;
-    arma::rowvec num_samples(N, arma::fill::zeros);
     arma::rowvec estimates(N, arma::fill::zeros);
     arma::rowvec best_distances(N);
     best_distances.fill(std::numeric_limits<double>::infinity());
-    arma::rowvec sigma(N);
+    arma::rowvec sigma(N); // standard deviation of induced losses on reference points
     arma::urowvec candidates(
       N,
-      arma::fill::ones); // one hot encoding of candidates;
+      arma::fill::ones); // one hot encoding of candidates -- points not filtered out yet
     arma::rowvec lcbs(N);
     arma::rowvec ucbs(N);
-    arma::rowvec T_samples(N, arma::fill::zeros);
-    arma::rowvec exact_mask(N, arma::fill::zeros);
+    arma::rowvec T_samples(N, arma::fill::zeros); // number of times calculating induced loss for reference point
+    arma::rowvec exact_mask(N, arma::fill::zeros); // computed the loss exactly for this datapoint
 
     for (size_t k = 0; k < nMedoids; k++) {
         // instantiate medoids one-by-online
@@ -426,16 +425,16 @@ void KMedoids::build(
         exact_mask.fill(0);
         estimates.fill(0);
         KMedoids::build_sigma(
-           best_distances, sigma, batchSize, use_absolute);
+           best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
 
-        while (arma::sum(candidates) > precision) {
+        while (arma::sum(candidates) > precision) { // while some candidates exist
             arma::umat compute_exactly =
               ((T_samples + batchSize) >= N_mat) != exact_mask;
             if (arma::accu(compute_exactly) > 0) {
                 arma::uvec targets = find(compute_exactly);
                 logHelper.comp_exact_build.push_back(targets.n_rows);
                 arma::rowvec result =
-                  build_target(targets, N, best_distances, use_absolute);
+                  build_target(targets, N, best_distances, use_absolute); // induced loss for these targets over all reference points
                 estimates.cols(targets) = result;
                 ucbs.cols(targets) = result;
                 lcbs.cols(targets) = result;
@@ -448,11 +447,11 @@ void KMedoids::build(
             }
             arma::uvec targets = arma::find(candidates);
             arma::rowvec result = build_target(
-              targets, batchSize, best_distances, use_absolute);
+              targets, batchSize, best_distances, use_absolute); // induced loss for the targets (sample)
             estimates.cols(targets) =
               ((T_samples.cols(targets) % estimates.cols(targets)) +
                (result * batchSize)) /
-              (batchSize + T_samples.cols(targets));
+              (batchSize + T_samples.cols(targets)); // update the running average
             T_samples.cols(targets) += batchSize;
             arma::rowvec adjust(targets.n_rows);
             adjust.fill(p);

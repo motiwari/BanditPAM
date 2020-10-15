@@ -87,7 +87,7 @@ class BuildExt(build_ext):
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
         opts.append('-Wno-register')
-        opts.append('-fopenmp')
+        # opts.append('-fopenm')
         link_opts = self.l_opts.get(ct, [])
         if ct == 'unix':
             opts.append(cpp_flag(self.compiler))
@@ -100,18 +100,22 @@ class BuildExt(build_ext):
             ext.extra_link_args = link_opts
         build_ext.build_extensions(self)
 
-
 setup(
     name='BanditPAM',
     version=__version__,
     author='James Mayclin and Eric Frankel, Mo Tiwari',
     maintainer="Eric Frankel",
     author_email='ericsf@stanford.edu',
-    url='https://github.com/jmayclin/BanditPAM/issues/55',
+    url='https://github.com/jmayclin/BanditPAM',
     description='C++ implementation of BanditPAM algorithm with Python Bindings',
     long_description='This repo contains a high-performance implementation of BanditPAM from https://arxiv.org/abs/2006.06856. The code can be called directly from Python or C++.',
     ext_modules=ext_modules,
     setup_requires=['pybind11>=2.5.0'],
     cmdclass={'build_ext': BuildExt},
     zip_safe=False,
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ]
 )
