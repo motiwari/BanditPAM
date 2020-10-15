@@ -30,23 +30,23 @@ class PythonTests(unittest.TestCase):
 
     def test_small_on_fly_mnist(self):
         '''
-        Test 10 on-the-fly generated samples of 1000 datapoints from mnist-70k dataset
+        Test 10 on-the-fly generated samples of 100 datapoints from mnist-70k dataset
         '''
         count = 0
         k_schedule = [4, 6, 8, 10] * 3
         for i in range(10):
-            data = self.mnist_70k.sample(n = 1000).to_numpy()
+            data = self.mnist_70k.sample(n = 100).to_numpy()
             count += onFly(k = k_schedule[i], data = data, loss = "L2")
         self.assertTrue(count >= 9)
 
     def test_small_on_fly_scrna(self):
         '''
-        Test 10 on-the-fly generated samples of 1000 datapoints from scrna dataset
+        Test 10 on-the-fly generated samples of 100 datapoints from scrna dataset
         '''
         count = 0
         k_schedule = [4, 6, 8, 10] * 3
         for i in range(10):
-            data = self.scrna.sample(n = 1000).to_numpy()
+            data = self.scrna.sample(n = 100).to_numpy()
             count += onFly(k = k_schedule[i], data = data, loss = "L1")
         self.assertTrue(count >= 9)
 
