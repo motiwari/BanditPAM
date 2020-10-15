@@ -157,3 +157,13 @@ Medoids: 694,168,306,714,324,959,527,251,800,737
 ```
 A file called `KMedoidsLogfile` with detailed logs during the process will also
 be present.
+
+## Testing
+
+To run the full suite of tests, run in the root directory:
+
+```
+/BanditPAM$ python -m unittest discover -s tests
+```
+
+Alternatively, to run a "smaller" set of tests, from the main repo folder run `python tests/test_commit.py` or `python tests/test_push.py` to run a set of longer, more intensive tests.
