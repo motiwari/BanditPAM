@@ -43,16 +43,6 @@ RUN wget http://sourceforge.net/projects/arma/files/armadillo-9.900.2.tar.xz \
     && rm -rf armadillo-9.900.2 \
     && rm armadillo-9.900.2.tar.xz
 
-RUN wget https://github.com/google/googletest/archive/release-1.10.0.tar.gz \
-    && tar -xzvf release-1.10.0.tar.gz \
-    && cd googletest-release-1.10.0 \
-    && cmake . \
-    && make \
-    && make install \
-    && cd .. \
-    && rm -rf googletest-release-1.10.0 \
-    && rm release-1.10.0.tar.gz
-
 RUN mkdir build \
     && cd build \
     && cmake .. \
