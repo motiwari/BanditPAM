@@ -8,9 +8,11 @@
 #include <iostream>
 #include <chrono>
 
+/**
+ *  LogHelper class. Assists the KMedoids class in structured logging.
+ */
 struct LogHelper {
     std::ofstream hlogFile;
-    std::string filename;
     int k;
 
     std::vector<double> comp_exact_build;
@@ -25,69 +27,50 @@ struct LogHelper {
     std::vector<std::string> sigma_build;
     std::vector<std::string> sigma_swap;
 
-    void init(int input_k, std::string input_filename = "HKMedoidsLogfile") {
-      k = input_k;
-      filename = input_filename;
-      hlogFile.open(filename);
+    void init(std::string input_filename = "HKMedoidsLogfile") {
+      hlogFile.open(input_filename);
     }
 
     void close() {
       hlogFile.close();
     }
 
+    void writeSummaryLine(std::string key, arma::rowvec vec) {
+      hlogFile << key;
+      for (size_t i = 0; i < vec.n_cols; i++) {
+        if (i == (vec.n_cols - 1)) {
+          hlogFile << vec(i) << '\n';
+        } else {
+          hlogFile << vec(i) << ',';
+        }
+      }
+    }
+
+    template <typename T>
+    void writeLogStringLine(std::string key, std::vector<T> vec) {
+      hlogFile << "\t\t" << key << '\n';
+      for (size_t i = 0; i < vec.size(); i++) {
+        hlogFile << "\t\t\t\t" << i << ": " << vec.at(i) << '\n';
+      }
+    }
+
     void writeProfile(arma::rowvec b_medoids, arma::rowvec f_medoids, int steps, double loss) {
-      hlogFile << "Built:";
-      for (size_t i = 0; i < b_medoids.n_cols; i++) {
-        if (i == (k - 1)) {
-          hlogFile << b_medoids(i) << '\n';
-        } else {
-          hlogFile << b_medoids(i) << ',';
-        }
-      }
-      hlogFile << "Swapped:";
-      for (size_t i = 0; i < f_medoids.n_cols; i++) {
-        if (i == (k - 1)) {
-          hlogFile << f_medoids(i) << '\n';
-        } else {
-          hlogFile << f_medoids(i) << ',';
-        }
-      }
+      writeSummaryLine("Built:", b_medoids);
+      writeSummaryLine("Swapped:", f_medoids);
       hlogFile << "Num Swaps: " << steps << '\n';
       hlogFile << "Final Loss: " << loss << '\n';
+
       hlogFile << "Build Logstring:" << '\n';
-      hlogFile << "\t\tcompute_exactly:\n";
-      for (size_t i = 0; i < comp_exact_build.size(); i++) {
-        hlogFile << "\t\t\t\t" << i << ": " << comp_exact_build.at(i) << '\n';
-      }
-      hlogFile << "\t\tloss:\n";
-      for (size_t i = 0; i < loss_build.size(); i++) {
-        hlogFile << "\t\t\t\t" << i << ": " << loss_build.at(i) << '\n';
-      }
-      hlogFile << "\t\tp:\n";
-      for (size_t i = 0; i < p_build.size(); i++) {
-        hlogFile << "\t\t\t\t" << i << ": " << p_build.at(i) << '\n';
-      }
-      hlogFile << "\t\tsigma:\n";
-      for (size_t i = 0; i < sigma_build.size(); i++) {
-        hlogFile << "\t\t\t\t" << i << ": " << sigma_build.at(i) << '\n';
-      }
+      writeLogStringLine("compute_exactly:", comp_exact_build);
+      writeLogStringLine("loss:", loss_build);
+      writeLogStringLine("p:", p_build);
+      writeLogStringLine("sigma:", sigma_build);
+
       hlogFile << "Swap Logstring:" << '\n';
-      hlogFile << "\t\tcompute_exactly:\n";
-      for (size_t i = 0; i < comp_exact_swap.size(); i++) {
-        hlogFile << "\t\t\t\t" << i << ": " << comp_exact_swap.at(i) << '\n';
-      }
-      hlogFile << "\t\tloss:\n";
-      for (size_t i = 0; i < loss_swap.size(); i++) {
-        hlogFile << "\t\t\t\t" << i << ": " << loss_swap.at(i) << '\n';
-      }
-      hlogFile << "\t\tp:\n";
-      for (size_t i = 0; i < p_swap.size(); i++) {
-        hlogFile << "\t\t\t\t" << i << ": " << p_swap.at(i) << '\n';
-      }
-      hlogFile << "\t\tsigma:\n";
-      for (size_t i = 0; i < sigma_swap.size(); i++) {
-        hlogFile << "\t\t\t\t" << i << ": " << sigma_swap.at(i) << '\n';
-      }
+      writeLogStringLine("compute_exactly:", comp_exact_swap);
+      writeLogStringLine("loss:", loss_swap);
+      writeLogStringLine("p:", p_swap);
+      writeLogStringLine("sigma:", sigma_swap);
     }
 };
 
@@ -214,8 +197,6 @@ class KMedoids {
     double cos(int i, int j) const;
 
     double manhattan(int i, int j) const;
-
-    void log(int priority);
 
     void checkAlgorithm(std::string algorithm);
 
