@@ -6,7 +6,7 @@
  * to run the BanditPAM KMedoids algorithm.
  *
  * Usage (from home repo directory):
- * ./cluster -f [path/to/input] -k [number of clusters]
+ * ./src/build/BanditPAM -f [path/to/input] -k [number of clusters]
  */
 
 #include "kmedoids_ucb.hpp"
