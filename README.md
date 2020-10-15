@@ -63,6 +63,7 @@ plt.show()
 
 
 ```python
+# Start in the repository root directory, i.e. '/BanditPAM/'.
 from BanditPAM import KMedoids
 import numpy as np
 import pandas as pd
