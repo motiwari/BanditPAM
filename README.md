@@ -114,9 +114,9 @@ This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
 ### Option 2: Installing Requirements and Building Directly
 Building this repository requires three external requirements:
-* Cmake >= 3.17
+* Cmake >= 3.17, https://cmake.org/download/
 * Armadillo >= 9.7, http://arma.sourceforge.net/download.html
-* OpenMP >= 2.5, https://www.openmp.org/resources/openmp-compilers-tools/ (OpenMP is supported by default on most Linux platforms, and can be downloaded through homebrew on macs.)
+* OpenMP >= 2.5, https://www.openmp.org/resources/openmp-compilers-tools/ (OpenMP is supported by default on most Linux platforms, and can be downloaded through homebrew on MacOS. For instructions on installing homebrew, see https://brew.sh/.)
 * CARMA >= 0.3.0, https://github.com/RUrlus/carma
 
 Ensure all the requirements above are installed and then run:
