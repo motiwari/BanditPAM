@@ -1,13 +1,23 @@
 \hypertarget{structLogHelper}{}\section{Log\+Helper Struct Reference}
 \label{structLogHelper}\index{Log\+Helper@{Log\+Helper}}
+
+
+{\ttfamily \#include $<$kmedoids\+\_\+ucb.\+hpp$>$}
+
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{structLogHelper_ab13e44f96df305a4022f0fab138d0412}\label{structLogHelper_ab13e44f96df305a4022f0fab138d0412}} 
-void {\bfseries init} (int input\+\_\+k, std\+::string input\+\_\+filename=\char`\"{}H\+K\+Medoids\+Logfile\char`\"{})
+\mbox{\Hypertarget{structLogHelper_a0cbf766b210cc27f71bf309b42922ac8}\label{structLogHelper_a0cbf766b210cc27f71bf309b42922ac8}} 
+void {\bfseries init} (std\+::string input\+\_\+filename=\char`\"{}H\+K\+Medoids\+Logfile\char`\"{})
 \item 
 \mbox{\Hypertarget{structLogHelper_a4624149f53c4577d0565f761c155d800}\label{structLogHelper_a4624149f53c4577d0565f761c155d800}} 
 void {\bfseries close} ()
+\item 
+\mbox{\Hypertarget{structLogHelper_a5b1a8ff2ae2ce6e3293e3b34085e3b86}\label{structLogHelper_a5b1a8ff2ae2ce6e3293e3b34085e3b86}} 
+void {\bfseries write\+Summary\+Line} (std\+::string key, arma\+::rowvec vec)
+\item 
+\mbox{\Hypertarget{structLogHelper_ad1bb80fa2bd8b1dfcd944ea19c4e8e06}\label{structLogHelper_ad1bb80fa2bd8b1dfcd944ea19c4e8e06}} 
+{\footnotesize template$<$typename T $>$ }\\void {\bfseries write\+Log\+String\+Line} (std\+::string key, std\+::vector$<$ T $>$ vec)
 \item 
 \mbox{\Hypertarget{structLogHelper_a15b3f49bf98956a0585f036801e25dbe}\label{structLogHelper_a15b3f49bf98956a0585f036801e25dbe}} 
 void {\bfseries write\+Profile} (arma\+::rowvec b\+\_\+medoids, arma\+::rowvec f\+\_\+medoids, int steps, double loss)
@@ -17,9 +27,6 @@ void {\bfseries write\+Profile} (arma\+::rowvec b\+\_\+medoids, arma\+::rowvec f
 \item 
 \mbox{\Hypertarget{structLogHelper_a084e11845451a653f46a48ab92c97ee8}\label{structLogHelper_a084e11845451a653f46a48ab92c97ee8}} 
 std\+::ofstream {\bfseries hlog\+File}
-\item 
-\mbox{\Hypertarget{structLogHelper_a2bb0e407e73b941f36bb6b862e608e79}\label{structLogHelper_a2bb0e407e73b941f36bb6b862e608e79}} 
-std\+::string {\bfseries filename}
 \item 
 \mbox{\Hypertarget{structLogHelper_ac606e3c78f973cb42f55ea6f8a11e509}\label{structLogHelper_ac606e3c78f973cb42f55ea6f8a11e509}} 
 int {\bfseries k}
@@ -49,6 +56,9 @@ std\+::vector$<$ std\+::string $>$ {\bfseries sigma\+\_\+build}
 std\+::vector$<$ std\+::string $>$ {\bfseries sigma\+\_\+swap}
 \end{DoxyCompactItemize}
 
+
+\subsection{Detailed Description}
+\hyperlink{structLogHelper}{Log\+Helper} class. Assists the \hyperlink{classKMedoids}{K\+Medoids} class in structured logging. 
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

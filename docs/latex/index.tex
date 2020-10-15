@@ -63,6 +63,7 @@ plt.show()
 
 
 \begin{DoxyCode}
+# Start in the repository root directory, i.e. '/BanditPAM/'.
 from BanditPAM import KMedoids
 import numpy as np
 import pandas as pd
@@ -93,7 +94,7 @@ Please note that it is not necessary to build the C++ executable from source to 
 
 \subsubsection*{Option 1\+: Building with Docker}
 
-We highly recommend building using Docker. Once you have Docker installed and the Docker Daemon is running, run the following commands\+:
+We highly recommend building using Docker. One can download and install Docker by following instructions at the \href{https://docs.docker.com/get-docker/}{\tt Docker install page}. Once you have Docker installed and the Docker Daemon is running, run the following commands\+:
 
 
 \begin{DoxyCode}
@@ -118,11 +119,18 @@ This will create an executable named {\ttfamily Bandit\+P\+AM} in {\ttfamily Ban
 
 Building this repository requires three external requirements\+:
 \begin{DoxyItemize}
-\item Cmake $>$= 3.\+17
+\item Cmake $>$= 3.\+17, \href{https://cmake.org/download/}{\tt https\+://cmake.\+org/download/}
 \item Armadillo $>$= 9.\+7, \href{http://arma.sourceforge.net/download.html}{\tt http\+://arma.\+sourceforge.\+net/download.\+html}
-\item Open\+MP $>$= 2.\+5, \href{https://www.openmp.org/resources/openmp-compilers-tools/}{\tt https\+://www.\+openmp.\+org/resources/openmp-\/compilers-\/tools/} (Open\+MP is supported by default on most Linux platforms, and can be downloaded through homebrew on macs.)
+\item Open\+MP $>$= 2.\+5, \href{https://www.openmp.org/resources/openmp-compilers-tools/}{\tt https\+://www.\+openmp.\+org/resources/openmp-\/compilers-\/tools/} (Open\+MP is supported by default on most Linux platforms, and can be downloaded through homebrew on Mac\+OS. For instructions on installing homebrew, see \href{https://brew.sh/}{\tt https\+://brew.\+sh/}.)
 \item C\+A\+R\+MA $>$= 0.\+3.\+0, \href{https://github.com/RUrlus/carma}{\tt https\+://github.\+com/\+R\+Urlus/carma}
 \end{DoxyItemize}
+
+If installing these requirements from source, one can generally use the following procedure to install each requirement from the library\textquotesingle{}s root folder (with C\+A\+R\+MA used as an example here)\+: 
+\begin{DoxyCode}
+/carma$ mkdir build && cd build
+/carma/build$ cmake .. && make && make install
+\end{DoxyCode}
+
 
 Ensure all the requirements above are installed and then run\+:
 
@@ -154,6 +162,12 @@ For example, if you ran {\ttfamily ./env\+\_\+setup.sh} and downloaded the M\+N\
 
 
 \begin{DoxyCode}
-/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10
+/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10 -v 1
 \end{DoxyCode}
- 
+
+
+The expected output in the command line will be\+: 
+\begin{DoxyCode}
+Medoids: 694,168,306,714,324,959,527,251,800,737
+\end{DoxyCode}
+ A file called {\ttfamily K\+Medoids\+Logfile} with detailed logs during the process will also be present. 

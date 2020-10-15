@@ -60,7 +60,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classKMedoids-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">KMedoids Class Reference</div>  </div>
@@ -79,56 +78,61 @@ Inheritance diagram for KMedoids:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa94dfc65454f847af5d08a2d7b816bb4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#aa94dfc65454f847af5d08a2d7b816bb4">KMedoids</a> (int n_medoids=5, std::string algorithm=&quot;BanditPAM&quot;, int verbosity=0, int max_iter=1000, std::string logFilename=&quot;KMedoidsLogfile&quot;)</td></tr>
-<tr class="separator:aa94dfc65454f847af5d08a2d7b816bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef6c94fdc427f213dfeb719d711db6cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#aef6c94fdc427f213dfeb719d711db6cf">KMedoids</a> (int nMedoids=5, std::string algorithm=&quot;BanditPAM&quot;, int verbosity=0, int maxIter=1000, std::string logFilename=&quot;KMedoidsLogfile&quot;)</td></tr>
+<tr class="separator:aef6c94fdc427f213dfeb719d711db6cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d05d453ee8c395102ac9d20c91a9a12"><td class="memItemLeft" align="right" valign="top"><a id="a3d05d453ee8c395102ac9d20c91a9a12"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>KMedoids</b> (const <a class="el" href="classKMedoids.html">KMedoids</a> &amp;kmed)</td></tr>
 <tr class="separator:a3d05d453ee8c395102ac9d20c91a9a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82710100b6fb5820c10bc3f796ed62ff"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a82710100b6fb5820c10bc3f796ed62ff">~KMedoids</a> ()</td></tr>
 <tr class="separator:a82710100b6fb5820c10bc3f796ed62ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65760033bcae8de418d350c6fc4981da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a65760033bcae8de418d350c6fc4981da">setNMedoids</a> (int k)</td></tr>
-<tr class="separator:a65760033bcae8de418d350c6fc4981da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70de4f833f95a0256cce42284ebb3d48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a70de4f833f95a0256cce42284ebb3d48">setLogFilename</a> (std::string l)</td></tr>
-<tr class="separator:a70de4f833f95a0256cce42284ebb3d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab68f7ee100ab2a15bc6ee0ba28f128ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#ab68f7ee100ab2a15bc6ee0ba28f128ba">fit</a> (arma::mat input_data, std::string loss)</td></tr>
-<tr class="separator:ab68f7ee100ab2a15bc6ee0ba28f128ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae241800e72a6b4a677333ffbf06e1798"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#ae241800e72a6b4a677333ffbf06e1798">fit</a> (arma::mat inputData, std::string loss)</td></tr>
+<tr class="separator:ae241800e72a6b4a677333ffbf06e1798"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26aa9827d2541626d959dc984f0f9bcb"><td class="memItemLeft" align="right" valign="top">arma::rowvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a26aa9827d2541626d959dc984f0f9bcb">getMedoidsFinal</a> ()</td></tr>
 <tr class="separator:a26aa9827d2541626d959dc984f0f9bcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54370d8d0f5c500f5deb859a9eab891c"><td class="memItemLeft" align="right" valign="top">arma::rowvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a54370d8d0f5c500f5deb859a9eab891c">getMedoidsBuild</a> ()</td></tr>
 <tr class="separator:a54370d8d0f5c500f5deb859a9eab891c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89474787892880381e4d0282de541d03"><td class="memItemLeft" align="right" valign="top">arma::rowvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a89474787892880381e4d0282de541d03">getLabels</a> ()</td></tr>
 <tr class="separator:a89474787892880381e4d0282de541d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab442bf7198be7a48a7eb5901ac7ca571"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#ab442bf7198be7a48a7eb5901ac7ca571">setLossFn</a> (std::string loss)</td></tr>
-<tr class="separator:ab442bf7198be7a48a7eb5901ac7ca571"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5b9331755cd049afb05af8ecee3aeb5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#af5b9331755cd049afb05af8ecee3aeb5">checkAlgorithm</a> (std::string algorithm)</td></tr>
-<tr class="separator:af5b9331755cd049afb05af8ecee3aeb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c8d55468ebe909229ea7bcdb50e8351"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a2c8d55468ebe909229ea7bcdb50e8351">getSteps</a> ()</td></tr>
 <tr class="separator:a2c8d55468ebe909229ea7bcdb50e8351"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a3365e728fd524c0be2fbab0b58e3a4cd"><td class="memItemLeft" align="right" valign="top"><a id="a3365e728fd524c0be2fbab0b58e3a4cd"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>n_medoids</b></td></tr>
-<tr class="separator:a3365e728fd524c0be2fbab0b58e3a4cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cf57e612442072fb377b1714fc5e12e"><td class="memItemLeft" align="right" valign="top"><a id="a3cf57e612442072fb377b1714fc5e12e"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b></td></tr>
-<tr class="separator:a3cf57e612442072fb377b1714fc5e12e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad738dc6b5a2dafa1ff4aeab807d6407d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#ad738dc6b5a2dafa1ff4aeab807d6407d">getNMedoids</a> ()</td></tr>
+<tr class="separator:ad738dc6b5a2dafa1ff4aeab807d6407d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad28860f50c0b5a4968f99d103b3de06f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#ad28860f50c0b5a4968f99d103b3de06f">setNMedoids</a> (int new_num)</td></tr>
+<tr class="separator:ad28860f50c0b5a4968f99d103b3de06f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01a1bf63fdd2cd8b389c3f1c0619388f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a01a1bf63fdd2cd8b389c3f1c0619388f">getAlgorithm</a> ()</td></tr>
+<tr class="separator:a01a1bf63fdd2cd8b389c3f1c0619388f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a6dbc45f5d83bded48bf86cbc2690ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a1a6dbc45f5d83bded48bf86cbc2690ad">setAlgorithm</a> (std::string new_alg)</td></tr>
+<tr class="separator:a1a6dbc45f5d83bded48bf86cbc2690ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d5372adbed828602f9311dbe9c70198"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a8d5372adbed828602f9311dbe9c70198">getVerbosity</a> ()</td></tr>
+<tr class="separator:a8d5372adbed828602f9311dbe9c70198"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d03726bbd66ffc6d2c202d2a3cf40d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a8d03726bbd66ffc6d2c202d2a3cf40d5">setVerbosity</a> (int new_ver)</td></tr>
+<tr class="separator:a8d03726bbd66ffc6d2c202d2a3cf40d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0569206113015abb38954f78a194eb5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#ac0569206113015abb38954f78a194eb5">getMaxIter</a> ()</td></tr>
+<tr class="separator:ac0569206113015abb38954f78a194eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1a84d5509090d31cd1c04616fd615f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#ae1a84d5509090d31cd1c04616fd615f3">setMaxIter</a> (int new_max)</td></tr>
+<tr class="separator:ae1a84d5509090d31cd1c04616fd615f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5982ef2a71cce9f1f45b98c55350391"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#ad5982ef2a71cce9f1f45b98c55350391">getLogfileName</a> ()</td></tr>
+<tr class="separator:ad5982ef2a71cce9f1f45b98c55350391"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45f89770245bff638e25bcd39ab52013"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#a45f89770245bff638e25bcd39ab52013">setLogFilename</a> (std::string new_lname)</td></tr>
+<tr class="separator:a45f89770245bff638e25bcd39ab52013"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab442bf7198be7a48a7eb5901ac7ca571"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKMedoids.html#ab442bf7198be7a48a7eb5901ac7ca571">setLossFn</a> (std::string loss)</td></tr>
+<tr class="separator:ab442bf7198be7a48a7eb5901ac7ca571"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classKMedoids.html">KMedoids</a> class. Creates a <a class="el" href="classKMedoids.html">KMedoids</a> object that can be used to find the medoids for a particular set of input data.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">n_medoids</td><td>Number of medoids to identify </td></tr>
-    <tr><td class="paramname">algorithm</td><td>Algorithm to use to find medoids; options are "BanditPAM" for this paper's iplementation, or "naive" to use the naive method </td></tr>
+    <tr><td class="paramname">nMedoids</td><td>Number of medoids/clusters to create </td></tr>
+    <tr><td class="paramname">algorithm</td><td>Algorithm used to find medoids; options are "BanditPAM" for the "Bandit-PAM" algorithm, or "naive" to use the naive method </td></tr>
     <tr><td class="paramname">verbosity</td><td>Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file </td></tr>
-    <tr><td class="paramname">max_iter</td><td>The maximum number of iterations to run the algorithm for </td></tr>
+    <tr><td class="paramname">maxIter</td><td>The maximum number of iterations the algorithm runs for </td></tr>
     <tr><td class="paramname">logFilename</td><td>The name of the output log file </td></tr>
   </table>
   </dd>
 </dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa94dfc65454f847af5d08a2d7b816bb4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa94dfc65454f847af5d08a2d7b816bb4">&#9670;&nbsp;</a></span>KMedoids()</h2>
+<a id="aef6c94fdc427f213dfeb719d711db6cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef6c94fdc427f213dfeb719d711db6cf">&#9670;&nbsp;</a></span>KMedoids()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -137,7 +141,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
           <td class="memname">KMedoids::KMedoids </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>n_medoids</em> = <code>5</code>, </td>
+          <td class="paramname"><em>nMedoids</em> = <code>5</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -155,7 +159,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>max_iter</em> = <code>1000</code>, </td>
+          <td class="paramname"><em>maxIter</em> = <code>1000</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -173,10 +177,10 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
 <p><a class="el" href="classKMedoids.html">KMedoids</a> class. Creates a <a class="el" href="classKMedoids.html">KMedoids</a> object that can be used to find the medoids for a particular set of input data.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">n_medoids</td><td>Number of medoids to identify </td></tr>
-    <tr><td class="paramname">algorithm</td><td>Algorithm to use to find medoids; options are "BanditPAM" for this paper's iplementation, or "naive" to use the naive method </td></tr>
+    <tr><td class="paramname">nMedoids</td><td>Number of medoids/clusters to create </td></tr>
+    <tr><td class="paramname">algorithm</td><td>Algorithm used to find medoids; options are "BanditPAM" for the "Bandit-PAM" algorithm, or "naive" to use the naive method </td></tr>
     <tr><td class="paramname">verbosity</td><td>Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file </td></tr>
-    <tr><td class="paramname">max_iter</td><td>The maximum number of iterations to run the algorithm for </td></tr>
+    <tr><td class="paramname">maxIter</td><td>The maximum number of iterations the algorithm runs for </td></tr>
     <tr><td class="paramname">logFilename</td><td>The name of the output log file </td></tr>
   </table>
   </dd>
@@ -198,32 +202,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function is the destructor for the <a class="el" href="classKMedoids.html">KMedoids</a> class. </p>
+<p>Destructor for the <a class="el" href="classKMedoids.html">KMedoids</a> class. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="af5b9331755cd049afb05af8ecee3aeb5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5b9331755cd049afb05af8ecee3aeb5">&#9670;&nbsp;</a></span>checkAlgorithm()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void KMedoids::checkAlgorithm </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>algorithm</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>This function sets the algorithm the <a class="el" href="classKMedoids.html">KMedoids</a> object will use </p>
-
-</div>
-</div>
-<a id="ab68f7ee100ab2a15bc6ee0ba28f128ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab68f7ee100ab2a15bc6ee0ba28f128ba">&#9670;&nbsp;</a></span>fit()</h2>
+<a id="ae241800e72a6b4a677333ffbf06e1798"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae241800e72a6b4a677333ffbf06e1798">&#9670;&nbsp;</a></span>fit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -258,6 +243,24 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
 
 </div>
 </div>
+<a id="a01a1bf63fdd2cd8b389c3f1c0619388f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01a1bf63fdd2cd8b389c3f1c0619388f">&#9670;&nbsp;</a></span>getAlgorithm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string KMedoids::getAlgorithm </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function gets the algorithm for the <a class="el" href="classKMedoids.html">KMedoids</a> object </p>
+
+</div>
+</div>
 <a id="a89474787892880381e4d0282de541d03"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a89474787892880381e4d0282de541d03">&#9670;&nbsp;</a></span>getLabels()</h2>
 
@@ -272,7 +275,43 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function returns the labels/medoids assignments for each datapoint after the final medoids are identified. </p>
+<p>Returns the labels/medoids assignments for each datapoint after the final medoids are identified. </p>
+
+</div>
+</div>
+<a id="ad5982ef2a71cce9f1f45b98c55350391"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5982ef2a71cce9f1f45b98c55350391">&#9670;&nbsp;</a></span>getLogfileName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string KMedoids::getLogfileName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function gets the log filename for the <a class="el" href="classKMedoids.html">KMedoids</a> object </p>
+
+</div>
+</div>
+<a id="ac0569206113015abb38954f78a194eb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0569206113015abb38954f78a194eb5">&#9670;&nbsp;</a></span>getMaxIter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int KMedoids::getMaxIter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function gets the maximum number of iterations for the <a class="el" href="classKMedoids.html">KMedoids</a> object </p>
 
 </div>
 </div>
@@ -290,7 +329,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function returns the build medoids for a <a class="el" href="classKMedoids.html">KMedoids</a> object. </p>
+<p>Returns the build medoids for a <a class="el" href="classKMedoids.html">KMedoids</a> object. </p>
 
 </div>
 </div>
@@ -308,7 +347,25 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function returns the final medoids for a <a class="el" href="classKMedoids.html">KMedoids</a> object. </p>
+<p>Returns the final medoids for a <a class="el" href="classKMedoids.html">KMedoids</a> object. </p>
+
+</div>
+</div>
+<a id="ad738dc6b5a2dafa1ff4aeab807d6407d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad738dc6b5a2dafa1ff4aeab807d6407d">&#9670;&nbsp;</a></span>getNMedoids()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int KMedoids::getNMedoids </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Gets the number of clusters for the <a class="el" href="classKMedoids.html">KMedoids</a> object </p>
 
 </div>
 </div>
@@ -326,12 +383,49 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function returns the number of swap steps that took place during the computation </p>
+<p>Returns the number of swap steps that took place during the computation. </p>
 
 </div>
 </div>
-<a id="a70de4f833f95a0256cce42284ebb3d48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70de4f833f95a0256cce42284ebb3d48">&#9670;&nbsp;</a></span>setLogFilename()</h2>
+<a id="a8d5372adbed828602f9311dbe9c70198"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d5372adbed828602f9311dbe9c70198">&#9670;&nbsp;</a></span>getVerbosity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int KMedoids::getVerbosity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function gets the verbosity for the <a class="el" href="classKMedoids.html">KMedoids</a> object </p>
+
+</div>
+</div>
+<a id="a1a6dbc45f5d83bded48bf86cbc2690ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a6dbc45f5d83bded48bf86cbc2690ad">&#9670;&nbsp;</a></span>setAlgorithm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void KMedoids::setAlgorithm </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>new_alg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function sets the algorithm for the <a class="el" href="classKMedoids.html">KMedoids</a> object </p>
+
+</div>
+</div>
+<a id="a45f89770245bff638e25bcd39ab52013"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45f89770245bff638e25bcd39ab52013">&#9670;&nbsp;</a></span>setLogFilename()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -340,12 +434,12 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
           <td class="memname">void KMedoids::setLogFilename </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>l</em></td><td>)</td>
+          <td class="paramname"><em>new_lname</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function sets the log file name </p>
+<p>This function sets the log filename for the <a class="el" href="classKMedoids.html">KMedoids</a> object </p>
 
 </div>
 </div>
@@ -364,12 +458,31 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function sets the loss function the <a class="el" href="classKMedoids.html">KMedoids</a> object will use </p>
+<p>Sets the loss function used by the <a class="el" href="classKMedoids.html">KMedoids</a> object. </p>
 
 </div>
 </div>
-<a id="a65760033bcae8de418d350c6fc4981da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65760033bcae8de418d350c6fc4981da">&#9670;&nbsp;</a></span>setNMedoids()</h2>
+<a id="ae1a84d5509090d31cd1c04616fd615f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1a84d5509090d31cd1c04616fd615f3">&#9670;&nbsp;</a></span>setMaxIter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void KMedoids::setMaxIter </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>new_max</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function sets the maximum number of iterations for the <a class="el" href="classKMedoids.html">KMedoids</a> object </p>
+
+</div>
+</div>
+<a id="ad28860f50c0b5a4968f99d103b3de06f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad28860f50c0b5a4968f99d103b3de06f">&#9670;&nbsp;</a></span>setNMedoids()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -378,12 +491,31 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>logFilename</b
           <td class="memname">void KMedoids::setNMedoids </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>k</em></td><td>)</td>
+          <td class="paramname"><em>new_num</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This function sets the <a class="el" href="classKMedoids.html">KMedoids</a> object's medoids </p>
+<p>This function sets the number of clusters for the <a class="el" href="classKMedoids.html">KMedoids</a> object </p>
+
+</div>
+</div>
+<a id="a8d03726bbd66ffc6d2c202d2a3cf40d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d03726bbd66ffc6d2c202d2a3cf40d5">&#9670;&nbsp;</a></span>setVerbosity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void KMedoids::setVerbosity </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>new_ver</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This function sets the verbosity for the <a class="el" href="classKMedoids.html">KMedoids</a> object </p>
 
 </div>
 </div>

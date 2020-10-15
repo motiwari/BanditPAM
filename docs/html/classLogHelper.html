@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BanditPAM: LogHelper Struct Reference</title>
+<title>BanditPAM: LogHelper Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,41 +61,22 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="structLogHelper-members.html">List of all members</a>  </div>
+<a href="classLogHelper-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">LogHelper Struct Reference</div>  </div>
+<div class="title">LogHelper Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="kmedoids__ucb_8hpp_source.html">kmedoids_ucb.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0cbf766b210cc27f71bf309b42922ac8"><td class="memItemLeft" align="right" valign="top"><a id="a0cbf766b210cc27f71bf309b42922ac8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> (std::string input_filename=&quot;HKMedoidsLogfile&quot;)</td></tr>
-<tr class="separator:a0cbf766b210cc27f71bf309b42922ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4624149f53c4577d0565f761c155d800"><td class="memItemLeft" align="right" valign="top"><a id="a4624149f53c4577d0565f761c155d800"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>close</b> ()</td></tr>
-<tr class="separator:a4624149f53c4577d0565f761c155d800"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b1a8ff2ae2ce6e3293e3b34085e3b86"><td class="memItemLeft" align="right" valign="top"><a id="a5b1a8ff2ae2ce6e3293e3b34085e3b86"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>writeSummaryLine</b> (std::string key, arma::rowvec vec)</td></tr>
-<tr class="separator:a5b1a8ff2ae2ce6e3293e3b34085e3b86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1bb80fa2bd8b1dfcd944ea19c4e8e06"><td class="memTemplParams" colspan="2"><a id="ad1bb80fa2bd8b1dfcd944ea19c4e8e06"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ad1bb80fa2bd8b1dfcd944ea19c4e8e06"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>writeLogStringLine</b> (std::string key, std::vector&lt; T &gt; vec)</td></tr>
-<tr class="separator:ad1bb80fa2bd8b1dfcd944ea19c4e8e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd60abb04cadac82bd4b34edc931560"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLogHelper.html#a4dd60abb04cadac82bd4b34edc931560">LogHelper</a> (std::string filename=&quot;KMedoidsLogfile&quot;)</td></tr>
+<tr class="separator:a4dd60abb04cadac82bd4b34edc931560"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15b3f49bf98956a0585f036801e25dbe"><td class="memItemLeft" align="right" valign="top"><a id="a15b3f49bf98956a0585f036801e25dbe"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>writeProfile</b> (arma::rowvec b_medoids, arma::rowvec f_medoids, int steps, double loss)</td></tr>
 <tr class="separator:a15b3f49bf98956a0585f036801e25dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a084e11845451a653f46a48ab92c97ee8"><td class="memItemLeft" align="right" valign="top"><a id="a084e11845451a653f46a48ab92c97ee8"></a>
-std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><b>hlogFile</b></td></tr>
-<tr class="separator:a084e11845451a653f46a48ab92c97ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac606e3c78f973cb42f55ea6f8a11e509"><td class="memItemLeft" align="right" valign="top"><a id="ac606e3c78f973cb42f55ea6f8a11e509"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>k</b></td></tr>
-<tr class="separator:ac606e3c78f973cb42f55ea6f8a11e509"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f9490e07d6bfc71b0d0fd555ca4f530"><td class="memItemLeft" align="right" valign="top"><a id="a7f9490e07d6bfc71b0d0fd555ca4f530"></a>
 std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>comp_exact_build</b></td></tr>
 <tr class="separator:a7f9490e07d6bfc71b0d0fd555ca4f530"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,10 +102,35 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>sigma_swap</b></td></tr>
 <tr class="separator:afee211952d9a61c217622557e91c1275"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="structLogHelper.html">LogHelper</a> class. Assists the <a class="el" href="classKMedoids.html">KMedoids</a> class in structured logging. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/esfrankel/Desktop/BanditPAM/headers/<a class="el" href="kmedoids__ucb_8hpp_source.html">kmedoids_ucb.hpp</a></li>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a4dd60abb04cadac82bd4b34edc931560"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dd60abb04cadac82bd4b34edc931560">&#9670;&nbsp;</a></span>LogHelper()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">LogHelper::LogHelper </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>filename</em> = <code>&quot;KMedoidsLogfile&quot;</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><a class="el" href="classLogHelper.html">LogHelper</a> class. Creates a <a class="el" href="classLogHelper.html">LogHelper</a> object that handles logging for a <a class="el" href="classKMedoids.html">KMedoids</a> object.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td>Name of the file that will be saved </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>/home/esfrankel/Desktop/BanditPAM/headers/<a class="el" href="log__helper_8hpp_source.html">log_helper.hpp</a></li>
+<li>/home/esfrankel/Desktop/BanditPAM/src/<a class="el" href="log__helper_8cpp.html">log_helper.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

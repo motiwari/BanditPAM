@@ -16,18 +16,14 @@ Inheritance diagram for K\+Medoids\+:\nopagebreak
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{classKMedoids_aa94dfc65454f847af5d08a2d7b816bb4}{K\+Medoids} (int n\+\_\+medoids=5, std\+::string algorithm=\char`\"{}Bandit\+P\+AM\char`\"{}, int verbosity=0, int max\+\_\+iter=1000, std\+::string log\+Filename=\char`\"{}K\+Medoids\+Logfile\char`\"{})
+\hyperlink{classKMedoids_aef6c94fdc427f213dfeb719d711db6cf}{K\+Medoids} (int n\+Medoids=5, std\+::string algorithm=\char`\"{}Bandit\+P\+AM\char`\"{}, int verbosity=0, int max\+Iter=1000, std\+::string log\+Filename=\char`\"{}K\+Medoids\+Logfile\char`\"{})
 \item 
 \mbox{\Hypertarget{classKMedoids_a3d05d453ee8c395102ac9d20c91a9a12}\label{classKMedoids_a3d05d453ee8c395102ac9d20c91a9a12}} 
 {\bfseries K\+Medoids} (const \hyperlink{classKMedoids}{K\+Medoids} \&kmed)
 \item 
 \hyperlink{classKMedoids_a82710100b6fb5820c10bc3f796ed62ff}{$\sim$\+K\+Medoids} ()
 \item 
-void \hyperlink{classKMedoids_a65760033bcae8de418d350c6fc4981da}{set\+N\+Medoids} (int k)
-\item 
-void \hyperlink{classKMedoids_a70de4f833f95a0256cce42284ebb3d48}{set\+Log\+Filename} (std\+::string l)
-\item 
-void \hyperlink{classKMedoids_ab68f7ee100ab2a15bc6ee0ba28f128ba}{fit} (arma\+::mat input\+\_\+data, std\+::string loss)
+void \hyperlink{classKMedoids_ae241800e72a6b4a677333ffbf06e1798}{fit} (arma\+::mat input\+Data, std\+::string loss)
 \item 
 arma\+::rowvec \hyperlink{classKMedoids_a26aa9827d2541626d959dc984f0f9bcb}{get\+Medoids\+Final} ()
 \item 
@@ -35,20 +31,29 @@ arma\+::rowvec \hyperlink{classKMedoids_a54370d8d0f5c500f5deb859a9eab891c}{get\+
 \item 
 arma\+::rowvec \hyperlink{classKMedoids_a89474787892880381e4d0282de541d03}{get\+Labels} ()
 \item 
-void \hyperlink{classKMedoids_ab442bf7198be7a48a7eb5901ac7ca571}{set\+Loss\+Fn} (std\+::string loss)
-\item 
-void \hyperlink{classKMedoids_af5b9331755cd049afb05af8ecee3aeb5}{check\+Algorithm} (std\+::string algorithm)
-\item 
 int \hyperlink{classKMedoids_a2c8d55468ebe909229ea7bcdb50e8351}{get\+Steps} ()
-\end{DoxyCompactItemize}
-\subsection*{Public Attributes}
-\begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{classKMedoids_a3365e728fd524c0be2fbab0b58e3a4cd}\label{classKMedoids_a3365e728fd524c0be2fbab0b58e3a4cd}} 
-int {\bfseries n\+\_\+medoids}
+int \hyperlink{classKMedoids_ad738dc6b5a2dafa1ff4aeab807d6407d}{get\+N\+Medoids} ()
 \item 
-\mbox{\Hypertarget{classKMedoids_a3cf57e612442072fb377b1714fc5e12e}\label{classKMedoids_a3cf57e612442072fb377b1714fc5e12e}} 
-std\+::string {\bfseries log\+Filename}
+void \hyperlink{classKMedoids_ad28860f50c0b5a4968f99d103b3de06f}{set\+N\+Medoids} (int new\+\_\+num)
+\item 
+std\+::string \hyperlink{classKMedoids_a01a1bf63fdd2cd8b389c3f1c0619388f}{get\+Algorithm} ()
+\item 
+void \hyperlink{classKMedoids_a1a6dbc45f5d83bded48bf86cbc2690ad}{set\+Algorithm} (std\+::string new\+\_\+alg)
+\item 
+int \hyperlink{classKMedoids_a8d5372adbed828602f9311dbe9c70198}{get\+Verbosity} ()
+\item 
+void \hyperlink{classKMedoids_a8d03726bbd66ffc6d2c202d2a3cf40d5}{set\+Verbosity} (int new\+\_\+ver)
+\item 
+int \hyperlink{classKMedoids_ac0569206113015abb38954f78a194eb5}{get\+Max\+Iter} ()
+\item 
+void \hyperlink{classKMedoids_ae1a84d5509090d31cd1c04616fd615f3}{set\+Max\+Iter} (int new\+\_\+max)
+\item 
+std\+::string \hyperlink{classKMedoids_ad5982ef2a71cce9f1f45b98c55350391}{get\+Logfile\+Name} ()
+\item 
+void \hyperlink{classKMedoids_a45f89770245bff638e25bcd39ab52013}{set\+Log\+Filename} (std\+::string new\+\_\+lname)
+\item 
+void \hyperlink{classKMedoids_ab442bf7198be7a48a7eb5901ac7ca571}{set\+Loss\+Fn} (std\+::string loss)
 \end{DoxyCompactItemize}
 
 
@@ -57,13 +62,13 @@ std\+::string {\bfseries log\+Filename}
 
 
 \begin{DoxyParams}{Parameters}
-{\em n\+\_\+medoids} & Number of medoids to identify \\
+{\em n\+Medoids} & Number of medoids/clusters to create \\
 \hline
-{\em algorithm} & Algorithm to use to find medoids; options are \char`\"{}\+Bandit\+P\+A\+M\char`\"{} for this paper\textquotesingle{}s iplementation, or \char`\"{}naive\char`\"{} to use the naive method \\
+{\em algorithm} & Algorithm used to find medoids; options are \char`\"{}\+Bandit\+P\+A\+M\char`\"{} for the \char`\"{}\+Bandit-\/\+P\+A\+M\char`\"{} algorithm, or \char`\"{}naive\char`\"{} to use the naive method \\
 \hline
 {\em verbosity} & Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file \\
 \hline
-{\em max\+\_\+iter} & The maximum number of iterations to run the algorithm for \\
+{\em max\+Iter} & The maximum number of iterations the algorithm runs for \\
 \hline
 {\em log\+Filename} & The name of the output log file \\
 \hline
@@ -71,23 +76,23 @@ std\+::string {\bfseries log\+Filename}
 
 
 \subsection{Constructor \& Destructor Documentation}
-\mbox{\Hypertarget{classKMedoids_aa94dfc65454f847af5d08a2d7b816bb4}\label{classKMedoids_aa94dfc65454f847af5d08a2d7b816bb4}} 
+\mbox{\Hypertarget{classKMedoids_aef6c94fdc427f213dfeb719d711db6cf}\label{classKMedoids_aef6c94fdc427f213dfeb719d711db6cf}} 
 \index{K\+Medoids@{K\+Medoids}!K\+Medoids@{K\+Medoids}}
 \index{K\+Medoids@{K\+Medoids}!K\+Medoids@{K\+Medoids}}
 \subsubsection{\texorpdfstring{K\+Medoids()}{KMedoids()}}
-{\footnotesize\ttfamily K\+Medoids\+::\+K\+Medoids (\begin{DoxyParamCaption}\item[{int}]{n\+\_\+medoids = {\ttfamily 5},  }\item[{std\+::string}]{algorithm = {\ttfamily \char`\"{}BanditPAM\char`\"{}},  }\item[{int}]{verbosity = {\ttfamily 0},  }\item[{int}]{max\+\_\+iter = {\ttfamily 1000},  }\item[{std\+::string}]{log\+Filename = {\ttfamily \char`\"{}KMedoidsLogfile\char`\"{}} }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily K\+Medoids\+::\+K\+Medoids (\begin{DoxyParamCaption}\item[{int}]{n\+Medoids = {\ttfamily 5},  }\item[{std\+::string}]{algorithm = {\ttfamily \char`\"{}BanditPAM\char`\"{}},  }\item[{int}]{verbosity = {\ttfamily 0},  }\item[{int}]{max\+Iter = {\ttfamily 1000},  }\item[{std\+::string}]{log\+Filename = {\ttfamily \char`\"{}KMedoidsLogfile\char`\"{}} }\end{DoxyParamCaption})}
 
 \hyperlink{classKMedoids}{K\+Medoids} class. Creates a \hyperlink{classKMedoids}{K\+Medoids} object that can be used to find the medoids for a particular set of input data.
 
 
 \begin{DoxyParams}{Parameters}
-{\em n\+\_\+medoids} & Number of medoids to identify \\
+{\em n\+Medoids} & Number of medoids/clusters to create \\
 \hline
-{\em algorithm} & Algorithm to use to find medoids; options are \char`\"{}\+Bandit\+P\+A\+M\char`\"{} for this paper\textquotesingle{}s iplementation, or \char`\"{}naive\char`\"{} to use the naive method \\
+{\em algorithm} & Algorithm used to find medoids; options are \char`\"{}\+Bandit\+P\+A\+M\char`\"{} for the \char`\"{}\+Bandit-\/\+P\+A\+M\char`\"{} algorithm, or \char`\"{}naive\char`\"{} to use the naive method \\
 \hline
 {\em verbosity} & Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file \\
 \hline
-{\em max\+\_\+iter} & The maximum number of iterations to run the algorithm for \\
+{\em max\+Iter} & The maximum number of iterations the algorithm runs for \\
 \hline
 {\em log\+Filename} & The name of the output log file \\
 \hline
@@ -98,16 +103,10 @@ std\+::string {\bfseries log\+Filename}
 \subsubsection{\texorpdfstring{$\sim$\+K\+Medoids()}{~KMedoids()}}
 {\footnotesize\ttfamily K\+Medoids\+::$\sim$\+K\+Medoids (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function is the destructor for the \hyperlink{classKMedoids}{K\+Medoids} class. 
+Destructor for the \hyperlink{classKMedoids}{K\+Medoids} class. 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{classKMedoids_af5b9331755cd049afb05af8ecee3aeb5}\label{classKMedoids_af5b9331755cd049afb05af8ecee3aeb5}} 
-\index{K\+Medoids@{K\+Medoids}!check\+Algorithm@{check\+Algorithm}}
-\index{check\+Algorithm@{check\+Algorithm}!K\+Medoids@{K\+Medoids}}
-\subsubsection{\texorpdfstring{check\+Algorithm()}{checkAlgorithm()}}
-{\footnotesize\ttfamily void K\+Medoids\+::check\+Algorithm (\begin{DoxyParamCaption}\item[{std\+::string}]{algorithm }\end{DoxyParamCaption})}
-
-This function sets the algorithm the \hyperlink{classKMedoids}{K\+Medoids} object will use \mbox{\Hypertarget{classKMedoids_ab68f7ee100ab2a15bc6ee0ba28f128ba}\label{classKMedoids_ab68f7ee100ab2a15bc6ee0ba28f128ba}} 
+\mbox{\Hypertarget{classKMedoids_ae241800e72a6b4a677333ffbf06e1798}\label{classKMedoids_ae241800e72a6b4a677333ffbf06e1798}} 
 \index{K\+Medoids@{K\+Medoids}!fit@{fit}}
 \index{fit@{fit}!K\+Medoids@{K\+Medoids}}
 \subsubsection{\texorpdfstring{fit()}{fit()}}
@@ -122,49 +121,97 @@ This is the main function of the \hyperlink{classKMedoids}{K\+Medoids} object\+:
 {\em loss} & The loss function used during medoid computation \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{classKMedoids_a89474787892880381e4d0282de541d03}\label{classKMedoids_a89474787892880381e4d0282de541d03}} 
+\mbox{\Hypertarget{classKMedoids_a01a1bf63fdd2cd8b389c3f1c0619388f}\label{classKMedoids_a01a1bf63fdd2cd8b389c3f1c0619388f}} 
+\index{K\+Medoids@{K\+Medoids}!get\+Algorithm@{get\+Algorithm}}
+\index{get\+Algorithm@{get\+Algorithm}!K\+Medoids@{K\+Medoids}}
+\subsubsection{\texorpdfstring{get\+Algorithm()}{getAlgorithm()}}
+{\footnotesize\ttfamily std\+::string K\+Medoids\+::get\+Algorithm (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function gets the algorithm for the \hyperlink{classKMedoids}{K\+Medoids} object \mbox{\Hypertarget{classKMedoids_a89474787892880381e4d0282de541d03}\label{classKMedoids_a89474787892880381e4d0282de541d03}} 
 \index{K\+Medoids@{K\+Medoids}!get\+Labels@{get\+Labels}}
 \index{get\+Labels@{get\+Labels}!K\+Medoids@{K\+Medoids}}
 \subsubsection{\texorpdfstring{get\+Labels()}{getLabels()}}
 {\footnotesize\ttfamily arma\+::rowvec K\+Medoids\+::get\+Labels (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function returns the labels/medoids assignments for each datapoint after the final medoids are identified. \mbox{\Hypertarget{classKMedoids_a54370d8d0f5c500f5deb859a9eab891c}\label{classKMedoids_a54370d8d0f5c500f5deb859a9eab891c}} 
+Returns the labels/medoids assignments for each datapoint after the final medoids are identified. \mbox{\Hypertarget{classKMedoids_ad5982ef2a71cce9f1f45b98c55350391}\label{classKMedoids_ad5982ef2a71cce9f1f45b98c55350391}} 
+\index{K\+Medoids@{K\+Medoids}!get\+Logfile\+Name@{get\+Logfile\+Name}}
+\index{get\+Logfile\+Name@{get\+Logfile\+Name}!K\+Medoids@{K\+Medoids}}
+\subsubsection{\texorpdfstring{get\+Logfile\+Name()}{getLogfileName()}}
+{\footnotesize\ttfamily std\+::string K\+Medoids\+::get\+Logfile\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function gets the log filename for the \hyperlink{classKMedoids}{K\+Medoids} object \mbox{\Hypertarget{classKMedoids_ac0569206113015abb38954f78a194eb5}\label{classKMedoids_ac0569206113015abb38954f78a194eb5}} 
+\index{K\+Medoids@{K\+Medoids}!get\+Max\+Iter@{get\+Max\+Iter}}
+\index{get\+Max\+Iter@{get\+Max\+Iter}!K\+Medoids@{K\+Medoids}}
+\subsubsection{\texorpdfstring{get\+Max\+Iter()}{getMaxIter()}}
+{\footnotesize\ttfamily int K\+Medoids\+::get\+Max\+Iter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function gets the maximum number of iterations for the \hyperlink{classKMedoids}{K\+Medoids} object \mbox{\Hypertarget{classKMedoids_a54370d8d0f5c500f5deb859a9eab891c}\label{classKMedoids_a54370d8d0f5c500f5deb859a9eab891c}} 
 \index{K\+Medoids@{K\+Medoids}!get\+Medoids\+Build@{get\+Medoids\+Build}}
 \index{get\+Medoids\+Build@{get\+Medoids\+Build}!K\+Medoids@{K\+Medoids}}
 \subsubsection{\texorpdfstring{get\+Medoids\+Build()}{getMedoidsBuild()}}
 {\footnotesize\ttfamily arma\+::rowvec K\+Medoids\+::get\+Medoids\+Build (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function returns the build medoids for a \hyperlink{classKMedoids}{K\+Medoids} object. \mbox{\Hypertarget{classKMedoids_a26aa9827d2541626d959dc984f0f9bcb}\label{classKMedoids_a26aa9827d2541626d959dc984f0f9bcb}} 
+Returns the build medoids for a \hyperlink{classKMedoids}{K\+Medoids} object. \mbox{\Hypertarget{classKMedoids_a26aa9827d2541626d959dc984f0f9bcb}\label{classKMedoids_a26aa9827d2541626d959dc984f0f9bcb}} 
 \index{K\+Medoids@{K\+Medoids}!get\+Medoids\+Final@{get\+Medoids\+Final}}
 \index{get\+Medoids\+Final@{get\+Medoids\+Final}!K\+Medoids@{K\+Medoids}}
 \subsubsection{\texorpdfstring{get\+Medoids\+Final()}{getMedoidsFinal()}}
 {\footnotesize\ttfamily arma\+::rowvec K\+Medoids\+::get\+Medoids\+Final (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function returns the final medoids for a \hyperlink{classKMedoids}{K\+Medoids} object. \mbox{\Hypertarget{classKMedoids_a2c8d55468ebe909229ea7bcdb50e8351}\label{classKMedoids_a2c8d55468ebe909229ea7bcdb50e8351}} 
+Returns the final medoids for a \hyperlink{classKMedoids}{K\+Medoids} object. \mbox{\Hypertarget{classKMedoids_ad738dc6b5a2dafa1ff4aeab807d6407d}\label{classKMedoids_ad738dc6b5a2dafa1ff4aeab807d6407d}} 
+\index{K\+Medoids@{K\+Medoids}!get\+N\+Medoids@{get\+N\+Medoids}}
+\index{get\+N\+Medoids@{get\+N\+Medoids}!K\+Medoids@{K\+Medoids}}
+\subsubsection{\texorpdfstring{get\+N\+Medoids()}{getNMedoids()}}
+{\footnotesize\ttfamily int K\+Medoids\+::get\+N\+Medoids (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Gets the number of clusters for the \hyperlink{classKMedoids}{K\+Medoids} object \mbox{\Hypertarget{classKMedoids_a2c8d55468ebe909229ea7bcdb50e8351}\label{classKMedoids_a2c8d55468ebe909229ea7bcdb50e8351}} 
 \index{K\+Medoids@{K\+Medoids}!get\+Steps@{get\+Steps}}
 \index{get\+Steps@{get\+Steps}!K\+Medoids@{K\+Medoids}}
 \subsubsection{\texorpdfstring{get\+Steps()}{getSteps()}}
 {\footnotesize\ttfamily int K\+Medoids\+::get\+Steps (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-This function returns the number of swap steps that took place during the computation \mbox{\Hypertarget{classKMedoids_a70de4f833f95a0256cce42284ebb3d48}\label{classKMedoids_a70de4f833f95a0256cce42284ebb3d48}} 
+Returns the number of swap steps that took place during the computation. \mbox{\Hypertarget{classKMedoids_a8d5372adbed828602f9311dbe9c70198}\label{classKMedoids_a8d5372adbed828602f9311dbe9c70198}} 
+\index{K\+Medoids@{K\+Medoids}!get\+Verbosity@{get\+Verbosity}}
+\index{get\+Verbosity@{get\+Verbosity}!K\+Medoids@{K\+Medoids}}
+\subsubsection{\texorpdfstring{get\+Verbosity()}{getVerbosity()}}
+{\footnotesize\ttfamily int K\+Medoids\+::get\+Verbosity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function gets the verbosity for the \hyperlink{classKMedoids}{K\+Medoids} object \mbox{\Hypertarget{classKMedoids_a1a6dbc45f5d83bded48bf86cbc2690ad}\label{classKMedoids_a1a6dbc45f5d83bded48bf86cbc2690ad}} 
+\index{K\+Medoids@{K\+Medoids}!set\+Algorithm@{set\+Algorithm}}
+\index{set\+Algorithm@{set\+Algorithm}!K\+Medoids@{K\+Medoids}}
+\subsubsection{\texorpdfstring{set\+Algorithm()}{setAlgorithm()}}
+{\footnotesize\ttfamily void K\+Medoids\+::set\+Algorithm (\begin{DoxyParamCaption}\item[{std\+::string}]{new\+\_\+alg }\end{DoxyParamCaption})}
+
+This function sets the algorithm for the \hyperlink{classKMedoids}{K\+Medoids} object \mbox{\Hypertarget{classKMedoids_a45f89770245bff638e25bcd39ab52013}\label{classKMedoids_a45f89770245bff638e25bcd39ab52013}} 
 \index{K\+Medoids@{K\+Medoids}!set\+Log\+Filename@{set\+Log\+Filename}}
 \index{set\+Log\+Filename@{set\+Log\+Filename}!K\+Medoids@{K\+Medoids}}
 \subsubsection{\texorpdfstring{set\+Log\+Filename()}{setLogFilename()}}
-{\footnotesize\ttfamily void K\+Medoids\+::set\+Log\+Filename (\begin{DoxyParamCaption}\item[{std\+::string}]{l }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void K\+Medoids\+::set\+Log\+Filename (\begin{DoxyParamCaption}\item[{std\+::string}]{new\+\_\+lname }\end{DoxyParamCaption})}
 
-This function sets the log file name \mbox{\Hypertarget{classKMedoids_ab442bf7198be7a48a7eb5901ac7ca571}\label{classKMedoids_ab442bf7198be7a48a7eb5901ac7ca571}} 
+This function sets the log filename for the \hyperlink{classKMedoids}{K\+Medoids} object \mbox{\Hypertarget{classKMedoids_ab442bf7198be7a48a7eb5901ac7ca571}\label{classKMedoids_ab442bf7198be7a48a7eb5901ac7ca571}} 
 \index{K\+Medoids@{K\+Medoids}!set\+Loss\+Fn@{set\+Loss\+Fn}}
 \index{set\+Loss\+Fn@{set\+Loss\+Fn}!K\+Medoids@{K\+Medoids}}
 \subsubsection{\texorpdfstring{set\+Loss\+Fn()}{setLossFn()}}
 {\footnotesize\ttfamily void K\+Medoids\+::set\+Loss\+Fn (\begin{DoxyParamCaption}\item[{std\+::string}]{loss }\end{DoxyParamCaption})}
 
-This function sets the loss function the \hyperlink{classKMedoids}{K\+Medoids} object will use \mbox{\Hypertarget{classKMedoids_a65760033bcae8de418d350c6fc4981da}\label{classKMedoids_a65760033bcae8de418d350c6fc4981da}} 
+Sets the loss function used by the \hyperlink{classKMedoids}{K\+Medoids} object. \mbox{\Hypertarget{classKMedoids_ae1a84d5509090d31cd1c04616fd615f3}\label{classKMedoids_ae1a84d5509090d31cd1c04616fd615f3}} 
+\index{K\+Medoids@{K\+Medoids}!set\+Max\+Iter@{set\+Max\+Iter}}
+\index{set\+Max\+Iter@{set\+Max\+Iter}!K\+Medoids@{K\+Medoids}}
+\subsubsection{\texorpdfstring{set\+Max\+Iter()}{setMaxIter()}}
+{\footnotesize\ttfamily void K\+Medoids\+::set\+Max\+Iter (\begin{DoxyParamCaption}\item[{int}]{new\+\_\+max }\end{DoxyParamCaption})}
+
+This function sets the maximum number of iterations for the \hyperlink{classKMedoids}{K\+Medoids} object \mbox{\Hypertarget{classKMedoids_ad28860f50c0b5a4968f99d103b3de06f}\label{classKMedoids_ad28860f50c0b5a4968f99d103b3de06f}} 
 \index{K\+Medoids@{K\+Medoids}!set\+N\+Medoids@{set\+N\+Medoids}}
 \index{set\+N\+Medoids@{set\+N\+Medoids}!K\+Medoids@{K\+Medoids}}
 \subsubsection{\texorpdfstring{set\+N\+Medoids()}{setNMedoids()}}
-{\footnotesize\ttfamily void K\+Medoids\+::set\+N\+Medoids (\begin{DoxyParamCaption}\item[{int}]{k }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void K\+Medoids\+::set\+N\+Medoids (\begin{DoxyParamCaption}\item[{int}]{new\+\_\+num }\end{DoxyParamCaption})}
 
-This function sets the \hyperlink{classKMedoids}{K\+Medoids} object\textquotesingle{}s medoids 
+This function sets the number of clusters for the \hyperlink{classKMedoids}{K\+Medoids} object \mbox{\Hypertarget{classKMedoids_a8d03726bbd66ffc6d2c202d2a3cf40d5}\label{classKMedoids_a8d03726bbd66ffc6d2c202d2a3cf40d5}} 
+\index{K\+Medoids@{K\+Medoids}!set\+Verbosity@{set\+Verbosity}}
+\index{set\+Verbosity@{set\+Verbosity}!K\+Medoids@{K\+Medoids}}
+\subsubsection{\texorpdfstring{set\+Verbosity()}{setVerbosity()}}
+{\footnotesize\ttfamily void K\+Medoids\+::set\+Verbosity (\begin{DoxyParamCaption}\item[{int}]{new\+\_\+ver }\end{DoxyParamCaption})}
+
+This function sets the verbosity for the \hyperlink{classKMedoids}{K\+Medoids} object 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
