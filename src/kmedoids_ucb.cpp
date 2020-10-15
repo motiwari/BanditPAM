@@ -2,7 +2,7 @@
  * @file kmedoids_ucb.cpp
  * @date 2020-06-10
  *
- * This file contains the main C++ implementation of the BanditPAM code.
+ * This file contains the primary C++ implementation of the BanditPAM code.
  *
  */
 #include "kmedoids_ucb.hpp"

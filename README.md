@@ -1,10 +1,10 @@
-# BanditPAM: Almost Linear-Time k-Medoids Clustering {#mainpage}
+# BanditPAM: Almost Linear-Time *k*-Medoids Clustering {#mainpage}
 
 This repo contains a high-performance implementation of BanditPAM from https://arxiv.org/abs/2006.06856. The code can be called directly from Python or C++.
 
 If you use this software, please cite:
 
-Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "Bandit-PAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits" Neural Information Processing Systems (NeurIPS) 2020.
+Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "Bandit-PAM: Almost Linear Time *k*-medoids Clustering via Multi-Armed Bandits" Neural Information Processing Systems (NeurIPS) 2020.
 
 
 ```python
