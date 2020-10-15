@@ -119,6 +119,12 @@ Building this repository requires three external requirements:
 * OpenMP >= 2.5, https://www.openmp.org/resources/openmp-compilers-tools/ (OpenMP is supported by default on most Linux platforms, and can be downloaded through homebrew on MacOS. For instructions on installing homebrew, see https://brew.sh/.)
 * CARMA >= 0.3.0, https://github.com/RUrlus/carma
 
+If installing these requirements from source, one can generally use the following procedure to install each requirement from the library's root folder (with CARMA used as an example here):
+```
+/carma$ mkdir build && cd build
+/carma/build$ cmake .. && make && make install
+```
+
 Ensure all the requirements above are installed and then run:
 
 ```
