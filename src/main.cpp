@@ -53,17 +53,17 @@ int main(int argc, char* argv[])
     arma::uword n = data.n_cols;
     arma::uword d = data.n_rows;
 
-    KMedoids kmed;
+    KMedoids kmed(k, "BanditPAM", verbosity);
     kmed.fit(data, loss);
 
     if (verbosity > 0) {
       arma::rowvec meds = kmed.getMedoidsFinal();
       std::cout << "Medoids: ";
-      for (size_t i = 0; i < k; i++) {
-        if (i == (k-1)) {
+      for (size_t i = 0; i < meds.n_cols; i++) {
+        if (i == (meds.n_cols - 1)) {
           std::cout << meds(i) << std::endl;
         } else {
-          std::cout << meds(i) << ", ";
+          std::cout << meds(i) << ',';
         }
       }
     }

@@ -148,5 +148,12 @@ Once the executable has been built, it can be invoked with:
 For example, if you ran `./env_setup.sh` and downloaded the MNIST dataset, you could run:
 
 ```
-/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10
+/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10 -v 1
 ```
+
+The expected output in the command line will be:
+```
+Medoids: 694,168,306,714,324,959,527,251,800,737
+```
+A file called `KMedoidsLogfile` with detailed logs during the process will also
+be present.

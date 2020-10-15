@@ -13,26 +13,35 @@
  *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
  *  for a particular set of input data.
  *
- *  @param nMedoids Number of medoids to identify
- *  @param algorithm Algorithm to use to find medoids; options are "BanditPAM" for
- *  this paper's iplementation, or "naive" to use the naive method
- *  @param verbosity Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file
- *  @param maxIter The maximum number of iterations to run the algorithm for
+ *  @param nMedoids Number of medoids/clusters to create
+ *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
+ *  the "Bandit-PAM" algorithm, or "naive" to use the naive method
+ *  @param verbosity Verbosity of the algorithm, 0 will have no log file
+ *  emitted, 1 will emit a log file
+ *  @param maxIter The maximum number of iterations the algorithm runs for
  *  @param logFilename The name of the output log file
  */
-KMedoids::KMedoids(int nMedoids, std::string algorithm, int verbosity, int maxIter, std::string logFilename): nMedoids(nMedoids), algorithm(algorithm), maxIter(maxIter), verbosity(verbosity), logFilename(logFilename) {
+KMedoids::KMedoids(int nMedoids, std::string algorithm, int verbosity,
+                                          int maxIter, std::string logFilename
+    ): nMedoids(nMedoids),
+       algorithm(algorithm),
+       maxIter(maxIter),
+       verbosity(verbosity),
+       logFilename(logFilename) {
   KMedoids::checkAlgorithm(algorithm);
 }
 
 /**
- * This function is the destructor for the KMedoids class.
+ * Destructor for the KMedoids class.
  */
 KMedoids::~KMedoids() {
   logFile.close();
 }
 
 /**
- * This function sets the algorithm the KMedoids object will use
+ * Checks the algorithm input by the user.
+ *
+ * @param algorithm Name of the algorithm input by the user.
  */
 void KMedoids::checkAlgorithm(std::string algorithm) {
   if (algorithm == "BanditPAM") {
@@ -45,21 +54,21 @@ void KMedoids::checkAlgorithm(std::string algorithm) {
 }
 
 /**
- * This function returns the final medoids for a KMedoids object.
+ * Returns the final medoids for a KMedoids object.
  */
 arma::rowvec KMedoids::getMedoidsFinal() {
   return medoidIndicesFinal;
 }
 
 /**
- * This function returns the build medoids for a KMedoids object.
+ * Returns the build medoids for a KMedoids object.
  */
 arma::rowvec KMedoids::getMedoidsBuild() {
   return medoidIndicesBuild;
 }
 
 /**
- * This function returns the labels/medoids assignments for each datapoint after the final
+ * Returns the labels/medoids assignments for each datapoint after the final
  * medoids are identified.
  */
 arma::rowvec KMedoids::getLabels() {
@@ -67,14 +76,14 @@ arma::rowvec KMedoids::getLabels() {
 }
 
 /**
- * This function returns the number of swap steps that took place during the computation
+ * Returns the number of swap steps that took place during the computation.
  */
 int KMedoids::getSteps() {
   return steps;
 }
 
 /**
- * This function sets the loss function the KMedoids object will use
+ * Sets the loss function used by the KMedoids object.
  */
 void KMedoids::setLossFn(std::string loss) {
   if (loss == "manhattan") {
@@ -91,7 +100,7 @@ void KMedoids::setLossFn(std::string loss) {
 }
 
 /**
- * This function gets the number of clusters for the KMedoids object
+ * Gets the number of clusters for the KMedoids object
  */
 int KMedoids::getNMedoids() {
   return nMedoids;
@@ -168,11 +177,14 @@ void KMedoids::setLogFilename(std::string new_lname) {
  * @param loss The loss function used during medoid computation
  */
 void KMedoids::fit(arma::mat input_data, std::string loss) {
-  logHelper.init(nMedoids, logFilename);
   KMedoids::setLossFn(loss);
   (this->*fitFn)(input_data);
-  logHelper.writeProfile(medoidIndicesBuild, medoidIndicesFinal, 4, 7.44);
-  logHelper.close();
+  if (verbosity > 0) {
+      logHelper.init(logFilename);
+      logHelper.writeProfile(medoidIndicesBuild, medoidIndicesFinal, steps,
+                                                        logHelper.loss_swap.back());
+      logHelper.close();
+  }
 }
 
 
@@ -190,7 +202,6 @@ void KMedoids::fit_naive(arma::mat input_data) {
   steps = 0;
 
   medoidIndicesBuild = medoid_indices;
-  // TODO: make assignments in naive code too!
   size_t i = 0;
   bool medoidChange = true;
   while (i < maxIter && medoidChange) {
@@ -325,9 +336,6 @@ void KMedoids::build(
               ((T_samples + batchSize) >= N_mat) != exact_mask;
             if (arma::accu(compute_exactly) > 0) {
                 arma::uvec targets = find(compute_exactly);
-                logBuffer << "Computing exactly for " << targets.n_rows
-                          << " out of " << data.n_cols << '\n';
-                // log(2);
                 logHelper.comp_exact_build.push_back(targets.n_rows);
                 arma::rowvec result =
                   build_target(targets, N, best_distances, use_absolute);
@@ -375,10 +383,6 @@ void KMedoids::build(
                               // not absolute
         logHelper.loss_build.push_back(arma::mean(arma::mean(best_distances)));
         logHelper.p_build.push_back((float)1/(float)p);
-        // logBuffer << "Loss: " << arma::mean(arma::mean(best_distances)) << '\n';
-        // log(2);
-        // logBuffer << "p: " << (float)1/(float)p << '\n';
-        // log(2);
     }
 }
 
@@ -419,7 +423,6 @@ void KMedoids::build_sigma(
               << ", max: " << arma::max(sigma)
               << ", mean: " << arma::mean(sigma);
     logHelper.sigma_build.push_back(sigma_out.str());
-    log(2);
 }
 
 arma::rowvec KMedoids::build_target(
@@ -505,9 +508,6 @@ void KMedoids::swap(
             arma::uvec targets = arma::find(compute_exactly);
 
             if (targets.size() > 0) {
-                // logBuffer << "COMPUTING EXACTLY " << targets.size()
-                //           << " out of " << candidates.size() << '\n';
-                // log(2);
                 logHelper.comp_exact_swap.push_back(targets.size());
                 arma::vec result = swap_target(medoid_indices,
                                                targets,
@@ -559,22 +559,12 @@ void KMedoids::swap(
         swap_performed = medoid_indices(k) != n;
         steps++;
 
-        // logBuffer << (swap_performed ? ("swap performed")
-        //                              : ("no swap performed"))
-        //                              << " " << medoid_indices(k) << "to" << n
-        //                              << '\n';
-        // log(2);
         medoid_indices(k) = n;
         medoids.col(k) = data.col(medoid_indices(k));
         calc_best_distances_swap(
           medoid_indices, best_distances, second_distances, assignments);
-        // arma::rowvec P = {0.25, 0.5, 0.75};
-        // arma::rowvec Q = arma::quantile(sigma.elem(targets), P);
         std::ostringstream sigma_out;
         sigma_out << "Sigma: min: " << sigma.min()
-        // << ", 25th: " << Q(0)
-        // << ", median: " << Q(1)
-        // << ", 75th: " << Q(2)
         << ", max: " << sigma.max()
         << ", mean: " << arma::mean(arma::mean(sigma));
         logHelper.sigma_swap.push_back(sigma_out.str());
@@ -716,11 +706,6 @@ double KMedoids::calc_loss(
 
 // Loss and miscellaneous functions
 
-void KMedoids::log(int priority) {
-  logFile << logBuffer.rdbuf();
-  logFile.clear();
-}
-
 double KMedoids::L1(int i, int j) const {
     return arma::norm(data.col(i) - data.col(j), 1);
 }
@@ -730,7 +715,8 @@ double KMedoids::L2(int i, int j) const {
 }
 
 double KMedoids::cos(int i, int j) const {
-    return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i)) * arma::norm(data.col(j)));
+    return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i))
+                                                    * arma::norm(data.col(j)));
 }
 
 double KMedoids::manhattan(int i, int j) const {
