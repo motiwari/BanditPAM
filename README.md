@@ -1,4 +1,4 @@
-# BanditPAM: Almost Linear-Time k-Medoids Clustering
+# BanditPAM: Almost Linear-Time k-Medoids Clustering {#mainpage}
 
 This repo contains a high-performance implementation of BanditPAM from https://arxiv.org/abs/2006.06856. The code can be called directly from Python or C++.
 
@@ -94,7 +94,7 @@ Please note that it is not necessary to build the C++ executable from source to 
 
 ### Option 1: Building with Docker
 
-We highly recommend building using Docker. Once you have Docker installed and the Docker Daemon is running, run the following commands:
+We highly recommend building using Docker. One can download and install Docker by following instructions at the [Docker install page](https://docs.docker.com/get-docker/). Once you have Docker installed and the Docker Daemon is running, run the following commands:
 
 ```
 /BanditPAM$ chmod +x env_setup.sh
