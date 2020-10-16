@@ -1,4 +1,5 @@
 import sys
+import sysconfig
 import os
 import tempfile
 import setuptools
@@ -29,7 +30,8 @@ ext_modules = [
             'headers',
         ],
         libraries=['armadillo'],
-        language='c++'
+        language='c++11',
+        extra_compile_args=['-static-libstdc++'],
     ),
 ]
 
@@ -57,7 +59,8 @@ def cpp_flag(compiler):
     r"""Return the -std=c++[11/14/17] compiler flag.
     The newer version is prefered over c++11 (when it is available).
     """
-    flags = ['-std=c++17', '-std=c++14', '-std=c++11']
+    # flags = ['-std=c++17', '-std=c++14', '-std=c++11']
+    flags = ['-std=c++11']
 
     for flag in flags:
         if has_flag(compiler, flag):

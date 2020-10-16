@@ -1,49 +1,40 @@
-FROM ubuntu:18.04
+FROM quay.io/pypa/manylinux1_x86_64
 
-RUN apt-get update && apt-get install -y \
-        build-essential \
-        git \
-        vim \
-        emacs \
-        parallel \
-        ca-certificates \
-        libjpeg-dev \
-        wget \
-        libopenblas-dev \
-        liblapack-dev \
-        libarpack2-dev \
-        libsuperlu-dev \
-        libomp-dev \
-        libssl-dev \
-        hdf5-tools && \
-    rm -rf /var/lib/apt/lists/*
+RUN yum install -y openblas-devel \
+    lapack-devel \
+    arpack-devel \
+    superlu-devel
 
-RUN mkdir bandits \
-    && cd bandits
-
-COPY . .
-
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.18.1/cmake-3.18.1.tar.gz \
-    && tar -zxvf cmake-3.18.1.tar.gz \
-    && cd cmake-3.18.1 \
-    && ./bootstrap \
-    && make \
+RUN cd home \
+    && curl -LO https://cmake.org/files/v3.12/cmake-3.12.3.tar.gz \
+    && tar zxvf cmake-3.12.3.tar.gz \
+    && cd cmake-3.12.3 \
+    && ./bootstrap --prefix=/usr/local \
+    && make -j$(nproc) \
     && make install \
     && cd .. \
-    && rm -rf cmake-3.18.1 \
-    && rm cmake-3.18.1.tar.gz
+    && rm -rf cmake-3.12.3 \
+    && rm cmake-3.12.3.tar.gz
 
-RUN wget http://sourceforge.net/projects/arma/files/armadillo-9.900.2.tar.xz \
-    && tar -xvf armadillo-9.900.2.tar.xz \
-    && cd armadillo-9.900.2 \
+RUN git clone https://gitlab.com/conradsnicta/armadillo-code.git \
+    && cd armadillo-code \
     && cmake . \
     && make \
     && make install \
     && cd .. \
-    && rm -rf armadillo-9.900.2 \
-    && rm armadillo-9.900.2.tar.xz
+    && rm -rf armadillo-code
 
-RUN mkdir build \
+RUN git clone https://github.com/RUrlus/carma.git --recursive \
+    && cd carma \
+    && git submodule update --init \
+    && mkdir build \
     && cd build \
     && cmake .. \
-    && make
+    && make install \
+    && cd ../.. \
+    && rm -rf carma
+
+RUN mkdir /home/bandits \
+    && cd /home/bandits
+
+COPY . /home/bandits/
