@@ -24,9 +24,11 @@ def main():
     ####### MNIST, L2 distance, k = 5 and k = 10
     dataset = 'MNIST'
     #Ns = [1000]#, 10000, 20000, 40000, 70000]
-    Ns = [3000, 10000, 20000, 40000, 70000]
+    # Ns = [3000, 10000, 20000, 40000, 70000]
+    Ns = [500]
     #ks = [5, 10, 30, 50, 100, 200]
-    ks = [10]
+    # ks = [10]
+    ks = [2, 3, 4, 5, 6, 8, 10, 20, 30, 40, 50, 75, 100, 150, 200]
     metric = 'L2'
 
     ######## MNIST, Cosine distance, k = 5
@@ -60,8 +62,8 @@ def main():
 
     with open('auto_exp_config.py', 'w+') as fout:
         fout.write("experiments = [\n")
-        for k in ks:
-            for seed in seeds:
+        for seed in seeds:
+            for k in ks:
                 for N in Ns:
                     for algo in algos:
                         exp = write_exp(algo, k, N, seed, dataset, metric)
