@@ -1,0 +1,73 @@
+Sigma: min: 0.541197, 25th: 0.977429, median: 1.15801, 75th: 1.37623, max: 2.10682, mean: 1.19547
+Computing exactly for 7 out of 20000
+Loss: 8.82956
+p: 5e-08
+Sigma: min: 0, 25th: 0.257152, median: 0.353741, 75th: 0.469277, max: 1.273, mean: 0.376076
+Computing exactly for 181 out of 20000
+Loss: 8.48759
+p: 5e-08
+Sigma: min: 0, 25th: 0.228478, median: 0.341103, 75th: 0.490315, max: 1.74944, mean: 0.387982
+Computing exactly for 245 out of 20000
+Loss: 8.22648
+p: 5e-08
+Sigma: min: 0, 25th: 0.17784, median: 0.266337, 75th: 0.366541, max: 1.23734, mean: 0.281716
+Computing exactly for 55 out of 20000
+Loss: 8.04207
+p: 5e-08
+Sigma: min: 0, 25th: 0.126521, median: 0.218295, 75th: 0.323052, max: 1.17659, mean: 0.23356
+Computing exactly for 157 out of 20000
+Loss: 7.88676
+p: 5e-08
+Sigma: min: 0, 25th: 0.115092, median: 0.196186, 75th: 0.289462, max: 1.18267, mean: 0.210237
+Computing exactly for 128 out of 20000
+Loss: 7.73866
+p: 5e-08
+Sigma: min: 0, 25th: 0.0921316, median: 0.160355, 75th: 0.249115, max: 1.08405, mean: 0.181289
+Computing exactly for 2 out of 20000
+Loss: 7.72863
+p: 5e-08
+Sigma: min: 0, 25th: 0.0844102, median: 0.149796, 75th: 0.232459, max: 1.18223, mean: 0.168826
+Loss: 7.70421
+p: 5e-08
+Sigma: min: 0, 25th: 0.0770095, median: 0.142655, 75th: 0.231105, max: 1.12664, mean: 0.166628
+Loss: 7.68747
+p: 5e-08
+Sigma: min: 0, 25th: 0.075531, median: 0.146375, 75th: 0.230151, max: 1.10272, mean: 0.164086
+Loss: 7.64309
+p: 5e-08
+COMPUTING EXACTLY 249 out of 200000
+swap performed 13662to3217
+Sigma: min: 0, max: 1.37168, mean: 0.428317
+Loss: 7.53857
+p: 5e-09
+COMPUTING EXACTLY 713 out of 200000
+swap performed 8914to11823
+Sigma: min: 0, max: 1.29447, mean: 0.427002
+Loss: 7.46587
+p: 5e-09
+COMPUTING EXACTLY 100 out of 200000
+swap performed 3070to8466
+Sigma: min: 0, max: 1.34052, mean: 0.464517
+Loss: 7.41299
+p: 5e-09
+COMPUTING EXACTLY 145 out of 200000
+swap performed 7003to6233
+Sigma: min: 0, max: 1.30627, mean: 0.450115
+Loss: 7.37641
+p: 5e-09
+COMPUTING EXACTLY 71 out of 200000
+swap performed 4080to1499
+Sigma: min: 0, max: 1.57906, mean: 0.468347
+Loss: 7.36885
+p: 5e-09
+COMPUTING EXACTLY 23 out of 200000
+swap performed 3326to16117
+Sigma: min: 0, max: 1.3793, mean: 0.464498
+Loss: 7.36181
+p: 5e-09
+COMPUTING EXACTLY 140 out of 200000
+no swap performed 1404to1404
+Sigma: min: 0, max: 1.2742, mean: 0.429403
+Loss: 7.36181
+p: 5e-09
+Swap Steps:7
