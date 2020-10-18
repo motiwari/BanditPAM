@@ -14,6 +14,7 @@ import pandas as pd
 import seaborn as sns
 
 from generate_config import write_exp
+import constants
 
 # Possible line numbers for the empty_counter fn
 FN_NAME_1 = 'data_utils.py:129(empty_counter)'
@@ -31,7 +32,7 @@ def showx():
     plt.close()
 
 
-def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap, take_log = True):
+def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap, title = "Insert title", take_log = True):
     '''
     Plots the number of distance calls vs. N, for various algorithms, seeds,
     values of k, and weightings between build and swap.
@@ -93,11 +94,40 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
                 # (no dependence on k)
                 plt.plot([x_min, x_max], [x_min * 2, x_max * 2], color='red', label='$kn^2$ PAM scaling')
             else:
-                # weighted reference line for
-                # plt.plot([x_min, x_max], [np.log10(kN) + x_min * 2, np.log10(kN) + x_max * 2], color='red', label='$kn^2$ PAM scaling')
-                pass
+                # Reference lines for PAM (kn^2) and FastPAM1 (n^2)
+                # NOTE: We add the intercept from the line of best fit on BanditPAM to account
+                # for the overhead of starting the algorithms and extrapolate
+                # using the expected scaling. This is a generous estimate, since
+                # the intercept is negative. The guidelines are accurate up to
+                # a constant, depending on the actual constant in front of the
+                # O(n^2) or O(kn^2) scaling, but the slope -- importantly -- is
+                # always 2
 
-            print("Slope is:", sl)
+                if title == "MNIST, $d = l_2, k = 5$":
+                    P_icpt = constants.MNIST_L2_k5_P_baseline_icpt
+                    FP1_icpt = constants.MNIST_L2_k5_FP1_baseline_icpt
+                    x0 = constants.MNIST_L2_k5_x_0
+                elif title == "MNIST, $d = l_2, k = 10$":
+                    P_icpt = constants.MNIST_L2_k10_P_baseline_icpt
+                    FP1_icpt = constants.MNIST_L2_k10_FP1_baseline_icpt
+                    x0 = constants.MNIST_L2_k10_x_0
+                elif title == "MNIST, $d =$ cosine, $k = 5$":
+                    P_icpt = constants.MNIST_cosine_k5_P_baseline_icpt
+                    FP1_icpt = constants.MNIST_cosine_k5_FP1_baseline_icpt
+                    x0 = constants.MNIST_cosine_k5_x_0
+                elif "scRNA, $d = l_1, k = 5$":
+                    P_icpt = constants.scRNA_L1_k5_P_baseline_icpt
+                    FP1_icpt = constants.scRNA_L1_k5_FP1_baseline_icpt
+                    x0 = constants.scRNA_L1_k5_x_0
+                else:
+                    raise Exception("Don't have constant intercepts")
+
+
+                print(kN, P_icpt, FP1_icpt)
+                plt.plot([x_min, x_max], [FP1_icpt + (x_min - x0) * 2, FP1_icpt + (x_max - x0) * 2], color='blue', linestyle='-.', label='$n^2$ FastPAM1 scaling')
+                plt.plot([x_min, x_max], [P_icpt + np.log10(kN) + (x_min - x0) * 2, P_icpt + np.log10(kN) + (x_max - x0) * 2], color='orange', label='$kn^2$ PAM scaling')
+
+            print("Slope is:", sl, "Intercept is:", icpt)
 
             # Manually modify legend labels for prettiness
             handles, labels = ax.get_legend_handles_labels()
@@ -111,8 +141,8 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
         plt.ylabel("$\log_{10}$(runtime (s))")
 
         # Modify these lines based on dataset
-        plt.title("MNIST, $d = l_2, k = 10$")
-        plt.savefig('figures/MNIST-L2-k10-extra.pdf')
+        plt.title(title)
+        plt.savefig('figures/' + title.replace("$", '') + '.pdf')
 
 def get_swap_T(logfile):
     '''
@@ -144,7 +174,7 @@ def get_runtime(timefile):
         runtime = float(line.split(':')[-1].strip())
     return runtime
 
-def show_plots(fix_k_or_N, build_or_swap, Ns, ks, seeds, algo, dataset, metric, dir_):
+def show_plots(fix_k_or_N, build_or_swap, Ns, ks, seeds, algo, dataset, metric, dir_, title = "Insert title"):
     '''
     A function which mines the number of distance calls for each experiment,
     from the dumped profiles. Creates a numpy array with the distance call
@@ -160,8 +190,6 @@ def show_plots(fix_k_or_N, build_or_swap, Ns, ks, seeds, algo, dataset, metric, 
             necessary
     '''
     runtimes = np.zeros((len(ks), len(Ns), len(seeds)))
-
-
     log_prefix = 'profiles/' + dir_ + '/p-'
     time_prefix = 'profiles/' + dir_ + '/t-'
 
@@ -189,9 +217,7 @@ def show_plots(fix_k_or_N, build_or_swap, Ns, ks, seeds, algo, dataset, metric, 
                 if not os.path.exists(logfile):
                     raise Exception("Warning: profile not found for ", logfile)
 
-
-
-    plot_slice_sns(runtimes, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap)
+    plot_slice_sns(runtimes, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap, title = title)
 
 def main():
     #algos = ['ucb'] # Could also include 'naive_v1'
@@ -206,12 +232,14 @@ def main():
     # dir_ = 'HOC4_PRECOMP_k2k3_paper'
 
     #### for MNIST L2, k = 5
-    # dataset = 'MNIST'
-    # metric = 'L2'
-    # Ns = [10000, 20000, 40000, 70000]
-    # ks = [5]
-    # seeds = range(10)
-    # dir_ = 'MNIST_L2_k5_paper'
+    dataset = 'MNIST'
+    metric = 'L2'
+    Ns = [10000, 20000, 40000, 70000]
+    ks = [5]
+    seeds = range(10)
+    dir_ = 'MNIST_L2_k5_paper'
+    title = "MNIST, $d = l_2, k = 5$"
+    show_plots('k', 'weighted_T', Ns, ks, seeds, algo, dataset, metric, dir_, title = title)
 
     ### for MNIST L2, k = 10
     dataset = 'MNIST'
@@ -219,44 +247,34 @@ def main():
     Ns = [10000, 20000, 40000, 70000]
     ks = [10]
     seeds = range(10)
-    dir_ = 'MNIST_L2_k10_paper_badram'
+    dir_ = 'MNIST_L2_k10_paper'
+    title = "MNIST, $d = l_2, k = 10$"
+    show_plots('k', 'weighted_T', Ns, ks, seeds, algo, dataset, metric, dir_, title = title)
 
     ##### for MNIST COSINE
-    # dataset = 'MNIST'
-    # metric = 'cos'
-    # Ns = [10000, 20000, 40000, 70000]
-    # ks = [5]
-    # seeds = range(10)
-    # dir_ = 'MNIST_COSINE_k5_paper'
-
-    #### for scRNAPCA, L2, K = 10
-    # dataset = 'SCRNAPCA'
-    # metric = 'L2'
-    # Ns = [10000, 20000, 30000, 40000]
-    # ks = [10]
-    # seeds = range(42, 52)
-    # dir_ = 'SCRNAPCA_L2_k10_paper' # NOTE: SCRNA_PCA_paper_more_some_incomplete contains data for some more values of N.
-
-    #### for scRNAPCA, L2, K = 5
-    # dataset = 'SCRNAPCA'
-    # metric = 'L2'
-    # Ns = [10000, 20000, 30000, 40000]
-    # ks = [5]
-    # seeds = range(42, 52)
-    # dir_ = 'SCRNAPCA_L2_k5_paper'
+    dataset = 'MNIST'
+    metric = 'cos'
+    Ns = [10000, 20000, 40000, 70000]
+    ks = [5]
+    seeds = range(10)
+    dir_ = 'MNIST_COSINE_k5_paper'
+    title = "MNIST, $d =$ cosine, $k = 5$"
+    show_plots('k', 'weighted_T', Ns, ks, seeds, algo, dataset, metric, dir_, title = title)
 
     #### for scRNA, L1, K = 5
-    # dataset = 'SCRNA'
-    # metric = 'L1'
-    # Ns = [10000, 20000, 30000, 40000]
-    # ks = [5]
-    # seeds = range(8)
-    # dir_ = 'SCRNA_L1_k5_bad8and9'
+    dataset = 'SCRNA'
+    metric = 'L1'
+    Ns = [10000, 20000, 30000, 40000]
+    ks = [5]
+    seeds = range(10)
+    dir_ = 'SCRNA_L1_k5_paper'
+    title = "scRNA, $d = l_1, k = 5$"
+    show_plots('k', 'weighted_T', Ns, ks, seeds, algo, dataset, metric, dir_, title = title)
 
     # show_plots('k', 'build', Ns, ks, seeds, algos, dataset, metric, dir_)
     # show_plots('k', 'swap', Ns, ks, seeds, algos, dataset, metric, dir_)
     # show_plots('k', 'weighted', Ns, ks, seeds, algos, dataset, metric, dir_)
-    show_plots('k', 'weighted_T', Ns, ks, seeds, algo, dataset, metric, dir_)
+    # show_plots('k', 'weighted_T', Ns, ks, seeds, algo, dataset, metric, dir_)
 
 
 if __name__ == '__main__':
