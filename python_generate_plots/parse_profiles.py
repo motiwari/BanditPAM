@@ -124,8 +124,8 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
 
 
                 print(kN, P_icpt, FP1_icpt)
-                plt.plot([x_min, x_max], [FP1_icpt + (x_min - x0) * 2, FP1_icpt + (x_max - x0) * 2], color='blue', linestyle='-.', label='$n^2$ FastPAM1 scaling')
-                plt.plot([x_min, x_max], [P_icpt + np.log10(kN) + (x_min - x0) * 2, P_icpt + np.log10(kN) + (x_max - x0) * 2], color='orange', label='$kn^2$ PAM scaling')
+                plt.plot([x_min, x_max], [FP1_icpt + (x_min - x0) * 2, FP1_icpt + (x_max - x0) * 2], color='blue', linestyle=':', label='$n^2$ FastPAM1 scaling')
+                plt.plot([x_min, x_max], [P_icpt + np.log10(kN) + (x_min - x0) * 2, P_icpt + np.log10(kN) + (x_max - x0) * 2], color='orange', linestyle='-.', label='$kn^2$ PAM scaling')
 
             print("Slope is:", sl, "Intercept is:", icpt)
 
