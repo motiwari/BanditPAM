@@ -7,10 +7,12 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
 __version__ = '0.0.1'
+os.environ["CC"] = "/opt/devtools-6.2/bin/gcc"
+os.environ["CXX"] = "/opt/devtools-6.2/bin/g++"
 
 
 class get_pybind_include(object):
-    r"""Helper class to determine the pybind11 include path
+    """Helper class to determine the pybind11 include path
     The purpose of this class is to postpone importing pybind11
     until it is actually installed, so that the ``get_include()``
     method can be invoked. """
@@ -37,7 +39,7 @@ ext_modules = [
 
 
 def has_flag(compiler, flagname):
-    r"""Return a boolean indicating whether a flag name is supported on
+    """Return a boolean indicating whether a flag name is supported on
     the specified compiler.
     """
     with tempfile.NamedTemporaryFile('w', suffix='.cpp', delete=False) as f:
@@ -56,7 +58,7 @@ def has_flag(compiler, flagname):
 
 
 def cpp_flag(compiler):
-    r"""Return the -std=c++[11/14/17] compiler flag.
+    """Return the -std=c++[11/14/17] compiler flag.
     The newer version is prefered over c++11 (when it is available).
     """
     # flags = ['-std=c++17', '-std=c++14', '-std=c++11']
@@ -71,7 +73,7 @@ def cpp_flag(compiler):
 
 
 class BuildExt(build_ext):
-    r"""A custom build extension for adding compiler-specific options."""
+    """A custom build extension for adding compiler-specific options."""
     c_opts = {
         'msvc': ['/EHsc'],
         'unix': [],
@@ -90,13 +92,13 @@ class BuildExt(build_ext):
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
         opts.append('-Wno-register')
+        opts.append('-std=c++11')
         # opts.append('-fopenm')
         link_opts = self.l_opts.get(ct, [])
         if ct == 'unix':
-            opts.append(cpp_flag(self.compiler))
+            # opts.append(cpp_flag(self.compiler))
             if has_flag(self.compiler, '-fvisibility=hidden'):
                 opts.append('-fvisibility=hidden')
-
         for ext in self.extensions:
             ext.define_macros = [('VERSION_INFO', '"{}"'.format(self.distribution.get_version()))]
             ext.extra_compile_args = opts

@@ -4,8 +4,8 @@ download () {
   url=$1
   filename=$2
 
-  # if [ -x "$(which wget)" ] ; then
-  #     wget -O $filename $url
+  if [ -x "$(which wget)" ] ; then
+      wget -O $filename $url
   if [ -x "$(which curl)" ]; then
       curl -o $filename -sfL $url -v
   else
