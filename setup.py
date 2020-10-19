@@ -32,7 +32,7 @@ ext_modules = [
             'headers',
         ],
         libraries=['armadillo'],
-        language='c++11',
+        language='c++14',
         extra_compile_args=['-static-libstdc++'],
     ),
 ]
@@ -92,7 +92,7 @@ class BuildExt(build_ext):
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
         opts.append('-Wno-register')
-        opts.append('-std=c++11')
+        opts.append('-std=c++14')
         # opts.append('-fopenm')
         link_opts = self.l_opts.get(ct, [])
         if ct == 'unix':

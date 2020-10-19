@@ -9,8 +9,6 @@ RUN curl -LO https://github.com/squeaky-pl/centos-devtools/releases/download/6.2
     && tar xvf gcc-6.2.0-binutils-2.27-x86_64.tar.bz2 \
     && rm gcc-6.2.0-binutils-2.27-x86_64.tar.bz2
 
-ENV PATH=/opt/devtools-6.2/bin/:/opt/rh/devtoolset-2/root/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
 RUN cd home \
     && curl -LO https://cmake.org/files/v3.12/cmake-3.12.3.tar.gz \
     && tar zxvf cmake-3.12.3.tar.gz \
@@ -21,6 +19,8 @@ RUN cd home \
     && cd .. \
     && rm -rf cmake-3.12.3 \
     && rm cmake-3.12.3.tar.gz
+
+ENV PATH=/opt/devtools-6.2/bin/:/opt/rh/devtoolset-2/root/usr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ENV CC=/opt/devtools-6.2/bin/gcc
 
