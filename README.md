@@ -32,7 +32,7 @@ This can be done either through
 /BanditPAM/: pip install BanditPAM
 /BanditPAM/: pip instal -r requirements.txt
 ```
-
+or through
 ```python
 /BanditPAM/: pip install -r requirements.txt
 /BanditPAM/: sudo pip install .
