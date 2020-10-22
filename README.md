@@ -27,7 +27,11 @@ gcc >= 5.4
 # Python Quickstart
 
 ## Install the repo and its dependencies:
-
+This can be done either through
+```python
+/BanditPAM/: pip install BanditPAM
+/BanditPAM/: pip instal -r requirements.txt
+```
 
 ```python
 /BanditPAM/: pip install -r requirements.txt
