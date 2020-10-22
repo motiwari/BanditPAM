@@ -16,6 +16,13 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
   year={2020}
 }
 ```
+# Requirements
+This repo has the following requirements:
+
+```
+Python >= 3.5
+gcc >= 5.4
+```
 
 # Python Quickstart
 

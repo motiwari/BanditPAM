@@ -6,7 +6,7 @@ import setuptools
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
-__version__ = '0.0.8'
+__version__ = '0.0.10'
 os.environ["CC"] = "/usr/bin/gcc"
 os.environ["CXX"] = "/usr/bin/g++"
 
