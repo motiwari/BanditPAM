@@ -86,19 +86,19 @@ PYBIND11_MODULE(BanditPAM, m) {
   m.doc() = "BanditPAM Python library, implemented in C++";
   py::class_<KMedsWrapper>(m, "KMedoids")
       .def(py::init<int, std::string, int, int, std::string>(),
-        py::arg("nMedoids") = 5,
+        py::arg("n_medoids") = 5,
         py::arg("algorithm") = "BanditPAM",
         py::arg("verbosity") = 0,
         py::arg("maxIter") = 1000,
         py::arg("logFilename") = "KMedoidsLogfile"
       )
-      .def_property("nMedoids", &KMedsWrapper::getNMedoids, &KMedsWrapper::setNMedoids)
+      .def_property("n_medoids", &KMedsWrapper::getNMedoids, &KMedsWrapper::setNMedoids)
       .def_property("algorithm", &KMedsWrapper::getAlgorithm, &KMedsWrapper::setAlgorithm)
       .def_property("verbosity", &KMedsWrapper::getVerbosity, &KMedsWrapper::setVerbosity)
       .def_property("maxIter", &KMedsWrapper::getMaxIter, &KMedsWrapper::setMaxIter)
       .def_property("logFilename", &KMedsWrapper::getLogfileName, &KMedsWrapper::setLogFilename)
-      .def_property_readonly("finalMedoids", &KMedsWrapper::getMedoidsFinalPython)
-      .def_property_readonly("buildMedoids", &KMedsWrapper::getMedoidsBuildPython)
+      .def_property_readonly("final_medoids", &KMedsWrapper::getMedoidsFinalPython)
+      .def_property_readonly("build_medoids", &KMedsWrapper::getMedoidsBuildPython)
       .def_property_readonly("labels", &KMedsWrapper::getLabelsPython)
       .def_property_readonly("steps", &KMedsWrapper::getStepsPython)
       .def("fit", &KMedsWrapper::fitPython);

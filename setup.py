@@ -6,10 +6,9 @@ import setuptools
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
-__version__ = '0.0.1'
-os.environ["CC"] = "/opt/devtools-6.2/bin/gcc"
-os.environ["CXX"] = "/opt/devtools-6.2/bin/g++"
-
+__version__ = '0.0.8'
+os.environ["CC"] = "/usr/bin/gcc"
+os.environ["CXX"] = "/usr/bin/g++"
 
 class get_pybind_include(object):
     """Helper class to determine the pybind11 include path
@@ -62,7 +61,7 @@ def cpp_flag(compiler):
     The newer version is prefered over c++11 (when it is available).
     """
     # flags = ['-std=c++17', '-std=c++14', '-std=c++11']
-    flags = ['-std=c++11']
+    flags = ['-std=c++14']
 
     for flag in flags:
         if has_flag(compiler, flag):
@@ -122,5 +121,6 @@ setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-    ]
+    ],
+    headers=['headers/kmedoids_ucb.hpp'],
 )

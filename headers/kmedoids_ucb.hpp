@@ -128,7 +128,7 @@ struct LogHelper {
  */
 class KMedoids {
   public:
-    KMedoids(int nMedoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int maxIter = 1000, std::string logFilename = "KMedoidsLogfile");
+    KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000, std::string logFilename = "KMedoidsLogfile");
 
     ~KMedoids();
 
@@ -242,11 +242,11 @@ class KMedoids {
     // Constructor params
     std::string algorithm; ///< options: "naive" and "BanditPAM"
 
-    int maxIter; ///< maximum number of iterations during KMedoids::fit
+    int max_iter; ///< maximum number of iterations during KMedoids::fit
 
     int verbosity; ///< determines whether KMedoids::fit outputs a logfile
 
-    int nMedoids; ///< number of medoids identified for a given dataset
+    int n_medoids; ///< number of medoids identified for a given dataset
 
     std::string logFilename; ///< name of the logfile output (verbosity permitting)
 
@@ -255,9 +255,9 @@ class KMedoids {
 
     arma::rowvec labels; ///< assignments of each datapoint to its medoid
 
-    arma::rowvec medoidIndicesBuild; ///< medoids at the end of build step
+    arma::rowvec medoid_indices_build; ///< medoids at the end of build step
 
-    arma::rowvec medoidIndicesFinal; ///< medoids at the end of the swap step
+    arma::rowvec medoid_indices_final; ///< medoids at the end of the swap step
 
     double (KMedoids::*lossFn)(int i, int j) const; ///< loss function used during KMedoids::fit
 
