@@ -1,4 +1,4 @@
-# BanditPAM: Almost Linear-Time *k*-Medoids Clustering {#mainpage}
+# BanditPAM: Almost Linear-Time *k*-Medoids Clustering
 
 This repo contains a high-performance implementation of BanditPAM from https://arxiv.org/abs/2006.06856. The code can be called directly from Python or C++.
 
