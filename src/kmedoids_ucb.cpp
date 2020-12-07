@@ -505,7 +505,6 @@ void KMedoids::build_sigma(
     arma::uvec tmp_refs = arma::randperm(N, batch_size);
     arma::vec sample(batch_size);
 // for each possible swap
-#pragma omp parallel for
     for (size_t i = 0; i < N; i++) {
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
@@ -557,7 +556,6 @@ arma::rowvec KMedoids::build_target(
     arma::uvec tmp_refs = arma::randperm(N,
                                    batch_size); // without replacement, requires
                                                 // updated version of armadillo
-#pragma omp parallel for
     for (size_t i = 0; i < target.n_rows; i++) {
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
@@ -728,7 +726,6 @@ void KMedoids::calc_best_distances_swap(
   arma::rowvec& second_distances,
   arma::rowvec& assignments)
 {
-#pragma omp parallel for
     for (size_t i = 0; i < data.n_cols; i++) {
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
@@ -778,7 +775,6 @@ arma::vec KMedoids::swap_target(
                                                 // updated version of armadillo
 
 // for each considered swap
-#pragma omp parallel for
     for (size_t i = 0; i < targets.n_rows; i++) {
         double total = 0;
         // extract data point of swap
@@ -836,7 +832,6 @@ void KMedoids::swap_sigma(
 
     arma::vec sample(batch_size);
 // for each considered swap
-#pragma omp parallel for
     for (size_t i = 0; i < K * N; i++) {
         // extract data point of swap
         size_t n = i / K;

@@ -1,7 +1,6 @@
 #ifndef KMEDOIDS_UCB_H_
 #define KMEDOIDS_UCB_H_
 
-#include <omp.h>
 #include <armadillo>
 #include <vector>
 #include <fstream>
