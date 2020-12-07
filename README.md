@@ -12,7 +12,7 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
   title={Bandit-PAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits},
   author={Tiwari, Mo and Zhang, Martin J and Mayclin, James and Thrun, Sebastian and Piech, Chris and Shomorony, Ilan},
   booktitle={Advances in Neural Information Processing Systems},
-  pages={368--374}, #TODO: Fix this
+  pages={368--374},
   year={2020}
 }
 ```
@@ -30,7 +30,7 @@ gcc >= 5.4
 This can be done either through
 ```python
 /BanditPAM/: pip install BanditPAM
-/BanditPAM/: pip instal -r requirements.txt
+/BanditPAM/: pip install -r requirements.txt
 ```
 or through
 ```python
