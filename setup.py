@@ -7,8 +7,9 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
 __version__ = '0.0.16'
-os.environ["CC"] = "/usr/bin/gcc"
-os.environ["CXX"] = "/usr/bin/g++"
+os.environ["CC"] = os.path.join('/usr', 'bin', 'gcc')
+os.environ["CXX"] = os.path.join('/usr', 'bin', 'g++')
+
 
 class get_pybind_include(object):
     """Helper class to determine the pybind11 include path
@@ -24,8 +25,8 @@ class get_pybind_include(object):
 ext_modules = [
     Extension(
         'BanditPAM',
-        sorted(['src/kmedoids_ucb.cpp',
-                'src/kmeds_pywrapper.cpp']),
+        sorted([os.path.join('src', 'kmedoids_ucb.cpp'),
+                os.path.join('src', 'kmeds_pywrapper.cpp')]),
         include_dirs=[
             get_pybind_include(),
             'headers',
@@ -104,7 +105,8 @@ class BuildExt(build_ext):
             ext.extra_link_args = link_opts
         build_ext.build_extensions(self)
 
-with open('docs/long_desc.rst', encoding='utf-8') as f:
+
+with open(os.path.join('docs', 'long_desc.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -118,7 +120,7 @@ setup(
     long_description=long_description,
     ext_modules=ext_modules,
     setup_requires=['pybind11>=2.5.0'],
-    data_files=[('docs', ['docs/long_desc.rst'])],
+    data_files=[('docs', [os.path.join('docs', 'long_desc.rst')])],
     include_package_data=True,
     cmdclass={'build_ext': BuildExt},
     zip_safe=False,
@@ -127,5 +129,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    headers=['headers/kmedoids_ucb.hpp'],
+    headers=[os.path.join('headers', 'kmedoids_ucb.hpp')],
 )

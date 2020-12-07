@@ -6,7 +6,7 @@ download () {
 
   if [ -x "$(which wget)" ] ; then
       wget -O $filename $url
-  if [ -x "$(which curl)" ]; then
+  elif [ -x "$(which curl)" ]; then
       curl -o $filename -sfL $url -v
   else
       echo "Could not find curl or wget, please install one." >&2
