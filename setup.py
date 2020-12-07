@@ -6,7 +6,7 @@ import setuptools
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
-__version__ = '0.0.10'
+__version__ = '0.0.16'
 os.environ["CC"] = "/usr/bin/gcc"
 os.environ["CXX"] = "/usr/bin/g++"
 
@@ -104,17 +104,22 @@ class BuildExt(build_ext):
             ext.extra_link_args = link_opts
         build_ext.build_extensions(self)
 
+with open('docs/long_desc.rst', encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(
     name='BanditPAM',
     version=__version__,
     author='James Mayclin and Eric Frankel, Mo Tiwari',
     maintainer="Eric Frankel",
     author_email='ericsf@stanford.edu',
-    url='https://github.com/jmayclin/BanditPAM',
-    description='C++ implementation of BanditPAM algorithm with Python Bindings',
-    long_description='This repo contains a high-performance implementation of BanditPAM from https://arxiv.org/abs/2006.06856. The code can be called directly from Python or C++.',
+    url='https://github.com/ThrunGroup/BanditPAM',
+    description='BanditPAM: A state-of-the-art, high-performance k-medoids algorithm.',
+    long_description=long_description,
     ext_modules=ext_modules,
     setup_requires=['pybind11>=2.5.0'],
+    data_files=[('docs', ['docs/long_desc.rst'])],
+    include_package_data=True,
     cmdclass={'build_ext': BuildExt},
     zip_safe=False,
     classifiers=[

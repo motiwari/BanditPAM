@@ -178,3 +178,11 @@ To run the full suite of tests, run in the root directory:
 ```
 
 Alternatively, to run a "smaller" set of tests, from the main repo folder run `python tests/test_commit.py` or `python tests/test_push.py` to run a set of longer, more intensive tests.
+
+## Credits
+
+Eric Frankel refined the C++ implementation of BanditPAM, exposed it via Python bindings, registered the package on PyPi, wrote the documentation and test cases, and is now the maintainer of the code.
+
+James Mayclin developed the initial C++ implementation of BanditPAM.
+
+Mo Tiwari wrote the original Python implementation of BanditPAM.
