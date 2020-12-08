@@ -61,8 +61,8 @@ def cpp_flag(compiler):
     """Return the -std=c++[11/14/17] compiler flag.
     The newer version is prefered over c++11 (when it is available).
     """
-    # flags = ['-std=c++17', '-std=c++14', '-std=c++11']
-    flags = ['-std=c++14']
+    flags = ['-std=c++17', '-std=c++14', '-std=c++11']
+    # flags = ['-std=c++14']
 
     for flag in flags:
         if has_flag(compiler, flag):
@@ -92,11 +92,11 @@ class BuildExt(build_ext):
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
         opts.append('-Wno-register')
-        opts.append('-std=c++14')
+        # opts.append('-std=c++14')
         # opts.append('-fopenm')
         link_opts = self.l_opts.get(ct, [])
         if ct == 'unix':
-            # opts.append(cpp_flag(self.compiler))
+            opts.append(cpp_flag(self.compiler))
             if has_flag(self.compiler, '-fvisibility=hidden'):
                 opts.append('-fvisibility=hidden')
         for ext in self.extensions:
