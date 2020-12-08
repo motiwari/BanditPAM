@@ -1,12 +1,12 @@
 #ifndef KMEDOIDS_UCB_H_
 #define KMEDOIDS_UCB_H_
 
-#include <omp.h>
 #include <armadillo>
 #include <vector>
 #include <fstream>
 #include <iostream>
 #include <chrono>
+#include <omp.h>
 
 /**
  *  \brief Logging class for structured KMedoids logs.
