@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <chrono>
+#include <omp.h>
 
 /**
  *  \brief Logging class for structured KMedoids logs.

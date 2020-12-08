@@ -61,8 +61,8 @@ def cpp_flag(compiler):
     """Return the -std=c++[11/14/17] compiler flag.
     The newer version is prefered over c++11 (when it is available).
     """
-    flags = ['-std=c++17', '-std=c++14', '-std=c++11']
-    # flags = ['-std=c++14']
+    # flags = ['-std=c++17', '-std=c++14', '-std=c++11']
+    flags = ['-std=c++14']
 
     for flag in flags:
         if has_flag(compiler, flag):
@@ -91,14 +91,16 @@ class BuildExt(build_ext):
     def build_extensions(self):
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
+        link_opts = self.l_opts.get(ct, [])
         opts.append('-Wno-register')
+        opts.append('-std=c++14')
         if sys.platform == 'darwin':
             opts.append('-Xpreprocessor -fopenmp')
         else:
             opts.append('-fopenmp')
-        link_opts = self.l_opts.get(ct, [])
+            link_opts.append('-lgomp')
         if ct == 'unix':
-            opts.append(cpp_flag(self.compiler))
+            # opts.append(cpp_flag(self.compiler))
             if has_flag(self.compiler, '-fvisibility=hidden'):
                 opts.append('-fvisibility=hidden')
         for ext in self.extensions:

@@ -8,7 +8,6 @@
 #include "kmedoids_ucb.hpp"
 #include <armadillo>
 #include <unordered_map>
-#include <omp.h>
 
 /**
  *  \brief Class implementation for running KMedoids methods.
