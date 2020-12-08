@@ -23,6 +23,7 @@ This repo has the following requirements:
 Python >= 3.5
 gcc >= 5.4
 ```
+It is highly encouraged that to use BanditPAM in a *nix machine for high performance and ease of installation. Windows is generally supported, but can be unstable depending on the C++ compiler/environment.
 
 # Python Quickstart
 
@@ -124,7 +125,7 @@ which will start a Docker instance with the necessary dependencies. Then:
 This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
 ### Option 2: Installing Requirements and Building Directly
-Building this repository requires three external requirements:
+Building this repository requires four external requirements:
 * Cmake >= 3.17, https://cmake.org/download/
 * Armadillo >= 9.7, http://arma.sourceforge.net/download.html
 * OpenMP >= 2.5, https://www.openmp.org/resources/openmp-compilers-tools/ (OpenMP is supported by default on most Linux platforms, and can be downloaded through homebrew on MacOS. For instructions on installing homebrew, see https://brew.sh/.)
@@ -136,7 +137,7 @@ If installing these requirements from source, one can generally use the followin
 /carma/build$ cmake .. && make && make install
 ```
 
-Ensure all the requirements above are installed and then run:
+Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:
 
 ```
 /BanditPAM$ mkdir build && cd build
