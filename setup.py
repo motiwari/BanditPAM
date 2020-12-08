@@ -92,8 +92,10 @@ class BuildExt(build_ext):
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
         opts.append('-Wno-register')
-        # opts.append('-std=c++14')
-        # opts.append('-fopenm')
+        if sys.platform == 'darwin':
+            opts.append('-Xpreprocessor -fopenmp')
+        else:
+            opts.append('-fopenmp')
         link_opts = self.l_opts.get(ct, [])
         if ct == 'unix':
             opts.append(cpp_flag(self.compiler))
