@@ -229,9 +229,10 @@ class KMedoids {
     double calc_loss(arma::rowvec& medoidIndices);
 
     // Loss functions
-    double L1(int i, int j) const;
+    int lp;
+    double LP(int i, int j) const;
 
-    double L2(int i, int j) const;
+    double LINF(int i, int j) const;
 
     double cos(int i, int j) const;
 

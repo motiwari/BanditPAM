@@ -8,6 +8,7 @@
 #include "kmedoids_ucb.hpp"
 #include <armadillo>
 #include <unordered_map>
+//#include <sstream>
 
 /**
  *  \brief Class implementation for running KMedoids methods.
@@ -109,10 +110,14 @@ void KMedoids::setLossFn(std::string loss) {
       lossFn = &KMedoids::manhattan;
   } else if (loss == "cos") {
       lossFn = &KMedoids::cos;
-  } else if (loss == "L1") {
-      lossFn = &KMedoids::L1;
-  } else if (loss == "L2"){
-      lossFn = &KMedoids::L2;
+  } else if (loss == "inf") {
+      lossFn = &KMedoids::LINF;
+  } else if (std::isdigit(loss.at(0))) {
+      lossFn = &KMedoids::LP;
+      lp     = atoi(loss.c_str());
+      //std::stringstream st(loss);
+      //st >> lp;
+      //lp     = std::stoi(loss);
   } else {
       throw "unrecognized loss function";
   }
@@ -894,15 +899,15 @@ double KMedoids::calc_loss(
 // Loss and miscellaneous functions
 
 /**
- * \brief L1 loss
+ * \brief LP loss
  *
- * Calculates the L1 loss between the datapoints at index i and j of the dataset
+ * Calculates the LP loss between the datapoints at index i and j of the dataset
  *
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::L1(int i, int j) const {
-    return arma::norm(data.col(i) - data.col(j), 1);
+double KMedoids::LP(int i, int j) const {
+    return arma::norm(data.col(i) - data.col(j), lp);
 }
 
 /**
@@ -913,9 +918,9 @@ double KMedoids::L1(int i, int j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::L2(int i, int j) const {
-    return arma::norm(data.col(i) - data.col(j), 2);
-}
+//double KMedoids::L2(int i, int j) const {
+//    return arma::norm(data.col(i) - data.col(j), 2);
+//}
 
 /**
  * \brief cos loss
@@ -930,7 +935,6 @@ double KMedoids::cos(int i, int j) const {
     return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i))
                                                     * arma::norm(data.col(j)));
 }
-
 /**
  * \brief Manhattan loss
  *
@@ -943,3 +947,16 @@ double KMedoids::cos(int i, int j) const {
 double KMedoids::manhattan(int i, int j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
+/**
+ * \brief L_INFINITY loss
+ *
+ * Calculates the Manhattan loss between the datapoints at index i and j of the
+ * dataset
+ *
+ * @param i Index of first datapoint
+ * @param j Index of second datapoint
+ */
+double KMedoids::LINF(int i, int j) const {
+    return arma::max(arma::abs(data.col(i) - data.col(j)));
+}
+

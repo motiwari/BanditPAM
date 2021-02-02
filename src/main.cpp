@@ -21,9 +21,9 @@ int main(int argc, char* argv[])
     int k;
     int opt;
     int verbosity = 0;
-    std::string loss = "L2";
+    std::string loss = "2";
 
-    while ((opt = getopt(argc, argv, "f:k:v:")) != -1) {
+    while ((opt = getopt(argc, argv, "f:l:k:v:")) != -1) {
         switch (opt) {
             // path to the data file to be read in
             case 'f':
@@ -36,6 +36,7 @@ int main(int argc, char* argv[])
             // type of loss/distance function to use
             case 'l':
                 loss = optarg;
+		break;
             // set the verbosity of the algorithm
             case 'v':
             	verbosity = std::stoi(optarg);
