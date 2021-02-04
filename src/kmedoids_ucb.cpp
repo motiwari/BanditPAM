@@ -106,6 +106,9 @@ int KMedoids::getSteps() {
  *  @param loss Loss function to be used e.g. L2
  */
 void KMedoids::setLossFn(std::string loss) {
+  if (loss.at(0) == 'L') {
+      loss = loss.substr(1);
+  }
   if (loss == "manhattan") {
       lossFn = &KMedoids::manhattan;
   } else if (loss == "cos") {

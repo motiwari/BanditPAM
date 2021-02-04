@@ -38,7 +38,6 @@ int main(int argc, char* argv[])
                 loss = optarg;
 		if (loss.at(0) == 'L') {
 			loss = loss.substr(1);
-			printf("Removing L\n");
 		}
 		break;
             // set the verbosity of the algorithm
