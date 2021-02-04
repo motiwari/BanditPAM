@@ -36,6 +36,10 @@ int main(int argc, char* argv[])
             // type of loss/distance function to use
             case 'l':
                 loss = optarg;
+		if (loss.at(0) == 'L') {
+			loss = loss.substr(1);
+			printf("Removing L\n");
+		}
 		break;
             // set the verbosity of the algorithm
             case 'v':
