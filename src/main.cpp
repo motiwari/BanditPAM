@@ -9,7 +9,8 @@
  * ./src/build/BanditPAM -f [path/to/input] -k [number of clusters]
  */
 
-#include "kmedoids_ucb.hpp"
+#include "../headers/kmedoids_ucb.hpp"
+
 #include <armadillo>
 #include <chrono>
 #include <fstream>
