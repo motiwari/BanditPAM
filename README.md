@@ -103,7 +103,7 @@ and additional statistics in a format that can be easily read into json.
 
 ## Building the C++ executable from source
 
-Please note that it is not necessary to build the C++ executable from source to use the Python code above. However, if you would like to use the C++ executable directly, follow the instructions below.
+Please note that it is *NOT* necessary to build the C++ executable from source to use the Python code above. However, if you would like to use the C++ executable directly, follow the instructions below.
 
 ### Option 1: Building with Docker
 
