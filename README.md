@@ -146,7 +146,7 @@ Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/
 
 This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
-## Usage
+## C++ Usage
 
 Once the executable has been built, it can be invoked with:
 ```
