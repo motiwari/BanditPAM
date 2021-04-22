@@ -10,6 +10,7 @@
  */
 
 #include "kmedoids_ucb.hpp"
+
 #include <armadillo>
 #include <chrono>
 #include <fstream>

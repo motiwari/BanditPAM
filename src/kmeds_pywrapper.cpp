@@ -6,11 +6,14 @@
  * allows it to be called in Python.
  *
  */
+
+#include "kmedoids_ucb.hpp"
+
 #include <armadillo>
 #include <carma/carma.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
-#include "kmedoids_ucb.hpp"
+
 
 namespace py = pybind11;
 
