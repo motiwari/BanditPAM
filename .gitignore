@@ -12,7 +12,8 @@ __pycache__
 .ipynb_checkpoints/
 python_generate_plots/__pycache__
 python_generate_plots/scrna_data/*
-headers/armadillo-10.2.1/
-headers/pybind11/
-src/main.dSYM/
 src/main
+src/kmedoids_ucb
+src/kmeds_pywrapper
+src/main.dSYM/
+src/KMedoidsLogfile
