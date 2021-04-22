@@ -5,7 +5,7 @@
  * This file contains the primary C++ implementation of the BanditPAM code.
  *
  */
-#include "kmedoids_ucb.hpp"
+#include "../headers/kmedoids_ucb.hpp"
 
 #include <armadillo>
 #include <unordered_map>
