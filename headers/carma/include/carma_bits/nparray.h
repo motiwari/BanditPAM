@@ -16,12 +16,14 @@
 #include <type_traits>
 #include <utility>
 
-#include <pybind11/numpy.h>
-#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>  // NOLINT
+#include <pybind11/pybind11.h>  // NOLINT
+#include <carma_bits/cnumpy.h> // NOLINT
+#include <carma_bits/config.h> // NOLINT
 namespace py = pybind11;
 
-#ifndef NPARRAY
-#define NPARRAY
+#ifndef INCLUDE_CARMA_BITS_NPARRAY_H_
+#define INCLUDE_CARMA_BITS_NPARRAY_H_
 
 namespace carma {
 
@@ -33,6 +35,14 @@ inline bool is_f_contiguous(const py::array_t<T>& arr) {
 template <typename T>
 inline bool is_c_contiguous(const py::array_t<T>& arr) {
     return py::detail::check_flags(arr.ptr(), py::detail::npy_api::NPY_ARRAY_C_CONTIGUOUS_);
+}
+
+template <typename T>
+inline bool is_c_contiguous_2d(const py::array_t<T>& arr) {
+    if (arr.ndim() > 1) {
+        return py::detail::check_flags(arr.ptr(), py::detail::npy_api::NPY_ARRAY_C_CONTIGUOUS_);
+    }
+    return false;
 }
 
 template <typename T>
@@ -56,12 +66,13 @@ inline bool is_aligned(const py::array_t<T>& arr) {
 }
 
 template <typename T>
-inline bool requires_copy(const py::array_t<T>& arr) {
-#ifdef CARMA_DONT_REQUIRE_OWNDATA
-    return (!is_writeable(arr) || !is_aligned(arr));
-#else
-    return (!is_writeable(arr) || !is_owndata(arr) || !is_aligned(arr));
-#endif
+inline bool is_well_behaved(const py::array_t<T>& arr) {
+    return well_behaved(arr.ptr());
+}
+
+template <typename T>
+inline void set_owndata(py::array_t<T>& arr) {
+    py::detail::array_proxy(arr.ptr())->flags &= py::detail::npy_api::NPY_ARRAY_OWNDATA_;
 }
 
 template <typename T>
@@ -70,10 +81,25 @@ inline void set_not_owndata(py::array_t<T>& arr) {
 }
 
 template <typename T>
+inline void set_writeable(py::array_t<T>& arr) {
+    py::detail::array_proxy(arr.ptr())->flags &= py::detail::npy_api::NPY_ARRAY_WRITEABLE_;
+}
+
+template <typename T>
 inline void set_not_writeable(py::array_t<T>& arr) {
     py::detail::array_proxy(arr.ptr())->flags &= ~py::detail::npy_api::NPY_ARRAY_WRITEABLE_;
 }
 
+template <typename T>
+inline void set_f_contiguous(py::array_t<T>& arr) {
+    py::detail::array_proxy(arr.ptr())->flags &= py::detail::npy_api::NPY_ARRAY_F_CONTIGUOUS_;
+}
+
+template <typename T>
+inline void set_c_contiguous(py::array_t<T>& arr) {
+    py::detail::array_proxy(arr.ptr())->flags &= py::detail::npy_api::NPY_ARRAY_C_CONTIGUOUS_;
+}
+
 }  // namespace carma
 
-#endif /* NPARRAY */
+#endif  // INCLUDE_CARMA_BITS_NPARRAY_H_

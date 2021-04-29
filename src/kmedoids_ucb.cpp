@@ -939,6 +939,7 @@ double KMedoids::cos(int i, int j) const {
     return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i))
                                                     * arma::norm(data.col(j)));
 }
+
 /**
  * \brief Manhattan loss
  *
@@ -951,6 +952,7 @@ double KMedoids::cos(int i, int j) const {
 double KMedoids::manhattan(int i, int j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
+
 /**
  * \brief L_INFINITY loss
  *
@@ -963,4 +965,3 @@ double KMedoids::manhattan(int i, int j) const {
 double KMedoids::LINF(int i, int j) const {
     return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
-

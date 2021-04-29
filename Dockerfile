@@ -43,6 +43,7 @@ RUN cd /home/armadillo-code \
     && rm -rf armadillo-code
 
 RUN cd /home/carma \
+    && git checkout unstable \
     && git submodule update --init \
     && mkdir build \
     && cd build \
