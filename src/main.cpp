@@ -15,24 +15,34 @@
 #include <chrono>
 #include <fstream>
 #include <unistd.h>
+#include <exception>
 
 int main(int argc, char* argv[])
-{
+{   
     std::string input_name;
     int k;
-    int opt;
+    int opt, prev_ind;;
     int verbosity = 0;
     std::string loss = "2";
+    bool f_flag = false;
+    bool k_flag = false;
 
-    while ((opt = getopt(argc, argv, "f:l:k:v:")) != -1) {
+    while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:")) != -1) {
+
+        if ( optind == prev_ind + 2 && *optarg == '-' ) {
+        opt = ':';
+        -- optind;
+        }
         switch (opt) {
             // path to the data file to be read in
             case 'f':
                 input_name = optarg;
+                f_flag = true;
                 break;
             // number of clusters to create
             case 'k':
                 k = std::stoi(optarg);
+                k_flag = true;
                 break;
             // type of loss/distance function to use
             case 'l':
@@ -53,6 +63,18 @@ int main(int argc, char* argv[])
                 return 1;
         }
     }
+
+    try {
+      if (f_flag == false) {
+        throw std::invalid_argument("error: Must specify input file via -f flag");
+      } else if (k_flag == false) {
+        throw std::invalid_argument("error: Must specify number of clusters via -k flag");
+      } 
+    } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+      return 1;
+    }
+
     arma::mat data;
     data.load(input_name);
     arma::uword n = data.n_cols;
