@@ -15,22 +15,34 @@
 #include <chrono>
 #include <fstream>
 #include <unistd.h>
+#include <exception>
 
 int main(int argc, char* argv[])
-{
+{   
     std::string input_name;
     std::string log_file_name = "KMedoidsLogfile";
     int k;
     int opt;
+    int prev_ind;
     int verbosity = 0;
     int max_iter = 1000;
     std::string loss = "2";
+    bool f_flag = false;
+    bool k_flag = false;
+    const int ARGUMENT_ERROR_CODE = 1;
 
-    while ((opt = getopt(argc, argv, "f:n:l:k:v:")) != -1) {
+    while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:")) != -1) {
+
+        if ( optind == prev_ind + 2 && *optarg == '-' ) {
+        opt = ':';
+        -- optind;
+        }
+
         switch (opt) {
             // path to the data file to be read in
             case 'f':
                 input_name = optarg;
+                f_flag = true;
                 break;
             // path to log output data
             case 'n':
@@ -39,6 +51,7 @@ int main(int argc, char* argv[])
             // number of clusters to create
             case 'k':
                 k = std::stoi(optarg);
+                k_flag = true;
                 break;
             // type of loss/distance function to use
             case 'l':
@@ -53,12 +66,24 @@ int main(int argc, char* argv[])
                 break;
             case ':':
                 printf("option needs a value\n");
-                return 1;
+                return ARGUMENT_ERROR_CODE;
             case '?':
                 printf("unknown option: %c\n", optopt);
-                return 1;
+                return ARGUMENT_ERROR_CODE;
         }
     }
+
+    try {
+      if (!f_flag) {
+        throw std::invalid_argument("error: Must specify input file via -f flag");
+      } else if (!k_flag) {
+        throw std::invalid_argument("error: Must specify number of clusters via -k flag");
+      } 
+    } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+      return ARGUMENT_ERROR_CODE;
+    }
+
     arma::mat data;
     data.load(input_name);
     arma::uword n = data.n_cols;

@@ -271,7 +271,7 @@ class KMedoids {
     // Hyperparameters
     static const size_t buildConfidence = 1000; ///< constant that affects the sensitivity of build confidence bounds
 
-    static const size_t swapConfidence = 1000; ///< constant that affects the sensitiviy of swap confidence bounds
+    static const size_t swapConfidence = 10000; ///< constant that affects the sensitiviy of swap confidence bounds
 
     const double precision = 0.001; ///< bound for double comparison precision
 
