@@ -2,3 +2,12 @@
 	path = headers/pybind11
 	url = ../../pybind/pybind11
 	branch = stable
+[submodule "headers/carma/third_party/Catch2"]
+	path = headers/carma/third_party/Catch2
+	url = https://github.com/catchorg/Catch2.git
+[submodule "headers/carma/third_party/armadillo-code"]
+	path = headers/carma/third_party/armadillo-code
+	url = https://gitlab.com/conradsnicta/armadillo-code.git
+[submodule "headers/carma/third_party/pybind11"]
+	path = headers/carma/third_party/pybind11
+	url = https://github.com/pybind/pybind11.git

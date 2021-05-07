@@ -14,13 +14,22 @@ os.environ["CXX"] = os.path.join('/usr', 'bin', 'g++')
 class get_pybind_include(object):
     """Helper class to determine the pybind11 include path
     The purpose of this class is to postpone importing pybind11
-    until it is actually installed, so that the ``get_include()``
-    method can be invoked. """
+    until it is actually installed via setup's setup_requires arg,
+    so that the ``get_include()`` method can be invoked. """
 
     def __str__(self):
         import pybind11
         return pybind11.get_include()
 
+class get_numpy_include(object):
+    """Helper class to determine the pybind11 include path
+    The purpose of this class is to postpone importing pybind11
+    until it is actually installed via setup's setup_requires arg,
+    so that the ``get_include()`` method can be invoked. """
+
+    def __str__(self):
+        import numpy
+        return numpy.get_include()
 
 ext_modules = [
     Extension(
@@ -29,7 +38,9 @@ ext_modules = [
                 os.path.join('src', 'kmeds_pywrapper.cpp')]),
         include_dirs=[
             get_pybind_include(),
+            get_numpy_include(),
             'headers',
+            'headers/carma/include',
         ],
         libraries=['armadillo'],
         language='c++14',
@@ -123,7 +134,10 @@ setup(
     description='BanditPAM: A state-of-the-art, high-performance k-medoids algorithm.',
     long_description=long_description,
     ext_modules=ext_modules,
-    setup_requires=['pybind11>=2.5.0'],
+    setup_requires=[
+        'pybind11>=2.5.0',
+        'numpy>=1.18',
+    ],
     data_files=[('docs', [os.path.join('docs', 'long_desc.rst')])],
     include_package_data=True,
     cmdclass={'build_ext': BuildExt},

@@ -20,10 +20,12 @@
 int main(int argc, char* argv[])
 {   
     std::string input_name;
+    std::string log_file_name = "KMedoidsLogfile";
     int k;
     int opt;
     int prev_ind;
     int verbosity = 0;
+    int max_iter = 1000;
     std::string loss = "2";
     bool f_flag = false;
     bool k_flag = false;
@@ -42,6 +44,10 @@ int main(int argc, char* argv[])
                 input_name = optarg;
                 f_flag = true;
                 break;
+            // path to log output data
+            case 'n':
+                log_file_name = optarg;
+                break;
             // number of clusters to create
             case 'k':
                 k = std::stoi(optarg);
@@ -50,14 +56,14 @@ int main(int argc, char* argv[])
             // type of loss/distance function to use
             case 'l':
                 loss = optarg;
-		if (loss.at(0) == 'L') {
-			loss = loss.substr(1);
-		}
-		break;
+                if (loss.at(0) == 'L') {
+                  loss = loss.substr(1);
+                }
+                break;
             // set the verbosity of the algorithm
             case 'v':
-            	verbosity = std::stoi(optarg);
-            	break;
+                verbosity = std::stoi(optarg);
+                break;
             case ':':
                 printf("option needs a value\n");
                 return ARGUMENT_ERROR_CODE;
@@ -83,7 +89,7 @@ int main(int argc, char* argv[])
     arma::uword n = data.n_cols;
     arma::uword d = data.n_rows;
 
-    KMedoids kmed(k, "BanditPAM", verbosity);
+    KMedoids kmed(k, "BanditPAM", verbosity, max_iter, log_file_name);
     kmed.fit(data, loss);
 
     if (verbosity > 0) {

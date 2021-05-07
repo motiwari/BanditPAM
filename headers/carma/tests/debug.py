@@ -1,0 +1,55 @@
+import sys
+import numpy as np
+import test_carma as tc
+
+sample = np.random.normal(0, 1, (1000, 2))
+fsample = np.asarray(sample, order='F')
+ref_sample = sample.sum()
+
+print('------ C-order -- Borrow ------')
+print('ref count sample -- pre: ', sys.getrefcount(sample))
+print('ref count fsample -- pre: ', sys.getrefcount(fsample))
+arr = tc.debug_arr_to_mat(sample, 0, 0)
+print('ref count sample -- post: ', sys.getrefcount(sample))
+print('ref count fsample -- post: ', sys.getrefcount(fsample))
+assert np.isclose(ref_sample, arr.sum())
+
+print('------ C-order -- Copy ------')
+print('ref count sample -- pre: ', sys.getrefcount(sample))
+print('ref count fsample -- pre: ', sys.getrefcount(fsample))
+arr = tc.debug_arr_to_mat(sample, 1, 0)
+print('ref count sample -- post: ', sys.getrefcount(sample))
+print('ref count fsample -- post: ', sys.getrefcount(fsample))
+assert np.isclose(ref_sample, arr.sum())
+
+print('------ C-order -- Steal ------')
+print('ref count sample -- pre: ', sys.getrefcount(sample))
+print('ref count fsample -- pre: ', sys.getrefcount(fsample))
+arr = tc.debug_arr_to_mat(sample, -1, 0)
+print('ref count sample -- post: ', sys.getrefcount(sample))
+print('ref count fsample -- post: ', sys.getrefcount(fsample))
+assert np.isclose(ref_sample, arr.sum())
+
+print('------ F-order -- Borrow ------')
+print('ref count sample -- pre: ', sys.getrefcount(sample))
+print('ref count fsample -- pre: ', sys.getrefcount(fsample))
+arr = tc.debug_arr_to_mat(fsample, 0, 0)
+print('ref count sample -- post: ', sys.getrefcount(sample))
+print('ref count fsample -- post: ', sys.getrefcount(fsample))
+assert np.isclose(ref_sample, arr.sum())
+
+print('------ F-order -- Copy ------')
+print('ref count sample -- pre: ', sys.getrefcount(sample))
+print('ref count fsample -- pre: ', sys.getrefcount(fsample))
+arr = tc.debug_arr_to_mat(fsample, 1, 0)
+print('ref count sample -- post: ', sys.getrefcount(sample))
+print('ref count fsample -- post: ', sys.getrefcount(fsample))
+assert np.isclose(ref_sample, arr.sum())
+
+print('------ F-order -- Steal ------')
+print('ref count sample -- pre: ', sys.getrefcount(sample))
+print('ref count fsample -- pre: ', sys.getrefcount(fsample))
+arr = tc.debug_arr_to_mat(fsample, -1, 0)
+print('ref count sample -- post: ', sys.getrefcount(sample))
+print('ref count fsample -- post: ', sys.getrefcount(fsample))
+assert np.isclose(ref_sample, arr.sum())
