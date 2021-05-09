@@ -607,7 +607,7 @@ void KMedoids::swap(
   arma::rowvec& assignments)
 {
     size_t N = data.n_cols;
-    int p = (N * n_medoids * swapConfidence * 10000); // reciprocal
+    int p = (N * n_medoids * swapConfidence); // reciprocal
 
     arma::mat sigma(n_medoids, N, arma::fill::zeros);
 
