@@ -6,9 +6,9 @@ import setuptools
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
-__version__ = '0.0.17'
-os.environ["CC"] = os.path.join('/usr', 'bin', 'gcc')
-os.environ["CXX"] = os.path.join('/usr', 'bin', 'g++')
+__version__ = '0.0.21'
+#os.environ["CC"] = os.path.join('/usr', 'bin', 'gcc')
+#os.environ["CXX"] = os.path.join('/usr', 'bin', 'g++')
 
 
 class get_pybind_include(object):
@@ -43,7 +43,7 @@ ext_modules = [
             'headers/carma/include',
         ],
         libraries=['armadillo'],
-        language='c++14',
+        language='c++1y',
         extra_compile_args=['-static-libstdc++'],
     ),
 ]
@@ -73,7 +73,7 @@ def cpp_flag(compiler):
     The newer version is prefered over c++11 (when it is available).
     """
     # flags = ['-std=c++17', '-std=c++14', '-std=c++11']
-    flags = ['-std=c++14']
+    flags = ['-std=c++1y']
 
     for flag in flags:
         if has_flag(compiler, flag):
@@ -104,7 +104,7 @@ class BuildExt(build_ext):
         opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
         opts.append('-Wno-register')
-        opts.append('-std=c++14')
+        opts.append('-std=c++1y')
         if sys.platform == 'darwin':
             opts.append('-Xpreprocessor -fopenmp')
         else:
