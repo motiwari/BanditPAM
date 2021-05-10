@@ -33,7 +33,6 @@ KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
        verbosity(verbosity),
        logFilename(logFilename) {
   KMedoids::checkAlgorithm(algorithm);
-  std::map<std::tuple<int,int>, double> cache;
 }
 
 /**
@@ -101,19 +100,6 @@ int KMedoids::getSteps() {
 }
 
 /**
- * \brief Wraps the given loss function with a cache
- * 
- * Given a loss function, returns a wrapped loss function that uses the cache
- */
-double KMedoids::wrappedLossFn(size_t i, size_t j) {
-  // If not in cache, compute
-  if (cache.find(std::make_tuple(static_cast<int>(i), static_cast<int>(j))) == cache.end()) {
-    cache[std::make_tuple(static_cast<int>(i), static_cast<int>(j))] = (this->*lossFn)(i, j);
-  }
-  return cache[std::make_tuple(i, j)];
-}
-
-/**
  *  \brief Sets the loss function
  *
  *  Sets the loss function used during KMedoids::fit
@@ -121,11 +107,9 @@ double KMedoids::wrappedLossFn(size_t i, size_t j) {
  *  @param loss Loss function to be used e.g. L2
  */
 void KMedoids::setLossFn(std::string loss) {
-  // TODO: Fix this
   if (loss.at(0) == 'L') {
       loss = loss.substr(1);
   }
-
   if (loss == "manhattan") {
       lossFn = &KMedoids::manhattan;
   } else if (loss == "cos") {
@@ -135,6 +119,9 @@ void KMedoids::setLossFn(std::string loss) {
   } else if (std::isdigit(loss.at(0))) {
       lossFn = &KMedoids::LP;
       lp     = atoi(loss.c_str());
+      //std::stringstream st(loss);
+      //st >> lp;
+      //lp     = std::stoi(loss);
   } else {
       throw "unrecognized loss function";
   }
@@ -175,7 +162,6 @@ std::string KMedoids::getAlgorithm() {
  *  @param new_alg New algorithm to use
  */
 void KMedoids::setAlgorithm(std::string new_alg) {
-  // TODO: call check_algorithm here
   algorithm = new_alg;
 }
 
@@ -255,9 +241,6 @@ void KMedoids::setLogFilename(std::string new_lname) {
  */
 void KMedoids::fit(arma::mat input_data, std::string loss) {
   KMedoids::setLossFn(loss);
-  
-  // # TODO: Reset the cache
-  
   (this->*fitFn)(input_data);
   if (verbosity > 0) {
       logHelper.init(logFilename);
@@ -309,7 +292,6 @@ void KMedoids::fit_naive(arma::mat input_data) {
 void KMedoids::build_naive(
   arma::rowvec& medoid_indices)
 {
-  // TODO: Use OMP here
   for (size_t k = 0; k < n_medoids; k++) {
     double minDistance = std::numeric_limits<double>::infinity();
     int best = 0;
@@ -319,10 +301,8 @@ void KMedoids::build_naive(
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points
         double cost = (this->*lossFn)(i, j);
-        // double cost = wrappedLossFn(i, j);
         for (size_t medoid = 0; medoid < k; medoid++) {
           double current = (this->*lossFn)(medoid_indices(medoid), j);
-          // double current = wrappedLossFn(medoid_indices(medoid), j);
           // compares this for cost of the medoid
           if (current < cost) {
             cost = current;
@@ -357,7 +337,6 @@ void KMedoids::swap_naive(
   size_t best = 0;
   size_t medoid_to_swap = 0;
   // iterate across the current medoids
-  // TODO: Use OpenMP
   for (size_t k = 0; k < n_medoids; k++) {
     // for every point in our dataset, let it serve as a "base" point
     for (size_t i = 0; i < data.n_cols; i++) {
@@ -365,13 +344,11 @@ void KMedoids::swap_naive(
       for (size_t j = 0; j < data.n_cols; j++) {
         // compute distance between base point and every other datapoint
         double cost = (this->*lossFn)(i, j);
-        // double cost = wrappedLossFn(i, j);
         for (size_t medoid = 0; medoid < n_medoids; medoid++) {
           if (medoid == k) {
-            continue;         
+            continue;
           }
           double current = (this->*lossFn)(medoid_indices(medoid), j);
-          // double current = wrappedLossFn(medoid_indices(medoid), j);
           if (current < cost) {
             cost = current;
           }
@@ -502,11 +479,10 @@ void KMedoids::build(
 
         // don't need to do this on final iteration
         for (size_t i = 0; i < N; i++) {
-          // double cost = (this->*lossFn)(i, medoid_indices(k));
-          double cost = wrappedLossFn(i, medoid_indices(k));
-          if (cost < best_distances(i)) {
-              best_distances(i) = cost;
-          }
+            double cost = (this->*lossFn)(i, medoid_indices(k));
+            if (cost < best_distances(i)) {
+                best_distances(i) = cost;
+            }
         }
         use_absolute = false; // use difference of loss for sigma and sampling,
                               // not absolute
@@ -542,8 +518,7 @@ void KMedoids::build_sigma(
     for (size_t i = 0; i < N; i++) {
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(i, tmp_refs(j));
-            // double cost = wrappedLossFn(i, tmp_refs(j)); // causes segfault
+            double cost = (this->*lossFn)(i,tmp_refs(j));
             if (use_absolute) {
                 sample(j) = cost;
             } else {
@@ -595,9 +570,8 @@ arma::rowvec KMedoids::build_target(
     for (size_t i = 0; i < target.n_rows; i++) {
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
-          double cost = (this->*lossFn)(tmp_refs(j), target(i));
-          // double cost = wrappedLossFn(tmp_refs(j), target(i)); //Causes Segfault
-            
+            double cost =
+              (this->*lossFn)(tmp_refs(j),target(i));
             if (use_absolute) {
                 total += cost;
             } else {
@@ -768,15 +742,14 @@ void KMedoids::calc_best_distances_swap(
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < medoid_indices.n_cols; k++) {
-          double cost = (this->*lossFn)(medoid_indices(k), i);
-          // double cost = wrappedLossFn(medoid_indices(k), i); // Causes segfault
-          if (cost < best) {
-              assignments(i) = k;
-              second = best;
-              best = cost;
-          } else if (cost < second) {
-              second = cost;
-          }
+            double cost = (this->*lossFn)(medoid_indices(k), i);
+            if (cost < best) {
+                assignments(i) = k;
+                second = best;
+                best = cost;
+            } else if (cost < second) {
+                second = cost;
+            }
         }
         best_distances(i) = best;
         second_distances(i) = second;
@@ -822,22 +795,21 @@ arma::vec KMedoids::swap_target(
         size_t k = targets(i) % medoid_indices.n_cols;
         // calculate total loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-          // double cost = (this->*lossFn)(n, tmp_refs(j));
-          double cost = wrappedLossFn(n, tmp_refs(j));
-          if (k == assignments(tmp_refs(j))) {
-              if (cost < second_best_distances(tmp_refs(j))) {
-                  total += cost;
-              } else {
-                  total += second_best_distances(tmp_refs(j));
-              }
-          } else {
-              if (cost < best_distances(tmp_refs(j))) {
-                  total += cost;
-              } else {
-                  total += best_distances(tmp_refs(j));
-              }
-          }
-          total -= best_distances(tmp_refs(j));
+            double cost = (this->*lossFn)(n, tmp_refs(j));
+            if (k == assignments(tmp_refs(j))) {
+                if (cost < second_best_distances(tmp_refs(j))) {
+                    total += cost;
+                } else {
+                    total += second_best_distances(tmp_refs(j));
+                }
+            } else {
+                if (cost < best_distances(tmp_refs(j))) {
+                    total += cost;
+                } else {
+                    total += best_distances(tmp_refs(j));
+                }
+            }
+            total -= best_distances(tmp_refs(j));
         }
         estimates(i) = total / tmp_refs.n_rows;
     }
@@ -881,25 +853,24 @@ void KMedoids::swap_sigma(
 
         // calculate change in loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-          // double cost = (this->*lossFn)(n, tmp_refs(j));
-          double cost = wrappedLossFn(n, tmp_refs(j));
+            double cost = (this->*lossFn)(n,tmp_refs(j));
 
-          if (k == assignments(tmp_refs(j))) {
-              if (cost < second_best_distances(tmp_refs(j))) {
-                  sample(j) = cost;
-              } else {
-                  sample(j) = second_best_distances(tmp_refs(j));
-              }
-          } else {
-              if (cost < best_distances(tmp_refs(j))) {
-                  sample(j) = cost;
-              } else {
-                  sample(j) = best_distances(tmp_refs(j));
-              }
-          }
-          sample(j) -= best_distances(tmp_refs(j));
-      }
-      sigma(k, n) = arma::stddev(sample);
+            if (k == assignments(tmp_refs(j))) {
+                if (cost < second_best_distances(tmp_refs(j))) {
+                    sample(j) = cost;
+                } else {
+                    sample(j) = second_best_distances(tmp_refs(j));
+                }
+            } else {
+                if (cost < best_distances(tmp_refs(j))) {
+                    sample(j) = cost;
+                } else {
+                    sample(j) = best_distances(tmp_refs(j));
+                }
+            }
+            sample(j) -= best_distances(tmp_refs(j));
+        }
+        sigma(k, n) = arma::stddev(sample);
     }
 }
 
@@ -919,11 +890,10 @@ double KMedoids::calc_loss(
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < n_medoids; k++) {
-          // double currCost = (this->*lossFn)(medoid_indices(k), i);
-          double currCost = wrappedLossFn(medoid_indices(k), i);
-          if (currCost < cost) {
-              cost = currCost;
-          }
+            double currCost = (this->*lossFn)(medoid_indices(k), i);
+            if (currCost < cost) {
+                cost = currCost;
+            }
         }
         total += cost;
     }

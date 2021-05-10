@@ -134,8 +134,6 @@ class KMedoids {
 
     void fit(arma::mat inputData, std::string loss);
 
-    std::map<std::tuple<int,int>, double> cache;
-
     // The functions below are "get" functions for read-only attributes
 
     arma::rowvec getMedoidsFinal();
@@ -169,9 +167,6 @@ class KMedoids {
     void setLogFilename(std::string new_lname);
 
     void setLossFn(std::string loss);
-    
-    double wrappedLossFn(size_t i, size_t j);
-
   private:
     // The functions below are PAM's constituent functions
     void fit_bpam(arma::mat inputData);
