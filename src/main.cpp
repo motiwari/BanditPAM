@@ -16,6 +16,7 @@
 #include <fstream>
 #include <unistd.h>
 #include <exception>
+#include <regex>
 
 int main(int argc, char* argv[])
 {   
@@ -56,7 +57,7 @@ int main(int argc, char* argv[])
             // type of loss/distance function to use
             case 'l':
                 loss = optarg;
-                if (loss.at(0) == 'L') {
+                if (std::regex_match(loss, std::regex("L\\d*"))) {
                   loss = loss.substr(1);
                 }
                 break;
