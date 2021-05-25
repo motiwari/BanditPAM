@@ -15,7 +15,7 @@ def onFly(k, data, loss):
     kmed_bpam.fit(data, loss)
     kmed_naive.fit(data, loss)
 
-    if (kmed_bpam.final_medoids.tolist() == kmed_naive.final_medoids.tolist()) and \
+    if (kmed_bpam.medoids.tolist() == kmed_naive.medoids.tolist()) and \
        (kmed_bpam.build_medoids.tolist() == kmed_naive.build_medoids.tolist()):
         return 1
     else:
@@ -64,7 +64,7 @@ class PythonTests(unittest.TestCase):
         kmed_5.fit(self.small_mnist, "L2")
 
         self.assertEqual(kmed_5.build_medoids.tolist(), np.array([16, 32, 70, 87, 24]).tolist())
-        self.assertEqual(kmed_5.final_medoids.tolist(), np.array([30, 99, 70, 23, 49]).tolist())
+        self.assertEqual(kmed_5.medoids.tolist(), np.array([30, 99, 70, 23, 49]).tolist())
 
         kmed_10 = KMedoids(
             n_medoids = 10,
@@ -76,7 +76,7 @@ class PythonTests(unittest.TestCase):
         kmed_10.fit(self.small_mnist, "L2")
 
         self.assertEqual(kmed_10.build_medoids.tolist(), np.array([16, 32, 70, 87, 24, 90, 49, 99, 82, 94]).tolist())
-        self.assertEqual(kmed_10.final_medoids.tolist(), np.array([16, 63, 70, 25, 31, 90, 49, 99, 82, 94]).tolist())
+        self.assertEqual(kmed_10.medoids.tolist(), np.array([16, 63, 70, 25, 31, 90, 49, 99, 82, 94]).tolist())
 
     def test_small_cases_scrna(self):
         '''
@@ -92,7 +92,7 @@ class PythonTests(unittest.TestCase):
         kmed_5.fit(self.scrna.head(1000).to_numpy(), "L1")
 
         self.assertEqual(kmed_5.build_medoids.tolist(), np.array([377, 267, 276, 762, 394]).tolist())
-        self.assertEqual(kmed_5.final_medoids.tolist(), np.array([377, 267, 276, 762, 394]).tolist())
+        self.assertEqual(kmed_5.medoids.tolist(), np.array([377, 267, 276, 762, 394]).tolist())
 
         kmed_10 = KMedoids(
             n_medoids = 10,
@@ -104,7 +104,7 @@ class PythonTests(unittest.TestCase):
         kmed_10.fit(self.scrna.head(1000).to_numpy(), "L1")
 
         self.assertEqual(kmed_10.build_medoids.tolist(), np.array([377, 267, 276, 762, 394, 311, 663, 802, 422, 20]).tolist())
-        self.assertEqual(kmed_10.final_medoids.tolist(), np.array([377, 267, 276, 762, 394, 311, 663, 802, 422, 20]).tolist())
+        self.assertEqual(kmed_10.medoids.tolist(), np.array([377, 267, 276, 762, 394, 311, 663, 802, 422, 20]).tolist())
 
     def test_edge_cases(self):
         '''
@@ -113,7 +113,7 @@ class PythonTests(unittest.TestCase):
         kmed = KMedoids()
 
         # initialized to empty
-        self.assertEqual([], kmed.final_medoids.tolist())
+        self.assertEqual([], kmed.medoids.tolist())
         self.assertEqual([], kmed.build_medoids.tolist())
 
         # error on trying to fit on empty

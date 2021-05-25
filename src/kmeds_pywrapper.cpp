@@ -100,7 +100,7 @@ PYBIND11_MODULE(BanditPAM, m) {
       .def_property("verbosity", &KMedsWrapper::getVerbosity, &KMedsWrapper::setVerbosity)
       .def_property("maxIter", &KMedsWrapper::getMaxIter, &KMedsWrapper::setMaxIter)
       .def_property("logFilename", &KMedsWrapper::getLogfileName, &KMedsWrapper::setLogFilename)
-      .def_property_readonly("final_medoids", &KMedsWrapper::getMedoidsFinalPython)
+      .def_property_readonly("medoids", &KMedsWrapper::getMedoidsFinalPython)
       .def_property_readonly("build_medoids", &KMedsWrapper::getMedoidsBuildPython)
       .def_property_readonly("labels", &KMedsWrapper::getLabelsPython)
       .def_property_readonly("steps", &KMedsWrapper::getStepsPython)
