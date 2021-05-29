@@ -15,7 +15,7 @@ def onFly(k, data, loss):
     kmed_bpam.fit(data, loss)
     kmed_naive.fit(data, loss)
 
-    if (kmed_bpam.final_medoids.tolist() == kmed_naive.final_medoids.tolist()) and \
+    if (kmed_bpam.medoids.tolist() == kmed_naive.medoids.tolist()) and \
        (kmed_bpam.build_medoids.tolist() == kmed_naive.build_medoids.tolist()):
         return 1
     else:
