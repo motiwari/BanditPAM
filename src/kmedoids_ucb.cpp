@@ -116,9 +116,6 @@ void KMedoids::setLossFn(std::string loss) {
   } else if (std::isdigit(loss.at(0))) {
       lossFn = &KMedoids::LP;
       lp     = atoi(loss.c_str());
-      //std::stringstream st(loss);
-      //st >> lp;
-      //lp     = std::stoi(loss);
   } else {
       throw "unrecognized loss function";
   }
