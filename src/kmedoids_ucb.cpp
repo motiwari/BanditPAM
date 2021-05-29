@@ -107,18 +107,22 @@ int KMedoids::getSteps() {
  *  @param loss Loss function to be used e.g. L2
  */
 void KMedoids::setLossFn(std::string loss) {
-  if (loss == "manhattan") {
-      lossFn = &KMedoids::manhattan;
-  } else if (loss == "cos") {
-      lossFn = &KMedoids::cos;
-  } else if (loss == "inf") {
-      lossFn = &KMedoids::LINF;
-  } else if (std::isdigit(loss.at(0))) {
-      lossFn = &KMedoids::LP;
-      lp     = atoi(loss.c_str());
-  } else {
-      throw "unrecognized loss function";
-  }
+  try {
+    if (loss == "manhattan") {
+        lossFn = &KMedoids::manhattan;
+    } else if (loss == "cos") {
+        lossFn = &KMedoids::cos;
+    } else if (loss == "inf") {
+        lossFn = &KMedoids::LINF;
+    } else if (std::isdigit(loss.at(0))) {
+        lossFn = &KMedoids::LP;
+        lp     = atoi(loss.c_str());
+    } else {
+        throw std::invalid_argument("error: unrecognized loss function");
+    }
+  } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+    }
 }
 
 /**
