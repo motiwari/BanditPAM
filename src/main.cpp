@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     bool k_flag = false;
     const int ARGUMENT_ERROR_CODE = 1;
 
-    while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:")) != -1) {
+    while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:n:")) != -1) {
 
         if ( optind == prev_ind + 2 && *optarg == '-' ) {
         opt = ':';
