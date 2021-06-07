@@ -173,16 +173,18 @@ class KMedoids {
 
     void fit_naive(arma::mat inputData);
 
-    void build_naive(arma::rowvec& medoidIndices);
+    void build_naive(arma::mat& data, arma::rowvec& medoidIndices);
 
-    void swap_naive(arma::rowvec& medoidIndices);
+    void swap_naive(arma::mat& data, arma::rowvec& medoidIndices);
 
     void build(
+      arma::mat& data,
       arma::rowvec& medoidIndices,
       arma::mat& medoids
     );
 
     void build_sigma(
+      arma::mat& data,
       arma::rowvec& best_distances,
       arma::rowvec& sigma,
       arma::uword batch_size,
@@ -190,6 +192,7 @@ class KMedoids {
     );
 
     arma::rowvec build_target(
+      arma::mat& data,
       arma::uvec& target,
       size_t batch_size,
       arma::rowvec& best_distances,
@@ -197,12 +200,14 @@ class KMedoids {
     );
 
     void swap(
+      arma::mat& data,
       arma::rowvec& medoidIndices,
       arma::mat& medoids,
       arma::rowvec& assignments
     );
 
     void calc_best_distances_swap(
+      arma::mat& data,
       arma::rowvec& medoidIndices,
       arma::rowvec& best_distances,
       arma::rowvec& second_distances,
@@ -210,6 +215,7 @@ class KMedoids {
     );
 
     arma::vec swap_target(
+      arma::mat& data,
       arma::rowvec& medoidIndices,
       arma::uvec& targets,
       size_t batch_size,
@@ -219,6 +225,7 @@ class KMedoids {
     );
 
     void swap_sigma(
+      arma::mat& data,
       arma::mat& sigma,
       size_t batch_size,
       arma::rowvec& best_distances,
@@ -226,17 +233,17 @@ class KMedoids {
       arma::rowvec& assignments
     );
 
-    double calc_loss(arma::rowvec& medoidIndices);
+    double calc_loss(arma::mat& data, arma::rowvec& medoidIndices);
 
     // Loss functions
     int lp;
-    double LP(int i, int j) const;
+    double LP(arma::mat& data, int i, int j) const;
 
-    double LINF(int i, int j) const;
+    double LINF(arma::mat& data, int i, int j) const;
 
-    double cos(int i, int j) const;
+    double cos(arma::mat& data, int i, int j) const;
 
-    double manhattan(int i, int j) const;
+    double manhattan(arma::mat& data, int i, int j) const;
 
     void checkAlgorithm(std::string algorithm);
 
@@ -260,7 +267,7 @@ class KMedoids {
 
     arma::rowvec medoid_indices_final; ///< medoids at the end of the swap step
 
-    double (KMedoids::*lossFn)(int i, int j) const; ///< loss function used during KMedoids::fit
+    double (KMedoids::*lossFn)(arma::mat& data, int i, int j) const; ///< loss function used during KMedoids::fit
 
     void (KMedoids::*fitFn)(arma::mat inputData); ///< function used for finding medoids (from algorithm)
 

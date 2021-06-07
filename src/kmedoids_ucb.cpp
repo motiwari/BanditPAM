@@ -263,7 +263,7 @@ void KMedoids::fit_naive(arma::mat input_data) {
   data = arma::trans(data);
   arma::rowvec medoid_indices(n_medoids);
   // runs build step
-  KMedoids::build_naive(medoid_indices);
+  KMedoids::build_naive(data, medoid_indices);
   steps = 0;
 
   medoid_indices_build = medoid_indices;
@@ -272,7 +272,7 @@ void KMedoids::fit_naive(arma::mat input_data) {
   while (i < max_iter && medoidChange) {
     auto previous(medoid_indices);
     // runs swa step as necessary
-    KMedoids::swap_naive(medoid_indices);
+    KMedoids::swap_naive(data, medoid_indices);
     medoidChange = arma::any(medoid_indices != previous);
     i++;
   }
@@ -286,10 +286,12 @@ void KMedoids::fit_naive(arma::mat input_data) {
  * checks its distance from every other datapoint in the dataset, then checks if
  * the total cost is less than that of the medoid (if a medoid exists yet).
  *
+ * @param data Transposed input data to find the medoids of
  * @param medoid_indices Uninitialized array of medoids that is modified in place
  * as medoids are identified
  */
 void KMedoids::build_naive(
+  arma::mat& data, 
   arma::rowvec& medoid_indices)
 {
   for (size_t k = 0; k < n_medoids; k++) {
@@ -300,9 +302,9 @@ void KMedoids::build_naive(
       double total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points
-        double cost = (this->*lossFn)(i, j);
+        double cost = (this->*lossFn)(data, i, j);
         for (size_t medoid = 0; medoid < k; medoid++) {
-          double current = (this->*lossFn)(medoid_indices(medoid), j);
+          double current = (this->*lossFn)(data, medoid_indices(medoid), j);
           // compares this for cost of the medoid
           if (current < cost) {
             cost = current;
@@ -327,10 +329,12 @@ void KMedoids::build_naive(
  * checks its distance from every other datapoint in the dataset, then checks if
  * the total cost is less than that of the medoid.
  *
+ * @param data Transposed input data to find the medoids of
  * @param medoid_indices Array of medoid indices created from the build step
  * that is modified in place as better medoids are identified
  */
 void KMedoids::swap_naive(
+  arma::mat& data, 
   arma::rowvec& medoid_indices)
 {
   double minDistance = std::numeric_limits<double>::infinity();
@@ -343,12 +347,12 @@ void KMedoids::swap_naive(
       double total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // compute distance between base point and every other datapoint
-        double cost = (this->*lossFn)(i, j);
+        double cost = (this->*lossFn)(data, i, j);
         for (size_t medoid = 0; medoid < n_medoids; medoid++) {
           if (medoid == k) {
             continue;
           }
-          double current = (this->*lossFn)(medoid_indices(medoid), j);
+          double current = (this->*lossFn)(data, medoid_indices(medoid), j);
           if (current < cost) {
             cost = current;
           }
@@ -380,13 +384,13 @@ void KMedoids::fit_bpam(arma::mat input_data) {
   arma::mat medoids_mat(data.n_rows, n_medoids);
   arma::rowvec medoid_indices(n_medoids);
   // runs build step
-  KMedoids::build(medoid_indices, medoids_mat);
+  KMedoids::build(data, medoid_indices, medoids_mat);
   steps = 0;
 
   medoid_indices_build = medoid_indices;
   arma::rowvec assignments(data.n_cols);
   // runs swap step
-  KMedoids::swap(medoid_indices, medoids_mat, assignments);
+  KMedoids::swap(data, medoid_indices, medoids_mat, assignments);
   medoid_indices_final = medoid_indices;
   labels = assignments;
 }
@@ -399,12 +403,14 @@ void KMedoids::fit_bpam(arma::mat input_data) {
  * solutions on the reference set to update the reward confidence intervals and
  * accordingly narrow the solution set.
  *
+ * @param data Transposed input data to find the medoids of
  * @param medoid_indices Uninitialized array of medoids that is modified in place
  * as medoids are identified
  * @param medoids Matrix of possible medoids that is updated as the bandit
  * learns which datapoints will be unlikely to be good candidates
  */
 void KMedoids::build(
+  arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids)
 {
@@ -434,7 +440,7 @@ void KMedoids::build(
         exact_mask.fill(0);
         estimates.fill(0);
         KMedoids::build_sigma(
-           best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
+           data, best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
 
         while (arma::sum(candidates) > precision) { // while some candidates exist
             arma::umat compute_exactly =
@@ -443,7 +449,7 @@ void KMedoids::build(
                 arma::uvec targets = find(compute_exactly);
                 logHelper.comp_exact_build.push_back(targets.n_rows);
                 arma::rowvec result =
-                  build_target(targets, N, best_distances, use_absolute); // induced loss for these targets over all reference points
+                  build_target(data, targets, N, best_distances, use_absolute); // induced loss for these targets over all reference points
                 estimates.cols(targets) = result;
                 ucbs.cols(targets) = result;
                 lcbs.cols(targets) = result;
@@ -456,7 +462,7 @@ void KMedoids::build(
             }
             arma::uvec targets = arma::find(candidates);
             arma::rowvec result = build_target(
-              targets, batchSize, best_distances, use_absolute); // induced loss for the targets (sample)
+              data, targets, batchSize, best_distances, use_absolute); // induced loss for the targets (sample)
             estimates.cols(targets) =
               ((T_samples.cols(targets) % estimates.cols(targets)) +
                (result * batchSize)) /
@@ -479,7 +485,7 @@ void KMedoids::build(
 
         // don't need to do this on final iteration
         for (size_t i = 0; i < N; i++) {
-            double cost = (this->*lossFn)(i, medoid_indices(k));
+            double cost = (this->*lossFn)(data, i, medoid_indices(k));
             if (cost < best_distances(i)) {
                 best_distances(i) = cost;
             }
@@ -496,6 +502,7 @@ void KMedoids::build(
  *
  * Calculates the confidence intervals about the reward for each arm
  *
+ * @param data Transposed input data to find the medoids of
  * @param sigma Dispersion paramater for each datapoint
  * @param batch_size Number of datapoints sampled for updating confidence
  * intervals
@@ -504,6 +511,7 @@ void KMedoids::build(
  * @param use_aboslute Determines whether the absolute cost is added to the total
  */
 void KMedoids::build_sigma(
+  arma::mat& data,
   arma::rowvec& best_distances,
   arma::rowvec& sigma,
   arma::uword batch_size,
@@ -518,7 +526,7 @@ void KMedoids::build_sigma(
     for (size_t i = 0; i < N; i++) {
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(i,tmp_refs(j));
+            double cost = (this->*lossFn)(data, i, tmp_refs(j));
             if (use_absolute) {
                 sample(j) = cost;
             } else {
@@ -548,6 +556,7 @@ void KMedoids::build_sigma(
  * Estimates the mean reward (or loss) for each arm in the identified targets
  * in the build step and returns a list of the estimated reward.
  *
+ * @param data Transposed input data to find the medoids of
  * @param target Set of target datapoints to be estimated
  * @param batch_size Number of datapoints sampled for updating confidence
  * intervals
@@ -556,6 +565,7 @@ void KMedoids::build_sigma(
  * @param use_absolute Determines whether the absolute cost is added to the total
  */
 arma::rowvec KMedoids::build_target(
+  arma::mat& data,
   arma::uvec& target,
   size_t batch_size,
   arma::rowvec& best_distances,
@@ -571,7 +581,7 @@ arma::rowvec KMedoids::build_target(
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
             double cost =
-              (this->*lossFn)(tmp_refs(j),target(i));
+              (this->*lossFn)(data, tmp_refs(j), target(i));
             if (use_absolute) {
                 total += cost;
             } else {
@@ -594,6 +604,7 @@ arma::rowvec KMedoids::build_target(
  * solutions on the reference set to update the reward confidence intervals and
  * accordingly narrow the solution set.
  *
+ * @param data Transposed input data to find the medoids of
  * @param medoid_indices Array of medoid indices created from the build step
  * that is modified in place as better medoids are identified
  * @param medoids Matrix of possible medoids that is updated as the bandit
@@ -602,6 +613,7 @@ arma::rowvec KMedoids::build_target(
  * datapoint assigned the index of the medoid it is closest to
  */
 void KMedoids::swap(
+  arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids,
   arma::rowvec& assignments)
@@ -628,9 +640,10 @@ void KMedoids::swap(
 
         // calculate quantities needed for swap, best_distances and sigma
         calc_best_distances_swap(
-          medoid_indices, best_distances, second_distances, assignments);
+          data, medoid_indices, best_distances, second_distances, assignments);
 
-        swap_sigma(sigma,
+        swap_sigma(data,
+                   sigma,
                    batchSize,
                    best_distances,
                    second_distances,
@@ -644,7 +657,7 @@ void KMedoids::swap(
         // while there is at least one candidate (double comparison issues)
         while (arma::accu(candidates) > 0.5) {
             calc_best_distances_swap(
-              medoid_indices, best_distances, second_distances, assignments);
+              data, medoid_indices, best_distances, second_distances, assignments);
 
             // compute exactly if it's been samples more than N times and hasn't
             // been computed exactly already
@@ -654,7 +667,8 @@ void KMedoids::swap(
 
             if (targets.size() > 0) {
                 logHelper.comp_exact_swap.push_back(targets.size());
-                arma::vec result = swap_target(medoid_indices,
+                arma::vec result = swap_target(data,
+                                               medoid_indices,
                                                targets,
                                                N,
                                                best_distances,
@@ -672,7 +686,8 @@ void KMedoids::swap(
                 break;
             }
             targets = arma::find(candidates);
-            arma::vec result = swap_target(medoid_indices,
+            arma::vec result = swap_target(data,
+                                           medoid_indices,
                                            targets,
                                            batchSize,
                                            best_distances,
@@ -707,7 +722,7 @@ void KMedoids::swap(
         medoid_indices(k) = n;
         medoids.col(k) = data.col(medoid_indices(k));
         calc_best_distances_swap(
-          medoid_indices, best_distances, second_distances, assignments);
+          data, medoid_indices, best_distances, second_distances, assignments);
         std::ostringstream sigma_out;
         sigma_out << "Sigma: min: " << sigma.min()
         << ", max: " << sigma.max()
@@ -724,6 +739,7 @@ void KMedoids::swap(
  * Calculates the best and second best distances for each datapoint to one of
  * the medoids in the current medoid set.
  *
+ * @param data Transposed input data to find the medoids of
  * @param medoid_indices Array of medoid indices corresponding to dataset entries
  * @param best_distances Array of best distances from each point to previous set
  * of medoids
@@ -732,6 +748,7 @@ void KMedoids::swap(
  * @param assignments Assignments of datapoints to their closest medoid
  */
 void KMedoids::calc_best_distances_swap(
+  arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::rowvec& best_distances,
   arma::rowvec& second_distances,
@@ -742,7 +759,7 @@ void KMedoids::calc_best_distances_swap(
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < medoid_indices.n_cols; k++) {
-            double cost = (this->*lossFn)(medoid_indices(k), i);
+            double cost = (this->*lossFn)(data, medoid_indices(k), i);
             if (cost < best) {
                 assignments(i) = k;
                 second = best;
@@ -762,6 +779,7 @@ void KMedoids::calc_best_distances_swap(
  * Estimates the mean reward (or loss) for each arm in the identified targets
  * in the swap step and returns a list of the estimated reward.
  *
+ * @param data Transposed input data to find the medoids of
  * @param sigma Dispersion paramater for each datapoint
  * @param targets Set of target datapoints to be estimated
  * @param batch_size Number of datapoints sampled for updating confidence
@@ -773,6 +791,7 @@ void KMedoids::calc_best_distances_swap(
  * @param assignments Assignments of datapoints to their closest medoid
  */
 arma::vec KMedoids::swap_target(
+  arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::uvec& targets,
   size_t batch_size,
@@ -795,7 +814,7 @@ arma::vec KMedoids::swap_target(
         size_t k = targets(i) % medoid_indices.n_cols;
         // calculate total loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(n, tmp_refs(j));
+            double cost = (this->*lossFn)(data, n, tmp_refs(j));
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
                     total += cost;
@@ -821,6 +840,7 @@ arma::vec KMedoids::swap_target(
  *
  * Calculates the confidence intervals about the reward for each arm
  *
+ * @param data Transposed input data to find the medoids of
  * @param sigma Dispersion paramater for each datapoint
  * @param batch_size Number of datapoints sampled for updating confidence
  * intervals
@@ -831,6 +851,7 @@ arma::vec KMedoids::swap_target(
  * @param assignments Assignments of datapoints to their closest medoid
  */
 void KMedoids::swap_sigma(
+  arma::mat& data,
   arma::mat& sigma,
   size_t batch_size,
   arma::rowvec& best_distances,
@@ -853,7 +874,7 @@ void KMedoids::swap_sigma(
 
         // calculate change in loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(n,tmp_refs(j));
+            double cost = (this->*lossFn)(data, n,tmp_refs(j));
 
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
@@ -880,9 +901,11 @@ void KMedoids::swap_sigma(
  * Calculates the loss under the previously identified loss function of the
  * medoid indices.
  *
+ * @param data Transposed input data to find the medoids of
  * @param medoid_indices Indices of the medoids in the dataset.
  */
 double KMedoids::calc_loss(
+  arma::mat& data,
   arma::rowvec& medoid_indices)
 {
     double total = 0;
@@ -890,7 +913,7 @@ double KMedoids::calc_loss(
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < n_medoids; k++) {
-            double currCost = (this->*lossFn)(medoid_indices(k), i);
+            double currCost = (this->*lossFn)(data, medoid_indices(k), i);
             if (currCost < cost) {
                 cost = currCost;
             }
@@ -907,10 +930,11 @@ double KMedoids::calc_loss(
  *
  * Calculates the LP loss between the datapoints at index i and j of the dataset
  *
+ * @param data Transposed input data to find the medoids of
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::LP(int i, int j) const {
+double KMedoids::LP(arma::mat& data, int i, int j) const {
     return arma::norm(data.col(i) - data.col(j), lp);
 }
 
@@ -932,10 +956,11 @@ double KMedoids::LP(int i, int j) const {
  * Calculates the cosine loss between the datapoints at index i and j of the
  * dataset
  *
+ * @param data Transposed input data to find the medoids of
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::cos(int i, int j) const {
+double KMedoids::cos(arma::mat& data, int i, int j) const {
     return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i))
                                                     * arma::norm(data.col(j)));
 }
@@ -946,10 +971,11 @@ double KMedoids::cos(int i, int j) const {
  * Calculates the Manhattan loss between the datapoints at index i and j of the
  * dataset
  *
+ * @param data Transposed input data to find the medoids of
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::manhattan(int i, int j) const {
+double KMedoids::manhattan(arma::mat& data, int i, int j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
 
@@ -959,9 +985,10 @@ double KMedoids::manhattan(int i, int j) const {
  * Calculates the Manhattan loss between the datapoints at index i and j of the
  * dataset
  *
+ * @param data Transposed input data to find the medoids of
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::LINF(int i, int j) const {
+double KMedoids::LINF(arma::mat& data, int i, int j) const {
     return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
