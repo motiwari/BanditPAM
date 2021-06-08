@@ -35,11 +35,9 @@ public:
    *
    * @param inputData Input data to find the medoids of
    * @param loss The loss function used during medoid computation
-   * @param k The number of medoids to compute
    * @param logFilename The name of the outputted log file
    */
-  void fitPython(py::array_t<double> inputData, std::string loss, int k, std::string logFilename) {
-    KMedoids::setNMedoids(k);
+  void fitPython(py::array_t<double> inputData, std::string loss, std::string logFilename) {
     KMedoids::setLogFilename(logFilename);
     KMedoids::fit(carma::arr_to_mat<double>(inputData), loss);
   }
