@@ -133,8 +133,9 @@ Building this repository requires four external requirements:
 
 If installing these requirements from source, one can generally use the following procedure to install each requirement from the library's root folder (with CARMA used as an example here):
 ```
-/carma$ mkdir build && cd build
-/carma/build$ cmake .. && make && make install
+/BanditPAM$ cd headers/carma
+/BanditPAM/headers/carma$ mkdir build && cd build
+/BanditPAM/headers/carma/build$ cmake .. && make && make install
 ```
 
 Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:
