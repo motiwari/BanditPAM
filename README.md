@@ -54,9 +54,10 @@ means = np.array([[0,0], [-5,5], [5,5]])
 X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 
 # Fit the data with BanditPAM:
-kmed = KMedoids(n_medoids = 3, algorithm = "BanditPAM")
+k = 3
+kmed = KMedoids(n_medoids = k, algorithm = "BanditPAM")
 # Writes results to gmm_log
-kmed.fit(X, 'L2', 3, "gmm_log")
+kmed.fit(X, 'L2', k, "gmm_log")
 
 # Visualize the data and the medoids:
 for p_idx, point in enumerate(X):
@@ -87,8 +88,9 @@ X = pd.read_csv('data/MNIST-1k.csv', sep=' ', header=None).to_numpy()
 X_tsne = TSNE(n_components = 2).fit_transform(X)
 
 # Fit the data with BanditPAM:
-kmed = KMedoids(n_medoids = 10, algorithm = "BanditPAM")
-kmed.fit(X, 'L2', 10, "mnist_log")
+k = 10
+kmed = KMedoids(n_medoids = k, algorithm = "BanditPAM")
+kmed.fit(X, 'L2', k, "mnist_log")
 
 # Visualize the data and the medoids via t-SNE:
 for p_idx, point in enumerate(X):
