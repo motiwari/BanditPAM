@@ -9,6 +9,7 @@
 
 #include <armadillo>
 #include <unordered_map>
+#include <regex>
 //#include <sstream>
 
 /**
@@ -107,6 +108,9 @@ int KMedoids::getSteps() {
  *  @param loss Loss function to be used e.g. L2
  */
 void KMedoids::setLossFn(std::string loss) {
+  if (std::regex_match(loss, std::regex("L\\d*"))) {
+      loss = loss.substr(1);
+  }
   try {
     if (loss == "manhattan") {
         lossFn = &KMedoids::manhattan;
