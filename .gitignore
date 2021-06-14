@@ -14,6 +14,6 @@ python_generate_plots/__pycache__
 python_generate_plots/scrna_data/*
 src/main
 src/kmedoids_ucb
-src/kmeds_pywrapper
+src/kmedoids_pywrapper
 src/main.dSYM/
 src/KMedoidsLogfile
