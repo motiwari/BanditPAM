@@ -9,6 +9,7 @@
 
 #include <armadillo>
 #include <unordered_map>
+#include <regex>
 //#include <sstream>
 
 /**
@@ -107,24 +108,25 @@ int KMedoids::getSteps() {
  *  @param loss Loss function to be used e.g. L2
  */
 void KMedoids::setLossFn(std::string loss) {
-  if (loss.at(0) == 'L') {
+  if (std::regex_match(loss, std::regex("L\\d*"))) {
       loss = loss.substr(1);
   }
-  if (loss == "manhattan") {
-      lossFn = &KMedoids::manhattan;
-  } else if (loss == "cos") {
-      lossFn = &KMedoids::cos;
-  } else if (loss == "inf") {
-      lossFn = &KMedoids::LINF;
-  } else if (std::isdigit(loss.at(0))) {
-      lossFn = &KMedoids::LP;
-      lp     = atoi(loss.c_str());
-      //std::stringstream st(loss);
-      //st >> lp;
-      //lp     = std::stoi(loss);
-  } else {
-      throw "unrecognized loss function";
-  }
+  try {
+    if (loss == "manhattan") {
+        lossFn = &KMedoids::manhattan;
+    } else if (loss == "cos") {
+        lossFn = &KMedoids::cos;
+    } else if (loss == "inf") {
+        lossFn = &KMedoids::LINF;
+    } else if (std::isdigit(loss.at(0))) {
+        lossFn = &KMedoids::LP;
+        lp     = atoi(loss.c_str());
+    } else {
+        throw std::invalid_argument("error: unrecognized loss function");
+    }
+  } catch (std::invalid_argument& e) {
+      std::cout << e.what() << std::endl;
+    }
 }
 
 /**
