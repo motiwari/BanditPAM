@@ -16,6 +16,7 @@
 #include <fstream>
 #include <unistd.h>
 #include <exception>
+#include <regex>
 
 int main(int argc, char* argv[])
 {   
@@ -31,7 +32,7 @@ int main(int argc, char* argv[])
     bool k_flag = false;
     const int ARGUMENT_ERROR_CODE = 1;
 
-    while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:")) != -1) {
+    while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:s:")) != -1) {
 
         if ( optind == prev_ind + 2 && *optarg == '-' ) {
         opt = ':';
@@ -45,7 +46,7 @@ int main(int argc, char* argv[])
                 f_flag = true;
                 break;
             // path to log output data
-            case 'n':
+            case 's':
                 log_file_name = optarg;
                 break;
             // number of clusters to create
@@ -56,7 +57,7 @@ int main(int argc, char* argv[])
             // type of loss/distance function to use
             case 'l':
                 loss = optarg;
-                if (loss.at(0) == 'L') {
+                if (std::regex_match(loss, std::regex("L\\d*"))) {
                   loss = loss.substr(1);
                 }
                 break;
