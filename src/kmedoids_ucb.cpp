@@ -35,6 +35,15 @@ KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
   KMedoids::checkAlgorithm(algorithm);
 }
 
+KMedoids::KMedoids(std::string algorithm, int verbosity,
+                                          int max_iter, std::string logFilename
+    ): algorithm(algorithm),
+       max_iter(max_iter),
+       verbosity(verbosity),
+       logFilename(logFilename) {
+  KMedoids::checkAlgorithm(algorithm);
+}
+
 /**
  *  \brief Destroys KMedoids object.
  *
