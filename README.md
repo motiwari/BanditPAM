@@ -186,8 +186,10 @@ Alternatively, to run a "smaller" set of tests, from the main repo folder run `p
 Note that some figures in the original paper were generated using the Python code at https://github.com/motiwari/BanditPAM-python. That code is not pretty, nor is it maintained. It only exists for reference and for reproducibility of the plots.
 
 ## Documentation
+
 The documents of BanditPAM can be found here: 
 * Detailed description of BanditPAM: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/long_desc.rst
+* C++ code of BanditPAM: https://github.com/ThrunGroup/BanditPAM
 * Installation information for MacOS: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md
 * Installation information for Linux: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md
 * Installation information for Windows: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md
