@@ -57,7 +57,7 @@ X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 k = 3
 kmed = KMedoids(n_medoids = k, algorithm = "BanditPAM")
 # Writes results to gmm_log
-kmed.fit(X, 'L2', k, "gmm_log")
+kmed.fit(X, 'L2', "gmm_log")
 
 # Visualize the data and the medoids:
 for p_idx, point in enumerate(X):
@@ -90,7 +90,7 @@ X_tsne = TSNE(n_components = 2).fit_transform(X)
 # Fit the data with BanditPAM:
 k = 10
 kmed = KMedoids(n_medoids = k, algorithm = "BanditPAM")
-kmed.fit(X, 'L2', k, "mnist_log")
+kmed.fit(X, 'L2', "mnist_log")
 
 # Visualize the data and the medoids via t-SNE:
 for p_idx, point in enumerate(X):
