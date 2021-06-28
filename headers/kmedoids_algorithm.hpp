@@ -93,7 +93,7 @@ struct LogHelper {
      *  @param steps Number of swap steps.
      *  @param loss Final loss of the KMedoids object.
      */
-    void writeProfile(arma::rowvec b_medoids, arma::rowvec f_medoids, int steps, double loss) {
+    void writeProfile(arma::rowvec b_medoids, arma::rowvec f_medoids, size_t steps, double loss) {
       writeSummaryLine("Built", b_medoids);
       writeSummaryLine("Swapped", f_medoids);
       hlogFile << "Num Swaps: " << steps << '\n';
@@ -129,6 +129,14 @@ struct LogHelper {
  *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
  *  @param logFilename The name of the output log file
  */
+
+typedef std::tuple<int, int> key_t_bpam;
+
+struct key_hash : public std::unary_function<key_t_bpam, double>
+{
+ std::size_t operator()(const key_t_bpam& k) const;
+};
+
 class KMedoids {
   public:
     KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000,
@@ -138,6 +146,9 @@ class KMedoids {
 
     void fit(arma::mat inputData, std::string loss);
 
+    // std::map is a RB tree, should use unordered_map
+    std::unordered_map<key_t_bpam, double, key_hash> cache;
+
     // The functions below are "get" functions for read-only attributes
 
     arma::rowvec getMedoidsFinal();
@@ -146,25 +157,25 @@ class KMedoids {
 
     arma::rowvec getLabels();
 
-    int getSteps();
+    size_t getSteps();
 
     // The functions below are get/set functions for attributes
 
-    int getNMedoids();
+    size_t getNMedoids();
 
-    void setNMedoids(int new_num);
+    void setNMedoids(size_t new_num);
 
     std::string getAlgorithm();
 
-    void setAlgorithm(std::string new_alg);
+    void setAlgorithm(std::string new_alg); // pass by ref
 
-    int getVerbosity();
+    size_t getVerbosity();
 
-    void setVerbosity(int new_ver);
+    void setVerbosity(size_t new_ver);
 
-    int getMaxIter();
+    size_t getMaxIter();
 
-    void setMaxIter(int new_max);
+    void setMaxIter(size_t new_max);
 
     int getbuildConfidence();
 
@@ -179,11 +190,13 @@ class KMedoids {
     void setLogFilename(std::string new_lname);
 
     void setLossFn(std::string loss);
+
+    
   private:
     // The functions below are PAM's constituent functions
     void fit_bpam(arma::mat inputData);
 
-    void fit_naive(arma::mat inputData);
+    void fit_naive(arma::mat inputData); // pass by ref? (and above)
 
     void build_naive(arma::mat& data, arma::rowvec& medoidIndices);
 
@@ -250,6 +263,8 @@ class KMedoids {
     double calc_loss(arma::mat& data, arma::rowvec& medoidIndices);
 
     // Loss functions
+    double wrappedLossFn(arma::mat& data, size_t i, size_t j, bool use_cache);
+
     int lp;
     double LP(arma::mat& data, int i, int j) const;
 
@@ -264,11 +279,11 @@ class KMedoids {
     // Constructor params
     std::string algorithm; ///< options: "naive" and "BanditPAM"
 
-    int max_iter; ///< maximum number of iterations during KMedoids::fit
+    size_t max_iter; ///< maximum number of iterations during KMedoids::fit
 
-    int verbosity; ///< determines whether KMedoids::fit outputs a logfile
+    size_t verbosity; ///< determines whether KMedoids::fit outputs a logfile
 
-    int n_medoids; ///< number of medoids identified for a given dataset
+    size_t n_medoids; ///< number of medoids identified for a given dataset
 
     std::string logFilename; ///< name of the logfile output (verbosity permitting)
 
@@ -287,7 +302,7 @@ class KMedoids {
 
     LogHelper logHelper; ///< helper object for making formatted logs
 
-    int steps; ///< number of actual swap iterations taken by the algorithm
+    size_t steps; ///< number of actual swap iterations taken by the algorithm
 
     // Hyperparameters
     int buildConfidence; ///< constant that affects the sensitivity of build confidence bounds

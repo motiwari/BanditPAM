@@ -72,7 +72,7 @@ public:
       throw;
     }
     // if k is specified here, we set the number of medoids as k and override previous value 
-    if ((kw.size() != 0) && (kw["k"])) {
+    if ((kw.size() != 0) && (kw.contains("k"))) {
       KMedoids::setNMedoids(py::cast<int>(kw["k"]));
     }
     KMedoids::setLogFilename(logFilename);
