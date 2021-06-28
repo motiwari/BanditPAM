@@ -60,10 +60,12 @@ kmed.fit(X, 'L2', 3, "gmm_log")
 
 # Visualize the data and the medoids:
 for p_idx, point in enumerate(X):
-    if p_idx in map(int, kmed.medoids):
+    if p_idx in map(int, kmed.final_medoids):
         plt.scatter(X[p_idx, 0], X[p_idx, 1], color='red', s = 40)
     else:
         plt.scatter(X[p_idx, 0], X[p_idx, 1], color='blue', s = 10)
+
+
 plt.show()
 ```
 
@@ -92,10 +94,12 @@ kmed.fit(X, 'L2', 10, "mnist_log")
 
 # Visualize the data and the medoids via t-SNE:
 for p_idx, point in enumerate(X):
-    if p_idx in map(int, kmed.medoids):
+    if p_idx in map(int, kmed.final_medoids):
         plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='red', s = 40)
     else:
         plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='blue', s = 5)
+
+
 plt.show()
 ```
 The corresponding logfile for this run, `mnist_log`, will contain the run's results
