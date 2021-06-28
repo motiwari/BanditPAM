@@ -187,8 +187,8 @@ Note that some figures in the original paper were generated using the Python cod
 
 ## Credits
 
-Eric Frankel refined the C++ implementation of BanditPAM, exposed it via Python bindings, registered the package on PyPi, wrote the documentation and test cases, and is now the maintainer of the code.
+Mo Tiwari wrote the original Python implementation of BanditPAM and now maintains the C++ implementation.
 
 James Mayclin developed the initial C++ implementation of BanditPAM.
 
-Mo Tiwari wrote the original Python implementation of BanditPAM.
+

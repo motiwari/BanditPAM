@@ -127,9 +127,9 @@ with open(os.path.join('docs', 'long_desc.rst'), encoding='utf-8') as f:
 setup(
     name='BanditPAM',
     version=__version__,
-    author='James Mayclin and Eric Frankel, Mo Tiwari',
-    maintainer="Eric Frankel",
-    author_email='ericsf@stanford.edu',
+    author='Mo Tiwari and James Mayclin',
+    maintainer="Mo Tiwari",
+    author_email='motiwari@stanford.edu',
     url='https://github.com/ThrunGroup/BanditPAM',
     description='BanditPAM: A state-of-the-art, high-performance k-medoids algorithm.',
     long_description=long_description,
