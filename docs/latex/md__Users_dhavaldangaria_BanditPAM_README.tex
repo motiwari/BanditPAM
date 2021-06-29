@@ -1,0 +1,229 @@
+This repo contains a high-\/performance implementation of Bandit\+PAM from \href{https://arxiv.org/abs/2006.06856}{\texttt{ https\+://arxiv.\+org/abs/2006.\+06856}}. The code can be called directly from Python or C++.
+
+If you use this software, please cite\+:
+
+Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. \char`\"{}\+Bandit-\/\+PAM\+: Almost Linear Time $\ast$k$\ast$-\/medoids Clustering via Multi-\/\+Armed Bandits\char`\"{} Advances in Neural Information Processing Systems (Neur\+IPS) 2020.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{preprocessor}{@inproceedings}\{BanditPAM,}
+\DoxyCodeLine{  title=\{Bandit-\/PAM: Almost Linear Time k-\/medoids Clustering via Multi-\/Armed Bandits\},}
+\DoxyCodeLine{  author=\{Tiwari, Mo \textcolor{keywordflow}{and} Zhang, Martin J \textcolor{keywordflow}{and} Mayclin, James \textcolor{keywordflow}{and} Thrun, Sebastian \textcolor{keywordflow}{and} Piech, Chris \textcolor{keywordflow}{and} Shomorony, Ilan\},}
+\DoxyCodeLine{  booktitle=\{Advances \textcolor{keywordflow}{in} Neural Information Processing Systems\},}
+\DoxyCodeLine{  pages=\{368-\/-\/374\},}
+\DoxyCodeLine{  year=\{2020\}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+ \doxysection*{Requirements}
+
+This repo has the following requirements\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Python >= 3.5}
+\DoxyCodeLine{gcc >= 5.4}
+
+\end{DoxyCode}
+ It is highly encouraged that to use Bandit\+PAM in a $\ast$nix machine for high performance and ease of installation. Windows is generally supported, but can be unstable depending on the C++ compiler/environment.
+
+\doxysection*{Python Quickstart}
+
+\doxysubsection*{Install the repo and its dependencies\+:}
+
+This can be done either through 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/BanditPAM/: pip install BanditPAM}
+\DoxyCodeLine{/BanditPAM/: pip install -\/r requirements.txt}
+
+\end{DoxyCode}
+ or through 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/BanditPAM/: pip install -\/r requirements.txt}
+\DoxyCodeLine{/BanditPAM/: sudo pip install .}
+
+\end{DoxyCode}
+
+
+\doxysubsubsection*{Example 1\+: Synthetic data from a Gaussian Mixture Model}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{from} BanditPAM \textcolor{keyword}{import} KMedoids}
+\DoxyCodeLine{\textcolor{keyword}{import} numpy \textcolor{keyword}{as} np}
+\DoxyCodeLine{\textcolor{keyword}{import} matplotlib.pyplot \textcolor{keyword}{as} plt}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{\# Generate data from a Gaussian Mixture Model with the given means:}}
+\DoxyCodeLine{np.random.seed(0)}
+\DoxyCodeLine{n\_per\_cluster = 40}
+\DoxyCodeLine{means = np.array([[0,0], [-\/5,5], [5,5]])}
+\DoxyCodeLine{X = np.vstack([np.random.randn(n\_per\_cluster, 2) + mu \textcolor{keywordflow}{for} mu \textcolor{keywordflow}{in} means])}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{\# Fit the data with BanditPAM:}}
+\DoxyCodeLine{kmed = \mbox{\hyperlink{classKMedoids}{KMedoids}}(n\_medoids = 3, algorithm = \textcolor{stringliteral}{"{}BanditPAM"{}})}
+\DoxyCodeLine{\textcolor{comment}{\# Writes results to gmm\_log}}
+\DoxyCodeLine{kmed.fit(X, \textcolor{stringliteral}{'L2'}, 3, \textcolor{stringliteral}{"{}gmm\_log"{}})}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{\# Visualize the data and the medoids:}}
+\DoxyCodeLine{\textcolor{keywordflow}{for} p\_idx, point \textcolor{keywordflow}{in} enumerate(X):}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} p\_idx \textcolor{keywordflow}{in} map(int, kmed.medoids):}
+\DoxyCodeLine{        plt.scatter(X[p\_idx, 0], X[p\_idx, 1], color=\textcolor{stringliteral}{'red'}, s = 40)}
+\DoxyCodeLine{    \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{        plt.scatter(X[p\_idx, 0], X[p\_idx, 1], color=\textcolor{stringliteral}{'blue'}, s = 10)}
+\DoxyCodeLine{plt.show()}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyInlineImage}
+\includegraphics[height=\baselineskip,keepaspectratio=true]{README_7_0.png}%png
+\end{DoxyInlineImage}
+
+
+\doxysubsubsection*{Example 2\+: MNIST and its medoids visualized via t-\/\+SNE}
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{\# Start in the repository root directory, i.e. '/BanditPAM/'.}}
+\DoxyCodeLine{\textcolor{keyword}{from} BanditPAM \textcolor{keyword}{import} KMedoids}
+\DoxyCodeLine{\textcolor{keyword}{import} numpy \textcolor{keyword}{as} np}
+\DoxyCodeLine{\textcolor{keyword}{import} pandas \textcolor{keyword}{as} pd}
+\DoxyCodeLine{\textcolor{keyword}{import} matplotlib.pyplot \textcolor{keyword}{as} plt}
+\DoxyCodeLine{\textcolor{keyword}{from} sklearn.manifold \textcolor{keyword}{import} TSNE}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{\# Load the 1000-\/point subset of MNIST and calculate its t-\/SNE embeddings for visualization:}}
+\DoxyCodeLine{X = pd.read\_csv(\textcolor{stringliteral}{'data/MNIST-\/1k.csv'}, sep=\textcolor{stringliteral}{' '}, header=\textcolor{keywordtype}{None}).to\_numpy()}
+\DoxyCodeLine{X\_tsne = TSNE(n\_components = 2).fit\_transform(X)}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{\# Fit the data with BanditPAM:}}
+\DoxyCodeLine{kmed = \mbox{\hyperlink{classKMedoids}{KMedoids}}(n\_medoids = 10, algorithm = \textcolor{stringliteral}{"{}BanditPAM"{}})}
+\DoxyCodeLine{kmed.fit(X, \textcolor{stringliteral}{'L2'}, 10, \textcolor{stringliteral}{"{}mnist\_log"{}})}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{comment}{\# Visualize the data and the medoids via t-\/SNE:}}
+\DoxyCodeLine{\textcolor{keywordflow}{for} p\_idx, point \textcolor{keywordflow}{in} enumerate(X):}
+\DoxyCodeLine{    \textcolor{keywordflow}{if} p\_idx \textcolor{keywordflow}{in} map(int, kmed.medoids):}
+\DoxyCodeLine{        plt.scatter(X\_tsne[p\_idx, 0], X\_tsne[p\_idx, 1], color=\textcolor{stringliteral}{'red'}, s = 40)}
+\DoxyCodeLine{    \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{        plt.scatter(X\_tsne[p\_idx, 0], X\_tsne[p\_idx, 1], color=\textcolor{stringliteral}{'blue'}, s = 5)}
+\DoxyCodeLine{plt.show()}
+
+\end{DoxyCode}
+ The corresponding logfile for this run, {\ttfamily mnist\+\_\+log}, will contain the run\textquotesingle{}s results and additional statistics in a format that can be easily read into json.
+
+\doxysubsection*{Building the C++ executable from source}
+
+Please note that it is {\itshape NOT} necessary to build the C++ executable from source to use the Python code above. However, if you would like to use the C++ executable directly, follow the instructions below.
+
+\doxysubsubsection*{Option 1\+: Building with Docker}
+
+We highly recommend building using Docker. One can download and install Docker by following instructions at the \href{https://docs.docker.com/get-docker/}{\texttt{ Docker install page}}. Once you have Docker installed and the Docker Daemon is running, run the following commands\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/BanditPAM\$ chmod +x env\_setup.sh}
+\DoxyCodeLine{/BanditPAM\$ ./env\_setup.sh}
+\DoxyCodeLine{/BanditPAM\$ ./run\_docker.sh}
+
+\end{DoxyCode}
+
+
+which will start a Docker instance with the necessary dependencies. Then\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/BanditPAM\$ mkdir build \&\& cd build}
+\DoxyCodeLine{/BanditPAM/build\$ cmake .. \&\& make}
+
+\end{DoxyCode}
+
+
+This will create an executable named {\ttfamily Bandit\+PAM} in {\ttfamily Bandit\+PAM/build/src}.
+
+\doxysubsubsection*{Option 2\+: Installing Requirements and Building Directly}
+
+Building this repository requires four external requirements\+:
+\begin{DoxyItemize}
+\item Cmake $>$= 3.\+17, \href{https://cmake.org/download/}{\texttt{ https\+://cmake.\+org/download/}}
+\item Armadillo $>$= 9.\+7, \href{http://arma.sourceforge.net/download.html}{\texttt{ http\+://arma.\+sourceforge.\+net/download.\+html}}
+\item Open\+MP $>$= 2.\+5, \href{https://www.openmp.org/resources/openmp-compilers-tools/}{\texttt{ https\+://www.\+openmp.\+org/resources/openmp-\/compilers-\/tools/}} (Open\+MP is supported by default on most Linux platforms, and can be downloaded through homebrew on Mac\+OS. For instructions on installing homebrew, see \href{https://brew.sh/}{\texttt{ https\+://brew.\+sh/}}.)
+\item CARMA $>$= 0.\+3.\+0, \href{https://github.com/RUrlus/carma}{\texttt{ https\+://github.\+com/\+RUrlus/carma}} (use the {\ttfamily unstable} branch)
+\end{DoxyItemize}
+
+If installing these requirements from source, one can generally use the following procedure to install each requirement from the library\textquotesingle{}s root folder (with CARMA used as an example here)\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/BanditPAM\$ cd headers/carma}
+\DoxyCodeLine{/BanditPAM/headers/carma\$ mkdir build \&\& cd build}
+\DoxyCodeLine{/BanditPAM/headers/carma/build\$ cmake .. \&\& make \&\& make install}
+
+\end{DoxyCode}
+
+
+Further installation information for Mac\+OS, Linux, and Windows is available in the \mbox{[}docs folder\mbox{]}(docs). Ensure all the requirements above are installed and then run\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/BanditPAM\$ mkdir build \&\& cd build}
+\DoxyCodeLine{/BanditPAM/build\$ cmake .. \&\& make}
+
+\end{DoxyCode}
+
+
+This will create an executable named {\ttfamily Bandit\+PAM} in {\ttfamily Bandit\+PAM/build/src}.
+
+\doxysubsection*{C++ Usage}
+
+Once the executable has been built, it can be invoked with\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/BanditPAM/build/src/BanditPAM -\/f [path/to/input.csv] -\/k [number of clusters] -\/v [verbosity level]}
+
+\end{DoxyCode}
+
+
+
+\begin{DoxyItemize}
+\item {\ttfamily -\/f} is mandatory and specifies the path to the dataset
+\item {\ttfamily -\/k} is mandatory and specifies the number of clusters with which to fit the data
+\item {\ttfamily -\/v} is optional and specifies the verbosity level.
+\end{DoxyItemize}
+
+For example, if you ran {\ttfamily ./env\+\_\+setup.sh} and downloaded the MNIST dataset, you could run\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/BanditPAM/build/src/BanditPAM -\/f ../data/MNIST-\/1k.csv -\/k 10 -\/v 1}
+
+\end{DoxyCode}
+
+
+The expected output in the command line will be\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Medoids: 694,168,306,714,324,959,527,251,800,737}
+
+\end{DoxyCode}
+ A file called {\ttfamily KMedoids\+Logfile} with detailed logs during the process will also be present.
+
+\doxysubsection*{Testing}
+
+To run the full suite of tests, run in the root directory\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{/BanditPAM\$ python -\/m unittest discover -\/s tests}
+
+\end{DoxyCode}
+
+
+Alternatively, to run a \char`\"{}smaller\char`\"{} set of tests, from the main repo folder run {\ttfamily python tests/test\+\_\+commit.\+py} or {\ttfamily python tests/test\+\_\+push.\+py} to run a set of longer, more intensive tests.
+
+\doxysubsection*{Reproducing Figures from the Paper}
+
+Note that some figures in the original paper were generated using the Python code at \href{https://github.com/motiwari/BanditPAM-python}{\texttt{ https\+://github.\+com/motiwari/\+Bandit\+PAM-\/python}}. That code is not pretty, nor is it maintained. It only exists for reference and for reproducibility of the plots.
+
+\doxysubsection*{Credits}
+
+Eric Frankel refined the C++ implementation of Bandit\+PAM, exposed it via Python bindings, registered the package on Py\+Pi, wrote the documentation and test cases, and is now the maintainer of the code.
+
+James Mayclin developed the initial C++ implementation of Bandit\+PAM.
+
+Mo Tiwari wrote the original Python implementation of Bandit\+PAM. 

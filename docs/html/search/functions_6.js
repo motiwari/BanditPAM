@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['l1',['L1',['../classKMedoids.html#a1333d47c27674c7fde7a1d557edaef3a',1,'KMedoids']]],
-  ['l2',['L2',['../classKMedoids.html#aa92fa87d17f16b85010b9215c21e0093',1,'KMedoids']]]
+  ['linf_111',['LINF',['../classKMedoids.html#a6d63f7f2301e6e7b6ecfa892433cec71',1,'KMedoids']]],
+  ['lp_112',['LP',['../classKMedoids.html#a05c9fccee6a00b5ad58bc5a16c9f0cb6',1,'KMedoids']]]
 ];

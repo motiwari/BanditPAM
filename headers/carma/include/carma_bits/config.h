@@ -7,10 +7,10 @@
 
 //-- ENABLE_CARMA_EXTRA_DEBUG --
 
-//#if !defined(CARMA_EXTRA_DEBUG)
-//#define ENABLE_CARMA_EXTRA_DEBUG
-//#define CARMA_EXTRA_DEBUG "ON"
-//#endif
+#if !defined(CARMA_EXTRA_DEBUG)
+/* #undef ENABLE_CARMA_EXTRA_DEBUG */
+/* #undef CARMA_EXTRA_DEBUG */
+#endif
 
 // -- ENABLE_CARMA_SOFT_STEAL --
 // When stealing the data of an array replace it with
