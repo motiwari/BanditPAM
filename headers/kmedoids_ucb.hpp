@@ -129,8 +129,7 @@ struct LogHelper {
 class KMedoids {
   public:
     KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000, std::string logFilename = "KMedoidsLogfile");
-    KMedoids(std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000, std::string logFilename = "KMedoidsLogfile");
-
+    
     ~KMedoids();
 
     void fit(arma::mat inputData, std::string loss);
