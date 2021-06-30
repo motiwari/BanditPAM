@@ -187,8 +187,8 @@ Note that some figures in the original paper were generated using the Python cod
 
 ## Documentation
 
-The documents of BanditPAM can be found here: s/documents/documentation
-* Detailed description of BanditPAM: Download the repo locally and open up `BanditPAM/docs/html/index.html` for detailed docs generated via doxygen.
+The documentation of BanditPAM can be found here: 
+* Doxygen docs: `BanditPAM/docs/html/index.html`
 * Installation information for MacOS: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md
 * Installation information for Linux: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md
 * Installation information for Windows: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md
