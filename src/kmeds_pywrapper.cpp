@@ -39,7 +39,8 @@ public:
    * @param logFilename The name of the outputted log file
    */
   void fitPython(py::array_t<double> inputData, std::string loss, std::string logFilename, py::kwargs kw) {
-    // throw an error if the number of medoids is not specified in either the KMedoids object or the fitPython function
+    // throw an error if the number of medoids is not specified in either 
+    // the KMedoids object or the fitPython function
     try {
       if (KMedoids::getNMedoids() == NULL) {
         if (kw.size() == 0) {
