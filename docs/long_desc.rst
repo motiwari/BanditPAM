@@ -3,14 +3,13 @@ BanditPAM: A state-of-the-art, high-performance k-medoids algorithm
 
 Introduction
 ------------
-Clustering algorithms are ubiquitous in modern data science applications. Compared to k-means clustering, k-medoids clustering 
+Clustering algorithms are ubiquitous in modern data science applications. Compared to the commonly used k-means clustering, k-medoids clustering 
 uses the points in the dataset itself -- the medoids -- as cluster centers and supports arbitrary dissimilarity functions
 in place of a distance metric. This enables greater interpretability of the cluster centers and the clustering of structured 
 objects. Despite its advantages, k-medoids clustering is less popular than k-means due to its computational cost. 
 The k-medoids algorithms such as PAM and FastPAM scale quadratically in the dataset size in each iterations
-but they are still significantly slower than k-means, which scales linearly in dataset size in each iteration. In this work,
-we introduce BanditPAM, a randomized algorithm inspired by techniques from multi-armed bandits, that runs significantly faster
-than prior k-medoids algorithms and achieves the same clustering results. 
+but they are still significantly slower than k-means, which scales linearly in dataset size in each iteration. We introduce BanditPAM, 
+a randomized algorithm inspired by techniques from multi-armed bandits, that runs significantly faster than prior k-medoids algorithms and achieves the same clustering results. 
 
 Details
 -------
