@@ -189,6 +189,14 @@ Alternatively, to run a "smaller" set of tests, from the main repo folder run `p
 
 Note that some figures in the original paper were generated using the Python code at https://github.com/motiwari/BanditPAM-python. That code is not pretty, nor is it maintained. It only exists for reference and for reproducibility of the plots.
 
+## Documentation
+
+Documentation for BanditPAM can be found here: 
+* Doxygen docs: `BanditPAM/docs/html/index.html`
+* Installation information for MacOS: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md
+* Installation information for Linux: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md
+* Installation information for Windows: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md
+
 ## Credits
 
 Mo Tiwari wrote the original Python implementation of BanditPAM and now maintains the C++ implementation.
