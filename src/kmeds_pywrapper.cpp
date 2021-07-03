@@ -38,8 +38,23 @@ public:
    * @param k The number of medoids to compute
    * @param logFilename The name of the outputted log file
    */
-  void fitPython(py::array_t<double> inputData, std::string loss, int k, std::string logFilename) {
-    KMedoids::setNMedoids(k);
+  void fitPython(py::array_t<double> inputData, std::string loss, std::string logFilename, py::kwargs kw) {
+    // throw an error if the number of medoids is not specified in either 
+    // the KMedoids object or the fitPython function
+    try {
+      if (KMedoids::getNMedoids() == NULL) {
+        if (kw.size() == 0) {
+          throw py::value_error("Must specify number of medoids via n_medoids in KMedoids or k in fit function.");
+        }
+      }
+    } catch (py::value_error &e) {
+      // Throw it again (pybind11 will raise ValueError)
+      throw;
+    }
+    // if k is specified here, we set the number of medoids as k and override previous value 
+    if ((kw.size() != 0) && (kw["k"])) {
+      KMedoids::setNMedoids(py::cast<int>(kw["k"]));
+    }
     KMedoids::setLogFilename(logFilename);
     KMedoids::fit(carma::arr_to_mat<double>(inputData), loss);
   }
@@ -89,7 +104,7 @@ PYBIND11_MODULE(BanditPAM, m) {
   m.doc() = "BanditPAM Python library, implemented in C++";
   py::class_<KMedsWrapper>(m, "KMedoids")
       .def(py::init<int, std::string, int, int, std::string>(),
-        py::arg("n_medoids") = 5,
+        py::arg("n_medoids") = NULL,
         py::arg("algorithm") = "BanditPAM",
         py::arg("verbosity") = 0,
         py::arg("maxIter") = 1000,
