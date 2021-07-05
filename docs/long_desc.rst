@@ -17,8 +17,10 @@ Details
 -------
 In this package, we provide a high-performance implementation of BanditPAM, a state-of-the-art k-medoids algorithm. 
 The main contributions of BanditPAM are as follows:
+
 * BanditPAM matches the best prior work in clustering quality but scales as O(nlogn) instead of O(n^2) in each iteration.
 * BanditPAM supports arbitrary dissimilarity functions between points -- these functions need not even be metrics. 
+  
 This implementation is written in C++ for performance, but is callable from Python via Python bindings. The algorithm is empirically
 validated on several large, real-word datasets with a reduction in the number of distance evaluations of up to 200x while returning the same results as 
 prior state-of-the-art. For further details, please see the full paper at https://arxiv.org/abs/2006.06856 and the code at https://github.com/ThrunGroup/BanditPAM/
