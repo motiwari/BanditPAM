@@ -9,8 +9,8 @@
 
 #include "kmedoids_ucb.hpp"
 
-#include <armadillo>
 #include <carma>
+#include <armadillo>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 
