@@ -28,13 +28,17 @@ It is highly encouraged that to use BanditPAM in a *nix machine for high perform
 # Python Quickstart
 
 ## Install the repo and its dependencies:
-This can be done either through
+This can be done either through PyPI (recommended)
 ```python
-/BanditPAM/: pip install BanditPAM
 /BanditPAM/: pip install -r requirements.txt
+/BanditPAM/: pip install BanditPAM
 ```
-or through
+or through the source code via
 ```python
+/BanditPAM/: git submodule update --init --recursive
+/BanditPAM/: cd headers/carma
+/BanditPAM/: mkdir build && cd build && cmake .. && make && make install
+/BanditPAM/: cd ../../..
 /BanditPAM/: pip install -r requirements.txt
 /BanditPAM/: sudo pip install .
 ```
