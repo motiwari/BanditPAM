@@ -14,6 +14,9 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 
+#define STRINGIFY(x) #x
+#define MACRO_STRINGIFY(x) STRINGIFY(x)
+
 
 namespace py = pybind11;
 
@@ -120,4 +123,9 @@ PYBIND11_MODULE(BanditPAM, m) {
       .def_property_readonly("labels", &KMedsWrapper::getLabelsPython)
       .def_property_readonly("steps", &KMedsWrapper::getStepsPython)
       .def("fit", &KMedsWrapper::fitPython);
+#ifdef VERSION_INFO
+  m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
+#else
+  m.attr("__version__") = "dev";
+#endif
 }
