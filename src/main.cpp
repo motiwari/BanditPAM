@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
                 input_name = optarg;
                 f_flag = true;
                 break;
-            // path to log output data
+            // name of the output log file
             case 's':
                 log_file_name = optarg;
                 break;

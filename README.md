@@ -56,14 +56,16 @@ X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 # Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids = 3, algorithm = "BanditPAM")
 # Writes results to gmm_log
-kmed.fit(X, 'L2', 3, "gmm_log")
+kmed.fit(X, 'L2', "gmm_log")
 
 # Visualize the data and the medoids:
 for p_idx, point in enumerate(X):
-    if p_idx in map(int, kmed.medoids):
+    if p_idx in map(int, kmed.final_medoids):
         plt.scatter(X[p_idx, 0], X[p_idx, 1], color='red', s = 40)
     else:
         plt.scatter(X[p_idx, 0], X[p_idx, 1], color='blue', s = 10)
+
+
 plt.show()
 ```
 
@@ -88,14 +90,16 @@ X_tsne = TSNE(n_components = 2).fit_transform(X)
 
 # Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids = 10, algorithm = "BanditPAM")
-kmed.fit(X, 'L2', 10, "mnist_log")
+kmed.fit(X, 'L2', "mnist_log")
 
 # Visualize the data and the medoids via t-SNE:
 for p_idx, point in enumerate(X):
-    if p_idx in map(int, kmed.medoids):
+    if p_idx in map(int, kmed.final_medoids):
         plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='red', s = 40)
     else:
         plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='blue', s = 5)
+
+
 plt.show()
 ```
 The corresponding logfile for this run, `mnist_log`, will contain the run's results
@@ -185,10 +189,18 @@ Alternatively, to run a "smaller" set of tests, from the main repo folder run `p
 
 Note that some figures in the original paper were generated using the Python code at https://github.com/motiwari/BanditPAM-python. That code is not pretty, nor is it maintained. It only exists for reference and for reproducibility of the plots.
 
+## Documentation
+
+Documentation for BanditPAM can be found here: 
+* Doxygen docs: `BanditPAM/docs/html/index.html`
+* Installation information for MacOS: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md
+* Installation information for Linux: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md
+* Installation information for Windows: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md
+
 ## Credits
 
-Eric Frankel refined the C++ implementation of BanditPAM, exposed it via Python bindings, registered the package on PyPi, wrote the documentation and test cases, and is now the maintainer of the code.
+Mo Tiwari wrote the original Python implementation of BanditPAM and now maintains the C++ implementation.
 
 James Mayclin developed the initial C++ implementation of BanditPAM.
 
-Mo Tiwari wrote the original Python implementation of BanditPAM.
+
