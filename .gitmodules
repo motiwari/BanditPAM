@@ -11,3 +11,6 @@
 [submodule "headers/carma/third_party/pybind11"]
 	path = headers/carma/third_party/pybind11
 	url = https://github.com/pybind/pybind11.git
+[submodule "headers/carma"]
+	path = headers/carma
+	url = https://github.com/RUrlus/carma.git
