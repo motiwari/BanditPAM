@@ -28,13 +28,17 @@ It is highly encouraged that to use BanditPAM in a *nix machine for high perform
 # Python Quickstart
 
 ## Install the repo and its dependencies:
-This can be done either through
+This can be done either through PyPI (recommended)
 ```python
-/BanditPAM/: pip install BanditPAM
 /BanditPAM/: pip install -r requirements.txt
+/BanditPAM/: pip install BanditPAM
 ```
-or through
+or through the source code via
 ```python
+/BanditPAM/: git submodule update --init --recursive
+/BanditPAM/: cd headers/carma
+/BanditPAM/: mkdir build && cd build && cmake .. && make && make install
+/BanditPAM/: cd ../../..
 /BanditPAM/: pip install -r requirements.txt
 /BanditPAM/: sudo pip install .
 ```
@@ -131,7 +135,7 @@ This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 ### Option 2: Installing Requirements and Building Directly
 Building this repository requires four external requirements:
 * Cmake >= 3.17, https://cmake.org/download/
-* Armadillo >= 9.7, http://arma.sourceforge.net/download.html
+* Armadillo >= 10.5.3, http://arma.sourceforge.net/download.html
 * OpenMP >= 2.5, https://www.openmp.org/resources/openmp-compilers-tools/ (OpenMP is supported by default on most Linux platforms, and can be downloaded through homebrew on MacOS. For instructions on installing homebrew, see https://brew.sh/.)
 * CARMA >= 0.3.0, https://github.com/RUrlus/carma (use the `unstable` branch)
 

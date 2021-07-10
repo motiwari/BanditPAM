@@ -41,6 +41,7 @@ ext_modules = [
             get_numpy_include(),
             'headers',
             'headers/carma/include',
+            'headers/carma/include/carma_bits'
         ],
         libraries=['armadillo'],
         language='c++1y',
