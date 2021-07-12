@@ -57,9 +57,6 @@ int main(int argc, char* argv[])
             // type of loss/distance function to use
             case 'l':
                 loss = optarg;
-                if (std::regex_match(loss, std::regex("L\\d*"))) {
-                  loss = loss.substr(1);
-                }
                 break;
             // set the verbosity of the algorithm
             case 'v':
