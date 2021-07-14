@@ -233,6 +233,8 @@ class KMedoids {
       arma::rowvec& assignments
     );
 
+    void sigma_log(arma::mat& sigma);
+
     double calc_loss(arma::mat& data, arma::rowvec& medoidIndices);
 
     // Loss functions

@@ -386,17 +386,9 @@ void KMedoids::swap_naive(
               best_distances,
               second_distances,
               assignments);
-  arma::rowvec flat_sigma = sigma.as_row(); 
-  arma::rowvec P = {0.25, 0.5, 0.75};
-  arma::rowvec Q = arma::quantile(flat_sigma, P);
-  std::ostringstream sigma_out;
-  sigma_out << "min: " << arma::min(flat_sigma)
-            << ", 25th: " << Q(0)
-            << ", median: " << Q(1)
-            << ", 75th: " << Q(2)
-            << ", max: " << arma::max(flat_sigma)
-            << ", mean: " << arma::mean(flat_sigma);
-  logHelper.sigma_swap.push_back(sigma_out.str());
+  
+  // write the sigma distribution to logfile
+  sigma_log(sigma);
 
   // iterate across the current medoids
   for (size_t k = 0; k < n_medoids; k++) {
@@ -784,17 +776,7 @@ void KMedoids::swap(
         medoids.col(k) = data.col(medoid_indices(k));
         calc_best_distances_swap(
           data, medoid_indices, best_distances, second_distances, assignments);
-        arma::rowvec flat_sigma = sigma.as_row(); 
-        arma::rowvec P = {0.25, 0.5, 0.75};
-        arma::rowvec Q = arma::quantile(flat_sigma, P);
-        std::ostringstream sigma_out;
-        sigma_out << "min: " << arma::min(flat_sigma)
-                  << ", 25th: " << Q(0)
-                  << ", median: " << Q(1)
-                  << ", 75th: " << Q(2)
-                  << ", max: " << arma::max(flat_sigma)
-                  << ", mean: " << arma::mean(flat_sigma);
-        logHelper.sigma_swap.push_back(sigma_out.str());
+        sigma_log(sigma);
         logHelper.loss_swap.push_back(arma::mean(arma::mean(best_distances)));
         logHelper.p_swap.push_back((float)1/(float)p);
     }
@@ -961,6 +943,28 @@ void KMedoids::swap_sigma(
         sigma(k, n) = arma::stddev(sample);
     }
 }
+
+/**
+* \brief Write the sigma distribution into logfile
+*
+* Calculates the statistical measures of the sigma distribution
+* and writes the results to the log file. 
+*
+* @param sigma Dispersion paramater for each datapoint
+*/
+void KMedoids::sigma_log(arma::mat& sigma) {
+  arma::rowvec flat_sigma = sigma.as_row(); 
+  arma::rowvec P = {0.25, 0.5, 0.75};
+  arma::rowvec Q = arma::quantile(flat_sigma, P);
+  std::ostringstream sigma_out;
+  sigma_out << "min: " << arma::min(flat_sigma)
+            << ", 25th: " << Q(0)
+            << ", median: " << Q(1)
+            << ", 75th: " << Q(2)
+            << ", max: " << arma::max(flat_sigma)
+            << ", mean: " << arma::mean(flat_sigma);
+  logHelper.sigma_swap.push_back(sigma_out.str());
+};
 
 /**
  * \brief Calculate loss for medoids
