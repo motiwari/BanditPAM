@@ -176,7 +176,7 @@ class KMedoids {
 
     void build_naive(arma::mat& data, arma::rowvec& medoidIndices);
 
-    void swap_naive(arma::mat& data, arma::rowvec& medoidIndices);
+    void swap_naive(arma::mat& data, arma::rowvec& medoidIndices, arma::rowvec& assignments);
 
     void build(
       arma::mat& data,
@@ -233,6 +233,8 @@ class KMedoids {
       arma::rowvec& second_best_distances,
       arma::rowvec& assignments
     );
+
+    void sigma_log(arma::mat& sigma);
 
     double calc_loss(arma::mat& data, arma::rowvec& medoidIndices);
 
