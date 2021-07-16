@@ -1,7 +1,7 @@
 #ifndef KMEDOIDS_UCB_H_
 #define KMEDOIDS_UCB_H_
 
-#include <carma>
+#include <carma.h>
 #include <armadillo>
 #include <vector>
 #include <fstream>

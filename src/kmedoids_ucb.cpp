@@ -7,7 +7,7 @@
  */
 #include "kmedoids_ucb.hpp"
 
-#include <carma>
+#include <carma.h>
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
