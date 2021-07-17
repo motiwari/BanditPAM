@@ -46,7 +46,7 @@ ext_modules = [
             'headers/carma/include/carma/carma',
             
         ],
-        libraries=['armadillo'],
+        libraries=['armadillo', 'omp'],
         language='c++1y',
         extra_compile_args=['-static-libstdc++'],
     ),
