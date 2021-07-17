@@ -7,25 +7,26 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
 __version__ = '0.0.21'
-#os.environ["CC"] = os.path.join('/usr', 'bin', 'gcc')
-#os.environ["CXX"] = os.path.join('/usr', 'bin', 'g++')
-
 
 class get_pybind_include(object):
-    """Helper class to determine the pybind11 include path
+    '''
+    Helper class to determine the pybind11 include path.
     The purpose of this class is to postpone importing pybind11
     until it is actually installed via setup's setup_requires arg,
-    so that the ``get_include()`` method can be invoked. """
+    so that the ``get_include()`` method can be invoked.
+    '''
 
     def __str__(self):
         import pybind11
         return pybind11.get_include()
 
 class get_numpy_include(object):
-    """Helper class to determine the numpy include path
+    '''
+    Helper class to determine the numpy include path
     The purpose of this class is to postpone importing numpy
     until it is actually installed via setup's setup_requires arg,
-    so that the ``get_include()`` method can be invoked. """
+    so that the ``get_include()`` method can be invoked.
+    '''
 
     def __str__(self):
         import numpy
@@ -53,9 +54,10 @@ ext_modules = [
 
 
 def has_flag(compiler, flagname):
-    """Return a boolean indicating whether a flag name is supported on
+    '''
+    Return a boolean indicating whether a flag name is supported on
     the specified compiler.
-    """
+    '''
     with tempfile.NamedTemporaryFile('w', suffix='.cpp', delete=False) as f:
         f.write('int main (int argc, char **argv) { return 0; }')
         fname = f.name
@@ -72,12 +74,13 @@ def has_flag(compiler, flagname):
 
 
 def cpp_flag(compiler):
-    """Return the -std=c++[11/14/17] compiler flag.
+    '''
+    Return the -std=c++[11/14/17] compiler flag.
     The newer version is prefered over c++11 (when it is available).
-    """
-    # flags = ['-std=c++17', '-std=c++14', '-std=c++11']
-    flags = ['-std=c++1y']
-
+    '''
+    flags = ['-std=c++17', '-std=c++14', '-std=c++11']
+    
+    # TODO (@Mo): Make sure this works when building for manylinux
     for flag in flags:
         if has_flag(compiler, flag):
             return flag
@@ -87,7 +90,9 @@ def cpp_flag(compiler):
 
 
 class BuildExt(build_ext):
-    """A custom build extension for adding compiler-specific options."""
+    '''
+    A custom build extension for adding compiler-specific options.
+    '''
     c_opts = {
         'msvc': ['/EHsc'],
         'unix': [],
@@ -98,7 +103,7 @@ class BuildExt(build_ext):
     }
 
     if sys.platform == 'darwin':
-        darwin_opts = ['-stdlib=libc++', '-mmacosx-version-min=10.7']
+        darwin_opts = ['-stdlib=libc++', '-mmacosx-version-min=10.7', '-O3']
         c_opts['unix'] += darwin_opts
         l_opts['unix'] += darwin_opts
 

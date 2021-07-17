@@ -8,5 +8,4 @@ set(CMAKE_CXX_FLAGS_DEBUG "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-
 add_subdirectory(src)
