@@ -6,7 +6,9 @@ import setuptools
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
-__version__ = '0.0.21'
+__version__ = '0.0.30'
+os.environ["CC"] = "/usr/local/opt/llvm/bin/clang"
+os.environ["CXX"] = "/usr/local/opt/llvm/bin/clang++"
 
 class get_pybind_include(object):
     '''
@@ -31,26 +33,6 @@ class get_numpy_include(object):
     def __str__(self):
         import numpy
         return numpy.get_include()
-
-ext_modules = [
-    Extension(
-        'BanditPAM',
-        sorted([os.path.join('src', 'kmedoids_ucb.cpp'),
-                os.path.join('src', 'kmeds_pywrapper.cpp')]),
-        include_dirs=[
-            get_pybind_include(),
-            get_numpy_include(),
-            'headers',
-            'headers/carma/include',
-            'headers/carma/include/carma',
-            'headers/carma/include/carma/carma',
-            
-        ],
-        libraries=['armadillo', 'omp'],
-        language='c++1y',
-        extra_compile_args=['-static-libstdc++'],
-    ),
-]
 
 
 def has_flag(compiler, flagname):
@@ -79,6 +61,7 @@ def cpp_flag(compiler):
     The newer version is prefered over c++11 (when it is available).
     '''
     flags = ['-std=c++17', '-std=c++14', '-std=c++11']
+    #flags = ['-std=c++y']
     
     # TODO (@Mo): Make sure this works when building for manylinux
     for flag in flags:
@@ -114,7 +97,8 @@ class BuildExt(build_ext):
         opts.append('-Wno-register')
         opts.append('-std=c++1y')
         if sys.platform == 'darwin':
-            opts.append('-Xpreprocessor -fopenmp')
+            opts.append('-Xpreprocessor -fopenmp') # For Apple clang -- but doesn't work properly
+            opts.append('-fopenmp')
         else:
             opts.append('-fopenmp')
             link_opts.append('-lgomp')
@@ -128,6 +112,29 @@ class BuildExt(build_ext):
             ext.extra_link_args = link_opts
         build_ext.build_extensions(self)
 
+
+ext_modules = [
+    Extension(
+        'BanditPAM',
+        sorted([os.path.join('src', 'kmedoids_ucb.cpp'),
+                os.path.join('src', 'kmeds_pywrapper.cpp')]),
+        include_dirs=[
+            get_pybind_include(),
+            get_numpy_include(),
+            'headers',
+            'headers/carma/include',
+            'headers/carma/include/carma',
+            'headers/carma/include/carma/carma',
+            '/usr/local/include',
+        ],
+        library_dirs=[
+            '/usr/local/lib',
+        ],
+        libraries=['armadillo', 'omp'],
+        language='c++1y',
+        extra_compile_args=['-static-libstdc++'],
+    ),
+]
 
 with open(os.path.join('docs', 'long_desc.rst'), encoding='utf-8') as f:
     long_description = f.read()
