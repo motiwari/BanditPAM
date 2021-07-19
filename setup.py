@@ -22,8 +22,8 @@ class get_pybind_include(object):
         return pybind11.get_include()
 
 class get_numpy_include(object):
-    """Helper class to determine the pybind11 include path
-    The purpose of this class is to postpone importing pybind11
+    """Helper class to determine the numpy include path
+    The purpose of this class is to postpone importing numpy
     until it is actually installed via setup's setup_requires arg,
     so that the ``get_include()`` method can be invoked. """
 
@@ -41,7 +41,9 @@ ext_modules = [
             get_numpy_include(),
             'headers',
             'headers/carma/include',
-            'headers/carma/include/carma_bits'
+            'headers/carma/include/carma',
+            'headers/carma/include/carma/carma',
+            
         ],
         libraries=['armadillo'],
         language='c++1y',

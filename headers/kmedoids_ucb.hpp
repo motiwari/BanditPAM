@@ -1,7 +1,7 @@
 #ifndef KMEDOIDS_UCB_H_
 #define KMEDOIDS_UCB_H_
 
-#include <carma>
+#include <carma.h>
 #include <armadillo>
 #include <vector>
 #include <fstream>
@@ -176,7 +176,7 @@ class KMedoids {
 
     void build_naive(arma::mat& data, arma::rowvec& medoidIndices);
 
-    void swap_naive(arma::mat& data, arma::rowvec& medoidIndices);
+    void swap_naive(arma::mat& data, arma::rowvec& medoidIndices, arma::rowvec& assignments);
 
     void build(
       arma::mat& data,
@@ -233,6 +233,8 @@ class KMedoids {
       arma::rowvec& second_best_distances,
       arma::rowvec& assignments
     );
+
+    void sigma_log(arma::mat& sigma);
 
     double calc_loss(arma::mat& data, arma::rowvec& medoidIndices);
 

@@ -7,7 +7,7 @@
  */
 #include "kmedoids_ucb.hpp"
 
-#include <carma>
+#include <carma.h>
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
@@ -270,16 +270,19 @@ void KMedoids::fit_naive(arma::mat input_data) {
   steps = 0;
 
   medoid_indices_build = medoid_indices;
+  arma::rowvec assignments(data.n_cols);
   size_t i = 0;
   bool medoidChange = true;
   while (i < max_iter && medoidChange) {
     auto previous(medoid_indices);
     // runs swa step as necessary
-    KMedoids::swap_naive(data, medoid_indices);
+    KMedoids::swap_naive(data, medoid_indices, assignments);
     medoidChange = arma::any(medoid_indices != previous);
     i++;
   }
   medoid_indices_final = medoid_indices;
+  labels = assignments;
+  steps = i;
 }
 
 /**
@@ -296,10 +299,19 @@ void KMedoids::fit_naive(arma::mat input_data) {
 void KMedoids::build_naive(
   arma::mat& data, 
   arma::rowvec& medoid_indices)
-{
+{ 
+  size_t N = data.n_cols;
+  int p = (buildConfidence * N); // reciprocal
+  bool use_absolute = true;
+  arma::rowvec estimates(N, arma::fill::zeros);
+  arma::rowvec best_distances(N);
+  best_distances.fill(std::numeric_limits<double>::infinity());
+  arma::rowvec sigma(N); // standard deviation of induced losses on reference points
   for (size_t k = 0; k < n_medoids; k++) {
     double minDistance = std::numeric_limits<double>::infinity();
     int best = 0;
+    KMedoids::build_sigma(
+           data, best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
     // fixes a base datapoint
     for (int i = 0; i < data.n_cols; i++) {
       double total = 0;
@@ -322,6 +334,19 @@ void KMedoids::build_naive(
     }
     // updates the medoid index for that of lowest cost.
     medoid_indices(k) = best;
+
+    // don't need to do this on final iteration
+    for (size_t l = 0; l < N; l++) {
+        double cost = (this->*lossFn)(data, l, medoid_indices(k));
+        if (cost < best_distances(l)) {
+            best_distances(l) = cost;
+        }
+    }
+    use_absolute = false; // use difference of loss for sigma and sampling,
+                          // not absolute
+    logHelper.loss_build.push_back(minDistance/N);
+    logHelper.p_build.push_back((float)1/(float)p);
+    logHelper.comp_exact_build.push_back(N);
   }
 }
 
@@ -335,14 +360,37 @@ void KMedoids::build_naive(
  * @param data Transposed input data to find the medoids of
  * @param medoid_indices Array of medoid indices created from the build step
  * that is modified in place as better medoids are identified
+ * @param assignments Uninitialized array of indices corresponding to each
+ * datapoint assigned the index of the medoid it is closest to
  */
 void KMedoids::swap_naive(
   arma::mat& data, 
-  arma::rowvec& medoid_indices)
+  arma::rowvec& medoid_indices,
+  arma::rowvec& assignments)
 {
   double minDistance = std::numeric_limits<double>::infinity();
   size_t best = 0;
   size_t medoid_to_swap = 0;
+  size_t N = data.n_cols;
+  int p = (N * n_medoids * swapConfidence); // reciprocal
+  arma::mat sigma(n_medoids, N, arma::fill::zeros);
+  arma::rowvec best_distances(N);
+  arma::rowvec second_distances(N);
+
+  // calculate quantities needed for swap, best_distances and sigma
+  calc_best_distances_swap(
+    data, medoid_indices, best_distances, second_distances, assignments);
+
+  swap_sigma(data,
+              sigma,
+              batchSize,
+              best_distances,
+              second_distances,
+              assignments);
+  
+  // write the sigma distribution to logfile
+  sigma_log(sigma);
+
   // iterate across the current medoids
   for (size_t k = 0; k < n_medoids; k++) {
     // for every point in our dataset, let it serve as a "base" point
@@ -372,6 +420,9 @@ void KMedoids::swap_naive(
     }
   }
   medoid_indices(medoid_to_swap) = best;
+  logHelper.loss_swap.push_back(minDistance/N);
+  logHelper.p_swap.push_back((float)1/(float)p);
+  logHelper.comp_exact_swap.push_back(N*n_medoids);
 }
 
 /**
@@ -726,11 +777,7 @@ void KMedoids::swap(
         medoids.col(k) = data.col(medoid_indices(k));
         calc_best_distances_swap(
           data, medoid_indices, best_distances, second_distances, assignments);
-        std::ostringstream sigma_out;
-        sigma_out << "Sigma: min: " << sigma.min()
-        << ", max: " << sigma.max()
-        << ", mean: " << arma::mean(arma::mean(sigma));
-        logHelper.sigma_swap.push_back(sigma_out.str());
+        sigma_log(sigma);
         logHelper.loss_swap.push_back(arma::mean(arma::mean(best_distances)));
         logHelper.p_swap.push_back((float)1/(float)p);
     }
@@ -897,6 +944,28 @@ void KMedoids::swap_sigma(
         sigma(k, n) = arma::stddev(sample);
     }
 }
+
+/**
+* \brief Write the sigma distribution into logfile
+*
+* Calculates the statistical measures of the sigma distribution
+* and writes the results to the log file. 
+*
+* @param sigma Dispersion paramater for each datapoint
+*/
+void KMedoids::sigma_log(arma::mat& sigma) {
+  arma::rowvec flat_sigma = sigma.as_row(); 
+  arma::rowvec P = {0.25, 0.5, 0.75};
+  arma::rowvec Q = arma::quantile(flat_sigma, P);
+  std::ostringstream sigma_out;
+  sigma_out << "min: " << arma::min(flat_sigma)
+            << ", 25th: " << Q(0)
+            << ", median: " << Q(1)
+            << ", 75th: " << Q(2)
+            << ", max: " << arma::max(flat_sigma)
+            << ", mean: " << arma::mean(flat_sigma);
+  logHelper.sigma_swap.push_back(sigma_out.str());
+};
 
 /**
  * \brief Calculate loss for medoids
