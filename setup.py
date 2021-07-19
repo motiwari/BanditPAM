@@ -35,7 +35,7 @@ ext_modules = [
     Extension(
         'BanditPAM',
         sorted([os.path.join('src', 'kmedoids_ucb.cpp'),
-                os.path.join('src', 'kmeds_pywrapper.cpp')]),
+                os.path.join('src', 'kmedoids_pywrapper.cpp')]),
         include_dirs=[
             get_pybind_include(),
             get_numpy_include(),

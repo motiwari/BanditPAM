@@ -1,69 +1,69 @@
-\hypertarget{structLogHelper}{}\section{Log\+Helper Struct Reference}
-\label{structLogHelper}\index{Log\+Helper@{Log\+Helper}}
+\hypertarget{structLogHelper}{}\doxysection{Log\+Helper Struct Reference}
+\label{structLogHelper}\index{LogHelper@{LogHelper}}
 
 
-Logging class for structured \hyperlink{classKMedoids}{K\+Medoids} logs.  
+Logging class for structured \mbox{\hyperlink{classKMedoids}{KMedoids}} logs.  
 
 
 
 
 {\ttfamily \#include $<$kmedoids\+\_\+ucb.\+hpp$>$}
 
-\subsection*{Public Member Functions}
+\doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{structLogHelper_a8bf957fb897ae5b548264f2f614879c5}{init} (std\+::string input\+\_\+filename=\char`\"{}K\+Medoids\+Logfile\char`\"{})
+void \mbox{\hyperlink{structLogHelper_a8bf957fb897ae5b548264f2f614879c5}{init}} (std\+::string input\+\_\+filename=\char`\"{}KMedoids\+Logfile\char`\"{})
 \begin{DoxyCompactList}\small\item\em Opens the log file. \end{DoxyCompactList}\item 
-void \hyperlink{structLogHelper_a4624149f53c4577d0565f761c155d800}{close} ()
+void \mbox{\hyperlink{structLogHelper_a4624149f53c4577d0565f761c155d800}{close}} ()
 \begin{DoxyCompactList}\small\item\em Closes the log file. \end{DoxyCompactList}\item 
-void \hyperlink{structLogHelper_a5b1a8ff2ae2ce6e3293e3b34085e3b86}{write\+Summary\+Line} (std\+::string key, arma\+::rowvec vec)
+void \mbox{\hyperlink{structLogHelper_a5b1a8ff2ae2ce6e3293e3b34085e3b86}{write\+Summary\+Line}} (std\+::string key, arma\+::rowvec vec)
 \begin{DoxyCompactList}\small\item\em Writes a vector out for a given key. \end{DoxyCompactList}\item 
-{\footnotesize template$<$typename T $>$ }\\void \hyperlink{structLogHelper_ad1bb80fa2bd8b1dfcd944ea19c4e8e06}{write\+Log\+String\+Line} (std\+::string key, std\+::vector$<$ T $>$ vec)
+{\footnotesize template$<$typename T $>$ }\\void \mbox{\hyperlink{structLogHelper_ad1bb80fa2bd8b1dfcd944ea19c4e8e06}{write\+Log\+String\+Line}} (std\+::string key, std\+::vector$<$ T $>$ vec)
 \begin{DoxyCompactList}\small\item\em Writes a logstring component. \end{DoxyCompactList}\item 
-void \hyperlink{structLogHelper_a15b3f49bf98956a0585f036801e25dbe}{write\+Profile} (arma\+::rowvec b\+\_\+medoids, arma\+::rowvec f\+\_\+medoids, int steps, double loss)
-\begin{DoxyCompactList}\small\item\em Writes formatted summary log of a \hyperlink{classKMedoids}{K\+Medoids} run. \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+void \mbox{\hyperlink{structLogHelper_a15b3f49bf98956a0585f036801e25dbe}{write\+Profile}} (arma\+::rowvec b\+\_\+medoids, arma\+::rowvec f\+\_\+medoids, int steps, double loss)
+\begin{DoxyCompactList}\small\item\em Writes formatted summary log of a \mbox{\hyperlink{classKMedoids}{KMedoids}} run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{structLogHelper_a084e11845451a653f46a48ab92c97ee8}\label{structLogHelper_a084e11845451a653f46a48ab92c97ee8}} 
-std\+::ofstream \hyperlink{structLogHelper_a084e11845451a653f46a48ab92c97ee8}{hlog\+File}
-\begin{DoxyCompactList}\small\item\em Output stream that writes the \hyperlink{classKMedoids}{K\+Medoids} log. \end{DoxyCompactList}\item 
+std\+::ofstream {\bfseries hlog\+File}
+\begin{DoxyCompactList}\small\item\em Output stream that writes the \mbox{\hyperlink{classKMedoids}{KMedoids}} log. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structLogHelper_a7f9490e07d6bfc71b0d0fd555ca4f530}\label{structLogHelper_a7f9490e07d6bfc71b0d0fd555ca4f530}} 
-std\+::vector$<$ double $>$ \hyperlink{structLogHelper_a7f9490e07d6bfc71b0d0fd555ca4f530}{comp\+\_\+exact\+\_\+build}
+std\+::vector$<$ double $>$ {\bfseries comp\+\_\+exact\+\_\+build}
 \begin{DoxyCompactList}\small\item\em Number of computations in build step. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structLogHelper_aaee1d830760c6b497f2fad31a0e368f8}\label{structLogHelper_aaee1d830760c6b497f2fad31a0e368f8}} 
-std\+::vector$<$ double $>$ \hyperlink{structLogHelper_aaee1d830760c6b497f2fad31a0e368f8}{comp\+\_\+exact\+\_\+swap}
+std\+::vector$<$ double $>$ {\bfseries comp\+\_\+exact\+\_\+swap}
 \begin{DoxyCompactList}\small\item\em Number of computations in swap step. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structLogHelper_a8da7e85d166977478fcfe848bb739dfa}\label{structLogHelper_a8da7e85d166977478fcfe848bb739dfa}} 
-std\+::vector$<$ double $>$ \hyperlink{structLogHelper_a8da7e85d166977478fcfe848bb739dfa}{loss\+\_\+build}
+std\+::vector$<$ double $>$ {\bfseries loss\+\_\+build}
 \begin{DoxyCompactList}\small\item\em Loss after each iteration of build step. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structLogHelper_a3361ae9284a7fca5b867165e0380af4b}\label{structLogHelper_a3361ae9284a7fca5b867165e0380af4b}} 
-std\+::vector$<$ double $>$ \hyperlink{structLogHelper_a3361ae9284a7fca5b867165e0380af4b}{loss\+\_\+swap}
+std\+::vector$<$ double $>$ {\bfseries loss\+\_\+swap}
 \begin{DoxyCompactList}\small\item\em Loss after each iteration of swap step. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structLogHelper_aed75dac28380b3f67b777d6b36719aa9}\label{structLogHelper_aed75dac28380b3f67b777d6b36719aa9}} 
-std\+::vector$<$ double $>$ \hyperlink{structLogHelper_aed75dac28380b3f67b777d6b36719aa9}{p\+\_\+build}
+std\+::vector$<$ double $>$ {\bfseries p\+\_\+build}
 \begin{DoxyCompactList}\small\item\em Precision for each iteration of build step. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structLogHelper_a87a35e651ad2a32092777e1d9bd4acfa}\label{structLogHelper_a87a35e651ad2a32092777e1d9bd4acfa}} 
-std\+::vector$<$ double $>$ \hyperlink{structLogHelper_a87a35e651ad2a32092777e1d9bd4acfa}{p\+\_\+swap}
+std\+::vector$<$ double $>$ {\bfseries p\+\_\+swap}
 \begin{DoxyCompactList}\small\item\em Precision for each iteration of swap step. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structLogHelper_a835a54928567970dd564d9eaed87597c}\label{structLogHelper_a835a54928567970dd564d9eaed87597c}} 
-std\+::vector$<$ std\+::string $>$ \hyperlink{structLogHelper_a835a54928567970dd564d9eaed87597c}{sigma\+\_\+build}
+std\+::vector$<$ std\+::string $>$ {\bfseries sigma\+\_\+build}
 \begin{DoxyCompactList}\small\item\em Distributions for each iteration of build step. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{structLogHelper_afee211952d9a61c217622557e91c1275}\label{structLogHelper_afee211952d9a61c217622557e91c1275}} 
-std\+::vector$<$ std\+::string $>$ \hyperlink{structLogHelper_afee211952d9a61c217622557e91c1275}{sigma\+\_\+swap}
+std\+::vector$<$ std\+::string $>$ {\bfseries sigma\+\_\+swap}
 \begin{DoxyCompactList}\small\item\em Distributions for each iteration of swap step. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
-\subsection{Detailed Description}
-Logging class for structured \hyperlink{classKMedoids}{K\+Medoids} logs. 
+\doxysubsection{Detailed Description}
+Logging class for structured \mbox{\hyperlink{classKMedoids}{KMedoids}} logs. 
 
-\hyperlink{structLogHelper}{Log\+Helper} class. Assists the \hyperlink{classKMedoids}{K\+Medoids} class in structured logging. 
+\mbox{\hyperlink{structLogHelper}{Log\+Helper}} class. Assists the \mbox{\hyperlink{classKMedoids}{KMedoids}} class in structured logging. 
 
-\subsection{Member Function Documentation}
+\doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{structLogHelper_a4624149f53c4577d0565f761c155d800}\label{structLogHelper_a4624149f53c4577d0565f761c155d800}} 
-\index{Log\+Helper@{Log\+Helper}!close@{close}}
-\index{close@{close}!Log\+Helper@{Log\+Helper}}
-\subsubsection{\texorpdfstring{close()}{close()}}
+\index{LogHelper@{LogHelper}!close@{close}}
+\index{close@{close}!LogHelper@{LogHelper}}
+\doxysubsubsection{\texorpdfstring{close()}{close()}}
 {\footnotesize\ttfamily void Log\+Helper\+::close (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
@@ -71,9 +71,9 @@ Logging class for structured \hyperlink{classKMedoids}{K\+Medoids} logs.
 Closes the log file. 
 
 Closes the log file. \mbox{\Hypertarget{structLogHelper_a8bf957fb897ae5b548264f2f614879c5}\label{structLogHelper_a8bf957fb897ae5b548264f2f614879c5}} 
-\index{Log\+Helper@{Log\+Helper}!init@{init}}
-\index{init@{init}!Log\+Helper@{Log\+Helper}}
-\subsubsection{\texorpdfstring{init()}{init()}}
+\index{LogHelper@{LogHelper}!init@{init}}
+\index{init@{init}!LogHelper@{LogHelper}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
 {\footnotesize\ttfamily void Log\+Helper\+::init (\begin{DoxyParamCaption}\item[{std\+::string}]{input\+\_\+filename = {\ttfamily \char`\"{}KMedoidsLogfile\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
@@ -88,9 +88,9 @@ Opens the log file.
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{structLogHelper_ad1bb80fa2bd8b1dfcd944ea19c4e8e06}\label{structLogHelper_ad1bb80fa2bd8b1dfcd944ea19c4e8e06}} 
-\index{Log\+Helper@{Log\+Helper}!write\+Log\+String\+Line@{write\+Log\+String\+Line}}
-\index{write\+Log\+String\+Line@{write\+Log\+String\+Line}!Log\+Helper@{Log\+Helper}}
-\subsubsection{\texorpdfstring{write\+Log\+String\+Line()}{writeLogStringLine()}}
+\index{LogHelper@{LogHelper}!writeLogStringLine@{writeLogStringLine}}
+\index{writeLogStringLine@{writeLogStringLine}!LogHelper@{LogHelper}}
+\doxysubsubsection{\texorpdfstring{writeLogStringLine()}{writeLogStringLine()}}
 {\footnotesize\ttfamily template$<$typename T $>$ \\
 void Log\+Helper\+::write\+Log\+String\+Line (\begin{DoxyParamCaption}\item[{std\+::string}]{key,  }\item[{std\+::vector$<$ T $>$}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
@@ -108,16 +108,16 @@ Writes a logstring line for the write\+Profile function.
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{structLogHelper_a15b3f49bf98956a0585f036801e25dbe}\label{structLogHelper_a15b3f49bf98956a0585f036801e25dbe}} 
-\index{Log\+Helper@{Log\+Helper}!write\+Profile@{write\+Profile}}
-\index{write\+Profile@{write\+Profile}!Log\+Helper@{Log\+Helper}}
-\subsubsection{\texorpdfstring{write\+Profile()}{writeProfile()}}
+\index{LogHelper@{LogHelper}!writeProfile@{writeProfile}}
+\index{writeProfile@{writeProfile}!LogHelper@{LogHelper}}
+\doxysubsubsection{\texorpdfstring{writeProfile()}{writeProfile()}}
 {\footnotesize\ttfamily void Log\+Helper\+::write\+Profile (\begin{DoxyParamCaption}\item[{arma\+::rowvec}]{b\+\_\+medoids,  }\item[{arma\+::rowvec}]{f\+\_\+medoids,  }\item[{int}]{steps,  }\item[{double}]{loss }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
-Writes formatted summary log of a \hyperlink{classKMedoids}{K\+Medoids} run. 
+Writes formatted summary log of a \mbox{\hyperlink{classKMedoids}{KMedoids}} run. 
 
-Writes summary statistics of a \hyperlink{classKMedoids}{K\+Medoids} run. Statistics include medoids after the build step, medoids after the swap step, number of swap steps, the final loss, and logstrings of the number of points that had distance computations, loss, precision, and uncertainty for each iteration of both the build and swap steps.
+Writes summary statistics of a \mbox{\hyperlink{classKMedoids}{KMedoids}} run. Statistics include medoids after the build step, medoids after the swap step, number of swap steps, the final loss, and logstrings of the number of points that had distance computations, loss, precision, and uncertainty for each iteration of both the build and swap steps.
 
 
 \begin{DoxyParams}{Parameters}
@@ -127,13 +127,13 @@ Writes summary statistics of a \hyperlink{classKMedoids}{K\+Medoids} run. Statis
 \hline
 {\em steps} & Number of swap steps. \\
 \hline
-{\em loss} & Final loss of the \hyperlink{classKMedoids}{K\+Medoids} object. \\
+{\em loss} & Final loss of the \mbox{\hyperlink{classKMedoids}{KMedoids}} object. \\
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{structLogHelper_a5b1a8ff2ae2ce6e3293e3b34085e3b86}\label{structLogHelper_a5b1a8ff2ae2ce6e3293e3b34085e3b86}} 
-\index{Log\+Helper@{Log\+Helper}!write\+Summary\+Line@{write\+Summary\+Line}}
-\index{write\+Summary\+Line@{write\+Summary\+Line}!Log\+Helper@{Log\+Helper}}
-\subsubsection{\texorpdfstring{write\+Summary\+Line()}{writeSummaryLine()}}
+\index{LogHelper@{LogHelper}!writeSummaryLine@{writeSummaryLine}}
+\index{writeSummaryLine@{writeSummaryLine}!LogHelper@{LogHelper}}
+\doxysubsubsection{\texorpdfstring{writeSummaryLine()}{writeSummaryLine()}}
 {\footnotesize\ttfamily void Log\+Helper\+::write\+Summary\+Line (\begin{DoxyParamCaption}\item[{std\+::string}]{key,  }\item[{arma\+::rowvec}]{vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
@@ -153,4 +153,4 @@ Writes a vector out for a given key
 
 The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-/home/esfrankel/\+Desktop/\+Bandit\+P\+A\+M/headers/kmedoids\+\_\+ucb.\+hpp\end{DoxyCompactItemize}
+/\+Users/dhavaldangaria/\+Bandit\+PAM/headers/kmedoids\+\_\+ucb.\+hpp\end{DoxyCompactItemize}

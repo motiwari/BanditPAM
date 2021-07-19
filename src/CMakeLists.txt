@@ -1,3 +1,4 @@
+include_directories(/System/Library/Frameworks/Python.framework/Versions/Current/Headers)
 include_directories(${PROJECT_SOURCE_DIR}/headers)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include)
