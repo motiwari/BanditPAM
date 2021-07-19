@@ -113,14 +113,13 @@ class BuildExt(build_ext):
         'unix': [],
     }
     
-    install_check_mac()
     if sys.platform == 'darwin':
+        install_check_mac()
         darwin_opts = ['-stdlib=libc++', '-mmacosx-version-min=10.7', '-O3']
         c_opts['unix'] += darwin_opts
         l_opts['unix'] += darwin_opts
 
     def build_extensions(self):
-        
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
