@@ -3,12 +3,11 @@ import sysconfig
 import os
 import tempfile
 import setuptools
+import subprocess
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
 __version__ = '0.0.30'
-os.environ["CC"] = "/usr/local/opt/llvm/bin/clang"
-os.environ["CXX"] = "/usr/local/opt/llvm/bin/clang++"
 
 class get_pybind_include(object):
     '''
@@ -72,6 +71,35 @@ def cpp_flag(compiler):
                        'is needed!')
 
 
+def check_brew_package(pkg_name):
+    brew_cmd = ['brew', '--prefix', pkg_name]
+    process = subprocess.Popen(brew_cmd, stdout=subprocess.PIPE)
+    output, _error = process.communicate()
+    if output.decode() == '':
+        raise Exception('Error: Need to install %s via homebrew! Please run `brew install %s`' % (pkg_name, pkg_name))
+    return output.decode().strip()
+
+
+def check_brew_installation():
+    brew_cmd = ['which', 'brew']
+    process = subprocess.Popen(brew_cmd, stdout=subprocess.PIPE)
+    output, _error = process.communicate()
+    if output.decode() == '':
+        raise Exception('Error: Need to install homebrew! Please see https://brew.sh')
+
+
+def install_check_mac():
+    # Make sure homebrew is installed
+    check_brew_installation()
+
+    # Check that LLVM clang, libomp, and armadillo are installed
+    llvm_loc = check_brew_package('llvm') # We need to use LLVM clang since Apple's clang doesn't support OpenMP
+    _libomp_loc = check_brew_package('libomp')
+    _arma_loc = check_brew_package('armadillo')
+    
+    # Set compiler to LLVM clang++
+    os.environ["CC"] = os.path.join(llvm_loc, 'bin', 'clang')
+    
 class BuildExt(build_ext):
     '''
     A custom build extension for adding compiler-specific options.
@@ -84,20 +112,21 @@ class BuildExt(build_ext):
         'msvc': [],
         'unix': [],
     }
-
+    
+    install_check_mac()
     if sys.platform == 'darwin':
         darwin_opts = ['-stdlib=libc++', '-mmacosx-version-min=10.7', '-O3']
         c_opts['unix'] += darwin_opts
         l_opts['unix'] += darwin_opts
 
     def build_extensions(self):
+        
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
         opts.append('-Wno-register')
         opts.append('-std=c++1y')
         if sys.platform == 'darwin':
-            opts.append('-Xpreprocessor -fopenmp') # For Apple clang -- but doesn't work properly
             opts.append('-fopenmp')
         else:
             opts.append('-fopenmp')
@@ -111,7 +140,6 @@ class BuildExt(build_ext):
             ext.extra_compile_args = opts
             ext.extra_link_args = link_opts
         build_ext.build_extensions(self)
-
 
 ext_modules = [
     Extension(
