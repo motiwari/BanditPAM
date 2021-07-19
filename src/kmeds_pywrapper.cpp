@@ -14,26 +14,11 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 
-#include <unistd.h>
-#include <omp.h>
-
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
 
 namespace py = pybind11;
-
-int sum_thread_ids() {
-    int sum=0;
-    #pragma omp parallel shared(sum)
-    {
-        sleep(3);
-        #pragma omp critical
-        sum += omp_get_thread_num();
-        std::cout << "Thread:" << omp_get_thread_num() << "\n";
-    }
-    return sum;
-}
 
 /**
  *  \brief Python wrapper for KMedoids class.
@@ -121,8 +106,8 @@ public:
 PYBIND11_MODULE(BanditPAM, m) {
   m.doc() = "BanditPAM Python library, implemented in C++";
   m.def("get_max_threads", &omp_get_max_threads, "Returns max number of threads");
-  m.def("set_num_threads", &omp_set_num_threads, "Set number of threads");
-  m.def("sum_thread_ids", &sum_thread_ids, "Adds the id of threads");
+  m.def("set_num_threads", &omp_set_num_threads, "Set the maximum number of threads");
+  m.def("sum_thread_ids", &sum_thread_ids, "Adds the ids of threads; used only for debugging");
   py::class_<KMedsWrapper>(m, "KMedoids")
       .def(py::init<int, std::string, int, int, std::string>(),
         py::arg("n_medoids") = NULL,
