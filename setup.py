@@ -60,7 +60,7 @@ def cpp_flag(compiler):
     The newer version is prefered over c++11 (when it is available).
     '''
     flags = ['-std=c++17', '-std=c++14', '-std=c++11']
-    #flags = ['-std=c++y']
+    #flags = ['-std=c++1y']
     
     # TODO (@Mo): Make sure this works when building for manylinux
     for flag in flags:
@@ -121,7 +121,7 @@ class BuildExt(build_ext):
 
     def build_extensions(self):
         ct = self.compiler.compiler_type
-        opts = self.c_opts.get(ct, [])
+        opts = self.c_opts.get(ct, ['-O3'])
         link_opts = self.l_opts.get(ct, [])
         opts.append('-Wno-register')
         opts.append('-std=c++1y')
