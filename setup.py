@@ -150,8 +150,6 @@ ext_modules = [
             get_numpy_include(),
             'headers',
             'headers/carma/include',
-            'headers/carma/include/carma',
-            'headers/carma/include/carma/carma',
             '/usr/local/include',
         ],
         library_dirs=[
