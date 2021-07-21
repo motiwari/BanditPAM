@@ -37,7 +37,7 @@ or through the source code via
 ```python
 /BanditPAM/: git submodule update --init --recursive
 /BanditPAM/: cd headers/carma
-/BanditPAM/: mkdir build && cd build && cmake .. && make && make install
+/BanditPAM/: mkdir build && cd build && cmake .. && make && sudo make install
 /BanditPAM/: cd ../../..
 /BanditPAM/: pip install -r requirements.txt
 /BanditPAM/: sudo pip install .
@@ -64,7 +64,7 @@ kmed.fit(X, 'L2', "gmm_log")
 
 # Visualize the data and the medoids:
 for p_idx, point in enumerate(X):
-    if p_idx in map(int, kmed.final_medoids):
+    if p_idx in map(int, kmed.medoids):
         plt.scatter(X[p_idx, 0], X[p_idx, 1], color='red', s = 40)
     else:
         plt.scatter(X[p_idx, 0], X[p_idx, 1], color='blue', s = 10)
@@ -98,7 +98,7 @@ kmed.fit(X, 'L2', "mnist_log")
 
 # Visualize the data and the medoids via t-SNE:
 for p_idx, point in enumerate(X):
-    if p_idx in map(int, kmed.final_medoids):
+    if p_idx in map(int, kmed.medoids):
         plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='red', s = 40)
     else:
         plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='blue', s = 5)
@@ -143,7 +143,7 @@ If installing these requirements from source, one can generally use the followin
 ```
 /BanditPAM$ cd headers/carma
 /BanditPAM/headers/carma$ mkdir build && cd build
-/BanditPAM/headers/carma/build$ cmake .. && make && make install
+/BanditPAM/headers/carma/build$ cmake .. && make && make sudo install
 ```
 
 Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:
