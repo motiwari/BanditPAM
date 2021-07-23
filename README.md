@@ -17,13 +17,13 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 ```
 
 # Requirements
-This repo requires Python3, and can be easily installed via `pip install BanditPAM`. 
+# TL;DR This repo requires Python3, and can be easily installed via `pip install BanditPAM`. 
 
 If you're on Mac or Windows and have any issue, please see the documents below and file an issue if you have additional trouble.
 
-* [Installation information for MacOS](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md)
-* [Installation information for Linux](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md)
-* [Installation information for Windows](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md)
+* [Installation on MacOS](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md)
+* [Installation on Linux](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md)
+* [Installation on Windows](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md)
 
 # Python Quickstart
 
@@ -103,6 +103,11 @@ plt.show()
 
 The corresponding logfile for this run, `mnist_log`, will contain the run's results
 and additional statistics in a format that can be easily read into json.
+
+## Documentation
+
+Documentation for BanditPAM can be found here: 
+* Doxygen docs: `BanditPAM/docs/html/index.html`
 
 ## Building the C++ executable from source
 
@@ -187,11 +192,6 @@ Alternatively, to run a "smaller" set of tests, from the main repo folder run `p
 ## Reproducing Figures from the Paper
 
 Note that some figures in the original paper were generated using the Python code at https://github.com/motiwari/BanditPAM-python. That code is not pretty, nor is it maintained. It only exists for reference and for reproducibility of the plots.
-
-## Documentation
-
-Documentation for BanditPAM can be found here: 
-* Doxygen docs: `BanditPAM/docs/html/index.html`
 
 ## Credits
 
