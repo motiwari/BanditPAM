@@ -6,7 +6,6 @@ If you use this software, please cite:
 
 Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "Bandit-PAM: Almost Linear Time *k*-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
 
-
 ```python
 @inproceedings{BanditPAM,
   title={Bandit-PAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits},
@@ -16,14 +15,15 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
   year={2020}
 }
 ```
-# Requirements
-This repo has the following requirements:
 
-```
-Python >= 3.5
-gcc >= 5.4
-```
-It is highly encouraged that to use BanditPAM in a *nix machine for high performance and ease of installation. Windows is generally supported, but can be unstable depending on the C++ compiler/environment.
+# Requirements
+This repo requires Python3, and can be easily installed via `pip install BanditPAM`. 
+
+If you're on Mac or Windows and have any issue, please see the documents below and file an issue if you have additional trouble.
+
+* [Installation information for MacOS](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md)
+* [Installation information for Linux](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md)
+* [Installation information for Windows](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md)
 
 # Python Quickstart
 
@@ -44,7 +44,6 @@ or through the source code via
 ```
 
 ### Example 1: Synthetic data from a Gaussian Mixture Model
-
 
 ```python
 from BanditPAM import KMedoids
@@ -69,16 +68,12 @@ for p_idx, point in enumerate(X):
     else:
         plt.scatter(X[p_idx, 0], X[p_idx, 1], color='blue', s = 10)
 
-
 plt.show()
 ```
 
-
 ![png](README_files/README_7_0.png)
 
-
 ### Example 2: MNIST and its medoids visualized via t-SNE
-
 
 ```python
 # Start in the repository root directory, i.e. '/BanditPAM/'.
@@ -103,9 +98,9 @@ for p_idx, point in enumerate(X):
     else:
         plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='blue', s = 5)
 
-
 plt.show()
 ```
+
 The corresponding logfile for this run, `mnist_log`, will contain the run's results
 and additional statistics in a format that can be easily read into json.
 
@@ -137,7 +132,7 @@ Building this repository requires four external requirements:
 * Cmake >= 3.17, https://cmake.org/download/
 * Armadillo >= 10.5.3, http://arma.sourceforge.net/download.html
 * OpenMP >= 2.5, https://www.openmp.org/resources/openmp-compilers-tools/ (OpenMP is supported by default on most Linux platforms, and can be downloaded through homebrew on MacOS. For instructions on installing homebrew, see https://brew.sh/.)
-* CARMA >= 0.3.0, https://github.com/RUrlus/carma (use the `unstable` branch)
+* CARMA >= 0.3.0, https://github.com/RUrlus/carma (use the commit to which `BanditPAM` points in the `/headers` subdirectory)
 
 If installing these requirements from source, one can generally use the following procedure to install each requirement from the library's root folder (with CARMA used as an example here):
 ```
@@ -197,9 +192,6 @@ Note that some figures in the original paper were generated using the Python cod
 
 Documentation for BanditPAM can be found here: 
 * Doxygen docs: `BanditPAM/docs/html/index.html`
-* Installation information for MacOS: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md
-* Installation information for Linux: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md
-* Installation information for Windows: https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md
 
 ## Credits
 
