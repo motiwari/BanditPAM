@@ -1,20 +1,33 @@
 # Installation Tutorial for MacOS
 
-The following is a description of the installation process of BanditPAM for MacOS. This assumes that:
+## Prerequisites
+The following is a more detailed description of the installation process of BanditPAM for MacOS. Please ensure:
  - Homebrew is installed; if not, see https://brew.sh/.
- - Python 3 is installed; if not, see .
- - Homebrew is installed.
- - Some form of C++ tools (i.e. gcc, g++) are installed.
+ - Python3 is installed; if not, run `brew install python` (by default, Macs only come with Python2)
+ - Pip is installed for your Python3 installation; this should be completed automatically by `brew install python` above.
+ - A C++ toolchain is installed, e.g. `gcc` or `clang`, and your environment variable `CC` points at the compiler. Please ensure this is the same compiler used to compile your Python installation if using CPython. If you open a python REPL it will show the compiler used during the language installation:
 
-## Installation Procedure
+ ```
+ >> python
+Python 3.7.9 (default, Mar  1 2021, 13:32:26)
+[Clang 11.0.0 (clang-1100.0.33.17)] :: Intel Corporation on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+Intel(R) Distribution for Python is brought to you by Intel Corporation.
+Please check out: https://software.intel.com/en-us/python-distribution
+```
+
+For the default Python2 installed on Mac, the Apple clang compiler is used; for Intel python, clang is used as well. Do not attempt to compile the BanditPAM extension with `gcc` if your Python used `clang`.
+
+## Additional Packages
 First, it's necessary to install the prerequisites for the package. Please do the following:
- - Run `brew install libomp armadillo`.
- - Run `pip3 install -r requirements.txt` in the main BanditPAM directory; the core library that is needed is `pybind11`.
+ - Run `brew install libomp armadillo` to install the OpenMP libraries and enable multithreading in the package
+ - Run `pip3 install -r requirements.txt` to install `numpy`, `pandas`, `matplotlib`, and `pybind11`.
 
-This should successfully install the requirements needed for BanditPAM, which can then be installed in either of the following ways:
- - Running `pip3 install BanditPAM`.
- - Running `pip3 install .` in the home directory.
- - Running `python3 setup.py install` in the home directory.
+This should successfully install the requirements needed for BanditPAM, which can then be installed via ONE of the following ways:
+ Choice i) Running `pip3 install BanditPAM`.
+ Choice ii) Running `pip3 install .` in the home directory.
 
 ## Known Issues 
-The following is a list of issues seen when installing BanditPAM. This is updated as further issues are encountered.
+The following is a list of issues seen when installing BanditPAM. This is updated as further issues are encountered. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/
+
+None.
