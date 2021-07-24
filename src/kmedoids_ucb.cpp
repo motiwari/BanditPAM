@@ -318,12 +318,9 @@ void KMedoids::build_naive(
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points
         double cost = (this->*lossFn)(data, i, j);
-        for (size_t medoid = 0; medoid < k; medoid++) {
-          double current = (this->*lossFn)(data, medoid_indices(medoid), j);
-          // compares this for cost of the medoid
-          if (current < cost) {
-            cost = current;
-          }
+        // compares this with the cached best distance
+        if (best_distances(j) < cost) {
+          cost = best_distances(j);
         }
         total += cost;
       }
@@ -335,7 +332,7 @@ void KMedoids::build_naive(
     // updates the medoid index for that of lowest cost.
     medoid_indices(k) = best;
 
-    // don't need to do this on final iteration
+    // updates the best distance with this medoid 
     for (size_t l = 0; l < N; l++) {
         double cost = (this->*lossFn)(data, l, medoid_indices(k));
         if (cost < best_distances(l)) {
@@ -399,15 +396,15 @@ void KMedoids::swap_naive(
       for (size_t j = 0; j < data.n_cols; j++) {
         // compute distance between base point and every other datapoint
         double cost = (this->*lossFn)(data, i, j);
-        for (size_t medoid = 0; medoid < n_medoids; medoid++) {
-          if (medoid == k) {
-            continue;
+        // (i) if x_j is not assigned to k: compares this with the cached best distance 
+        // (ii) if x_j is assigned to k: compares this with the cached second best distance
+        if (assignments(j) != k) {
+          if (best_distances(j) < cost) {
+            cost = best_distances(j);
           }
-          double current = (this->*lossFn)(data, medoid_indices(medoid), j);
-          if (current < cost) {
-            cost = current;
-          }
-        }
+        } else if (second_distances(j) < cost) {
+          cost = second_distances(j);
+        } 
         total += cost;
       }
       // if total distance for new base point is better than that of the medoid,
