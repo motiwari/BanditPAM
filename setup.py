@@ -237,11 +237,18 @@ class BuildExt(build_ext):
 # TODO: Edit libraries based on gcc vs clang
 # TODO: Edit language based on gcc vs clang
 # TODO: Edit include_dirs based on OS
-ext_modules = [
-    Extension(
-        'BanditPAM',
-        [os.path.join('src', 'kmeds_pywrapper.cpp'), os.path.join('src', 'kmedoids_ucb.cpp')],
-        include_dirs=[
+
+if sys.platform == 'linux' or sys.platform == 'linux2':
+    include_dirs=[
+            get_pybind_include(),
+            get_numpy_include(),
+            'headers',
+            '/usr/local/include',
+            '/usr/local/include/carma',
+            '/usr/local/include/carma/carma',
+        ]
+else: # including for MacOSX / darwin
+    include_dirs=[
             get_pybind_include(),
             get_numpy_include(),
             'headers',
@@ -249,7 +256,14 @@ ext_modules = [
             'headers/carma/include/carma',
             'headers/carma/include/carma/carma',
             '/usr/local/include',
-        ],
+        ]
+
+
+ext_modules = [
+    Extension(
+        'BanditPAM',
+        [os.path.join('src', 'kmeds_pywrapper.cpp'), os.path.join('src', 'kmedoids_ucb.cpp')],
+        include_dirs=include_dirs,
         library_dirs=[
             '/usr/local/lib',
         ],
