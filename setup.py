@@ -62,7 +62,6 @@ def cpp_flag(compiler):
     flags = ['-std=c++17', '-std=c++14', '-std=c++11']
     #flags = ['-std=c++1y']
     
-    # TODO (@Mo): Make sure this works when building for manylinux
     for flag in flags:
         if has_flag(compiler, flag):
             return flag
@@ -88,17 +87,94 @@ def check_brew_installation():
         raise Exception('Error: Need to install homebrew! Please see https://brew.sh')
 
 
+def check_numpy_installation():
+    try:
+        import numpy
+    except ModuleNotFoundError:
+        raise Exception('Need to install numpy!')
+
+
 def install_check_mac():
     # Make sure homebrew is installed
     check_brew_installation()
+
+    # Make sure numpy is installed
+    check_numpy_installation()
 
     # Check that LLVM clang, libomp, and armadillo are installed
     llvm_loc = check_brew_package('llvm') # We need to use LLVM clang since Apple's clang doesn't support OpenMP
     _libomp_loc = check_brew_package('libomp')
     _arma_loc = check_brew_package('armadillo')
     
-    # Set compiler to LLVM clang++
+    # Set compiler to LLVM clang on Mac, since Apple clang doesn't support OpenMP
     os.environ["CC"] = os.path.join(llvm_loc, 'bin', 'clang')
+
+
+def check_omp_install_linux():
+    # Check compiler version is gcc>=6.0.0 or clang>=X.X.X
+    pass
+
+
+def check_armadillo_install_linux():
+    # Since armadillo is a C++ extension, just check if it exists
+    cmd = ['find', '/', '-iname', 'armadillo']
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    output, _error = process.communicate()
+    if output.decode() == '':
+        print("Warning: Armadillo may not be installed. \
+            Please build it from", os.path.join('BanditPAM', 'headers', 'carma', 'third_party', 'armadillo-code'))
+    return output.decode().strip()
+
+
+def check_carma_install_linux():
+    if not os.path.exists(os.path.join('usr', 'local', 'include', 'carma')):
+        raise Exception("Error: carma does not appear to be installed. \
+            Did you build it from %s ?" % (os.path.join('BanditPAM', 'headers', 'carma', 'third_party', 'armadillo-code')))
+
+
+def check_linux_package_installation(pkg_name):
+    cmd = ['dpkg', '-s', pkg_name]
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    output, _error = process.communicate()
+    if output.decode() == '':
+        raise Exception('Error: Need to install %s via homebrew! \
+            Please ensure all dependencies are installed via your package manager (apt, yum, etc.): \
+            build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev \
+            libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev' % (pkg_name))
+    return output.decode().strip()
+
+
+def install_check_linux():
+    # Make sure linux packages are installed
+    dependencies = [
+        'build-essential',
+        'checkinstall',
+        'libreadline-gplv2-dev',
+        'libncursesw5-dev',
+        'libssl-dev',
+        'libsqlite3-dev',
+        'tk-dev',
+        'libgdbm-dev',
+        'libc6-dev',
+        'libbz2-dev',
+        'libffi-dev',
+        'zlib1g-dev',
+        ]
+
+    for dep in dependencies:
+        check_linux_package_installation(dep)
+
+    # Make sure numpy is installed
+    check_numpy_installation()
+
+    # Check openMP is installed
+    check_omp_install_linux()
+
+    # Check armadillo is installed
+    check_armadillo_install_linux()
+
+    # Check carma is installed
+    check_carma_install_linux()
     
 class BuildExt(build_ext):
     '''
@@ -115,36 +191,56 @@ class BuildExt(build_ext):
     
     if sys.platform == 'darwin':
         install_check_mac()
+
         darwin_opts = ['-stdlib=libc++', '-mmacosx-version-min=10.7', '-O3']
         c_opts['unix'] += darwin_opts
         l_opts['unix'] += darwin_opts
+    elif sys.platform == 'linux' or sys.platform =='linux2':
+        install_check_linux()
+
+        linux_opts = ['-O3']
+        c_opts['unix'] += linux_opts
+        l_opts['unix'] += linux_opts
+
 
     def build_extensions(self):
+        #TODO: Modify opts language based on OS
+        #TODO: Add -O3
+        #TODO: Change library name based on gcc vs clang
         ct = self.compiler.compiler_type
-        opts = self.c_opts.get(ct, ['-O3'])
+        
+        opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
+        
         opts.append('-Wno-register')
         opts.append('-std=c++1y')
+        opts.append('-O3') # Add it here as well, in case of Windows installation
+        
         if sys.platform == 'darwin':
             opts.append('-fopenmp')
         else:
             opts.append('-fopenmp')
             link_opts.append('-lgomp')
+        
         if ct == 'unix':
             # opts.append(cpp_flag(self.compiler))
             if has_flag(self.compiler, '-fvisibility=hidden'):
                 opts.append('-fvisibility=hidden')
+        
         for ext in self.extensions:
             ext.define_macros = [('VERSION_INFO', '"{}"'.format(self.distribution.get_version()))]
             ext.extra_compile_args = opts
             ext.extra_link_args = link_opts
+        
         build_ext.build_extensions(self)
 
+# TODO: Edit libraries based on gcc vs clang
+# TODO: Edit language based on gcc vs clang
+# TODO: Edit include_dirs based on OS
 ext_modules = [
     Extension(
         'BanditPAM',
-        sorted([os.path.join('src', 'kmedoids_ucb.cpp'),
-                os.path.join('src', 'kmeds_pywrapper.cpp')]),
+        [os.path.join('src', 'kmeds_pywrapper.cpp'), os.path.join('src', 'kmedoids_ucb.cpp')],
         include_dirs=[
             get_pybind_include(),
             get_numpy_include(),
