@@ -1,3 +1,7 @@
+'''
+Based on https://github.com/pybind/pybind11_benchmark/blob/master/setup.py
+'''
+
 import sys
 import sysconfig
 import os
@@ -7,7 +11,7 @@ import subprocess
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
-__version__ = '0.0.30'
+__version__ = '0.0.35'
 
 class get_pybind_include(object):
     '''
@@ -50,7 +54,7 @@ def has_flag(compiler, flagname):
         try:
             os.remove(fname)
         except OSError:
-            pass
+            print("Warning: Received an OSError")
     return True
 
 
@@ -59,8 +63,13 @@ def cpp_flag(compiler):
     Return the -std=c++[11/14/17] compiler flag.
     The newer version is prefered over c++11 (when it is available).
     '''
-    flags = ['-std=c++17', '-std=c++14', '-std=c++11']
-    #flags = ['-std=c++14']
+
+    if sys.platform == 'darwin':
+        # Assuming that on OSX, building with clang
+        flags = ['-std=c++17', '-std=c++14', '-std=c++11']
+    else:
+        # Assuming that on linux, building on a manylinux image (old) with gcc
+        flags = ['-std=c++1y']
     
     for flag in flags:
         if has_flag(compiler, flag):
@@ -111,6 +120,7 @@ def install_check_mac():
 
 
 def check_omp_install_linux():
+    # TODO: Need to get exact compiler name and version to check this
     # Check compiler version is gcc>=6.0.0 or clang>=X.X.X
     pass
 
@@ -204,26 +214,25 @@ class BuildExt(build_ext):
 
 
     def build_extensions(self):
-        #TODO: Modify opts language based on OS
-        #TODO: Add -O3
-        #TODO: Change library name based on gcc vs clang
         ct = self.compiler.compiler_type
         
         opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
         
         opts.append('-Wno-register')
-        opts.append('-std=c++14')
+        opts.append(cpp_flag(self.compiler))
         opts.append('-O3') # Add it here as well, in case of Windows installation
+        opts.append('-fopenmp')
         
+        #TODO: Change OMP library library name based on gcc vs clang instead of based on OS
         if sys.platform == 'darwin':
-            opts.append('-fopenmp')
+            # We assume that if the user is on OSX, then they are building with clang (required above)
+            link_opts.append('-lomp')
         else:
-            opts.append('-fopenmp')
+            # We assume that if the user is on linux, then they are building with gcc
             link_opts.append('-lgomp')
         
         if ct == 'unix':
-            # opts.append(cpp_flag(self.compiler))
             if has_flag(self.compiler, '-fvisibility=hidden'):
                 opts.append('-fvisibility=hidden')
         
@@ -234,10 +243,8 @@ class BuildExt(build_ext):
         
         build_ext.build_extensions(self)
 
-# TODO: Edit libraries based on gcc vs clang
-# TODO: Edit language based on gcc vs clang
-# TODO: Edit include_dirs based on OS
 
+#TODO: Change OMP library library name based on gcc vs clang instead of based on OS
 if sys.platform == 'linux' or sys.platform == 'linux2':
     include_dirs=[
             get_pybind_include(),
@@ -247,7 +254,9 @@ if sys.platform == 'linux' or sys.platform == 'linux2':
             '/usr/local/include/carma',
             '/usr/local/include/carma/carma',
         ]
-else: # including for MacOSX / darwin
+    # We assume that if the user is on linux, then they are building with gcc
+    libraries=['armadillo', 'gomp']
+else: # OSX
     include_dirs=[
             get_pybind_include(),
             get_numpy_include(),
@@ -257,7 +266,8 @@ else: # including for MacOSX / darwin
             'headers/carma/include/carma/carma',
             '/usr/local/include',
         ]
-
+    # We assume that if the user is on OSX, then they are building with clang (required above)
+    libraries = ['armadillo', 'omp']
 
 ext_modules = [
     Extension(
@@ -267,8 +277,8 @@ ext_modules = [
         library_dirs=[
             '/usr/local/lib',
         ],
-        libraries=['armadillo', 'omp'],
-        language='c++14',
+        libraries=libraries,
+        language='c++1y', #TODO: modify this based on cpp_flag(compiler)
         extra_compile_args=['-static-libstdc++'],
     ),
 ]
