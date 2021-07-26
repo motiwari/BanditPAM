@@ -16,7 +16,7 @@ RUN cd /home \
     && tar zxf cmake-3.12.3.tar.gz \
     && cd cmake-3.12.3 \
     && ./bootstrap --prefix=/usr/local \
-    && make -j$(nproc) \
+    && make \
     && make install \
     && cd .. \
     && rm -rf cmake-3.12.3 \
