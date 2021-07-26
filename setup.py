@@ -60,7 +60,7 @@ def cpp_flag(compiler):
     The newer version is prefered over c++11 (when it is available).
     '''
     flags = ['-std=c++17', '-std=c++14', '-std=c++11']
-    #flags = ['-std=c++1y']
+    #flags = ['-std=c++14']
     
     for flag in flags:
         if has_flag(compiler, flag):
@@ -213,7 +213,7 @@ class BuildExt(build_ext):
         link_opts = self.l_opts.get(ct, [])
         
         opts.append('-Wno-register')
-        opts.append('-std=c++1y')
+        opts.append('-std=c++14')
         opts.append('-O3') # Add it here as well, in case of Windows installation
         
         if sys.platform == 'darwin':
@@ -254,7 +254,7 @@ ext_modules = [
             '/usr/local/lib',
         ],
         libraries=['armadillo', 'omp'],
-        language='c++1y',
+        language='c++14',
         extra_compile_args=['-static-libstdc++'],
     ),
 ]
