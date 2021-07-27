@@ -2,10 +2,10 @@
 cd "${0%/*}/../.."
 echo 'Running tests'
 
-python3 tests/test_push.py
+python3 tests/test_commit.py
 if [ $? -ne 0 ]; then
-	echo 'Aborting push (Attempting to push a repository where the test suite fails)'
-	echo 'Bypass with git push --no-verify'
+	echo 'Aborting commit (Attempting to commit a repository where the test suite fails)'
+	echo 'Bypass with git commit --no-verify'
 	exit 1
 fi
 
