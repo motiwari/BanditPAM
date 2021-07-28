@@ -136,12 +136,6 @@ def check_armadillo_install_linux():
     return output.decode().strip()
 
 
-def check_carma_install_linux():
-    if not os.path.exists(os.path.join('usr', 'local', 'include', 'carma')):
-        raise Exception("Error: carma does not appear to be installed. \
-            Did you build it from %s ?" % (os.path.join('BanditPAM', 'headers', 'carma', 'third_party', 'armadillo-code')))
-
-
 def check_linux_package_installation(pkg_name):
     cmd = ['dpkg', '-s', pkg_name]
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
@@ -183,9 +177,6 @@ def install_check_linux():
     # Check armadillo is installed
     check_armadillo_install_linux()
 
-    # Check carma is installed
-    check_carma_install_linux()
-    
 class BuildExt(build_ext):
     '''
     A custom build extension for adding compiler-specific options.
