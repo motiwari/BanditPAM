@@ -8,6 +8,7 @@ import os
 import tempfile
 import setuptools
 import subprocess
+import platform
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
@@ -148,7 +149,7 @@ def check_linux_package_installation(pkg_name):
     return output.decode().strip()
 
 
-def install_check_linux():
+def install_check_ubuntu():
     # Make sure linux packages are installed
     dependencies = [
         'build-essential',
@@ -177,6 +178,12 @@ def install_check_linux():
     # Check armadillo is installed
     check_armadillo_install_linux()
 
+def is_ubuntu():
+    cmd = ['cat', '/etc/issue']
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    output, _error = process.communicate()
+    return 'Ubuntu' in output.decode()
+
 class BuildExt(build_ext):
     '''
     A custom build extension for adding compiler-specific options.
@@ -197,7 +204,8 @@ class BuildExt(build_ext):
         c_opts['unix'] += darwin_opts
         l_opts['unix'] += darwin_opts
     elif sys.platform == 'linux' or sys.platform =='linux2':
-        install_check_linux()
+        if is_ubuntu():
+            install_check_ubuntu()
 
         linux_opts = ['-O3']
         c_opts['unix'] += linux_opts
