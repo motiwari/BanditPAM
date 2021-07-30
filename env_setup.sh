@@ -27,8 +27,21 @@ mkdir -p data
 [[ ! -f ./data/MNIST-70k.csv ]] && "Downloading full MNIST..." && download http://web.stanford.edu/~ericsf/MNIST-70k.csv ./data/MNIST-70k.csv
 
 ######### Run scripts #########
-echo "Running build_docker.sh"
-sh ./build_docker.sh
-echo "Running install-hooks.sh"
-sh scripts/install-hooks.sh
+
+if [[ "$(docker images -q banditpam/cpp:latest 2> /dev/null)" == "" ]]; then
+  echo "Running build_docker.sh"
+  sh ./build_docker.sh
+else
+  echo "Docker image banditpam/cpp:latest already exists. Skipping execution of build_docker.sh."
+fi
+
+GIT_DIR=$(git rev-parse --git-dir)
+
+if [[ -f $GIT_DIR/hooks/pre-push && -f $GIT_DIR/hooks/pre-commit ]]; then
+   echo "Hooks already exist. Skipping execution of scripts/install-hooks.sh."
+else
+   echo "Runnin install-hooks.sh"
+   sh scripts/install-hooks.sh
+fi
+
 echo "Done"
