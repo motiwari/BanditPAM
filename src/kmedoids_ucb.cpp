@@ -275,7 +275,7 @@ void KMedoids::fit_naive(arma::mat input_data) {
   bool medoidChange = true;
   while (i < max_iter && medoidChange) {
     auto previous(medoid_indices);
-    // runs swa step as necessary
+    // runs swap step as necessary
     KMedoids::swap_naive(data, medoid_indices, assignments);
     medoidChange = arma::any(medoid_indices != previous);
     i++;
@@ -329,10 +329,10 @@ void KMedoids::build_naive(
         best = i;
       }
     }
-    // updates the medoid index for that of lowest cost.
+    // update the medoid index for that of lowest cost
     medoid_indices(k) = best;
 
-    // updates the best distance with this medoid 
+    // update the medoid assignment and best_distance for this datapoint
     for (size_t l = 0; l < N; l++) {
         double cost = (this->*lossFn)(data, l, medoid_indices(k));
         if (cost < best_distances(l)) {
@@ -402,8 +402,10 @@ void KMedoids::swap_naive(
           if (best_distances(j) < cost) {
             cost = best_distances(j);
           }
-        } else if (second_distances(j) < cost) {
+        } else {
+          if (second_distances(j) < cost) {
           cost = second_distances(j);
+          }
         } 
         total += cost;
       }

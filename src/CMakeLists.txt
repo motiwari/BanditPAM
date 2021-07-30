@@ -3,6 +3,7 @@ include_directories(${PROJECT_SOURCE_DIR}/headers/carma)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma/carma)
+include_directories(/Users/thomascheung/opt/anaconda3/pkgs/python-3.8.5-h26836e1_1/include/python3.8)
 
 add_executable(BanditPAM main.cpp)
 
