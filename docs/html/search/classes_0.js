@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['kmedoids',['KMedoids',['../classKMedoids.html',1,'']]],
-  ['kmedswrapper',['KMedsWrapper',['../classKMedsWrapper.html',1,'']]]
+  ['kmedoids_79',['KMedoids',['../classKMedoids.html',1,'']]],
+  ['kmedoidswrapper_80',['KMedoidsWrapper',['../classKMedoidsWrapper.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nmedoids',['nMedoids',['../classKMedoids.html#a2de8fdd200f9963c3cf9e1f824d1af7b',1,'KMedoids']]]
+  ['n_5fmedoids_54',['n_medoids',['../classKMedoids.html#a3365e728fd524c0be2fbab0b58e3a4cd',1,'KMedoids']]]
 ];
