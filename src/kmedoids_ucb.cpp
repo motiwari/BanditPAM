@@ -12,6 +12,20 @@
 #include <unordered_map>
 #include <regex>
 //#include <sstream>
+#include <signal.h>
+
+/**
+ *  \brief Kills the process.
+ * 
+ * Check whether ctrl+c signal is received.
+ * If signal is received it kilss the process.
+ */
+ 
+void signal_callback_handler(int signum) {
+   std::cout << "Caught signal " << signum << std::endl;
+   // Terminate program
+   exit(signum);
+}
 
 /**
  *  \brief Class implementation for running KMedoids methods.
@@ -35,6 +49,7 @@ KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
        verbosity(verbosity),
        logFilename(logFilename) {
   KMedoids::checkAlgorithm(algorithm);
+  signal(SIGINT, signal_callback_handler);
 }
 
 /**
@@ -43,6 +58,7 @@ KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
  *  Destructor for the KMedoids class.
  */
 KMedoids::~KMedoids() {;}
+
 
 /**
  *  \brief Checks whether algorithm input is valid
@@ -242,7 +258,7 @@ void KMedoids::setLogFilename(std::string new_lname) {
  * @param input_data Input data to find the medoids of
  * @param loss The loss function used during medoid computation
  */
-void KMedoids::fit(arma::mat input_data, std::string loss) {
+void KMedoids::fit(arma::mat input_data, std::string loss) { 
   KMedoids::setLossFn(loss);
   (this->*fitFn)(input_data);
   if (verbosity > 0) {
