@@ -58,7 +58,6 @@ KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
  */
 KMedoids::~KMedoids() {;}
 
-
 /**
  *  \brief Checks whether algorithm input is valid
  *
@@ -257,7 +256,7 @@ void KMedoids::setLogFilename(std::string new_lname) {
  * @param input_data Input data to find the medoids of
  * @param loss The loss function used during medoid computation
  */
-void KMedoids::fit(arma::mat input_data, std::string loss) { 
+void KMedoids::fit(arma::mat input_data, std::string loss) {
   KMedoids::setLossFn(loss);
   (this->*fitFn)(input_data);
   if (verbosity > 0) {
