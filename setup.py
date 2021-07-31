@@ -143,7 +143,9 @@ class BuildExt(build_ext):
 ext_modules = [
     Extension(
         'BanditPAM',
-        sorted([os.path.join('src', 'kmedoids_ucb.cpp'),
+        sorted([os.path.join('src', 'kmedoids_algorithm.cpp'),
+                os.path.join('src', 'pam.cpp'),
+                os.path.join('src', 'banditpam.cpp'),
                 os.path.join('src', 'kmeds_pywrapper.cpp')]),
         include_dirs=[
             get_pybind_include(),
@@ -189,5 +191,5 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    headers=[os.path.join('headers', 'kmedoids_ucb.hpp')],
+    headers=[os.path.join('headers', 'kmedoids_algorithm.hpp')],
 )
