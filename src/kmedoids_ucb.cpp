@@ -17,13 +17,12 @@
 /**
  *  \brief Kills the process.
  * 
- * Check whether ctrl+c signal is received.
- * If signal is received it kilss the process.
+ *  Terminates the process if ctrl+c signal is received
+ * 
  */
  
 void signal_callback_handler(int signum) {
    std::cout << "Caught signal " << signum << std::endl;
-   // Terminate program
    exit(signum);
 }
 
