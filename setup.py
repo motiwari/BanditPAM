@@ -271,7 +271,7 @@ else: # OSX
 ext_modules = [
     Extension(
         'BanditPAM',
-        [os.path.join('src', 'kmeds_pywrapper.cpp'), os.path.join('src', 'kmedoids_ucb.cpp')],
+        [os.path.join('src', 'kmedoids_pywrapper.cpp'), os.path.join('src', 'kmedoids_ucb.cpp')],
         include_dirs=include_dirs,
         library_dirs=[
             '/usr/local/lib',
