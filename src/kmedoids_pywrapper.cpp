@@ -7,7 +7,7 @@
  *
  */
 
-#include "kmedoids_ucb.hpp"
+#include "kmedoids_algorithm.hpp"
 
 #include <carma.h>
 #include <armadillo>
