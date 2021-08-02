@@ -25,6 +25,7 @@
  *  @param verbosity Verbosity of the algorithm, 0 will have no log file
  *  emitted, 1 will emit a log file
  *  @param max_iter The maximum number of iterations the algorithm runs for
+<<<<<<< HEAD
  *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
  *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
  *  @param logFilename The name of the output log file
@@ -32,12 +33,21 @@
 KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
                    int max_iter, int buildConfidence, int swapConfidence,
                    std::string logFilename
+=======
+ *  @param logFilename The name of the output log file
+ */
+KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
+                                          int max_iter, std::string logFilename
+>>>>>>> 46cbb27 (resolve conflicts in restructuring the script. Fixes #22)
     ): n_medoids(n_medoids),
        algorithm(algorithm),
        max_iter(max_iter),
        verbosity(verbosity),
+<<<<<<< HEAD
        buildConfidence(buildConfidence),
        swapConfidence(swapConfidence),
+=======
+>>>>>>> 46cbb27 (resolve conflicts in restructuring the script. Fixes #22)
        logFilename(logFilename) {
   KMedoids::checkAlgorithm(algorithm);
 }
@@ -217,6 +227,7 @@ void KMedoids::setMaxIter(int new_max) {
 }
 
 /**
+<<<<<<< HEAD
  *  \brief Returns the constant buildConfidence 
  *
  *  Returns the constant that affects the sensitivity of build confidence bounds 
@@ -261,6 +272,8 @@ void KMedoids::setswapConfidence(int new_swapConfidence) {
 }
 
 /**
+=======
+>>>>>>> 46cbb27 (resolve conflicts in restructuring the script. Fixes #22)
  *  \brief Returns the log filename for KMedoids
  *
  *  Returns the name of the logfile that will be output at the end of
@@ -293,7 +306,10 @@ void KMedoids::setLogFilename(std::string new_lname) {
  */
 void KMedoids::fit(arma::mat input_data, std::string loss) {
   KMedoids::setLossFn(loss);
+<<<<<<< HEAD
   KMedoids::checkAlgorithm(algorithm);
+=======
+>>>>>>> 46cbb27 (resolve conflicts in restructuring the script. Fixes #22)
   (this->*fitFn)(input_data);
   if (verbosity > 0) {
       logHelper.init(logFilename);
