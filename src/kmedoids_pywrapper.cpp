@@ -126,17 +126,21 @@ PYBIND11_MODULE(BanditPAM, m) {
   m.def("set_num_threads", &omp_set_num_threads, "Set the maximum number of threads");
   m.def("sum_thread_ids", &sum_thread_ids, "Adds the ids of threads; used only for debugging");
   py::class_<KMedoidsWrapper>(m, "KMedoids")
-      .def(py::init<int, std::string, int, int, std::string>(),
+      .def(py::init<int, std::string, int, int, int, int, std::string>(),
         py::arg("n_medoids") = NULL,
         py::arg("algorithm") = "BanditPAM",
         py::arg("verbosity") = 0,
         py::arg("maxIter") = 1000,
+        py::arg("buildConfidence") = 1000,
+        py::arg("swapConfidence") = 10000,
         py::arg("logFilename") = "KMedoidsLogfile"
       )
       .def_property("n_medoids", &KMedoidsWrapper::getNMedoids, &KMedoidsWrapper::setNMedoids)
       .def_property("algorithm", &KMedoidsWrapper::getAlgorithm, &KMedoidsWrapper::setAlgorithm)
       .def_property("verbosity", &KMedoidsWrapper::getVerbosity, &KMedoidsWrapper::setVerbosity)
       .def_property("maxIter", &KMedoidsWrapper::getMaxIter, &KMedoidsWrapper::setMaxIter)
+      .def_property("buildConfidence", &KMedoidsWrapper::getbuildConfidence, &KMedoidsWrapper::setbuildConfidence)
+      .def_property("swapConfidence", &KMedoidsWrapper::getswapConfidence, &KMedoidsWrapper::setswapConfidence)
       .def_property("logFilename", &KMedoidsWrapper::getLogfileName, &KMedoidsWrapper::setLogFilename)
       .def_property_readonly("medoids", &KMedoidsWrapper::getMedoidsFinalPython)
       .def_property_readonly("build_medoids", &KMedoidsWrapper::getMedoidsBuildPython)
