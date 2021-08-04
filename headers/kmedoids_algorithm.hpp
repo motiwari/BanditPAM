@@ -125,11 +125,14 @@ struct LogHelper {
  *  @param verbosity Verbosity of the algorithm, 0 will have no log file
  *  emitted, 1 will emit a log file
  *  @param maxIter The maximum number of iterations the algorithm runs for
+ *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
+ *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
  *  @param logFilename The name of the output log file
  */
 class KMedoids {
   public:
-    KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000, std::string logFilename = "KMedoidsLogfile");
+    KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000,
+             int buildConfidence =  1000, int swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
     
     ~KMedoids();
 
@@ -162,6 +165,14 @@ class KMedoids {
     int getMaxIter();
 
     void setMaxIter(int new_max);
+
+    int getbuildConfidence();
+
+    void setbuildConfidence(int new_buildConfidence);
+
+    int getswapConfidence();
+
+    void setswapConfidence(int new_swapConfidence);
 
     std::string getLogfileName();
 
@@ -279,9 +290,9 @@ class KMedoids {
     int steps; ///< number of actual swap iterations taken by the algorithm
 
     // Hyperparameters
-    static const size_t buildConfidence = 1000; ///< constant that affects the sensitivity of build confidence bounds
+    int buildConfidence; ///< constant that affects the sensitivity of build confidence bounds
 
-    static const size_t swapConfidence = 10000; ///< constant that affects the sensitiviy of swap confidence bounds
+    int swapConfidence; ///< constant that affects the sensitiviy of swap confidence bounds
 
     const double precision = 0.001; ///< bound for double comparison precision
 

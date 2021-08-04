@@ -27,6 +27,8 @@ int main(int argc, char* argv[])
     int prev_ind;
     int verbosity = 0;
     int max_iter = 1000;
+    int buildConfidence = 1000;
+    int swapConfidence = 10000;
     std::string loss = "2";
     bool f_flag = false;
     bool k_flag = false;
@@ -87,7 +89,7 @@ int main(int argc, char* argv[])
     arma::uword n = data.n_cols;
     arma::uword d = data.n_rows;
 
-    KMedoids kmed(k, "BanditPAM", verbosity, max_iter, log_file_name);
+    KMedoids kmed(k, "BanditPAM", verbosity, max_iter, buildConfidence, swapConfidence, log_file_name);
     kmed.fit(data, loss);
 
     if (verbosity > 0) {

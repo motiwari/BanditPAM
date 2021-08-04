@@ -25,14 +25,19 @@
  *  @param verbosity Verbosity of the algorithm, 0 will have no log file
  *  emitted, 1 will emit a log file
  *  @param max_iter The maximum number of iterations the algorithm runs for
+ *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
+ *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
  *  @param logFilename The name of the output log file
  */
 KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
-                                          int max_iter, std::string logFilename
+                   int max_iter, int buildConfidence, int swapConfidence,
+                   std::string logFilename
     ): n_medoids(n_medoids),
        algorithm(algorithm),
        max_iter(max_iter),
        verbosity(verbosity),
+       buildConfidence(buildConfidence),
+       swapConfidence(swapConfidence),
        logFilename(logFilename) {
   KMedoids::checkAlgorithm(algorithm);
 }
@@ -212,6 +217,50 @@ void KMedoids::setMaxIter(int new_max) {
 }
 
 /**
+ *  \brief Returns the constant buildConfidence 
+ *
+ *  Returns the constant that affects the sensitivity of build confidence bounds 
+ *  that can be run during KMedoids::fit
+ */
+int KMedoids::getbuildConfidence() {
+  return buildConfidence;
+}
+
+/**
+ *  \brief Sets the constant buildConfidence
+ *
+ *  Sets the constant that affects the sensitivity of build confidence bounds 
+ *  that can be run during KMedoids::fit
+ *
+ *  @param new_buildConfidence New buildConfidence 
+ */
+void KMedoids::setbuildConfidence(int new_buildConfidence) {
+  buildConfidence = new_buildConfidence;
+}
+
+/**
+ *  \brief Returns the constant swapConfidence 
+ *
+ *  Returns the constant that affects the sensitivity of swap confidence bounds 
+ *  that can be run during KMedoids::fit
+ */
+int KMedoids::getswapConfidence() {
+  return swapConfidence;
+}
+
+/**
+ *  \brief Sets the constant swapConfidence
+ *
+ *  Sets the constant that affects the sensitivity of swap confidence bounds
+ *  that can be run during KMedoids::fit
+ *
+ *  @param new_swapConfidence New swapConfidence 
+ */
+void KMedoids::setswapConfidence(int new_swapConfidence) {
+  swapConfidence = new_swapConfidence;
+}
+
+/**
  *  \brief Returns the log filename for KMedoids
  *
  *  Returns the name of the logfile that will be output at the end of
@@ -244,6 +293,7 @@ void KMedoids::setLogFilename(std::string new_lname) {
  */
 void KMedoids::fit(arma::mat input_data, std::string loss) {
   KMedoids::setLossFn(loss);
+  KMedoids::checkAlgorithm(algorithm);
   (this->*fitFn)(input_data);
   if (verbosity > 0) {
       logHelper.init(logFilename);
