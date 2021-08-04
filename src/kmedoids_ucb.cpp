@@ -12,6 +12,19 @@
 #include <unordered_map>
 #include <regex>
 //#include <sstream>
+#include <signal.h>
+
+/**
+ *  \brief Kills the process.
+ * 
+ *  Terminates the process if ctrl+c signal is received
+ * 
+ */
+ 
+void signal_callback_handler(int signum) {
+   std::cout << "Caught signal " << signum << std::endl;
+   exit(signum);
+}
 
 /**
  *  \brief Class implementation for running KMedoids methods.
@@ -35,6 +48,7 @@ KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
        verbosity(verbosity),
        logFilename(logFilename) {
   KMedoids::checkAlgorithm(algorithm);
+  signal(SIGINT, signal_callback_handler);
 }
 
 /**
