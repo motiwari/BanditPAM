@@ -5,7 +5,7 @@ include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma_bits)
 
 add_executable(BanditPAM main.cpp)
 
-add_library(BanditPAM_LIB kmedoids_algorithm.cpp pam.cpp banditpam.cpp)
+add_library(BanditPAM_LIB kmedoids_algorithm.cpp pam.cpp banditpam.cpp fastpam1.cpp)
 target_link_libraries(BanditPAM PUBLIC BanditPAM_LIB)
 
 find_package(OpenMP REQUIRED)

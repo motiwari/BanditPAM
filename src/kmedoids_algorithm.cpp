@@ -61,6 +61,8 @@ void km::KMedoids::checkAlgorithm(const std::string& algorithm) {
     fitFn = &km::KMedoids::fit_bpam;
   } else if (algorithm == "naive") {
     fitFn = &km::KMedoids::fit_naive;
+  } else if (algorithm == "FastPAM1") {
+    fitFn = &km::KMedoids::fit_fastpam1;
   } else {
     throw "unrecognized algorithm";
   }

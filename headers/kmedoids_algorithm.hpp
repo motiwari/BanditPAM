@@ -94,10 +94,16 @@ namespace km {
     private:
       // The functions below are PAM's constituent functions
       void fit_bpam(const arma::mat& inputData);
+    
+      void fit_fastpam1(const arma::mat& inputData);
 
       void fit_naive(const arma::mat& inputData); // pass by ref? (and above)
 
       void build_naive(const arma::mat& data, arma::rowvec& medoidIndices);
+
+      void build_fastpam1(const arma::mat& data, arma::rowvec& medoidIndices);
+
+      void swap_fastpam1(const arma::mat& data, arma::rowvec& medoidIndices, arma::rowvec& assignments);
 
       void swap_naive(const arma::mat& data, arma::rowvec& medoidIndices, arma::rowvec& assignments);
 
