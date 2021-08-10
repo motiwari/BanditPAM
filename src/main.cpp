@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <exception>
 #include <regex>
+#include <filesystem>
 
 int main(int argc, char* argv[])
 {   
@@ -78,7 +79,9 @@ int main(int argc, char* argv[])
         throw std::invalid_argument("error: Must specify input file via -f flag");
       } else if (!k_flag) {
         throw std::invalid_argument("error: Must specify number of clusters via -k flag");
-      } 
+      } else if (!std::filesystem::exists(input_name)) {
+        throw std::invalid_argument("error: The file does not exist");
+      }
     } catch (std::invalid_argument& e) {
       std::cout << e.what() << std::endl;
       return ARGUMENT_ERROR_CODE;
