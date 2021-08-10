@@ -43,8 +43,10 @@ RUN cd /home/armadillo-code \
     && cd .. \
     && rm -rf armadillo-code
 
-RUN cd /home/carma \
-    && git checkout unstable \
+RUN yum -y install git-all \
+    && export PATH=/usr/local/libexec/git-core:$PATH \
+    &&  cd /home/carma \
+    && git checkout 502ab50 \
     && git submodule update --init \
     && mkdir build \
     && cd build \
