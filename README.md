@@ -199,4 +199,4 @@ Mo Tiwari wrote the original Python implementation of BanditPAM and now maintain
 
 James Mayclin developed the initial C++ implementation of BanditPAM.
 
-
+We would like to thank Max Horton for helpful guidance regarding the C++ implementation.
