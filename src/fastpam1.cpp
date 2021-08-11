@@ -1,9 +1,15 @@
+#ifndef FASTPAM1_C_
+#define FASTPAM1_C_
+
 /**
  * @file fastpam1.cpp
  * @date 2021-08-03
  *
- * This file contains the primary C++ implementation of the FastPAM1 code.
- *
+ * This file contains the primary C++ implementation of the FastPAM1 code follows 
+ * from the paper: Erich Schubert, Peter J. Rousseeuw: Faster k-Medoids Clustering: 
+ * Improving the PAM, CLARA, and CLARANS Algorithms. The paper can be assessed at
+ * https://arxiv.org/pdf/1810.05691.pdf 
+ * 
  */
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
@@ -18,13 +24,12 @@
  *
  * Run the naive FastPAM1 algorithm to identify a dataset's medoids.
  *
- * @param input_data Input data to find the medoids of
+ * @param input_data Input data to cluster
  */
 void km::KMedoids::fit_fastpam1(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::rowvec medoid_indices(n_medoids);
-  // runs build step
   km::KMedoids::build_fastpam1(data, medoid_indices);
   steps = 0;
   medoid_indices_build = medoid_indices;
@@ -32,8 +37,7 @@ void km::KMedoids::fit_fastpam1(const arma::mat& input_data) {
   size_t iter = 0;
   bool medoidChange = true;
   while (iter < max_iter && medoidChange) {
-    auto previous(medoid_indices);
-    // runs swap step as necessary
+    auto previous{medoid_indices};
     km::KMedoids::swap_fastpam1(data, medoid_indices, assignments);
     medoidChange = arma::any(medoid_indices != previous);
     iter++;
@@ -50,7 +54,7 @@ void km::KMedoids::fit_fastpam1(const arma::mat& input_data) {
  * checks its distance from every other datapoint in the dataset, then checks if
  * the total cost is less than that of the medoid (if a medoid exists yet).
  *
- * @param data Transposed input data to find the medoids of
+ * @param data Transposed input data to cluster
  * @param medoid_indices Uninitialized array of medoids that is modified in place
  * as medoids are identified
  */
@@ -69,7 +73,7 @@ void km::KMedoids::build_fastpam1(
     double minDistance = std::numeric_limits<double>::infinity();
     int best = 0;
     km::KMedoids::build_sigma(
-           data, best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
+           data, best_distances, sigma, batchSize, use_absolute); 
     // fixes a base datapoint
     for (int i = 0; i < data.n_cols; i++) {
       double total = 0;
@@ -87,7 +91,6 @@ void km::KMedoids::build_fastpam1(
         best = i;
       }
     }
-    // update the medoid index for that of lowest cost
     medoid_indices(k) = best;
 
     // update the medoid assignment and best_distance for this datapoint
@@ -109,10 +112,12 @@ void km::KMedoids::build_fastpam1(
  * \brief Swap step for the FastPAM1 algorithm
  *
  * Runs swap step for the FastPAM1 algorithm. Loops over all datapoint and
- * checks its distance from every other datapoint in the dataset, then checks if
- * the total cost is less than that of the medoid.
+ * compute the loss change when a medoid is replaced by the datapoint. The 
+ * loss change is stored in an array of size n_medoids and the update is 
+ * based on an if conditional outside of the loop. The best medoid is chosen
+ * according to the best loss change. 
  *
- * @param data Transposed input data to find the medoids of
+ * @param data Transposed input data to cluster
  * @param medoid_indices Array of medoid indices created from the build step
  * that is modified in place as better medoids are identified
  * @param assignments Uninitialized array of indices corresponding to each
@@ -123,7 +128,7 @@ void km::KMedoids::swap_fastpam1(
   arma::rowvec& medoid_indices,
   arma::rowvec& assignments)
 {
-  double bestChange = 0; // best loss change 
+  double bestChange = 0; 
   double minDistance = std::numeric_limits<double>::infinity();
   size_t best = 0;
   size_t medoid_to_swap = 0;
@@ -154,7 +159,6 @@ void km::KMedoids::swap_fastpam1(
       delta_td.fill(-di);
       for (size_t j = 0; j < data.n_cols; j++) {
           if (j != i) {
-              // compute distance to new medoid
               double dij = (this->*lossFn)(data, i, j);
               // update loss change for the current 
               if (dij < second_distances(j)) {
@@ -192,3 +196,5 @@ void km::KMedoids::swap_fastpam1(
   logHelper.p_swap.push_back((float)1/(float)p);
   logHelper.comp_exact_swap.push_back(N*n_medoids);
 }
+
+#endif // FASTPAM1_C_
