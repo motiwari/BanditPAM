@@ -249,9 +249,9 @@ if sys.platform == 'linux' or sys.platform == 'linux2':
             get_pybind_include(),
             get_numpy_include(),
             'headers',
+            'headers/carma/include/carma_bits',
+            'headers/carma/include',
             '/usr/local/include',
-            '/usr/local/include/carma',
-            '/usr/local/include/carma/carma',
         ]
     # We assume that if the user is on linux, then they are building with gcc
     libraries=['armadillo', 'gomp']

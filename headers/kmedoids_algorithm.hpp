@@ -3,7 +3,7 @@
 
 #include "log_helper.hpp"
 
-#include <carma.h>
+#include <carma>
 #include <armadillo>
 #include <vector>
 #include <fstream>

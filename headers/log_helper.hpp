@@ -1,7 +1,7 @@
 #ifndef LOG_HELPER_H_
 #define LOG_HELPER_H_
 
-#include <carma.h>
+#include <carma>
 #include <armadillo>
 #include <vector>
 #include <fstream>

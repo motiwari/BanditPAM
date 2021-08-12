@@ -8,7 +8,7 @@
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
 
-#include <carma.h>
+#include <carma>
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
