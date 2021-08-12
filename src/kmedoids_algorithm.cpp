@@ -102,7 +102,7 @@ arma::rowvec KMedoids::getLabels() {
  *  Returns the number of SWAP steps completed during the last call to
  *  KMedoids::fit
  */
-int KMedoids::getSteps() {
+size_t KMedoids::getSteps() {
   return steps;
 }
 
@@ -140,7 +140,7 @@ void KMedoids::setLossFn(std::string loss) {
  *
  *  Returns the number of medoids to be identified during KMedoids::fit
  */
-int KMedoids::getNMedoids() {
+size_t KMedoids::getNMedoids() {
   return n_medoids;
 }
 
@@ -149,7 +149,7 @@ int KMedoids::getNMedoids() {
  *
  *  Sets the number of medoids to be identified during KMedoids::fit
  */
-void KMedoids::setNMedoids(int new_num) {
+void KMedoids::setNMedoids(size_t new_num) {
   n_medoids = new_num;
 }
 
@@ -179,7 +179,7 @@ void KMedoids::setAlgorithm(std::string new_alg) {
  *  Returns the verbosity used during KMedoids::fit, with 0 not creating a
  *  logfile, and >0 creating a detailed logfile.
  */
-int KMedoids::getVerbosity() {
+size_t KMedoids::getVerbosity() {
   return verbosity;
 }
 
@@ -191,7 +191,7 @@ int KMedoids::getVerbosity() {
  *
  *  @param new_ver New verbosity to use
  */
-void KMedoids::setVerbosity(int new_ver) {
+void KMedoids::setVerbosity(size_t new_ver) {
   verbosity = new_ver;
 }
 
@@ -201,7 +201,7 @@ void KMedoids::setVerbosity(int new_ver) {
  *  Returns the maximum number of iterations that can be run during
  *  KMedoids::fit
  */
-int KMedoids::getMaxIter() {
+size_t KMedoids::getMaxIter() {
   return max_iter;
 }
 
@@ -212,7 +212,7 @@ int KMedoids::getMaxIter() {
  *
  *  @param new_max New maximum number of iterations to use
  */
-void KMedoids::setMaxIter(int new_max) {
+void KMedoids::setMaxIter(size_t new_max) {
   max_iter = new_max;
 }
 
