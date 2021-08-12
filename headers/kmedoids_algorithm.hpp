@@ -35,7 +35,7 @@ struct LogHelper {
      *
      *  @param input_filename Filename that log will be saved as.
      */
-    void init(std::string input_filename = "KMedoidsLogfile") {
+    void init(const std::string& input_filename = "KMedoidsLogfile") {
       hlogFile.open(input_filename);
     }
 
@@ -54,7 +54,7 @@ struct LogHelper {
      *  @param key Key for json-ified output structure
      *  @param vec Vector to be iterated across when writing line
      */
-    void writeSummaryLine(std::string key, arma::rowvec vec) {
+    void writeSummaryLine(const std::string& key, arma::rowvec vec) {
       hlogFile << key << ':';
       for (size_t i = 0; i < vec.n_cols; i++) {
         if (i == (vec.n_cols - 1)) {
@@ -73,7 +73,7 @@ struct LogHelper {
      *  @param vec Vector to be iterated across when writing logstring line
      */
     template <typename T>
-    void writeLogStringLine(std::string key, std::vector<T> vec) {
+    void writeLogStringLine(const std::string& key, std::vector<T> vec) {
       hlogFile << "\t\t:" << key << '\n';
       for (size_t i = 0; i < vec.size(); i++) {
         hlogFile << "\t\t\t\t" << i << ": " << vec.at(i) << '\n';
@@ -93,7 +93,7 @@ struct LogHelper {
      *  @param steps Number of swap steps.
      *  @param loss Final loss of the KMedoids object.
      */
-    void writeProfile(arma::rowvec b_medoids, arma::rowvec f_medoids, size_t steps, double loss) {
+    void writeProfile(const arma::rowvec& b_medoids, const arma::rowvec& f_medoids, size_t steps, double loss) {
       writeSummaryLine("Built", b_medoids);
       writeSummaryLine("Swapped", f_medoids);
       hlogFile << "Num Swaps: " << steps << '\n';
@@ -139,7 +139,7 @@ struct key_hash : public std::unary_function<key_t_bpam, double>
 
 class KMedoids {
   public:
-    KMedoids(size_t n_medoids = 5, std::string algorithm = "BanditPAM", size_t verbosity = 0, size_t max_iter = 1000,
+    KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t verbosity = 0, size_t max_iter = 1000,
              size_t buildConfidence =  1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
     
     ~KMedoids();
