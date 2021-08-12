@@ -130,7 +130,7 @@ struct LogHelper {
  *  @param logFilename The name of the output log file
  */
 
-typedef std::tuple<int, int> key_t_bpam;
+typedef std::tuple<size_t, size_t> key_t_bpam;
 
 struct key_hash : public std::unary_function<key_t_bpam, double>
 {
@@ -139,8 +139,8 @@ struct key_hash : public std::unary_function<key_t_bpam, double>
 
 class KMedoids {
   public:
-    KMedoids(int n_medoids = 5, std::string algorithm = "BanditPAM", int verbosity = 0, int max_iter = 1000,
-             int buildConfidence =  1000, int swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
+    KMedoids(size_t n_medoids = 5, std::string algorithm = "BanditPAM", size_t verbosity = 0, size_t max_iter = 1000,
+             size_t buildConfidence =  1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
     
     ~KMedoids();
 
@@ -177,13 +177,13 @@ class KMedoids {
 
     void setMaxIter(size_t new_max);
 
-    int getbuildConfidence();
+    size_t getbuildConfidence();
 
-    void setbuildConfidence(int new_buildConfidence);
+    void setbuildConfidence(size_t new_buildConfidence);
 
-    int getswapConfidence();
+    size_t getswapConfidence();
 
-    void setswapConfidence(int new_swapConfidence);
+    void setswapConfidence(size_t new_swapConfidence);
 
     std::string getLogfileName();
 
@@ -265,14 +265,14 @@ class KMedoids {
     // Loss functions
     double wrappedLossFn(arma::mat& data, size_t i, size_t j, bool use_cache);
 
-    int lp;
-    double LP(arma::mat& data, int i, int j) const;
+    size_t lp;
+    double LP(arma::mat& data, size_t i, size_t j) const;
 
-    double LINF(arma::mat& data, int i, int j) const;
+    double LINF(arma::mat& data, size_t i, size_t j) const;
 
-    double cos(arma::mat& data, int i, int j) const;
+    double cos(arma::mat& data, size_t i, size_t j) const;
 
-    double manhattan(arma::mat& data, int i, int j) const;
+    double manhattan(arma::mat& data, size_t i, size_t j) const;
 
     void checkAlgorithm(std::string algorithm);
 
@@ -296,7 +296,7 @@ class KMedoids {
 
     arma::rowvec medoid_indices_final; ///< medoids at the end of the swap step
 
-    double (KMedoids::*lossFn)(arma::mat& data, int i, int j) const; ///< loss function used during KMedoids::fit
+    double (KMedoids::*lossFn)(arma::mat& data, size_t i, size_t j) const; ///< loss function used during KMedoids::fit
 
     void (KMedoids::*fitFn)(arma::mat inputData); ///< function used for finding medoids (from algorithm)
 
@@ -305,9 +305,9 @@ class KMedoids {
     size_t steps; ///< number of actual swap iterations taken by the algorithm
 
     // Hyperparameters
-    int buildConfidence; ///< constant that affects the sensitivity of build confidence bounds
+    size_t buildConfidence; ///< constant that affects the sensitivity of build confidence bounds
 
-    int swapConfidence; ///< constant that affects the sensitiviy of swap confidence bounds
+    size_t swapConfidence; ///< constant that affects the sensitiviy of swap confidence bounds
 
     const double precision = 0.001; ///< bound for double comparison precision
 

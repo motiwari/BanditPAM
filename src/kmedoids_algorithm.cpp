@@ -29,8 +29,8 @@
  *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
  *  @param logFilename The name of the output log file
  */
-KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
-                   int max_iter, int buildConfidence, int swapConfidence,
+KMedoids::KMedoids(size_t n_medoids, std::string algorithm, size_t verbosity,
+                   size_t max_iter, size_t buildConfidence, size_t swapConfidence,
                    std::string logFilename
     ): n_medoids(n_medoids),
        algorithm(algorithm),
@@ -222,7 +222,7 @@ void KMedoids::setMaxIter(size_t new_max) {
  *  Returns the constant that affects the sensitivity of build confidence bounds 
  *  that can be run during KMedoids::fit
  */
-int KMedoids::getbuildConfidence() {
+size_t KMedoids::getbuildConfidence() {
   return buildConfidence;
 }
 
@@ -234,7 +234,7 @@ int KMedoids::getbuildConfidence() {
  *
  *  @param new_buildConfidence New buildConfidence 
  */
-void KMedoids::setbuildConfidence(int new_buildConfidence) {
+void KMedoids::setbuildConfidence(size_t new_buildConfidence) {
   buildConfidence = new_buildConfidence;
 }
 
@@ -244,7 +244,7 @@ void KMedoids::setbuildConfidence(int new_buildConfidence) {
  *  Returns the constant that affects the sensitivity of swap confidence bounds 
  *  that can be run during KMedoids::fit
  */
-int KMedoids::getswapConfidence() {
+size_t KMedoids::getswapConfidence() {
   return swapConfidence;
 }
 
@@ -256,7 +256,7 @@ int KMedoids::getswapConfidence() {
  *
  *  @param new_swapConfidence New swapConfidence 
  */
-void KMedoids::setswapConfidence(int new_swapConfidence) {
+void KMedoids::setswapConfidence(size_t new_swapConfidence) {
   swapConfidence = new_swapConfidence;
 }
 
@@ -517,21 +517,10 @@ double KMedoids::calc_loss(
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::LP(arma::mat& data, int i, int j) const {
+double KMedoids::LP(arma::mat& data, size_t i, size_t j) const {
     return arma::norm(data.col(i) - data.col(j), lp);
 }
 
-/**
- * \brief L2 loss
- *
- * Calculates the L2 loss between the datapoints at index i and j of the dataset
- *
- * @param i Index of first datapoint
- * @param j Index of second datapoint
- */
-//double KMedoids::L2(int i, int j) const {
-//    return arma::norm(data.col(i) - data.col(j), 2);
-//}
 
 /**
  * \brief cos loss
@@ -543,7 +532,7 @@ double KMedoids::LP(arma::mat& data, int i, int j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::cos(arma::mat& data, int i, int j) const {
+double KMedoids::cos(arma::mat& data, size_t i, size_t j) const {
     return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i))
                                                     * arma::norm(data.col(j)));
 }
@@ -558,7 +547,7 @@ double KMedoids::cos(arma::mat& data, int i, int j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::manhattan(arma::mat& data, int i, int j) const {
+double KMedoids::manhattan(arma::mat& data, size_t i, size_t j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
 
@@ -572,6 +561,6 @@ double KMedoids::manhattan(arma::mat& data, int i, int j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::LINF(arma::mat& data, int i, int j) const {
+double KMedoids::LINF(arma::mat& data, size_t i, size_t j) const {
     return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
