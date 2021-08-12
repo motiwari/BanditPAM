@@ -39,7 +39,7 @@ int sum_thread_ids() {
     sleep(3);
     #pragma omp critical
     sum += omp_get_thread_num();
-    std::cout << "Thread:" << omp_get_thread_num() << "\n";
+    // std::cout << "Thread:" << omp_get_thread_num() << "\n";
   }
   return sum;
 }

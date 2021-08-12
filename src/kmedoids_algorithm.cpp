@@ -56,12 +56,16 @@ double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool 
   if (!use_cache) {
     return (this->*lossFn)(data, i, j);
   }
-  
-  key_t_bpam key = std::make_tuple(i, j);
-  if (cache.find(key) == cache.end()){
-    cache[key] = (this->*lossFn)(data, i, j);
+
+  std::cout << "i" << i << "j" << j << "\n";
+  #pragma omp critical
+  {
+    key_t_bpam key = std::make_tuple(i, j);
+    if (cache.find(key) == cache.end()){
+      cache[key] = (this->*lossFn)(data, i, j);
+    }
+    return cache[key];
   }
-  return cache[key];
 }
 
 /**
