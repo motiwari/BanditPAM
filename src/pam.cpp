@@ -59,7 +59,7 @@ void KMedoids::build_naive(
   arma::rowvec& medoid_indices)
 { 
   size_t N = data.n_cols;
-  int p = (buildConfidence * N); // reciprocal
+  size_t p = (buildConfidence * N); // reciprocal
   bool use_absolute = true;
   arma::rowvec estimates(N, arma::fill::zeros);
   arma::rowvec best_distances(N);
@@ -67,11 +67,11 @@ void KMedoids::build_naive(
   arma::rowvec sigma(N); // standard deviation of induced losses on reference points
   for (size_t k = 0; k < n_medoids; k++) {
     double minDistance = std::numeric_limits<double>::infinity();
-    int best = 0;
+    size_t best = 0;
     KMedoids::build_sigma(
            data, best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
     // fixes a base datapoint
-    for (int i = 0; i < data.n_cols; i++) {
+    for (size_t i = 0; i < data.n_cols; i++) {
       double total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points
@@ -127,7 +127,7 @@ void KMedoids::swap_naive(
   size_t best = 0;
   size_t medoid_to_swap = 0;
   size_t N = data.n_cols;
-  int p = (N * n_medoids * swapConfidence); // reciprocal
+  size_t p = (N * n_medoids * swapConfidence); // reciprocal
   arma::mat sigma(n_medoids, N, arma::fill::zeros);
   arma::rowvec best_distances(N);
   arma::rowvec second_distances(N);

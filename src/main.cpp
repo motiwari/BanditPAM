@@ -23,13 +23,13 @@ int main(int argc, char* argv[])
 {   
     std::string input_name;
     std::string log_file_name = "KMedoidsLogfile";
-    int k;
+    size_t k;
     int opt;
     int prev_ind;
-    int verbosity = 0;
-    int max_iter = 1000;
-    int buildConfidence = 1000;
-    int swapConfidence = 10000;
+    size_t verbosity = 0;
+    size_t max_iter = 1000;
+    size_t buildConfidence = 1000;
+    size_t swapConfidence = 10000;
     std::string loss = "2";
     bool f_flag = false;
     bool k_flag = false;

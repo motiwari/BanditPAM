@@ -59,7 +59,7 @@ void KMedoids::build(
     size_t N = data.n_cols;
     arma::rowvec N_mat(N);
     N_mat.fill(N);
-    int p = (buildConfidence * N); // reciprocal of
+    size_t p = (buildConfidence * N); // reciprocal of
     bool use_absolute = true;
     arma::rowvec estimates(N, arma::fill::zeros);
     arma::rowvec best_distances(N);
@@ -207,7 +207,7 @@ void KMedoids::swap(
   arma::rowvec& assignments)
 {
     size_t N = data.n_cols;
-    int p = (N * n_medoids * swapConfidence); // reciprocal
+    size_t p = (N * n_medoids * swapConfidence); // reciprocal
 
     arma::mat sigma(n_medoids, N, arma::fill::zeros);
 
