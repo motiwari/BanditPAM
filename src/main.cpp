@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
     arma::uword n = data.n_cols;
     arma::uword d = data.n_rows;
 
-    KMedoids kmed(k, "BanditPAM", verbosity, max_iter, buildConfidence, swapConfidence, log_file_name);
+    km::KMedoids kmed(k, "BanditPAM", verbosity, max_iter, buildConfidence, swapConfidence, log_file_name);
     kmed.fit(data, loss);
 
     if (verbosity > 0) {

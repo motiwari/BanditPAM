@@ -20,12 +20,12 @@
  *
  * @param input_data Input data to find the medoids of
  */
-void KMedoids::fit_naive(const arma::mat& input_data) {
+void km::KMedoids::fit_naive(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::rowvec medoid_indices(n_medoids);
   // runs build step
-  KMedoids::build_naive(data, medoid_indices);
+  km::KMedoids::build_naive(data, medoid_indices);
   steps = 0;
 
   medoid_indices_build = medoid_indices;
@@ -35,7 +35,7 @@ void KMedoids::fit_naive(const arma::mat& input_data) {
   while (i < max_iter && medoidChange) {
     auto previous(medoid_indices);
     // runs swap step as necessary
-    KMedoids::swap_naive(data, medoid_indices, assignments);
+    km::KMedoids::swap_naive(data, medoid_indices, assignments);
     medoidChange = arma::any(medoid_indices != previous);
     i++;
   }
@@ -55,7 +55,7 @@ void KMedoids::fit_naive(const arma::mat& input_data) {
  * @param medoid_indices Uninitialized array of medoids that is modified in place
  * as medoids are identified
  */
-void KMedoids::build_naive(
+void km::KMedoids::build_naive(
   const arma::mat& data, 
   arma::rowvec& medoid_indices)
 { 
@@ -69,7 +69,7 @@ void KMedoids::build_naive(
   for (size_t k = 0; k < n_medoids; k++) {
     double minDistance = std::numeric_limits<double>::infinity();
     size_t best = 0;
-    KMedoids::build_sigma(
+    km::KMedoids::build_sigma(
            data, best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
     // fixes a base datapoint
     for (size_t i = 0; i < data.n_cols; i++) {
@@ -119,7 +119,7 @@ void KMedoids::build_naive(
  * @param assignments Uninitialized array of indices corresponding to each
  * datapoint assigned the index of the medoid it is closest to
  */
-void KMedoids::swap_naive(
+void km::KMedoids::swap_naive(
   const arma::mat& data, 
   arma::rowvec& medoid_indices,
   arma::rowvec& assignments)

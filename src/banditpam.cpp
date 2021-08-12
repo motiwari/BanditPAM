@@ -20,19 +20,19 @@
  *
  * @param input_data Input data to find the medoids of
  */
-void KMedoids::fit_bpam(const arma::mat& input_data) {
+void km::KMedoids::fit_bpam(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::mat medoids_mat(data.n_rows, n_medoids);
   arma::rowvec medoid_indices(n_medoids);
   // runs build step
-  KMedoids::build(data, medoid_indices, medoids_mat);
+  km::KMedoids::build(data, medoid_indices, medoids_mat);
   steps = 0;
 
   medoid_indices_build = medoid_indices;
   arma::rowvec assignments(data.n_cols);
   // runs swap step
-  KMedoids::swap(data, medoid_indices, medoids_mat, assignments);
+  km::KMedoids::swap(data, medoid_indices, medoids_mat, assignments);
   medoid_indices_final = medoid_indices;
   labels = assignments;
 }
@@ -51,7 +51,7 @@ void KMedoids::fit_bpam(const arma::mat& input_data) {
  * @param medoids Matrix of possible medoids that is updated as the bandit
  * learns which datapoints will be unlikely to be good candidates
  */
-void KMedoids::build(
+void km::KMedoids::build(
   const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids)
@@ -81,7 +81,7 @@ void KMedoids::build(
         T_samples.fill(0);
         exact_mask.fill(0);
         estimates.fill(0);
-        KMedoids::build_sigma(
+        km::KMedoids::build_sigma(
            data, best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
 
         while (arma::sum(candidates) > precision) { // while some candidates exist
@@ -153,7 +153,7 @@ void KMedoids::build(
  * of medoids
  * @param use_absolute Determines whether the absolute cost is added to the total
  */
-arma::rowvec KMedoids::build_target(
+arma::rowvec km::KMedoids::build_target(
   const arma::mat& data,
   arma::uvec& target,
   size_t batch_size,
@@ -201,7 +201,7 @@ arma::rowvec KMedoids::build_target(
  * @param assignments Uninitialized array of indices corresponding to each
  * datapoint assigned the index of the medoid it is closest to
  */
-void KMedoids::swap(
+void km::KMedoids::swap(
   const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids,
@@ -335,7 +335,7 @@ void KMedoids::swap(
  * point to previous set of medoids
  * @param assignments Assignments of datapoints to their closest medoid
  */
-arma::vec KMedoids::swap_target(
+arma::vec km::KMedoids::swap_target(
   const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::uvec& targets,
