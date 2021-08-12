@@ -62,7 +62,7 @@ public:
     // throw an error if the number of medoids is not specified in either 
     // the KMedoids object or the fitPython function
     try {
-      if (KMedoids::getNMedoids() == NULL) {
+      if (KMedoids::getNMedoids() == 0) { // Check for 0 as NULL
         if (kw.size() == 0) {
           throw py::value_error("Must specify number of medoids via n_medoids in KMedoids or k in fit function.");
         }
