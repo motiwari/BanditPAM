@@ -1,8 +1,7 @@
 include_directories(${PROJECT_SOURCE_DIR}/headers)
-include_directories(${PROJECT_SOURCE_DIR}/headers/carma)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include)
-include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma)
-include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma/carma)
+include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma_bits)
+#include_directories(/Users/motiwari/.local/lib/python3.7/site-packages/numpy/core/include)
 
 add_executable(BanditPAM main.cpp)
 

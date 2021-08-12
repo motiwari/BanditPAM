@@ -6,8 +6,9 @@
  *
  */
 #include "kmedoids_algorithm.hpp"
+#include "log_helper.hpp"
 
-#include <carma.h>
+#include <carma>
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
@@ -19,19 +20,19 @@
  *
  * @param input_data Input data to find the medoids of
  */
-void KMedoids::fit_bpam(arma::mat input_data) {
+void km::KMedoids::fit_bpam(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::mat medoids_mat(data.n_rows, n_medoids);
   arma::rowvec medoid_indices(n_medoids);
   // runs build step
-  KMedoids::build(data, medoid_indices, medoids_mat);
+  km::KMedoids::build(data, medoid_indices, medoids_mat);
   steps = 0;
 
   medoid_indices_build = medoid_indices;
   arma::rowvec assignments(data.n_cols);
   // runs swap step
-  KMedoids::swap(data, medoid_indices, medoids_mat, assignments);
+  km::KMedoids::swap(data, medoid_indices, medoids_mat, assignments);
   medoid_indices_final = medoid_indices;
   labels = assignments;
 }
@@ -50,8 +51,8 @@ void KMedoids::fit_bpam(arma::mat input_data) {
  * @param medoids Matrix of possible medoids that is updated as the bandit
  * learns which datapoints will be unlikely to be good candidates
  */
-void KMedoids::build(
-  arma::mat& data,
+void km::KMedoids::build(
+  const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids)
 {
@@ -59,7 +60,7 @@ void KMedoids::build(
     size_t N = data.n_cols;
     arma::rowvec N_mat(N);
     N_mat.fill(N);
-    int p = (buildConfidence * N); // reciprocal of
+    size_t p = (buildConfidence * N); // reciprocal of
     bool use_absolute = true;
     arma::rowvec estimates(N, arma::fill::zeros);
     arma::rowvec best_distances(N);
@@ -80,7 +81,7 @@ void KMedoids::build(
         T_samples.fill(0);
         exact_mask.fill(0);
         estimates.fill(0);
-        KMedoids::build_sigma(
+        km::KMedoids::build_sigma(
            data, best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
 
         while (arma::sum(candidates) > precision) { // while some candidates exist
@@ -152,8 +153,8 @@ void KMedoids::build(
  * of medoids
  * @param use_absolute Determines whether the absolute cost is added to the total
  */
-arma::rowvec KMedoids::build_target(
-  arma::mat& data,
+arma::rowvec km::KMedoids::build_target(
+  const arma::mat& data,
   arma::uvec& target,
   size_t batch_size,
   arma::rowvec& best_distances,
@@ -200,14 +201,14 @@ arma::rowvec KMedoids::build_target(
  * @param assignments Uninitialized array of indices corresponding to each
  * datapoint assigned the index of the medoid it is closest to
  */
-void KMedoids::swap(
-  arma::mat& data,
+void km::KMedoids::swap(
+  const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids,
   arma::rowvec& assignments)
 {
     size_t N = data.n_cols;
-    int p = (N * n_medoids * swapConfidence); // reciprocal
+    size_t p = (N * n_medoids * swapConfidence); // reciprocal
 
     arma::mat sigma(n_medoids, N, arma::fill::zeros);
 
@@ -334,8 +335,8 @@ void KMedoids::swap(
  * point to previous set of medoids
  * @param assignments Assignments of datapoints to their closest medoid
  */
-arma::vec KMedoids::swap_target(
-  arma::mat& data,
+arma::vec km::KMedoids::swap_target(
+  const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::uvec& targets,
   size_t batch_size,

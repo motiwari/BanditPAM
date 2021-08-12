@@ -10,6 +10,7 @@
  */
 
 #include "kmedoids_algorithm.hpp"
+#include "log_helper.hpp"
 
 #include <armadillo>
 #include <chrono>
@@ -23,13 +24,13 @@ int main(int argc, char* argv[])
 {   
     std::string input_name;
     std::string log_file_name = "KMedoidsLogfile";
-    int k;
+    size_t k;
     int opt;
     int prev_ind;
-    int verbosity = 0;
-    int max_iter = 1000;
-    int buildConfidence = 1000;
-    int swapConfidence = 10000;
+    size_t verbosity = 0;
+    size_t max_iter = 1000;
+    size_t buildConfidence = 1000;
+    size_t swapConfidence = 10000;
     std::string loss = "2";
     bool f_flag = false;
     bool k_flag = false;
@@ -92,7 +93,7 @@ int main(int argc, char* argv[])
     arma::uword n = data.n_cols;
     arma::uword d = data.n_rows;
 
-    KMedoids kmed(k, "BanditPAM", verbosity, max_iter, buildConfidence, swapConfidence, log_file_name);
+    km::KMedoids kmed(k, "BanditPAM", verbosity, max_iter, buildConfidence, swapConfidence, log_file_name);
     kmed.fit(data, loss);
 
     if (verbosity > 0) {

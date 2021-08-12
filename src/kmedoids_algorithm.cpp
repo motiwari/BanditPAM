@@ -6,12 +6,12 @@
  *
  */
 #include "kmedoids_algorithm.hpp"
+#include "log_helper.hpp"
 
-#include <carma.h>
+#include <carma>
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
-//#include <sstream>
 
 /**
  *  \brief Class implementation for running KMedoids methods.
@@ -29,17 +29,17 @@
  *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
  *  @param logFilename The name of the output log file
  */
-KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
-                   int max_iter, int buildConfidence, int swapConfidence,
+km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t verbosity,
+                   size_t max_iter, size_t buildConfidence, size_t swapConfidence,
                    std::string logFilename
     ): n_medoids(n_medoids),
        algorithm(algorithm),
        max_iter(max_iter),
-       verbosity(verbosity),
        buildConfidence(buildConfidence),
        swapConfidence(swapConfidence),
+       verbosity(verbosity),
        logFilename(logFilename) {
-  KMedoids::checkAlgorithm(algorithm);
+  km::KMedoids::checkAlgorithm(algorithm);
 }
 
 /**
@@ -47,7 +47,7 @@ KMedoids::KMedoids(int n_medoids, std::string algorithm, int verbosity,
  *
  *  Destructor for the KMedoids class.
  */
-KMedoids::~KMedoids() {;}
+km::KMedoids::~KMedoids() {;}
 
 /**
  *  \brief Checks whether algorithm input is valid
@@ -56,11 +56,11 @@ KMedoids::~KMedoids() {;}
  *
  *  @param algorithm Name of the algorithm input by the user.
  */
-void KMedoids::checkAlgorithm(std::string algorithm) {
+void km::KMedoids::checkAlgorithm(const std::string& algorithm) {
   if (algorithm == "BanditPAM") {
-    fitFn = &KMedoids::fit_bpam;
+    fitFn = &km::KMedoids::fit_bpam;
   } else if (algorithm == "naive") {
-    fitFn = &KMedoids::fit_naive;
+    fitFn = &km::KMedoids::fit_naive;
   } else {
     throw "unrecognized algorithm";
   }
@@ -69,30 +69,30 @@ void KMedoids::checkAlgorithm(std::string algorithm) {
 /**
  *  \brief Returns the final medoids
  *
- *  Returns the final medoids at the end of the SWAP step after KMedoids::fit
+ *  Returns the final medoids at the end of the SWAP step after km::KMedoids::fit
  *  has been called.
  */
-arma::rowvec KMedoids::getMedoidsFinal() {
+arma::rowvec km::KMedoids::getMedoidsFinal() {
   return medoid_indices_final;
 }
 
 /**
  *  \brief Returns the build medoids
  *
- *  Returns the build medoids at the end of the BUILD step after KMedoids::fit
+ *  Returns the build medoids at the end of the BUILD step after km::KMedoids::fit
  *  has been called.
  */
-arma::rowvec KMedoids::getMedoidsBuild() {
+arma::rowvec km::KMedoids::getMedoidsBuild() {
   return medoid_indices_build;
 }
 
 /**
  *  \brief Returns the medoid assignments for each datapoint
  *
- *  Returns the medoid each input datapoint is assigned to after KMedoids::fit
+ *  Returns the medoid each input datapoint is assigned to after km::KMedoids::fit
  *  has been called and the final medoids have been identified
  */
-arma::rowvec KMedoids::getLabels() {
+arma::rowvec km::KMedoids::getLabels() {
   return labels;
 }
 
@@ -100,32 +100,32 @@ arma::rowvec KMedoids::getLabels() {
  *  \brief Returns the number of swap steps
  *
  *  Returns the number of SWAP steps completed during the last call to
- *  KMedoids::fit
+ *  km::KMedoids::fit
  */
-int KMedoids::getSteps() {
+size_t km::KMedoids::getSteps() {
   return steps;
 }
 
 /**
  *  \brief Sets the loss function
  *
- *  Sets the loss function used during KMedoids::fit
+ *  Sets the loss function used during km::KMedoids::fit
  *
  *  @param loss Loss function to be used e.g. L2
  */
-void KMedoids::setLossFn(std::string loss) {
+void km::KMedoids::setLossFn(std::string loss) {
   if (std::regex_match(loss, std::regex("L\\d*"))) {
       loss = loss.substr(1);
   }
   try {
     if (loss == "manhattan") {
-        lossFn = &KMedoids::manhattan;
+        lossFn = &km::KMedoids::manhattan;
     } else if (loss == "cos") {
-        lossFn = &KMedoids::cos;
+        lossFn = &km::KMedoids::cos;
     } else if (loss == "inf") {
-        lossFn = &KMedoids::LINF;
+        lossFn = &km::KMedoids::LINF;
     } else if (std::isdigit(loss.at(0))) {
-        lossFn = &KMedoids::LP;
+        lossFn = &km::KMedoids::LP;
         lp     = atoi(loss.c_str());
     } else {
         throw std::invalid_argument("error: unrecognized loss function");
@@ -138,60 +138,60 @@ void KMedoids::setLossFn(std::string loss) {
 /**
  *  \brief Returns the number of medoids
  *
- *  Returns the number of medoids to be identified during KMedoids::fit
+ *  Returns the number of medoids to be identified during km::KMedoids::fit
  */
-int KMedoids::getNMedoids() {
+size_t km::KMedoids::getNMedoids() {
   return n_medoids;
 }
 
 /**
  *  \brief Sets the number of medoids
  *
- *  Sets the number of medoids to be identified during KMedoids::fit
+ *  Sets the number of medoids to be identified during km::KMedoids::fit
  */
-void KMedoids::setNMedoids(int new_num) {
+void km::KMedoids::setNMedoids(size_t new_num) {
   n_medoids = new_num;
 }
 
 /**
  *  \brief Returns the algorithm for KMedoids
  *
- *  Returns the algorithm used for identifying the medoids during KMedoids::fit
+ *  Returns the algorithm used for identifying the medoids during km::KMedoids::fit
  */
-std::string KMedoids::getAlgorithm() {
+std::string km::KMedoids::getAlgorithm() {
   return algorithm;
 }
 
 /**
  *  \brief Sets the algorithm for KMedoids
  *
- *  Sets the algorithm used for identifying the medoids during KMedoids::fit
+ *  Sets the algorithm used for identifying the medoids during km::KMedoids::fit
  *
  *  @param new_alg New algorithm to use
  */
-void KMedoids::setAlgorithm(std::string new_alg) {
+void km::KMedoids::setAlgorithm(const std::string& new_alg) {
   algorithm = new_alg;
 }
 
 /**
  *  \brief Returns the verbosity for KMedoids
  *
- *  Returns the verbosity used during KMedoids::fit, with 0 not creating a
+ *  Returns the verbosity used during km::KMedoids::fit, with 0 not creating a
  *  logfile, and >0 creating a detailed logfile.
  */
-int KMedoids::getVerbosity() {
+size_t km::KMedoids::getVerbosity() {
   return verbosity;
 }
 
 /**
  *  \brief Sets the verbosity for KMedoids
  *
- *  Sets the verbosity used during KMedoids::fit, with 0 not creating a
+ *  Sets the verbosity used during km::KMedoids::fit, with 0 not creating a
  *  logfile, and >0 creating a detailed logfile.
  *
  *  @param new_ver New verbosity to use
  */
-void KMedoids::setVerbosity(int new_ver) {
+void km::KMedoids::setVerbosity(size_t new_ver) {
   verbosity = new_ver;
 }
 
@@ -199,20 +199,20 @@ void KMedoids::setVerbosity(int new_ver) {
  *  \brief Returns the maximum number of iterations for KMedoids
  *
  *  Returns the maximum number of iterations that can be run during
- *  KMedoids::fit
+ *  km::KMedoids::fit
  */
-int KMedoids::getMaxIter() {
+size_t km::KMedoids::getMaxIter() {
   return max_iter;
 }
 
 /**
  *  \brief Sets the maximum number of iterations for KMedoids
  *
- *  Sets the maximum number of iterations that can be run during KMedoids::fit
+ *  Sets the maximum number of iterations that can be run during km::KMedoids::fit
  *
  *  @param new_max New maximum number of iterations to use
  */
-void KMedoids::setMaxIter(int new_max) {
+void km::KMedoids::setMaxIter(size_t new_max) {
   max_iter = new_max;
 }
 
@@ -220,9 +220,9 @@ void KMedoids::setMaxIter(int new_max) {
  *  \brief Returns the constant buildConfidence 
  *
  *  Returns the constant that affects the sensitivity of build confidence bounds 
- *  that can be run during KMedoids::fit
+ *  that can be run during km::KMedoids::fit
  */
-int KMedoids::getbuildConfidence() {
+size_t km::KMedoids::getbuildConfidence() {
   return buildConfidence;
 }
 
@@ -230,11 +230,11 @@ int KMedoids::getbuildConfidence() {
  *  \brief Sets the constant buildConfidence
  *
  *  Sets the constant that affects the sensitivity of build confidence bounds 
- *  that can be run during KMedoids::fit
+ *  that can be run during km::KMedoids::fit
  *
  *  @param new_buildConfidence New buildConfidence 
  */
-void KMedoids::setbuildConfidence(int new_buildConfidence) {
+void km::KMedoids::setbuildConfidence(size_t new_buildConfidence) {
   buildConfidence = new_buildConfidence;
 }
 
@@ -242,9 +242,9 @@ void KMedoids::setbuildConfidence(int new_buildConfidence) {
  *  \brief Returns the constant swapConfidence 
  *
  *  Returns the constant that affects the sensitivity of swap confidence bounds 
- *  that can be run during KMedoids::fit
+ *  that can be run during km::KMedoids::fit
  */
-int KMedoids::getswapConfidence() {
+size_t km::KMedoids::getswapConfidence() {
   return swapConfidence;
 }
 
@@ -252,11 +252,11 @@ int KMedoids::getswapConfidence() {
  *  \brief Sets the constant swapConfidence
  *
  *  Sets the constant that affects the sensitivity of swap confidence bounds
- *  that can be run during KMedoids::fit
+ *  that can be run during km::KMedoids::fit
  *
  *  @param new_swapConfidence New swapConfidence 
  */
-void KMedoids::setswapConfidence(int new_swapConfidence) {
+void km::KMedoids::setswapConfidence(size_t new_swapConfidence) {
   swapConfidence = new_swapConfidence;
 }
 
@@ -264,9 +264,9 @@ void KMedoids::setswapConfidence(int new_swapConfidence) {
  *  \brief Returns the log filename for KMedoids
  *
  *  Returns the name of the logfile that will be output at the end of
- *  KMedoids::fit if verbosity is >0
+ *  km::KMedoids::fit if verbosity is >0
  */
-std::string KMedoids::getLogfileName() {
+std::string km::KMedoids::getLogfileName() {
   return logFilename;
 }
 
@@ -274,11 +274,11 @@ std::string KMedoids::getLogfileName() {
  *  \brief Sets the log filename for KMedoids
  *
  *  Sets the name of the logfile that will be output at the end of
- *  KMedoids::fit if verbosity is >0
+ *  km::KMedoids::fit if verbosity is >0
  *
  *  @param new_lname New logfile name
  */
-void KMedoids::setLogFilename(std::string new_lname) {
+void km::KMedoids::setLogFilename(const std::string& new_lname) {
   logFilename = new_lname;
 }
 
@@ -291,9 +291,9 @@ void KMedoids::setLogFilename(std::string new_lname) {
  * @param input_data Input data to find the medoids of
  * @param loss The loss function used during medoid computation
  */
-void KMedoids::fit(arma::mat input_data, std::string loss) {
-  KMedoids::setLossFn(loss);
-  KMedoids::checkAlgorithm(algorithm);
+void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
+  km::KMedoids::setLossFn(loss);
+  km::KMedoids::checkAlgorithm(algorithm);
   (this->*fitFn)(input_data);
   if (verbosity > 0) {
       logHelper.init(logFilename);
@@ -316,8 +316,8 @@ void KMedoids::fit(arma::mat input_data, std::string loss) {
  * of medoids
  * @param use_aboslute Determines whether the absolute cost is added to the total
  */
-void KMedoids::build_sigma(
-  arma::mat& data,
+void km::KMedoids::build_sigma(
+  const arma::mat& data,
   arma::rowvec& best_distances,
   arma::rowvec& sigma,
   arma::uword batch_size,
@@ -370,8 +370,8 @@ void KMedoids::build_sigma(
  * point to previous set of medoids
  * @param assignments Assignments of datapoints to their closest medoid
  */
-void KMedoids::calc_best_distances_swap(
-  arma::mat& data,
+void km::KMedoids::calc_best_distances_swap(
+  const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::rowvec& best_distances,
   arma::rowvec& second_distances,
@@ -411,8 +411,8 @@ void KMedoids::calc_best_distances_swap(
  * point to previous set of medoids
  * @param assignments Assignments of datapoints to their closest medoid
  */
-void KMedoids::swap_sigma(
-  arma::mat& data,
+void km::KMedoids::swap_sigma(
+  const arma::mat& data,
   arma::mat& sigma,
   size_t batch_size,
   arma::rowvec& best_distances,
@@ -464,7 +464,7 @@ void KMedoids::swap_sigma(
 *
 * @param sigma Dispersion paramater for each datapoint
 */
-void KMedoids::sigma_log(arma::mat& sigma) {
+void km::KMedoids::sigma_log(arma::mat& sigma) {
   arma::rowvec flat_sigma = sigma.as_row(); 
   arma::rowvec P = {0.25, 0.5, 0.75};
   arma::rowvec Q = arma::quantile(flat_sigma, P);
@@ -487,8 +487,8 @@ void KMedoids::sigma_log(arma::mat& sigma) {
  * @param data Transposed input data to find the medoids of
  * @param medoid_indices Indices of the medoids in the dataset.
  */
-double KMedoids::calc_loss(
-  arma::mat& data,
+double km::KMedoids::calc_loss(
+  const arma::mat& data,
   arma::rowvec& medoid_indices)
 {
     double total = 0;
@@ -517,21 +517,10 @@ double KMedoids::calc_loss(
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::LP(arma::mat& data, int i, int j) const {
+double km::KMedoids::LP(const arma::mat& data, size_t i, size_t j) const {
     return arma::norm(data.col(i) - data.col(j), lp);
 }
 
-/**
- * \brief L2 loss
- *
- * Calculates the L2 loss between the datapoints at index i and j of the dataset
- *
- * @param i Index of first datapoint
- * @param j Index of second datapoint
- */
-//double KMedoids::L2(int i, int j) const {
-//    return arma::norm(data.col(i) - data.col(j), 2);
-//}
 
 /**
  * \brief cos loss
@@ -543,7 +532,7 @@ double KMedoids::LP(arma::mat& data, int i, int j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::cos(arma::mat& data, int i, int j) const {
+double km::KMedoids::cos(const arma::mat& data, size_t i, size_t j) const {
     return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i))
                                                     * arma::norm(data.col(j)));
 }
@@ -558,7 +547,7 @@ double KMedoids::cos(arma::mat& data, int i, int j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::manhattan(arma::mat& data, int i, int j) const {
+double km::KMedoids::manhattan(const arma::mat& data, size_t i, size_t j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
 
@@ -572,6 +561,6 @@ double KMedoids::manhattan(arma::mat& data, int i, int j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::LINF(arma::mat& data, int i, int j) const {
+double km::KMedoids::LINF(const arma::mat& data, size_t i, size_t j) const {
     return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
