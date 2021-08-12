@@ -139,8 +139,15 @@ struct key_hash : public std::unary_function<key_t_bpam, double>
 
 class KMedoids {
   public:
-    KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t verbosity = 0, size_t max_iter = 1000,
-             size_t buildConfidence =  1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
+    KMedoids(
+      size_t n_medoids = 5,
+      const std::string& algorithm = "BanditPAM", 
+      size_t max_iter = 1000,
+      size_t buildConfidence =  1000,
+      size_t swapConfidence = 10000,
+      size_t verbosity = 0, 
+      std::string logFilename = "KMedoidsLogfile"
+      );
     
     ~KMedoids();
 
@@ -277,15 +284,12 @@ class KMedoids {
     void checkAlgorithm(const std::string& algorithm);
 
     // Constructor params
+    size_t n_medoids; ///< number of medoids identified for a given dataset
+
     std::string algorithm; ///< options: "naive" and "BanditPAM"
 
     size_t max_iter; ///< maximum number of iterations during KMedoids::fit
 
-    size_t verbosity; ///< determines whether KMedoids::fit outputs a logfile
-
-    size_t n_medoids; ///< number of medoids identified for a given dataset
-
-    std::string logFilename; ///< name of the logfile output (verbosity permitting)
 
     // Properties of the KMedoids instance
     arma::mat data; ///< input data used during KMedoids::fit
@@ -312,6 +316,10 @@ class KMedoids {
     const double precision = 0.001; ///< bound for double comparison precision
 
     const size_t batchSize = 100; ///< batch size for computation steps
+
+    size_t verbosity; ///< determines whether KMedoids::fit outputs a logfile
+
+    std::string logFilename; ///< name of the logfile output (verbosity permitting)
 };
 
 #endif // KMEDOIDS_UCB_H_
