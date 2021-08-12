@@ -27,12 +27,12 @@ namespace km {
    *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
    *  for a particular set of input data.
    *
-   *  @param nMedoids Number of medoids/clusters to create
+   *  @param n_medoids Number of medoids/clusters to create
    *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
    *  the "Bandit-PAM" algorithm, or "naive" to use the naive method
    *  @param verbosity Verbosity of the algorithm, 0 will have no log file
-   *  emitted, 1 will emit a log file
-   *  @param maxIter The maximum number of iterations the algorithm runs for
+   *  emitted, 1 will create a log file
+   *  @param max_iter The maximum number of iterations the algorithm runs for
    *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
    *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
    *  @param logFilename The name of the output log file
