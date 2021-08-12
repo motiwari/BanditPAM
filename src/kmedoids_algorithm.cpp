@@ -12,7 +12,6 @@
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
-//#include <sstream>
 
 /**
  *  \brief Class implementation for running KMedoids methods.

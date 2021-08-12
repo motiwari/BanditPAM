@@ -16,19 +16,19 @@
  *  LogHelper class. Assists the KMedoids class in structured logging.
  */
 struct LogHelper {
-    std::ofstream hlogFile; ///< Output stream that writes the KMedoids log
+    std::ofstream hlogFile; // Output stream that writes the KMedoids log
 
-    std::vector<double> comp_exact_build; ///< Number of computations in build step
-    std::vector<double> comp_exact_swap; ///< Number of computations in swap step
+    std::vector<double> comp_exact_build; // Number of computations in build step
+    std::vector<double> comp_exact_swap; // Number of computations in swap step
 
-    std::vector<double> loss_build; ///< Loss after each iteration of build step
-    std::vector<double> loss_swap; ///< Loss after each iteration of swap step
+    std::vector<double> loss_build; // Loss after each iteration of build step
+    std::vector<double> loss_swap; // Loss after each iteration of swap step
 
-    std::vector<double> p_build; ///< Precision for each iteration of build step
-    std::vector<double> p_swap; ///< Precision for each iteration of swap step
+    std::vector<double> p_build; // Precision for each iteration of build step
+    std::vector<double> p_swap; // Precision for each iteration of swap step
 
-    std::vector<std::string> sigma_build; ///< Distributions for each iteration of build step
-    std::vector<std::string> sigma_swap; ///< Distributions for each iteration of swap step
+    std::vector<std::string> sigma_build; // Distributions for each iteration of build step
+    std::vector<std::string> sigma_swap; // Distributions for each iteration of swap step
 
     /*! \brief Opens the log file.
      *

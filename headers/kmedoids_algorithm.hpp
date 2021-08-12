@@ -181,7 +181,6 @@ class KMedoids {
 
     size_t max_iter; ///< maximum number of iterations during KMedoids::fit
 
-
     // Properties of the KMedoids instance
     arma::mat data; ///< input data used during KMedoids::fit
 
