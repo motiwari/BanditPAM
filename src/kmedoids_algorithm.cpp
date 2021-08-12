@@ -29,9 +29,9 @@
  *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
  *  @param logFilename The name of the output log file
  */
-KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, 
+KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t verbosity,
                    size_t max_iter, size_t buildConfidence, size_t swapConfidence,
-                   size_t verbosity, std::string logFilename
+                   std::string logFilename
     ): n_medoids(n_medoids),
        algorithm(algorithm),
        max_iter(max_iter),
