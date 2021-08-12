@@ -52,7 +52,7 @@ km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t ve
  */
 km::KMedoids::~KMedoids() {;}
 
-double km::KMedoids::wrappedLossFn(const arma::mat& data, size_t i, size_t j, bool use_cache = false) {
+double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache) {
   if (!use_cache) {
     return (this->*lossFn)(data, i, j);
   }
@@ -348,7 +348,7 @@ arma::rowvec km::KMedoids::build_sigma(
     for (size_t i = 0; i < N; i++) {
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = km::KMedoids::wrappedLossFn(data, i, tmp_refs(j));
+            double cost = km::KMedoids::cachedLoss(data, i, tmp_refs(j));
             if (use_absolute) {
                 sample(j) = cost;
             } else {
@@ -398,7 +398,7 @@ void km::KMedoids::calc_best_distances_swap(
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < medoid_indices.n_cols; k++) {
-            double cost = km::KMedoids::wrappedLossFn(data, medoid_indices(k), i);
+            double cost = km::KMedoids::cachedLoss(data, medoid_indices(k), i);
             if (cost < best) {
                 assignments(i) = k;
                 second = best;
@@ -450,7 +450,7 @@ arma::mat km::KMedoids::swap_sigma(
 
         // calculate change in loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = km::KMedoids::wrappedLossFn(data, n, tmp_refs(j));
+            double cost = km::KMedoids::cachedLoss(data, n, tmp_refs(j));
 
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
@@ -511,7 +511,7 @@ double km::KMedoids::calc_loss(
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < n_medoids; k++) {
-            double currCost = km::KMedoids::wrappedLossFn(data, medoid_indices(k), i);
+            double currCost = km::KMedoids::cachedLoss(data, medoid_indices(k), i);
             if (currCost < cost) {
                 cost = currCost;
             }

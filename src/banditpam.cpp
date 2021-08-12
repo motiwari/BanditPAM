@@ -125,7 +125,7 @@ void BanditPAM::build(
 
         // don't need to do this on final iteration
         for (size_t i = 0; i < N; i++) {
-            double cost = (this->*lossFn)(data, i, medoid_indices(k));
+            double cost = km::KMedoids::cachedLoss(data, i, medoid_indices(k));
             if (cost < best_distances(i)) {
                 best_distances(i) = cost;
             }
@@ -167,7 +167,7 @@ arma::rowvec BanditPAM::build_target(
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
             double cost =
-              (this->*lossFn)(data, tmp_refs(j), target(i));
+              km::KMedoids::cachedLoss(data, tmp_refs(j), target(i));
             if (use_absolute) {
                 total += cost;
             } else {
@@ -353,7 +353,7 @@ arma::vec BanditPAM::swap_target(
         size_t k = targets(i) % medoid_indices.n_cols;
         // calculate total loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(data, n, tmp_refs(j));
+            double cost = km::KMedoids::cachedLoss(data, n, tmp_refs(j));
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
                     total += cost;
