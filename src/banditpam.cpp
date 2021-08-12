@@ -19,7 +19,7 @@
  *
  * @param input_data Input data to find the medoids of
  */
-void KMedoids::fit_bpam(arma::mat input_data) {
+void KMedoids::fit_bpam(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::mat medoids_mat(data.n_rows, n_medoids);
@@ -51,7 +51,7 @@ void KMedoids::fit_bpam(arma::mat input_data) {
  * learns which datapoints will be unlikely to be good candidates
  */
 void KMedoids::build(
-  arma::mat& data,
+  const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids)
 {
@@ -153,7 +153,7 @@ void KMedoids::build(
  * @param use_absolute Determines whether the absolute cost is added to the total
  */
 arma::rowvec KMedoids::build_target(
-  arma::mat& data,
+  const arma::mat& data,
   arma::uvec& target,
   size_t batch_size,
   arma::rowvec& best_distances,
@@ -201,7 +201,7 @@ arma::rowvec KMedoids::build_target(
  * datapoint assigned the index of the medoid it is closest to
  */
 void KMedoids::swap(
-  arma::mat& data,
+  const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids,
   arma::rowvec& assignments)
@@ -335,7 +335,7 @@ void KMedoids::swap(
  * @param assignments Assignments of datapoints to their closest medoid
  */
 arma::vec KMedoids::swap_target(
-  arma::mat& data,
+  const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::uvec& targets,
   size_t batch_size,

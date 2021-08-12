@@ -19,7 +19,7 @@
  *
  * @param input_data Input data to find the medoids of
  */
-void KMedoids::fit_naive(arma::mat input_data) {
+void KMedoids::fit_naive(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::rowvec medoid_indices(n_medoids);
@@ -55,7 +55,7 @@ void KMedoids::fit_naive(arma::mat input_data) {
  * as medoids are identified
  */
 void KMedoids::build_naive(
-  arma::mat& data, 
+  const arma::mat& data, 
   arma::rowvec& medoid_indices)
 { 
   size_t N = data.n_cols;
@@ -119,7 +119,7 @@ void KMedoids::build_naive(
  * datapoint assigned the index of the medoid it is closest to
  */
 void KMedoids::swap_naive(
-  arma::mat& data, 
+  const arma::mat& data, 
   arma::rowvec& medoid_indices,
   arma::rowvec& assignments)
 {

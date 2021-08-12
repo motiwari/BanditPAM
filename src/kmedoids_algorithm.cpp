@@ -56,7 +56,7 @@ KMedoids::~KMedoids() {;}
  *
  *  @param algorithm Name of the algorithm input by the user.
  */
-void KMedoids::checkAlgorithm(std::string algorithm) {
+void KMedoids::checkAlgorithm(const std::string& algorithm) {
   if (algorithm == "BanditPAM") {
     fitFn = &KMedoids::fit_bpam;
   } else if (algorithm == "naive") {
@@ -169,7 +169,7 @@ std::string KMedoids::getAlgorithm() {
  *
  *  @param new_alg New algorithm to use
  */
-void KMedoids::setAlgorithm(std::string new_alg) {
+void KMedoids::setAlgorithm(const std::string& new_alg) {
   algorithm = new_alg;
 }
 
@@ -278,7 +278,7 @@ std::string KMedoids::getLogfileName() {
  *
  *  @param new_lname New logfile name
  */
-void KMedoids::setLogFilename(std::string new_lname) {
+void KMedoids::setLogFilename(const std::string& new_lname) {
   logFilename = new_lname;
 }
 
@@ -291,7 +291,7 @@ void KMedoids::setLogFilename(std::string new_lname) {
  * @param input_data Input data to find the medoids of
  * @param loss The loss function used during medoid computation
  */
-void KMedoids::fit(arma::mat input_data, std::string loss) {
+void KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
   KMedoids::setLossFn(loss);
   KMedoids::checkAlgorithm(algorithm);
   (this->*fitFn)(input_data);
@@ -317,7 +317,7 @@ void KMedoids::fit(arma::mat input_data, std::string loss) {
  * @param use_aboslute Determines whether the absolute cost is added to the total
  */
 void KMedoids::build_sigma(
-  arma::mat& data,
+  const arma::mat& data,
   arma::rowvec& best_distances,
   arma::rowvec& sigma,
   arma::uword batch_size,
@@ -371,7 +371,7 @@ void KMedoids::build_sigma(
  * @param assignments Assignments of datapoints to their closest medoid
  */
 void KMedoids::calc_best_distances_swap(
-  arma::mat& data,
+  const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::rowvec& best_distances,
   arma::rowvec& second_distances,
@@ -412,7 +412,7 @@ void KMedoids::calc_best_distances_swap(
  * @param assignments Assignments of datapoints to their closest medoid
  */
 void KMedoids::swap_sigma(
-  arma::mat& data,
+  const arma::mat& data,
   arma::mat& sigma,
   size_t batch_size,
   arma::rowvec& best_distances,
@@ -488,7 +488,7 @@ void KMedoids::sigma_log(arma::mat& sigma) {
  * @param medoid_indices Indices of the medoids in the dataset.
  */
 double KMedoids::calc_loss(
-  arma::mat& data,
+  const arma::mat& data,
   arma::rowvec& medoid_indices)
 {
     double total = 0;
@@ -517,7 +517,7 @@ double KMedoids::calc_loss(
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::LP(arma::mat& data, size_t i, size_t j) const {
+double KMedoids::LP(const arma::mat& data, size_t i, size_t j) const {
     return arma::norm(data.col(i) - data.col(j), lp);
 }
 
@@ -532,7 +532,7 @@ double KMedoids::LP(arma::mat& data, size_t i, size_t j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::cos(arma::mat& data, size_t i, size_t j) const {
+double KMedoids::cos(const arma::mat& data, size_t i, size_t j) const {
     return arma::dot(data.col(i), data.col(j)) / (arma::norm(data.col(i))
                                                     * arma::norm(data.col(j)));
 }
@@ -547,7 +547,7 @@ double KMedoids::cos(arma::mat& data, size_t i, size_t j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::manhattan(arma::mat& data, size_t i, size_t j) const {
+double KMedoids::manhattan(const arma::mat& data, size_t i, size_t j) const {
     return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
 
@@ -561,6 +561,6 @@ double KMedoids::manhattan(arma::mat& data, size_t i, size_t j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::LINF(arma::mat& data, size_t i, size_t j) const {
+double KMedoids::LINF(const arma::mat& data, size_t i, size_t j) const {
     return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
