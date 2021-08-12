@@ -16,8 +16,11 @@
 
 typedef std::tuple<size_t, size_t> key_t_bpam;
 
-struct key_hash : public std::unary_function<key_t_bpam, double> {
-  std::size_t operator()(const key_t_bpam& k) const;
+struct key_hash : public std::unary_function<key_t_bpam, double>
+{
+ std::size_t operator()(const key_t_bpam& k) const {
+   return std::get<0>(k) ^ std::get<1>(k); // TODO: Terrible hash fn, please use something better
+ }
 };
 
 namespace km {
@@ -46,8 +49,7 @@ class KMedoids {
 
       void fit(const arma::mat& inputData, const std::string& loss);
 
-      // std::map is a RB tree, should use unordered_map
-      std::unordered_map<key_t_bpam, double, key_hash> cache;
+      std::unordered_map<key_t_bpam, double, key_hash> cache; // std::map is a RB tree, should use unordered_map
 
       // The functions below are "get" functions for read-only attributes
 
