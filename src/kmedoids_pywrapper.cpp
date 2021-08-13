@@ -73,8 +73,13 @@ public:
       throw;
     }
     // if k is specified here, we set the number of medoids as k and override previous value 
-    if ((kw.size() != 0) && (kw.contains("k"))) {
-      KMedoids::setNMedoids(py::cast<int>(kw["k"]));
+    if (kw.size() != 0) {
+      if (kw.contains("k")) {
+        KMedoids::setNMedoids(py::cast<int>(kw["k"]));
+      }
+      if (kw.contains("algorithm")) {
+        KMedoids::setAlgorithm(py::cast<std::string>(kw["algorithm"]));
+      }
     }
     KMedoids::setLogFilename(logFilename);
     KMedoids::fit(carma::arr_to_mat<double>(inputData), loss);

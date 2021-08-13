@@ -171,6 +171,7 @@ std::string km::KMedoids::getAlgorithm() {
  */
 void km::KMedoids::setAlgorithm(const std::string& new_alg) {
   algorithm = new_alg;
+  km::KMedoids::checkAlgorithm(algorithm);
 }
 
 /**
@@ -293,13 +294,12 @@ void km::KMedoids::setLogFilename(const std::string& new_lname) {
  */
 void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
   km::KMedoids::setLossFn(loss);
-  km::KMedoids::checkAlgorithm(algorithm);
   (this->*fitFn)(input_data);
-  if (verbosity > 0) {
-      logHelper.init(logFilename);
-      logHelper.writeProfile(medoid_indices_build, medoid_indices_final, steps,
-                                                        logHelper.loss_swap.back());
-      logHelper.close();
+  if (this->verbosity > 0) {
+      this->logHelper.init(this->logFilename);
+      this->logHelper.writeProfile(this->medoid_indices_build, this->medoid_indices_final, this->steps,
+                                                        this->logHelper.loss_swap.back());
+      this->logHelper.close();
   }
 }
 

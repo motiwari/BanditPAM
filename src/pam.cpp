@@ -26,8 +26,6 @@ void km::KMedoids::fit_naive(const arma::mat& input_data) {
   arma::rowvec medoid_indices(n_medoids);
   // runs build step
   km::KMedoids::build_naive(data, medoid_indices);
-  steps = 0;
-
   medoid_indices_build = medoid_indices;
   arma::rowvec assignments(data.n_cols);
   size_t i = 0;
@@ -40,8 +38,8 @@ void km::KMedoids::fit_naive(const arma::mat& input_data) {
     i++;
   }
   medoid_indices_final = medoid_indices;
-  labels = assignments;
-  steps = i;
+  this->labels = assignments;
+  this->steps = i;
 }
 
 /**
