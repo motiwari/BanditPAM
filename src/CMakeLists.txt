@@ -1,3 +1,7 @@
+find_package(Python3 COMPONENTS Interpreter Development)
+INCLUDE_DIRECTORIES(${Python3_INCLUDE_DIRS})
+find_package(PythonLibs 3)
+
 include_directories(${PROJECT_SOURCE_DIR}/headers)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma_bits)

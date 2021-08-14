@@ -58,14 +58,19 @@ double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool 
   }
 
   std::cout << "i" << i << "j" << j << "\n";
-  #pragma omp critical
-  {
+  // #pragma omp critical
+  // {
     key_t_bpam key = std::make_tuple(i, j);
     if (cache.find(key) == cache.end()){
+
+      // Hypothesis: cache[key] accesses by exact value, whereas cache.find(key) accesses by hash
+      // So if as hash collision will hit from another thread, we'll try to access the true area
+      // and get a segfault
+      // This is likely to happen since there are 16 threads and XOR is a bad hash?
       cache[key] = (this->*lossFn)(data, i, j);
     }
     return cache[key];
-  }
+  // }
 }
 
 /**

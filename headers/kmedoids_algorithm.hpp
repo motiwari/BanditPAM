@@ -19,7 +19,8 @@ typedef std::tuple<size_t, size_t> key_t_bpam;
 struct key_hash : public std::unary_function<key_t_bpam, double>
 {
  std::size_t operator()(const key_t_bpam& k) const {
-   return std::get<0>(k) ^ std::get<1>(k); // TODO: Terrible hash fn, please use something better
+   return (std::get<0>(k) ^ std::get<1>(k));
+  //  return (std::get<0>(k) ^ std::get<1>(k)) + (std::get<0>(k) % 5) + (std::get<0>(k) % 11); // TODO: Terrible hash fn, please use something better
  }
 };
 
