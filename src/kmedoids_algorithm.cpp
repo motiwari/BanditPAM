@@ -12,6 +12,10 @@
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
+#include <string>
+#include <cstring>
+#include "Python.h"
+
 
 /**
  *  \brief Class implementation for running KMedoids methods.
@@ -291,7 +295,35 @@ void km::KMedoids::setLogFilename(const std::string& new_lname) {
  * @param input_data Input data to find the medoids of
  * @param loss The loss function used during medoid computation
  */
-void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
+void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss, std::string module, std::string dist_mat) {
+  
+  setenv("PYTHONPATH",".",1);
+  
+  Py_Initialize();
+  
+  PyObject *pName, *sys, *path;
+  
+  char* mod = (char*) module.c_str();
+  char* distmat = (char*) dist_mat.c_str();
+  
+  sys  = PyImport_ImportModule("sys");
+  path = PyObject_GetAttrString(sys, "path");
+  PyList_Append(path, PyUnicode_DecodeFSDefault("."));
+ 
+  PyObject *pModule = PyImport_ImportModule(mod);
+
+  if (!pModule)
+    {
+        PyErr_Print();
+        printf("ERROR in pModule\n");
+        exit(1);
+    }
+
+
+  PyObject *pFunc = PyObject_GetAttrString(pModule, distmat);
+  std::cout<< "Works fine till here\n";
+  PyObject_CallObject(pFunc, NULL);
+  
   km::KMedoids::setLossFn(loss);
   km::KMedoids::checkAlgorithm(algorithm);
   (this->*fitFn)(input_data);

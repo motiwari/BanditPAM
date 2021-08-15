@@ -43,7 +43,7 @@ namespace km {
       
       ~KMedoids();
 
-      void fit(const arma::mat& inputData, const std::string& loss);
+      void fit(const arma::mat& inputData, const std::string& loss, std::string module, std::string dist_mat);
 
       // std::map is a RB tree, should use unordered_map
       std::unordered_map<key_t_bpam, double, key_hash> cache;

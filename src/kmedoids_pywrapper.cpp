@@ -59,7 +59,7 @@ public:
    * @param k The number of medoids to compute
    * @param logFilename The name of the outputted log file
    */
-  void fitPython(const py::array_t<double>& inputData, const std::string& loss, const std::string& logFilename, py::kwargs kw) {
+  void fitPython(const py::array_t<double>& inputData, const std::string& loss, const std::string& logFilename,  py::kwargs kw) {
     // throw an error if the number of medoids is not specified in either 
     // the KMedoids object or the fitPython function
     try {
@@ -76,8 +76,9 @@ public:
     if ((kw.size() != 0) && (kw.contains("k"))) {
       KMedoids::setNMedoids(py::cast<int>(kw["k"]));
     }
+    
     KMedoids::setLogFilename(logFilename);
-    KMedoids::fit(carma::arr_to_mat<double>(inputData), loss);
+    KMedoids::fit(carma::arr_to_mat<double>(inputData), loss , py::cast<std::string>(kw["module"]), py::cast<std::string>(kw["dist_mat"]));
   }
 
   /**
