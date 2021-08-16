@@ -90,9 +90,9 @@ namespace km {
 
       void setLossFn(std::string loss);
 
-      
-    private:
+    protected:
       // The functions below are PAM's constituent functions
+
       void fit_bpam(const arma::mat& inputData);
 
       void fit_naive(const arma::mat& inputData); // pass by ref? (and above)
@@ -100,12 +100,6 @@ namespace km {
       void build_naive(const arma::mat& data, arma::rowvec& medoidIndices);
 
       void swap_naive(const arma::mat& data, arma::rowvec& medoidIndices, arma::rowvec& assignments);
-
-      void fit_fastpam1(const arma::mat& inputData);
-
-      void build_fastpam1(const arma::mat& data, arma::rowvec& medoidIndices);
-
-      void swap_fastpam1(const arma::mat& data, arma::rowvec& medoidIndices, arma::rowvec& assignments);
 
       void build(
         const arma::mat& data,
@@ -199,8 +193,6 @@ namespace km {
 
       double (KMedoids::*lossFn)(const arma::mat& data, size_t i, size_t j) const; ///< loss function used during KMedoids::fit
 
-      void (KMedoids::*fitFn)(const arma::mat& inputData); ///< function used for finding medoids (from algorithm)
-
       LogHelper logHelper; ///< helper object for making formatted logs
 
       size_t steps; ///< number of actual swap iterations taken by the algorithm
@@ -219,5 +211,4 @@ namespace km {
       std::string logFilename; ///< name of the logfile output (verbosity permitting)
   };
 }
-
-  #endif // KMEDOIDS_ALGORITHM_H_
+#endif // KMEDOIDS_ALGORITHM_H_

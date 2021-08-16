@@ -1,36 +1,36 @@
-#ifndef FASTPAM1_C_
-#define FASTPAM1_C_
-
 /**
  * @file fastpam1.cpp
  * @date 2021-08-03
  *
  * This file contains the primary C++ implementation of the FastPAM1 code follows 
- * from the paper: Erich Schubert, Peter J. Rousseeuw: Faster k-Medoids Clustering: 
+ * from the paper: Erich Schubert and Peter J. Rousseeuw: Faster k-Medoids Clustering: 
  * Improving the PAM, CLARA, and CLARANS Algorithms. The paper can be assessed at
- * https://arxiv.org/pdf/1810.05691.pdf 
+ * https://arxiv.org/pdf/1810.05691.pdf. Also the original PAM papers: 
+ * 1) Leonard Kaufman and Peter J. Rousseeuw: Clustering by means of medoids. 
+ * 2) Leonard Kaufman and Peter J. Rousseeuw: Partitioning around medoids (program pam). 
  * 
  */
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
+#include "fastpam1.hpp"
 
-#include <carma.h>
+#include <carma>
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
 
 /**
- * \brief Runs naive FastPAM1 algorithm.
+ * \brief Runs FastPAM1 algorithm.
  *
- * Run the naive FastPAM1 algorithm to identify a dataset's medoids.
+ * Run the FastPAM1 algorithm to identify a dataset's medoids.
  *
  * @param input_data Input data to cluster
  */
-void km::KMedoids::fit_fastpam1(const arma::mat& input_data) {
+void FastPAM1::fit_fastpam1(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::rowvec medoid_indices(n_medoids);
-  km::KMedoids::build_fastpam1(data, medoid_indices);
+  FastPAM1::build_fastpam1(data, medoid_indices);
   steps = 0;
   medoid_indices_build = medoid_indices;
   arma::rowvec assignments(data.n_cols);
@@ -38,7 +38,7 @@ void km::KMedoids::fit_fastpam1(const arma::mat& input_data) {
   bool medoidChange = true;
   while (iter < max_iter && medoidChange) {
     auto previous{medoid_indices};
-    km::KMedoids::swap_fastpam1(data, medoid_indices, assignments);
+    FastPAM1::swap_fastpam1(data, medoid_indices, assignments);
     medoidChange = arma::any(medoid_indices != previous);
     iter++;
   }
@@ -58,9 +58,10 @@ void km::KMedoids::fit_fastpam1(const arma::mat& input_data) {
  * @param medoid_indices Uninitialized array of medoids that is modified in place
  * as medoids are identified
  */
-void km::KMedoids::build_fastpam1(
+void FastPAM1::build_fastpam1(
   const arma::mat& data, 
-  arma::rowvec& medoid_indices)
+  arma::rowvec& medoid_indices
+)
 { 
   size_t N = data.n_cols;
   int p = (buildConfidence * N); // reciprocal
@@ -123,10 +124,11 @@ void km::KMedoids::build_fastpam1(
  * @param assignments Uninitialized array of indices corresponding to each
  * datapoint assigned the index of the medoid it is closest to
  */
-void km::KMedoids::swap_fastpam1(
+void FastPAM1::swap_fastpam1(
   const arma::mat& data, 
   arma::rowvec& medoid_indices,
-  arma::rowvec& assignments)
+  arma::rowvec& assignments
+)
 {
   double bestChange = 0; 
   double minDistance = std::numeric_limits<double>::infinity();
@@ -140,10 +142,10 @@ void km::KMedoids::swap_fastpam1(
   arma::rowvec delta_td(n_medoids, arma::fill::zeros);
 
   // calculate quantities needed for swap, best_distances and sigma
-  calc_best_distances_swap(
+  km::KMedoids::calc_best_distances_swap(
     data, medoid_indices, best_distances, second_distances, assignments);
 
-  swap_sigma(data,
+  km::KMedoids::swap_sigma(data,
               sigma,
               batchSize,
               best_distances,
@@ -151,7 +153,7 @@ void km::KMedoids::swap_fastpam1(
               assignments);
   
   // write the sigma distribution to logfile
-  sigma_log(sigma);
+  km::KMedoids::sigma_log(sigma);
   // for every point in our dataset, let it serve as a new medoid 
   for (size_t i = 0; i < data.n_cols; i++) {
       double di = best_distances(i);
@@ -196,5 +198,3 @@ void km::KMedoids::swap_fastpam1(
   logHelper.p_swap.push_back((float)1/(float)p);
   logHelper.comp_exact_swap.push_back(N*n_medoids);
 }
-
-#endif // FASTPAM1_C_
