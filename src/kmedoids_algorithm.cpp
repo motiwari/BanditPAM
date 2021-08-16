@@ -120,6 +120,7 @@ size_t km::KMedoids::getSteps() {
 void km::KMedoids::setLossFn(std::string loss) {
   if (std::regex_match(loss, std::regex("L\\d*"))) {
       loss = loss.substr(1);
+      std::cout<< "setLossFn:"<<loss<<std::endl;
   }
   try {
     if (loss == "manhattan") {
@@ -134,6 +135,8 @@ void km::KMedoids::setLossFn(std::string loss) {
     } else {
         throw std::invalid_argument("error: unrecognized loss function");
     }
+    std::cout<< "setLossFn 1 lossFn :"<<lossFn <<std::endl;
+    std::cout<< "setLossFn 1 lp :"<<lp <<std::endl;
   } catch (std::invalid_argument& e) {
       std::cout << e.what() << std::endl;
     }
@@ -318,12 +321,23 @@ void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss, std
         printf("ERROR in pModule\n");
         exit(1);
     }
-
+  
 
   PyObject *pFunc = PyObject_GetAttrString(pModule, distmat);
   std::cout<< "Works fine till here\n";
-  PyObject_CallObject(pFunc, NULL);
-  
+  PyObject *py_args_tuple, *pResult;
+  py_args_tuple = PyTuple_New(2);
+  PyTuple_SetItem(py_args_tuple, 0, PyFloat_FromDouble(2.2)); //stolen
+  PyTuple_SetItem(py_args_tuple, 1, PyFloat_FromDouble(3.3)); //stolen
+  //PyTuple_SetItem(py_args_tuple, 0, PyLong_FromLong(2.0)); //stolen
+  //PyTuple_SetItem(py_args_tuple, 1, PyLong_FromLong(2.0)); //stolen
+  std::cout<< "ARGS are defined\n";
+
+  pResult=PyObject_CallObject(pFunc, py_args_tuple);
+  //PyList_GetItem(py_result, i);
+  double result = PyFloat_AsDouble(pResult);
+  std::cout<< "results--"<<result<<std::endl;
+  std::cout<< "Loss--"<<loss<<std::endl;
   km::KMedoids::setLossFn(loss);
   km::KMedoids::checkAlgorithm(algorithm);
   (this->*fitFn)(input_data);
