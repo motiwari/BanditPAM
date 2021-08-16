@@ -7,6 +7,7 @@
  */
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
+#include "pam.hpp"
 
 #include <carma>
 #include <armadillo>
@@ -16,16 +17,16 @@
 /**
  * \brief Runs naive PAM algorithm.
  *
- * Run the naive PAM algorithm to identify a dataset's medoids.
+ * Run the PAM algorithm to identify a dataset's medoids.
  *
  * @param input_data Input data to find the medoids of
  */
-void km::KMedoids::fit_naive(const arma::mat& input_data) {
+void PAM::fit_naive(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::rowvec medoid_indices(n_medoids);
   // runs build step
-  km::KMedoids::build_naive(data, medoid_indices);
+  PAM::build_naive(data, medoid_indices);
   steps = 0;
 
   medoid_indices_build = medoid_indices;
@@ -35,7 +36,7 @@ void km::KMedoids::fit_naive(const arma::mat& input_data) {
   while (i < max_iter && medoidChange) {
     auto previous(medoid_indices);
     // runs swap step as necessary
-    km::KMedoids::swap_naive(data, medoid_indices, assignments);
+    PAM::swap_naive(data, medoid_indices, assignments);
     medoidChange = arma::any(medoid_indices != previous);
     i++;
   }
@@ -45,9 +46,9 @@ void km::KMedoids::fit_naive(const arma::mat& input_data) {
 }
 
 /**
- * \brief Build step for the naive algorithm
+ * \brief Build step for the PAM algorithm
  *
- * Runs build step for the naive PAM algorithm. Loops over all datapoint and
+ * Runs build step for the PAM algorithm. Loops over all datapoint and
  * checks its distance from every other datapoint in the dataset, then checks if
  * the total cost is less than that of the medoid (if a medoid exists yet).
  *
@@ -55,7 +56,7 @@ void km::KMedoids::fit_naive(const arma::mat& input_data) {
  * @param medoid_indices Uninitialized array of medoids that is modified in place
  * as medoids are identified
  */
-void km::KMedoids::build_naive(
+void PAM::build_naive(
   const arma::mat& data, 
   arma::rowvec& medoid_indices)
 { 
@@ -107,9 +108,9 @@ void km::KMedoids::build_naive(
 }
 
 /**
- * \brief Swap step for the naive algorithm
+ * \brief Swap step for the PAM algorithm
  *
- * Runs build step for the naive PAM algorithm. Loops over all datapoint and
+ * Runs build step for the PAM algorithm. Loops over all datapoint and
  * checks its distance from every other datapoint in the dataset, then checks if
  * the total cost is less than that of the medoid.
  *
@@ -119,7 +120,7 @@ void km::KMedoids::build_naive(
  * @param assignments Uninitialized array of indices corresponding to each
  * datapoint assigned the index of the medoid it is closest to
  */
-void km::KMedoids::swap_naive(
+void PAM::swap_naive(
   const arma::mat& data, 
   arma::rowvec& medoid_indices,
   arma::rowvec& assignments)
@@ -134,18 +135,18 @@ void km::KMedoids::swap_naive(
   arma::rowvec second_distances(N);
 
   // calculate quantities needed for swap, best_distances and sigma
-  calc_best_distances_swap(
+  km::KMedoids::calc_best_distances_swap(
     data, medoid_indices, best_distances, second_distances, assignments);
 
-  swap_sigma(data,
-              sigma,
-              batchSize,
-              best_distances,
-              second_distances,
-              assignments);
+  km::KMedoids::swap_sigma(data,
+                           sigma,
+                           batchSize,
+                           best_distances,
+                           second_distances,
+                           assignments);
   
   // write the sigma distribution to logfile
-  sigma_log(sigma);
+  km::KMedoids::sigma_log(sigma);
 
   // iterate across the current medoids
   for (size_t k = 0; k < n_medoids; k++) {
