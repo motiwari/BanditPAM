@@ -57,5 +57,4 @@ public:
     */
     void swap_fastpam1(const arma::mat& data, arma::rowvec& medoid_indices, arma::rowvec& assignments);
 };
-
 #endif // FASTPAM1_H_

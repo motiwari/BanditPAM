@@ -7,6 +7,7 @@
  */
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
+#include "banditpam.hpp"
 
 #include <carma>
 #include <armadillo>
@@ -20,19 +21,19 @@
  *
  * @param input_data Input data to find the medoids of
  */
-void km::KMedoids::fit_bpam(const arma::mat& input_data) {
+void BanditPAM::fit_bpam(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::mat medoids_mat(data.n_rows, n_medoids);
   arma::rowvec medoid_indices(n_medoids);
   // runs build step
-  km::KMedoids::build(data, medoid_indices, medoids_mat);
+  BanditPAM::build(data, medoid_indices, medoids_mat);
   steps = 0;
 
   medoid_indices_build = medoid_indices;
   arma::rowvec assignments(data.n_cols);
   // runs swap step
-  km::KMedoids::swap(data, medoid_indices, medoids_mat, assignments);
+  BanditPAM::swap(data, medoid_indices, medoids_mat, assignments);
   medoid_indices_final = medoid_indices;
   labels = assignments;
 }
@@ -51,7 +52,7 @@ void km::KMedoids::fit_bpam(const arma::mat& input_data) {
  * @param medoids Matrix of possible medoids that is updated as the bandit
  * learns which datapoints will be unlikely to be good candidates
  */
-void km::KMedoids::build(
+void BanditPAM::build(
   const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids)
@@ -153,7 +154,7 @@ void km::KMedoids::build(
  * of medoids
  * @param use_absolute Determines whether the absolute cost is added to the total
  */
-arma::rowvec km::KMedoids::build_target(
+arma::rowvec BanditPAM::build_target(
   const arma::mat& data,
   arma::uvec& target,
   size_t batch_size,
@@ -201,7 +202,7 @@ arma::rowvec km::KMedoids::build_target(
  * @param assignments Uninitialized array of indices corresponding to each
  * datapoint assigned the index of the medoid it is closest to
  */
-void km::KMedoids::swap(
+void BanditPAM::swap(
   const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids,
@@ -335,7 +336,7 @@ void km::KMedoids::swap(
  * point to previous set of medoids
  * @param assignments Assignments of datapoints to their closest medoid
  */
-arma::vec km::KMedoids::swap_target(
+arma::vec BanditPAM::swap_target(
   const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::uvec& targets,
