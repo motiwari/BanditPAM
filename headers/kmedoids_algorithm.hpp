@@ -124,7 +124,7 @@ class KMedoids {
       double calc_loss(const arma::mat& data, arma::rowvec& medoidIndices);
 
       // Loss functions
-      double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = true);
+      double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = false);
 
       size_t lp;
       double LP(const arma::mat& data, size_t i, size_t j) const;

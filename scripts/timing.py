@@ -6,9 +6,9 @@ import numpy as np
 import BanditPAM
 import sys
 
-print(BanditPAM.sum_thread_ids())
-BanditPAM.set_num_threads(int(sys.argv[1]))
-print(BanditPAM.sum_thread_ids())
+#print(BanditPAM.sum_thread_ids())
+#BanditPAM.set_num_threads(int(sys.argv[1]))
+#print(BanditPAM.sum_thread_ids())
 
 X = np.loadtxt('data/MNIST-1k.csv')
 kmed = BanditPAM.KMedoids(n_medoids = 5, algorithm = "BanditPAM")
