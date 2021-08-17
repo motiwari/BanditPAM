@@ -300,11 +300,12 @@ void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
   } else if (algorithm == "FastPAM1") {
     static_cast<FastPAM1*>(this)->fit_fastpam1(input_data);
   }
-  if (verbosity > 0) {
-      logHelper.init(logFilename);
-      logHelper.writeProfile(medoid_indices_build, medoid_indices_final, steps,
-                                                        logHelper.loss_swap.back());
-      logHelper.close();
+
+  if (this->verbosity > 0) {
+      this->logHelper.init(this->logFilename);
+      this->logHelper.writeProfile(this->medoid_indices_build, this->medoid_indices_final, this->steps,
+                                                        this->logHelper.loss_swap.back());
+      this->logHelper.close();
   }
 }
 

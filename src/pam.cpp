@@ -28,7 +28,6 @@ void PAM::fit_naive(const arma::mat& input_data) {
   // runs build step
   PAM::build_naive(data, medoid_indices);
   steps = 0;
-
   medoid_indices_build = medoid_indices;
   arma::rowvec assignments(data.n_cols);
   size_t i = 0;
@@ -41,8 +40,8 @@ void PAM::fit_naive(const arma::mat& input_data) {
     i++;
   }
   medoid_indices_final = medoid_indices;
-  labels = assignments;
-  steps = i;
+  this->labels = assignments;
+  this->steps = i;
 }
 
 /**
