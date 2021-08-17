@@ -2,6 +2,7 @@
 
 ## Prerequisites
 The following is a more detailed description of the installation process of BanditPAM for MacOS. Please ensure:
+ - The most recent versions of the Xcode Command Line Tools are installed via `xcode-select --install`
  - Homebrew is installed; if not, see https://brew.sh/.
  - Python3 is installed; if not, run `brew install python` (by default, Macs only come with Python2)
  - Pip is installed for your Python3 installation; this should be completed automatically by `brew install python` above.

@@ -7,6 +7,7 @@
  */
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
+#include "fastpam1.hpp"
 
 #include <carma>
 #include <armadillo>
@@ -57,11 +58,7 @@ km::KMedoids::~KMedoids() {;}
  *  @param algorithm Name of the algorithm input by the user.
  */
 void km::KMedoids::checkAlgorithm(const std::string& algorithm) {
-  if (algorithm == "BanditPAM") {
-    fitFn = &km::KMedoids::fit_bpam;
-  } else if (algorithm == "naive") {
-    fitFn = &km::KMedoids::fit_naive;
-  } else {
+  if ((algorithm != "BanditPAM") && (algorithm != "naive") && (algorithm != "FastPAM1")) {
     throw "unrecognized algorithm";
   }
 }
@@ -294,7 +291,14 @@ void km::KMedoids::setLogFilename(const std::string& new_lname) {
  */
 void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
   km::KMedoids::setLossFn(loss);
-  (this->*fitFn)(input_data);
+  if (algorithm == "naive") {
+    (this->fit_naive)(input_data);
+  } else if (algorithm == "BanditPAM") {
+    (this->fit_bpam)(input_data);
+  } else if (algorithm == "FastPAM1") {
+    static_cast<FastPAM1*>(this)->fit_fastpam1(input_data);
+  }
+  
   if (this->verbosity > 0) {
       this->logHelper.init(this->logFilename);
       this->logHelper.writeProfile(this->medoid_indices_build, this->medoid_indices_final, this->steps,

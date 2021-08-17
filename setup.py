@@ -274,7 +274,9 @@ ext_modules = [
         [os.path.join('src', 'kmedoids_pywrapper.cpp'), 
          os.path.join('src', 'kmedoids_algorithm.cpp'),
          os.path.join('src', 'pam.cpp'),
-         os.path.join('src', 'banditpam.cpp')],
+         os.path.join('src', 'banditpam.cpp'),
+         os.path.join('src', 'fastpam1.cpp'),
+        ],
         include_dirs=include_dirs,
         library_dirs=[
             '/usr/local/lib',
