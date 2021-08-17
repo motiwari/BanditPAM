@@ -9,6 +9,7 @@
 
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
+#include "fastpam1.hpp"
 
 #include <carma>
 #include <armadillo>
