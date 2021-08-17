@@ -284,13 +284,20 @@ else:  # OSX
 
 ext_modules = [
     Extension(
-        "BanditPAM",
-        [
-            os.path.join("src", "kmedoids_pywrapper.cpp"),
-            os.path.join("src", "kmedoids_algorithm.cpp"),
-            os.path.join("src", "pam.cpp"),
-            os.path.join("src", "banditpam.cpp"),
-            os.path.join("src", "fastpam1.cpp"),
+        'BanditPAM',
+        [os.path.join('src', 'kmedoids_pywrapper.cpp'), 
+         os.path.join('src', 'kmedoids_algorithm.cpp'),
+         os.path.join('src', 'pam.cpp'),
+         os.path.join('src', 'banditpam.cpp'),
+         os.path.join('src', 'fit_python.cpp'),
+         os.path.join('src', 'medoids_python.cpp'),
+         os.path.join('src', 'build_medoids_python.cpp'),
+         os.path.join('src', 'labels_python.cpp'),
+         os.path.join('src', 'steps_python.cpp'),
+        ],
+        include_dirs=include_dirs,
+        library_dirs=[
+            '/usr/local/lib',
         ],
         include_dirs=include_dirs,
         library_dirs=["/usr/local/lib"],
@@ -323,5 +330,8 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    headers=[os.path.join("headers", "kmedoids_algorithm.hpp")],
+    headers=[
+        os.path.join('headers', 'kmedoids_algorithm.hpp'), 
+        os.path.join('headers', 'kmedoids_pywrapper.hpp'),
+    ],
 )
