@@ -69,8 +69,8 @@ void PAM::build_naive(
   for (size_t k = 0; k < n_medoids; k++) {
     double minDistance = std::numeric_limits<double>::infinity();
     size_t best = 0;
-    km::KMedoids::build_sigma(
-           data, best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
+    sigma = km::KMedoids::build_sigma(
+            data, best_distances, batchSize, use_absolute); // computes std dev amongst batch of reference points
     // fixes a base datapoint
     for (size_t i = 0; i < data.n_cols; i++) {
       double total = 0;
@@ -137,12 +137,20 @@ void PAM::swap_naive(
   km::KMedoids::calc_best_distances_swap(
     data, medoid_indices, best_distances, second_distances, assignments);
 
+<<<<<<< HEAD
   km::KMedoids::swap_sigma(data,
                            sigma,
                            batchSize,
                            best_distances,
                            second_distances,
                            assignments);
+=======
+  sigma = swap_sigma(data,
+                     batchSize,
+                     best_distances,
+                     second_distances,
+                     assignments);
+>>>>>>> mupdate sigma by re-assign sigma at call sites. Fixes #116
   
   // write the sigma distribution to logfile
   km::KMedoids::sigma_log(sigma);

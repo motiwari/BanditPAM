@@ -92,10 +92,27 @@ namespace km {
 
     protected:
       // The functions below are PAM's constituent functions
+<<<<<<< HEAD
       void build_sigma(
+=======
+      void fit_bpam(const arma::mat& inputData);
+
+      void fit_naive(const arma::mat& inputData); // pass by ref? (and above)
+
+      void build_naive(const arma::mat& data, arma::rowvec& medoidIndices);
+
+      void swap_naive(const arma::mat& data, arma::rowvec& medoidIndices, arma::rowvec& assignments);
+
+      void build(
+        const arma::mat& data,
+        arma::rowvec& medoidIndices,
+        arma::mat& medoids
+      );
+
+      arma::rowvec build_sigma(
+>>>>>>> mupdate sigma by re-assign sigma at call sites. Fixes #116
         const arma::mat& data,
         arma::rowvec& best_distances,
-        arma::rowvec& sigma,
         arma::uword batch_size,
         bool use_absolute
       );
@@ -108,9 +125,22 @@ namespace km {
         arma::rowvec& assignments
       );
 
+<<<<<<< HEAD
       void swap_sigma(
+=======
+      arma::vec swap_target(
         const arma::mat& data,
-        arma::mat& sigma,
+        arma::rowvec& medoidIndices,
+        arma::uvec& targets,
+        size_t batch_size,
+        arma::rowvec& best_distances,
+        arma::rowvec& second_best_distances,
+        arma::rowvec& assignments
+      );
+
+      arma::mat swap_sigma(
+>>>>>>> mupdate sigma by re-assign sigma at call sites. Fixes #116
+        const arma::mat& data,
         size_t batch_size,
         arma::rowvec& best_distances,
         arma::rowvec& second_best_distances,
