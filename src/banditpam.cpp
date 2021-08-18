@@ -82,7 +82,7 @@ void BanditPAM::build(
         T_samples.fill(0);
         exact_mask.fill(0);
         estimates.fill(0);
-        sigma = km::KMedoids::build_sigma(
+        sigma = build_sigma(
                 data, best_distances, batchSize, use_absolute); // computes std dev amongst batch of reference points
 
         while (arma::sum(candidates) > precision) { // while some candidates exist

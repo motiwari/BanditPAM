@@ -137,20 +137,11 @@ void PAM::swap_naive(
   km::KMedoids::calc_best_distances_swap(
     data, medoid_indices, best_distances, second_distances, assignments);
 
-<<<<<<< HEAD
-  km::KMedoids::swap_sigma(data,
-                           sigma,
-                           batchSize,
-                           best_distances,
-                           second_distances,
-                           assignments);
-=======
-  sigma = swap_sigma(data,
-                     batchSize,
-                     best_distances,
-                     second_distances,
-                     assignments);
->>>>>>> mupdate sigma by re-assign sigma at call sites. Fixes #116
+  sigma = km::KMedoids::swap_sigma(data,
+                                   batchSize,
+                                   best_distances,
+                                   second_distances,
+                                   assignments);
   
   // write the sigma distribution to logfile
   km::KMedoids::sigma_log(sigma);
