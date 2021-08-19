@@ -78,7 +78,7 @@ public:
     }
     
     KMedoids::setLogFilename(logFilename);
-    KMedoids::fit(carma::arr_to_mat<double>(inputData), loss , py::cast<std::string>(kw["module"]), py::cast<std::string>(kw["dist_mat"]));
+    KMedoids::fit(carma::arr_to_mat<double>(inputData), loss , py::cast<std::string>(kw["mod_path"]), py::cast<std::string>(kw["dist_mat"]));
   }
 
   /**
@@ -128,14 +128,16 @@ PYBIND11_MODULE(BanditPAM, m) {
   m.def("set_num_threads", &omp_set_num_threads, "Set the maximum number of threads");
   m.def("sum_thread_ids", &sum_thread_ids, "Adds the ids of threads; used only for debugging");
   py::class_<KMedoidsWrapper>(m, "KMedoids")
-      .def(py::init<int, std::string, int, int, int, int, std::string>(),
+      .def(py::init<int, std::string, int, int, int, int, std::string, std::string, std::string>(),
         py::arg("n_medoids") = NULL,
         py::arg("algorithm") = "BanditPAM",
         py::arg("verbosity") = 0,
         py::arg("maxIter") = 1000,
         py::arg("buildConfidence") = 1000,
         py::arg("swapConfidence") = 10000,
-        py::arg("logFilename") = "KMedoidsLogfile"
+        py::arg("logFilename") = "KMedoidsLogfile",
+        py::arg("modPath") = "",
+        py::arg("dist_mat") = ""
       )
       .def_property("n_medoids", &KMedoidsWrapper::getNMedoids, &KMedoidsWrapper::setNMedoids)
       .def_property("algorithm", &KMedoidsWrapper::getAlgorithm, &KMedoidsWrapper::setAlgorithm)
@@ -144,6 +146,8 @@ PYBIND11_MODULE(BanditPAM, m) {
       .def_property("buildConfidence", &KMedoidsWrapper::getbuildConfidence, &KMedoidsWrapper::setbuildConfidence)
       .def_property("swapConfidence", &KMedoidsWrapper::getswapConfidence, &KMedoidsWrapper::setswapConfidence)
       .def_property("logFilename", &KMedoidsWrapper::getLogfileName, &KMedoidsWrapper::setLogFilename)
+      .def_property("modPath", &KMedoidsWrapper::getModPath, &KMedoidsWrapper::setModPath)
+      .def_property("dist_mat", &KMedoidsWrapper::getDistMat, &KMedoidsWrapper::setDistMat)
       .def_property_readonly("medoids", &KMedoidsWrapper::getMedoidsFinalPython)
       .def_property_readonly("build_medoids", &KMedoidsWrapper::getMedoidsBuildPython)
       .def_property_readonly("labels", &KMedoidsWrapper::getLabelsPython)

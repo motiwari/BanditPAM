@@ -35,15 +35,17 @@ namespace km {
    *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
    *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
    *  @param logFilename The name of the output log file
+   *  @param modPath The Path of the custom loss function
+   *  @param dist_mat The name of the custom loss function
    */
   class KMedoids {
     public:
       KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t verbosity = 0, size_t max_iter = 1000,
-              size_t buildConfidence =  1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
+              size_t buildConfidence =  1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile", std::string modPath = "", std::string dist_mat = "" );
       
       ~KMedoids();
 
-      void fit(const arma::mat& inputData, const std::string& loss, std::string module, std::string dist_mat);
+      void fit(const arma::mat& inputData, const std::string& loss, std::string modPath, std::string dist_mat);
 
       // std::map is a RB tree, should use unordered_map
       std::unordered_map<key_t_bpam, double, key_hash> cache;
@@ -86,9 +88,16 @@ namespace km {
 
       std::string getLogfileName();
 
+      std::string getModPath();
+      std::string getDistMat();
+
       void setLogFilename(const std::string& new_lname);
 
       void setLossFn(std::string loss);
+
+      void setModPath(std::string modPath);
+
+      void setDistMat(std::string dist_mat);
 
       
     private:
@@ -171,6 +180,8 @@ namespace km {
 
       double cos(const arma::mat& data, size_t i, size_t j) const;
 
+      double custom_loss(const arma::mat& data, size_t i, size_t j) const;
+
       double manhattan(const arma::mat& data, size_t i, size_t j) const;
 
       void checkAlgorithm(const std::string& algorithm);
@@ -210,7 +221,11 @@ namespace km {
 
       size_t verbosity; ///< determines whether KMedoids::fit outputs a logfile
 
-      std::string logFilename; ///< name of the logfile output (verbosity permitting)
+      std::string logFilename; ///< name of the logfile output (verbosity permitting) 
+
+      std::string modPath; //< Path of the custom loss module
+
+      std::string dist_mat; //< name of the cistom loss function
   };
 }
 

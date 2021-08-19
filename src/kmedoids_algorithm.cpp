@@ -16,7 +16,6 @@
 #include <cstring>
 #include "Python.h"
 
-
 /**
  *  \brief Class implementation for running KMedoids methods.
  *
@@ -32,17 +31,22 @@
  *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
  *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
  *  @param logFilename The name of the output log file
+ *  @param modPath The Path of the custom loss function
+ *  @param dist_mat The name of the custom loss function
  */
 km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t verbosity,
                    size_t max_iter, size_t buildConfidence, size_t swapConfidence,
-                   std::string logFilename
+                   std::string logFilename, std::string modPath, std::string dist_mat
     ): n_medoids(n_medoids),
        algorithm(algorithm),
        max_iter(max_iter),
        buildConfidence(buildConfidence),
        swapConfidence(swapConfidence),
        verbosity(verbosity),
-       logFilename(logFilename) {
+       logFilename(logFilename),
+       modPath(modPath),
+       dist_mat(dist_mat)
+       {
   km::KMedoids::checkAlgorithm(algorithm);
 }
 
@@ -117,6 +121,36 @@ size_t km::KMedoids::getSteps() {
  *
  *  @param loss Loss function to be used e.g. L2
  */
+void km::KMedoids::setModPath(std::string mod_path) {
+  if (!mod_path.empty())
+  {
+     this->modPath = mod_path;
+  }
+
+}
+
+
+/**
+ *  \brief Sets the loss function
+ *
+ *  Sets the loss function used during km::KMedoids::fit
+ *
+ *  @param loss Loss function to be used e.g. L2
+ */
+void km::KMedoids::setDistMat(std::string dist_matrics) {
+  if (!dist_matrics.empty())
+  {
+     dist_mat = dist_matrics;
+  }
+}
+
+/**
+ *  \brief Sets the loss function
+ *
+ *  Sets the loss function used during km::KMedoids::fit
+ *
+ *  @param loss Loss function to be used e.g. L2
+ */
 void km::KMedoids::setLossFn(std::string loss) {
   if (std::regex_match(loss, std::regex("L\\d*"))) {
       loss = loss.substr(1);
@@ -132,7 +166,9 @@ void km::KMedoids::setLossFn(std::string loss) {
     } else if (std::isdigit(loss.at(0))) {
         lossFn = &km::KMedoids::LP;
         lp     = atoi(loss.c_str());
-    } else {
+    } else if (loss == "custom") {
+        lossFn = &km::KMedoids::custom_loss;
+    }else {
         throw std::invalid_argument("error: unrecognized loss function");
     }
     std::cout<< "setLossFn 1 lossFn :"<<lossFn <<std::endl;
@@ -278,6 +314,26 @@ std::string km::KMedoids::getLogfileName() {
 }
 
 /**
+ *  \brief Returns the module path for custom loss
+ *
+ *  Returns the path of the module that will have the
+ *  custom loss function
+ */
+std::string km::KMedoids::getModPath() {
+  return modPath;
+}
+
+/**
+ *  \brief Returns the name of the custom loss function
+ *
+ *  Returns the name of the custom log function that will be used to
+ *  calculate the distance between two data points
+ */
+std::string km::KMedoids::getDistMat() {
+  return dist_mat;
+}
+
+/**
  *  \brief Sets the log filename for KMedoids
  *
  *  Sets the name of the logfile that will be output at the end of
@@ -298,47 +354,10 @@ void km::KMedoids::setLogFilename(const std::string& new_lname) {
  * @param input_data Input data to find the medoids of
  * @param loss The loss function used during medoid computation
  */
-void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss, std::string module, std::string dist_mat) {
+void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss, std::string mod_path, std::string dist_mat) {
   
-  setenv("PYTHONPATH",".",1);
-  
-  Py_Initialize();
-  
-  PyObject *pName, *sys, *path;
-  
-  char* mod = (char*) module.c_str();
-  char* distmat = (char*) dist_mat.c_str();
-  
-  sys  = PyImport_ImportModule("sys");
-  path = PyObject_GetAttrString(sys, "path");
-  PyList_Append(path, PyUnicode_DecodeFSDefault("."));
- 
-  PyObject *pModule = PyImport_ImportModule(mod);
-
-  if (!pModule)
-    {
-        PyErr_Print();
-        printf("ERROR in pModule\n");
-        exit(1);
-    }
-  
-
-  PyObject *pFunc = PyObject_GetAttrString(pModule, distmat);
-  std::cout<< "Works fine till here\n";
-  PyObject *py_args_tuple, *pResult;
-  py_args_tuple = PyTuple_New(2);
-  PyTuple_SetItem(py_args_tuple, 0, PyFloat_FromDouble(2.2)); //stolen
-  PyTuple_SetItem(py_args_tuple, 1, PyFloat_FromDouble(3.3)); //stolen
-  //PyTuple_SetItem(py_args_tuple, 0, PyLong_FromLong(2.0)); //stolen
-  //PyTuple_SetItem(py_args_tuple, 1, PyLong_FromLong(2.0)); //stolen
-  std::cout<< "ARGS are defined\n";
-
-  pResult=PyObject_CallObject(pFunc, py_args_tuple);
-  //PyList_GetItem(py_result, i);
-  double result = PyFloat_AsDouble(pResult);
-  std::cout<< "results--"<<result<<std::endl;
-  std::cout<< "Loss--"<<loss<<std::endl;
-  km::KMedoids::setLossFn(loss);
+  km::KMedoids::setModPath(mod_path);
+  km::KMedoids::setDistMat(dist_mat);
   km::KMedoids::checkAlgorithm(algorithm);
   (this->*fitFn)(input_data);
   if (verbosity > 0) {
@@ -609,4 +628,55 @@ double km::KMedoids::manhattan(const arma::mat& data, size_t i, size_t j) const 
  */
 double km::KMedoids::LINF(const arma::mat& data, size_t i, size_t j) const {
     return arma::max(arma::abs(data.col(i) - data.col(j)));
+}
+
+/**
+ * \brief custom loss
+ *
+ * Calculates the custom loss between the datapoints at index i and j of the
+ * dataset
+ *
+ * @param data Transposed input data to find the medoids of
+ * @param i Index of first datapoint
+ * @param j Index of second datapoint
+ */
+double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) const {
+  //return arma::max(arma::abs(data.col(i) - data.col(j)));
+  setenv("PYTHONPATH",".",1);
+  Py_Initialize();
+  
+  PyObject *pName, *sys, *path;
+  
+  char* mod = (char*) modPath.c_str();
+  char* distmat = (char*) dist_mat.c_str();
+  
+  sys  = PyImport_ImportModule("sys");
+  path = PyObject_GetAttrString(sys, "path");
+  PyList_Append(path, PyUnicode_DecodeFSDefault("."));
+ 
+  PyObject *pModule = PyImport_ImportModule(mod);
+
+  if (!pModule)
+  {
+    PyErr_Print();
+    printf("ERROR in pModule\n");
+    exit(1);
+  }
+  
+  PyObject *pFunc = PyObject_GetAttrString(pModule, distmat);
+  std::cout<< "Works fine till here\n";
+  PyObject *py_args_tuple, *pResult;
+  py_args_tuple = PyTuple_New(2);
+  //PyTuple_SetItem(py_args_tuple, 0, PyFloat_FromDouble(data.col(i))); 
+  //PyTuple_SetItem(py_args_tuple, 1, PyFloat_FromDouble(data.col(j))); 
+  PyTuple_SetItem(py_args_tuple, 0, Py_INCREF(data.col(i))); 
+  PyTuple_SetItem(py_args_tuple, 1, arma::mat data.col(j)); 
+  std::cout<< "ARGS are defined\n";
+
+  pResult=PyObject_CallObject(pFunc, py_args_tuple);
+  //PyList_GetItem(py_result, i);
+  double result = PyFloat_AsDouble(pResult);
+  std::cout<< "results--"<<result<<std::endl;
+  return result;
+
 }
