@@ -1,5 +1,5 @@
-#ifndef KMEDOIDS_ALGORITHM_H_
-#define KMEDOIDS_ALGORITHM_H_
+#ifndef HEADERS_KMEDOIDS_ALGORITHM_HPP_
+#define HEADERS_KMEDOIDS_ALGORITHM_HPP_
 
 #include "log_helper.hpp"
 
@@ -10,13 +10,15 @@
 #include <iostream>
 #include <chrono>
 #include <omp.h>
-
+#include <tuple>
+#include <functional>
+#include <unordered_map>
+#include <string>
 
 typedef std::tuple<size_t, size_t> key_t_bpam;
 
-struct key_hash : public std::unary_function<key_t_bpam, double>
-{
- std::size_t operator()(const key_t_bpam& k) const;
+struct key_hash : public std::unary_function<key_t_bpam, double> {
+  std::size_t operator()(const key_t_bpam& k) const;
 };
 
 namespace km {
@@ -36,11 +38,11 @@ namespace km {
    *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
    *  @param logFilename The name of the output log file
    */
-  class KMedoids {
-    public:
+class KMedoids {
+ public:
       KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t verbosity = 0, size_t max_iter = 1000,
               size_t buildConfidence =  1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
-      
+
       ~KMedoids();
 
       void fit(const arma::mat& inputData, const std::string& loss);
@@ -90,7 +92,7 @@ namespace km {
 
       void setLossFn(std::string loss);
 
-    protected:
+ protected:
       // The functions below are PAM's constituent functions
       arma::rowvec build_sigma(
         const arma::mat& data,
@@ -167,6 +169,6 @@ namespace km {
       size_t verbosity; ///< determines whether KMedoids::fit outputs a logfile
 
       std::string logFilename; ///< name of the logfile output (verbosity permitting)
-  };
-}
-#endif // KMEDOIDS_ALGORITHM_H_
+};
+} // namespace km
+#endif // HEADERS_KMEDOIDS_ALGORITHM_HPP_

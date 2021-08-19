@@ -2,16 +2,14 @@
  * @file fastpam1.cpp
  * @date 2021-08-03
  *
- * This file contains the primary C++ implementation of the FastPAM1 code follows 
- * from the paper: Erich Schubert and Peter J. Rousseeuw: Faster k-Medoids Clustering: 
+ * This file contains the primary C++ implementation of the FastPAM1 code follows
+ * from the paper: Erich Schubert and Peter J. Rousseeuw: Faster k-Medoids Clustering:
  * Improving the PAM, CLARA, and CLARANS Algorithms. The paper can be assessed at
- * https://arxiv.org/pdf/1810.05691.pdf. Also the original PAM papers: 
- * 1) Leonard Kaufman and Peter J. Rousseeuw: Clustering by means of medoids. 
- * 2) Leonard Kaufman and Peter J. Rousseeuw: Partitioning around medoids (program pam). 
- * 
+ * https://arxiv.org/pdf/1810.05691.pdf. Also the original PAM papers:
+ * 1) Leonard Kaufman and Peter J. Rousseeuw: Clustering by means of medoids.
+ * 2) Leonard Kaufman and Peter J. Rousseeuw: Partitioning around medoids (program pam).
+ *
  */
-#include "kmedoids_algorithm.hpp"
-#include "log_helper.hpp"
 #include "fastpam1.hpp"
 
 #include <carma>
@@ -59,10 +57,9 @@ void FastPAM1::fit_fastpam1(const arma::mat& input_data) {
  * as medoids are identified
  */
 void FastPAM1::build_fastpam1(
-  const arma::mat& data, 
+  const arma::mat& data,
   arma::rowvec& medoid_indices
-)
-{ 
+) {
   size_t N = data.n_cols;
   int p = (buildConfidence * N); // reciprocal
   bool use_absolute = true;
@@ -104,7 +101,7 @@ void FastPAM1::build_fastpam1(
     use_absolute = false; // use difference of loss for sigma and sampling,
                           // not absolute
     logHelper.loss_build.push_back(minDistance/N);
-    logHelper.p_build.push_back((float)1/(float)p);
+    logHelper.p_build.push_back(static_cast<float>(1)/static_cast<float>(p));
     logHelper.comp_exact_build.push_back(N);
   }
 }
@@ -113,10 +110,10 @@ void FastPAM1::build_fastpam1(
  * \brief Swap step for the FastPAM1 algorithm
  *
  * Runs swap step for the FastPAM1 algorithm. Loops over all datapoint and
- * compute the loss change when a medoid is replaced by the datapoint. The 
- * loss change is stored in an array of size n_medoids and the update is 
+ * compute the loss change when a medoid is replaced by the datapoint. The
+ * loss change is stored in an array of size n_medoids and the update is
  * based on an if conditional outside of the loop. The best medoid is chosen
- * according to the best loss change. 
+ * according to the best loss change.
  *
  * @param data Transposed input data to cluster
  * @param medoid_indices Array of medoid indices created from the build step
@@ -125,12 +122,11 @@ void FastPAM1::build_fastpam1(
  * datapoint assigned the index of the medoid it is closest to
  */
 void FastPAM1::swap_fastpam1(
-  const arma::mat& data, 
+  const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::rowvec& assignments
-)
-{
-  double bestChange = 0; 
+) {
+  double bestChange = 0;
   double minDistance = std::numeric_limits<double>::infinity();
   size_t best = 0;
   size_t medoid_to_swap = 0;
@@ -153,7 +149,7 @@ void FastPAM1::swap_fastpam1(
   
   // write the sigma distribution to logfile
   km::KMedoids::sigma_log(sigma);
-  // for every point in our dataset, let it serve as a new medoid 
+  // for every point in our dataset, let it serve as a new medoid
   for (size_t i = 0; i < data.n_cols; i++) {
       double di = best_distances(i);
       // loss change for making i a medoid
@@ -161,22 +157,22 @@ void FastPAM1::swap_fastpam1(
       for (size_t j = 0; j < data.n_cols; j++) {
           if (j != i) {
               double dij = (this->*lossFn)(data, i, j);
-              // update loss change for the current 
+              // update loss change for the current
               if (dij < second_distances(j)) {
                   delta_td.at(assignments(j)) += (dij - best_distances(j));
               } else {
                   delta_td.at(assignments(j)) += (second_distances(j) - best_distances(j));
               }
-              // reassignment check 
+              // reassignment check
               if (dij < best_distances(j)) {
-                  // update loss change for others 
+                  // update loss change for others
                   delta_td += (dij -  best_distances(j));
                   // remove the update for the current
-                  delta_td.at(assignments(j)) -= (dij -  best_distances(j)); 
-              }  
+                  delta_td.at(assignments(j)) -= (dij -  best_distances(j));
+              }
           }
       }
-      // choose the best medoid-to-swap 
+      // choose the best medoid-to-swap
       arma::uword min_medoid = delta_td.index_min();
       // if the loss change is better than the best loss change
       // update the best index identified so far
@@ -194,6 +190,6 @@ void FastPAM1::swap_fastpam1(
       minDistance = arma::sum(best_distances);
   }
   logHelper.loss_swap.push_back(minDistance/N);
-  logHelper.p_swap.push_back((float)1/(float)p);
+  logHelper.p_swap.push_back(static_cast<float>(1)/static_cast<float>(p));
   logHelper.comp_exact_swap.push_back(N*n_medoids);
 }

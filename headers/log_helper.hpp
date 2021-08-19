@@ -1,5 +1,5 @@
-#ifndef LOG_HELPER_H_
-#define LOG_HELPER_H_
+#ifndef HEADERS_LOG_HELPER_HPP_
+#define HEADERS_LOG_HELPER_HPP_
 
 #include <carma>
 #include <armadillo>
@@ -8,6 +8,7 @@
 #include <iostream>
 #include <chrono>
 #include <omp.h>
+#include <string>
 
 namespace km {
     /**
@@ -15,7 +16,7 @@ namespace km {
      *
      *  LogHelper class. Assists the KMedoids class in structured logging.
      */
-    struct LogHelper {
+struct LogHelper {
         std::ofstream hlogFile; // Output stream that writes the KMedoids log
 
         std::vector<double> comp_exact_build; // Number of computations in build step
@@ -112,6 +113,6 @@ namespace km {
             writeLogStringLine("p", p_swap);
             writeLogStringLine("sigma", sigma_swap);
         }
-    };
-}
-#endif // LOG_HELPER_H_
+};
+} // namespace km
+#endif // HEADERS_LOG_HELPER_HPP_

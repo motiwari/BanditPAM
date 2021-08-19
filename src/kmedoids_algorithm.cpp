@@ -217,9 +217,9 @@ void km::KMedoids::setMaxIter(size_t new_max) {
 }
 
 /**
- *  \brief Returns the constant buildConfidence 
+ *  \brief Returns the constant buildConfidence
  *
- *  Returns the constant that affects the sensitivity of build confidence bounds 
+ *  Returns the constant that affects the sensitivity of build confidence bounds
  *  that can be run during km::KMedoids::fit
  */
 size_t km::KMedoids::getbuildConfidence() {
@@ -229,19 +229,19 @@ size_t km::KMedoids::getbuildConfidence() {
 /**
  *  \brief Sets the constant buildConfidence
  *
- *  Sets the constant that affects the sensitivity of build confidence bounds 
+ *  Sets the constant that affects the sensitivity of build confidence bounds
  *  that can be run during km::KMedoids::fit
  *
- *  @param new_buildConfidence New buildConfidence 
+ *  @param new_buildConfidence New buildConfidence
  */
 void km::KMedoids::setbuildConfidence(size_t new_buildConfidence) {
   buildConfidence = new_buildConfidence;
 }
 
 /**
- *  \brief Returns the constant swapConfidence 
+ *  \brief Returns the constant swapConfidence
  *
- *  Returns the constant that affects the sensitivity of swap confidence bounds 
+ *  Returns the constant that affects the sensitivity of swap confidence bounds
  *  that can be run during km::KMedoids::fit
  */
 size_t km::KMedoids::getswapConfidence() {
@@ -254,7 +254,7 @@ size_t km::KMedoids::getswapConfidence() {
  *  Sets the constant that affects the sensitivity of swap confidence bounds
  *  that can be run during km::KMedoids::fit
  *
- *  @param new_swapConfidence New swapConfidence 
+ *  @param new_swapConfidence New swapConfidence
  */
 void km::KMedoids::setswapConfidence(size_t new_swapConfidence) {
   swapConfidence = new_swapConfidence;
@@ -325,8 +325,7 @@ arma::rowvec km::KMedoids::build_sigma(
   const arma::mat& data,
   arma::rowvec& best_distances,
   arma::uword batch_size,
-  bool use_absolute)
-{
+  bool use_absolute) {
     size_t N = data.n_cols;
     // without replacement, requires updated version of armadillo
     arma::uvec tmp_refs = arma::randperm(N, batch_size);
@@ -381,8 +380,7 @@ void km::KMedoids::calc_best_distances_swap(
   arma::rowvec& medoid_indices,
   arma::rowvec& best_distances,
   arma::rowvec& second_distances,
-  arma::rowvec& assignments)
-{
+  arma::rowvec& assignments) {
 #pragma omp parallel for
     for (size_t i = 0; i < data.n_cols; i++) {
         double best = std::numeric_limits<double>::infinity();
@@ -440,7 +438,7 @@ arma::mat km::KMedoids::swap_sigma(
 
         // calculate change in loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(data, n,tmp_refs(j));
+            double cost = (this->*lossFn)(data, n, tmp_refs(j));
 
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
@@ -466,12 +464,12 @@ arma::mat km::KMedoids::swap_sigma(
 * \brief Write the sigma distribution into logfile
 *
 * Calculates the statistical measures of the sigma distribution
-* and writes the results to the log file. 
+* and writes the results to the log file.
 *
 * @param sigma Dispersion paramater for each datapoint
 */
 void km::KMedoids::sigma_log(arma::mat& sigma) {
-  arma::rowvec flat_sigma = sigma.as_row(); 
+  arma::rowvec flat_sigma = sigma.as_row();
   arma::rowvec P = {0.25, 0.5, 0.75};
   arma::rowvec Q = arma::quantile(flat_sigma, P);
   std::ostringstream sigma_out;
@@ -495,8 +493,7 @@ void km::KMedoids::sigma_log(arma::mat& sigma) {
  */
 double km::KMedoids::calc_loss(
   const arma::mat& data,
-  arma::rowvec& medoid_indices)
-{
+  arma::rowvec& medoid_indices) {
     double total = 0;
 
     for (size_t i = 0; i < data.n_cols; i++) {

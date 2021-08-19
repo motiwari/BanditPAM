@@ -9,8 +9,6 @@
  * ./src/build/BanditPAM -f [path/to/input] -k [number of clusters]
  */
 
-#include "kmedoids_algorithm.hpp"
-#include "log_helper.hpp"
 #include "fastpam1.hpp"
 #include "pam.hpp"
 #include "banditpam.hpp"
@@ -23,8 +21,7 @@
 #include <regex>
 #include <filesystem>
 
-int main(int argc, char* argv[])
-{   
+int main(int argc, char* argv[]) {
     std::string input_name;
     std::string log_file_name = "KMedoidsLogfile";
     size_t k;
@@ -43,7 +40,7 @@ int main(int argc, char* argv[])
 
         if ( optind == prev_ind + 2 && *optarg == '-' ) {
         opt = ':';
-        -- optind;
+        --optind;
         }
 
         switch (opt) {
