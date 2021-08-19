@@ -315,23 +315,22 @@ void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
  * Calculates the confidence intervals about the reward for each arm
  *
  * @param data Transposed input data to find the medoids of
- * @param sigma Dispersion paramater for each datapoint
  * @param batch_size Number of datapoints sampled for updating confidence
  * intervals
  * @param best_distances Array of best distances from each point to previous set
  * of medoids
  * @param use_aboslute Determines whether the absolute cost is added to the total
  */
-void km::KMedoids::build_sigma(
+arma::rowvec km::KMedoids::build_sigma(
   const arma::mat& data,
   arma::rowvec& best_distances,
-  arma::rowvec& sigma,
   arma::uword batch_size,
   bool use_absolute) {
     size_t N = data.n_cols;
     // without replacement, requires updated version of armadillo
     arma::uvec tmp_refs = arma::randperm(N, batch_size);
     arma::vec sample(batch_size);
+    arma::rowvec updated_sigma(N); 
 // for each possible swap
 #pragma omp parallel for
     for (size_t i = 0; i < N; i++) {
@@ -347,18 +346,19 @@ void km::KMedoids::build_sigma(
                 sample(j) -= best_distances(tmp_refs(j));
             }
         }
-        sigma(i) = arma::stddev(sample);
+        updated_sigma(i) = arma::stddev(sample);
     }
     arma::rowvec P = {0.25, 0.5, 0.75};
-    arma::rowvec Q = arma::quantile(sigma, P);
+    arma::rowvec Q = arma::quantile(updated_sigma, P);
     std::ostringstream sigma_out;
-    sigma_out << "min: " << arma::min(sigma)
+    sigma_out << "min: " << arma::min(updated_sigma)
               << ", 25th: " << Q(0)
               << ", median: " << Q(1)
               << ", 75th: " << Q(2)
-              << ", max: " << arma::max(sigma)
-              << ", mean: " << arma::mean(sigma);
+              << ", max: " << arma::max(updated_sigma)
+              << ", mean: " << arma::mean(updated_sigma);
     logHelper.sigma_build.push_back(sigma_out.str());
+    return updated_sigma;
 }
 
 /**
@@ -406,7 +406,6 @@ void km::KMedoids::calc_best_distances_swap(
  * Calculates the confidence intervals about the reward for each arm
  *
  * @param data Transposed input data to find the medoids of
- * @param sigma Dispersion paramater for each datapoint
  * @param batch_size Number of datapoints sampled for updating confidence
  * intervals
  * @param best_distances Array of best distances from each point to previous set
@@ -415,15 +414,16 @@ void km::KMedoids::calc_best_distances_swap(
  * point to previous set of medoids
  * @param assignments Assignments of datapoints to their closest medoid
  */
-void km::KMedoids::swap_sigma(
+arma::mat km::KMedoids::swap_sigma(
   const arma::mat& data,
-  arma::mat& sigma,
   size_t batch_size,
   arma::rowvec& best_distances,
   arma::rowvec& second_best_distances,
-  arma::rowvec& assignments) {
+  arma::rowvec& assignments)
+{   
     size_t N = data.n_cols;
-    size_t K = sigma.n_rows;
+    size_t K = n_medoids;
+    arma::mat updated_sigma(K, N, arma::fill::zeros);
     arma::uvec tmp_refs = arma::randperm(N,
                                    batch_size); // without replacement, requires
                                                 // updated version of armadillo
@@ -455,8 +455,9 @@ void km::KMedoids::swap_sigma(
             }
             sample(j) -= best_distances(tmp_refs(j));
         }
-        sigma(k, n) = arma::stddev(sample);
+        updated_sigma(k, n) = arma::stddev(sample);
     }
+  return updated_sigma;
 }
 
 /**

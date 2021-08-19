@@ -94,10 +94,9 @@ class KMedoids {
 
  protected:
       // The functions below are PAM's constituent functions
-      void build_sigma(
+      arma::rowvec build_sigma(
         const arma::mat& data,
         arma::rowvec& best_distances,
-        arma::rowvec& sigma,
         arma::uword batch_size,
         bool use_absolute
       );
@@ -110,9 +109,8 @@ class KMedoids {
         arma::rowvec& assignments
       );
 
-      void swap_sigma(
+      arma::mat swap_sigma(
         const arma::mat& data,
-        arma::mat& sigma,
         size_t batch_size,
         arma::rowvec& best_distances,
         arma::rowvec& second_best_distances,

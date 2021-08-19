@@ -79,8 +79,8 @@ void BanditPAM::build(
         T_samples.fill(0);
         exact_mask.fill(0);
         estimates.fill(0);
-        km::KMedoids::build_sigma(
-           data, best_distances, sigma, batchSize, use_absolute); // computes std dev amongst batch of reference points
+        sigma = build_sigma(
+                data, best_distances, batchSize, use_absolute); // computes std dev amongst batch of reference points
 
         while (arma::sum(candidates) > precision) { // while some candidates exist
             arma::umat compute_exactly =
@@ -227,12 +227,11 @@ void BanditPAM::swap(
         calc_best_distances_swap(
           data, medoid_indices, best_distances, second_distances, assignments);
 
-        swap_sigma(data,
-                   sigma,
-                   batchSize,
-                   best_distances,
-                   second_distances,
-                   assignments);
+        sigma = swap_sigma(data,
+                           batchSize,
+                           best_distances,
+                           second_distances,
+                           assignments);
 
         candidates.fill(1);
         exact_mask.fill(0);
