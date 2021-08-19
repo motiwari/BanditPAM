@@ -1,5 +1,5 @@
-#ifndef BANDITPAM_H_
-#define BANDITPAM_H_
+#ifndef HEADERS_BANDITPAM_HPP_
+#define HEADERS_BANDITPAM_HPP_
 
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
@@ -13,16 +13,16 @@
 #include <omp.h>
 
 /**
- *  \brief Class implementation for BanditPAM algorithm. 
+ *  \brief Class implementation for BanditPAM algorithm.
  *
- *  BanditPAM class. Consists of all necessary functions to implement 
- *  BanditPAM algorithm. 
- *  
+ *  BanditPAM class. Consists of all necessary functions to implement
+ *  BanditPAM algorithm.
+ *
  */
 class BanditPAM : public km::KMedoids {
-public:
+ public:
     /*! \brief Runs BanditPAM algorithm.
-    * 
+    *
     *  Run the BanditPAM algorithm to identify a dataset's medoids.
     *
     *  @param input_data Input data to cluster
@@ -113,4 +113,4 @@ public:
         arma::rowvec& assignments
     );
 };
-#endif // BANDITPAM_H_
+#endif // HEADERS_BANDITPAM_HPP_

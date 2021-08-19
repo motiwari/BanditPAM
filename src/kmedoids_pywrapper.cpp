@@ -26,11 +26,11 @@ namespace py = pybind11;
 
 /**
  * @brief Never meant to be called; a debugging function. Sums to IDs of all available threads.
- * 
+ *
  * @return int: the n-th triangular number, where n is the number of threads
  */
 int sum_thread_ids() {
-  int sum=0;
+  int sum = 0;
   #pragma omp parallel shared(sum)
   {
     sleep(3);
@@ -48,7 +48,7 @@ int sum_thread_ids() {
  *  the C++ code in Python.
  */
 class KMedoidsWrapper : public km::KMedoids {
-public:
+ public:
   using km::KMedoids::KMedoids;
 
   /**
@@ -63,7 +63,7 @@ public:
    * @param logFilename The name of the outputted log file
    */
   void fitPython(const py::array_t<double>& inputData, const std::string& loss, const std::string& logFilename, py::kwargs kw) {
-    // throw an error if the number of medoids is not specified in either 
+    // throw an error if the number of medoids is not specified in either
     // the KMedoids object or the fitPython function
     try {
       if (KMedoids::getNMedoids() == 0) { // Check for 0 as NULL
@@ -75,7 +75,7 @@ public:
       // Throw it again (pybind11 will raise ValueError)
       throw;
     }
-    // if k is specified here, we set the number of medoids as k and override previous value 
+    // if k is specified here, we set the number of medoids as k and override previous value
     if (kw.size() != 0) {
       if (kw.contains("k")) {
         KMedoids::setNMedoids(py::cast<int>(kw["k"]));

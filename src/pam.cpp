@@ -5,8 +5,6 @@
  * This file contains the primary C++ implementation of the PAM code.
  *
  */
-#include "kmedoids_algorithm.hpp"
-#include "log_helper.hpp"
 #include "pam.hpp"
 
 #include <carma>
@@ -56,9 +54,8 @@ void PAM::fit_naive(const arma::mat& input_data) {
  * as medoids are identified
  */
 void PAM::build_naive(
-  const arma::mat& data, 
-  arma::rowvec& medoid_indices)
-{ 
+  const arma::mat& data,
+  arma::rowvec& medoid_indices) {
   size_t N = data.n_cols;
   size_t p = (buildConfidence * N); // reciprocal
   bool use_absolute = true;
@@ -101,7 +98,7 @@ void PAM::build_naive(
     use_absolute = false; // use difference of loss for sigma and sampling,
                           // not absolute
     logHelper.loss_build.push_back(minDistance/N);
-    logHelper.p_build.push_back((float)1/(float)p);
+    logHelper.p_build.push_back(static_cast<float>(1)/static_cast<float>(p));
     logHelper.comp_exact_build.push_back(N);
   }
 }
@@ -120,10 +117,9 @@ void PAM::build_naive(
  * datapoint assigned the index of the medoid it is closest to
  */
 void PAM::swap_naive(
-  const arma::mat& data, 
+  const arma::mat& data,
   arma::rowvec& medoid_indices,
-  arma::rowvec& assignments)
-{
+  arma::rowvec& assignments) {
   double minDistance = std::numeric_limits<double>::infinity();
   size_t best = 0;
   size_t medoid_to_swap = 0;
@@ -143,7 +139,7 @@ void PAM::swap_naive(
                            best_distances,
                            second_distances,
                            assignments);
-  
+
   // write the sigma distribution to logfile
   km::KMedoids::sigma_log(sigma);
 
@@ -155,7 +151,7 @@ void PAM::swap_naive(
       for (size_t j = 0; j < data.n_cols; j++) {
         // compute distance between base point and every other datapoint
         double cost = (this->*lossFn)(data, i, j);
-        // (i) if x_j is not assigned to k: compares this with the cached best distance 
+        // (i) if x_j is not assigned to k: compares this with the cached best distance
         // (ii) if x_j is assigned to k: compares this with the cached second best distance
         if (assignments(j) != k) {
           if (best_distances(j) < cost) {
@@ -165,7 +161,7 @@ void PAM::swap_naive(
           if (second_distances(j) < cost) {
           cost = second_distances(j);
           }
-        } 
+        }
         total += cost;
       }
       // if total distance for new base point is better than that of the medoid,
@@ -179,6 +175,6 @@ void PAM::swap_naive(
   }
   medoid_indices(medoid_to_swap) = best;
   logHelper.loss_swap.push_back(minDistance/N);
-  logHelper.p_swap.push_back((float)1/(float)p);
+  logHelper.p_swap.push_back(static_cast<float>(1)/static_cast<float>(p));
   logHelper.comp_exact_swap.push_back(N*n_medoids);
 }

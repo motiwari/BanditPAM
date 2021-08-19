@@ -1,5 +1,5 @@
-#ifndef PAM_H_
-#define PAM_H_
+#ifndef HEADERS_PAM_HPP_
+#define HEADERS_PAM_HPP_
 
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
@@ -13,16 +13,16 @@
 #include <omp.h>
 
 /**
- *  \brief Class implementation for PAM algorithm. 
+ *  \brief Class implementation for PAM algorithm.
  *
- *  PAM class. Consists of all necessary functions to implement 
- *  PAM algorithm. 
- *  
+ *  PAM class. Consists of all necessary functions to implement
+ *  PAM algorithm.
+ *
  */
 class PAM : public km::KMedoids {
-public:
+ public:
     /*! \brief Runs PAM algorithm.
-    * 
+    *
     *  Run the PAM algorithm to identify a dataset's medoids.
     *
     *  @param input_data Input data to cluster
@@ -42,7 +42,7 @@ public:
     void build_naive(const arma::mat& data, arma::rowvec& medoidIndices);
 
     /*! \brief Swap step for the PAM algorithm
-    * 
+    *
     *  Runs build step for the PAM algorithm. Loops over all datapoint and
     *  checks its distance from every other datapoint in the dataset, then checks if
     *  the total cost is less than that of the medoid.
@@ -55,4 +55,4 @@ public:
     */
     void swap_naive(const arma::mat& data, arma::rowvec& medoidIndices, arma::rowvec& assignments);
 };
-#endif // PAM_H_
+#endif // HEADERS_PAM_HPP_
