@@ -5,8 +5,6 @@
  * This file contains the primary C++ implementation of the BanditPAM code.
  *
  */
-#include "kmedoids_algorithm.hpp"
-#include "log_helper.hpp"
 #include "banditpam.hpp"
 
 #include <carma>
@@ -55,8 +53,7 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
 void BanditPAM::build(
   const arma::mat& data,
   arma::rowvec& medoid_indices,
-  arma::mat& medoids)
-{
+  arma::mat& medoids) {
     // Parameters
     size_t N = data.n_cols;
     arma::rowvec N_mat(N);
@@ -136,7 +133,7 @@ void BanditPAM::build(
         use_absolute = false; // use difference of loss for sigma and sampling,
                               // not absolute
         logHelper.loss_build.push_back(arma::mean(arma::mean(best_distances)));
-        logHelper.p_build.push_back((float)1/(float)p);
+        logHelper.p_build.push_back(static_cast<float>(1)/static_cast<float>(p));
     }
 }
 
@@ -159,8 +156,7 @@ arma::rowvec BanditPAM::build_target(
   arma::uvec& target,
   size_t batch_size,
   arma::rowvec& best_distances,
-  bool use_absolute)
-{
+  bool use_absolute) {
     size_t N = data.n_cols;
     arma::rowvec estimates(target.n_rows, arma::fill::zeros);
     arma::uvec tmp_refs = arma::randperm(N,
@@ -206,8 +202,7 @@ void BanditPAM::swap(
   const arma::mat& data,
   arma::rowvec& medoid_indices,
   arma::mat& medoids,
-  arma::rowvec& assignments)
-{
+  arma::rowvec& assignments) {
     size_t N = data.n_cols;
     size_t p = (N * n_medoids * swapConfidence); // reciprocal
 
@@ -315,7 +310,7 @@ void BanditPAM::swap(
           data, medoid_indices, best_distances, second_distances, assignments);
         sigma_log(sigma);
         logHelper.loss_swap.push_back(arma::mean(arma::mean(best_distances)));
-        logHelper.p_swap.push_back((float)1/(float)p);
+        logHelper.p_swap.push_back(static_cast<float>(1)/static_cast<float>(p));
     }
 }
 
@@ -343,8 +338,7 @@ arma::vec BanditPAM::swap_target(
   size_t batch_size,
   arma::rowvec& best_distances,
   arma::rowvec& second_best_distances,
-  arma::rowvec& assignments)
-{
+  arma::rowvec& assignments) {
     size_t N = data.n_cols;
     arma::vec estimates(targets.n_rows, arma::fill::zeros);
     arma::uvec tmp_refs = arma::randperm(N,
