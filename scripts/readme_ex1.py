@@ -1,7 +1,8 @@
 from BanditPAM import KMedoids
 import numpy as np
 import matplotlib.pyplot as plt
-
+import BanditPAM
+BanditPAM.set_num_threads(1)
 
 def my_func():
     print('****************got called*************')
@@ -16,7 +17,7 @@ X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 # Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids = 3, algorithm = "BanditPAM")
 # Writes results to gmm_log
-#kmed.fit(X, 'L2', "gmm_log", mod_path="multiply", dist_mat= "multiply", k=3)
+#kmed.fit(X, 'L2', "gmm_log", modPath="multiply", dist_mat= "multiply", k=3)
 kmed.fit(X, 'custom', "gmm_log", modPath="multiply", dist_mat= "multiply", k=3)
 
 # Visualize the data and the medoids:

@@ -716,17 +716,40 @@ double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) cons
   }
   
   PyObject *pFunc = PyObject_GetAttrString(pModule, distmat);
-  
+  //PyGILState_Release(gstate);
   std::cout<< "Works fine till here\n";
   PyObject *py_args_tuple, *pResult;
   py_args_tuple = PyTuple_New(2);
-  
+  //PyTuple_SetItem(py_args_tuple, 0, PyFloat_FromDouble(data.col(i))); 
+  //PyTuple_SetItem(py_args_tuple, 1, PyFloat_FromDouble(data.col(j))); 
   
   arma::vec v1= data.col(i);
   arma::vec v2= data.col(j);
   std::cout<<"v1 size--"<<size(v1);
   std::cout<<"v2 size--"<<size(v2);
+  /*py::array_t<double> cv1 = carma::col_to_arr(v1);
+  py::array_t<double> cv2 = carma::col_to_arr(v2);
   
+  const int size = cv1.size();
+  const int size2 = cv2.size();
+  //npy_intp dims1[1]{size};
+  npy_intp dims1=size;
+  //npy_intp dims2[1]{size2};
+  npy_intp dims2=size2;
+  PyObject *pArray1 = PyArray_SimpleNewFromData(
+        1, &size, NPY_DOUBLE);
+  PyObject *pArray2 = PyArray_SimpleNewFromData(
+        1, &size2, NPY_DOUBLE);
+
+     double* resultDataPtr1 = static_cast<double*>(PyArray_DATA((PyArrayObject*)pArray1));
+     double* resultDataPtr2 = static_cast<double*>(PyArray_DATA((PyArrayObject*)pArray2));
+ 
+  for (int i = 0; i < size; i++) {
+    resultDataPtr1[i] = v1[i];
+  }
+   for (int j = 0; j < size2; j++) {
+    resultDataPtr2[j] = v2[j];
+  }*/
 
 
    PyObject *pylist, *item;
@@ -747,18 +770,22 @@ double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) cons
         }
    }
    std::cout<< "Works fine till here222222\n";
- 
+  //PyTuple_SetItem(py_args_tuple, 0, carma::col_to_arr(v1)); 
+  //PyTuple_SetItem(py_args_tuple, 1, carma::col_to_arr(data.col(j))); 
   PyTuple_SetItem(py_args_tuple, 0, pylist); 
   PyTuple_SetItem(py_args_tuple, 1, pylist1 ); 
   
- 
+  /*py::make_tuple(
+        carma::col_to_arr(v1),
+        carma::col_to_arr(v2)
+    );*/
 
   std::cout<< "ARGS are defined\n";
   //pResult=PyObject_CallObject(pFunc, Py_INCREF(make_tuple));
   pResult=PyObject_CallObject(pFunc, py_args_tuple);
   //PyList_GetItem(py_result, i);
   double result = PyFloat_AsDouble(pResult);
-  std::cout<< "results--"<<pResult<<std::endl;
+  std::cout<< "results--"<<result<<std::endl;
   return result;
 
 }
