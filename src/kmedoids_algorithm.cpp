@@ -15,6 +15,7 @@
 #include <string>
 #include <cstring>
 #include "Python.h"
+#include "numpy/arrayobject.h"
 
 /**
  *  \brief Class implementation for running KMedoids methods.
@@ -124,7 +125,7 @@ size_t km::KMedoids::getSteps() {
 void km::KMedoids::setModPath(std::string mod_path) {
   if (!mod_path.empty())
   {
-     this->modPath = mod_path;
+     modPath = mod_path;
   }
 
 }
@@ -163,12 +164,14 @@ void km::KMedoids::setLossFn(std::string loss) {
         lossFn = &km::KMedoids::cos;
     } else if (loss == "inf") {
         lossFn = &km::KMedoids::LINF;
+    }else if (loss == "custom") {
+        std::cout<< "custommmmmmmmm"<<std::endl;
+        lossFn = &km::KMedoids::custom_loss;
     } else if (std::isdigit(loss.at(0))) {
+        std::cout<< "digitttttt"<<std::endl;
         lossFn = &km::KMedoids::LP;
         lp     = atoi(loss.c_str());
-    } else if (loss == "custom") {
-        lossFn = &km::KMedoids::custom_loss;
-    }else {
+    } else {
         throw std::invalid_argument("error: unrecognized loss function");
     }
     std::cout<< "setLossFn 1 lossFn :"<<lossFn <<std::endl;
@@ -355,7 +358,8 @@ void km::KMedoids::setLogFilename(const std::string& new_lname) {
  * @param loss The loss function used during medoid computation
  */
 void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss, std::string mod_path, std::string dist_mat) {
-  
+  std::cout<<"Inside fittt "<<std::endl;
+  km::KMedoids::setLossFn(loss);
   km::KMedoids::setModPath(mod_path);
   km::KMedoids::setDistMat(dist_mat);
   km::KMedoids::checkAlgorithm(algorithm);
@@ -642,20 +646,26 @@ double km::KMedoids::LINF(const arma::mat& data, size_t i, size_t j) const {
  */
 double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) const {
   //return arma::max(arma::abs(data.col(i) - data.col(j)));
+  std::cout<< "inside custom lost"<<std::endl;
   setenv("PYTHONPATH",".",1);
   Py_Initialize();
   
   PyObject *pName, *sys, *path;
-  
+  std::string modPath = "multiply";
+  std::cout<< "inside custom lost modPath "<<modPath<<std::endl;
+  std::string dist_mat = "multiply";
+  std::cout<< "inside custom lost dist_mat "<<dist_mat<<std::endl;
   char* mod = (char*) modPath.c_str();
   char* distmat = (char*) dist_mat.c_str();
-  
+  std::cout<< "inside custom lost mod "<<mod<<std::endl;
+  std::cout<< "inside custom lost distmat "<<distmat<<std::endl;
   sys  = PyImport_ImportModule("sys");
   path = PyObject_GetAttrString(sys, "path");
   PyList_Append(path, PyUnicode_DecodeFSDefault("."));
- 
-  PyObject *pModule = PyImport_ImportModule(mod);
-
+  std::cout<< "inside custom lost sys "<<sys<<std::endl;
+  std::cout<< "inside custom lost path "<<path<<std::endl;
+  PyObject *pModule = PyImport_ImportModule("multiply");
+  std::cout<< "inside custom lost pModule "<<pModule<<std::endl;
   if (!pModule)
   {
     PyErr_Print();
@@ -669,10 +679,64 @@ double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) cons
   py_args_tuple = PyTuple_New(2);
   //PyTuple_SetItem(py_args_tuple, 0, PyFloat_FromDouble(data.col(i))); 
   //PyTuple_SetItem(py_args_tuple, 1, PyFloat_FromDouble(data.col(j))); 
-  PyTuple_SetItem(py_args_tuple, 0, Py_INCREF(data.col(i))); 
-  PyTuple_SetItem(py_args_tuple, 1, arma::mat data.col(j)); 
-  std::cout<< "ARGS are defined\n";
+  
+  arma::vec v1= data.col(i);
+  arma::vec v2= data.col(j);
 
+  /*py::array_t<double> cv1 = carma::col_to_arr(v1);
+  py::array_t<double> cv2 = carma::col_to_arr(v2);
+  
+  const int size = cv1.size();
+  const int size2 = cv2.size();
+  //npy_intp dims1[1]{size};
+  npy_intp dims1=size;
+  //npy_intp dims2[1]{size2};
+  npy_intp dims2=size2;
+  PyObject *pArray1 = PyArray_SimpleNewFromData(
+        1, &size, NPY_DOUBLE);
+  PyObject *pArray2 = PyArray_SimpleNewFromData(
+        1, &size2, NPY_DOUBLE);
+
+     double* resultDataPtr1 = static_cast<double*>(PyArray_DATA((PyArrayObject*)pArray1));
+     double* resultDataPtr2 = static_cast<double*>(PyArray_DATA((PyArrayObject*)pArray2));
+ 
+  for (int i = 0; i < size; i++) {
+    resultDataPtr1[i] = v1[i];
+  }
+   for (int j = 0; j < size2; j++) {
+    resultDataPtr2[j] = v2[j];
+  }*/
+
+
+   PyObject *pylist, *item;
+    pylist = PyList_New(v1.size());
+    if (pylist != NULL){ 
+        for (int i = 0; i < v1.size(); i++) {
+            item = PyLong_FromLong(v1[i]);
+            PyList_SET_ITEM(pylist, i, item);
+        }
+    }
+
+   PyObject *pylist1, *item1;
+   pylist1 = PyList_New(v2.size());
+    if (pylist1 != NULL){ 
+        for (int j = 0; i < v2.size(); j++) {
+            item1 = PyLong_FromLong(v2[j]);
+            PyList_SET_ITEM(pylist1, j, item1);
+        }
+   }
+  //PyTuple_SetItem(py_args_tuple, 0, carma::col_to_arr(v1)); 
+  //PyTuple_SetItem(py_args_tuple, 1, carma::col_to_arr(data.col(j))); 
+  PyTuple_SetItem(py_args_tuple, 0, pylist); 
+  PyTuple_SetItem(py_args_tuple, 1, pylist1 ); 
+
+  /*py::make_tuple(
+        carma::col_to_arr(v1),
+        carma::col_to_arr(v2)
+    );*/
+
+  std::cout<< "ARGS are defined\n";
+  //pResult=PyObject_CallObject(pFunc, Py_INCREF(make_tuple));
   pResult=PyObject_CallObject(pFunc, py_args_tuple);
   //PyList_GetItem(py_result, i);
   double result = PyFloat_AsDouble(pResult);

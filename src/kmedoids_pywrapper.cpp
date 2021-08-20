@@ -78,7 +78,7 @@ public:
     }
     
     KMedoids::setLogFilename(logFilename);
-    KMedoids::fit(carma::arr_to_mat<double>(inputData), loss , py::cast<std::string>(kw["mod_path"]), py::cast<std::string>(kw["dist_mat"]));
+    KMedoids::fit(carma::arr_to_mat<double>(inputData), loss , py::cast<std::string>(kw["modPath"]), py::cast<std::string>(kw["dist_mat"]));
   }
 
   /**
