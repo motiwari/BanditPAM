@@ -155,7 +155,6 @@ void km::KMedoids::setDistMat(std::string dist_matrics) {
 void km::KMedoids::setLossFn(std::string loss) {
   if (std::regex_match(loss, std::regex("L\\d*"))) {
       loss = loss.substr(1);
-      std::cout<< "setLossFn:"<<loss<<std::endl;
   }
   try {
     if (loss == "manhattan") {
@@ -165,17 +164,13 @@ void km::KMedoids::setLossFn(std::string loss) {
     } else if (loss == "inf") {
         lossFn = &km::KMedoids::LINF;
     }else if (loss == "custom") {
-        std::cout<< "custommmmmmmmm"<<std::endl;
         lossFn = &km::KMedoids::custom_loss;
     } else if (std::isdigit(loss.at(0))) {
-        std::cout<< "digitttttt"<<std::endl;
         lossFn = &km::KMedoids::LP;
         lp     = atoi(loss.c_str());
     } else {
         throw std::invalid_argument("error: unrecognized loss function");
     }
-    std::cout<< "setLossFn 1 lossFn :"<<lossFn <<std::endl;
-    std::cout<< "setLossFn 1 lp :"<<lp <<std::endl;
   } catch (std::invalid_argument& e) {
       std::cout << e.what() << std::endl;
     }
@@ -588,45 +583,6 @@ double km::KMedoids::calc_loss(
  */
 double km::KMedoids::LP(const arma::mat& data, size_t i, size_t j) const {
    std::cout<<"INSIDE LPPPPPP"<<std::endl;
-   setenv("PYTHONPATH",".",1);
-  
-  Py_Initialize();
-  
-  PyObject *pName, *sys, *path;
-  
-  //char* mod = (char*) module.c_str();
-  //char* distmat = (char*) dist_mat.c_str();
-  
-  sys  = PyImport_ImportModule("sys");
-  path = PyObject_GetAttrString(sys, "path");
-  PyList_Append(path, PyUnicode_DecodeFSDefault("."));
- 
-  PyObject *pModule = PyImport_ImportModule("multiply");
-
-  if (!pModule)
-    {
-        PyErr_Print();
-        printf("ERROR in pModule\n");
-        exit(1);
-    }
-  
-
-  PyObject *pFunc = PyObject_GetAttrString(pModule, "multiply");
-  std::cout<< "Works fine till here\n";
-  PyObject *py_args_tuple, *pResult;
-  py_args_tuple = PyTuple_New(2);
-  PyTuple_SetItem(py_args_tuple, 0, PyFloat_FromDouble(2.2)); //stolen
-  PyTuple_SetItem(py_args_tuple, 1, PyFloat_FromDouble(3.3)); //stolen
-  //PyTuple_SetItem(py_args_tuple, 0, PyLong_FromLong(2.0)); //stolen
-  //PyTuple_SetItem(py_args_tuple, 1, PyLong_FromLong(2.0)); //stolen
-  std::cout<< "ARGS are defined\n";
-
-  pResult=PyObject_CallObject(pFunc, py_args_tuple);
-  //PyList_GetItem(py_result, i);
-  double result = PyFloat_AsDouble(pResult);
-  std::cout<< "results--"<<result<<std::endl;
-  //std::cout<< "Loss--"<<loss<<std::endl;
-
     return arma::norm(data.col(i) - data.col(j), lp);
 }
 
@@ -686,79 +642,65 @@ double km::KMedoids::LINF(const arma::mat& data, size_t i, size_t j) const {
  */
 double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) const {
   //return arma::max(arma::abs(data.col(i) - data.col(j)));
+  double result =0;
   std::cout<< "inside custom lost"<<std::endl;
-  setenv("PYTHONPATH",".",1);
-  Py_Initialize();
-  
-  PyObject *pName, *sys, *path;
-  std::string modPath = "multiply";
-  std::cout<< "inside custom lost modPath "<<modPath<<std::endl;
-  std::string dist_mat = "multiply";
-  std::cout<< "inside custom lost dist_mat "<<dist_mat<<std::endl;
-  char* mod = (char*) modPath.c_str();
-  char* distmat = (char*) dist_mat.c_str();
-  std::cout<< "inside custom lost mod "<<mod<<std::endl;
-  std::cout<< "inside custom lost distmat "<<distmat<<std::endl;
-  sys  = PyImport_ImportModule("sys");
-  path = PyObject_GetAttrString(sys, "path");
-  PyList_Append(path, PyUnicode_DecodeFSDefault("."));
-  std::cout<< "inside custom lost sys "<<sys<<std::endl;
-  std::cout<< "inside custom lost path "<<path<<std::endl;
-  //PyGILState_STATE gstate;
-  //gstate = PyGILState_Ensure();
-  PyObject *pModule = PyImport_ImportModule("multiply");
-  std::cout<< "inside custom lost pModule "<<pModule<<std::endl;
-  if (!pModule)
+  PyGILState_STATE gil_state = PyGILState_Ensure();
   {
-    PyErr_Print();
-    printf("ERROR in pModule\n");
-    exit(1);
-  }
-  
-  PyObject *pFunc = PyObject_GetAttrString(pModule, distmat);
-  
-  std::cout<< "Works fine till here\n";
-  PyObject *py_args_tuple, *pResult;
-  py_args_tuple = PyTuple_New(2);
-  
-  
-  arma::vec v1= data.col(i);
-  arma::vec v2= data.col(j);
-  std::cout<<"v1 size--"<<size(v1);
-  std::cout<<"v2 size--"<<size(v2);
-  
-
-
-   PyObject *pylist, *item;
+    setenv("PYTHONPATH",".",1);
+    Py_Initialize();
+    
+    PyObject *pName, *sys, *path;
+    std::string modPath = "multiply";
+    std::string dist_mat = "multiply";
+    char* mod = (char*) modPath.c_str();
+    char* distmat = (char*) dist_mat.c_str();
+    sys  = PyImport_ImportModule("sys");
+    path = PyObject_GetAttrString(sys, "path");
+    PyList_Append(path, PyUnicode_DecodeFSDefault("."));
+    PyObject *pModule = PyImport_ImportModule("multiply");
+    if (!pModule)
+    {
+      PyErr_Print();
+      printf("ERROR in pModule\n");
+      exit(1);
+    }
+    PyObject *pFunc = PyObject_GetAttrString(pModule, distmat);
+    
+    std::cout<< "Works fine till here\n";
+    PyObject *py_args_tuple, *pResult;
+    py_args_tuple = PyTuple_New(2);
+    
+    arma::vec v1= data.col(i);
+    arma::vec v2= data.col(j);
+    
+    PyObject *pylist, *item;
     pylist = PyList_New(v1.size());
     if (pylist != NULL){ 
         for (int i = 0; i < v1.size(); i++) {
-            item = PyLong_FromLong(v1[i]);
+          item = PyLong_FromLong(v1[i]);
             PyList_SET_ITEM(pylist, i, item);
         }
     }
-   std::cout<< "Works fine till here1111111\n";
-   PyObject *pylist1, *item1;
-   pylist1 = PyList_New(v2.size());
+    PyObject *pylist1, *item1;
+    pylist1 = PyList_New(v2.size());
+    //py::array_t<double> cv1 = carma::col_to_arr(v1);
+    pylist1 = PyList_New(v2.size());
     if (pylist1 != NULL){ 
         for (int j = 0; j < v2.size(); j++) {
             item1 = PyLong_FromLong(v2[j]);
             PyList_SET_ITEM(pylist1, j, item1);
         }
-   }
-   std::cout<< "Works fine till here222222\n";
- 
-  PyTuple_SetItem(py_args_tuple, 0, pylist); 
-  PyTuple_SetItem(py_args_tuple, 1, pylist1 ); 
+    }
   
- 
-
-  std::cout<< "ARGS are defined\n";
-  //pResult=PyObject_CallObject(pFunc, Py_INCREF(make_tuple));
-  pResult=PyObject_CallObject(pFunc, py_args_tuple);
-  //PyList_GetItem(py_result, i);
-  double result = PyFloat_AsDouble(pResult);
-  std::cout<< "results--"<<pResult<<std::endl;
+    PyTuple_SetItem(py_args_tuple, 0, pylist); 
+    PyTuple_SetItem(py_args_tuple, 1, pylist1 ); 
+    
+    pResult=PyObject_CallObject(pFunc, py_args_tuple);
+    result = PyFloat_AsDouble(pResult); 
+    std::cout<< "results--"<<result<<std::endl;
+  }
+  PyGILState_Release(gil_state);
+  std::cout<< "END ** custom lost"<<std::endl;
   return result;
 
 }
