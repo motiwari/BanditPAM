@@ -37,9 +37,9 @@ void KMedoidsWrapper::fitPython(const py::array_t<double>& inputData,
     // the KMedoids object or the fitPython function
     try {
         if (KMedoids::getNMedoids() == 0) { // Check for 0 as NULL
-        if (kw.size() == 0) {
-            throw py::value_error("Must specify number of medoids via n_medoids in KMedoids or k in fit function.");
-        }
+            if (kw.size() == 0) {
+                throw py::value_error("Must specify number of medoids via n_medoids in KMedoids or k in fit function.");
+            }
         }
     } catch (py::value_error &e) {
         // Throw it again (pybind11 will raise ValueError)

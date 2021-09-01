@@ -1,5 +1,5 @@
-#ifndef FITPYTHON_H_
-#define FITPYTHON_H_
+#ifndef KMEDOIDS_PYWRAPPER_H_
+#define KMEDOIDS_PYWRAPPER_H_
 
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
@@ -78,4 +78,4 @@ void labels_python(py::class_<KMedoidsWrapper> &);
 
 void steps_python(py::class_<KMedoidsWrapper> &);
 
-# endif // FITPYTHON_H_
+# endif // KMEDOIDS_PYWRAPPER_H_
