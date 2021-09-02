@@ -9,9 +9,9 @@
  * ./src/build/BanditPAM -f [path/to/input] -k [number of clusters]
  */
 
-#include "fastpam1.hpp"
-#include "pam.hpp"
-#include "banditpam.hpp"
+#include "kmedoids_algorithm.hpp"
+#include "log_helper.hpp"
+#include "kmedoids_pywrapper.hpp"
 
 #include <armadillo>
 #include <chrono>
