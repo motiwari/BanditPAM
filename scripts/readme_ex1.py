@@ -2,10 +2,7 @@ from BanditPAM import KMedoids
 import numpy as np
 import matplotlib.pyplot as plt
 import BanditPAM
-BanditPAM.set_num_threads(1)
-
-def my_func():
-    print('****************got called*************')
+#BanditPAM.set_num_threads(1)
 
 # Generate data from a Gaussian Mixture Model with the given means:
 np.random.seed(0)
