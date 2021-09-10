@@ -21,6 +21,7 @@
  * @param input_data Input data to find the medoids of
  */
 void km::KMedoids::fit_bpam(const arma::mat& input_data) {
+  omp_set_num_threads(1);
   data = input_data;
   data = arma::trans(data);
   arma::mat medoids_mat(data.n_rows, n_medoids);
@@ -169,12 +170,8 @@ arma::rowvec km::KMedoids::build_target(
     for (size_t i = 0; i < target.n_rows; i++) {
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
-            double cost = 0;
-            PyGILState_STATE gil_state = PyGILState_Ensure();
-            {
-              cost = (this->*lossFn)(data, tmp_refs(j), target(i));
-            }
-            PyGILState_Release(gil_state);
+            double cost =
+              (this->*lossFn)(data, tmp_refs(j), target(i));
             if (use_absolute) {
                 total += cost;
             } else {
@@ -363,12 +360,7 @@ arma::vec km::KMedoids::swap_target(
         size_t k = targets(i) % medoid_indices.n_cols;
         // calculate total loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost=0;
-            PyGILState_STATE gil_state = PyGILState_Ensure();
-            {
-              cost = (this->*lossFn)(data, n, tmp_refs(j));
-            }
-            PyGILState_Release(gil_state);
+            double cost = (this->*lossFn)(data, n, tmp_refs(j));
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
                     total += cost;

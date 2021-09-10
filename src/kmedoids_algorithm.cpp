@@ -396,12 +396,7 @@ void km::KMedoids::build_sigma(
     for (size_t i = 0; i < N; i++) {
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = 0;
-            PyGILState_STATE gil_state = PyGILState_Ensure();
-            {
-              cost= (this->*lossFn)(data, i, tmp_refs(j));
-            }
-            PyGILState_Release(gil_state);
+            double cost = (this->*lossFn)(data, i, tmp_refs(j));
             if (use_absolute) {
                 sample(j) = cost;
             } else {
@@ -451,12 +446,7 @@ void km::KMedoids::calc_best_distances_swap(
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < medoid_indices.n_cols; k++) {
-            double cost=0;
-            PyGILState_STATE gil_state = PyGILState_Ensure();
-            { 
-              cost= (this->*lossFn)(data, medoid_indices(k), i);
-            }
-            PyGILState_Release(gil_state);
+            double cost = (this->*lossFn)(data, medoid_indices(k), i);
             if (cost < best) {
                 assignments(i) = k;
                 second = best;
@@ -509,12 +499,8 @@ void km::KMedoids::swap_sigma(
 
         // calculate change in loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = 0;
-            PyGILState_STATE gil_state = PyGILState_Ensure();
-            { 
-              cost = (this->*lossFn)(data, n,tmp_refs(j));
-            }
-            PyGILState_Release(gil_state);
+            double cost = (this->*lossFn)(data, n,tmp_refs(j));
+
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
                     sample(j) = cost;
@@ -658,8 +644,8 @@ double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) cons
   //return arma::max(arma::abs(data.col(i) - data.col(j)));
   double result =0;
   std::cout<< "inside custom lost"<<std::endl;
-  PyGILState_STATE gil_state = PyGILState_Ensure();
-  {
+  //PyGILState_STATE gil_state = PyGILState_Ensure();
+  //{
     setenv("PYTHONPATH",".",1);
     Py_Initialize();
     
@@ -712,8 +698,8 @@ double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) cons
     pResult=PyObject_CallObject(pFunc, py_args_tuple);
     result = PyFloat_AsDouble(pResult); 
     std::cout<< "results--"<<result<<std::endl;
-  }
-  PyGILState_Release(gil_state);
+  //}
+  //PyGILState_Release(gil_state);
   std::cout<< "END ** custom lost"<<std::endl;
   return result;
 

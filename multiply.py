@@ -1,6 +1,6 @@
 import BanditPAM
 import numpy as np
-BanditPAM.set_num_threads(1)
+#BanditPAM.set_num_threads(1)
 def multiply(a,b):
     #print("Will compute ", a, " times ", b)
     lst_1 = np.array(a)
