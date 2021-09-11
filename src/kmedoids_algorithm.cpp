@@ -396,7 +396,9 @@ void km::KMedoids::build_sigma(
     for (size_t i = 0; i < N; i++) {
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
+          std::cout<< "*************in parallel***********"<<std::endl;
             double cost = (this->*lossFn)(data, i, tmp_refs(j));
+          std::cout<< "*************out parallel***********"<<std::endl;
             if (use_absolute) {
                 sample(j) = cost;
             } else {
@@ -648,16 +650,19 @@ double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) cons
   //{
     setenv("PYTHONPATH",".",1);
     Py_Initialize();
-    
     PyObject *pName, *sys, *path;
     std::string modPath = "multiply";
     std::string dist_mat = "multiply";
-    char* mod = (char*) modPath.c_str();
-    char* distmat = (char*) dist_mat.c_str();
+      std::cout<< "inside custom lost111"<<std::endl;
+    //char* mod = (char*) modPath.c_str();
+    //char* distmat = (char*) dist_mat.c_str();
+    char* mod ="multiply";
+    char* distmat="multiply";
     sys  = PyImport_ImportModule("sys");
     path = PyObject_GetAttrString(sys, "path");
     PyList_Append(path, PyUnicode_DecodeFSDefault("."));
     PyObject *pModule = PyImport_ImportModule("multiply");
+    std::cout<< "inside custom lost222"<<std::endl;
     if (!pModule)
     {
       PyErr_Print();
@@ -665,7 +670,7 @@ double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) cons
       exit(1);
     }
     PyObject *pFunc = PyObject_GetAttrString(pModule, distmat);
-    
+    std::cout<< "inside custom lost3333"<<std::endl;
     std::cout<< "Works fine till here\n";
     PyObject *py_args_tuple, *pResult;
     py_args_tuple = PyTuple_New(2);
@@ -681,6 +686,7 @@ double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) cons
             PyList_SET_ITEM(pylist, i, item);
         }
     }
+    std::cout<< "inside custom lost444"<<std::endl;
     PyObject *pylist1, *item1;
     pylist1 = PyList_New(v2.size());
     //py::array_t<double> cv1 = carma::col_to_arr(v1);

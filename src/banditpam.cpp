@@ -21,19 +21,23 @@
  * @param input_data Input data to find the medoids of
  */
 void km::KMedoids::fit_bpam(const arma::mat& input_data) {
-  omp_set_num_threads(1);
+  //omp_set_num_threads(1);
   data = input_data;
   data = arma::trans(data);
   arma::mat medoids_mat(data.n_rows, n_medoids);
   arma::rowvec medoid_indices(n_medoids);
   // runs build step
+  std::cout<< "*************Before Build***********"<<std::endl;
   km::KMedoids::build(data, medoid_indices, medoids_mat);
+  std::cout<< "*************After Build***********"<<std::endl;
   steps = 0;
 
   medoid_indices_build = medoid_indices;
   arma::rowvec assignments(data.n_cols);
   // runs swap step
+  std::cout<< "*************Before swap***********"<<std::endl;
   km::KMedoids::swap(data, medoid_indices, medoids_mat, assignments);
+  std::cout<< "*************After swap***********"<<std::endl;
   medoid_indices_final = medoid_indices;
   labels = assignments;
 }
@@ -57,6 +61,7 @@ void km::KMedoids::build(
   arma::rowvec& medoid_indices,
   arma::mat& medoids)
 {
+    
     // Parameters
     size_t N = data.n_cols;
     arma::rowvec N_mat(N);
@@ -74,9 +79,10 @@ void km::KMedoids::build(
     arma::rowvec ucbs(N);
     arma::rowvec T_samples(N, arma::fill::zeros); // number of times calculating induced loss for reference point
     arma::rowvec exact_mask(N, arma::fill::zeros); // computed the loss exactly for this datapoint
-
+    std::cout<< "*************Build Before for loop***********"<<std::endl;
     for (size_t k = 0; k < n_medoids; k++) {
         // instantiate medoids one-by-online
+        std::cout<< "K: "<<k<<std::endl;
         size_t step_count = 0;
         candidates.fill(1);
         T_samples.fill(0);
@@ -138,6 +144,7 @@ void km::KMedoids::build(
         logHelper.loss_build.push_back(arma::mean(arma::mean(best_distances)));
         logHelper.p_build.push_back((float)1/(float)p);
     }
+    std::cout<< "*************Build After for loop***********"<<std::endl;
 }
 
 /**
