@@ -177,8 +177,11 @@ arma::rowvec km::KMedoids::build_target(
     for (size_t i = 0; i < target.n_rows; i++) {
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
-            double cost =
-              (this->*lossFn)(data, tmp_refs(j), target(i));
+            //double cost =
+            //  (this->*lossFn)(data, tmp_refs(j), target(i));
+            double cost;
+            #pragma omp critical 
+              cost = (this->*lossFn)(data, tmp_refs(j), target(i));
             if (use_absolute) {
                 total += cost;
             } else {
@@ -367,7 +370,10 @@ arma::vec km::KMedoids::swap_target(
         size_t k = targets(i) % medoid_indices.n_cols;
         // calculate total loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(data, n, tmp_refs(j));
+            //double cost = (this->*lossFn)(data, n, tmp_refs(j));
+            double cost;
+            #pragma omp critical 
+              cost = (this->*lossFn)(data, n,tmp_refs(j));
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
                     total += cost;

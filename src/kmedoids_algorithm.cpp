@@ -397,7 +397,10 @@ void km::KMedoids::build_sigma(
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
           std::cout<< "*************in parallel***********"<<std::endl;
-            double cost = (this->*lossFn)(data, i, tmp_refs(j));
+          double cost;
+          #pragma omp critical 
+           cost = (this->*lossFn)(data, i, tmp_refs(j));
+            
           std::cout<< "*************out parallel***********"<<std::endl;
             if (use_absolute) {
                 sample(j) = cost;
@@ -448,7 +451,10 @@ void km::KMedoids::calc_best_distances_swap(
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < medoid_indices.n_cols; k++) {
-            double cost = (this->*lossFn)(data, medoid_indices(k), i);
+            //double cost = (this->*lossFn)(data, medoid_indices(k), i);
+            double cost;
+            #pragma omp critical 
+              cost = (this->*lossFn)(data, medoid_indices(k), i);
             if (cost < best) {
                 assignments(i) = k;
                 second = best;
@@ -501,8 +507,10 @@ void km::KMedoids::swap_sigma(
 
         // calculate change in loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(data, n,tmp_refs(j));
-
+            //double cost = (this->*lossFn)(data, n,tmp_refs(j));
+            double cost;
+            #pragma omp critical 
+              cost = (this->*lossFn)(data, n,tmp_refs(j));
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
                     sample(j) = cost;
@@ -646,6 +654,7 @@ double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) cons
   //return arma::max(arma::abs(data.col(i) - data.col(j)));
   double result =0;
   std::cout<< "inside custom lost"<<std::endl;
+  //std::vector data = data.cast<std::vector<py::object>>();
   //PyGILState_STATE gil_state = PyGILState_Ensure();
   //{
     setenv("PYTHONPATH",".",1);
@@ -653,11 +662,9 @@ double km::KMedoids::custom_loss(const arma::mat& data, size_t i, size_t j) cons
     PyObject *pName, *sys, *path;
     std::string modPath = "multiply";
     std::string dist_mat = "multiply";
-      std::cout<< "inside custom lost111"<<std::endl;
-    //char* mod = (char*) modPath.c_str();
-    //char* distmat = (char*) dist_mat.c_str();
-    char* mod ="multiply";
-    char* distmat="multiply";
+    std::cout<< "inside custom lost111"<<std::endl;
+    char* mod = (char*) modPath.c_str();
+    char* distmat = (char*) dist_mat.c_str();
     sys  = PyImport_ImportModule("sys");
     path = PyObject_GetAttrString(sys, "path");
     PyList_Append(path, PyUnicode_DecodeFSDefault("."));
