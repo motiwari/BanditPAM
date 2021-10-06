@@ -143,7 +143,7 @@ If installing these requirements from source, one can generally use the followin
 ```
 /BanditPAM$ cd headers/carma
 /BanditPAM/headers/carma$ mkdir build && cd build
-/BanditPAM/headers/carma/build$ cmake .. && make && make sudo install
+/BanditPAM/headers/carma/build$ cmake .. && make && sudo make install
 ```
 
 Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:
