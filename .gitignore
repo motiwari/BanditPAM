@@ -18,3 +18,4 @@ src/kmeds_pywrapper
 src/main.dSYM/
 src/KMedoidsLogfile
 var/
+BanditPAM.egg-info/
