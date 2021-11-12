@@ -57,10 +57,10 @@ double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool 
     return (this->*lossFn)(data, i, j);
   }
 
-  std::cout << "i" << i << "j" << j << "\n";
+  // std::cout << "i" << i << "j" << j << "\n";
   // #pragma omp critical
   // {
-    key_t_bpam key = std::make_tuple(i, j);
+    key_t_bpam key = std::make_pair(i, j);
     if (cache.find(key) == cache.end()){
 
       // Hypothesis: cache[key] accesses by exact value, whereas cache.find(key) accesses by hash

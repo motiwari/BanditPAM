@@ -14,14 +14,24 @@
 #include <unordered_map>
 #include <string>
 
-typedef std::tuple<size_t, size_t> key_t_bpam;
+typedef std::pair<size_t, size_t> key_t_bpam;
 
-struct key_hash : public std::unary_function<key_t_bpam, double>
+// struct key_hash : public std::unary_function<key_t_bpam, double>
+// {
+//  std::size_t operator()(const key_t_bpam& k) const {
+//    return (std::get<0>(k) ^ std::get<1>(k));
+//   //  return (std::get<0>(k) ^ std::get<1>(k)) + (std::get<0>(k) % 5) + (std::get<0>(k) % 11); // TODO: Terrible hash fn, please use something better
+//  }
+// };
+
+struct KeyHasher
 {
- std::size_t operator()(const key_t_bpam& k) const {
-   return (std::get<0>(k) ^ std::get<1>(k));
-  //  return (std::get<0>(k) ^ std::get<1>(k)) + (std::get<0>(k) % 5) + (std::get<0>(k) % 11); // TODO: Terrible hash fn, please use something better
- }
+  std::size_t operator()(const key_t_bpam& k) const
+  {
+    
+    return ((std::hash<size_t>()(k.first)
+             ^ (std::hash<size_t>()(k.second) << 1)) >> 1);
+  }
 };
 
 namespace km {
@@ -50,7 +60,7 @@ class KMedoids {
 
       void fit(const arma::mat& inputData, const std::string& loss);
 
-      std::unordered_map<key_t_bpam, double, key_hash> cache; // std::map is a RB tree, should use unordered_map
+      std::unordered_map<key_t_bpam, double, KeyHasher> cache; // std::map is a RB tree, should use unordered_map
 
       // The functions below are "get" functions for read-only attributes
 
@@ -124,7 +134,7 @@ class KMedoids {
       double calc_loss(const arma::mat& data, arma::rowvec& medoidIndices);
 
       // Loss functions
-      double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = false);
+      double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = true);
 
       size_t lp;
       double LP(const arma::mat& data, size_t i, size_t j) const;
