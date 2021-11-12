@@ -50,7 +50,7 @@ km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t ve
  *
  *  Destructor for the KMedoids class.
  */
-km::KMedoids::~KMedoids() {;}
+km::KMedoids::~KMedoids() {;} // TODO: Need semicolons?
 
 double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache) {
   if (!use_cache) {
