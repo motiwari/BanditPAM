@@ -2,12 +2,12 @@
  * @file pam.cpp
  * @date 2021-07-25
  *
- * This file contains the primary C++ implementation of the PAM code.
+ * This file contains a C++ implementation of the PAM algorithm.
  *
  */
+
 #include "pam.hpp"
 
-#include <carma>
 #include <armadillo>
 #include <unordered_map>
 #include <regex>

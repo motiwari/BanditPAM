@@ -5,13 +5,13 @@
  * This file contains the primary C++ implementation of the BanditPAM code.
  *
  */
+
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
 #include "fastpam1.hpp"
 #include "pam.hpp"
 #include "banditpam.hpp"
 
-#include <carma>
 #include <armadillo>
 #include <unordered_map>
 #include <regex>

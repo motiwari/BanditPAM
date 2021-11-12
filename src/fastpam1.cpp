@@ -4,15 +4,15 @@
  *
  * This file contains the primary C++ implementation of the FastPAM1 code follows
  * from the paper: Erich Schubert and Peter J. Rousseeuw: Faster k-Medoids Clustering:
- * Improving the PAM, CLARA, and CLARANS Algorithms. The paper can be assessed at
- * https://arxiv.org/pdf/1810.05691.pdf. Also the original PAM papers:
+ * Improving the PAM, CLARA, and CLARANS Algorithms. (https://arxiv.org/pdf/1810.05691.pdf).
+ * The original PAM papers are:
  * 1) Leonard Kaufman and Peter J. Rousseeuw: Clustering by means of medoids.
  * 2) Leonard Kaufman and Peter J. Rousseeuw: Partitioning around medoids (program pam).
  *
  */
+
 #include "fastpam1.hpp"
 
-#include <carma>
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
@@ -73,7 +73,7 @@ void FastPAM1::build_fastpam1(
     sigma = km::KMedoids::build_sigma(
                           data, best_distances, batchSize, use_absolute); 
     // fixes a base datapoint
-    for (int i = 0; i < data.n_cols; i++) {
+    for (size_t i = 0; i < data.n_cols; i++) {
       double total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points

@@ -31,7 +31,7 @@ void KMedoidsWrapper::fitPython(const py::array_t<double>& inputData,
                                 const std::string& loss, 
                                 const std::string& logFilename, 
                                 py::kwargs kw
-) 
+    ) 
 {
     // throw an error if the number of medoids is not specified in either 
     // the KMedoids object or the fitPython function

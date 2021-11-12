@@ -5,9 +5,9 @@
  * This file contains the primary C++ implementation of the BanditPAM code.
  *
  */
+
 #include "banditpam.hpp"
 
-#include <carma>
 #include <armadillo>
 #include <unordered_map>
 #include <regex>

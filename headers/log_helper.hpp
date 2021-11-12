@@ -1,7 +1,6 @@
 #ifndef HEADERS_LOG_HELPER_HPP_
 #define HEADERS_LOG_HELPER_HPP_
 
-#include <carma>
 #include <armadillo>
 #include <vector>
 #include <fstream>

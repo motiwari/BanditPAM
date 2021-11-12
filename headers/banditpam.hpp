@@ -4,7 +4,6 @@
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
 
-#include <carma>
 #include <armadillo>
 #include <vector>
 #include <fstream>

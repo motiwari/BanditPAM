@@ -1,11 +1,16 @@
 #ifndef KMEDOIDS_PYWRAPPER_H_
 #define KMEDOIDS_PYWRAPPER_H_
 
+/* 
+ * We perform these imports first because kmedoids_pywrapper is compiled first
+ * when building the python package, and carma must be 'include'd before armadillo
+*/
+#include <carma>
+#include <armadillo>
+
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
 
-#include <carma>
-#include <armadillo>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 

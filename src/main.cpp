@@ -11,7 +11,6 @@
 
 #include "kmedoids_algorithm.hpp"
 #include "log_helper.hpp"
-#include "kmedoids_pywrapper.hpp"
 
 #include <armadillo>
 #include <chrono>
