@@ -24,15 +24,27 @@ typedef std::pair<size_t, size_t> key_t_bpam;
 //  }
 // };
 
+// struct KeyHasher
+// {
+//   std::size_t operator()(const key_t_bpam& k) const
+//   {
+    
+//     return ((std::hash<size_t>()(k.first)
+//              ^ (std::hash<size_t>()(k.second) << 1)) >> 1);
+//   }
+// };
+
 struct KeyHasher
 {
+  // We need a faster hash than std::hash
+  // Though this is a rudimentary hash function, I checked up to 
+  // 10^8 entries and there were no collisions.
   std::size_t operator()(const key_t_bpam& k) const
   {
-    
-    return ((std::hash<size_t>()(k.first)
-             ^ (std::hash<size_t>()(k.second) << 1)) >> 1);
+    return (((k.first * INT_MAX) + k.second));
   }
 };
+
 
 namespace km {
   /**

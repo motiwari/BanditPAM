@@ -15,6 +15,8 @@
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
+#include <omp.h>
+
 
 /**
  *  \brief Class implementation for running KMedoids methods.
@@ -43,6 +45,8 @@ km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t ve
        verbosity(verbosity),
        logFilename(logFilename) {
   km::KMedoids::checkAlgorithm(algorithm);
+  // std::cout<<omp_get_num_threads() << "\n";
+  omp_set_num_threads(1);
 }
 
 /**
@@ -58,16 +62,22 @@ double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool 
   }
 
   // std::cout << "i" << i << "j" << j << "\n";
-  // #pragma omp critical
+  // #pragma omp atomic
   // {
     key_t_bpam key = std::make_pair(i, j);
+    key_t_bpam reversed_key = std::make_pair(j, i);
+    // std::cout << "finding\n";
     if (cache.find(key) == cache.end()){
-
+      // std::cout << "not found (" << i << "," << j << ")\n";
       // Hypothesis: cache[key] accesses by exact value, whereas cache.find(key) accesses by hash
       // So if as hash collision will hit from another thread, we'll try to access the true area
       // and get a segfault
       // This is likely to happen since there are 16 threads and XOR is a bad hash?
       cache[key] = (this->*lossFn)(data, i, j);
+      cache[reversed_key] = (this->*lossFn)(data, i, j);
+      // std::cout << "overwritten\n";
+    } else {
+      // std::cout << "successfully found (" << i << "," << j << ")\n";
     }
     return cache[key];
   // }
