@@ -46,7 +46,7 @@ km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t ve
        logFilename(logFilename) {
   km::KMedoids::checkAlgorithm(algorithm);
   // std::cout<<omp_get_num_threads() << "\n";
-  omp_set_num_threads(1);
+  // omp_set_num_threads(1);
 }
 
 /**
@@ -56,32 +56,32 @@ km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t ve
  */
 km::KMedoids::~KMedoids() {;} // TODO: Need semicolons?
 
-double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache) {
+double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache, bool symmetric_distance_metric) {
   if (!use_cache) {
     return (this->*lossFn)(data, i, j);
   }
+  
 
-  // std::cout << "i" << i << "j" << j << "\n";
-  // #pragma omp atomic
-  // {
-    key_t_bpam key = std::make_pair(i, j);
-    key_t_bpam reversed_key = std::make_pair(j, i);
-    // std::cout << "finding\n";
-    if (cache.find(key) == cache.end()){
-      // std::cout << "not found (" << i << "," << j << ")\n";
-      // Hypothesis: cache[key] accesses by exact value, whereas cache.find(key) accesses by hash
-      // So if as hash collision will hit from another thread, we'll try to access the true area
-      // and get a segfault
-      // This is likely to happen since there are 16 threads and XOR is a bad hash?
+  key_t_bpam key = std::make_pair(i, j);
+  if (cache.find(key) == cache.end()){
+    // Hypothesis: cache[key] accesses by exact value, whereas cache.find(key) accesses by hash
+    // So if as hash collision will hit from another thread, we'll try to access the true area
+    // and get a segfault
+    // This is likely to happen since there are 16 threads and XOR is a bad hash?
+    
+      #pragma omp critical 
+      {
       cache[key] = (this->*lossFn)(data, i, j);
-      cache[reversed_key] = (this->*lossFn)(data, i, j);
-      // std::cout << "overwritten\n";
-    } else {
-      // std::cout << "successfully found (" << i << "," << j << ")\n";
+      
+      if (symmetric_distance_metric) {
+        cache[std::make_pair(j, i)] = (this->*lossFn)(data, i, j);
+      }
+      }
     }
+  
     return cache[key];
-  // }
-}
+  
+  }
 
 /**
  *  \brief Checks whether algorithm input is valid
