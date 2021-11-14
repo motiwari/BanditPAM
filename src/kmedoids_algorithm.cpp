@@ -79,10 +79,8 @@ double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool 
       }
     }
   }
-  
-    return cache[key];
-  
-  }
+  return cache[key];
+}
 
 /**
  *  \brief Checks whether algorithm input is valid
