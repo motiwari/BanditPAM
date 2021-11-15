@@ -409,7 +409,7 @@ void km::KMedoids::calc_best_distances_swap(
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < medoid_indices.n_cols; k++) {
-            double cost = km::KMedoids::cachedLoss(data, medoid_indices(k), i);
+            double cost = km::KMedoids::cachedLoss(data, i, medoid_indices(k));
             if (cost < best) {
                 assignments(i) = k;
                 second = best;
@@ -524,7 +524,7 @@ double km::KMedoids::calc_loss(
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < n_medoids; k++) {
-            double currCost = km::KMedoids::cachedLoss(data, medoid_indices(k), i);
+            double currCost = km::KMedoids::cachedLoss(data, i, medoid_indices(k));
             if (currCost < cost) {
                 cost = currCost;
             }

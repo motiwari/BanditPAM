@@ -186,7 +186,7 @@ arma::rowvec BanditPAM::build_target(
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
             double cost =
-              km::KMedoids::cachedLoss(data, tmp_refs(j), target(i));
+              km::KMedoids::cachedLoss(data, target(i), tmp_refs(j));
             if (use_absolute) {
                 total += cost;
             } else {
