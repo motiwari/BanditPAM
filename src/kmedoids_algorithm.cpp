@@ -519,7 +519,8 @@ double km::KMedoids::calc_loss(
   arma::rowvec& medoid_indices) {
     double total = 0;
 
-    // TODO: Should there be a pragma omp parallel for here?
+    // TODO: is this parallel loop accumulating properly?
+    #pragma omp parallel for
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < n_medoids; k++) {
