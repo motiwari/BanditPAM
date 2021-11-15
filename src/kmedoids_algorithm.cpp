@@ -64,13 +64,19 @@ double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool 
   size_t n = data.n_cols;
   size_t m = ceil(log10(data.n_cols) * cache_multiplier);
 
-  if (j < m) {
-    if (cache[n*(m-1) + j] == 0) {
-        cache[n*(m-1) + j] = (this->*lossFn)(data, i, j);
-    } else {
-      return cache[n*(m-1) + j];
-    }
-  }
+
+  //arma::uvec permutation
+  // n, m 
+  // reindex mapping original number -> new cache row
+  // cache[n * m]
+
+  if (reindex.find(j) != reindex.end()) { // test this is one of the early points in the permutation
+      if (cache[n*(m-1) + j] == 0) {
+          cache[n*(m-1) + j] = (this->*lossFn)(data, i, j);
+      } else {
+        return cache[n*(m-1) + j];
+      }
+    } 
   return (this->*lossFn)(data, i, j);
 }
 

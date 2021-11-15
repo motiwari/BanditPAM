@@ -27,9 +27,18 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
   // TODO: Create fixed permutation here
   // TODO: If cache exists, delete it
   
-  size_t n = data.n_cols;
-  size_t m = ceil(log10(data.n_cols) * cache_multiplier);
-  cache = new float[m * n];
+  if (false) { // if using cache
+    size_t n = data.n_cols;
+    size_t m = ceil(log10(data.n_cols) * cache_multiplier);
+    cache = new float[m * n];
+
+    permutation = arma::randperm(n);
+    reindex = {};
+    for (size_t counter = 0; counter < m; counter++) {
+        reindex[permutation[counter]] = counter;
+        counter++;
+    }
+  }
   
 
   arma::mat medoids_mat(data.n_rows, n_medoids);
