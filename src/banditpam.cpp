@@ -30,11 +30,11 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
   if (true) { // if using cache
     size_t n = data.n_cols;
     size_t m = fmin(n, ceil(log10(data.n_cols) * cache_multiplier));
-    cache = new float[m * n];
+    cache = new float[n * m];
 
     permutation = arma::randperm(n);
     reindex = {};
-    for (size_t counter = 0; counter < m; counter++) {
+    for (size_t counter = 0; counter < m; counter++) { // TODO: Can we parallelize this?
         reindex[permutation[counter]] = counter;
     }
   }
