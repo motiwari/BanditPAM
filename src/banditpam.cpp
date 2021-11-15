@@ -27,16 +27,16 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
   // TODO: Create fixed permutation here
   // TODO: If cache exists, delete it
   
-  if (false) { // if using cache
+  if (true) { // if using cache
     size_t n = data.n_cols;
-    size_t m = ceil(log10(data.n_cols) * cache_multiplier);
+    size_t m = fmin(n, ceil(log10(data.n_cols) * cache_multiplier));
     cache = new float[m * n];
 
     permutation = arma::randperm(n);
     reindex = {};
     for (size_t counter = 0; counter < m; counter++) {
+        std::cout << permutation[counter] << "->" << counter << "\n";
         reindex[permutation[counter]] = counter;
-        counter++;
     }
   }
   
