@@ -387,7 +387,6 @@ arma::vec BanditPAM::swap_target(
        tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
     }
 
-
 // for each considered swap
 #pragma omp parallel for
     for (size_t i = 0; i < targets.n_rows; i++) {

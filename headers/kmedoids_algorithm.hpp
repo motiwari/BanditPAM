@@ -73,7 +73,8 @@ class KMedoids {
 
       void fit(const arma::mat& inputData, const std::string& loss);
 
-
+      // cache-related variables
+      
       size_t cache_multiplier = 1000;
 
       float* cache; // array of floats
@@ -84,11 +85,9 @@ class KMedoids {
 
       std::unordered_map<size_t, size_t> reindex; 
 
-      bool use_perm = true; // for debugging only
+      bool use_perm = true; // set to false for debugging only, to measure speedup
 
-
-
-      // The functions below are "get" functions for read-only attributes
+      // The functions below are getters for read-only attributes
 
       arma::rowvec getMedoidsFinal();
 
