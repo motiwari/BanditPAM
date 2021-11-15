@@ -370,6 +370,7 @@ arma::rowvec km::KMedoids::build_sigma(
         }
         updated_sigma(i) = arma::stddev(sample);
     }
+
     arma::rowvec P = {0.25, 0.5, 0.75};
     arma::rowvec Q = arma::quantile(updated_sigma, P);
     std::ostringstream sigma_out;
@@ -518,6 +519,7 @@ double km::KMedoids::calc_loss(
   arma::rowvec& medoid_indices) {
     double total = 0;
 
+    // TODO: Should there be a pragma omp parallel for here?
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < n_medoids; k++) {

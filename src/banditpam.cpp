@@ -142,6 +142,7 @@ void BanditPAM::build(
         medoids.unsafe_col(k) = data.unsafe_col(medoid_indices(k));
 
         // don't need to do this on final iteration
+        #pragma omp parallel for
         for (size_t i = 0; i < N; i++) {
             double cost = km::KMedoids::cachedLoss(data, i, medoid_indices(k));
             if (cost < best_distances(i)) {
