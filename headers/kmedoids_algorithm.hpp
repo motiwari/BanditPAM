@@ -73,10 +73,9 @@ class KMedoids {
 
       void fit(const arma::mat& inputData, const std::string& loss);
 
-      // TODO: Use new keyword, May still be on the stack!!!
-      std::unordered_map<key_t_bpam, double, KeyHasher> cache = {}; // std::map is a RB tree, should use unordered_map
-
-      std::unordered_map<size_t, std::mutex*> locks;
+      float* cache; // array of integers
+      
+      size_t cache_multiplier = 50;
 
       // The functions below are "get" functions for read-only attributes
 
@@ -150,7 +149,7 @@ class KMedoids {
       double calc_loss(const arma::mat& data, arma::rowvec& medoidIndices);
 
       // Loss functions
-      double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = true, bool symmetric_distance_metric = true);
+      double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = true);
 
       size_t lp;
 

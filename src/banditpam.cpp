@@ -11,6 +11,7 @@
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
+#include <cmath>
 
 /**
  * \brief Runs BanditPAM algorithm.
@@ -25,16 +26,11 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
 
   // TODO: Create fixed permutation here
   // TODO: If cache exists, delete it
-  cache = {};
-  // TODO: if locks exist, delete it
-  locks = {};
   
-  // Cannot parallelize this for the same reasons we can't
-  // write via multiple threads to an std::unordered_map
-  for (size_t idx = 0; idx < data.n_cols; idx++) {
-    locks[idx] = new std::mutex();
-  }
-
+  size_t n = data.n_cols;
+  size_t m = ceil(log10(data.n_cols) * cache_multiplier);
+  cache = new float[m * n];
+  
 
   arma::mat medoids_mat(data.n_rows, n_medoids);
   arma::rowvec medoid_indices(n_medoids);
