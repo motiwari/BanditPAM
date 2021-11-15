@@ -67,7 +67,7 @@ namespace km {
 class KMedoids {
  public:
       KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t verbosity = 0, size_t max_iter = 1000,
-              size_t buildConfidence =  1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
+              size_t buildConfidence = 1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
 
       ~KMedoids();
 

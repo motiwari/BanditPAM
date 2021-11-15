@@ -35,7 +35,6 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
     permutation = arma::randperm(n);
     reindex = {};
     for (size_t counter = 0; counter < m; counter++) {
-        std::cout << permutation[counter] << "->" << counter << "\n";
         reindex[permutation[counter]] = counter;
     }
   }
