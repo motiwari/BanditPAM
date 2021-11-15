@@ -22,6 +22,20 @@
 void BanditPAM::fit_bpam(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
+
+  // TODO: Create fixed permutation here
+  // TODO: If cache exists, delete it
+  cache = {};
+  // TODO: if locks exist, delete it
+  locks = {};
+  
+  // Cannot parallelize this for the same reasons we can't
+  // write via multiple threads to an std::unordered_map
+  for (size_t idx = 0; idx < data.n_cols; idx++) {
+    locks[idx] = new std::mutex();
+  }
+
+
   arma::mat medoids_mat(data.n_rows, n_medoids);
   arma::rowvec medoid_indices(n_medoids);
   // runs build step

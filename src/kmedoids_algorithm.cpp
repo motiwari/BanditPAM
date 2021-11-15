@@ -63,22 +63,27 @@ double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool 
   
 
   key_t_bpam key = std::make_pair(i, j);
-  if (cache.find(key) == cache.end()){
+  if (locks[i]->try_lock()) {
+    if (cache.find(key) == cache.end()) {
     // NOTE: ThreadSanitizer will give a nominal race condition when building this code in debug mode
     // However, in reality it's not an issue because actually any way the race conditions are
     // resolved will result in the same values being written to the cache
     // TODO: It may be possible to make this cache even MORE performant by PERMITTING shearing!
     // Since each thread will always be writing the same value
     
-    #pragma omp critical 
-    {
+    // if (false) {
+    
       cache[key] = (this->*lossFn)(data, i, j);
       
-      if (symmetric_distance_metric) {
-        cache[std::make_pair(j, i)] = (this->*lossFn)(data, i, j);
+      // if (symmetric_distance_metric) {
+      //   cache[std::make_pair(j, i)] = (this->*lossFn)(data, i, j);
       }
+      locks[i]->unlock();
     }
-  }
+    else {
+      return (this->*lossFn)(data, i, j);
+    }
+  
   return cache[key];
 }
 

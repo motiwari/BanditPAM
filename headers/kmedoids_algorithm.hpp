@@ -13,6 +13,7 @@
 #include <functional>
 #include <unordered_map>
 #include <string>
+#include <mutex>
 
 typedef std::pair<size_t, size_t> key_t_bpam;
 
@@ -72,7 +73,10 @@ class KMedoids {
 
       void fit(const arma::mat& inputData, const std::string& loss);
 
-      std::unordered_map<key_t_bpam, double, KeyHasher> cache; // std::map is a RB tree, should use unordered_map
+      // TODO: Use new keyword, May still be on the stack!!!
+      std::unordered_map<key_t_bpam, double, KeyHasher> cache = {}; // std::map is a RB tree, should use unordered_map
+
+      std::unordered_map<size_t, std::mutex*> locks;
 
       // The functions below are "get" functions for read-only attributes
 
@@ -149,6 +153,7 @@ class KMedoids {
       double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = true, bool symmetric_distance_metric = true);
 
       size_t lp;
+
       double LP(const arma::mat& data, size_t i, size_t j) const;
 
       double LINF(const arma::mat& data, size_t i, size_t j) const;
