@@ -33,6 +33,7 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
     cache = new float[n * m];
 
     permutation = arma::randperm(n);
+    permutation_idx = 0;
     reindex = {};
     for (size_t counter = 0; counter < m; counter++) { // TODO: Can we parallelize this?
         reindex[permutation[counter]] = counter;
@@ -92,6 +93,7 @@ void BanditPAM::build(
 
     for (size_t k = 0; k < n_medoids; k++) {
         // instantiate medoids one-by-online
+        permutation_idx = 0;
         size_t step_count = 0;
         candidates.fill(1);
         T_samples.fill(0);
@@ -178,9 +180,16 @@ arma::rowvec BanditPAM::build_target(
   bool use_absolute) {
     size_t N = data.n_cols;
     arma::rowvec estimates(target.n_rows, arma::fill::zeros);
-    arma::uvec tmp_refs = arma::randperm(N,
-                                   batch_size); // without replacement, requires
-                                                // updated version of armadillo
+    // arma::uvec tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
+
+    // TODO: Make this wraparound properly, last batch_size elements are dropped
+    // TODO: Check batch_size is < N
+    if ((permutation_idx + batch_size) > N) {
+      permutation_idx = 0;
+    }
+    arma::uvec tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
+    permutation_idx += batch_size;
+
 #pragma omp parallel for
     for (size_t i = 0; i < target.n_rows; i++) {
         double total = 0;
@@ -241,6 +250,7 @@ void BanditPAM::swap(
     // continue making swaps while loss is decreasing
     while (swap_performed && iter < max_iter) {
         iter++;
+        permutation_idx = 0;
 
         // calculate quantities needed for swap, best_distances and sigma
         calc_best_distances_swap(
@@ -359,9 +369,15 @@ arma::vec BanditPAM::swap_target(
   arma::rowvec& assignments) {
     size_t N = data.n_cols;
     arma::vec estimates(targets.n_rows, arma::fill::zeros);
-    arma::uvec tmp_refs = arma::randperm(N,
-                                   batch_size); // without replacement, requires
-                                                // updated version of armadillo
+    // arma::uvec tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
+
+    // TODO: Make this wraparound properly, last batch_size elements are dropped
+    // TODO: Check batch_size is < N
+    if ((permutation_idx + batch_size) > N) {
+      permutation_idx = 0;
+    }
+    arma::uvec tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
+    permutation_idx += batch_size;
 
 // for each considered swap
 #pragma omp parallel for

@@ -80,7 +80,11 @@ class KMedoids {
 
       arma::uvec permutation;
 
+      size_t permutation_idx;
+
       std::unordered_map<size_t, size_t> reindex; 
+
+      bool use_perm = true; // for debugging only
 
 
 
