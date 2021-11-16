@@ -15,37 +15,6 @@
 #include <string>
 #include <mutex>
 
-typedef std::pair<size_t, size_t> key_t_bpam;
-
-// struct key_hash : public std::unary_function<key_t_bpam, double>
-// {
-//  std::size_t operator()(const key_t_bpam& k) const {
-//    return (std::get<0>(k) ^ std::get<1>(k));
-//   //  return (std::get<0>(k) ^ std::get<1>(k)) + (std::get<0>(k) % 5) + (std::get<0>(k) % 11); // TODO: Terrible hash fn, please use something better
-//  }
-// };
-
-// struct KeyHasher
-// {
-//   std::size_t operator()(const key_t_bpam& k) const
-//   {
-    
-//     return ((std::hash<size_t>()(k.first)
-//              ^ (std::hash<size_t>()(k.second) << 1)) >> 1);
-//   }
-// };
-
-struct KeyHasher
-{
-  // We need a faster hash than std::hash
-  // Though this is a rudimentary hash function, I checked up to 
-  // 10^8 entries and there were no collisions.
-  std::size_t operator()(const key_t_bpam& k) const
-  {
-    return (((k.first * INT_MAX) + k.second));
-  }
-};
-
 
 namespace km {
   /**
@@ -56,9 +25,8 @@ namespace km {
    *
    *  @param n_medoids Number of medoids/clusters to create
    *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
-   *  the "Bandit-PAM" algorithm, or "naive" to use the naive method
-   *  @param verbosity Verbosity of the algorithm, 0 will have no log file
-   *  emitted, 1 will create a log file
+   *  the "BanditPAM" algorithm, or "naive" to use PAM
+   *  @param verbosity Verbosity of the algorithm, 0 will have no log file, 1 will create a log file
    *  @param max_iter The maximum number of iterations the algorithm runs for
    *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
    *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds

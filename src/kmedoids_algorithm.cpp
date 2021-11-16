@@ -45,8 +45,6 @@ km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t ve
        verbosity(verbosity),
        logFilename(logFilename) {
   km::KMedoids::checkAlgorithm(algorithm);
-  // std::cout<<omp_get_num_threads() << "\n";
-  // omp_set_num_threads(1);
 }
 
 /**
