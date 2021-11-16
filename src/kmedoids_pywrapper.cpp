@@ -45,7 +45,7 @@ int sum_thread_ids() {
 }
 
 
-PYBIND11_MODULE(BanditPAM, m) {
+PYBIND11_MODULE(banditpam, m) {
   m.doc() = "BanditPAM Python library, implemented in C++";
   m.def("get_max_threads", &omp_get_max_threads, "Returns max number of threads");
   m.def("set_num_threads", &omp_set_num_threads, "Set the maximum number of threads");
