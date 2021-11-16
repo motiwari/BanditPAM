@@ -12,7 +12,7 @@ import platform
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
-__version__ = "1.0.0a"
+__version__ = "1.0.0b"
 
 
 class get_pybind_include(object):
