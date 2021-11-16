@@ -19,3 +19,5 @@ src/main.dSYM/
 src/KMedoidsLogfile
 var/
 BanditPAM.egg-info/
+build/
+tmp/
