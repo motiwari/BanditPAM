@@ -1,0 +1,3416 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" width="1200" height="326" onload="init(evt)" viewBox="0 0 1200 326" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Flame graph stack visualization. See https://github.com/brendangregg/FlameGraph for latest version, and http://www.brendangregg.com/flamegraphs.html for examples. -->
+<!-- NOTES:  -->
+<defs>
+	<linearGradient id="background" y1="0" y2="1" x1="0" x2="0" >
+		<stop stop-color="#eeeeee" offset="5%" />
+		<stop stop-color="#eeeeb0" offset="95%" />
+	</linearGradient>
+</defs>
+<style type="text/css">
+	text { font-family:Verdana; font-size:12px; fill:rgb(0,0,0); }
+	#search, #ignorecase { opacity:0.1; cursor:pointer; }
+	#search:hover, #search.show, #ignorecase:hover, #ignorecase.show { opacity:1; }
+	#subtitle { text-anchor:middle; font-color:rgb(160,160,160); }
+	#title { text-anchor:middle; font-size:17px}
+	#unzoom { cursor:pointer; }
+	#frames > *:hover { stroke:black; stroke-width:0.5; cursor:pointer; }
+	.hide { display:none; }
+	.parent { opacity:0.5; }
+</style>
+<script type="text/ecmascript">
+<![CDATA[
+	"use strict";
+	var details, searchbtn, unzoombtn, matchedtxt, svg, searching, currentSearchTerm, ignorecase, ignorecaseBtn;
+	function init(evt) {
+		details = document.getElementById("details").firstChild;
+		searchbtn = document.getElementById("search");
+		ignorecaseBtn = document.getElementById("ignorecase");
+		unzoombtn = document.getElementById("unzoom");
+		matchedtxt = document.getElementById("matched");
+		svg = document.getElementsByTagName("svg")[0];
+		searching = 0;
+		currentSearchTerm = null;
+
+		// use GET parameters to restore a flamegraphs state.
+		var params = get_params();
+		if (params.x && params.y)
+			zoom(find_group(document.querySelector('[x="' + params.x + '"][y="' + params.y + '"]')));
+                if (params.s) search(params.s);
+	}
+
+	// event listeners
+	window.addEventListener("click", function(e) {
+		var target = find_group(e.target);
+		if (target) {
+			if (target.nodeName == "a") {
+				if (e.ctrlKey === false) return;
+				e.preventDefault();
+			}
+			if (target.classList.contains("parent")) unzoom();
+			zoom(target);
+			if (!document.querySelector('.parent')) {
+				clearzoom();
+				return;
+			}
+
+			// set parameters for zoom state
+			var el = target.querySelector("rect");
+			if (el && el.attributes && el.attributes.y && el.attributes._orig_x) {
+				var params = get_params()
+				params.x = el.attributes._orig_x.value;
+				params.y = el.attributes.y.value;
+				history.replaceState(null, null, parse_params(params));
+			}
+		}
+		else if (e.target.id == "unzoom") clearzoom();
+		else if (e.target.id == "search") search_prompt();
+		else if (e.target.id == "ignorecase") toggle_ignorecase();
+	}, false)
+
+	// mouse-over for info
+	// show
+	window.addEventListener("mouseover", function(e) {
+		var target = find_group(e.target);
+		if (target) details.nodeValue = "Function: " + g_to_text(target);
+	}, false)
+
+	// clear
+	window.addEventListener("mouseout", function(e) {
+		var target = find_group(e.target);
+		if (target) details.nodeValue = ' ';
+	}, false)
+
+	// ctrl-F for search
+	// ctrl-I to toggle case-sensitive search
+	window.addEventListener("keydown",function (e) {
+		if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)) {
+			e.preventDefault();
+			search_prompt();
+		}
+		else if (e.ctrlKey && e.keyCode === 73) {
+			e.preventDefault();
+			toggle_ignorecase();
+		}
+	}, false)
+
+	// functions
+	function get_params() {
+		var params = {};
+		var paramsarr = window.location.search.substr(1).split('&');
+		for (var i = 0; i < paramsarr.length; ++i) {
+			var tmp = paramsarr[i].split("=");
+			if (!tmp[0] || !tmp[1]) continue;
+			params[tmp[0]]  = decodeURIComponent(tmp[1]);
+		}
+		return params;
+	}
+	function parse_params(params) {
+		var uri = "?";
+		for (var key in params) {
+			uri += key + '=' + encodeURIComponent(params[key]) + '&';
+		}
+		if (uri.slice(-1) == "&")
+			uri = uri.substring(0, uri.length - 1);
+		if (uri == '?')
+			uri = window.location.href.split('?')[0];
+		return uri;
+	}
+	function find_child(node, selector) {
+		var children = node.querySelectorAll(selector);
+		if (children.length) return children[0];
+	}
+	function find_group(node) {
+		var parent = node.parentElement;
+		if (!parent) return;
+		if (parent.id == "frames") return node;
+		return find_group(parent);
+	}
+	function orig_save(e, attr, val) {
+		if (e.attributes["_orig_" + attr] != undefined) return;
+		if (e.attributes[attr] == undefined) return;
+		if (val == undefined) val = e.attributes[attr].value;
+		e.setAttribute("_orig_" + attr, val);
+	}
+	function orig_load(e, attr) {
+		if (e.attributes["_orig_"+attr] == undefined) return;
+		e.attributes[attr].value = e.attributes["_orig_" + attr].value;
+		e.removeAttribute("_orig_"+attr);
+	}
+	function g_to_text(e) {
+		var text = find_child(e, "title").firstChild.nodeValue;
+		return (text)
+	}
+	function g_to_func(e) {
+		var func = g_to_text(e);
+		// if there's any manipulation we want to do to the function
+		// name before it's searched, do it here before returning.
+		return (func);
+	}
+	function update_text(e) {
+		var r = find_child(e, "rect");
+		var t = find_child(e, "text");
+		var w = parseFloat(r.attributes.width.value) -3;
+		var txt = find_child(e, "title").textContent.replace(/\([^(]*\)$/,"");
+		t.attributes.x.value = parseFloat(r.attributes.x.value) + 3;
+
+		// Smaller than this size won't fit anything
+		if (w < 2 * 12 * 0.59) {
+			t.textContent = "";
+			return;
+		}
+
+		t.textContent = txt;
+		// Fit in full text width
+		if (/^ *$/.test(txt) || t.getSubStringLength(0, txt.length) < w)
+			return;
+
+		for (var x = txt.length - 2; x > 0; x--) {
+			if (t.getSubStringLength(0, x + 2) <= w) {
+				t.textContent = txt.substring(0, x) + "..";
+				return;
+			}
+		}
+		t.textContent = "";
+	}
+
+	// zoom
+	function zoom_reset(e) {
+		if (e.attributes != undefined) {
+			orig_load(e, "x");
+			orig_load(e, "width");
+		}
+		if (e.childNodes == undefined) return;
+		for (var i = 0, c = e.childNodes; i < c.length; i++) {
+			zoom_reset(c[i]);
+		}
+	}
+	function zoom_child(e, x, ratio) {
+		if (e.attributes != undefined) {
+			if (e.attributes.x != undefined) {
+				orig_save(e, "x");
+				e.attributes.x.value = (parseFloat(e.attributes.x.value) - x - 10) * ratio + 10;
+				if (e.tagName == "text")
+					e.attributes.x.value = find_child(e.parentNode, "rect[x]").attributes.x.value + 3;
+			}
+			if (e.attributes.width != undefined) {
+				orig_save(e, "width");
+				e.attributes.width.value = parseFloat(e.attributes.width.value) * ratio;
+			}
+		}
+
+		if (e.childNodes == undefined) return;
+		for (var i = 0, c = e.childNodes; i < c.length; i++) {
+			zoom_child(c[i], x - 10, ratio);
+		}
+	}
+	function zoom_parent(e) {
+		if (e.attributes) {
+			if (e.attributes.x != undefined) {
+				orig_save(e, "x");
+				e.attributes.x.value = 10;
+			}
+			if (e.attributes.width != undefined) {
+				orig_save(e, "width");
+				e.attributes.width.value = parseInt(svg.width.baseVal.value) - (10 * 2);
+			}
+		}
+		if (e.childNodes == undefined) return;
+		for (var i = 0, c = e.childNodes; i < c.length; i++) {
+			zoom_parent(c[i]);
+		}
+	}
+	function zoom(node) {
+		var attr = find_child(node, "rect").attributes;
+		var width = parseFloat(attr.width.value);
+		var xmin = parseFloat(attr.x.value);
+		var xmax = parseFloat(xmin + width);
+		var ymin = parseFloat(attr.y.value);
+		var ratio = (svg.width.baseVal.value - 2 * 10) / width;
+
+		// XXX: Workaround for JavaScript float issues (fix me)
+		var fudge = 0.0001;
+
+		unzoombtn.classList.remove("hide");
+
+		var el = document.getElementById("frames").children;
+		for (var i = 0; i < el.length; i++) {
+			var e = el[i];
+			var a = find_child(e, "rect").attributes;
+			var ex = parseFloat(a.x.value);
+			var ew = parseFloat(a.width.value);
+			var upstack;
+			// Is it an ancestor
+			if (0 == 0) {
+				upstack = parseFloat(a.y.value) > ymin;
+			} else {
+				upstack = parseFloat(a.y.value) < ymin;
+			}
+			if (upstack) {
+				// Direct ancestor
+				if (ex <= xmin && (ex+ew+fudge) >= xmax) {
+					e.classList.add("parent");
+					zoom_parent(e);
+					update_text(e);
+				}
+				// not in current path
+				else
+					e.classList.add("hide");
+			}
+			// Children maybe
+			else {
+				// no common path
+				if (ex < xmin || ex + fudge >= xmax) {
+					e.classList.add("hide");
+				}
+				else {
+					zoom_child(e, xmin, ratio);
+					update_text(e);
+				}
+			}
+		}
+		search();
+	}
+	function unzoom() {
+		unzoombtn.classList.add("hide");
+		var el = document.getElementById("frames").children;
+		for(var i = 0; i < el.length; i++) {
+			el[i].classList.remove("parent");
+			el[i].classList.remove("hide");
+			zoom_reset(el[i]);
+			update_text(el[i]);
+		}
+		search();
+	}
+	function clearzoom() {
+		unzoom();
+
+		// remove zoom state
+		var params = get_params();
+		if (params.x) delete params.x;
+		if (params.y) delete params.y;
+		history.replaceState(null, null, parse_params(params));
+	}
+
+	// search
+	function toggle_ignorecase() {
+		ignorecase = !ignorecase;
+		if (ignorecase) {
+			ignorecaseBtn.classList.add("show");
+		} else {
+			ignorecaseBtn.classList.remove("show");
+		}
+		reset_search();
+		search();
+	}
+	function reset_search() {
+		var el = document.querySelectorAll("#frames rect");
+		for (var i = 0; i < el.length; i++) {
+			orig_load(el[i], "fill")
+		}
+		var params = get_params();
+		delete params.s;
+		history.replaceState(null, null, parse_params(params));
+	}
+	function search_prompt() {
+		if (!searching) {
+			var term = prompt("Enter a search term (regexp " +
+			    "allowed, eg: ^ext4_)"
+			    + (ignorecase ? ", ignoring case" : "")
+			    + "\nPress Ctrl-i to toggle case sensitivity", "");
+			if (term != null) search(term);
+		} else {
+			reset_search();
+			searching = 0;
+			currentSearchTerm = null;
+			searchbtn.classList.remove("show");
+			searchbtn.firstChild.nodeValue = "Search"
+			matchedtxt.classList.add("hide");
+			matchedtxt.firstChild.nodeValue = ""
+		}
+	}
+	function search(term) {
+		if (term) currentSearchTerm = term;
+
+		var re = new RegExp(currentSearchTerm, ignorecase ? 'i' : '');
+		var el = document.getElementById("frames").children;
+		var matches = new Object();
+		var maxwidth = 0;
+		for (var i = 0; i < el.length; i++) {
+			var e = el[i];
+			var func = g_to_func(e);
+			var rect = find_child(e, "rect");
+			if (func == null || rect == null)
+				continue;
+
+			// Save max width. Only works as we have a root frame
+			var w = parseFloat(rect.attributes.width.value);
+			if (w > maxwidth)
+				maxwidth = w;
+
+			if (func.match(re)) {
+				// highlight
+				var x = parseFloat(rect.attributes.x.value);
+				orig_save(rect, "fill");
+				rect.attributes.fill.value = "rgb(230,0,230)";
+
+				// remember matches
+				if (matches[x] == undefined) {
+					matches[x] = w;
+				} else {
+					if (w > matches[x]) {
+						// overwrite with parent
+						matches[x] = w;
+					}
+				}
+				searching = 1;
+			}
+		}
+		if (!searching)
+			return;
+		var params = get_params();
+		params.s = currentSearchTerm;
+		history.replaceState(null, null, parse_params(params));
+
+		searchbtn.classList.add("show");
+		searchbtn.firstChild.nodeValue = "Reset Search";
+
+		// calculate percent matched, excluding vertical overlap
+		var count = 0;
+		var lastx = -1;
+		var lastw = 0;
+		var keys = Array();
+		for (k in matches) {
+			if (matches.hasOwnProperty(k))
+				keys.push(k);
+		}
+		// sort the matched frames by their x location
+		// ascending, then width descending
+		keys.sort(function(a, b){
+			return a - b;
+		});
+		// Step through frames saving only the biggest bottom-up frames
+		// thanks to the sort order. This relies on the tree property
+		// where children are always smaller than their parents.
+		var fudge = 0.0001;	// JavaScript floating point
+		for (var k in keys) {
+			var x = parseFloat(keys[k]);
+			var w = matches[keys[k]];
+			if (x >= lastx + lastw - fudge) {
+				count += w;
+				lastx = x;
+				lastw = w;
+			}
+		}
+		// display matched percent
+		matchedtxt.classList.remove("hide");
+		var pct = 100 * count / maxwidth;
+		if (pct != 100) pct = pct.toFixed(1)
+		matchedtxt.firstChild.nodeValue = "Matched: " + pct + "%";
+	}
+]]>
+</script>
+<rect x="0.0" y="0" width="1200.0" height="326.0" fill="url(#background)"  />
+<text id="title" x="600.00" y="24" >Flame Graph</text>
+<text id="details" x="10.00" y="309" > </text>
+<text id="unzoom" x="10.00" y="24" class="hide">Reset Zoom</text>
+<text id="search" x="1090.00" y="24" >Search</text>
+<text id="ignorecase" x="1174.00" y="24" >ic</text>
+<text id="matched" x="1090.00" y="309" > </text>
+<g id="frames">
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,523 samples, 1.10%)</title><rect x="260.9" y="165" width="13.0" height="15.0" fill="rgb(254,212,51)" rx="2" ry="2" />
+<text  x="263.87" y="175.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,587 samples, 1.15%)</title><rect x="475.3" y="181" width="13.5" height="15.0" fill="rgb(240,7,33)" rx="2" ry="2" />
+<text  x="478.28" y="191.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (691 samples, 0.50%)</title><rect x="1038.6" y="117" width="5.9" height="15.0" fill="rgb(231,92,50)" rx="2" ry="2" />
+<text  x="1041.61" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (896 samples, 0.65%)</title><rect x="536.9" y="149" width="7.7" height="15.0" fill="rgb(235,84,44)" rx="2" ry="2" />
+<text  x="539.90" y="159.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::ios_base::getloc().const (163 samples, 0.12%)</title><rect x="27.7" y="133" width="1.4" height="15.0" fill="rgb(213,35,27)" rx="2" ry="2" />
+<text  x="30.74" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (71 samples, 0.05%)</title><rect x="331.6" y="101" width="0.6" height="15.0" fill="rgb(251,126,19)" rx="2" ry="2" />
+<text  x="334.61" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (156 samples, 0.11%)</title><rect x="685.0" y="149" width="1.3" height="15.0" fill="rgb(215,165,13)" rx="2" ry="2" />
+<text  x="687.98" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="1118.5" y="229" width="71.5" height="15.0" fill="rgb(252,96,6)" rx="2" ry="2" />
+<text  x="1121.53" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (15 samples, 0.01%)</title><rect x="1136.3" y="117" width="0.1" height="15.0" fill="rgb(212,44,37)" rx="2" ry="2" />
+<text  x="1139.28" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (15 samples, 0.01%)</title><rect x="330.0" y="117" width="0.2" height="15.0" fill="rgb(232,176,21)" rx="2" ry="2" />
+<text  x="333.04" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (147 samples, 0.11%)</title><rect x="473.1" y="149" width="1.3" height="15.0" fill="rgb(234,139,49)" rx="2" ry="2" />
+<text  x="476.12" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="189.4" y="197" width="71.5" height="15.0" fill="rgb(224,2,19)" rx="2" ry="2" />
+<text  x="192.39" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (900 samples, 0.65%)</title><rect x="203.8" y="117" width="7.7" height="15.0" fill="rgb(216,25,51)" rx="2" ry="2" />
+<text  x="206.82" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,062 samples, 0.77%)</title><rect x="488.9" y="149" width="9.1" height="15.0" fill="rgb(252,49,31)" rx="2" ry="2" />
+<text  x="491.89" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (913 samples, 0.66%)</title><rect x="822.6" y="149" width="7.8" height="15.0" fill="rgb(215,74,1)" rx="2" ry="2" />
+<text  x="825.59" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (13 samples, 0.01%)</title><rect x="1187.3" y="117" width="0.1" height="15.0" fill="rgb(231,184,33)" rx="2" ry="2" />
+<text  x="1190.26" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (76 samples, 0.05%)</title><rect x="1117.8" y="117" width="0.6" height="15.0" fill="rgb(233,213,47)" rx="2" ry="2" />
+<text  x="1120.79" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,237 samples, 0.89%)</title><rect x="332.3" y="165" width="10.6" height="15.0" fill="rgb(245,223,3)" rx="2" ry="2" />
+<text  x="335.34" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,718 samples, 3.41%)</title><rect x="1068.2" y="149" width="40.2" height="15.0" fill="rgb(236,142,5)" rx="2" ry="2" />
+<text  x="1071.18" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,585 samples, 1.15%)</title><rect x="189.4" y="181" width="13.5" height="15.0" fill="rgb(251,134,40)" rx="2" ry="2" />
+<text  x="192.39" y="191.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,710 samples, 4.85%)</title><rect x="775.4" y="165" width="57.2" height="15.0" fill="rgb(226,30,3)" rx="2" ry="2" />
+<text  x="778.38" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="975.6" y="197" width="71.5" height="15.0" fill="rgb(221,159,2)" rx="2" ry="2" />
+<text  x="978.58" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (119 samples, 0.09%)</title><rect x="1189.0" y="149" width="1.0" height="15.0" fill="rgb(239,98,0)" rx="2" ry="2" />
+<text  x="1191.98" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__pow5mult_D2A (50 samples, 0.04%)</title><rect x="44.3" y="149" width="0.5" height="15.0" fill="rgb(220,201,37)" rx="2" ry="2" />
+<text  x="47.33" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (389 samples, 0.28%)</title><rect x="1124.0" y="117" width="3.4" height="15.0" fill="rgb(242,32,33)" rx="2" ry="2" />
+<text  x="1127.03" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (14 samples, 0.01%)</title><rect x="919.0" y="117" width="0.1" height="15.0" fill="rgb(220,182,42)" rx="2" ry="2" />
+<text  x="922.00" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_call (908 samples, 0.66%)</title><rect x="105.4" y="133" width="7.7" height="15.0" fill="rgb(210,36,38)" rx="2" ry="2" />
+<text  x="108.37" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,501 samples, 1.09%)</title><rect x="689.7" y="149" width="12.8" height="15.0" fill="rgb(243,167,40)" rx="2" ry="2" />
+<text  x="692.70" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (12 samples, 0.01%)</title><rect x="332.2" y="117" width="0.1" height="15.0" fill="rgb(225,147,23)" rx="2" ry="2" />
+<text  x="335.22" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (903 samples, 0.65%)</title><rect x="1108.6" y="133" width="7.7" height="15.0" fill="rgb(241,50,2)" rx="2" ry="2" />
+<text  x="1111.57" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (697 samples, 0.50%)</title><rect x="1181.3" y="101" width="6.0" height="15.0" fill="rgb(253,106,32)" rx="2" ry="2" />
+<text  x="1184.31" y="111.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_call (1,074 samples, 0.78%)</title><rect x="46.2" y="133" width="9.2" height="15.0" fill="rgb(245,91,8)" rx="2" ry="2" />
+<text  x="49.23" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__fread (61 samples, 0.04%)</title><rect x="24.9" y="117" width="0.6" height="15.0" fill="rgb(205,1,6)" rx="2" ry="2" />
+<text  x="27.94" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="689.7" y="229" width="71.5" height="15.0" fill="rgb(238,113,18)" rx="2" ry="2" />
+<text  x="692.70" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,851 samples, 4.95%)</title><rect x="273.9" y="165" width="58.4" height="15.0" fill="rgb(230,202,31)" rx="2" ry="2" />
+<text  x="276.87" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,080 samples, 0.78%)</title><rect x="1127.4" y="149" width="9.2" height="15.0" fill="rgb(225,225,12)" rx="2" ry="2" />
+<text  x="1130.39" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_c`_sread (46 samples, 0.03%)</title><rect x="29.5" y="69" width="0.4" height="15.0" fill="rgb(222,165,44)" rx="2" ry="2" />
+<text  x="32.49" y="79.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (617 samples, 0.45%)</title><rect x="126.2" y="117" width="5.3" height="15.0" fill="rgb(233,163,33)" rx="2" ry="2" />
+<text  x="129.24" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (651 samples, 0.47%)</title><rect x="769.8" y="133" width="5.6" height="15.0" fill="rgb(230,229,41)" rx="2" ry="2" />
+<text  x="772.81" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (26 samples, 0.02%)</title><rect x="114.6" y="69" width="0.3" height="15.0" fill="rgb(226,6,2)" rx="2" ry="2" />
+<text  x="117.63" y="79.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (914 samples, 0.66%)</title><rect x="47.1" y="37" width="7.8" height="15.0" fill="rgb(252,168,1)" rx="2" ry="2" />
+<text  x="50.13" y="47.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (67 samples, 0.05%)</title><rect x="760.5" y="117" width="0.6" height="15.0" fill="rgb(216,62,51)" rx="2" ry="2" />
+<text  x="763.51" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,295 samples, 2.38%)</title><rect x="290.5" y="117" width="28.1" height="15.0" fill="rgb(235,211,27)" rx="2" ry="2" />
+<text  x="293.49" y="127.5" >B..</text>
+</g>
+<g >
+<title>libsystem_m`??? (180 samples, 0.13%)</title><rect x="390.0" y="117" width="1.5" height="15.0" fill="rgb(238,216,9)" rx="2" ry="2" />
+<text  x="392.96" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,539 samples, 1.11%)</title><rect x="546.8" y="165" width="13.1" height="15.0" fill="rgb(235,78,12)" rx="2" ry="2" />
+<text  x="549.75" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (34 samples, 0.02%)</title><rect x="568.5" y="117" width="0.2" height="15.0" fill="rgb(244,115,27)" rx="2" ry="2" />
+<text  x="571.45" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,238 samples, 0.90%)</title><rect x="332.3" y="181" width="10.6" height="15.0" fill="rgb(223,137,39)" rx="2" ry="2" />
+<text  x="335.34" y="191.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_internal_join (154 samples, 0.11%)</title><rect x="55.4" y="117" width="1.3" height="15.0" fill="rgb(228,13,46)" rx="2" ry="2" />
+<text  x="58.40" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="403.8" y="213" width="71.5" height="15.0" fill="rgb(217,141,38)" rx="2" ry="2" />
+<text  x="406.81" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (70 samples, 0.05%)</title><rect x="188.7" y="117" width="0.6" height="15.0" fill="rgb(230,24,12)" rx="2" ry="2" />
+<text  x="191.67" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (285 samples, 0.21%)</title><rect x="818.6" y="117" width="2.4" height="15.0" fill="rgb(243,143,15)" rx="2" ry="2" />
+<text  x="821.58" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (902 samples, 0.65%)</title><rect x="105.4" y="117" width="7.7" height="15.0" fill="rgb(223,5,13)" rx="2" ry="2" />
+<text  x="108.42" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (506 samples, 0.37%)</title><rect x="983.8" y="117" width="4.4" height="15.0" fill="rgb(226,78,12)" rx="2" ry="2" />
+<text  x="986.84" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (23 samples, 0.02%)</title><rect x="282.7" y="117" width="0.2" height="15.0" fill="rgb(250,35,19)" rx="2" ry="2" />
+<text  x="285.71" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="761.2" y="213" width="71.4" height="15.0" fill="rgb(225,205,34)" rx="2" ry="2" />
+<text  x="764.17" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (880 samples, 0.64%)</title><rect x="629.9" y="101" width="7.6" height="15.0" fill="rgb(231,109,47)" rx="2" ry="2" />
+<text  x="632.94" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (645 samples, 0.47%)</title><rect x="769.9" y="117" width="5.5" height="15.0" fill="rgb(245,202,5)" rx="2" ry="2" />
+<text  x="772.86" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="1047.1" y="213" width="71.4" height="15.0" fill="rgb(244,87,12)" rx="2" ry="2" />
+<text  x="1050.06" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="332.3" y="245" width="71.5" height="15.0" fill="rgb(219,180,29)" rx="2" ry="2" />
+<text  x="335.34" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>libomp`__kmp_join_barrier(int) (889 samples, 0.64%)</title><rect x="968.0" y="181" width="7.6" height="15.0" fill="rgb(244,48,8)" rx="2" ry="2" />
+<text  x="971.00" y="191.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,318 samples, 2.40%)</title><rect x="1076.0" y="101" width="28.3" height="15.0" fill="rgb(218,177,2)" rx="2" ry="2" />
+<text  x="1079.01" y="111.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (24 samples, 0.02%)</title><rect x="211.5" y="117" width="0.2" height="15.0" fill="rgb(206,222,1)" rx="2" ry="2" />
+<text  x="214.50" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (110 samples, 0.08%)</title><rect x="1045.3" y="133" width="0.9" height="15.0" fill="rgb(232,90,25)" rx="2" ry="2" />
+<text  x="1048.26" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,181 samples, 2.30%)</title><rect x="505.9" y="101" width="27.2" height="15.0" fill="rgb(211,101,38)" rx="2" ry="2" />
+<text  x="508.93" y="111.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,275 samples, 2.37%)</title><rect x="359.8" y="101" width="27.9" height="15.0" fill="rgb(220,191,35)" rx="2" ry="2" />
+<text  x="362.76" y="111.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (70 samples, 0.05%)</title><rect x="686.4" y="101" width="0.6" height="15.0" fill="rgb(243,19,50)" rx="2" ry="2" />
+<text  x="689.42" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (16 samples, 0.01%)</title><rect x="473.5" y="133" width="0.1" height="15.0" fill="rgb(223,222,31)" rx="2" ry="2" />
+<text  x="476.48" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,274 samples, 3.09%)</title><rect x="214.5" y="133" width="36.5" height="15.0" fill="rgb(252,117,28)" rx="2" ry="2" />
+<text  x="217.51" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (13 samples, 0.01%)</title><rect x="618.1" y="117" width="0.1" height="15.0" fill="rgb(235,105,33)" rx="2" ry="2" />
+<text  x="621.08" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (45 samples, 0.03%)</title><rect x="331.0" y="117" width="0.3" height="15.0" fill="rgb(233,134,13)" rx="2" ry="2" />
+<text  x="333.95" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="475.3" y="197" width="71.5" height="15.0" fill="rgb(210,202,35)" rx="2" ry="2" />
+<text  x="478.28" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (72 samples, 0.05%)</title><rect x="546.0" y="117" width="0.6" height="15.0" fill="rgb(226,132,30)" rx="2" ry="2" />
+<text  x="548.99" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (637 samples, 0.46%)</title><rect x="841.1" y="133" width="5.5" height="15.0" fill="rgb(253,151,29)" rx="2" ry="2" />
+<text  x="844.14" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (157 samples, 0.11%)</title><rect x="830.4" y="149" width="1.3" height="15.0" fill="rgb(252,23,40)" rx="2" ry="2" />
+<text  x="833.38" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (145 samples, 0.10%)</title><rect x="114.4" y="101" width="1.2" height="15.0" fill="rgb(237,91,48)" rx="2" ry="2" />
+<text  x="117.39" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,029 samples, 0.74%)</title><rect x="489.2" y="133" width="8.8" height="15.0" fill="rgb(224,176,25)" rx="2" ry="2" />
+<text  x="492.17" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,555 samples, 3.29%)</title><rect x="498.0" y="149" width="38.9" height="15.0" fill="rgb(247,140,25)" rx="2" ry="2" />
+<text  x="501.03" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>Thread_6478880 (8,375 samples, 6.06%)</title><rect x="403.8" y="261" width="71.5" height="15.0" fill="rgb(247,20,20)" rx="2" ry="2" />
+<text  x="406.81" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (13 samples, 0.01%)</title><rect x="1116.5" y="133" width="0.1" height="15.0" fill="rgb(234,200,32)" rx="2" ry="2" />
+<text  x="1119.50" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,021 samples, 0.74%)</title><rect x="131.9" y="133" width="8.7" height="15.0" fill="rgb(218,104,23)" rx="2" ry="2" />
+<text  x="134.86" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,836 samples, 4.94%)</title><rect x="559.9" y="165" width="58.3" height="15.0" fill="rgb(221,159,54)" rx="2" ry="2" />
+<text  x="562.89" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libsystem_m`??? (14 samples, 0.01%)</title><rect x="351.9" y="117" width="0.1" height="15.0" fill="rgb(249,116,40)" rx="2" ry="2" />
+<text  x="354.85" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (48 samples, 0.03%)</title><rect x="473.9" y="117" width="0.4" height="15.0" fill="rgb(243,48,14)" rx="2" ry="2" />
+<text  x="476.89" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (532 samples, 0.38%)</title><rect x="269.3" y="133" width="4.6" height="15.0" fill="rgb(246,73,25)" rx="2" ry="2" />
+<text  x="272.33" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,056 samples, 0.76%)</title><rect x="131.6" y="149" width="9.0" height="15.0" fill="rgb(252,31,16)" rx="2" ry="2" />
+<text  x="134.56" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (737 samples, 0.53%)</title><rect x="609.5" y="117" width="6.3" height="15.0" fill="rgb(209,164,11)" rx="2" ry="2" />
+<text  x="612.48" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,538 samples, 1.11%)</title><rect x="546.8" y="149" width="13.1" height="15.0" fill="rgb(230,195,53)" rx="2" ry="2" />
+<text  x="549.76" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (47 samples, 0.03%)</title><rect x="616.8" y="117" width="0.4" height="15.0" fill="rgb(246,152,54)" rx="2" ry="2" />
+<text  x="619.78" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (15 samples, 0.01%)</title><rect x="188.4" y="117" width="0.1" height="15.0" fill="rgb(226,50,49)" rx="2" ry="2" />
+<text  x="191.38" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,449 samples, 1.05%)</title><rect x="1047.1" y="165" width="12.3" height="15.0" fill="rgb(220,117,50)" rx="2" ry="2" />
+<text  x="1050.06" y="175.5" ></text>
+</g>
+<g >
+<title>libomp`__kmpc_fork_call (1,229 samples, 0.89%)</title><rect x="46.2" y="149" width="10.5" height="15.0" fill="rgb(224,159,5)" rx="2" ry="2" />
+<text  x="49.23" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,522 samples, 1.10%)</title><rect x="260.9" y="149" width="13.0" height="15.0" fill="rgb(254,174,29)" rx="2" ry="2" />
+<text  x="263.88" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (253 samples, 0.18%)</title><rect x="954.0" y="117" width="2.2" height="15.0" fill="rgb(248,134,50)" rx="2" ry="2" />
+<text  x="957.02" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,588 samples, 3.32%)</title><rect x="855.0" y="149" width="39.2" height="15.0" fill="rgb(248,161,45)" rx="2" ry="2" />
+<text  x="858.01" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (70 samples, 0.05%)</title><rect x="617.5" y="101" width="0.6" height="15.0" fill="rgb(217,151,45)" rx="2" ry="2" />
+<text  x="620.48" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (99 samples, 0.07%)</title><rect x="967.2" y="133" width="0.8" height="15.0" fill="rgb(248,104,22)" rx="2" ry="2" />
+<text  x="970.15" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,664 samples, 1.20%)</title><rect x="761.2" y="165" width="14.2" height="15.0" fill="rgb(208,157,19)" rx="2" ry="2" />
+<text  x="764.17" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (31 samples, 0.02%)</title><rect x="1067.8" y="117" width="0.3" height="15.0" fill="rgb(215,94,16)" rx="2" ry="2" />
+<text  x="1070.80" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (103 samples, 0.07%)</title><rect x="188.5" y="149" width="0.9" height="15.0" fill="rgb(216,67,3)" rx="2" ry="2" />
+<text  x="191.50" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (13 samples, 0.01%)</title><rect x="830.7" y="133" width="0.1" height="15.0" fill="rgb(253,127,15)" rx="2" ry="2" />
+<text  x="833.69" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__lshift_D2A (50 samples, 0.04%)</title><rect x="43.7" y="149" width="0.5" height="15.0" fill="rgb(237,10,12)" rx="2" ry="2" />
+<text  x="46.73" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (14 samples, 0.01%)</title><rect x="426.0" y="117" width="0.2" height="15.0" fill="rgb(223,159,15)" rx="2" ry="2" />
+<text  x="429.05" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (104 samples, 0.08%)</title><rect x="331.4" y="149" width="0.9" height="15.0" fill="rgb(232,104,10)" rx="2" ry="2" />
+<text  x="334.45" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (749 samples, 0.54%)</title><rect x="823.8" y="101" width="6.4" height="15.0" fill="rgb(205,180,49)" rx="2" ry="2" />
+<text  x="826.80" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_platform`_platform_memmove$VARIANT$Haswell (12 samples, 0.01%)</title><rect x="29.9" y="85" width="0.1" height="15.0" fill="rgb(248,10,28)" rx="2" ry="2" />
+<text  x="32.88" y="95.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="546.8" y="213" width="71.4" height="15.0" fill="rgb(217,179,22)" rx="2" ry="2" />
+<text  x="549.75" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (533 samples, 0.39%)</title><rect x="1054.9" y="117" width="4.5" height="15.0" fill="rgb(247,18,12)" rx="2" ry="2" />
+<text  x="1057.88" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::swap_sigma(arma::Mat&lt;double&gt;.const&amp;, (162 samples, 0.12%)</title><rect x="114.4" y="165" width="1.4" height="15.0" fill="rgb(252,164,25)" rx="2" ry="2" />
+<text  x="117.39" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (275 samples, 0.20%)</title><rect x="1033.2" y="117" width="2.4" height="15.0" fill="rgb(246,214,44)" rx="2" ry="2" />
+<text  x="1036.22" y="127.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::ios_base::clear(unsigned.int) (13 samples, 0.01%)</title><rect x="39.5" y="149" width="0.1" height="15.0" fill="rgb(211,115,12)" rx="2" ry="2" />
+<text  x="42.45" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (157 samples, 0.11%)</title><rect x="1116.3" y="149" width="1.3" height="15.0" fill="rgb(216,90,0)" rx="2" ry="2" />
+<text  x="1119.28" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (896 samples, 0.65%)</title><rect x="203.9" y="101" width="7.6" height="15.0" fill="rgb(215,154,53)" rx="2" ry="2" />
+<text  x="206.86" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,333 samples, 3.13%)</title><rect x="61.5" y="69" width="36.9" height="15.0" fill="rgb(250,22,32)" rx="2" ry="2" />
+<text  x="64.45" y="79.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (18 samples, 0.01%)</title><rect x="330.5" y="133" width="0.2" height="15.0" fill="rgb(252,211,33)" rx="2" ry="2" />
+<text  x="333.54" y="143.5" ></text>
+</g>
+<g >
+<title>libdyld`start (12,645 samples, 9.15%)</title><rect x="10.0" y="245" width="107.9" height="15.0" fill="rgb(234,90,11)" rx="2" ry="2" />
+<text  x="13.00" y="255.5" >libdyld`start</text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (802 samples, 0.58%)</title><rect x="98.4" y="69" width="6.9" height="15.0" fill="rgb(220,203,8)" rx="2" ry="2" />
+<text  x="101.45" y="79.5" ></text>
+</g>
+<g >
+<title>BanditPAM`bool.arma::diskio::load_auto_detect&lt;double&gt;(arma::Mat&lt;double&gt;&amp;, (4,214 samples, 3.05%)</title><rect x="10.0" y="213" width="36.0" height="15.0" fill="rgb(244,103,24)" rx="2" ry="2" />
+<text  x="13.00" y="223.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (893 samples, 0.65%)</title><rect x="322.5" y="133" width="7.7" height="15.0" fill="rgb(241,84,4)" rx="2" ry="2" />
+<text  x="325.55" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (66 samples, 0.05%)</title><rect x="760.5" y="101" width="0.6" height="15.0" fill="rgb(236,17,39)" rx="2" ry="2" />
+<text  x="763.52" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__diff_D2A (23 samples, 0.02%)</title><rect x="43.4" y="149" width="0.2" height="15.0" fill="rgb(242,110,24)" rx="2" ry="2" />
+<text  x="46.44" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,036 samples, 0.75%)</title><rect x="775.4" y="149" width="8.8" height="15.0" fill="rgb(205,209,54)" rx="2" ry="2" />
+<text  x="778.40" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="904.1" y="197" width="71.5" height="15.0" fill="rgb(215,201,50)" rx="2" ry="2" />
+<text  x="907.11" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (899 samples, 0.65%)</title><rect x="179.6" y="149" width="7.7" height="15.0" fill="rgb(228,24,0)" rx="2" ry="2" />
+<text  x="182.59" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,248 samples, 0.90%)</title><rect x="618.2" y="149" width="10.7" height="15.0" fill="rgb(208,79,3)" rx="2" ry="2" />
+<text  x="621.23" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (101 samples, 0.07%)</title><rect x="760.3" y="133" width="0.9" height="15.0" fill="rgb(220,139,5)" rx="2" ry="2" />
+<text  x="763.31" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (14 samples, 0.01%)</title><rect x="211.7" y="117" width="0.1" height="15.0" fill="rgb(253,64,41)" rx="2" ry="2" />
+<text  x="214.71" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,742 samples, 4.88%)</title><rect x="846.6" y="165" width="57.5" height="15.0" fill="rgb(242,110,34)" rx="2" ry="2" />
+<text  x="849.58" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libsystem_m`??? (165 samples, 0.12%)</title><rect x="97.0" y="53" width="1.4" height="15.0" fill="rgb(212,107,1)" rx="2" ry="2" />
+<text  x="100.02" y="63.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,824 samples, 4.94%)</title><rect x="417.0" y="181" width="58.3" height="15.0" fill="rgb(214,42,4)" rx="2" ry="2" />
+<text  x="420.04" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>libsystem_m`??? (27 samples, 0.02%)</title><rect x="112.9" y="53" width="0.2" height="15.0" fill="rgb(250,42,7)" rx="2" ry="2" />
+<text  x="115.89" y="63.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_gather(barrier_type,.kmp_info*, (802 samples, 0.58%)</title><rect x="98.4" y="85" width="6.9" height="15.0" fill="rgb(234,44,26)" rx="2" ry="2" />
+<text  x="101.45" y="95.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="260.9" y="245" width="71.4" height="15.0" fill="rgb(253,74,22)" rx="2" ry="2" />
+<text  x="263.86" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (400 samples, 0.29%)</title><rect x="1123.9" y="133" width="3.5" height="15.0" fill="rgb(254,209,22)" rx="2" ry="2" />
+<text  x="1126.94" y="143.5" ></text>
+</g>
+<g >
+<title>Thread_6478877 (8,375 samples, 6.06%)</title><rect x="189.4" y="261" width="71.5" height="15.0" fill="rgb(234,112,3)" rx="2" ry="2" />
+<text  x="192.39" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (277 samples, 0.20%)</title><rect x="246.9" y="117" width="2.4" height="15.0" fill="rgb(224,222,22)" rx="2" ry="2" />
+<text  x="249.93" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (62 samples, 0.04%)</title><rect x="1046.4" y="101" width="0.5" height="15.0" fill="rgb(227,53,30)" rx="2" ry="2" />
+<text  x="1049.37" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (106 samples, 0.08%)</title><rect x="759.4" y="133" width="0.9" height="15.0" fill="rgb(237,225,34)" rx="2" ry="2" />
+<text  x="762.37" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (13 samples, 0.01%)</title><rect x="186.9" y="117" width="0.2" height="15.0" fill="rgb(226,203,10)" rx="2" ry="2" />
+<text  x="189.94" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,048 samples, 0.76%)</title><rect x="46.4" y="69" width="9.0" height="15.0" fill="rgb(230,160,41)" rx="2" ry="2" />
+<text  x="49.44" y="79.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (25 samples, 0.02%)</title><rect x="783.9" y="117" width="0.2" height="15.0" fill="rgb(231,190,24)" rx="2" ry="2" />
+<text  x="786.93" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (698 samples, 0.50%)</title><rect x="1110.0" y="117" width="6.0" height="15.0" fill="rgb(239,106,21)" rx="2" ry="2" />
+<text  x="1113.04" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (120 samples, 0.09%)</title><rect x="688.7" y="117" width="1.0" height="15.0" fill="rgb(223,221,52)" rx="2" ry="2" />
+<text  x="691.67" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_gather(barrier_type,.kmp_info*, (294 samples, 0.21%)</title><rect x="687.2" y="165" width="2.5" height="15.0" fill="rgb(247,132,36)" rx="2" ry="2" />
+<text  x="690.19" y="175.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (1,073 samples, 0.78%)</title><rect x="46.2" y="101" width="9.2" height="15.0" fill="rgb(216,55,20)" rx="2" ry="2" />
+<text  x="49.24" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (13 samples, 0.01%)</title><rect x="711.3" y="117" width="0.1" height="15.0" fill="rgb(235,58,50)" rx="2" ry="2" />
+<text  x="714.29" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__d2b_D2A (23 samples, 0.02%)</title><rect x="43.2" y="149" width="0.2" height="15.0" fill="rgb(225,124,45)" rx="2" ry="2" />
+<text  x="46.25" y="159.5" ></text>
+</g>
+<g >
+<title>Thread_6478883 (8,375 samples, 6.06%)</title><rect x="618.2" y="261" width="71.5" height="15.0" fill="rgb(246,105,7)" rx="2" ry="2" />
+<text  x="621.22" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (735 samples, 0.53%)</title><rect x="392.8" y="117" width="6.3" height="15.0" fill="rgb(235,160,26)" rx="2" ry="2" />
+<text  x="395.83" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (21 samples, 0.02%)</title><rect x="472.9" y="117" width="0.2" height="15.0" fill="rgb(241,158,5)" rx="2" ry="2" />
+<text  x="475.93" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (523 samples, 0.38%)</title><rect x="983.7" y="133" width="4.5" height="15.0" fill="rgb(225,54,41)" rx="2" ry="2" />
+<text  x="986.70" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (918 samples, 0.66%)</title><rect x="274.9" y="101" width="7.8" height="15.0" fill="rgb(241,117,9)" rx="2" ry="2" />
+<text  x="277.88" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (273 samples, 0.20%)</title><rect x="890.5" y="117" width="2.3" height="15.0" fill="rgb(230,128,12)" rx="2" ry="2" />
+<text  x="893.47" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (118 samples, 0.09%)</title><rect x="1116.6" y="133" width="1.0" height="15.0" fill="rgb(223,6,33)" rx="2" ry="2" />
+<text  x="1119.61" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,254 samples, 2.35%)</title><rect x="148.3" y="101" width="27.8" height="15.0" fill="rgb(234,120,16)" rx="2" ry="2" />
+<text  x="151.34" y="111.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (720 samples, 0.52%)</title><rect x="466.7" y="117" width="6.2" height="15.0" fill="rgb(244,82,11)" rx="2" ry="2" />
+<text  x="469.71" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,741 samples, 4.88%)</title><rect x="910.5" y="181" width="57.5" height="15.0" fill="rgb(214,42,54)" rx="2" ry="2" />
+<text  x="913.47" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (543 samples, 0.39%)</title><rect x="697.9" y="133" width="4.6" height="15.0" fill="rgb(207,45,41)" rx="2" ry="2" />
+<text  x="700.87" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__mult_D2A (21 samples, 0.02%)</title><rect x="44.2" y="149" width="0.1" height="15.0" fill="rgb(227,227,38)" rx="2" ry="2" />
+<text  x="47.15" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (848 samples, 0.61%)</title><rect x="911.5" y="101" width="7.2" height="15.0" fill="rgb(234,108,43)" rx="2" ry="2" />
+<text  x="914.51" y="111.5" ></text>
+</g>
+<g >
+<title>Thread_6478538.DispatchQueue_1: (12,645 samples, 9.15%)</title><rect x="10.0" y="261" width="107.9" height="15.0" fill="rgb(227,6,14)" rx="2" ry="2" />
+<text  x="13.00" y="271.5" >Thread_647853..</text>
+</g>
+<g >
+<title>BanditPAM`void.arma::glue_rel_noteq::apply&lt;arma::mtOp&lt;unsigned (57 samples, 0.04%)</title><rect x="116.6" y="165" width="0.5" height="15.0" fill="rgb(219,40,7)" rx="2" ry="2" />
+<text  x="119.61" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (702 samples, 0.51%)</title><rect x="538.3" y="101" width="6.0" height="15.0" fill="rgb(238,44,32)" rx="2" ry="2" />
+<text  x="541.26" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (712 samples, 0.51%)</title><rect x="323.9" y="101" width="6.1" height="15.0" fill="rgb(214,220,12)" rx="2" ry="2" />
+<text  x="326.90" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (734 samples, 0.53%)</title><rect x="752.4" y="117" width="6.2" height="15.0" fill="rgb(227,131,29)" rx="2" ry="2" />
+<text  x="755.37" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (910 samples, 0.66%)</title><rect x="489.8" y="117" width="7.8" height="15.0" fill="rgb(249,24,14)" rx="2" ry="2" />
+<text  x="492.79" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (984 samples, 0.71%)</title><rect x="846.6" y="149" width="8.4" height="15.0" fill="rgb(247,126,54)" rx="2" ry="2" />
+<text  x="849.61" y="159.5" ></text>
+</g>
+<g >
+<title>Thread_6478890 (8,375 samples, 6.06%)</title><rect x="1118.5" y="261" width="71.5" height="15.0" fill="rgb(216,212,41)" rx="2" ry="2" />
+<text  x="1121.53" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,637 samples, 2.63%)</title><rect x="1144.1" y="117" width="31.1" height="15.0" fill="rgb(226,225,41)" rx="2" ry="2" />
+<text  x="1147.11" y="127.5" >Ba..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (713 samples, 0.52%)</title><rect x="323.9" y="117" width="6.1" height="15.0" fill="rgb(246,158,40)" rx="2" ry="2" />
+<text  x="326.90" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,449 samples, 1.05%)</title><rect x="1047.1" y="181" width="12.3" height="15.0" fill="rgb(236,59,30)" rx="2" ry="2" />
+<text  x="1050.06" y="191.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (902 samples, 0.65%)</title><rect x="105.4" y="85" width="7.7" height="15.0" fill="rgb(224,191,32)" rx="2" ry="2" />
+<text  x="108.42" y="95.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (923 samples, 0.67%)</title><rect x="1037.0" y="149" width="7.9" height="15.0" fill="rgb(250,103,38)" rx="2" ry="2" />
+<text  x="1040.05" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (104 samples, 0.08%)</title><rect x="967.1" y="149" width="0.9" height="15.0" fill="rgb(237,179,41)" rx="2" ry="2" />
+<text  x="970.11" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (922 samples, 0.67%)</title><rect x="47.1" y="53" width="7.8" height="15.0" fill="rgb(228,128,29)" rx="2" ry="2" />
+<text  x="50.06" y="63.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (534 samples, 0.39%)</title><rect x="697.9" y="117" width="4.6" height="15.0" fill="rgb(229,56,11)" rx="2" ry="2" />
+<text  x="700.95" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (70 samples, 0.05%)</title><rect x="967.3" y="101" width="0.6" height="15.0" fill="rgb(206,38,9)" rx="2" ry="2" />
+<text  x="970.30" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,246 samples, 2.35%)</title><rect x="219.2" y="101" width="27.7" height="15.0" fill="rgb(235,228,25)" rx="2" ry="2" />
+<text  x="222.23" y="111.5" >B..</text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="332.3" y="197" width="71.5" height="15.0" fill="rgb(224,62,36)" rx="2" ry="2" />
+<text  x="335.34" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="189.4" y="229" width="71.5" height="15.0" fill="rgb(209,198,23)" rx="2" ry="2" />
+<text  x="192.39" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="332.3" y="213" width="71.5" height="15.0" fill="rgb(230,98,5)" rx="2" ry="2" />
+<text  x="335.34" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (715 samples, 0.52%)</title><rect x="895.5" y="117" width="6.1" height="15.0" fill="rgb(252,87,27)" rx="2" ry="2" />
+<text  x="898.48" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (335 samples, 0.24%)</title><rect x="972.7" y="133" width="2.9" height="15.0" fill="rgb(236,20,33)" rx="2" ry="2" />
+<text  x="975.73" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,581 samples, 3.31%)</title><rect x="211.9" y="149" width="39.1" height="15.0" fill="rgb(213,214,23)" rx="2" ry="2" />
+<text  x="214.89" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,265 samples, 2.36%)</title><rect x="433.8" y="117" width="27.9" height="15.0" fill="rgb(220,61,33)" rx="2" ry="2" />
+<text  x="436.81" y="127.5" >B..</text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,836 samples, 4.94%)</title><rect x="559.9" y="181" width="58.3" height="15.0" fill="rgb(226,23,30)" rx="2" ry="2" />
+<text  x="562.89" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,249 samples, 0.90%)</title><rect x="618.2" y="165" width="10.7" height="15.0" fill="rgb(251,0,11)" rx="2" ry="2" />
+<text  x="621.22" y="175.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (629 samples, 0.45%)</title><rect x="841.2" y="117" width="5.4" height="15.0" fill="rgb(228,35,15)" rx="2" ry="2" />
+<text  x="844.21" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,307 samples, 2.39%)</title><rect x="359.5" y="117" width="28.2" height="15.0" fill="rgb(224,148,0)" rx="2" ry="2" />
+<text  x="362.49" y="127.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (149 samples, 0.11%)</title><rect x="330.2" y="149" width="1.2" height="15.0" fill="rgb(230,130,14)" rx="2" ry="2" />
+<text  x="333.18" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (25 samples, 0.02%)</title><rect x="854.6" y="117" width="0.3" height="15.0" fill="rgb(235,182,54)" rx="2" ry="2" />
+<text  x="857.65" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (22 samples, 0.02%)</title><rect x="966.9" y="117" width="0.2" height="15.0" fill="rgb(222,206,51)" rx="2" ry="2" />
+<text  x="969.92" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_join_barrier(int) (802 samples, 0.58%)</title><rect x="98.4" y="101" width="6.9" height="15.0" fill="rgb(207,129,40)" rx="2" ry="2" />
+<text  x="101.45" y="111.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (745 samples, 0.54%)</title><rect x="904.1" y="181" width="6.4" height="15.0" fill="rgb(224,121,22)" rx="2" ry="2" />
+<text  x="907.11" y="191.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,151 samples, 2.28%)</title><rect x="791.7" y="101" width="26.9" height="15.0" fill="rgb(235,47,53)" rx="2" ry="2" />
+<text  x="794.69" y="111.5" >B..</text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (62 samples, 0.04%)</title><rect x="113.8" y="53" width="0.5" height="15.0" fill="rgb(229,43,19)" rx="2" ry="2" />
+<text  x="116.81" y="63.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (7,339 samples, 5.31%)</title><rect x="1127.4" y="165" width="62.6" height="15.0" fill="rgb(214,69,34)" rx="2" ry="2" />
+<text  x="1130.36" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (289 samples, 0.21%)</title><rect x="102.8" y="37" width="2.5" height="15.0" fill="rgb(251,139,37)" rx="2" ry="2" />
+<text  x="105.82" y="47.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (63 samples, 0.05%)</title><rect x="1046.4" y="117" width="0.5" height="15.0" fill="rgb(223,193,19)" rx="2" ry="2" />
+<text  x="1049.36" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_c`fread (67 samples, 0.05%)</title><rect x="24.9" y="133" width="0.6" height="15.0" fill="rgb(205,37,52)" rx="2" ry="2" />
+<text  x="27.93" y="143.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::__shared_count::__release_shared() (91 samples, 0.07%)</title><rect x="27.0" y="133" width="0.7" height="15.0" fill="rgb(232,158,22)" rx="2" ry="2" />
+<text  x="29.97" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="260.9" y="213" width="71.4" height="15.0" fill="rgb(229,129,0)" rx="2" ry="2" />
+<text  x="263.86" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (860 samples, 0.62%)</title><rect x="911.4" y="117" width="7.3" height="15.0" fill="rgb(232,108,23)" rx="2" ry="2" />
+<text  x="914.41" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (97 samples, 0.07%)</title><rect x="840.3" y="133" width="0.8" height="15.0" fill="rgb(234,24,3)" rx="2" ry="2" />
+<text  x="843.30" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (255 samples, 0.18%)</title><rect x="461.7" y="117" width="2.1" height="15.0" fill="rgb(242,206,0)" rx="2" ry="2" />
+<text  x="464.67" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (904 samples, 0.65%)</title><rect x="132.5" y="101" width="7.7" height="15.0" fill="rgb(224,109,8)" rx="2" ry="2" />
+<text  x="135.48" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (629 samples, 0.45%)</title><rect x="126.1" y="133" width="5.4" height="15.0" fill="rgb(212,204,26)" rx="2" ry="2" />
+<text  x="129.14" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (895 samples, 0.65%)</title><rect x="465.5" y="149" width="7.6" height="15.0" fill="rgb(242,181,8)" rx="2" ry="2" />
+<text  x="468.48" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="260.9" y="197" width="71.4" height="15.0" fill="rgb(241,93,8)" rx="2" ry="2" />
+<text  x="263.86" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>libc++.1`std::__1::basic_istream&lt;char,.std::__1::char_traits&lt;char&gt; (387 samples, 0.28%)</title><rect x="26.2" y="149" width="3.3" height="15.0" fill="rgb(205,44,42)" rx="2" ry="2" />
+<text  x="29.15" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (702 samples, 0.51%)</title><rect x="181.0" y="101" width="5.9" height="15.0" fill="rgb(249,140,26)" rx="2" ry="2" />
+<text  x="183.95" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (70 samples, 0.05%)</title><rect x="617.5" y="117" width="0.6" height="15.0" fill="rgb(231,206,54)" rx="2" ry="2" />
+<text  x="620.48" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (15 samples, 0.01%)</title><rect x="966.1" y="133" width="0.2" height="15.0" fill="rgb(236,41,19)" rx="2" ry="2" />
+<text  x="969.15" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,587 samples, 1.15%)</title><rect x="475.3" y="165" width="13.5" height="15.0" fill="rgb(244,229,17)" rx="2" ry="2" />
+<text  x="478.28" y="175.5" ></text>
+</g>
+<g >
+<title>Thread_6478882 (8,375 samples, 6.06%)</title><rect x="546.8" y="261" width="71.4" height="15.0" fill="rgb(224,161,48)" rx="2" ry="2" />
+<text  x="549.75" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (712 samples, 0.51%)</title><rect x="1181.2" y="117" width="6.1" height="15.0" fill="rgb(248,78,13)" rx="2" ry="2" />
+<text  x="1184.18" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (583 samples, 0.42%)</title><rect x="483.8" y="133" width="5.0" height="15.0" fill="rgb(220,47,8)" rx="2" ry="2" />
+<text  x="486.85" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (103 samples, 0.07%)</title><rect x="545.9" y="149" width="0.8" height="15.0" fill="rgb(224,197,15)" rx="2" ry="2" />
+<text  x="548.86" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (70 samples, 0.05%)</title><rect x="260.2" y="117" width="0.6" height="15.0" fill="rgb(217,116,14)" rx="2" ry="2" />
+<text  x="263.17" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_join_call (17 samples, 0.01%)</title><rect x="115.6" y="133" width="0.2" height="15.0" fill="rgb(224,115,52)" rx="2" ry="2" />
+<text  x="118.62" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_join_barrier(int) (274 samples, 0.20%)</title><rect x="401.5" y="181" width="2.3" height="15.0" fill="rgb(250,18,21)" rx="2" ry="2" />
+<text  x="404.47" y="191.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (280 samples, 0.20%)</title><rect x="1175.2" y="117" width="2.3" height="15.0" fill="rgb(206,180,50)" rx="2" ry="2" />
+<text  x="1178.15" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (240 samples, 0.17%)</title><rect x="176.1" y="117" width="2.1" height="15.0" fill="rgb(251,169,8)" rx="2" ry="2" />
+<text  x="179.11" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (185 samples, 0.13%)</title><rect x="821.0" y="117" width="1.6" height="15.0" fill="rgb(231,137,54)" rx="2" ry="2" />
+<text  x="824.01" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (25 samples, 0.02%)</title><rect x="996.7" y="117" width="0.2" height="15.0" fill="rgb(213,90,52)" rx="2" ry="2" />
+<text  x="999.65" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (104 samples, 0.08%)</title><rect x="197.0" y="133" width="0.9" height="15.0" fill="rgb(252,108,35)" rx="2" ry="2" />
+<text  x="200.02" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (389 samples, 0.28%)</title><rect x="625.6" y="117" width="3.3" height="15.0" fill="rgb(223,55,41)" rx="2" ry="2" />
+<text  x="628.56" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,043 samples, 0.75%)</title><rect x="629.0" y="149" width="8.9" height="15.0" fill="rgb(222,161,35)" rx="2" ry="2" />
+<text  x="631.95" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_join_barrier(int) (154 samples, 0.11%)</title><rect x="55.4" y="101" width="1.3" height="15.0" fill="rgb(212,203,31)" rx="2" ry="2" />
+<text  x="58.40" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (25 samples, 0.02%)</title><rect x="1046.0" y="117" width="0.2" height="15.0" fill="rgb(254,119,30)" rx="2" ry="2" />
+<text  x="1048.98" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`BanditPAM::build_target(arma::Mat&lt;double&gt;.const&amp;, (1,233 samples, 0.89%)</title><rect x="46.2" y="165" width="10.5" height="15.0" fill="rgb(215,122,0)" rx="2" ry="2" />
+<text  x="49.22" y="175.5" ></text>
+</g>
+<g >
+<title>Thread_6478878 (8,375 samples, 6.06%)</title><rect x="260.9" y="261" width="71.4" height="15.0" fill="rgb(237,111,25)" rx="2" ry="2" />
+<text  x="263.86" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (909 samples, 0.66%)</title><rect x="343.8" y="117" width="7.8" height="15.0" fill="rgb(227,185,48)" rx="2" ry="2" />
+<text  x="346.82" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (75 samples, 0.05%)</title><rect x="339.0" y="133" width="0.6" height="15.0" fill="rgb(224,118,30)" rx="2" ry="2" />
+<text  x="341.95" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,012 samples, 0.73%)</title><rect x="702.8" y="133" width="8.6" height="15.0" fill="rgb(226,10,38)" rx="2" ry="2" />
+<text  x="705.76" y="143.5" ></text>
+</g>
+<g >
+<title>Thread_6478876 (8,376 samples, 6.06%)</title><rect x="117.9" y="261" width="71.5" height="15.0" fill="rgb(220,179,41)" rx="2" ry="2" />
+<text  x="120.91" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,603 samples, 3.33%)</title><rect x="637.9" y="149" width="39.2" height="15.0" fill="rgb(228,201,32)" rx="2" ry="2" />
+<text  x="640.85" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>libsystem_m`??? (19 samples, 0.01%)</title><rect x="615.8" y="117" width="0.2" height="15.0" fill="rgb(227,116,50)" rx="2" ry="2" />
+<text  x="618.83" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,379 samples, 3.17%)</title><rect x="999.7" y="133" width="37.3" height="15.0" fill="rgb(226,146,40)" rx="2" ry="2" />
+<text  x="1002.68" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (14 samples, 0.01%)</title><rect x="685.3" y="133" width="0.1" height="15.0" fill="rgb(220,159,46)" rx="2" ry="2" />
+<text  x="688.32" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,360 samples, 2.43%)</title><rect x="66.1" y="53" width="28.6" height="15.0" fill="rgb(227,184,26)" rx="2" ry="2" />
+<text  x="69.05" y="63.5" >Ba..</text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (61 samples, 0.04%)</title><rect x="102.3" y="53" width="0.5" height="15.0" fill="rgb(220,151,30)" rx="2" ry="2" />
+<text  x="105.26" y="63.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (269 samples, 0.19%)</title><rect x="94.7" y="53" width="2.3" height="15.0" fill="rgb(216,152,39)" rx="2" ry="2" />
+<text  x="97.73" y="63.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,032 samples, 0.75%)</title><rect x="343.2" y="133" width="8.8" height="15.0" fill="rgb(222,167,35)" rx="2" ry="2" />
+<text  x="346.17" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,663 samples, 3.37%)</title><rect x="711.4" y="149" width="39.8" height="15.0" fill="rgb(230,66,8)" rx="2" ry="2" />
+<text  x="714.40" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`void.arma::glue_mixed_schur::apply&lt;arma::subview_elem1&lt;unsigned (17 samples, 0.01%)</title><rect x="115.9" y="165" width="0.1" height="15.0" fill="rgb(233,107,53)" rx="2" ry="2" />
+<text  x="118.89" y="175.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (211 samples, 0.15%)</title><rect x="956.2" y="117" width="1.8" height="15.0" fill="rgb(221,120,34)" rx="2" ry="2" />
+<text  x="959.18" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (93 samples, 0.07%)</title><rect x="1046.2" y="133" width="0.8" height="15.0" fill="rgb(230,158,27)" rx="2" ry="2" />
+<text  x="1049.25" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::build_sigma(arma::Mat&lt;double&gt;.const&amp;, (120 samples, 0.09%)</title><rect x="56.8" y="165" width="1.0" height="15.0" fill="rgb(223,102,7)" rx="2" ry="2" />
+<text  x="59.79" y="175.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,741 samples, 4.88%)</title><rect x="910.5" y="165" width="57.5" height="15.0" fill="rgb(241,20,20)" rx="2" ry="2" />
+<text  x="913.47" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="117.9" y="213" width="71.5" height="15.0" fill="rgb(216,123,49)" rx="2" ry="2" />
+<text  x="120.92" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="1118.5" y="245" width="71.5" height="15.0" fill="rgb(245,201,8)" rx="2" ry="2" />
+<text  x="1121.53" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,730 samples, 3.42%)</title><rect x="1139.2" y="133" width="40.3" height="15.0" fill="rgb(222,40,48)" rx="2" ry="2" />
+<text  x="1142.16" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (79 samples, 0.06%)</title><rect x="1054.1" y="133" width="0.7" height="15.0" fill="rgb(238,87,30)" rx="2" ry="2" />
+<text  x="1057.11" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,282 samples, 3.10%)</title><rect x="921.4" y="133" width="36.6" height="15.0" fill="rgb(228,12,1)" rx="2" ry="2" />
+<text  x="924.44" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (7,340 samples, 5.31%)</title><rect x="1127.4" y="181" width="62.6" height="15.0" fill="rgb(236,5,50)" rx="2" ry="2" />
+<text  x="1130.35" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (90 samples, 0.07%)</title><rect x="114.9" y="69" width="0.7" height="15.0" fill="rgb(235,216,39)" rx="2" ry="2" />
+<text  x="117.86" y="79.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,010 samples, 0.73%)</title><rect x="775.6" y="133" width="8.6" height="15.0" fill="rgb(239,210,29)" rx="2" ry="2" />
+<text  x="778.62" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (24 samples, 0.02%)</title><rect x="1188.8" y="117" width="0.2" height="15.0" fill="rgb(241,158,10)" rx="2" ry="2" />
+<text  x="1191.77" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,782 samples, 4.90%)</title><rect x="131.5" y="181" width="57.9" height="15.0" fill="rgb(213,126,34)" rx="2" ry="2" />
+<text  x="134.51" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (898 samples, 0.65%)</title><rect x="894.2" y="133" width="7.7" height="15.0" fill="rgb(220,224,11)" rx="2" ry="2" />
+<text  x="897.23" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (101 samples, 0.07%)</title><rect x="331.5" y="133" width="0.8" height="15.0" fill="rgb(240,173,28)" rx="2" ry="2" />
+<text  x="334.47" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (44 samples, 0.03%)</title><rect x="685.8" y="117" width="0.4" height="15.0" fill="rgb(227,203,12)" rx="2" ry="2" />
+<text  x="688.78" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (42 samples, 0.03%)</title><rect x="115.1" y="53" width="0.4" height="15.0" fill="rgb(248,64,9)" rx="2" ry="2" />
+<text  x="118.15" y="63.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (921 samples, 0.67%)</title><rect x="703.2" y="117" width="7.9" height="15.0" fill="rgb(212,61,3)" rx="2" ry="2" />
+<text  x="706.23" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (17 samples, 0.01%)</title><rect x="854.9" y="117" width="0.1" height="15.0" fill="rgb(241,48,3)" rx="2" ry="2" />
+<text  x="857.86" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (26 samples, 0.02%)</title><rect x="1117.4" y="117" width="0.2" height="15.0" fill="rgb(233,213,15)" rx="2" ry="2" />
+<text  x="1120.39" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (885 samples, 0.64%)</title><rect x="179.7" y="133" width="7.6" height="15.0" fill="rgb(217,77,47)" rx="2" ry="2" />
+<text  x="182.70" y="143.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::locale::use_facet(std::__1::locale::id&amp;).const (22 samples, 0.02%)</title><rect x="40.6" y="149" width="0.2" height="15.0" fill="rgb(248,25,31)" rx="2" ry="2" />
+<text  x="43.59" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (26 samples, 0.02%)</title><rect x="259.0" y="133" width="0.3" height="15.0" fill="rgb(217,207,45)" rx="2" ry="2" />
+<text  x="262.03" y="143.5" ></text>
+</g>
+<g >
+<title>all (138,271 samples, 100%)</title><rect x="10.0" y="277" width="1180.0" height="15.0" fill="rgb(235,132,48)" rx="2" ry="2" />
+<text  x="13.00" y="287.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_internal_join (15 samples, 0.01%)</title><rect x="57.7" y="117" width="0.1" height="15.0" fill="rgb(225,0,1)" rx="2" ry="2" />
+<text  x="60.69" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (37 samples, 0.03%)</title><rect x="259.5" y="117" width="0.3" height="15.0" fill="rgb(237,207,13)" rx="2" ry="2" />
+<text  x="262.53" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,280 samples, 3.10%)</title><rect x="429.0" y="133" width="36.5" height="15.0" fill="rgb(222,167,3)" rx="2" ry="2" />
+<text  x="431.96" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (146 samples, 0.11%)</title><rect x="187.3" y="149" width="1.2" height="15.0" fill="rgb(205,179,17)" rx="2" ry="2" />
+<text  x="190.26" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,056 samples, 0.76%)</title><rect x="343.0" y="149" width="9.0" height="15.0" fill="rgb(238,59,10)" rx="2" ry="2" />
+<text  x="345.96" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`void.arma::op_strans::apply_mat_inplace&lt;double&gt;(arma::Mat&lt;double&gt;&amp;) (28 samples, 0.02%)</title><rect x="117.5" y="181" width="0.2" height="15.0" fill="rgb(233,178,49)" rx="2" ry="2" />
+<text  x="120.45" y="191.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (756 samples, 0.55%)</title><rect x="823.7" y="117" width="6.5" height="15.0" fill="rgb(242,191,2)" rx="2" ry="2" />
+<text  x="826.74" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,551 samples, 1.12%)</title><rect x="403.8" y="181" width="13.2" height="15.0" fill="rgb(220,37,22)" rx="2" ry="2" />
+<text  x="406.81" y="191.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_gather(barrier_type,.kmp_info*, (154 samples, 0.11%)</title><rect x="55.4" y="85" width="1.3" height="15.0" fill="rgb(236,70,20)" rx="2" ry="2" />
+<text  x="58.40" y="95.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (15 samples, 0.01%)</title><rect x="830.3" y="117" width="0.1" height="15.0" fill="rgb(223,16,4)" rx="2" ry="2" />
+<text  x="833.25" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (85 samples, 0.06%)</title><rect x="769.1" y="133" width="0.7" height="15.0" fill="rgb(233,24,51)" rx="2" ry="2" />
+<text  x="772.09" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="189.4" y="245" width="71.5" height="15.0" fill="rgb(234,132,5)" rx="2" ry="2" />
+<text  x="192.39" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,034 samples, 0.75%)</title><rect x="1118.5" y="181" width="8.9" height="15.0" fill="rgb(218,21,4)" rx="2" ry="2" />
+<text  x="1121.53" y="191.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_join_barrier(int) (17 samples, 0.01%)</title><rect x="115.6" y="101" width="0.2" height="15.0" fill="rgb(243,59,24)" rx="2" ry="2" />
+<text  x="118.62" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (854 samples, 0.62%)</title><rect x="847.4" y="101" width="7.2" height="15.0" fill="rgb(224,229,47)" rx="2" ry="2" />
+<text  x="850.36" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (275 samples, 0.20%)</title><rect x="1104.3" y="117" width="2.4" height="15.0" fill="rgb(237,108,38)" rx="2" ry="2" />
+<text  x="1107.33" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,078 samples, 0.78%)</title><rect x="273.9" y="149" width="9.2" height="15.0" fill="rgb(247,218,22)" rx="2" ry="2" />
+<text  x="276.90" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (102 samples, 0.07%)</title><rect x="903.2" y="133" width="0.9" height="15.0" fill="rgb(251,126,29)" rx="2" ry="2" />
+<text  x="906.24" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,781 samples, 4.90%)</title><rect x="131.5" y="165" width="57.9" height="15.0" fill="rgb(232,55,2)" rx="2" ry="2" />
+<text  x="134.52" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (887 samples, 0.64%)</title><rect x="776.4" y="101" width="7.5" height="15.0" fill="rgb(244,198,27)" rx="2" ry="2" />
+<text  x="779.36" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (901 samples, 0.65%)</title><rect x="391.7" y="133" width="7.6" height="15.0" fill="rgb(221,138,6)" rx="2" ry="2" />
+<text  x="394.66" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (254 samples, 0.18%)</title><rect x="908.3" y="133" width="2.2" height="15.0" fill="rgb(247,183,5)" rx="2" ry="2" />
+<text  x="911.30" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (198 samples, 0.14%)</title><rect x="249.3" y="117" width="1.7" height="15.0" fill="rgb(217,135,26)" rx="2" ry="2" />
+<text  x="252.29" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="1118.5" y="197" width="71.5" height="15.0" fill="rgb(242,165,16)" rx="2" ry="2" />
+<text  x="1121.53" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (985 samples, 0.71%)</title><rect x="910.7" y="133" width="8.4" height="15.0" fill="rgb(229,162,25)" rx="2" ry="2" />
+<text  x="913.72" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,474 samples, 1.07%)</title><rect x="975.6" y="149" width="12.6" height="15.0" fill="rgb(207,55,13)" rx="2" ry="2" />
+<text  x="978.58" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (902 samples, 0.65%)</title><rect x="105.4" y="101" width="7.7" height="15.0" fill="rgb(209,151,9)" rx="2" ry="2" />
+<text  x="108.42" y="111.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="618.2" y="197" width="71.5" height="15.0" fill="rgb(207,162,23)" rx="2" ry="2" />
+<text  x="621.22" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,034 samples, 0.75%)</title><rect x="417.3" y="133" width="8.9" height="15.0" fill="rgb(243,114,23)" rx="2" ry="2" />
+<text  x="420.34" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (71 samples, 0.05%)</title><rect x="903.4" y="117" width="0.6" height="15.0" fill="rgb(220,161,4)" rx="2" ry="2" />
+<text  x="906.37" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (148 samples, 0.11%)</title><rect x="399.3" y="149" width="1.3" height="15.0" fill="rgb(221,49,34)" rx="2" ry="2" />
+<text  x="402.35" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (25 samples, 0.02%)</title><rect x="903.0" y="117" width="0.2" height="15.0" fill="rgb(251,125,42)" rx="2" ry="2" />
+<text  x="906.00" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,592 samples, 1.15%)</title><rect x="117.9" y="149" width="13.6" height="15.0" fill="rgb(240,27,16)" rx="2" ry="2" />
+<text  x="120.92" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (388 samples, 0.28%)</title><rect x="339.6" y="133" width="3.3" height="15.0" fill="rgb(223,48,36)" rx="2" ry="2" />
+<text  x="342.59" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`main (12,645 samples, 9.15%)</title><rect x="10.0" y="229" width="107.9" height="15.0" fill="rgb(223,34,34)" rx="2" ry="2" />
+<text  x="13.00" y="239.5" >BanditPAM`main</text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="904.1" y="213" width="71.5" height="15.0" fill="rgb(208,82,10)" rx="2" ry="2" />
+<text  x="907.11" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (122 samples, 0.09%)</title><rect x="688.7" y="133" width="1.0" height="15.0" fill="rgb(218,73,36)" rx="2" ry="2" />
+<text  x="691.66" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (108 samples, 0.08%)</title><rect x="402.9" y="133" width="0.9" height="15.0" fill="rgb(218,192,6)" rx="2" ry="2" />
+<text  x="405.89" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_join_barrier(int) (15 samples, 0.01%)</title><rect x="57.7" y="101" width="0.1" height="15.0" fill="rgb(214,140,24)" rx="2" ry="2" />
+<text  x="60.69" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,357 samples, 3.15%)</title><rect x="714.0" y="133" width="37.2" height="15.0" fill="rgb(227,42,32)" rx="2" ry="2" />
+<text  x="717.01" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (585 samples, 0.42%)</title><rect x="197.9" y="133" width="5.0" height="15.0" fill="rgb(213,149,52)" rx="2" ry="2" />
+<text  x="200.93" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (260 samples, 0.19%)</title><rect x="747.3" y="117" width="2.2" height="15.0" fill="rgb(217,120,52)" rx="2" ry="2" />
+<text  x="750.32" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (266 samples, 0.19%)</title><rect x="673.2" y="117" width="2.2" height="15.0" fill="rgb(205,83,15)" rx="2" ry="2" />
+<text  x="676.17" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (101 samples, 0.07%)</title><rect x="545.9" y="133" width="0.8" height="15.0" fill="rgb(229,54,6)" rx="2" ry="2" />
+<text  x="548.87" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,260 samples, 2.36%)</title><rect x="926.2" y="117" width="27.8" height="15.0" fill="rgb(211,83,49)" rx="2" ry="2" />
+<text  x="929.20" y="127.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,697 samples, 3.40%)</title><rect x="997.0" y="149" width="40.0" height="15.0" fill="rgb(232,15,37)" rx="2" ry="2" />
+<text  x="999.96" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (38 samples, 0.03%)</title><rect x="637.5" y="117" width="0.3" height="15.0" fill="rgb(251,129,33)" rx="2" ry="2" />
+<text  x="640.45" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,237 samples, 0.89%)</title><rect x="332.3" y="149" width="10.6" height="15.0" fill="rgb(220,44,49)" rx="2" ry="2" />
+<text  x="335.34" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="904.1" y="229" width="71.5" height="15.0" fill="rgb(205,70,27)" rx="2" ry="2" />
+<text  x="907.11" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (45 samples, 0.03%)</title><rect x="425.7" y="117" width="0.3" height="15.0" fill="rgb(220,117,24)" rx="2" ry="2" />
+<text  x="428.66" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,831 samples, 4.94%)</title><rect x="628.9" y="165" width="58.3" height="15.0" fill="rgb(234,19,17)" rx="2" ry="2" />
+<text  x="631.88" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (332 samples, 0.24%)</title><rect x="972.8" y="117" width="2.8" height="15.0" fill="rgb(234,84,33)" rx="2" ry="2" />
+<text  x="975.75" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (745 samples, 0.54%)</title><rect x="904.1" y="165" width="6.4" height="15.0" fill="rgb(210,49,29)" rx="2" ry="2" />
+<text  x="907.11" y="175.5" ></text>
+</g>
+<g >
+<title>libomp`__kmpc_fork_call (1,052 samples, 0.76%)</title><rect x="105.4" y="149" width="8.9" height="15.0" fill="rgb(239,65,48)" rx="2" ry="2" />
+<text  x="108.37" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (72 samples, 0.05%)</title><rect x="546.0" y="101" width="0.6" height="15.0" fill="rgb(248,153,42)" rx="2" ry="2" />
+<text  x="548.99" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (41 samples, 0.03%)</title><rect x="759.8" y="117" width="0.3" height="15.0" fill="rgb(205,211,23)" rx="2" ry="2" />
+<text  x="762.76" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (5,030 samples, 3.64%)</title><rect x="1136.6" y="149" width="42.9" height="15.0" fill="rgb(245,193,41)" rx="2" ry="2" />
+<text  x="1139.60" y="159.5" >Band..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (74 samples, 0.05%)</title><rect x="331.6" y="117" width="0.6" height="15.0" fill="rgb(217,98,24)" rx="2" ry="2" />
+<text  x="334.59" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`__read_nocancel (46 samples, 0.03%)</title><rect x="29.5" y="53" width="0.4" height="15.0" fill="rgb(253,156,50)" rx="2" ry="2" />
+<text  x="32.49" y="63.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="546.8" y="245" width="71.4" height="15.0" fill="rgb(214,23,39)" rx="2" ry="2" />
+<text  x="549.75" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>libomp`__kmp_join_call (155 samples, 0.11%)</title><rect x="55.4" y="133" width="1.3" height="15.0" fill="rgb(245,52,43)" rx="2" ry="2" />
+<text  x="58.39" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (14 samples, 0.01%)</title><rect x="1044.5" y="117" width="0.1" height="15.0" fill="rgb(228,159,36)" rx="2" ry="2" />
+<text  x="1047.50" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (545 samples, 0.39%)</title><rect x="1054.8" y="133" width="4.6" height="15.0" fill="rgb(249,75,21)" rx="2" ry="2" />
+<text  x="1057.78" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (14 samples, 0.01%)</title><rect x="546.6" y="117" width="0.1" height="15.0" fill="rgb(240,191,22)" rx="2" ry="2" />
+<text  x="549.61" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (934 samples, 0.68%)</title><rect x="1128.3" y="101" width="8.0" height="15.0" fill="rgb(212,131,6)" rx="2" ry="2" />
+<text  x="1131.31" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (103 samples, 0.07%)</title><rect x="399.7" y="133" width="0.9" height="15.0" fill="rgb(211,73,19)" rx="2" ry="2" />
+<text  x="402.73" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (155 samples, 0.11%)</title><rect x="758.9" y="149" width="1.4" height="15.0" fill="rgb(227,152,31)" rx="2" ry="2" />
+<text  x="761.95" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (24 samples, 0.02%)</title><rect x="901.7" y="117" width="0.2" height="15.0" fill="rgb(213,49,18)" rx="2" ry="2" />
+<text  x="904.69" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (891 samples, 0.64%)</title><rect x="105.5" y="69" width="7.6" height="15.0" fill="rgb(232,154,17)" rx="2" ry="2" />
+<text  x="108.51" y="79.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,501 samples, 1.09%)</title><rect x="689.7" y="181" width="12.8" height="15.0" fill="rgb(249,224,15)" rx="2" ry="2" />
+<text  x="692.70" y="191.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,621 samples, 3.34%)</title><rect x="352.1" y="149" width="39.4" height="15.0" fill="rgb(241,72,36)" rx="2" ry="2" />
+<text  x="355.06" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="832.6" y="197" width="71.5" height="15.0" fill="rgb(240,171,38)" rx="2" ry="2" />
+<text  x="835.64" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (909 samples, 0.66%)</title><rect x="751.2" y="149" width="7.7" height="15.0" fill="rgb(233,182,36)" rx="2" ry="2" />
+<text  x="754.19" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,063 samples, 0.77%)</title><rect x="417.1" y="149" width="9.1" height="15.0" fill="rgb(245,38,21)" rx="2" ry="2" />
+<text  x="420.10" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_internal_join (802 samples, 0.58%)</title><rect x="98.4" y="117" width="6.9" height="15.0" fill="rgb(244,145,20)" rx="2" ry="2" />
+<text  x="101.45" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,376 samples, 6.06%)</title><rect x="117.9" y="245" width="71.5" height="15.0" fill="rgb(223,100,33)" rx="2" ry="2" />
+<text  x="120.91" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>libomp`__kmpc_fork_call (5,420 samples, 3.92%)</title><rect x="59.0" y="149" width="46.3" height="15.0" fill="rgb(225,17,22)" rx="2" ry="2" />
+<text  x="62.04" y="159.5" >libo..</text>
+</g>
+<g >
+<title>libsystem_platform`_platform_memmove$VARIANT$Haswell (24 samples, 0.02%)</title><rect x="117.7" y="181" width="0.2" height="15.0" fill="rgb(223,118,5)" rx="2" ry="2" />
+<text  x="120.69" y="191.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__fread (60 samples, 0.04%)</title><rect x="29.5" y="101" width="0.5" height="15.0" fill="rgb(218,127,23)" rx="2" ry="2" />
+<text  x="32.47" y="111.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,034 samples, 0.75%)</title><rect x="1118.5" y="165" width="8.9" height="15.0" fill="rgb(211,22,8)" rx="2" ry="2" />
+<text  x="1121.53" y="175.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (23 samples, 0.02%)</title><rect x="1136.4" y="117" width="0.2" height="15.0" fill="rgb(215,154,18)" rx="2" ry="2" />
+<text  x="1139.41" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,280 samples, 2.37%)</title><rect x="148.1" y="117" width="28.0" height="15.0" fill="rgb(243,164,41)" rx="2" ry="2" />
+<text  x="151.11" y="127.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (73 samples, 0.05%)</title><rect x="400.8" y="101" width="0.6" height="15.0" fill="rgb(207,145,0)" rx="2" ry="2" />
+<text  x="403.79" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (32 samples, 0.02%)</title><rect x="140.2" y="117" width="0.3" height="15.0" fill="rgb(232,208,18)" rx="2" ry="2" />
+<text  x="143.19" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,574 samples, 1.14%)</title><rect x="189.5" y="149" width="13.4" height="15.0" fill="rgb(243,112,47)" rx="2" ry="2" />
+<text  x="192.49" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,592 samples, 1.15%)</title><rect x="117.9" y="181" width="13.6" height="15.0" fill="rgb(213,125,22)" rx="2" ry="2" />
+<text  x="120.92" y="191.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,874 samples, 4.97%)</title><rect x="702.5" y="165" width="58.7" height="15.0" fill="rgb(227,216,49)" rx="2" ry="2" />
+<text  x="705.51" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (273 samples, 0.20%)</title><rect x="401.5" y="149" width="2.3" height="15.0" fill="rgb(227,126,13)" rx="2" ry="2" />
+<text  x="404.48" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,057 samples, 0.76%)</title><rect x="1127.6" y="133" width="9.0" height="15.0" fill="rgb(231,88,19)" rx="2" ry="2" />
+<text  x="1130.58" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (17 samples, 0.01%)</title><rect x="115.6" y="69" width="0.2" height="15.0" fill="rgb(220,76,22)" rx="2" ry="2" />
+<text  x="118.62" y="79.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="618.2" y="245" width="71.5" height="15.0" fill="rgb(228,163,39)" rx="2" ry="2" />
+<text  x="621.22" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (743 samples, 0.54%)</title><rect x="252.1" y="117" width="6.3" height="15.0" fill="rgb(207,43,6)" rx="2" ry="2" />
+<text  x="255.09" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (878 samples, 0.63%)</title><rect x="1060.3" y="117" width="7.5" height="15.0" fill="rgb(233,37,0)" rx="2" ry="2" />
+<text  x="1063.31" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (755 samples, 0.55%)</title><rect x="959.1" y="101" width="6.5" height="15.0" fill="rgb(250,88,27)" rx="2" ry="2" />
+<text  x="962.14" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,614 samples, 3.34%)</title><rect x="59.1" y="85" width="39.3" height="15.0" fill="rgb(237,2,9)" rx="2" ry="2" />
+<text  x="62.05" y="95.5" >Ban..</text>
+</g>
+<g >
+<title>libsystem_m`??? (16 samples, 0.01%)</title><rect x="617.2" y="117" width="0.1" height="15.0" fill="rgb(214,119,20)" rx="2" ry="2" />
+<text  x="620.18" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="1047.1" y="197" width="71.4" height="15.0" fill="rgb(210,22,42)" rx="2" ry="2" />
+<text  x="1050.06" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>Thread_6478881 (8,375 samples, 6.06%)</title><rect x="475.3" y="261" width="71.5" height="15.0" fill="rgb(249,108,26)" rx="2" ry="2" />
+<text  x="478.28" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>libsystem_c`__Bfree_D2A (32 samples, 0.02%)</title><rect x="43.0" y="149" width="0.2" height="15.0" fill="rgb(211,191,1)" rx="2" ry="2" />
+<text  x="45.97" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (98 samples, 0.07%)</title><rect x="966.3" y="133" width="0.8" height="15.0" fill="rgb(221,30,49)" rx="2" ry="2" />
+<text  x="969.27" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (729 samples, 0.53%)</title><rect x="678.5" y="117" width="6.2" height="15.0" fill="rgb(237,90,38)" rx="2" ry="2" />
+<text  x="681.49" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (70 samples, 0.05%)</title><rect x="967.3" y="117" width="0.6" height="15.0" fill="rgb(247,50,8)" rx="2" ry="2" />
+<text  x="970.30" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (42 samples, 0.03%)</title><rect x="907.9" y="133" width="0.4" height="15.0" fill="rgb(244,155,38)" rx="2" ry="2" />
+<text  x="910.94" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (125 samples, 0.09%)</title><rect x="1187.9" y="133" width="1.1" height="15.0" fill="rgb(243,116,6)" rx="2" ry="2" />
+<text  x="1190.91" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,307 samples, 3.11%)</title><rect x="285.6" y="133" width="36.8" height="15.0" fill="rgb(218,43,16)" rx="2" ry="2" />
+<text  x="288.64" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (145 samples, 0.10%)</title><rect x="114.4" y="117" width="1.2" height="15.0" fill="rgb(211,168,23)" rx="2" ry="2" />
+<text  x="117.39" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (707 samples, 0.51%)</title><rect x="106.8" y="53" width="6.0" height="15.0" fill="rgb(250,75,43)" rx="2" ry="2" />
+<text  x="109.78" y="63.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (63 samples, 0.05%)</title><rect x="972.2" y="133" width="0.5" height="15.0" fill="rgb(232,17,37)" rx="2" ry="2" />
+<text  x="975.18" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="832.6" y="213" width="71.5" height="15.0" fill="rgb(228,180,24)" rx="2" ry="2" />
+<text  x="835.64" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>libsystem_c`localeconv_l (15 samples, 0.01%)</title><rect x="45.6" y="149" width="0.1" height="15.0" fill="rgb(239,204,1)" rx="2" ry="2" />
+<text  x="48.55" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (41 samples, 0.03%)</title><rect x="902.7" y="117" width="0.3" height="15.0" fill="rgb(232,177,38)" rx="2" ry="2" />
+<text  x="905.65" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (102 samples, 0.07%)</title><rect x="617.4" y="133" width="0.8" height="15.0" fill="rgb(231,133,19)" rx="2" ry="2" />
+<text  x="620.35" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,311 samples, 3.12%)</title><rect x="354.7" y="133" width="36.8" height="15.0" fill="rgb(227,207,45)" rx="2" ry="2" />
+<text  x="357.70" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (890 samples, 0.64%)</title><rect x="629.9" y="117" width="7.6" height="15.0" fill="rgb(217,110,21)" rx="2" ry="2" />
+<text  x="632.86" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`BanditPAM::swap_target(arma::Mat&lt;double&gt;.const&amp;, (5,423 samples, 3.92%)</title><rect x="59.0" y="165" width="46.3" height="15.0" fill="rgb(215,197,8)" rx="2" ry="2" />
+<text  x="62.03" y="175.5" >Band..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,277 samples, 2.37%)</title><rect x="219.0" y="117" width="27.9" height="15.0" fill="rgb(206,211,20)" rx="2" ry="2" />
+<text  x="221.96" y="127.5" >B..</text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (154 samples, 0.11%)</title><rect x="55.4" y="69" width="1.3" height="15.0" fill="rgb(215,133,21)" rx="2" ry="2" />
+<text  x="58.40" y="79.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (106 samples, 0.08%)</title><rect x="617.3" y="149" width="0.9" height="15.0" fill="rgb(252,44,11)" rx="2" ry="2" />
+<text  x="620.32" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (83 samples, 0.06%)</title><rect x="624.8" y="133" width="0.7" height="15.0" fill="rgb(207,1,54)" rx="2" ry="2" />
+<text  x="627.78" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (55 samples, 0.04%)</title><rect x="57.1" y="37" width="0.5" height="15.0" fill="rgb(235,224,40)" rx="2" ry="2" />
+<text  x="60.10" y="47.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (102 samples, 0.07%)</title><rect x="685.4" y="133" width="0.9" height="15.0" fill="rgb(241,87,34)" rx="2" ry="2" />
+<text  x="688.44" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,585 samples, 1.15%)</title><rect x="189.4" y="165" width="13.5" height="15.0" fill="rgb(230,37,2)" rx="2" ry="2" />
+<text  x="192.39" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,016 samples, 0.73%)</title><rect x="629.2" y="133" width="8.7" height="15.0" fill="rgb(237,115,24)" rx="2" ry="2" />
+<text  x="632.18" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (55 samples, 0.04%)</title><rect x="56.2" y="37" width="0.5" height="15.0" fill="rgb(235,208,51)" rx="2" ry="2" />
+<text  x="59.25" y="47.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="832.6" y="229" width="71.5" height="15.0" fill="rgb(246,5,23)" rx="2" ry="2" />
+<text  x="835.64" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,258 samples, 3.08%)</title><rect x="143.2" y="133" width="36.4" height="15.0" fill="rgb(205,194,41)" rx="2" ry="2" />
+<text  x="146.25" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>libomp`__kmp_internal_join (17 samples, 0.01%)</title><rect x="115.6" y="117" width="0.2" height="15.0" fill="rgb(214,187,19)" rx="2" ry="2" />
+<text  x="118.62" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (871 samples, 0.63%)</title><rect x="1060.4" y="101" width="7.4" height="15.0" fill="rgb(250,61,20)" rx="2" ry="2" />
+<text  x="1063.37" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (108 samples, 0.08%)</title><rect x="902.3" y="133" width="0.9" height="15.0" fill="rgb(235,158,0)" rx="2" ry="2" />
+<text  x="905.29" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (889 samples, 0.64%)</title><rect x="560.9" y="117" width="7.6" height="15.0" fill="rgb(233,9,1)" rx="2" ry="2" />
+<text  x="563.87" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (911 samples, 0.66%)</title><rect x="958.1" y="133" width="7.7" height="15.0" fill="rgb(224,144,25)" rx="2" ry="2" />
+<text  x="961.06" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (884 samples, 0.64%)</title><rect x="465.6" y="133" width="7.5" height="15.0" fill="rgb(217,5,49)" rx="2" ry="2" />
+<text  x="468.57" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (193 samples, 0.14%)</title><rect x="606.7" y="117" width="1.7" height="15.0" fill="rgb(235,10,30)" rx="2" ry="2" />
+<text  x="609.71" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,256 samples, 2.35%)</title><rect x="290.8" y="101" width="27.8" height="15.0" fill="rgb(227,212,23)" rx="2" ry="2" />
+<text  x="293.83" y="111.5" >B..</text>
+</g>
+<g >
+<title>libc++.1`std::__1::__shared_count::__release_shared() (76 samples, 0.05%)</title><rect x="25.5" y="149" width="0.7" height="15.0" fill="rgb(227,227,11)" rx="2" ry="2" />
+<text  x="28.51" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (899 samples, 0.65%)</title><rect x="1037.3" y="133" width="7.6" height="15.0" fill="rgb(237,89,48)" rx="2" ry="2" />
+<text  x="1040.25" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_gather(barrier_type,.kmp_info*, (15 samples, 0.01%)</title><rect x="57.7" y="85" width="0.1" height="15.0" fill="rgb(213,50,31)" rx="2" ry="2" />
+<text  x="60.69" y="95.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (105 samples, 0.08%)</title><rect x="474.4" y="149" width="0.9" height="15.0" fill="rgb(242,222,26)" rx="2" ry="2" />
+<text  x="477.38" y="159.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::__shared_count::__add_shared() (96 samples, 0.07%)</title><rect x="39.7" y="133" width="0.8" height="15.0" fill="rgb(234,98,22)" rx="2" ry="2" />
+<text  x="42.66" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,851 samples, 4.95%)</title><rect x="273.9" y="181" width="58.4" height="15.0" fill="rgb(226,164,15)" rx="2" ry="2" />
+<text  x="276.87" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,019 samples, 0.74%)</title><rect x="203.1" y="133" width="8.7" height="15.0" fill="rgb(239,208,9)" rx="2" ry="2" />
+<text  x="206.13" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (103 samples, 0.07%)</title><rect x="474.4" y="133" width="0.9" height="15.0" fill="rgb(231,17,30)" rx="2" ry="2" />
+<text  x="477.39" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,925 samples, 5.01%)</title><rect x="1059.4" y="181" width="59.1" height="15.0" fill="rgb(241,46,50)" rx="2" ry="2" />
+<text  x="1062.43" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (918 samples, 0.66%)</title><rect x="1108.4" y="149" width="7.9" height="15.0" fill="rgb(236,148,11)" rx="2" ry="2" />
+<text  x="1111.44" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`void.arma::subview_elem1&lt;double, (32 samples, 0.02%)</title><rect x="117.1" y="165" width="0.3" height="15.0" fill="rgb(214,96,20)" rx="2" ry="2" />
+<text  x="120.09" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (759 samples, 0.55%)</title><rect x="959.1" y="117" width="6.5" height="15.0" fill="rgb(251,10,54)" rx="2" ry="2" />
+<text  x="962.11" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (84 samples, 0.06%)</title><rect x="125.4" y="133" width="0.7" height="15.0" fill="rgb(228,70,18)" rx="2" ry="2" />
+<text  x="128.42" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (251 samples, 0.18%)</title><rect x="908.3" y="117" width="2.2" height="15.0" fill="rgb(246,149,26)" rx="2" ry="2" />
+<text  x="911.33" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (906 samples, 0.66%)</title><rect x="894.2" y="149" width="7.7" height="15.0" fill="rgb(244,150,52)" rx="2" ry="2" />
+<text  x="897.16" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="475.3" y="229" width="71.5" height="15.0" fill="rgb(222,7,6)" rx="2" ry="2" />
+<text  x="478.28" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`BanditPAM::fit_bpam(arma::Mat&lt;double&gt;.const&amp;) (8,429 samples, 6.10%)</title><rect x="46.0" y="197" width="71.9" height="15.0" fill="rgb(222,90,54)" rx="2" ry="2" />
+<text  x="48.96" y="207.5" >BanditPA..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (696 samples, 0.50%)</title><rect x="1110.1" y="101" width="5.9" height="15.0" fill="rgb(251,141,36)" rx="2" ry="2" />
+<text  x="1113.05" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (107 samples, 0.08%)</title><rect x="1117.6" y="149" width="0.9" height="15.0" fill="rgb(227,101,43)" rx="2" ry="2" />
+<text  x="1120.61" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (39 samples, 0.03%)</title><rect x="1188.4" y="117" width="0.4" height="15.0" fill="rgb(231,156,38)" rx="2" ry="2" />
+<text  x="1191.44" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="1047.1" y="245" width="71.4" height="15.0" fill="rgb(207,35,10)" rx="2" ry="2" />
+<text  x="1050.06" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>libsystem_m`??? (207 samples, 0.15%)</title><rect x="1106.7" y="117" width="1.7" height="15.0" fill="rgb(218,60,39)" rx="2" ry="2" />
+<text  x="1109.67" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (62 samples, 0.04%)</title><rect x="113.8" y="37" width="0.5" height="15.0" fill="rgb(212,106,8)" rx="2" ry="2" />
+<text  x="116.81" y="47.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="618.2" y="213" width="71.5" height="15.0" fill="rgb(244,36,50)" rx="2" ry="2" />
+<text  x="621.22" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (145 samples, 0.10%)</title><rect x="114.4" y="85" width="1.2" height="15.0" fill="rgb(227,175,25)" rx="2" ry="2" />
+<text  x="117.39" y="95.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (14 samples, 0.01%)</title><rect x="688.5" y="133" width="0.2" height="15.0" fill="rgb(242,5,22)" rx="2" ry="2" />
+<text  x="691.54" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (4,614 samples, 3.34%)</title><rect x="59.1" y="101" width="39.3" height="15.0" fill="rgb(251,225,19)" rx="2" ry="2" />
+<text  x="62.05" y="111.5" >lib..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (30 samples, 0.02%)</title><rect x="918.7" y="117" width="0.3" height="15.0" fill="rgb(233,90,45)" rx="2" ry="2" />
+<text  x="921.75" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,863 samples, 4.96%)</title><rect x="342.9" y="181" width="58.6" height="15.0" fill="rgb(243,52,46)" rx="2" ry="2" />
+<text  x="345.90" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>libsystem_m`??? (15 samples, 0.01%)</title><rect x="545.7" y="117" width="0.2" height="15.0" fill="rgb(211,46,48)" rx="2" ry="2" />
+<text  x="548.73" y="127.5" ></text>
+</g>
+<g >
+<title>Thread_6478888 (8,375 samples, 6.06%)</title><rect x="975.6" y="261" width="71.5" height="15.0" fill="rgb(234,44,44)" rx="2" ry="2" />
+<text  x="978.58" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,296 samples, 2.38%)</title><rect x="576.2" y="117" width="28.2" height="15.0" fill="rgb(213,157,48)" rx="2" ry="2" />
+<text  x="579.23" y="127.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (920 samples, 0.67%)</title><rect x="958.0" y="149" width="7.8" height="15.0" fill="rgb(226,46,10)" rx="2" ry="2" />
+<text  x="960.98" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (155 samples, 0.11%)</title><rect x="616.0" y="149" width="1.3" height="15.0" fill="rgb(230,152,49)" rx="2" ry="2" />
+<text  x="619.00" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (106 samples, 0.08%)</title><rect x="260.0" y="149" width="0.9" height="15.0" fill="rgb(207,229,19)" rx="2" ry="2" />
+<text  x="262.96" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,787 samples, 4.91%)</title><rect x="488.8" y="181" width="57.9" height="15.0" fill="rgb(227,25,42)" rx="2" ry="2" />
+<text  x="491.82" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="761.2" y="197" width="71.4" height="15.0" fill="rgb(213,120,26)" rx="2" ry="2" />
+<text  x="764.17" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (730 samples, 0.53%)</title><rect x="752.4" y="101" width="6.2" height="15.0" fill="rgb(226,172,38)" rx="2" ry="2" />
+<text  x="755.40" y="111.5" ></text>
+</g>
+<g >
+<title>Thread_6478879 (8,375 samples, 6.06%)</title><rect x="332.3" y="261" width="71.5" height="15.0" fill="rgb(212,140,1)" rx="2" ry="2" />
+<text  x="335.34" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="403.8" y="197" width="71.5" height="15.0" fill="rgb(245,47,45)" rx="2" ry="2" />
+<text  x="406.81" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (149 samples, 0.11%)</title><rect x="1044.9" y="149" width="1.3" height="15.0" fill="rgb(242,90,2)" rx="2" ry="2" />
+<text  x="1047.92" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="975.6" y="245" width="71.5" height="15.0" fill="rgb(252,152,54)" rx="2" ry="2" />
+<text  x="978.58" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (81 samples, 0.06%)</title><rect x="483.2" y="133" width="0.6" height="15.0" fill="rgb(249,139,29)" rx="2" ry="2" />
+<text  x="486.16" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,009 samples, 0.73%)</title><rect x="910.5" y="149" width="8.6" height="15.0" fill="rgb(226,47,36)" rx="2" ry="2" />
+<text  x="913.51" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (70 samples, 0.05%)</title><rect x="188.7" y="101" width="0.6" height="15.0" fill="rgb(220,186,37)" rx="2" ry="2" />
+<text  x="191.67" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`void.arma::glue_rel_and::apply&lt;arma::mtOp&lt;unsigned (67 samples, 0.05%)</title><rect x="116.0" y="165" width="0.6" height="15.0" fill="rgb(251,3,29)" rx="2" ry="2" />
+<text  x="119.03" y="175.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (561 samples, 0.41%)</title><rect x="412.3" y="117" width="4.7" height="15.0" fill="rgb(242,193,10)" rx="2" ry="2" />
+<text  x="415.26" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (23 samples, 0.02%)</title><rect x="187.1" y="117" width="0.2" height="15.0" fill="rgb(240,129,48)" rx="2" ry="2" />
+<text  x="190.05" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (24 samples, 0.02%)</title><rect x="684.8" y="117" width="0.2" height="15.0" fill="rgb(208,62,17)" rx="2" ry="2" />
+<text  x="687.77" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (19 samples, 0.01%)</title><rect x="831.6" y="117" width="0.1" height="15.0" fill="rgb(212,164,28)" rx="2" ry="2" />
+<text  x="834.56" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="689.7" y="213" width="71.5" height="15.0" fill="rgb(213,2,36)" rx="2" ry="2" />
+<text  x="692.70" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,449 samples, 1.05%)</title><rect x="1047.1" y="149" width="12.3" height="15.0" fill="rgb(229,146,36)" rx="2" ry="2" />
+<text  x="1050.06" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (742 samples, 0.54%)</title><rect x="252.1" y="101" width="6.3" height="15.0" fill="rgb(244,10,5)" rx="2" ry="2" />
+<text  x="255.10" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_c`strtod_l (589 samples, 0.43%)</title><rect x="40.9" y="165" width="5.1" height="15.0" fill="rgb(239,200,52)" rx="2" ry="2" />
+<text  x="43.94" y="175.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (14 samples, 0.01%)</title><rect x="55.3" y="53" width="0.1" height="15.0" fill="rgb(238,203,49)" rx="2" ry="2" />
+<text  x="58.26" y="63.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (173 samples, 0.13%)</title><rect x="1035.6" y="117" width="1.4" height="15.0" fill="rgb(215,206,10)" rx="2" ry="2" />
+<text  x="1038.57" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (24 samples, 0.02%)</title><rect x="258.5" y="117" width="0.2" height="15.0" fill="rgb(237,71,29)" rx="2" ry="2" />
+<text  x="261.49" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (12 samples, 0.01%)</title><rect x="784.1" y="117" width="0.1" height="15.0" fill="rgb(226,49,6)" rx="2" ry="2" />
+<text  x="787.14" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_join_barrier(int) (295 samples, 0.21%)</title><rect x="687.2" y="181" width="2.5" height="15.0" fill="rgb(209,134,19)" rx="2" ry="2" />
+<text  x="690.18" y="191.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,899 samples, 4.99%)</title><rect x="988.2" y="181" width="58.8" height="15.0" fill="rgb(254,157,39)" rx="2" ry="2" />
+<text  x="991.16" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (114 samples, 0.08%)</title><rect x="268.4" y="133" width="0.9" height="15.0" fill="rgb(252,130,34)" rx="2" ry="2" />
+<text  x="271.36" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,621 samples, 3.34%)</title><rect x="568.9" y="149" width="39.5" height="15.0" fill="rgb(237,75,10)" rx="2" ry="2" />
+<text  x="571.92" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,327 samples, 2.41%)</title><rect x="66.3" y="37" width="28.4" height="15.0" fill="rgb(224,176,17)" rx="2" ry="2" />
+<text  x="69.33" y="47.5" >Ba..</text>
+</g>
+<g >
+<title>BanditPAM`bool.arma::diskio::load_raw_ascii&lt;double&gt;(arma::Mat&lt;double&gt;&amp;, (4,214 samples, 3.05%)</title><rect x="10.0" y="181" width="36.0" height="15.0" fill="rgb(227,196,39)" rx="2" ry="2" />
+<text  x="13.00" y="191.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (68 samples, 0.05%)</title><rect x="474.6" y="101" width="0.5" height="15.0" fill="rgb(236,26,0)" rx="2" ry="2" />
+<text  x="477.55" y="111.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,249 samples, 0.90%)</title><rect x="618.2" y="181" width="10.7" height="15.0" fill="rgb(215,184,10)" rx="2" ry="2" />
+<text  x="621.22" y="191.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,664 samples, 1.20%)</title><rect x="761.2" y="181" width="14.2" height="15.0" fill="rgb(212,213,36)" rx="2" ry="2" />
+<text  x="764.17" y="191.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (189 samples, 0.14%)</title><rect x="535.3" y="117" width="1.6" height="15.0" fill="rgb(242,146,47)" rx="2" ry="2" />
+<text  x="538.28" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (37 samples, 0.03%)</title><rect x="1117.1" y="117" width="0.3" height="15.0" fill="rgb(221,107,31)" rx="2" ry="2" />
+<text  x="1120.08" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,633 samples, 1.18%)</title><rect x="832.6" y="165" width="14.0" height="15.0" fill="rgb(227,136,19)" rx="2" ry="2" />
+<text  x="835.64" y="175.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__b2d_D2A (16 samples, 0.01%)</title><rect x="44.9" y="133" width="0.1" height="15.0" fill="rgb(220,96,40)" rx="2" ry="2" />
+<text  x="47.85" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (74 samples, 0.05%)</title><rect x="400.8" y="117" width="0.6" height="15.0" fill="rgb(242,71,34)" rx="2" ry="2" />
+<text  x="403.78" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_platform`_platform_strlen (30 samples, 0.02%)</title><rect x="45.7" y="149" width="0.3" height="15.0" fill="rgb(217,211,28)" rx="2" ry="2" />
+<text  x="48.71" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (398 samples, 0.29%)</title><rect x="625.5" y="133" width="3.4" height="15.0" fill="rgb(254,66,13)" rx="2" ry="2" />
+<text  x="628.49" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,315 samples, 2.40%)</title><rect x="719.0" y="101" width="28.3" height="15.0" fill="rgb(222,207,43)" rx="2" ry="2" />
+<text  x="722.03" y="111.5" >B..</text>
+</g>
+<g >
+<title>libsystem_m`??? (14 samples, 0.01%)</title><rect x="115.5" y="53" width="0.1" height="15.0" fill="rgb(217,144,29)" rx="2" ry="2" />
+<text  x="118.51" y="63.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="546.8" y="197" width="71.4" height="15.0" fill="rgb(228,168,45)" rx="2" ry="2" />
+<text  x="549.75" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (101 samples, 0.07%)</title><rect x="400.6" y="149" width="0.9" height="15.0" fill="rgb(250,219,52)" rx="2" ry="2" />
+<text  x="403.61" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (293 samples, 0.21%)</title><rect x="102.8" y="53" width="2.5" height="15.0" fill="rgb(240,196,2)" rx="2" ry="2" />
+<text  x="105.79" y="63.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (606 samples, 0.44%)</title><rect x="554.7" y="133" width="5.2" height="15.0" fill="rgb(218,197,7)" rx="2" ry="2" />
+<text  x="557.71" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_join_call (144 samples, 0.10%)</title><rect x="113.1" y="133" width="1.2" height="15.0" fill="rgb(224,15,25)" rx="2" ry="2" />
+<text  x="116.12" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (108 samples, 0.08%)</title><rect x="830.8" y="133" width="0.9" height="15.0" fill="rgb(225,159,52)" rx="2" ry="2" />
+<text  x="833.80" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (197 samples, 0.14%)</title><rect x="675.4" y="117" width="1.7" height="15.0" fill="rgb(206,29,17)" rx="2" ry="2" />
+<text  x="678.44" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (899 samples, 0.65%)</title><rect x="822.7" y="133" width="7.7" height="15.0" fill="rgb(235,51,34)" rx="2" ry="2" />
+<text  x="825.71" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (102 samples, 0.07%)</title><rect x="686.3" y="149" width="0.9" height="15.0" fill="rgb(249,19,38)" rx="2" ry="2" />
+<text  x="689.31" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (21 samples, 0.02%)</title><rect x="282.9" y="117" width="0.2" height="15.0" fill="rgb(214,40,48)" rx="2" ry="2" />
+<text  x="285.91" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (15 samples, 0.01%)</title><rect x="1189.8" y="117" width="0.2" height="15.0" fill="rgb(243,163,24)" rx="2" ry="2" />
+<text  x="1192.83" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmpc_fork_call (162 samples, 0.12%)</title><rect x="114.4" y="149" width="1.4" height="15.0" fill="rgb(208,70,43)" rx="2" ry="2" />
+<text  x="117.39" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,790 samples, 4.91%)</title><rect x="202.9" y="165" width="58.0" height="15.0" fill="rgb(229,34,54)" rx="2" ry="2" />
+<text  x="205.92" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libomp`__kmp_join_call (803 samples, 0.58%)</title><rect x="98.4" y="133" width="6.9" height="15.0" fill="rgb(248,188,31)" rx="2" ry="2" />
+<text  x="101.44" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,553 samples, 3.29%)</title><rect x="919.1" y="149" width="38.9" height="15.0" fill="rgb(243,173,20)" rx="2" ry="2" />
+<text  x="922.12" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="260.9" y="229" width="71.4" height="15.0" fill="rgb(243,11,26)" rx="2" ry="2" />
+<text  x="263.86" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::fit(arma::Mat&lt;double&gt;.const&amp;, (8,429 samples, 6.10%)</title><rect x="46.0" y="213" width="71.9" height="15.0" fill="rgb(221,27,21)" rx="2" ry="2" />
+<text  x="48.96" y="223.5" >BanditPA..</text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (12 samples, 0.01%)</title><rect x="56.1" y="53" width="0.1" height="15.0" fill="rgb(226,99,15)" rx="2" ry="2" />
+<text  x="59.13" y="63.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (75 samples, 0.05%)</title><rect x="831.9" y="117" width="0.6" height="15.0" fill="rgb(250,169,40)" rx="2" ry="2" />
+<text  x="834.88" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (896 samples, 0.65%)</title><rect x="343.9" y="101" width="7.7" height="15.0" fill="rgb(205,30,34)" rx="2" ry="2" />
+<text  x="346.93" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (713 samples, 0.52%)</title><rect x="895.5" y="101" width="6.1" height="15.0" fill="rgb(225,72,46)" rx="2" ry="2" />
+<text  x="898.50" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (890 samples, 0.64%)</title><rect x="418.1" y="117" width="7.6" height="15.0" fill="rgb(208,161,36)" rx="2" ry="2" />
+<text  x="421.07" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (100 samples, 0.07%)</title><rect x="56.8" y="101" width="0.9" height="15.0" fill="rgb(245,133,1)" rx="2" ry="2" />
+<text  x="59.83" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`__read_nocancel (53 samples, 0.04%)</title><rect x="25.0" y="69" width="0.4" height="15.0" fill="rgb(215,184,45)" rx="2" ry="2" />
+<text  x="27.95" y="79.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (894 samples, 0.65%)</title><rect x="989.0" y="117" width="7.7" height="15.0" fill="rgb(219,33,43)" rx="2" ry="2" />
+<text  x="992.03" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (100 samples, 0.07%)</title><rect x="56.8" y="117" width="0.9" height="15.0" fill="rgb(215,88,27)" rx="2" ry="2" />
+<text  x="59.83" y="127.5" ></text>
+</g>
+<g >
+<title>Thread_6478886 (8,375 samples, 6.06%)</title><rect x="832.6" y="261" width="71.5" height="15.0" fill="rgb(238,9,47)" rx="2" ry="2" />
+<text  x="835.64" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>libomp`__kmp_fork_call (4,617 samples, 3.34%)</title><rect x="59.0" y="133" width="39.4" height="15.0" fill="rgb(254,100,11)" rx="2" ry="2" />
+<text  x="62.04" y="143.5" >lib..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,022 samples, 0.74%)</title><rect x="988.2" y="149" width="8.8" height="15.0" fill="rgb(252,84,11)" rx="2" ry="2" />
+<text  x="991.24" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (999 samples, 0.72%)</title><rect x="988.4" y="133" width="8.6" height="15.0" fill="rgb(237,31,41)" rx="2" ry="2" />
+<text  x="991.44" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (873 samples, 0.63%)</title><rect x="418.2" y="101" width="7.5" height="15.0" fill="rgb(211,227,7)" rx="2" ry="2" />
+<text  x="421.21" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (905 samples, 0.65%)</title><rect x="677.3" y="133" width="7.7" height="15.0" fill="rgb(212,70,48)" rx="2" ry="2" />
+<text  x="680.25" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (68 samples, 0.05%)</title><rect x="260.2" y="101" width="0.6" height="15.0" fill="rgb(245,41,49)" rx="2" ry="2" />
+<text  x="263.19" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (14 samples, 0.01%)</title><rect x="544.8" y="133" width="0.1" height="15.0" fill="rgb(249,128,41)" rx="2" ry="2" />
+<text  x="547.82" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_join_barrier(int) (144 samples, 0.10%)</title><rect x="113.1" y="101" width="1.2" height="15.0" fill="rgb(247,142,24)" rx="2" ry="2" />
+<text  x="116.12" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (104 samples, 0.08%)</title><rect x="402.9" y="117" width="0.9" height="15.0" fill="rgb(250,64,18)" rx="2" ry="2" />
+<text  x="405.92" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,399 samples, 3.18%)</title><rect x="1070.9" y="133" width="37.5" height="15.0" fill="rgb(216,124,48)" rx="2" ry="2" />
+<text  x="1073.90" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (734 samples, 0.53%)</title><rect x="609.5" y="101" width="6.3" height="15.0" fill="rgb(207,134,34)" rx="2" ry="2" />
+<text  x="612.50" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (159 samples, 0.11%)</title><rect x="892.8" y="117" width="1.4" height="15.0" fill="rgb(252,54,32)" rx="2" ry="2" />
+<text  x="895.80" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="189.4" y="213" width="71.5" height="15.0" fill="rgb(209,14,24)" rx="2" ry="2" />
+<text  x="192.39" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>libsystem_m`??? (209 samples, 0.15%)</title><rect x="320.6" y="117" width="1.8" height="15.0" fill="rgb(211,196,24)" rx="2" ry="2" />
+<text  x="323.61" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="689.7" y="245" width="71.5" height="15.0" fill="rgb(227,220,4)" rx="2" ry="2" />
+<text  x="692.70" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>libsystem_m`??? (23 samples, 0.02%)</title><rect x="965.6" y="117" width="0.2" height="15.0" fill="rgb(219,144,39)" rx="2" ry="2" />
+<text  x="968.63" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (24 samples, 0.02%)</title><rect x="187.6" y="133" width="0.2" height="15.0" fill="rgb(241,165,25)" rx="2" ry="2" />
+<text  x="190.57" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_gather(barrier_type,.kmp_info*, (889 samples, 0.64%)</title><rect x="968.0" y="165" width="7.6" height="15.0" fill="rgb(242,64,6)" rx="2" ry="2" />
+<text  x="971.00" y="175.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,524 samples, 1.10%)</title><rect x="260.9" y="181" width="13.0" height="15.0" fill="rgb(243,216,20)" rx="2" ry="2" />
+<text  x="263.86" y="191.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (881 samples, 0.64%)</title><rect x="989.1" y="101" width="7.6" height="15.0" fill="rgb(214,1,17)" rx="2" ry="2" />
+<text  x="992.14" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (725 samples, 0.52%)</title><rect x="678.5" y="101" width="6.2" height="15.0" fill="rgb(231,167,51)" rx="2" ry="2" />
+<text  x="681.53" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (24 samples, 0.02%)</title><rect x="544.3" y="117" width="0.3" height="15.0" fill="rgb(216,99,11)" rx="2" ry="2" />
+<text  x="547.35" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,609 samples, 2.61%)</title><rect x="1144.4" y="101" width="30.8" height="15.0" fill="rgb(229,139,35)" rx="2" ry="2" />
+<text  x="1147.35" y="111.5" >Ba..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (37 samples, 0.03%)</title><rect x="545.4" y="117" width="0.3" height="15.0" fill="rgb(244,142,7)" rx="2" ry="2" />
+<text  x="548.41" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (18 samples, 0.01%)</title><rect x="686.2" y="117" width="0.1" height="15.0" fill="rgb(236,179,46)" rx="2" ry="2" />
+<text  x="689.15" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (259 samples, 0.19%)</title><rect x="533.1" y="117" width="2.2" height="15.0" fill="rgb(236,52,28)" rx="2" ry="2" />
+<text  x="536.07" y="127.5" ></text>
+</g>
+<g >
+<title>Thread_6478885 (8,375 samples, 6.06%)</title><rect x="761.2" y="261" width="71.4" height="15.0" fill="rgb(221,159,38)" rx="2" ry="2" />
+<text  x="764.17" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (959 samples, 0.69%)</title><rect x="846.8" y="133" width="8.2" height="15.0" fill="rgb(253,65,40)" rx="2" ry="2" />
+<text  x="849.82" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,352 samples, 2.42%)</title><rect x="718.7" y="117" width="28.6" height="15.0" fill="rgb(216,104,25)" rx="2" ry="2" />
+<text  x="721.71" y="127.5" >Ba..</text>
+</g>
+<g >
+<title>libsystem_m`??? (26 samples, 0.02%)</title><rect x="758.7" y="117" width="0.2" height="15.0" fill="rgb(224,195,52)" rx="2" ry="2" />
+<text  x="761.73" y="127.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::__shared_count::__add_shared() (137 samples, 0.10%)</title><rect x="27.9" y="117" width="1.1" height="15.0" fill="rgb(254,152,25)" rx="2" ry="2" />
+<text  x="30.87" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (108 samples, 0.08%)</title><rect x="831.7" y="149" width="0.9" height="15.0" fill="rgb(225,200,25)" rx="2" ry="2" />
+<text  x="834.72" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`BanditPAM::build(arma::Mat&lt;double&gt;.const&amp;, (1,426 samples, 1.03%)</title><rect x="46.0" y="181" width="12.1" height="15.0" fill="rgb(248,163,17)" rx="2" ry="2" />
+<text  x="48.96" y="191.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (92 samples, 0.07%)</title><rect x="697.1" y="133" width="0.8" height="15.0" fill="rgb(231,88,51)" rx="2" ry="2" />
+<text  x="700.09" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (100 samples, 0.07%)</title><rect x="56.8" y="85" width="0.9" height="15.0" fill="rgb(235,132,24)" rx="2" ry="2" />
+<text  x="59.83" y="95.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_call (101 samples, 0.07%)</title><rect x="56.8" y="133" width="0.9" height="15.0" fill="rgb(240,151,54)" rx="2" ry="2" />
+<text  x="59.82" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,292 samples, 3.10%)</title><rect x="640.5" y="133" width="36.6" height="15.0" fill="rgb(241,160,6)" rx="2" ry="2" />
+<text  x="643.50" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,229 samples, 2.34%)</title><rect x="434.1" y="101" width="27.6" height="15.0" fill="rgb(231,163,24)" rx="2" ry="2" />
+<text  x="437.11" y="111.5" >B..</text>
+</g>
+<g >
+<title>libsystem_m`??? (19 samples, 0.01%)</title><rect x="760.1" y="117" width="0.2" height="15.0" fill="rgb(253,150,3)" rx="2" ry="2" />
+<text  x="763.11" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (932 samples, 0.67%)</title><rect x="1179.6" y="133" width="8.0" height="15.0" fill="rgb(210,123,12)" rx="2" ry="2" />
+<text  x="1182.64" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,246 samples, 3.07%)</title><rect x="500.7" y="133" width="36.2" height="15.0" fill="rgb(238,122,49)" rx="2" ry="2" />
+<text  x="503.66" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (707 samples, 0.51%)</title><rect x="538.2" y="117" width="6.1" height="15.0" fill="rgb(237,172,53)" rx="2" ry="2" />
+<text  x="541.22" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`void.arma::op_strans::apply_mat_noalias_large&lt;double&gt;(arma::Mat&lt;double&gt;&amp;, (28 samples, 0.02%)</title><rect x="117.5" y="165" width="0.2" height="15.0" fill="rgb(211,3,35)" rx="2" ry="2" />
+<text  x="120.45" y="175.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,711 samples, 4.85%)</title><rect x="775.4" y="181" width="57.2" height="15.0" fill="rgb(223,107,24)" rx="2" ry="2" />
+<text  x="778.37" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (32 samples, 0.02%)</title><rect x="351.6" y="117" width="0.3" height="15.0" fill="rgb(238,54,34)" rx="2" ry="2" />
+<text  x="354.58" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,343 samples, 3.14%)</title><rect x="571.3" y="133" width="37.1" height="15.0" fill="rgb(213,29,45)" rx="2" ry="2" />
+<text  x="574.30" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="1047.1" y="229" width="71.4" height="15.0" fill="rgb(234,137,8)" rx="2" ry="2" />
+<text  x="1050.06" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`void.arma::glue_rel_and::apply&lt;arma::mtOp&lt;unsigned (16 samples, 0.01%)</title><rect x="57.8" y="165" width="0.2" height="15.0" fill="rgb(244,57,19)" rx="2" ry="2" />
+<text  x="60.84" y="175.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (13 samples, 0.01%)</title><rect x="259.8" y="117" width="0.2" height="15.0" fill="rgb(214,158,44)" rx="2" ry="2" />
+<text  x="262.85" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,823 samples, 4.93%)</title><rect x="417.1" y="165" width="58.2" height="15.0" fill="rgb(214,208,0)" rx="2" ry="2" />
+<text  x="420.05" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="403.8" y="229" width="71.5" height="15.0" fill="rgb(215,63,11)" rx="2" ry="2" />
+<text  x="406.81" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (78 samples, 0.06%)</title><rect x="1189.2" y="117" width="0.6" height="15.0" fill="rgb(228,24,1)" rx="2" ry="2" />
+<text  x="1192.16" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (105 samples, 0.08%)</title><rect x="760.3" y="149" width="0.9" height="15.0" fill="rgb(222,131,43)" rx="2" ry="2" />
+<text  x="763.27" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,925 samples, 5.01%)</title><rect x="1059.4" y="165" width="59.1" height="15.0" fill="rgb(254,203,47)" rx="2" ry="2" />
+<text  x="1062.43" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,254 samples, 2.35%)</title><rect x="576.6" y="101" width="27.8" height="15.0" fill="rgb(224,184,35)" rx="2" ry="2" />
+<text  x="579.59" y="111.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (75 samples, 0.05%)</title><rect x="831.9" y="101" width="0.6" height="15.0" fill="rgb(210,80,43)" rx="2" ry="2" />
+<text  x="834.88" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (920 samples, 0.67%)</title><rect x="391.5" y="149" width="7.8" height="15.0" fill="rgb(225,211,54)" rx="2" ry="2" />
+<text  x="394.49" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (143 samples, 0.10%)</title><rect x="113.1" y="69" width="1.2" height="15.0" fill="rgb(225,207,49)" rx="2" ry="2" />
+<text  x="116.12" y="79.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (162 samples, 0.12%)</title><rect x="1187.6" y="149" width="1.4" height="15.0" fill="rgb(249,198,27)" rx="2" ry="2" />
+<text  x="1190.59" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (22 samples, 0.02%)</title><rect x="399.2" y="117" width="0.1" height="15.0" fill="rgb(207,4,28)" rx="2" ry="2" />
+<text  x="402.16" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,073 samples, 0.78%)</title><rect x="46.2" y="85" width="9.2" height="15.0" fill="rgb(241,149,3)" rx="2" ry="2" />
+<text  x="49.24" y="95.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,315 samples, 2.40%)</title><rect x="862.2" y="117" width="28.3" height="15.0" fill="rgb(229,183,54)" rx="2" ry="2" />
+<text  x="865.18" y="127.5" >B..</text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_gather(barrier_type,.kmp_info*, (143 samples, 0.10%)</title><rect x="113.1" y="85" width="1.2" height="15.0" fill="rgb(217,129,36)" rx="2" ry="2" />
+<text  x="116.12" y="95.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,037 samples, 0.75%)</title><rect x="702.5" y="149" width="8.9" height="15.0" fill="rgb(254,168,13)" rx="2" ry="2" />
+<text  x="705.55" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (192 samples, 0.14%)</title><rect x="463.8" y="117" width="1.7" height="15.0" fill="rgb(212,214,38)" rx="2" ry="2" />
+<text  x="466.84" y="127.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::locale::use_facet(std::__1::locale::id&amp;).const (29 samples, 0.02%)</title><rect x="29.2" y="133" width="0.2" height="15.0" fill="rgb(212,65,0)" rx="2" ry="2" />
+<text  x="32.18" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,493 samples, 3.25%)</title><rect x="784.2" y="149" width="38.4" height="15.0" fill="rgb(216,66,34)" rx="2" ry="2" />
+<text  x="787.24" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (889 samples, 0.64%)</title><rect x="968.0" y="149" width="7.6" height="15.0" fill="rgb(247,185,39)" rx="2" ry="2" />
+<text  x="971.00" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="761.2" y="245" width="71.4" height="15.0" fill="rgb(246,0,16)" rx="2" ry="2" />
+<text  x="764.17" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,633 samples, 1.18%)</title><rect x="832.6" y="181" width="14.0" height="15.0" fill="rgb(216,7,19)" rx="2" ry="2" />
+<text  x="835.64" y="191.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,278 samples, 2.37%)</title><rect x="862.5" y="101" width="28.0" height="15.0" fill="rgb(214,50,18)" rx="2" ry="2" />
+<text  x="865.50" y="111.5" >B..</text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,790 samples, 4.91%)</title><rect x="202.9" y="181" width="58.0" height="15.0" fill="rgb(210,185,8)" rx="2" ry="2" />
+<text  x="205.92" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (89 samples, 0.06%)</title><rect x="330.7" y="133" width="0.7" height="15.0" fill="rgb(254,138,31)" rx="2" ry="2" />
+<text  x="333.69" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (21 samples, 0.02%)</title><rect x="497.8" y="117" width="0.2" height="15.0" fill="rgb(250,107,16)" rx="2" ry="2" />
+<text  x="500.78" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (13 samples, 0.01%)</title><rect x="759.3" y="133" width="0.1" height="15.0" fill="rgb(241,57,23)" rx="2" ry="2" />
+<text  x="762.26" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::basic_filebuf&lt;char,.std::__1::char_traits&lt;char&gt; (66 samples, 0.05%)</title><rect x="29.5" y="133" width="0.5" height="15.0" fill="rgb(209,1,14)" rx="2" ry="2" />
+<text  x="32.46" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (26 samples, 0.02%)</title><rect x="497.6" y="117" width="0.2" height="15.0" fill="rgb(224,193,14)" rx="2" ry="2" />
+<text  x="500.55" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,316 samples, 3.12%)</title><rect x="857.3" y="133" width="36.9" height="15.0" fill="rgb(219,46,29)" rx="2" ry="2" />
+<text  x="860.33" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (33 samples, 0.02%)</title><rect x="966.6" y="117" width="0.3" height="15.0" fill="rgb(245,135,1)" rx="2" ry="2" />
+<text  x="969.64" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::calc_best_distances_swap(arma::Mat&lt;double&gt;.const&amp;, (1,052 samples, 0.76%)</title><rect x="105.4" y="165" width="8.9" height="15.0" fill="rgb(215,179,48)" rx="2" ry="2" />
+<text  x="108.37" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (894 samples, 0.65%)</title><rect x="489.9" y="101" width="7.7" height="15.0" fill="rgb(207,83,41)" rx="2" ry="2" />
+<text  x="492.92" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (107 samples, 0.08%)</title><rect x="544.9" y="133" width="1.0" height="15.0" fill="rgb(243,142,2)" rx="2" ry="2" />
+<text  x="547.94" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_c`fread (64 samples, 0.05%)</title><rect x="29.5" y="117" width="0.5" height="15.0" fill="rgb(225,15,34)" rx="2" ry="2" />
+<text  x="32.46" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (104 samples, 0.08%)</title><rect x="1117.6" y="133" width="0.9" height="15.0" fill="rgb(240,216,19)" rx="2" ry="2" />
+<text  x="1120.64" y="143.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::basic_streambuf&lt;char,.std::__1::char_traits&lt;char&gt; (66 samples, 0.05%)</title><rect x="29.5" y="149" width="0.5" height="15.0" fill="rgb(216,107,36)" rx="2" ry="2" />
+<text  x="32.46" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (89 samples, 0.06%)</title><rect x="473.6" y="133" width="0.8" height="15.0" fill="rgb(238,43,28)" rx="2" ry="2" />
+<text  x="476.62" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (103 samples, 0.07%)</title><rect x="260.0" y="133" width="0.9" height="15.0" fill="rgb(214,61,52)" rx="2" ry="2" />
+<text  x="262.99" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (13 samples, 0.01%)</title><rect x="331.3" y="117" width="0.1" height="15.0" fill="rgb(225,215,39)" rx="2" ry="2" />
+<text  x="334.34" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,831 samples, 4.94%)</title><rect x="628.9" y="181" width="58.3" height="15.0" fill="rgb(238,96,54)" rx="2" ry="2" />
+<text  x="631.88" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,547 samples, 1.12%)</title><rect x="403.8" y="149" width="13.2" height="15.0" fill="rgb(224,214,22)" rx="2" ry="2" />
+<text  x="406.84" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (148 samples, 0.11%)</title><rect x="258.7" y="149" width="1.3" height="15.0" fill="rgb(243,53,8)" rx="2" ry="2" />
+<text  x="261.70" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (919 samples, 0.66%)</title><rect x="677.1" y="149" width="7.9" height="15.0" fill="rgb(232,16,0)" rx="2" ry="2" />
+<text  x="680.13" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (35 samples, 0.03%)</title><rect x="1045.7" y="117" width="0.3" height="15.0" fill="rgb(223,122,17)" rx="2" ry="2" />
+<text  x="1048.68" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="975.6" y="213" width="71.5" height="15.0" fill="rgb(249,44,15)" rx="2" ry="2" />
+<text  x="978.58" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>Thread_6478884 (8,375 samples, 6.06%)</title><rect x="689.7" y="261" width="71.5" height="15.0" fill="rgb(243,7,13)" rx="2" ry="2" />
+<text  x="692.70" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (71 samples, 0.05%)</title><rect x="474.5" y="117" width="0.6" height="15.0" fill="rgb(247,68,48)" rx="2" ry="2" />
+<text  x="477.53" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (729 samples, 0.53%)</title><rect x="392.9" y="101" width="6.2" height="15.0" fill="rgb(210,18,31)" rx="2" ry="2" />
+<text  x="395.88" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (31 samples, 0.02%)</title><rect x="188.1" y="117" width="0.3" height="15.0" fill="rgb(230,156,15)" rx="2" ry="2" />
+<text  x="191.11" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (4,614 samples, 3.34%)</title><rect x="59.1" y="117" width="39.3" height="15.0" fill="rgb(245,218,3)" rx="2" ry="2" />
+<text  x="62.05" y="127.5" >lib..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (860 samples, 0.62%)</title><rect x="847.3" y="117" width="7.3" height="15.0" fill="rgb(228,17,24)" rx="2" ry="2" />
+<text  x="850.31" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (294 samples, 0.21%)</title><rect x="687.2" y="149" width="2.5" height="15.0" fill="rgb(223,26,34)" rx="2" ry="2" />
+<text  x="690.19" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (572 samples, 0.41%)</title><rect x="483.9" y="117" width="4.9" height="15.0" fill="rgb(208,39,39)" rx="2" ry="2" />
+<text  x="486.94" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,474 samples, 1.07%)</title><rect x="975.6" y="181" width="12.6" height="15.0" fill="rgb(214,45,53)" rx="2" ry="2" />
+<text  x="978.58" y="191.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_barrier(int,.int) (1,539 samples, 1.11%)</title><rect x="546.8" y="181" width="13.1" height="15.0" fill="rgb(209,75,15)" rx="2" ry="2" />
+<text  x="549.75" y="191.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (882 samples, 0.64%)</title><rect x="608.5" y="133" width="7.5" height="15.0" fill="rgb(236,226,42)" rx="2" ry="2" />
+<text  x="611.47" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="475.3" y="213" width="71.5" height="15.0" fill="rgb(254,118,44)" rx="2" ry="2" />
+<text  x="478.28" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>libomp`__kmpc_fork_call (117 samples, 0.08%)</title><rect x="56.8" y="149" width="1.0" height="15.0" fill="rgb(248,189,4)" rx="2" ry="2" />
+<text  x="59.82" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (904 samples, 0.65%)</title><rect x="251.0" y="149" width="7.7" height="15.0" fill="rgb(231,210,52)" rx="2" ry="2" />
+<text  x="253.98" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (947 samples, 0.68%)</title><rect x="1128.2" y="117" width="8.1" height="15.0" fill="rgb(253,136,45)" rx="2" ry="2" />
+<text  x="1131.20" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (912 samples, 0.66%)</title><rect x="322.4" y="149" width="7.8" height="15.0" fill="rgb(211,149,17)" rx="2" ry="2" />
+<text  x="325.39" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__ratio_D2A (27 samples, 0.02%)</title><rect x="44.8" y="149" width="0.2" height="15.0" fill="rgb(217,181,35)" rx="2" ry="2" />
+<text  x="47.76" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_fork_call (145 samples, 0.10%)</title><rect x="114.4" y="133" width="1.2" height="15.0" fill="rgb(231,22,26)" rx="2" ry="2" />
+<text  x="117.39" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (234 samples, 0.17%)</title><rect x="318.6" y="117" width="2.0" height="15.0" fill="rgb(251,122,0)" rx="2" ry="2" />
+<text  x="321.61" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__mult_D2A (36 samples, 0.03%)</title><rect x="44.5" y="133" width="0.3" height="15.0" fill="rgb(211,85,54)" rx="2" ry="2" />
+<text  x="47.45" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__multadd_D2A (48 samples, 0.03%)</title><rect x="45.1" y="133" width="0.4" height="15.0" fill="rgb(234,218,23)" rx="2" ry="2" />
+<text  x="48.13" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (573 samples, 0.41%)</title><rect x="412.2" y="133" width="4.8" height="15.0" fill="rgb(242,185,11)" rx="2" ry="2" />
+<text  x="415.15" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,021 samples, 0.74%)</title><rect x="1059.5" y="149" width="8.7" height="15.0" fill="rgb(231,45,46)" rx="2" ry="2" />
+<text  x="1062.46" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (19 samples, 0.01%)</title><rect x="402.7" y="133" width="0.2" height="15.0" fill="rgb(241,27,23)" rx="2" ry="2" />
+<text  x="405.72" y="143.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::basic_string&lt;char,.std::__1::char_traits&lt;char&gt;, (1,105 samples, 0.80%)</title><rect x="30.0" y="149" width="9.5" height="15.0" fill="rgb(209,24,13)" rx="2" ry="2" />
+<text  x="33.02" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,041 samples, 0.75%)</title><rect x="202.9" y="149" width="8.9" height="15.0" fill="rgb(225,112,13)" rx="2" ry="2" />
+<text  x="205.94" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_gather(barrier_type,.kmp_info*, (17 samples, 0.01%)</title><rect x="115.6" y="85" width="0.2" height="15.0" fill="rgb(211,210,33)" rx="2" ry="2" />
+<text  x="118.62" y="95.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (56 samples, 0.04%)</title><rect x="57.1" y="53" width="0.5" height="15.0" fill="rgb(209,13,15)" rx="2" ry="2" />
+<text  x="60.09" y="63.5" ></text>
+</g>
+<g >
+<title>Thread_6478887 (8,375 samples, 6.06%)</title><rect x="904.1" y="261" width="71.5" height="15.0" fill="rgb(237,42,22)" rx="2" ry="2" />
+<text  x="907.11" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="117.9" y="229" width="71.5" height="15.0" fill="rgb(250,220,36)" rx="2" ry="2" />
+<text  x="120.92" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>libsystem_m`??? (26 samples, 0.02%)</title><rect x="1187.4" y="117" width="0.2" height="15.0" fill="rgb(233,3,42)" rx="2" ry="2" />
+<text  x="1190.37" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="618.2" y="229" width="71.5" height="15.0" fill="rgb(205,115,21)" rx="2" ry="2" />
+<text  x="621.22" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,321 samples, 2.40%)</title><rect x="1004.9" y="101" width="28.3" height="15.0" fill="rgb(232,119,24)" rx="2" ry="2" />
+<text  x="1007.88" y="111.5" >Ba..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,015 samples, 0.73%)</title><rect x="560.2" y="133" width="8.6" height="15.0" fill="rgb(251,169,43)" rx="2" ry="2" />
+<text  x="563.18" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (92 samples, 0.07%)</title><rect x="400.7" y="133" width="0.8" height="15.0" fill="rgb(208,75,37)" rx="2" ry="2" />
+<text  x="403.68" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="117.9" y="197" width="71.5" height="15.0" fill="rgb(234,163,20)" rx="2" ry="2" />
+<text  x="120.92" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (15 samples, 0.01%)</title><rect x="57.7" y="69" width="0.1" height="15.0" fill="rgb(212,149,27)" rx="2" ry="2" />
+<text  x="60.69" y="79.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (16 samples, 0.01%)</title><rect x="687.0" y="117" width="0.2" height="15.0" fill="rgb(251,150,43)" rx="2" ry="2" />
+<text  x="690.02" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,563 samples, 3.30%)</title><rect x="140.6" y="149" width="39.0" height="15.0" fill="rgb(247,168,14)" rx="2" ry="2" />
+<text  x="143.65" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,501 samples, 1.09%)</title><rect x="689.7" y="165" width="12.8" height="15.0" fill="rgb(243,154,39)" rx="2" ry="2" />
+<text  x="692.70" y="175.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`cthread_yield (56 samples, 0.04%)</title><rect x="56.2" y="53" width="0.5" height="15.0" fill="rgb(206,44,30)" rx="2" ry="2" />
+<text  x="59.24" y="63.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..64 (1,045 samples, 0.76%)</title><rect x="559.9" y="149" width="8.9" height="15.0" fill="rgb(229,158,14)" rx="2" ry="2" />
+<text  x="562.92" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (263 samples, 0.19%)</title><rect x="387.7" y="117" width="2.3" height="15.0" fill="rgb(232,186,14)" rx="2" ry="2" />
+<text  x="390.71" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="975.6" y="229" width="71.5" height="15.0" fill="rgb(224,117,24)" rx="2" ry="2" />
+<text  x="978.58" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="403.8" y="245" width="71.5" height="15.0" fill="rgb(221,50,11)" rx="2" ry="2" />
+<text  x="406.81" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (703 samples, 0.51%)</title><rect x="180.9" y="117" width="6.0" height="15.0" fill="rgb(212,7,2)" rx="2" ry="2" />
+<text  x="183.94" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (45 samples, 0.03%)</title><rect x="400.1" y="117" width="0.4" height="15.0" fill="rgb(233,217,8)" rx="2" ry="2" />
+<text  x="403.13" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (74 samples, 0.05%)</title><rect x="1117.8" y="101" width="0.6" height="15.0" fill="rgb(221,207,45)" rx="2" ry="2" />
+<text  x="1120.80" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (86 samples, 0.06%)</title><rect x="187.8" y="133" width="0.7" height="15.0" fill="rgb(230,219,0)" rx="2" ry="2" />
+<text  x="190.77" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (51 samples, 0.04%)</title><rect x="831.1" y="117" width="0.5" height="15.0" fill="rgb(250,187,12)" rx="2" ry="2" />
+<text  x="834.12" y="127.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::locale::locale(std::__1::locale.const&amp;) (12 samples, 0.01%)</title><rect x="40.5" y="133" width="0.1" height="15.0" fill="rgb(235,222,33)" rx="2" ry="2" />
+<text  x="43.48" y="143.5" ></text>
+</g>
+<g >
+<title>libc++.1`std::__1::ios_base::getloc().const (120 samples, 0.09%)</title><rect x="39.6" y="149" width="1.0" height="15.0" fill="rgb(239,180,29)" rx="2" ry="2" />
+<text  x="42.56" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (94 samples, 0.07%)</title><rect x="982.9" y="133" width="0.8" height="15.0" fill="rgb(246,64,0)" rx="2" ry="2" />
+<text  x="985.90" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,034 samples, 0.75%)</title><rect x="1118.5" y="149" width="8.9" height="15.0" fill="rgb(238,131,6)" rx="2" ry="2" />
+<text  x="1121.53" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (35 samples, 0.03%)</title><rect x="1044.6" y="117" width="0.3" height="15.0" fill="rgb(207,38,8)" rx="2" ry="2" />
+<text  x="1047.62" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (4,195 samples, 3.03%)</title><rect x="786.8" y="133" width="35.8" height="15.0" fill="rgb(216,4,3)" rx="2" ry="2" />
+<text  x="789.79" y="143.5" >Ban..</text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_gather(barrier_type,.kmp_info*, (273 samples, 0.20%)</title><rect x="401.5" y="165" width="2.3" height="15.0" fill="rgb(211,110,1)" rx="2" ry="2" />
+<text  x="404.48" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (83 samples, 0.06%)</title><rect x="259.3" y="133" width="0.7" height="15.0" fill="rgb(222,10,24)" rx="2" ry="2" />
+<text  x="262.25" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,047 samples, 0.76%)</title><rect x="274.2" y="133" width="8.9" height="15.0" fill="rgb(248,86,13)" rx="2" ry="2" />
+<text  x="277.15" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="832.6" y="245" width="71.5" height="15.0" fill="rgb(229,223,51)" rx="2" ry="2" />
+<text  x="835.64" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,248 samples, 2.35%)</title><rect x="645.5" y="101" width="27.7" height="15.0" fill="rgb(224,180,11)" rx="2" ry="2" />
+<text  x="648.46" y="111.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (101 samples, 0.07%)</title><rect x="686.3" y="133" width="0.9" height="15.0" fill="rgb(222,25,33)" rx="2" ry="2" />
+<text  x="689.32" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (565 samples, 0.41%)</title><rect x="198.1" y="117" width="4.8" height="15.0" fill="rgb(213,172,19)" rx="2" ry="2" />
+<text  x="201.10" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (276 samples, 0.20%)</title><rect x="604.4" y="117" width="2.3" height="15.0" fill="rgb(230,56,21)" rx="2" ry="2" />
+<text  x="607.36" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,208 samples, 2.32%)</title><rect x="505.7" y="117" width="27.4" height="15.0" fill="rgb(216,159,25)" rx="2" ry="2" />
+<text  x="508.70" y="127.5" >B..</text>
+</g>
+<g >
+<title>libsystem_m`??? (12 samples, 0.01%)</title><rect x="140.5" y="117" width="0.1" height="15.0" fill="rgb(223,14,6)" rx="2" ry="2" />
+<text  x="143.47" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (107 samples, 0.08%)</title><rect x="616.4" y="133" width="0.9" height="15.0" fill="rgb(214,3,19)" rx="2" ry="2" />
+<text  x="619.41" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (683 samples, 0.49%)</title><rect x="1038.7" y="101" width="5.8" height="15.0" fill="rgb(241,58,11)" rx="2" ry="2" />
+<text  x="1041.68" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (900 samples, 0.65%)</title><rect x="751.3" y="133" width="7.6" height="15.0" fill="rgb(225,112,54)" rx="2" ry="2" />
+<text  x="754.27" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (70 samples, 0.05%)</title><rect x="686.4" y="117" width="0.6" height="15.0" fill="rgb(246,159,32)" rx="2" ry="2" />
+<text  x="689.42" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,474 samples, 1.07%)</title><rect x="975.6" y="165" width="12.6" height="15.0" fill="rgb(219,26,13)" rx="2" ry="2" />
+<text  x="978.58" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (931 samples, 0.67%)</title><rect x="274.8" y="117" width="7.9" height="15.0" fill="rgb(253,50,23)" rx="2" ry="2" />
+<text  x="277.77" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (1,000 samples, 0.72%)</title><rect x="1059.6" y="133" width="8.6" height="15.0" fill="rgb(207,123,35)" rx="2" ry="2" />
+<text  x="1062.63" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (945 samples, 0.68%)</title><rect x="1179.5" y="149" width="8.1" height="15.0" fill="rgb(239,172,7)" rx="2" ry="2" />
+<text  x="1182.53" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (233 samples, 0.17%)</title><rect x="1177.5" y="117" width="2.0" height="15.0" fill="rgb(219,69,45)" rx="2" ry="2" />
+<text  x="1180.54" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..95 (895 samples, 0.65%)</title><rect x="608.4" y="149" width="7.6" height="15.0" fill="rgb(235,133,39)" rx="2" ry="2" />
+<text  x="611.36" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,874 samples, 4.97%)</title><rect x="702.5" y="181" width="58.7" height="15.0" fill="rgb(249,31,21)" rx="2" ry="2" />
+<text  x="705.51" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`BanditPAM::swap(arma::Mat&lt;double&gt;.const&amp;, (6,949 samples, 5.03%)</title><rect x="58.1" y="181" width="59.3" height="15.0" fill="rgb(223,76,27)" rx="2" ry="2" />
+<text  x="61.13" y="191.5" >Bandit..</text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="332.3" y="229" width="71.5" height="15.0" fill="rgb(254,63,20)" rx="2" ry="2" />
+<text  x="335.34" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (117 samples, 0.08%)</title><rect x="1189.0" y="133" width="1.0" height="15.0" fill="rgb(211,45,5)" rx="2" ry="2" />
+<text  x="1191.99" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,368 samples, 2.44%)</title><rect x="1075.6" y="117" width="28.7" height="15.0" fill="rgb(216,3,41)" rx="2" ry="2" />
+<text  x="1078.59" y="127.5" >Ba..</text>
+</g>
+<g >
+<title>Thread_6478889 (8,375 samples, 6.06%)</title><rect x="1047.1" y="261" width="71.4" height="15.0" fill="rgb(253,186,1)" rx="2" ry="2" />
+<text  x="1050.06" y="271.5" >Thread_6..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (78 samples, 0.06%)</title><rect x="1189.2" y="101" width="0.6" height="15.0" fill="rgb(241,98,12)" rx="2" ry="2" />
+<text  x="1192.16" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,365 samples, 2.43%)</title><rect x="1004.5" y="117" width="28.7" height="15.0" fill="rgb(233,53,19)" rx="2" ry="2" />
+<text  x="1007.51" y="127.5" >Ba..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (103 samples, 0.07%)</title><rect x="831.8" y="133" width="0.8" height="15.0" fill="rgb(214,89,32)" rx="2" ry="2" />
+<text  x="834.76" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (1,073 samples, 0.78%)</title><rect x="46.2" y="117" width="9.2" height="15.0" fill="rgb(246,60,39)" rx="2" ry="2" />
+<text  x="49.24" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,592 samples, 1.15%)</title><rect x="117.9" y="165" width="13.6" height="15.0" fill="rgb(210,130,40)" rx="2" ry="2" />
+<text  x="120.92" y="175.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (168 samples, 0.12%)</title><rect x="178.2" y="117" width="1.4" height="15.0" fill="rgb(207,109,16)" rx="2" ry="2" />
+<text  x="181.15" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hyper_barrier_release(barrier_type,.kmp_info*, (1,550 samples, 1.12%)</title><rect x="403.8" y="165" width="13.2" height="15.0" fill="rgb(219,209,51)" rx="2" ry="2" />
+<text  x="406.82" y="175.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (913 samples, 0.66%)</title><rect x="132.4" y="117" width="7.8" height="15.0" fill="rgb(253,174,38)" rx="2" ry="2" />
+<text  x="135.40" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (155 samples, 0.11%)</title><rect x="901.9" y="149" width="1.3" height="15.0" fill="rgb(229,188,10)" rx="2" ry="2" />
+<text  x="904.89" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (906 samples, 0.66%)</title><rect x="703.4" y="101" width="7.7" height="15.0" fill="rgb(245,172,54)" rx="2" ry="2" />
+<text  x="706.36" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::basic_istream&lt;char,.std::__1::char_traits&lt;char&gt; (3,388 samples, 2.45%)</title><rect x="11.9" y="165" width="28.9" height="15.0" fill="rgb(233,80,1)" rx="2" ry="2" />
+<text  x="14.92" y="175.5" >Ba..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (90 samples, 0.07%)</title><rect x="56.9" y="69" width="0.8" height="15.0" fill="rgb(242,196,35)" rx="2" ry="2" />
+<text  x="59.90" y="79.5" ></text>
+</g>
+<g >
+<title>libsystem_c`__s2b_D2A (65 samples, 0.05%)</title><rect x="45.0" y="149" width="0.5" height="15.0" fill="rgb(241,195,29)" rx="2" ry="2" />
+<text  x="47.99" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,633 samples, 1.18%)</title><rect x="832.6" y="149" width="14.0" height="15.0" fill="rgb(227,222,50)" rx="2" ry="2" />
+<text  x="835.64" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,280 samples, 2.37%)</title><rect x="645.2" y="117" width="28.0" height="15.0" fill="rgb(225,150,18)" rx="2" ry="2" />
+<text  x="648.18" y="127.5" >B..</text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,663 samples, 1.20%)</title><rect x="761.2" y="149" width="14.2" height="15.0" fill="rgb(253,160,2)" rx="2" ry="2" />
+<text  x="764.18" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`DYLD-STUB$$std::__1::basic_string&lt;char,.std::__1::char_traits&lt;char&gt;, (104 samples, 0.08%)</title><rect x="10.9" y="165" width="0.9" height="15.0" fill="rgb(244,25,3)" rx="2" ry="2" />
+<text  x="13.94" y="175.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="761.2" y="229" width="71.4" height="15.0" fill="rgb(239,177,40)" rx="2" ry="2" />
+<text  x="764.17" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::basic_filebuf&lt;char,.std::__1::char_traits&lt;char&gt; (68 samples, 0.05%)</title><rect x="24.9" y="149" width="0.6" height="15.0" fill="rgb(229,197,27)" rx="2" ry="2" />
+<text  x="27.93" y="159.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (26 samples, 0.02%)</title><rect x="1116.1" y="117" width="0.2" height="15.0" fill="rgb(206,204,31)" rx="2" ry="2" />
+<text  x="1119.05" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (93 samples, 0.07%)</title><rect x="553.9" y="133" width="0.8" height="15.0" fill="rgb(249,3,42)" rx="2" ry="2" />
+<text  x="556.92" y="143.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_worker(void*) (8,375 samples, 6.06%)</title><rect x="1118.5" y="213" width="71.5" height="15.0" fill="rgb(217,72,31)" rx="2" ry="2" />
+<text  x="1121.53" y="223.5" >libomp`_..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (871 samples, 0.63%)</title><rect x="561.0" y="101" width="7.5" height="15.0" fill="rgb(247,54,6)" rx="2" ry="2" />
+<text  x="564.02" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (23 samples, 0.02%)</title><rect x="711.1" y="117" width="0.2" height="15.0" fill="rgb(223,66,4)" rx="2" ry="2" />
+<text  x="714.09" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,595 samples, 3.32%)</title><rect x="283.2" y="149" width="39.2" height="15.0" fill="rgb(220,13,8)" rx="2" ry="2" />
+<text  x="286.18" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>libsystem_c`__srefill1 (54 samples, 0.04%)</title><rect x="24.9" y="101" width="0.5" height="15.0" fill="rgb(250,100,30)" rx="2" ry="2" />
+<text  x="27.94" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (99 samples, 0.07%)</title><rect x="1046.2" y="149" width="0.8" height="15.0" fill="rgb(238,181,44)" rx="2" ry="2" />
+<text  x="1049.19" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_join_call (15 samples, 0.01%)</title><rect x="57.7" y="133" width="0.1" height="15.0" fill="rgb(233,81,33)" rx="2" ry="2" />
+<text  x="60.69" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`bool.arma::diskio::load_auto_detect&lt;double&gt;(arma::Mat&lt;double&gt;&amp;, (4,214 samples, 3.05%)</title><rect x="10.0" y="197" width="36.0" height="15.0" fill="rgb(217,130,9)" rx="2" ry="2" />
+<text  x="13.00" y="207.5" >Ban..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined. (105 samples, 0.08%)</title><rect x="903.2" y="149" width="0.9" height="15.0" fill="rgb(236,93,10)" rx="2" ry="2" />
+<text  x="906.22" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_internal_join (144 samples, 0.10%)</title><rect x="113.1" y="117" width="1.2" height="15.0" fill="rgb(228,132,6)" rx="2" ry="2" />
+<text  x="116.12" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (1,585 samples, 1.15%)</title><rect x="475.3" y="149" width="13.5" height="15.0" fill="rgb(219,156,54)" rx="2" ry="2" />
+<text  x="478.30" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (150 samples, 0.11%)</title><rect x="965.8" y="149" width="1.3" height="15.0" fill="rgb(214,210,52)" rx="2" ry="2" />
+<text  x="968.83" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (882 samples, 0.64%)</title><rect x="537.0" y="133" width="7.6" height="15.0" fill="rgb(229,50,49)" rx="2" ry="2" />
+<text  x="540.02" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`_pthread_start (8,375 samples, 6.06%)</title><rect x="546.8" y="229" width="71.4" height="15.0" fill="rgb(242,59,12)" rx="2" ry="2" />
+<text  x="549.75" y="239.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (3,185 samples, 2.30%)</title><rect x="791.4" y="117" width="27.2" height="15.0" fill="rgb(243,115,44)" rx="2" ry="2" />
+<text  x="794.40" y="127.5" >B..</text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..72 (4,600 samples, 3.33%)</title><rect x="426.2" y="149" width="39.3" height="15.0" fill="rgb(216,106,43)" rx="2" ry="2" />
+<text  x="429.23" y="159.5" >Ban..</text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,787 samples, 4.91%)</title><rect x="488.8" y="165" width="57.9" height="15.0" fill="rgb(240,187,52)" rx="2" ry="2" />
+<text  x="491.82" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (39 samples, 0.03%)</title><rect x="54.9" y="53" width="0.4" height="15.0" fill="rgb(244,59,18)" rx="2" ry="2" />
+<text  x="57.93" y="63.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (706 samples, 0.51%)</title><rect x="106.8" y="37" width="6.0" height="15.0" fill="rgb(207,210,50)" rx="2" ry="2" />
+<text  x="109.78" y="47.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (56 samples, 0.04%)</title><rect x="1123.5" y="133" width="0.4" height="15.0" fill="rgb(208,133,12)" rx="2" ry="2" />
+<text  x="1126.46" y="143.5" ></text>
+</g>
+<g >
+<title>libsystem_c`_sread (54 samples, 0.04%)</title><rect x="24.9" y="85" width="0.5" height="15.0" fill="rgb(233,118,29)" rx="2" ry="2" />
+<text  x="27.94" y="95.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (69 samples, 0.05%)</title><rect x="903.4" y="101" width="0.6" height="15.0" fill="rgb(243,202,44)" rx="2" ry="2" />
+<text  x="906.39" y="111.5" ></text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (3,231 samples, 2.34%)</title><rect x="926.4" y="101" width="27.6" height="15.0" fill="rgb(235,29,23)" rx="2" ry="2" />
+<text  x="929.45" y="111.5" >B..</text>
+</g>
+<g >
+<title>libsystem_c`__srefill1 (46 samples, 0.03%)</title><rect x="29.5" y="85" width="0.4" height="15.0" fill="rgb(240,220,28)" rx="2" ry="2" />
+<text  x="32.49" y="95.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="475.3" y="245" width="71.5" height="15.0" fill="rgb(231,179,40)" rx="2" ry="2" />
+<text  x="478.28" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,899 samples, 4.99%)</title><rect x="988.2" y="165" width="58.8" height="15.0" fill="rgb(221,32,6)" rx="2" ry="2" />
+<text  x="991.16" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (596 samples, 0.43%)</title><rect x="554.8" y="117" width="5.1" height="15.0" fill="rgb(249,163,28)" rx="2" ry="2" />
+<text  x="557.80" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::LP(arma::Mat&lt;double&gt;.const&amp;, (901 samples, 0.65%)</title><rect x="776.2" y="117" width="7.7" height="15.0" fill="rgb(246,143,54)" rx="2" ry="2" />
+<text  x="779.24" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (521 samples, 0.38%)</title><rect x="269.4" y="117" width="4.5" height="15.0" fill="rgb(246,28,13)" rx="2" ry="2" />
+<text  x="272.42" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`kmp_flag_64&lt;false,.true&gt;::wait(kmp_info*, (745 samples, 0.54%)</title><rect x="904.1" y="149" width="6.4" height="15.0" fill="rgb(229,212,34)" rx="2" ry="2" />
+<text  x="907.11" y="159.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_task_func (6,742 samples, 4.88%)</title><rect x="846.6" y="181" width="57.5" height="15.0" fill="rgb(220,162,12)" rx="2" ry="2" />
+<text  x="849.58" y="191.5" >libomp..</text>
+</g>
+<g >
+<title>BanditPAM`arma::eGlue&lt;arma::subview_col&lt;double&gt;,.arma::subview_col&lt;double&gt;, (716 samples, 0.52%)</title><rect x="466.7" y="101" width="6.2" height="15.0" fill="rgb(209,61,28)" rx="2" ry="2" />
+<text  x="469.75" y="111.5" ></text>
+</g>
+<g >
+<title>libsystem_m`??? (194 samples, 0.14%)</title><rect x="749.5" y="117" width="1.7" height="15.0" fill="rgb(226,92,23)" rx="2" ry="2" />
+<text  x="752.54" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_launch_thread (8,375 samples, 6.06%)</title><rect x="689.7" y="197" width="71.5" height="15.0" fill="rgb(253,66,0)" rx="2" ry="2" />
+<text  x="692.70" y="207.5" >libomp`_..</text>
+</g>
+<g >
+<title>libsystem_kernel`swtch_pri (381 samples, 0.28%)</title><rect x="339.7" y="117" width="3.2" height="15.0" fill="rgb(245,52,27)" rx="2" ry="2" />
+<text  x="342.65" y="127.5" ></text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (12 samples, 0.01%)</title><rect x="901.6" y="117" width="0.1" height="15.0" fill="rgb(249,167,45)" rx="2" ry="2" />
+<text  x="904.59" y="127.5" ></text>
+</g>
+<g >
+<title>libsystem_pthread`thread_start (8,375 samples, 6.06%)</title><rect x="904.1" y="245" width="71.5" height="15.0" fill="rgb(237,101,11)" rx="2" ry="2" />
+<text  x="907.11" y="255.5" >libsyste..</text>
+</g>
+<g >
+<title>BanditPAM`std::__1::pair&lt;std::__1::__hash_iterator&lt;std::__1::__hash_node&lt;std::__1::__hash_value_type&lt;unsigned.long, (12 samples, 0.01%)</title><rect x="904.0" y="117" width="0.1" height="15.0" fill="rgb(249,184,41)" rx="2" ry="2" />
+<text  x="906.98" y="127.5" ></text>
+</g>
+<g >
+<title>libomp`__kmp_invoke_microtask (6,863 samples, 4.96%)</title><rect x="342.9" y="165" width="58.6" height="15.0" fill="rgb(235,30,26)" rx="2" ry="2" />
+<text  x="345.90" y="175.5" >libomp..</text>
+</g>
+<g >
+<title>libomp`__kmp_hardware_timestamp (70 samples, 0.05%)</title><rect x="411.6" y="133" width="0.6" height="15.0" fill="rgb(244,34,43)" rx="2" ry="2" />
+<text  x="414.56" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`double.arma::op_var::direct_var&lt;double&gt;(double (19 samples, 0.01%)</title><rect x="616.2" y="133" width="0.2" height="15.0" fill="rgb(216,45,18)" rx="2" ry="2" />
+<text  x="619.24" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (96 samples, 0.07%)</title><rect x="188.6" y="133" width="0.8" height="15.0" fill="rgb(210,53,13)" rx="2" ry="2" />
+<text  x="191.56" y="143.5" ></text>
+</g>
+<g >
+<title>BanditPAM`.omp_outlined..96 (153 samples, 0.11%)</title><rect x="544.6" y="149" width="1.3" height="15.0" fill="rgb(210,152,27)" rx="2" ry="2" />
+<text  x="547.55" y="159.5" ></text>
+</g>
+<g >
+<title>BanditPAM`km::KMedoids::cachedLoss(arma::Mat&lt;double&gt;.const&amp;, (894 samples, 0.65%)</title><rect x="251.1" y="133" width="7.6" height="15.0" fill="rgb(213,147,33)" rx="2" ry="2" />
+<text  x="254.07" y="143.5" ></text>
+</g>
+</g>
+</svg>

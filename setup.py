@@ -12,7 +12,7 @@ import platform
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
-__version__ = "1.0.0"
+__version__ = "1.0.0experimental"
 
 
 class get_pybind_include(object):
@@ -242,7 +242,7 @@ class BuildExt(build_ext):
             link_opts.append('-lprofiler')
         else:
             # We assume that if the user is on linux, then they are building with gcc
-            link_opts.append("-lgomp")
+            link_opts.append("-lomp")
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
@@ -269,7 +269,7 @@ if sys.platform == "linux" or sys.platform == "linux2":
         "/usr/local/include",
     ]
     # We assume that if the user is on linux, then they are building with gcc
-    libraries = ["armadillo", "gomp"]
+    libraries = ["armadillo", "omp"]
 else:  # OSX
     include_dirs = [
         get_pybind_include(),
