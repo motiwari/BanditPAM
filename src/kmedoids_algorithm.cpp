@@ -63,11 +63,12 @@ double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool 
   size_t m = fmin(n, ceil(log10(data.n_cols) * cache_multiplier));
   
   if (reindex.find(j) != reindex.end()) { // test this is one of the early points in the permutation
-    if (cache[(m*i) + reindex[j]] == 0) {
+    // TODO: Potential race condition with shearing?
+    // T1 begins to write to cache and then T2 access in the middle of write?
+    if (cache[(m*i) + reindex[j]] == -1) {
         cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
-    } else {
-      return cache[m*i + reindex[j]];
-    }
+    } 
+    return cache[m*i + reindex[j]];
   }
   return (this->*lossFn)(data, i, j);
 }
