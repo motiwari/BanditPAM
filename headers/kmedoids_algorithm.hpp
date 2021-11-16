@@ -93,7 +93,7 @@ class KMedoids {
 
       void setswapConfidence(size_t new_swapConfidence);
 
-      std::string getLogfileName();
+      std::string getLogFilename();
 
       void setLogFilename(const std::string& new_lname);
 

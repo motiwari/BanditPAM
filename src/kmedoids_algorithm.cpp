@@ -286,7 +286,7 @@ void km::KMedoids::setswapConfidence(size_t new_swapConfidence) {
  *  Returns the name of the logfile that will be output at the end of
  *  km::KMedoids::fit if verbosity is >0
  */
-std::string km::KMedoids::getLogfileName() {
+std::string km::KMedoids::getLogFilename() {
   return logFilename;
 }
 

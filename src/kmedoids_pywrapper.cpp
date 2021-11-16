@@ -66,7 +66,7 @@ PYBIND11_MODULE(BanditPAM, m) {
   cls.def_property("maxIter", &KMedoidsWrapper::getMaxIter, &KMedoidsWrapper::setMaxIter);
   cls.def_property("buildConfidence", &KMedoidsWrapper::getbuildConfidence, &KMedoidsWrapper::setbuildConfidence);
   cls.def_property("swapConfidence", &KMedoidsWrapper::getswapConfidence, &KMedoidsWrapper::setswapConfidence);
-  cls.def_property("logFilename", &KMedoidsWrapper::getLogfileName, &KMedoidsWrapper::setLogFilename);
+  cls.def_property("logFilename", &KMedoidsWrapper::getLogFilename, &KMedoidsWrapper::setLogFilename);
   medoids_python(cls);
   build_medoids_python(cls);
   labels_python(cls);

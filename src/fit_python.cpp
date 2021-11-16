@@ -29,7 +29,7 @@ namespace py = pybind11;
  */
 void KMedoidsWrapper::fitPython(const py::array_t<double>& inputData, 
                                 const std::string& loss, 
-                                const std::string& logFilename, 
+                                const std::string& logFilename,
                                 py::kwargs kw
     ) 
 {
@@ -43,6 +43,7 @@ void KMedoidsWrapper::fitPython(const py::array_t<double>& inputData,
         }
     } catch (py::value_error &e) {
         // Throw it again (pybind11 will raise ValueError)
+        // TODO: Make this more informative
         throw;
     }
     // if k is specified here, we set the number of medoids as k and override previous value 
