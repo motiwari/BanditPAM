@@ -12,7 +12,7 @@ import platform
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
-__version__ = "0.0.35"
+__version__ = "0.0.36"
 
 
 class get_pybind_include(object):
@@ -285,7 +285,7 @@ else:  # OSX
 
 ext_modules = [
     Extension(
-        "BanditPAM",
+        "banditpam",
         [
             os.path.join("src", "kmedoids_pywrapper.cpp"),
             os.path.join("src", "kmedoids_algorithm.cpp"),
@@ -310,7 +310,7 @@ with open(os.path.join("docs", "long_desc.rst"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="BanditPAM",
+    name="banditpam",
     version=__version__,
     author="Mo Tiwari and James Mayclin",
     maintainer="Mo Tiwari",

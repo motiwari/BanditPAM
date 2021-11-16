@@ -1,4 +1,4 @@
-from BanditPAM import KMedoids
+from banditpam import KMedoids
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt

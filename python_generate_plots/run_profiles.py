@@ -18,7 +18,7 @@ import traceback
 from data_utils import *
 from timeit import default_timer as timer
 
-from BanditPAM import KMedoids
+from banditpam import KMedoids
 
 def remap_args(args, exp):
     '''
