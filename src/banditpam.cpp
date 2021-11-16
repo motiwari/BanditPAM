@@ -29,6 +29,7 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
     size_t m = fmin(n, ceil(log10(data.n_cols) * cache_multiplier));
     cache = new float[n * m];
 
+#pragma omp parallel for
     for (size_t idx = 0; idx < m*n; idx++){
       cache[idx] = -1;
     }
