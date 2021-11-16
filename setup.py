@@ -238,7 +238,8 @@ class BuildExt(build_ext):
         # TODO: Change OMP library library name based on gcc vs clang instead of based on OS
         if sys.platform == "darwin":
             # We assume that if the user is on OSX, then they are building with clang (required above)
-            link_opts.append("-lomp")
+            link_opts.append('-lomp')
+            link_opts.append('-lprofiler')
         else:
             # We assume that if the user is on linux, then they are building with gcc
             link_opts.append("-lgomp")

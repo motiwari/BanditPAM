@@ -73,7 +73,7 @@ void PAM::build_naive(
       double total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points
-        double cost = (this->*lossFn)(data, i, j);
+        double cost = km::KMedoids::cachedLoss(data, i, j);
         // compares this with the cached best distance
         if (best_distances(j) < cost) {
           cost = best_distances(j);
@@ -90,7 +90,7 @@ void PAM::build_naive(
 
     // update the medoid assignment and best_distance for this datapoint
     for (size_t l = 0; l < N; l++) {
-        double cost = (this->*lossFn)(data, l, medoid_indices(k));
+        double cost = km::KMedoids::cachedLoss(data, l, medoid_indices(k));
         if (cost < best_distances(l)) {
             best_distances(l) = cost;
         }
@@ -149,8 +149,8 @@ void PAM::swap_naive(
       double total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // compute distance between base point and every other datapoint
-        double cost = (this->*lossFn)(data, i, j);
-        // (i) if x_j is not assigned to k: compares this with the cached best distance
+        double cost = km::KMedoids::cachedLoss(data, i, j);
+        // (i) if x_j is not assigned to k: compares this with the cached best distance 
         // (ii) if x_j is assigned to k: compares this with the cached second best distance
         if (assignments(j) != k) {
           if (best_distances(j) < cost) {

@@ -89,9 +89,7 @@ int main(int argc, char* argv[]) {
 
     arma::mat data;
     data.load(input_name);
-    arma::uword n = data.n_cols;
-    arma::uword d = data.n_rows;
-
+    
     km::KMedoids kmed(k, "BanditPAM", verbosity, max_iter, buildConfidence, swapConfidence, log_file_name);
     kmed.fit(data, loss);
 

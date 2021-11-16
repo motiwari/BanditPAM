@@ -11,6 +11,7 @@
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
+#include <cmath>
 
 /**
  * \brief Runs BanditPAM algorithm.
@@ -22,6 +23,21 @@
 void BanditPAM::fit_bpam(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
+
+  if (this->use_cache_p) {
+    size_t n = data.n_cols;
+    size_t m = fmin(n, ceil(log10(data.n_cols) * cache_multiplier));
+    cache = new float[n * m];
+
+    permutation = arma::randperm(n);
+    permutation_idx = 0;
+    reindex = {};
+    for (size_t counter = 0; counter < m; counter++) { // TODO: Can we parallelize this?
+        reindex[permutation[counter]] = counter;
+    }
+  }
+  
+
   arma::mat medoids_mat(data.n_rows, n_medoids);
   arma::rowvec medoid_indices(n_medoids);
   // runs build step
@@ -74,6 +90,7 @@ void BanditPAM::build(
 
     for (size_t k = 0; k < n_medoids; k++) {
         // instantiate medoids one-by-online
+        permutation_idx = 0;
         size_t step_count = 0;
         candidates.fill(1);
         T_samples.fill(0);
@@ -124,8 +141,9 @@ void BanditPAM::build(
         medoids.unsafe_col(k) = data.unsafe_col(medoid_indices(k));
 
         // don't need to do this on final iteration
+        #pragma omp parallel for
         for (size_t i = 0; i < N; i++) {
-            double cost = (this->*lossFn)(data, i, medoid_indices(k));
+            double cost = km::KMedoids::cachedLoss(data, i, medoid_indices(k));
             if (cost < best_distances(i)) {
                 best_distances(i) = cost;
             }
@@ -159,15 +177,26 @@ arma::rowvec BanditPAM::build_target(
   bool use_absolute) {
     size_t N = data.n_cols;
     arma::rowvec estimates(target.n_rows, arma::fill::zeros);
-    arma::uvec tmp_refs = arma::randperm(N,
-                                   batch_size); // without replacement, requires
-                                                // updated version of armadillo
+    
+    arma::uvec tmp_refs;
+    // TODO: Make this wraparound properly, last batch_size elements are dropped
+    // TODO: Check batch_size is < N
+    if (use_perm) {
+      if ((permutation_idx + batch_size - 1) >= N) {
+        permutation_idx = 0;
+      }
+      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
+      permutation_idx += batch_size;
+    } else {
+       tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
+    }
+
 #pragma omp parallel for
     for (size_t i = 0; i < target.n_rows; i++) {
         double total = 0;
         for (size_t j = 0; j < tmp_refs.n_rows; j++) {
             double cost =
-              (this->*lossFn)(data, tmp_refs(j), target(i));
+              km::KMedoids::cachedLoss(data, target(i), tmp_refs(j));
             if (use_absolute) {
                 total += cost;
             } else {
@@ -222,6 +251,7 @@ void BanditPAM::swap(
     // continue making swaps while loss is decreasing
     while (swap_performed && iter < max_iter) {
         iter++;
+        permutation_idx = 0;
 
         // calculate quantities needed for swap, best_distances and sigma
         calc_best_distances_swap(
@@ -340,9 +370,19 @@ arma::vec BanditPAM::swap_target(
   arma::rowvec& assignments) {
     size_t N = data.n_cols;
     arma::vec estimates(targets.n_rows, arma::fill::zeros);
-    arma::uvec tmp_refs = arma::randperm(N,
-                                   batch_size); // without replacement, requires
-                                                // updated version of armadillo
+
+    arma::uvec tmp_refs;
+    // TODO: Make this wraparound properly, last batch_size elements are dropped
+    // TODO: Check batch_size is < N
+    if (use_perm) {
+      if ((permutation_idx + batch_size - 1) >= N) {
+        permutation_idx = 0;
+      }
+      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
+      permutation_idx += batch_size;
+    } else {
+       tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
+    }
 
 // for each considered swap
 #pragma omp parallel for
@@ -353,7 +393,7 @@ arma::vec BanditPAM::swap_target(
         size_t k = targets(i) % medoid_indices.n_cols;
         // calculate total loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(data, n, tmp_refs(j));
+            double cost = km::KMedoids::cachedLoss(data, n, tmp_refs(j));
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
                     total += cost;

@@ -15,6 +15,8 @@
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
+#include <omp.h>
+
 
 /**
  *  \brief Class implementation for running KMedoids methods.
@@ -50,7 +52,25 @@ km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t ve
  *
  *  Destructor for the KMedoids class.
  */
-km::KMedoids::~KMedoids() {;}
+km::KMedoids::~KMedoids() {;} // TODO: Need semicolons?
+
+double km::KMedoids::cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache) {
+  if (!use_cache) {
+    return (this->*lossFn)(data, i, j);
+  }
+  
+  size_t n = data.n_cols;
+  size_t m = fmin(n, ceil(log10(data.n_cols) * cache_multiplier));
+  
+  if (reindex.find(j) != reindex.end()) { // test this is one of the early points in the permutation
+    if (cache[(m*i) + reindex[j]] == 0) {
+        cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
+    } else {
+      return cache[m*i + reindex[j]];
+    }
+  }
+  return (this->*lossFn)(data, i, j);
+}
 
 /**
  *  \brief Checks whether algorithm input is valid
@@ -327,8 +347,20 @@ arma::rowvec km::KMedoids::build_sigma(
   arma::uword batch_size,
   bool use_absolute) {
     size_t N = data.n_cols;
-    // without replacement, requires updated version of armadillo
-    arma::uvec tmp_refs = arma::randperm(N, batch_size);
+    
+    arma::uvec tmp_refs;
+    // TODO: Make this wraparound properly, last batch_size elements are dropped
+    // TODO: Check batch_size is < N
+    if (use_perm) {
+      if ((permutation_idx + batch_size - 1) >= N) {
+        permutation_idx = 0;
+      }
+      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
+      permutation_idx += batch_size;
+    } else {
+       tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
+    }
+    
     arma::vec sample(batch_size);
     arma::rowvec updated_sigma(N); 
 // for each possible swap
@@ -336,7 +368,7 @@ arma::rowvec km::KMedoids::build_sigma(
     for (size_t i = 0; i < N; i++) {
         // gather a sample of points
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(data, i, tmp_refs(j));
+            double cost = km::KMedoids::cachedLoss(data, i, tmp_refs(j));
             if (use_absolute) {
                 sample(j) = cost;
             } else {
@@ -348,6 +380,7 @@ arma::rowvec km::KMedoids::build_sigma(
         }
         updated_sigma(i) = arma::stddev(sample);
     }
+
     arma::rowvec P = {0.25, 0.5, 0.75};
     arma::rowvec Q = arma::quantile(updated_sigma, P);
     std::ostringstream sigma_out;
@@ -386,7 +419,7 @@ void km::KMedoids::calc_best_distances_swap(
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < medoid_indices.n_cols; k++) {
-            double cost = (this->*lossFn)(data, medoid_indices(k), i);
+            double cost = km::KMedoids::cachedLoss(data, i, medoid_indices(k));
             if (cost < best) {
                 assignments(i) = k;
                 second = best;
@@ -424,9 +457,19 @@ arma::mat km::KMedoids::swap_sigma(
     size_t N = data.n_cols;
     size_t K = n_medoids;
     arma::mat updated_sigma(K, N, arma::fill::zeros);
-    arma::uvec tmp_refs = arma::randperm(N,
-                                   batch_size); // without replacement, requires
-                                                // updated version of armadillo
+    
+    arma::uvec tmp_refs;
+    // TODO: Make this wraparound properly, last batch_size elements are dropped
+    // TODO: Check batch_size is < N
+    if (use_perm) {
+      if ((permutation_idx + batch_size - 1) >= N) {
+        permutation_idx = 0;
+      }
+      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
+      permutation_idx += batch_size;
+    } else {
+       tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
+    }
 
     arma::vec sample(batch_size);
 // for each considered swap
@@ -438,7 +481,7 @@ arma::mat km::KMedoids::swap_sigma(
 
         // calculate change in loss for some subset of the data
         for (size_t j = 0; j < batch_size; j++) {
-            double cost = (this->*lossFn)(data, n, tmp_refs(j));
+            double cost = km::KMedoids::cachedLoss(data, n, tmp_refs(j));
 
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {
@@ -496,10 +539,12 @@ double km::KMedoids::calc_loss(
   arma::rowvec& medoid_indices) {
     double total = 0;
 
+    // TODO: is this parallel loop accumulating properly?
+    #pragma omp parallel for
     for (size_t i = 0; i < data.n_cols; i++) {
         double cost = std::numeric_limits<double>::infinity();
         for (size_t k = 0; k < n_medoids; k++) {
-            double currCost = (this->*lossFn)(data, medoid_indices(k), i);
+            double currCost = km::KMedoids::cachedLoss(data, i, medoid_indices(k));
             if (currCost < cost) {
                 cost = currCost;
             }

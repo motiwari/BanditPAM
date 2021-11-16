@@ -13,12 +13,8 @@
 #include <functional>
 #include <unordered_map>
 #include <string>
+#include <mutex>
 
-typedef std::tuple<size_t, size_t> key_t_bpam;
-
-struct key_hash : public std::unary_function<key_t_bpam, double> {
-  std::size_t operator()(const key_t_bpam& k) const;
-};
 
 namespace km {
   /**
@@ -27,12 +23,11 @@ namespace km {
    *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
    *  for a particular set of input data.
    *
-   *  @param nMedoids Number of medoids/clusters to create
+   *  @param n_medoids Number of medoids/clusters to create
    *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
-   *  the "Bandit-PAM" algorithm, or "naive" to use the naive method
-   *  @param verbosity Verbosity of the algorithm, 0 will have no log file
-   *  emitted, 1 will emit a log file
-   *  @param maxIter The maximum number of iterations the algorithm runs for
+   *  the "BanditPAM" algorithm, or "naive" to use PAM
+   *  @param verbosity Verbosity of the algorithm, 0 will have no log file, 1 will create a log file
+   *  @param max_iter The maximum number of iterations the algorithm runs for
    *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
    *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
    *  @param logFilename The name of the output log file
@@ -40,16 +35,29 @@ namespace km {
 class KMedoids {
  public:
       KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t verbosity = 0, size_t max_iter = 1000,
-              size_t buildConfidence =  1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
+              size_t buildConfidence = 1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
 
       ~KMedoids();
 
       void fit(const arma::mat& inputData, const std::string& loss);
 
-      // std::map is a RB tree, should use unordered_map
-      std::unordered_map<key_t_bpam, double, key_hash> cache;
+      // cache-related variables
 
-      // The functions below are "get" functions for read-only attributes
+      size_t cache_multiplier = 1000;
+
+      float* cache; // array of floats
+
+      arma::uvec permutation;
+
+      size_t permutation_idx;
+
+      std::unordered_map<size_t, size_t> reindex; 
+
+      bool use_perm = true; // set to false for debugging only, to measure speedup
+
+      bool use_cache_p = true; // set to false for debugging only, to measure speedup
+
+      // The functions below are getters for read-only attributes
 
       arma::rowvec getMedoidsFinal();
 
@@ -121,9 +129,10 @@ class KMedoids {
       double calc_loss(const arma::mat& data, arma::rowvec& medoidIndices);
 
       // Loss functions
-      double wrappedLossFn(const arma::mat& data, size_t i, size_t j, bool use_cache);
+      double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = true); // if you change use_cache, also change use_cache_p
 
       size_t lp;
+
       double LP(const arma::mat& data, size_t i, size_t j) const;
 
       double LINF(const arma::mat& data, size_t i, size_t j) const;
