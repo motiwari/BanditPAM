@@ -1,8 +1,6 @@
 """
 Based on https://github.com/pybind/pybind11_benchmark/blob/master/setup.py
 """
-import signal
-import time
 import sys
 import os
 import tempfile
@@ -12,7 +10,7 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 
-__version__ = "1.0.0b"
+__version__ = "1.0.0"
 
 
 class get_pybind_include(object):
@@ -45,9 +43,6 @@ class get_numpy_include(object):
 
 def compiler_check():
     """
-    A very hacky method by which we understand what compiler was used to 
-    compile the user's Python.
-
     This is necessary because setuptools will use the compiler that compiled
     python -- even if the user specifies another one! -- for some of the
     compilation process
