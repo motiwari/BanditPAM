@@ -10,7 +10,7 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 
 class get_pybind_include(object):

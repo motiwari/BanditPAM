@@ -195,8 +195,10 @@ Note that some figures in the original paper were generated using the Python cod
 
 ## Credits
 
-Mo Tiwari wrote the original Python implementation of BanditPAM and now maintains the C++ implementation.
+Mo Tiwari wrote the original Python implementation of BanditPAM and many features of the C++ implementation. Mo now maintains the C++ implementation.
 
 James Mayclin developed the initial C++ implementation of BanditPAM.
 
-We would like to thank Jerry Quinn and Max Horton for helpful guidance regarding the C++ implementation.
+The original BanditPAM paper was published by Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, and Ilan Shomorony.
+
+We would like to thank Jerry Quinn, David Durst, Geet Sethi, and Max Horton for helpful guidance regarding the C++ implementation.

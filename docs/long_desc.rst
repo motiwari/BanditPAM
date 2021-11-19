@@ -1,6 +1,11 @@
 BanditPAM: A state-of-the-art, high-performance k-medoids algorithm
 ===================================================================
 
+Quickstart
+----------
+
+Please see https://github.com/ThrunGroup/BanditPAM#python-quickstart.
+
 Introduction
 ------------
 Clustering algorithms are ubiquitous in modern data science applications. Compared to the commonly used k-means clustering, k-medoids clustering 
