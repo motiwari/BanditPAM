@@ -179,6 +179,20 @@ Medoids: 694,168,306,714,324,959,527,251,800,737
 A file called `KMedoidsLogfile` with detailed logs during the process will also
 be present.
 
+## Implementing a custom distance metric
+
+One of the advantages of k-medoids is that it works with arbitrary distance metrics; in fact, your "metric" need not even be a real metric -- it can be negative, asymmetric, and/or not satisfy the triangle inequality or homogeneity. Any pairwise dissimilarity function works with k-medoids!
+
+This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running k-means wouldn't even make sense. We talk about one such setting in the original paper.
+
+The package currently supports a number of distance metrics, including all L_p losses and cosine distance.
+
+If you're willing to write a little C++, you only need to add a few lines to kmedoids_algorithm.cpp and kmedoids_algorithm.hpp to implement your distance metric / pairwise dissimilarity!
+
+Then, be sure to re-install the repository with a `pip install .` (note the trailing `.`).
+
+The maintainers of this repository are working on permitting arbitrary dissimilarity metrics that users write in Python, as well; see #4.
+
 ## Testing
 
 To run the full suite of tests, run in the root directory:
