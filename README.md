@@ -17,7 +17,7 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 ```
 
 # Requirements
-# TL;DR with python3, just do `pip install banditpam` and you can jump to the Examples. 
+# TL;DR with python3, just do `pip install banditpam` and you can jump to the [examples](https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
 
 If you have any issues, please see the documents below and file a Github issue if you have additional trouble.
 
@@ -33,7 +33,7 @@ This can be done either through PyPI (recommended)
 /BanditPAM/: pip install -r requirements.txt
 /BanditPAM/: pip install banditpam
 ```
-or through the source code via
+OR through the source code via
 ```python
 /BanditPAM/: git submodule update --init --recursive
 /BanditPAM/: cd headers/carma
@@ -185,13 +185,13 @@ One of the advantages of k-medoids is that it works with arbitrary distance metr
 
 This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running k-means wouldn't even make sense. We talk about one such setting in the [original paper](https://arxiv.org/abs/2006.06856).
 
-The package currently supports a number of distance metrics, including all L_p losses and cosine distance.
+The package currently supports a number of distance metrics, including all Lp losses and cosine distance.
 
-If you're willing to write a little C++, you only need to add a few lines to kmedoids_algorithm.cpp and kmedoids_algorithm.hpp to implement your distance metric / pairwise dissimilarity!
+If you're willing to write a little C++, you only need to add a few lines to [kmedoids_algorithm.cpp](https://github.com/ThrunGroup/BanditPAM/blob/main/src/kmedoids_algorithm.cpp#L560-L615) and [kmedoids_algorithm.hpp](https://github.com/ThrunGroup/BanditPAM/blob/main/headers/kmedoids_algorithm.hpp#L136-L142) to implement your distance metric / pairwise dissimilarity!
 
 Then, be sure to re-install the repository with a `pip install .` (note the trailing `.`).
 
-The maintainers of this repository are working on permitting arbitrary dissimilarity metrics that users write in Python, as well; see #4.
+The maintainers of this repository are working on permitting arbitrary dissimilarity metrics that users write in Python, as well; see [#4](https://github.com/ThrunGroup/BanditPAM/issues/4).
 
 ## Testing
 
