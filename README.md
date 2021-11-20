@@ -1,6 +1,6 @@
 # BanditPAM: Almost Linear-Time *k*-Medoids Clustering
 
-This repo contains a high-performance implementation of BanditPAM from https://arxiv.org/abs/2006.06856. The code can be called directly from Python or C++.
+This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://arxiv.org/abs/2006.06856). The code can be called directly from Python or C++.
 
 If you use this software, please cite:
 
@@ -17,9 +17,9 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 ```
 
 # Requirements
-# TL;DR This repo requires Python3, and can be easily installed via `pip install BanditPAM`. 
+# TL;DR with python3, just do `pip install banditpam` and you can jump to the Examples. 
 
-If you're on Mac or Windows and have any issue, please see the documents below and file an issue if you have additional trouble.
+If you have any issues, please see the documents below and file a Github issue if you have additional trouble.
 
 * [Installation on MacOS](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md)
 * [Installation on Linux](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md)
@@ -31,7 +31,7 @@ If you're on Mac or Windows and have any issue, please see the documents below a
 This can be done either through PyPI (recommended)
 ```python
 /BanditPAM/: pip install -r requirements.txt
-/BanditPAM/: pip install BanditPAM
+/BanditPAM/: pip install banditpam
 ```
 or through the source code via
 ```python
@@ -46,7 +46,7 @@ or through the source code via
 ### Example 1: Synthetic data from a Gaussian Mixture Model
 
 ```python
-from BanditPAM import KMedoids
+from banditpam import KMedoids
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -77,7 +77,7 @@ plt.show()
 
 ```python
 # Start in the repository root directory, i.e. '/BanditPAM/'.
-from BanditPAM import KMedoids
+from banditpam import KMedoids
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -183,7 +183,7 @@ be present.
 
 One of the advantages of k-medoids is that it works with arbitrary distance metrics; in fact, your "metric" need not even be a real metric -- it can be negative, asymmetric, and/or not satisfy the triangle inequality or homogeneity. Any pairwise dissimilarity function works with k-medoids!
 
-This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running k-means wouldn't even make sense. We talk about one such setting in the original paper.
+This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running k-means wouldn't even make sense. We talk about one such setting in the [original paper](https://arxiv.org/abs/2006.06856).
 
 The package currently supports a number of distance metrics, including all L_p losses and cosine distance.
 
