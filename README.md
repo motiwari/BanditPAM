@@ -4,11 +4,11 @@ This repo contains a high-performance implementation of BanditPAM from [BanditPA
 
 If you use this software, please cite:
 
-Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "Bandit-PAM: Almost Linear Time *k*-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
+Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "BanditPAM: Almost Linear Time *k*-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
 
 ```python
 @inproceedings{BanditPAM,
-  title={Bandit-PAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits},
+  title={BanditPAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits},
   author={Tiwari, Mo and Zhang, Martin J and Mayclin, James and Thrun, Sebastian and Piech, Chris and Shomorony, Ilan},
   booktitle={Advances in Neural Information Processing Systems},
   pages={368--374},
