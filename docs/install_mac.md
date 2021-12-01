@@ -7,7 +7,7 @@ The following is a more detailed description of the installation process of Band
  - Python3 is installed; if not, run `brew install python` (by default, Macs only come with Python2)
  - Pip is installed for your Python3 installation; this should be completed automatically by `brew install python` above.
  - A C++ toolchain is installed, e.g. `gcc` or `clang`. We strongly suggest using LLVM's `clang` via `brew install llvm`.
- -- You can also use another C++ compiler and ensure your `CC` environment variable `CC` points to it. Please ensure this is the same compiler used to compile your Python installation if using CPython. If you open a python REPL it will show the compiler used during the language installation:
+ - -- You can also use another C++ compiler and ensure your `CC` environment variable `CC` points to it. Please ensure this is the same compiler used to compile your Python installation if using CPython. If you open a python REPL it will show the compiler used during the language installation:
 
  ```
  >> python
