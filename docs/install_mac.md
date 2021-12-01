@@ -18,7 +18,7 @@ Intel(R) Distribution for Python is brought to you by Intel Corporation.
 Please check out: https://software.intel.com/en-us/python-distribution
 ```
 
-For the default Python2 installed on Mac, the Apple clang compiler is used; for Intel python, clang is used as well. Do not attempt to compile the BanditPAM extension with `gcc` if your Python used `clang`.
+For the default Python2 installed on Mac, the `Apple clang` compiler is used; for Intel python, `clang` is used as well. Do not attempt to compile the BanditPAM extension with `gcc` if your Python used `clang`.
 
 ## Additional Packages
 First, it's necessary to install the prerequisites for the package. Please do the following:
