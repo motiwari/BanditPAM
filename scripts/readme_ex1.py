@@ -13,6 +13,8 @@ kmed = KMedoids(n_medoids=3, algorithm="BanditPAM")
 # Writes results to gmm_log
 kmed.fit(X, "L2", "gmm_log")
 
+print(kmed.labels) # prints cluster assignments
+
 # Visualize the data and the medoids:
 for p_idx, point in enumerate(X):
     if p_idx in map(int, kmed.medoids):
