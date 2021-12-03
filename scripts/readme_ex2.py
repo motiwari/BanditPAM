@@ -1,8 +1,8 @@
-from banditpam import KMedoids
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
+from banditpam import KMedoids
 
 # Load the 1000-point subset of MNIST and calculate its t-SNE embeddings for visualization:
 X = pd.read_csv("data/MNIST-1k.csv", sep=" ", header=None).to_numpy()
