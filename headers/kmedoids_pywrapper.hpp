@@ -4,7 +4,7 @@
 /* 
  * We perform these imports first because kmedoids_pywrapper is compiled first
  * when building the python package, and carma must be 'include'd before armadillo
-*/
+ */
 #include <carma>
 #include <armadillo>
 
