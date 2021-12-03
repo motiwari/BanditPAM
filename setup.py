@@ -1,6 +1,3 @@
-"""
-Based on https://github.com/pybind/pybind11_benchmark/blob/master/setup.py
-"""
 import sys
 import os
 import tempfile
@@ -9,8 +6,9 @@ import subprocess
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
+import distutils.spawn
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 
 class get_pybind_include(object):
@@ -20,10 +18,8 @@ class get_pybind_include(object):
     until it is actually installed via setup's setup_requires arg,
     so that the ``get_include()`` method can be invoked.
     """
-
     def __str__(self):
         import pybind11
-
         return pybind11.get_include()
 
 
@@ -34,10 +30,8 @@ class get_numpy_include(object):
     until it is actually installed via setup's setup_requires arg,
     so that the ``get_include()`` method can be invoked.
     """
-
     def __str__(self):
         import numpy
-
         return numpy.get_include()
 
 
@@ -47,7 +41,18 @@ def compiler_check():
     python -- even if the user specifies another one! -- for some of the
     compilation process
     """
-    return 'clang' if 'clang' in distutils.sysconfig.get_config_vars()['CC'] else 'gcc'
+    try:
+        return 'clang' if 'clang' in distutils.sysconfig.get_config_vars()['CC'] else 'gcc'
+    except KeyError as _e:
+        # The 'CC' environment variable hasn't been set. In this case, search for clang and gcc
+        # Borrowed from https://github.com/clab/dynet/blob/master/setup.py
+        if distutils.spawn.find_executable('clang') is not None:
+            return 'clang'
+        elif distutils.spawn.find_executable('gcc') is not None:
+            return 'gcc'
+
+    raise Exception("No C++ compiler was found. Please install LLVM clang.")
+
 
 def has_flag(compiler, flagname):
     """
