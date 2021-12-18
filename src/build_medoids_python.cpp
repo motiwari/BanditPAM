@@ -23,7 +23,11 @@ namespace py = pybind11;
  *  after KMedoids::fit has been called.
  */
 py::array_t<arma::uword> KMedoidsWrapper::getMedoidsBuildPython() {
-    return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsBuild()).squeeze();
+    if (KMedoids::getMedoidsBuild().size() > 1) {
+        return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsBuild()).squeeze();
+    } else {
+        return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsBuild());
+    }
 }
 
 void build_medoids_python(py::class_<KMedoidsWrapper> &cls) {
