@@ -338,7 +338,6 @@ void BanditPAM::swap(
         medoids.col(k) = data.col(medoid_indices(k));
         calc_best_distances_swap(
           data, medoid_indices, best_distances, second_distances, assignments);
-
     }
 }
 

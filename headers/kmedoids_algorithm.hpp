@@ -1,7 +1,6 @@
 #ifndef HEADERS_KMEDOIDS_ALGORITHM_HPP_
 #define HEADERS_KMEDOIDS_ALGORITHM_HPP_
 
-
 #include <armadillo>
 #include <vector>
 #include <fstream>
