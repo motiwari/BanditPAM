@@ -80,23 +80,23 @@ void km::KMedoids::checkAlgorithm(const std::string& algorithm) {
 }
 
 /**
- *  \brief Returns the final medoids
- *
- *  Returns the final medoids at the end of the SWAP step after km::KMedoids::fit
- *  has been called.
- */
-arma::rowvec km::KMedoids::getMedoidsFinal() {
-  return medoid_indices_final;
-}
-
-/**
  *  \brief Returns the build medoids
  *
  *  Returns the build medoids at the end of the BUILD step after km::KMedoids::fit
  *  has been called.
  */
-arma::rowvec km::KMedoids::getMedoidsBuild() {
+arma::urowvec km::KMedoids::getMedoidsBuild() {
   return medoid_indices_build;
+}
+
+/**
+ *  \brief Returns the final medoids
+ *
+ *  Returns the final medoids at the end of the SWAP step after km::KMedoids::fit
+ *  has been called.
+ */
+arma::urowvec km::KMedoids::getMedoidsFinal() {
+  return medoid_indices_final;
 }
 
 /**
@@ -105,7 +105,7 @@ arma::rowvec km::KMedoids::getMedoidsBuild() {
  *  Returns the medoid each input datapoint is assigned to after km::KMedoids::fit
  *  has been called and the final medoids have been identified
  */
-arma::rowvec km::KMedoids::getLabels() {
+arma::urowvec km::KMedoids::getLabels() {
   return labels;
 }
 
@@ -343,10 +343,10 @@ arma::rowvec km::KMedoids::build_sigma(
  */
 void km::KMedoids::calc_best_distances_swap(
   const arma::mat& data,
-  arma::rowvec& medoid_indices,
+  arma::urowvec& medoid_indices,
   arma::rowvec& best_distances,
   arma::rowvec& second_distances,
-  arma::rowvec& assignments) {
+  arma::urowvec& assignments) {
 #pragma omp parallel for
     for (size_t i = 0; i < data.n_cols; i++) {
         double best = std::numeric_limits<double>::infinity();
@@ -385,7 +385,7 @@ arma::mat km::KMedoids::swap_sigma(
   size_t batch_size,
   arma::rowvec& best_distances,
   arma::rowvec& second_best_distances,
-  arma::rowvec& assignments)
+  arma::urowvec& assignments)
 {   
     size_t N = data.n_cols;
     size_t K = n_medoids;
@@ -436,7 +436,6 @@ arma::mat km::KMedoids::swap_sigma(
   return updated_sigma;
 }
 
-
 /**
  * \brief Calculate loss for medoids
  *
@@ -448,7 +447,7 @@ arma::mat km::KMedoids::swap_sigma(
  */
 double km::KMedoids::calc_loss(
   const arma::mat& data,
-  arma::rowvec& medoid_indices) {
+  arma::urowvec& medoid_indices) {
     double total = 0;
 
     // TODO: is this parallel loop accumulating properly?

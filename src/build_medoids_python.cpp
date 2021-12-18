@@ -22,8 +22,8 @@ namespace py = pybind11;
  *  Returns as a numpy array the build medoids at the end of the BUILD step
  *  after KMedoids::fit has been called.
  */
-py::array_t<double> KMedoidsWrapper::getMedoidsBuildPython() {
-    return carma::row_to_arr<double>(KMedoids::getMedoidsBuild()).squeeze();
+py::array_t<arma::uword> KMedoidsWrapper::getMedoidsBuildPython() {
+    return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsBuild()).squeeze();
 }
 
 void build_medoids_python(py::class_<KMedoidsWrapper> &cls) {

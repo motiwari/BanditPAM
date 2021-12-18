@@ -43,7 +43,7 @@ public:
    *  Returns as a numpy array the final medoids at the end of the SWAP step
    *  after KMedoids::fit has been called.
    */
-  py::array_t<double> getMedoidsFinalPython();
+  py::array_t<arma::uword> getMedoidsFinalPython();
 
   /**
    *  \brief Returns the build medoids
@@ -51,7 +51,7 @@ public:
    *  Returns as a numpy array the build medoids at the end of the BUILD step
    *  after KMedoids::fit has been called.
    */
-  py::array_t<double> getMedoidsBuildPython();
+  py::array_t<arma::uword> getMedoidsBuildPython();
 
   /**
    *  \brief Returns the medoid assignments for each datapoint
@@ -59,7 +59,7 @@ public:
    *  Returns as a numpy array the medoid each input datapoint is assigned to
    *  after KMedoids::fit is called and the final medoids have been identified
    */
-  py::array_t<double> getLabelsPython();
+  py::array_t<arma::uword> getLabelsPython();
 
   /**
    *  \brief Returns the number of swap steps

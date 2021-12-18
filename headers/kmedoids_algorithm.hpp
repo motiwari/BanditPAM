@@ -55,11 +55,11 @@ class KMedoids {
 
       // The functions below are getters for read-only attributes
 
-      arma::rowvec getMedoidsFinal();
+      arma::urowvec getMedoidsFinal();
 
-      arma::rowvec getMedoidsBuild();
+      arma::urowvec getMedoidsBuild();
 
-      arma::rowvec getLabels();
+      arma::urowvec getLabels();
 
       size_t getSteps();
 
@@ -98,10 +98,10 @@ class KMedoids {
 
       void calc_best_distances_swap(
         const arma::mat& data,
-        arma::rowvec& medoidIndices,
+        arma::urowvec& medoidIndices,
         arma::rowvec& best_distances,
         arma::rowvec& second_distances,
-        arma::rowvec& assignments
+        arma::urowvec& assignments
       );
 
       arma::mat swap_sigma(
@@ -109,10 +109,10 @@ class KMedoids {
         size_t batch_size,
         arma::rowvec& best_distances,
         arma::rowvec& second_best_distances,
-        arma::rowvec& assignments
+        arma::urowvec& assignments
       );
 
-      double calc_loss(const arma::mat& data, arma::rowvec& medoidIndices);
+      double calc_loss(const arma::mat& data, arma::urowvec& medoidIndices);
 
       // Loss functions
       double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = true); // if you change use_cache, also change use_cache_p
@@ -139,11 +139,11 @@ class KMedoids {
       // Properties of the KMedoids instance
       arma::mat data; ///< input data used during KMedoids::fit
 
-      arma::rowvec labels; ///< assignments of each datapoint to its medoid
+      arma::urowvec labels; ///< assignments of each datapoint to its medoid
 
-      arma::rowvec medoid_indices_build; ///< medoids at the end of build step
+      arma::urowvec medoid_indices_build; ///< medoids at the end of build step
 
-      arma::rowvec medoid_indices_final; ///< medoids at the end of the swap step
+      arma::urowvec medoid_indices_final; ///< medoids at the end of the swap step
 
       double (KMedoids::*lossFn)(const arma::mat& data, size_t i, size_t j) const; ///< loss function used during KMedoids::fit
 

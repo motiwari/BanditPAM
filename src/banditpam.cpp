@@ -44,13 +44,13 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
   
 
   arma::mat medoids_mat(data.n_rows, n_medoids);
-  arma::rowvec medoid_indices(n_medoids);
+  arma::urowvec medoid_indices(n_medoids);
   // runs build step
   BanditPAM::build(data, medoid_indices, medoids_mat);
   steps = 0;
 
   medoid_indices_build = medoid_indices;
-  arma::rowvec assignments(data.n_cols);
+  arma::urowvec assignments(data.n_cols);
   // runs swap step
   BanditPAM::swap(data, medoid_indices, medoids_mat, assignments);
   medoid_indices_final = medoid_indices;
@@ -73,7 +73,7 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
  */
 void BanditPAM::build(
   const arma::mat& data,
-  arma::rowvec& medoid_indices,
+  arma::urowvec& medoid_indices,
   arma::mat& medoids) {
     // Parameters
     size_t N = data.n_cols;
@@ -231,9 +231,9 @@ arma::rowvec BanditPAM::build_target(
  */
 void BanditPAM::swap(
   const arma::mat& data,
-  arma::rowvec& medoid_indices,
+  arma::urowvec& medoid_indices,
   arma::mat& medoids,
-  arma::rowvec& assignments) {
+  arma::urowvec& assignments) {
     size_t N = data.n_cols;
     size_t p = (N * n_medoids * swapConfidence); // reciprocal
 
@@ -359,12 +359,12 @@ void BanditPAM::swap(
  */
 arma::vec BanditPAM::swap_target(
   const arma::mat& data,
-  arma::rowvec& medoid_indices,
+  arma::urowvec& medoid_indices,
   arma::uvec& targets,
   size_t batch_size,
   arma::rowvec& best_distances,
   arma::rowvec& second_best_distances,
-  arma::rowvec& assignments) {
+  arma::urowvec& assignments) {
     size_t N = data.n_cols;
     arma::vec estimates(targets.n_rows, arma::fill::zeros);
 

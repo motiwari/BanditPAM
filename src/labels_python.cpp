@@ -22,8 +22,8 @@ namespace py = pybind11;
  *  Returns as a numpy array the medoid each input datapoint is assigned to
  *  after KMedoids::fit is called and the final medoids have been identified
  */
-py::array_t<double> KMedoidsWrapper::getLabelsPython() {
-    return carma::row_to_arr<double>(KMedoids::getLabels()).squeeze();
+py::array_t<arma::uword> KMedoidsWrapper::getLabelsPython() {
+    return carma::row_to_arr<arma::uword>(KMedoids::getLabels()).squeeze();
 }
 
 void labels_python(py::class_<KMedoidsWrapper> &cls) {

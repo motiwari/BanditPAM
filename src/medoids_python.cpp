@@ -22,8 +22,8 @@ namespace py = pybind11;
  *  Returns as a numpy array the final medoids at the end of the SWAP step
  *  after KMedoids::fit has been called.
  */
-py::array_t<double> KMedoidsWrapper::getMedoidsFinalPython() {
-    return carma::row_to_arr<double>(KMedoids::getMedoidsFinal()).squeeze();
+py::array_t<arma::uword> KMedoidsWrapper::getMedoidsFinalPython() {
+    return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsFinal()).squeeze();
 }
 
 void medoids_python(py::class_<KMedoidsWrapper> &cls) {

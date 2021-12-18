@@ -22,12 +22,12 @@
 void PAM::fit_naive(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
-  arma::rowvec medoid_indices(n_medoids);
+  arma::urowvec medoid_indices(n_medoids);
   // runs build step
   PAM::build_naive(data, medoid_indices);
   steps = 0;
   medoid_indices_build = medoid_indices;
-  arma::rowvec assignments(data.n_cols);
+  arma::urowvec assignments(data.n_cols);
   size_t i = 0;
   bool medoidChange = true;
   while (i < max_iter && medoidChange) {
@@ -55,7 +55,7 @@ void PAM::fit_naive(const arma::mat& input_data) {
  */
 void PAM::build_naive(
   const arma::mat& data,
-  arma::rowvec& medoid_indices) {
+  arma::urowvec& medoid_indices) {
   size_t N = data.n_cols;
   bool use_absolute = true;
   arma::rowvec estimates(N, arma::fill::zeros);
@@ -114,8 +114,8 @@ void PAM::build_naive(
  */
 void PAM::swap_naive(
   const arma::mat& data,
-  arma::rowvec& medoid_indices,
-  arma::rowvec& assignments) {
+  arma::urowvec& medoid_indices,
+  arma::urowvec& assignments) {
   double minDistance = std::numeric_limits<double>::infinity();
   size_t best = 0;
   size_t medoid_to_swap = 0;
@@ -133,8 +133,6 @@ void PAM::swap_naive(
                                    best_distances,
                                    second_distances,
                                    assignments);
-  
-  
   // iterate across the current medoids
   for (size_t k = 0; k < n_medoids; k++) {
     // for every point in our dataset, let it serve as a "base" point

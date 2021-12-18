@@ -40,7 +40,7 @@ class BanditPAM : public km::KMedoids {
     *  @param medoids Matrix of possible medoids that is updated as the bandit
     *  learns which datapoints will be unlikely to be good candidates
     */
-    void build(const arma::mat& data, arma::rowvec& medoidIndices, arma::mat& medoids);
+    void build(const arma::mat& data, arma::urowvec& medoidIndices, arma::mat& medoids);
 
     /*! \brief Estimates the mean reward for each arm in build step
     *
@@ -80,9 +80,9 @@ class BanditPAM : public km::KMedoids {
     */
     void swap(
         const arma::mat& data,
-        arma::rowvec& medoidIndices,
+        arma::urowvec& medoidIndices,
         arma::mat& medoids,
-        arma::rowvec& assignments
+        arma::urowvec& assignments
     );
 
     /*! \brief Estimates the mean reward for each arm in swap step
@@ -102,12 +102,12 @@ class BanditPAM : public km::KMedoids {
     */
     arma::vec swap_target(
         const arma::mat& data,
-        arma::rowvec& medoidIndices,
+        arma::urowvec& medoidIndices,
         arma::uvec& targets,
         size_t batch_size,
         arma::rowvec& best_distances,
         arma::rowvec& second_best_distances,
-        arma::rowvec& assignments
+        arma::urowvec& assignments
     );
 };
 #endif // HEADERS_BANDITPAM_HPP_

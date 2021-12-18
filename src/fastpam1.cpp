@@ -27,11 +27,11 @@
 void FastPAM1::fit_fastpam1(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
-  arma::rowvec medoid_indices(n_medoids);
+  arma::urowvec medoid_indices(n_medoids);
   FastPAM1::build_fastpam1(data, medoid_indices);
   steps = 0;
   medoid_indices_build = medoid_indices;
-  arma::rowvec assignments(data.n_cols);
+  arma::urowvec assignments(data.n_cols);
   size_t iter = 0;
   bool medoidChange = true;
   while (iter < max_iter && medoidChange) {
@@ -58,7 +58,7 @@ void FastPAM1::fit_fastpam1(const arma::mat& input_data) {
  */
 void FastPAM1::build_fastpam1(
   const arma::mat& data,
-  arma::rowvec& medoid_indices
+  arma::urowvec& medoid_indices
 ) {
   size_t N = data.n_cols;
   bool use_absolute = true;
@@ -119,8 +119,8 @@ void FastPAM1::build_fastpam1(
  */
 void FastPAM1::swap_fastpam1(
   const arma::mat& data,
-  arma::rowvec& medoid_indices,
-  arma::rowvec& assignments
+  arma::urowvec& medoid_indices,
+  arma::urowvec& assignments
 ) {
   double bestChange = 0;
   double minDistance = std::numeric_limits<double>::infinity();

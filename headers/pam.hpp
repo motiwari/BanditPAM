@@ -37,7 +37,7 @@ class PAM : public km::KMedoids {
     *  @param medoid_indices Uninitialized array of medoids that is modified in place
     *  as medoids are identified
     */
-    void build_naive(const arma::mat& data, arma::rowvec& medoidIndices);
+    void build_naive(const arma::mat& data, arma::urowvec& medoidIndices);
 
     /*! \brief Swap step for the PAM algorithm
     *
@@ -51,6 +51,6 @@ class PAM : public km::KMedoids {
     *  @param assignments Uninitialized array of indices corresponding to each
     *  datapoint assigned the index of the medoid it is closest to
     */
-    void swap_naive(const arma::mat& data, arma::rowvec& medoidIndices, arma::rowvec& assignments);
+    void swap_naive(const arma::mat& data, arma::urowvec& medoidIndices, arma::urowvec& assignments);
 };
 #endif // HEADERS_PAM_HPP_
