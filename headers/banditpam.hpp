@@ -49,7 +49,6 @@ class BanditPAM : public km::KMedoids {
     *
     *  @param data Transposed input data to find the medoids of
     *  @param target Set of target datapoints to be estimated
-    *  @param batch_size Number of datapoints sampled for updating confidence
     *  intervals
     *  @param best_distances Array of best distances from each point to previous set
     *  of medoids
@@ -58,9 +57,9 @@ class BanditPAM : public km::KMedoids {
     arma::rowvec build_target(
         const arma::mat& data,
         arma::uvec& target,
-        size_t batch_size,
         arma::rowvec& best_distances,
-        bool use_absolute
+        bool use_absolute,
+        size_t exact
     );
 
     /*! \brief Swap step for BanditPAM
@@ -92,7 +91,6 @@ class BanditPAM : public km::KMedoids {
     *
     *  @param data Transposed input data to find the medoids of
     *  @param targets Set of target datapoints to be estimated
-    *  @param batch_size Number of datapoints sampled for updating confidence
     *  intervals
     *  @param best_distances Array of best distances from each point to previous set
     *  of medoids
@@ -104,10 +102,10 @@ class BanditPAM : public km::KMedoids {
         const arma::mat& data,
         arma::urowvec& medoidIndices,
         arma::uvec& targets,
-        size_t batch_size,
         arma::rowvec& best_distances,
         arma::rowvec& second_best_distances,
-        arma::urowvec& assignments
+        arma::urowvec& assignments,
+        size_t exact
     );
 };
 #endif // HEADERS_BANDITPAM_HPP_

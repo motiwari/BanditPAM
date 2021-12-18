@@ -92,7 +92,6 @@ class KMedoids {
       arma::rowvec build_sigma(
         const arma::mat& data,
         arma::rowvec& best_distances,
-        arma::uword batch_size,
         bool use_absolute
       );
 
@@ -106,7 +105,6 @@ class KMedoids {
 
       arma::mat swap_sigma(
         const arma::mat& data,
-        size_t batch_size,
         arma::rowvec& best_distances,
         arma::rowvec& second_best_distances,
         arma::urowvec& assignments

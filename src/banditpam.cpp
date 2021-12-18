@@ -102,7 +102,7 @@ void BanditPAM::build(
         exact_mask.fill(0);
         estimates.fill(0);
         sigma = build_sigma(
-                data, best_distances, batchSize, use_absolute); // computes std dev amongst batch of reference points
+                data, best_distances, use_absolute); // computes std dev amongst batch of reference points
 
         while (arma::sum(candidates) > precision) { // while some candidates exist
             arma::umat compute_exactly =
@@ -110,7 +110,7 @@ void BanditPAM::build(
             if (arma::accu(compute_exactly) > 0) {
                 arma::uvec targets = find(compute_exactly);
                 arma::rowvec result =
-                  build_target(data, targets, N, best_distances, use_absolute); // induced loss for these targets over all reference points
+                  build_target(data, targets, best_distances, use_absolute, N); // induced loss for these targets over all reference points
                 estimates.cols(targets) = result;
                 ucbs.cols(targets) = result;
                 lcbs.cols(targets) = result;
@@ -123,7 +123,7 @@ void BanditPAM::build(
             }
             arma::uvec targets = arma::find(candidates);
             arma::rowvec result = build_target(
-              data, targets, batchSize, best_distances, use_absolute); // induced loss for the targets (sample)
+              data, targets, best_distances, use_absolute, 0); // induced loss for the targets (sample)
             estimates.cols(targets) =
               ((T_samples.cols(targets) % estimates.cols(targets)) +
                (result * batchSize)) /
@@ -165,7 +165,6 @@ void BanditPAM::build(
  *
  * @param data Transposed input data to find the medoids of
  * @param target Set of target datapoints to be estimated
- * @param batch_size Number of datapoints sampled for updating confidence
  * intervals
  * @param best_distances Array of best distances from each point to previous set
  * of medoids
@@ -174,23 +173,26 @@ void BanditPAM::build(
 arma::rowvec BanditPAM::build_target(
   const arma::mat& data,
   arma::uvec& target,
-  size_t batch_size,
   arma::rowvec& best_distances,
-  bool use_absolute) {
+  bool use_absolute,
+  size_t exact = 0) {
     size_t N = data.n_cols;
+    size_t tmp_batch_size = batchSize;
+    if (exact > 0) {
+      tmp_batch_size = N;
+    }
     arma::rowvec estimates(target.n_rows, arma::fill::zeros);
     
     arma::uvec tmp_refs;
     // TODO: Make this wraparound properly, last batch_size elements are dropped
-    // TODO: Check batch_size is < N
     if (use_perm) {
-      if ((permutation_idx + batch_size - 1) >= N) {
+      if ((permutation_idx + tmp_batch_size - 1) >= N) {
         permutation_idx = 0;
       }
-      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
-      permutation_idx += batch_size;
+      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + tmp_batch_size - 1); // inclusive of both indices
+      permutation_idx += tmp_batch_size;
     } else {
-       tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
+       tmp_refs = arma::randperm(N, tmp_batch_size); // without replacement, requires updated version of armadillo
     }
 
 #pragma omp parallel for
@@ -208,7 +210,7 @@ arma::rowvec BanditPAM::build_target(
                 total -= best_distances(tmp_refs(j));
             }
         }
-        estimates(i) = total / batch_size;
+        estimates(i) = total / tmp_batch_size;
     }
     return estimates;
 }
@@ -260,7 +262,6 @@ void BanditPAM::swap(
           data, medoid_indices, best_distances, second_distances, assignments);
 
         sigma = swap_sigma(data,
-                           batchSize,
                            best_distances,
                            second_distances,
                            assignments);
@@ -285,10 +286,10 @@ void BanditPAM::swap(
                 arma::vec result = swap_target(data,
                                                medoid_indices,
                                                targets,
-                                               N,
                                                best_distances,
                                                second_distances,
-                                               assignments);
+                                               assignments,
+                                               N);
                 estimates.elem(targets) = result;
                 ucbs.elem(targets) = result;
                 lcbs.elem(targets) = result;
@@ -304,10 +305,10 @@ void BanditPAM::swap(
             arma::vec result = swap_target(data,
                                            medoid_indices,
                                            targets,
-                                           batchSize,
                                            best_distances,
                                            second_distances,
-                                           assignments);
+                                           assignments,
+                                           0);
             estimates.elem(targets) =
               ((T_samples.elem(targets) % estimates.elem(targets)) +
                (result * batchSize)) /
@@ -349,7 +350,6 @@ void BanditPAM::swap(
  *
  * @param data Transposed input data to find the medoids of
  * @param targets Set of target datapoints to be estimated
- * @param batch_size Number of datapoints sampled for updating confidence
  * intervals
  * @param best_distances Array of best distances from each point to previous set
  * of medoids
@@ -361,24 +361,28 @@ arma::vec BanditPAM::swap_target(
   const arma::mat& data,
   arma::urowvec& medoid_indices,
   arma::uvec& targets,
-  size_t batch_size,
   arma::rowvec& best_distances,
   arma::rowvec& second_best_distances,
-  arma::urowvec& assignments) {
+  arma::urowvec& assignments,
+  size_t exact = 0) {
     size_t N = data.n_cols;
     arma::vec estimates(targets.n_rows, arma::fill::zeros);
 
+    size_t tmp_batch_size = batchSize;
+    if (exact > 0) {
+      tmp_batch_size = N;
+    }
+
     arma::uvec tmp_refs;
     // TODO: Make this wraparound properly, last batch_size elements are dropped
-    // TODO: Check batch_size is < N
     if (use_perm) {
-      if ((permutation_idx + batch_size - 1) >= N) {
+      if ((permutation_idx + tmp_batch_size - 1) >= N) {
         permutation_idx = 0;
       }
-      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
-      permutation_idx += batch_size;
+      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + tmp_batch_size - 1); // inclusive of both indices
+      permutation_idx += tmp_batch_size;
     } else {
-       tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
+       tmp_refs = arma::randperm(N, tmp_batch_size); // without replacement, requires updated version of armadillo
     }
 
 // for each considered swap
@@ -389,7 +393,7 @@ arma::vec BanditPAM::swap_target(
         size_t n = targets(i) / medoid_indices.n_cols;
         size_t k = targets(i) % medoid_indices.n_cols;
         // calculate total loss for some subset of the data
-        for (size_t j = 0; j < batch_size; j++) {
+        for (size_t j = 0; j < tmp_batch_size; j++) {
             double cost = km::KMedoids::cachedLoss(data, n, tmp_refs(j));
             if (k == assignments(tmp_refs(j))) {
                 if (cost < second_best_distances(tmp_refs(j))) {

@@ -7,6 +7,7 @@ import numpy as np
 def onFly(k, data, loss):
     kmed_bpam = KMedoids(n_medoids=k, algorithm="BanditPAM")
     kmed_naive = KMedoids(n_medoids=k, algorithm="naive")
+    
     kmed_bpam.fit(data, loss)
     kmed_naive.fit(data, loss)
 

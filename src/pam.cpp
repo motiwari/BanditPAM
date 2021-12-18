@@ -66,7 +66,7 @@ void PAM::build_naive(
     double minDistance = std::numeric_limits<double>::infinity();
     size_t best = 0;
     sigma = km::KMedoids::build_sigma(
-            data, best_distances, batchSize, use_absolute); // computes std dev amongst batch of reference points
+            data, best_distances, use_absolute); // computes std dev amongst batch of reference points
     // fixes a base datapoint
     for (size_t i = 0; i < data.n_cols; i++) {
       double total = 0;
@@ -129,7 +129,6 @@ void PAM::swap_naive(
     data, medoid_indices, best_distances, second_distances, assignments);
 
   sigma = km::KMedoids::swap_sigma(data,
-                                   batchSize,
                                    best_distances,
                                    second_distances,
                                    assignments);
@@ -149,7 +148,7 @@ void PAM::swap_naive(
           }
         } else {
           if (second_distances(j) < cost) {
-          cost = second_distances(j);
+            cost = second_distances(j);
           }
         }
         total += cost;
