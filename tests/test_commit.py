@@ -35,7 +35,7 @@ class PythonTests(unittest.TestCase):
         for i in range(10):
             data = self.mnist_70k.sample(n=100).to_numpy()
             count += onFly(k=k_schedule[i], data=data, loss="L2")
-        self.assertTrue(count >= 9)
+        self.assertTrue(count == 10)
 
     def test_small_on_fly_scrna(self):
         """
@@ -46,7 +46,7 @@ class PythonTests(unittest.TestCase):
         for i in range(10):
             data = self.scrna.sample(n=100).to_numpy()
             count += onFly(k=k_schedule[i], data=data, loss="L1")
-        self.assertTrue(count >= 9)
+        self.assertTrue(count == 10)
 
     def test_small_cases_mnist(self):
         """
@@ -80,37 +80,6 @@ class PythonTests(unittest.TestCase):
             np.array([16, 63, 70, 25, 31, 90, 49, 99, 82, 94]).tolist(),
         )
 
-    def test_small_cases_scrna(self):
-        """
-        Test BanditPAM algorithm at 5 and 10 medoids on scrna dataset with known medoids
-        """
-        kmed_5 = KMedoids(
-            n_medoids=5,
-            algorithm="BanditPAM",
-        )
-        kmed_5.fit(self.scrna.head(1000).to_numpy(), "L1")
-
-        self.assertEqual(
-            kmed_5.build_medoids.tolist(), np.array([377, 267, 276, 762, 394]).tolist()
-        )
-        self.assertEqual(
-            kmed_5.medoids.tolist(), np.array([377, 267, 276, 762, 394]).tolist()
-        )
-
-        kmed_10 = KMedoids(
-            n_medoids=10,
-            algorithm="BanditPAM",
-        )
-        kmed_10.fit(self.scrna.head(1000).to_numpy(), "L1")
-
-        self.assertEqual(
-            kmed_10.build_medoids.tolist(),
-            np.array([377, 267, 276, 762, 394, 311, 663, 802, 422, 20]).tolist(),
-        )
-        self.assertEqual(
-            kmed_10.medoids.tolist(),
-            np.array([377, 267, 276, 762, 394, 311, 663, 802, 422, 20]).tolist(),
-        )
 
     def test_edge_cases(self):
         """

@@ -317,7 +317,7 @@ void BanditPAM::swap(
             arma::vec adjust(targets.n_rows);
             adjust.fill(p);
             adjust = arma::log(adjust);
-            arma::vec cb_delta = sigma.elem(targets) %
+            arma::vec cb_delta = sigma.elem(targets) % 
                                  arma::sqrt(adjust / T_samples.elem(targets));
 
             ucbs.elem(targets) = estimates.elem(targets) + cb_delta;
