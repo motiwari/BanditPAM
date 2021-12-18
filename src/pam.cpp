@@ -61,13 +61,9 @@ void PAM::build_naive(
   arma::rowvec estimates(N, arma::fill::zeros);
   arma::rowvec best_distances(N);
   best_distances.fill(std::numeric_limits<double>::infinity());
-  arma::rowvec sigma(N); // standard deviation of induced losses on reference points
   for (size_t k = 0; k < n_medoids; k++) {
     double minDistance = std::numeric_limits<double>::infinity();
     size_t best = 0;
-    sigma = km::KMedoids::build_sigma(
-            data, best_distances, use_absolute); // computes std dev amongst batch of reference points
-    // fixes a base datapoint
     for (size_t i = 0; i < data.n_cols; i++) {
       double total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
@@ -120,18 +116,12 @@ void PAM::swap_naive(
   size_t best = 0;
   size_t medoid_to_swap = 0;
   size_t N = data.n_cols;
-  arma::mat sigma(n_medoids, N, arma::fill::zeros);
   arma::rowvec best_distances(N);
   arma::rowvec second_distances(N);
 
-  // calculate quantities needed for swap, best_distances and sigma
   km::KMedoids::calc_best_distances_swap(
     data, medoid_indices, best_distances, second_distances, assignments);
 
-  sigma = km::KMedoids::swap_sigma(data,
-                                   best_distances,
-                                   second_distances,
-                                   assignments);
   // iterate across the current medoids
   for (size_t k = 0; k < n_medoids; k++) {
     // for every point in our dataset, let it serve as a "base" point
