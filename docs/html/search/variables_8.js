@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['n_5fmedoids_149',['n_medoids',['../classKMedoids.html#a3365e728fd524c0be2fbab0b58e3a4cd',1,'KMedoids']]]
+  ['verbosity_0',['verbosity',['../classkm_1_1KMedoids.html#a3145f9552f181042e786f350ca042a0c',1,'km::KMedoids']]]
 ];

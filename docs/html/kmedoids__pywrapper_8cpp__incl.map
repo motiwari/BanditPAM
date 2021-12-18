@@ -1,13 +1,19 @@
-<map id="/Users/dhavaldangaria/BanditPAM/src/kmedoids_pywrapper.cpp" name="/Users/dhavaldangaria/BanditPAM/src/kmedoids_pywrapper.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="155,5,329,61"/>
-<area shape="rect" id="node2" href="$kmedoids__ucb_8hpp_source.html" title=" " alt="" coords="175,109,309,136"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,184,76,211"/>
-<area shape="rect" id="node4" title=" " alt="" coords="100,184,176,211"/>
-<area shape="rect" id="node10" title=" " alt="" coords="333,109,476,136"/>
-<area shape="rect" id="node11" title=" " alt="" coords="500,109,629,136"/>
-<area shape="rect" id="node5" title=" " alt="" coords="559,184,618,211"/>
-<area shape="rect" id="node6" title=" " alt="" coords="201,184,267,211"/>
-<area shape="rect" id="node7" title=" " alt="" coords="292,184,365,211"/>
-<area shape="rect" id="node8" title=" " alt="" coords="389,184,452,211"/>
-<area shape="rect" id="node9" title=" " alt="" coords="477,184,535,211"/>
+<map id="/Users/motiwari/Desktop/BanditPAM/src/kmedoids_pywrapper.cpp" name="/Users/motiwari/Desktop/BanditPAM/src/kmedoids_pywrapper.cpp">
+<area shape="rect" id="node1" title=" " alt="" coords="273,5,446,61"/>
+<area shape="rect" id="node2" title=" " alt="" coords="191,184,250,211"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,259,81,285"/>
+<area shape="rect" id="node4" href="$kmedoids__algorithm_8hpp_source.html" title=" " alt="" coords="325,184,492,211"/>
+<area shape="rect" id="node15" href="$kmedoids__pywrapper_8hpp_source.html" title=" " alt="" coords="335,109,509,136"/>
+<area shape="rect" id="node16" title=" " alt="" coords="516,184,659,211"/>
+<area shape="rect" id="node17" title=" " alt="" coords="683,184,812,211"/>
+<area shape="rect" id="node5" title=" " alt="" coords="106,259,165,285"/>
+<area shape="rect" id="node6" title=" " alt="" coords="189,259,255,285"/>
+<area shape="rect" id="node7" title=" " alt="" coords="280,259,353,285"/>
+<area shape="rect" id="node8" title=" " alt="" coords="377,259,440,285"/>
+<area shape="rect" id="node9" title=" " alt="" coords="465,259,523,285"/>
+<area shape="rect" id="node10" title=" " alt="" coords="547,259,598,285"/>
+<area shape="rect" id="node11" title=" " alt="" coords="623,259,701,285"/>
+<area shape="rect" id="node12" title=" " alt="" coords="725,259,841,285"/>
+<area shape="rect" id="node13" title=" " alt="" coords="865,259,920,285"/>
+<area shape="rect" id="node14" title=" " alt="" coords="945,259,1003,285"/>
 </map>

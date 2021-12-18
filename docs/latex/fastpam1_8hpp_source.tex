@@ -1,0 +1,27 @@
+\hypertarget{fastpam1_8hpp_source}{}\doxysection{fastpam1.\+hpp}
+\label{fastpam1_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/fastpam1.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/fastpam1.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef HEADERS\_FASTPAM1\_HPP\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define HEADERS\_FASTPAM1\_HPP\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}kmedoids\_algorithm.hpp"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <armadillo>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <chrono>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <omp.h>}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classFastPAM1}{FastPAM1}} : \textcolor{keyword}{public} \mbox{\hyperlink{classkm_1_1KMedoids}{km::KMedoids}} \{}
+\DoxyCodeLine{21  \textcolor{keyword}{public}:}
+\DoxyCodeLine{28     \textcolor{keywordtype}{void} \mbox{\hyperlink{classFastPAM1_ad7237bd4d312a3c146d005b1e86dd1e4}{fit\_fastpam1}}(\textcolor{keyword}{const} arma::mat\& input\_data);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{40     \textcolor{keywordtype}{void} \mbox{\hyperlink{classFastPAM1_a622fffd8901d54d8f0ae29d1543c0f20}{build\_fastpam1}}(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, arma::urowvec\& medoid\_indices);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{56     \textcolor{keywordtype}{void} \mbox{\hyperlink{classFastPAM1_aae4c5eabb6d6e857b30731a4f2c54bb0}{swap\_fastpam1}}(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, arma::urowvec\& medoid\_indices, arma::urowvec\& assignments);}
+\DoxyCodeLine{57 \};}
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// HEADERS\_FASTPAM1\_HPP\_}}
+
+\end{DoxyCode}

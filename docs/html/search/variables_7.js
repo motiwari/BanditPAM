@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['max_5fiter_146',['max_iter',['../classKMedoids.html#a3f8f9d261e721749f14f30dacfe9aa03',1,'KMedoids']]],
-  ['medoid_5findices_5fbuild_147',['medoid_indices_build',['../classKMedoids.html#a604881068bc30237190db6fc73f2d0c7',1,'KMedoids']]],
-  ['medoid_5findices_5ffinal_148',['medoid_indices_final',['../classKMedoids.html#aac1178a6e7f0da5338efb94e49def9dd',1,'KMedoids']]]
+  ['steps_0',['steps',['../classkm_1_1KMedoids.html#a88969d67d5473d1e9dc4fc333234f9d2',1,'km::KMedoids']]],
+  ['swapconfidence_1',['swapConfidence',['../classkm_1_1KMedoids.html#a8f29b104f30ae18296d6024d53d899df',1,'km::KMedoids']]]
 ];

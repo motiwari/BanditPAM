@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['main_2ecpp_49',['main.cpp',['../main_8cpp.html',1,'']]],
-  ['manhattan_50',['manhattan',['../classKMedoids.html#ad59fdea6100cb2326510cd6352bcd322',1,'KMedoids']]],
-  ['max_5fiter_51',['max_iter',['../classKMedoids.html#a3f8f9d261e721749f14f30dacfe9aa03',1,'KMedoids']]],
-  ['medoid_5findices_5fbuild_52',['medoid_indices_build',['../classKMedoids.html#a604881068bc30237190db6fc73f2d0c7',1,'KMedoids']]],
-  ['medoid_5findices_5ffinal_53',['medoid_indices_final',['../classKMedoids.html#aac1178a6e7f0da5338efb94e49def9dd',1,'KMedoids']]]
+  ['pam_0',['PAM',['../classPAM.html',1,'']]],
+  ['pam_2ecpp_1',['pam.cpp',['../pam_8cpp.html',1,'']]],
+  ['precision_2',['precision',['../classkm_1_1KMedoids.html#a17d0a3d805cc5d3084ff5cf996b530cc',1,'km::KMedoids']]]
 ];

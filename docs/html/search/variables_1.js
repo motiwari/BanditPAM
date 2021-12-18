@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['batchsize_133',['batchSize',['../classKMedoids.html#abe265fbf9b607f20544b9b32e923a893',1,'KMedoids']]],
-  ['buildconfidence_134',['buildConfidence',['../classKMedoids.html#a75a5dc3ec625069a5fc98d133b2c22df',1,'KMedoids']]]
+  ['batchsize_0',['batchSize',['../classkm_1_1KMedoids.html#a016fb11aaa66ac25b1d072f370a5fab7',1,'km::KMedoids']]],
+  ['buildconfidence_1',['buildConfidence',['../classkm_1_1KMedoids.html#a068895dab1b234dae0b04c21e935a2cf',1,'km::KMedoids']]]
 ];

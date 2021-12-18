@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loghelper_81',['LogHelper',['../structLogHelper.html',1,'']]]
+  ['fastpam1_0',['FastPAM1',['../classFastPAM1.html',1,'']]]
 ];

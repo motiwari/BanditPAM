@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['calc_5fbest_5fdistances_5fswap_89',['calc_best_distances_swap',['../classKMedoids.html#a83f8605eb570f345553d75ff8674f137',1,'KMedoids']]],
-  ['calc_5floss_90',['calc_loss',['../classKMedoids.html#a4cf0d9c4ecebc5a4bd20a9441dbda711',1,'KMedoids']]],
-  ['checkalgorithm_91',['checkAlgorithm',['../classKMedoids.html#af5b9331755cd049afb05af8ecee3aeb5',1,'KMedoids']]],
-  ['close_92',['close',['../structLogHelper.html#a4624149f53c4577d0565f761c155d800',1,'LogHelper']]],
-  ['cos_93',['cos',['../classKMedoids.html#a56028b6ad37c2064aab129bcbf475816',1,'KMedoids']]]
+  ['calc_5fbest_5fdistances_5fswap_0',['calc_best_distances_swap',['../classkm_1_1KMedoids.html#a67edf8fc895cbb71be054fb95c918565',1,'km::KMedoids']]],
+  ['calc_5floss_1',['calc_loss',['../classkm_1_1KMedoids.html#a1c48caa21d790c2cebd0d9886b0d4111',1,'km::KMedoids']]],
+  ['checkalgorithm_2',['checkAlgorithm',['../classkm_1_1KMedoids.html#a4a9ac86ec0e9ae191ed6a9b0cd87b390',1,'km::KMedoids']]],
+  ['cos_3',['cos',['../classkm_1_1KMedoids.html#ab5e65b731aca5ee57db67465ccfc8a78',1,'km::KMedoids']]]
 ];

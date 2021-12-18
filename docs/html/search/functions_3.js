@@ -1,16 +1,17 @@
 var searchData=
 [
-  ['getalgorithm_98',['getAlgorithm',['../classKMedoids.html#a01a1bf63fdd2cd8b389c3f1c0619388f',1,'KMedoids']]],
-  ['getlabels_99',['getLabels',['../classKMedoids.html#a89474787892880381e4d0282de541d03',1,'KMedoids']]],
-  ['getlabelspython_100',['getLabelsPython',['../classKMedoidsWrapper.html#ae1da2fd6b272d0ddea14549cd18c2af8',1,'KMedoidsWrapper']]],
-  ['getlogfilename_101',['getLogfileName',['../classKMedoids.html#ad5982ef2a71cce9f1f45b98c55350391',1,'KMedoids']]],
-  ['getmaxiter_102',['getMaxIter',['../classKMedoids.html#ac0569206113015abb38954f78a194eb5',1,'KMedoids']]],
-  ['getmedoidsbuild_103',['getMedoidsBuild',['../classKMedoids.html#a54370d8d0f5c500f5deb859a9eab891c',1,'KMedoids']]],
-  ['getmedoidsbuildpython_104',['getMedoidsBuildPython',['../classKMedoidsWrapper.html#a02d6751e6c126a4aa25909d37011853d',1,'KMedoidsWrapper']]],
-  ['getmedoidsfinal_105',['getMedoidsFinal',['../classKMedoids.html#a26aa9827d2541626d959dc984f0f9bcb',1,'KMedoids']]],
-  ['getmedoidsfinalpython_106',['getMedoidsFinalPython',['../classKMedoidsWrapper.html#af24a4a55cc36ed02303e094c176427c3',1,'KMedoidsWrapper']]],
-  ['getnmedoids_107',['getNMedoids',['../classKMedoids.html#ad738dc6b5a2dafa1ff4aeab807d6407d',1,'KMedoids']]],
-  ['getsteps_108',['getSteps',['../classKMedoids.html#a2c8d55468ebe909229ea7bcdb50e8351',1,'KMedoids']]],
-  ['getstepspython_109',['getStepsPython',['../classKMedoidsWrapper.html#acfbcaf672bd1f1db1c00d35704341988',1,'KMedoidsWrapper']]],
-  ['getverbosity_110',['getVerbosity',['../classKMedoids.html#a8d5372adbed828602f9311dbe9c70198',1,'KMedoids']]]
+  ['getalgorithm_0',['getAlgorithm',['../classkm_1_1KMedoids.html#ac61ed3b6949c85beee32b5ac89b04e69',1,'km::KMedoids']]],
+  ['getbuildconfidence_1',['getbuildConfidence',['../classkm_1_1KMedoids.html#a4601172340297c9aa6c64b6dd437ebfe',1,'km::KMedoids']]],
+  ['getlabels_2',['getLabels',['../classkm_1_1KMedoids.html#afc3925e6c12dd7302b777fea6ea34f6b',1,'km::KMedoids']]],
+  ['getlabelspython_3',['getLabelsPython',['../classKMedoidsWrapper.html#ae06abf0305fe84eec0fa66278a448c5f',1,'KMedoidsWrapper']]],
+  ['getmaxiter_4',['getMaxIter',['../classkm_1_1KMedoids.html#a30e3d018e893d14323ccc713007677eb',1,'km::KMedoids']]],
+  ['getmedoidsbuild_5',['getMedoidsBuild',['../classkm_1_1KMedoids.html#a10a5a0a696f6fded3abd6ae95f880021',1,'km::KMedoids']]],
+  ['getmedoidsbuildpython_6',['getMedoidsBuildPython',['../classKMedoidsWrapper.html#a0979e5ecaf1f10adbccfe0a077f2f563',1,'KMedoidsWrapper']]],
+  ['getmedoidsfinal_7',['getMedoidsFinal',['../classkm_1_1KMedoids.html#a87e78dab85ac1401ea8d985eecdb3c4d',1,'km::KMedoids']]],
+  ['getmedoidsfinalpython_8',['getMedoidsFinalPython',['../classKMedoidsWrapper.html#a38a4684e55fd4d88d0799bbf28a157d1',1,'KMedoidsWrapper']]],
+  ['getnmedoids_9',['getNMedoids',['../classkm_1_1KMedoids.html#ac3064fb9c05547d6f5d3ac48811877f9',1,'km::KMedoids']]],
+  ['getsteps_10',['getSteps',['../classkm_1_1KMedoids.html#ad27740495edebaf17c3869f4b55d3320',1,'km::KMedoids']]],
+  ['getstepspython_11',['getStepsPython',['../classKMedoidsWrapper.html#acfbcaf672bd1f1db1c00d35704341988',1,'KMedoidsWrapper']]],
+  ['getswapconfidence_12',['getswapConfidence',['../classkm_1_1KMedoids.html#a51f21a00890e3a1ef460a2d0c94fb69f',1,'km::KMedoids']]],
+  ['getverbosity_13',['getVerbosity',['../classkm_1_1KMedoids.html#a18ee3582b5151506bca85341ebb66ae2',1,'km::KMedoids']]]
 ];

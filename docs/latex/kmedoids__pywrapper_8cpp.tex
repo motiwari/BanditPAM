@@ -1,8 +1,9 @@
-\hypertarget{kmedoids__pywrapper_8cpp}{}\doxysection{/\+Users/dhavaldangaria/\+Bandit\+PAM/src/kmedoids\+\_\+pywrapper.cpp File Reference}
-\label{kmedoids__pywrapper_8cpp}\index{/Users/dhavaldangaria/BanditPAM/src/kmedoids\_pywrapper.cpp@{/Users/dhavaldangaria/BanditPAM/src/kmedoids\_pywrapper.cpp}}
-{\ttfamily \#include \char`\"{}kmedoids\+\_\+ucb.\+hpp\char`\"{}}\newline
-{\ttfamily \#include $<$carma.\+h$>$}\newline
+\hypertarget{kmedoids__pywrapper_8cpp}{}\doxysection{/\+Users/motiwari/\+Desktop/\+Bandit\+PAM/src/kmedoids\+\_\+pywrapper.cpp File Reference}
+\label{kmedoids__pywrapper_8cpp}\index{/Users/motiwari/Desktop/BanditPAM/src/kmedoids\_pywrapper.cpp@{/Users/motiwari/Desktop/BanditPAM/src/kmedoids\_pywrapper.cpp}}
+{\ttfamily \#include $<$carma$>$}\newline
 {\ttfamily \#include $<$armadillo$>$}\newline
+{\ttfamily \#include \char`\"{}kmedoids\+\_\+algorithm.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}kmedoids\+\_\+pywrapper.\+hpp\char`\"{}}\newline
 {\ttfamily \#include $<$pybind11/pybind11.\+h$>$}\newline
 {\ttfamily \#include $<$pybind11/numpy.\+h$>$}\newline
 Include dependency graph for kmedoids\+\_\+pywrapper.\+cpp\+:
@@ -13,11 +14,6 @@ Include dependency graph for kmedoids\+\_\+pywrapper.\+cpp\+:
 \includegraphics[width=350pt]{kmedoids__pywrapper_8cpp__incl}
 \end{center}
 \end{figure}
-\doxysubsection*{Classes}
-\begin{DoxyCompactItemize}
-\item 
-class \mbox{\hyperlink{classKMedoidsWrapper}{KMedoids\+Wrapper}}
-\begin{DoxyCompactList}\small\item\em Python wrapper for \mbox{\hyperlink{classKMedoids}{KMedoids}} class. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -30,10 +26,8 @@ class \mbox{\hyperlink{classKMedoidsWrapper}{KMedoids\+Wrapper}}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-int \mbox{\hyperlink{kmedoids__pywrapper_8cpp_ae25f9b5575ca65b090cd8c9fdef5814c}{sum\+\_\+thread\+\_\+ids}} ()
-\begin{DoxyCompactList}\small\item\em Never meant to be called; a debugging function. Sums to IDs of all available threads. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{kmedoids__pywrapper_8cpp_a66c5e3323d71e29a0a148bec731ac27b}\label{kmedoids__pywrapper_8cpp_a66c5e3323d71e29a0a148bec731ac27b}} 
-{\bfseries PYBIND11\+\_\+\+MODULE} (Bandit\+PAM, m)
+\mbox{\Hypertarget{kmedoids__pywrapper_8cpp_a5560ecc481be83d23eb47b26293e52d9}\label{kmedoids__pywrapper_8cpp_a5560ecc481be83d23eb47b26293e52d9}} 
+{\bfseries PYBIND11\+\_\+\+MODULE} (banditpam, m)
 \end{DoxyCompactItemize}
 
 
@@ -42,18 +36,3 @@ int \mbox{\hyperlink{kmedoids__pywrapper_8cpp_ae25f9b5575ca65b090cd8c9fdef5814c}
 2020-\/06-\/10
 \end{DoxyDate}
 Creates the Python bindings for the C++ code that allows it to be called in Python. 
-
-\doxysubsection{Function Documentation}
-\mbox{\Hypertarget{kmedoids__pywrapper_8cpp_ae25f9b5575ca65b090cd8c9fdef5814c}\label{kmedoids__pywrapper_8cpp_ae25f9b5575ca65b090cd8c9fdef5814c}} 
-\index{kmedoids\_pywrapper.cpp@{kmedoids\_pywrapper.cpp}!sum\_thread\_ids@{sum\_thread\_ids}}
-\index{sum\_thread\_ids@{sum\_thread\_ids}!kmedoids\_pywrapper.cpp@{kmedoids\_pywrapper.cpp}}
-\doxysubsubsection{\texorpdfstring{sum\_thread\_ids()}{sum\_thread\_ids()}}
-{\footnotesize\ttfamily int sum\+\_\+thread\+\_\+ids (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-
-
-Never meant to be called; a debugging function. Sums to IDs of all available threads. 
-
-\begin{DoxyReturn}{Returns}
-int\+: the n-\/th triangular number, where n is the number of threads 
-\end{DoxyReturn}

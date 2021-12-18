@@ -1,0 +1,654 @@
+\hypertarget{classkm_1_1KMedoids}{}\doxysection{km\+::KMedoids Class Reference}
+\label{classkm_1_1KMedoids}\index{km::KMedoids@{km::KMedoids}}
+
+
+Class implementation for running \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} methods.  
+
+
+
+
+{\ttfamily \#include $<$kmedoids\+\_\+algorithm.\+hpp$>$}
+
+
+
+Inheritance diagram for km\+::KMedoids\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classkm_1_1KMedoids__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classkm_1_1KMedoids_ad8223737ca28d3eb65611a0a7e05e719}{KMedoids}} (size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_a7d8a592e525c919e2b124085b99b5400}{n\+\_\+medoids}}=5, const std\+::string \&\mbox{\hyperlink{classkm_1_1KMedoids_ae444145a3bc114dd28a6c094fcfdf827}{algorithm}}=\char`\"{}Bandit\+PAM\char`\"{}, size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_a3145f9552f181042e786f350ca042a0c}{verbosity}}=0, size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_af7c457dbb6c4c836b72624c9720aa8cb}{max\+\_\+iter}}=1000, size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_a068895dab1b234dae0b04c21e935a2cf}{build\+Confidence}}=1000, size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_a8f29b104f30ae18296d6024d53d899df}{swap\+Confidence}}=10000)
+\begin{DoxyCompactList}\small\item\em Class implementation for running \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} methods. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classkm_1_1KMedoids_a95542daf31e84a3e739731a7786b3655}{$\sim$\+KMedoids}} ()
+\begin{DoxyCompactList}\small\item\em Destroys \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} object. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{fit}} (const arma\+::mat \&input\+Data, const std\+::string \&loss)
+\begin{DoxyCompactList}\small\item\em Finds medoids for the input data under identified loss function. \end{DoxyCompactList}\item 
+arma\+::urowvec \mbox{\hyperlink{classkm_1_1KMedoids_a87e78dab85ac1401ea8d985eecdb3c4d}{get\+Medoids\+Final}} ()
+\begin{DoxyCompactList}\small\item\em Returns the final medoids. \end{DoxyCompactList}\item 
+arma\+::urowvec \mbox{\hyperlink{classkm_1_1KMedoids_a10a5a0a696f6fded3abd6ae95f880021}{get\+Medoids\+Build}} ()
+\begin{DoxyCompactList}\small\item\em Returns the build medoids. \end{DoxyCompactList}\item 
+arma\+::urowvec \mbox{\hyperlink{classkm_1_1KMedoids_afc3925e6c12dd7302b777fea6ea34f6b}{get\+Labels}} ()
+\begin{DoxyCompactList}\small\item\em Returns the medoid assignments for each datapoint. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_ad27740495edebaf17c3869f4b55d3320}{get\+Steps}} ()
+\begin{DoxyCompactList}\small\item\em Returns the number of swap steps. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_ac3064fb9c05547d6f5d3ac48811877f9}{get\+NMedoids}} ()
+\begin{DoxyCompactList}\small\item\em Returns the number of medoids. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classkm_1_1KMedoids_a0c43b66114a5c7ea104027f408cef110}{set\+NMedoids}} (size\+\_\+t new\+\_\+num)
+\begin{DoxyCompactList}\small\item\em Sets the number of medoids. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classkm_1_1KMedoids_ac61ed3b6949c85beee32b5ac89b04e69}{get\+Algorithm}} ()
+\begin{DoxyCompactList}\small\item\em Returns the algorithm for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classkm_1_1KMedoids_aba765d2e27af9d85b7eaf05699cee4a4}{set\+Algorithm}} (const std\+::string \&new\+\_\+alg)
+\begin{DoxyCompactList}\small\item\em Sets the algorithm for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_a18ee3582b5151506bca85341ebb66ae2}{get\+Verbosity}} ()
+\begin{DoxyCompactList}\small\item\em Returns the verbosity for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classkm_1_1KMedoids_a78a3340bb956d8295f70849910afc4f8}{set\+Verbosity}} (size\+\_\+t new\+\_\+ver)
+\begin{DoxyCompactList}\small\item\em Sets the verbosity for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_a30e3d018e893d14323ccc713007677eb}{get\+Max\+Iter}} ()
+\begin{DoxyCompactList}\small\item\em Returns the maximum number of iterations for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classkm_1_1KMedoids_a3a742098e57ded57fd606e08e0d315f0}{set\+Max\+Iter}} (size\+\_\+t new\+\_\+max)
+\begin{DoxyCompactList}\small\item\em Sets the maximum number of iterations for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_a4601172340297c9aa6c64b6dd437ebfe}{getbuild\+Confidence}} ()
+\begin{DoxyCompactList}\small\item\em Returns the constant build\+Confidence. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classkm_1_1KMedoids_aca6efb798341eda10f94f7e7357d81f9}{setbuild\+Confidence}} (size\+\_\+t new\+\_\+build\+Confidence)
+\begin{DoxyCompactList}\small\item\em Sets the constant build\+Confidence. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{classkm_1_1KMedoids_a51f21a00890e3a1ef460a2d0c94fb69f}{getswap\+Confidence}} ()
+\begin{DoxyCompactList}\small\item\em Returns the constant swap\+Confidence. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classkm_1_1KMedoids_acfd4e8a8696c6db5ec1d7c7682955e76}{setswap\+Confidence}} (size\+\_\+t new\+\_\+swap\+Confidence)
+\begin{DoxyCompactList}\small\item\em Sets the constant swap\+Confidence. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classkm_1_1KMedoids_ab0c41b1a22079045c0d3ea4a9bb408af}{set\+Loss\+Fn}} (std\+::string loss)
+\begin{DoxyCompactList}\small\item\em Sets the loss function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_afef3fcd749d67ee223fd173d03a46af5}\label{classkm_1_1KMedoids_afef3fcd749d67ee223fd173d03a46af5}} 
+size\+\_\+t {\bfseries cache\+\_\+multiplier} = 1000
+\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_aaf5999794e1e6a9cf7587b45af7965d4}\label{classkm_1_1KMedoids_aaf5999794e1e6a9cf7587b45af7965d4}} 
+float $\ast$ {\bfseries cache}
+\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a46b93a3254181304f495ae4afd38c926}\label{classkm_1_1KMedoids_a46b93a3254181304f495ae4afd38c926}} 
+arma\+::uvec {\bfseries permutation}
+\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_ab61cd26a588c5eabf8e3422c1018aa8d}\label{classkm_1_1KMedoids_ab61cd26a588c5eabf8e3422c1018aa8d}} 
+size\+\_\+t {\bfseries permutation\+\_\+idx}
+\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_aab55aa7e43d9680645eb4c6c429440a6}\label{classkm_1_1KMedoids_aab55aa7e43d9680645eb4c6c429440a6}} 
+std\+::unordered\+\_\+map$<$ size\+\_\+t, size\+\_\+t $>$ {\bfseries reindex}
+\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_ae2041c73d811dfe6f152b36e81c6e632}\label{classkm_1_1KMedoids_ae2041c73d811dfe6f152b36e81c6e632}} 
+bool {\bfseries use\+\_\+perm} = true
+\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_adacf668171943d8431a1fb8f42b2e383}\label{classkm_1_1KMedoids_adacf668171943d8431a1fb8f42b2e383}} 
+bool {\bfseries use\+\_\+cache\+\_\+p} = true
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+arma\+::rowvec \mbox{\hyperlink{classkm_1_1KMedoids_ac1969258393c29f860a4ed47536ce019}{build\+\_\+sigma}} (const arma\+::mat \&\mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, arma\+::rowvec \&best\+\_\+distances, arma\+::uword batch\+\_\+size, bool use\+\_\+absolute)
+\begin{DoxyCompactList}\small\item\em Calculates confidence intervals in build step. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classkm_1_1KMedoids_a67edf8fc895cbb71be054fb95c918565}{calc\+\_\+best\+\_\+distances\+\_\+swap}} (const arma\+::mat \&\mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, arma\+::urowvec \&medoid\+Indices, arma\+::rowvec \&best\+\_\+distances, arma\+::rowvec \&second\+\_\+distances, arma\+::urowvec \&assignments)
+\begin{DoxyCompactList}\small\item\em Calculates distances in swap step. \end{DoxyCompactList}\item 
+arma\+::mat \mbox{\hyperlink{classkm_1_1KMedoids_a87fea4440d2f3a1948afea492cb85159}{swap\+\_\+sigma}} (const arma\+::mat \&\mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, size\+\_\+t batch\+\_\+size, arma\+::rowvec \&best\+\_\+distances, arma\+::rowvec \&second\+\_\+best\+\_\+distances, arma\+::urowvec \&assignments)
+\begin{DoxyCompactList}\small\item\em Calculates confidence intervals in swap step. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classkm_1_1KMedoids_a1c48caa21d790c2cebd0d9886b0d4111}{calc\+\_\+loss}} (const arma\+::mat \&\mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, arma\+::urowvec \&medoid\+Indices)
+\begin{DoxyCompactList}\small\item\em Calculate loss for medoids. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a405148fdad32b62725ad9f9140c611b7}\label{classkm_1_1KMedoids_a405148fdad32b62725ad9f9140c611b7}} 
+double {\bfseries cached\+Loss} (const arma\+::mat \&\mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, size\+\_\+t i, size\+\_\+t j, bool use\+\_\+cache=true)
+\item 
+double \mbox{\hyperlink{classkm_1_1KMedoids_a0b8bb9fd23956e25b4f0f4849183ba91}{LP}} (const arma\+::mat \&\mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, size\+\_\+t i, size\+\_\+t j) const
+\begin{DoxyCompactList}\small\item\em LP loss. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classkm_1_1KMedoids_a173f39c684caa33e35f910497e78a165}{LINF}} (const arma\+::mat \&\mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, size\+\_\+t i, size\+\_\+t j) const
+\begin{DoxyCompactList}\small\item\em L\+\_\+\+INFINITY loss. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classkm_1_1KMedoids_ab5e65b731aca5ee57db67465ccfc8a78}{cos}} (const arma\+::mat \&\mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, size\+\_\+t i, size\+\_\+t j) const
+\begin{DoxyCompactList}\small\item\em cos loss \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{classkm_1_1KMedoids_a9f3affb3e61235f7aae5f136ab4dfae5}{manhattan}} (const arma\+::mat \&\mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, size\+\_\+t i, size\+\_\+t j) const
+\begin{DoxyCompactList}\small\item\em Manhattan loss. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classkm_1_1KMedoids_a4a9ac86ec0e9ae191ed6a9b0cd87b390}{check\+Algorithm}} (const std\+::string \&\mbox{\hyperlink{classkm_1_1KMedoids_ae444145a3bc114dd28a6c094fcfdf827}{algorithm}})
+\begin{DoxyCompactList}\small\item\em Checks whether algorithm input is valid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_aac643b12f690a1c17d75cb13237995fa}\label{classkm_1_1KMedoids_aac643b12f690a1c17d75cb13237995fa}} 
+size\+\_\+t {\bfseries lp}
+\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a7d8a592e525c919e2b124085b99b5400}\label{classkm_1_1KMedoids_a7d8a592e525c919e2b124085b99b5400}} 
+size\+\_\+t {\bfseries n\+\_\+medoids}
+\begin{DoxyCompactList}\small\item\em number of medoids identified for a given dataset \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_ae444145a3bc114dd28a6c094fcfdf827}\label{classkm_1_1KMedoids_ae444145a3bc114dd28a6c094fcfdf827}} 
+std\+::string {\bfseries algorithm}
+\begin{DoxyCompactList}\small\item\em options\+: \char`\"{}naive\char`\"{} and \char`\"{}\+Bandit\+PAM\char`\"{} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_af7c457dbb6c4c836b72624c9720aa8cb}\label{classkm_1_1KMedoids_af7c457dbb6c4c836b72624c9720aa8cb}} 
+size\+\_\+t {\bfseries max\+\_\+iter}
+\begin{DoxyCompactList}\small\item\em maximum number of iterations during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{KMedoids\+::fit}} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}\label{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}} 
+arma\+::mat {\bfseries data}
+\begin{DoxyCompactList}\small\item\em input data used during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{KMedoids\+::fit}} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a1179ba0198699e438436ad3724d78ab3}\label{classkm_1_1KMedoids_a1179ba0198699e438436ad3724d78ab3}} 
+arma\+::urowvec {\bfseries labels}
+\begin{DoxyCompactList}\small\item\em assignments of each datapoint to its medoid \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_abc406948ac96646449a8a49ee2dac60c}\label{classkm_1_1KMedoids_abc406948ac96646449a8a49ee2dac60c}} 
+arma\+::urowvec {\bfseries medoid\+\_\+indices\+\_\+build}
+\begin{DoxyCompactList}\small\item\em medoids at the end of build step \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_ae2f54264348a90f2c4c11aae05fca06e}\label{classkm_1_1KMedoids_ae2f54264348a90f2c4c11aae05fca06e}} 
+arma\+::urowvec {\bfseries medoid\+\_\+indices\+\_\+final}
+\begin{DoxyCompactList}\small\item\em medoids at the end of the swap step \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a70d66a74b16ce7440eaec676bf76ab91}\label{classkm_1_1KMedoids_a70d66a74b16ce7440eaec676bf76ab91}} 
+double(KMedoids\+::$\ast$ {\bfseries loss\+Fn} )(const arma\+::mat \&\mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, size\+\_\+t i, size\+\_\+t j) const
+\begin{DoxyCompactList}\small\item\em loss function used during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{KMedoids\+::fit}} \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a88969d67d5473d1e9dc4fc333234f9d2}\label{classkm_1_1KMedoids_a88969d67d5473d1e9dc4fc333234f9d2}} 
+size\+\_\+t {\bfseries steps}
+\begin{DoxyCompactList}\small\item\em number of actual swap iterations taken by the algorithm \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a068895dab1b234dae0b04c21e935a2cf}\label{classkm_1_1KMedoids_a068895dab1b234dae0b04c21e935a2cf}} 
+size\+\_\+t {\bfseries build\+Confidence}
+\begin{DoxyCompactList}\small\item\em constant that affects the sensitivity of build confidence bounds \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a8f29b104f30ae18296d6024d53d899df}\label{classkm_1_1KMedoids_a8f29b104f30ae18296d6024d53d899df}} 
+size\+\_\+t {\bfseries swap\+Confidence}
+\begin{DoxyCompactList}\small\item\em constant that affects the sensitiviy of swap confidence bounds \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a17d0a3d805cc5d3084ff5cf996b530cc}\label{classkm_1_1KMedoids_a17d0a3d805cc5d3084ff5cf996b530cc}} 
+const double {\bfseries precision} = 0.\+001
+\begin{DoxyCompactList}\small\item\em bound for double comparison precision \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a016fb11aaa66ac25b1d072f370a5fab7}\label{classkm_1_1KMedoids_a016fb11aaa66ac25b1d072f370a5fab7}} 
+size\+\_\+t {\bfseries batch\+Size} = 100
+\begin{DoxyCompactList}\small\item\em batch size for computation steps \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classkm_1_1KMedoids_a3145f9552f181042e786f350ca042a0c}\label{classkm_1_1KMedoids_a3145f9552f181042e786f350ca042a0c}} 
+size\+\_\+t {\bfseries verbosity}
+\begin{DoxyCompactList}\small\item\em determines whether \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{KMedoids\+::fit}} outputs a logfile \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class implementation for running \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} methods. 
+
+\mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} class. Creates a \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} object that can be used to find the medoids for a particular set of input data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n\+\_\+medoids} & Number of medoids/clusters to create \\
+\hline
+{\em algorithm} & Algorithm used to find medoids; options are \char`\"{}\+Bandit\+PAM\char`\"{} for the \char`\"{}\+Bandit\+PAM\char`\"{} algorithm, or \char`\"{}naive\char`\"{} to use \mbox{\hyperlink{classPAM}{PAM}} \\
+\hline
+{\em verbosity} & Verbosity of the algorithm, 0 will have no log file, 1 will create a log file \\
+\hline
+{\em max\+\_\+iter} & The maximum number of iterations the algorithm runs for \\
+\hline
+{\em build\+Confidence} & Constant that affects the sensitivity of build confidence bounds \\
+\hline
+{\em swap\+Confidence} & Constant that affects the sensitiviy of swap confidence bounds \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classkm_1_1KMedoids_ad8223737ca28d3eb65611a0a7e05e719}\label{classkm_1_1KMedoids_ad8223737ca28d3eb65611a0a7e05e719}} 
+\index{km::KMedoids@{km::KMedoids}!KMedoids@{KMedoids}}
+\index{KMedoids@{KMedoids}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{KMedoids()}{KMedoids()}}
+{\footnotesize\ttfamily km\+::\+KMedoids\+::\+KMedoids (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{n\+\_\+medoids = {\ttfamily 5},  }\item[{const std\+::string \&}]{algorithm = {\ttfamily \char`\"{}BanditPAM\char`\"{}},  }\item[{size\+\_\+t}]{verbosity = {\ttfamily 0},  }\item[{size\+\_\+t}]{max\+\_\+iter = {\ttfamily 1000},  }\item[{size\+\_\+t}]{build\+Confidence = {\ttfamily 1000},  }\item[{size\+\_\+t}]{swap\+Confidence = {\ttfamily 10000} }\end{DoxyParamCaption})}
+
+
+
+Class implementation for running \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} methods. 
+
+\mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} class. Creates a \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} object that can be used to find the medoids for a particular set of input data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n\+\_\+medoids} & Number of medoids/clusters to create \\
+\hline
+{\em algorithm} & Algorithm used to find medoids; options are \char`\"{}\+Bandit\+PAM\char`\"{} or \char`\"{}naive\char`\"{} to use \mbox{\hyperlink{classPAM}{PAM}} \\
+\hline
+{\em verbosity} & Verbosity of the algorithm, 0 will have no log file emitted, 1 will emit a log file \\
+\hline
+{\em max\+\_\+iter} & The maximum number of iterations the algorithm runs for \\
+\hline
+{\em build\+Confidence} & Constant that affects the sensitivity of build confidence bounds \\
+\hline
+{\em swap\+Confidence} & Constant that affects the sensitiviy of swap confidence bounds \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_a95542daf31e84a3e739731a7786b3655}\label{classkm_1_1KMedoids_a95542daf31e84a3e739731a7786b3655}} 
+\index{km::KMedoids@{km::KMedoids}!````~KMedoids@{$\sim$KMedoids}}
+\index{````~KMedoids@{$\sim$KMedoids}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{$\sim$KMedoids()}{~KMedoids()}}
+{\footnotesize\ttfamily km\+::\+KMedoids\+::$\sim$\+KMedoids (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Destroys \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} object. 
+
+Destructor for the \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} class. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classkm_1_1KMedoids_ac1969258393c29f860a4ed47536ce019}\label{classkm_1_1KMedoids_ac1969258393c29f860a4ed47536ce019}} 
+\index{km::KMedoids@{km::KMedoids}!build\_sigma@{build\_sigma}}
+\index{build\_sigma@{build\_sigma}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{build\_sigma()}{build\_sigma()}}
+{\footnotesize\ttfamily arma\+::rowvec km\+::\+KMedoids\+::build\+\_\+sigma (\begin{DoxyParamCaption}\item[{const arma\+::mat \&}]{data,  }\item[{arma\+::rowvec \&}]{best\+\_\+distances,  }\item[{arma\+::uword}]{batch\+\_\+size,  }\item[{bool}]{use\+\_\+absolute }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Calculates confidence intervals in build step. 
+
+Calculates the confidence intervals about the reward for each arm
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Transposed input data to find the medoids of \\
+\hline
+{\em batch\+\_\+size} & Number of datapoints sampled for updating confidence intervals \\
+\hline
+{\em best\+\_\+distances} & Array of best distances from each point to previous set of medoids \\
+\hline
+{\em use\+\_\+aboslute} & Determines whether the absolute cost is added to the total \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_a67edf8fc895cbb71be054fb95c918565}\label{classkm_1_1KMedoids_a67edf8fc895cbb71be054fb95c918565}} 
+\index{km::KMedoids@{km::KMedoids}!calc\_best\_distances\_swap@{calc\_best\_distances\_swap}}
+\index{calc\_best\_distances\_swap@{calc\_best\_distances\_swap}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{calc\_best\_distances\_swap()}{calc\_best\_distances\_swap()}}
+{\footnotesize\ttfamily void km\+::\+KMedoids\+::calc\+\_\+best\+\_\+distances\+\_\+swap (\begin{DoxyParamCaption}\item[{const arma\+::mat \&}]{data,  }\item[{arma\+::urowvec \&}]{medoid\+\_\+indices,  }\item[{arma\+::rowvec \&}]{best\+\_\+distances,  }\item[{arma\+::rowvec \&}]{second\+\_\+distances,  }\item[{arma\+::urowvec \&}]{assignments }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Calculates distances in swap step. 
+
+Calculates the best and second best distances for each datapoint to one of the medoids in the current medoid set.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Transposed input data to find the medoids of \\
+\hline
+{\em medoid\+\_\+indices} & Array of medoid indices corresponding to dataset entries \\
+\hline
+{\em best\+\_\+distances} & Array of best distances from each point to previous set of medoids \\
+\hline
+{\em second\+\_\+best\+\_\+distances} & Array of second smallest distances from each point to previous set of medoids \\
+\hline
+{\em assignments} & Assignments of datapoints to their closest medoid \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_a1c48caa21d790c2cebd0d9886b0d4111}\label{classkm_1_1KMedoids_a1c48caa21d790c2cebd0d9886b0d4111}} 
+\index{km::KMedoids@{km::KMedoids}!calc\_loss@{calc\_loss}}
+\index{calc\_loss@{calc\_loss}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{calc\_loss()}{calc\_loss()}}
+{\footnotesize\ttfamily double km\+::\+KMedoids\+::calc\+\_\+loss (\begin{DoxyParamCaption}\item[{const arma\+::mat \&}]{data,  }\item[{arma\+::urowvec \&}]{medoid\+\_\+indices }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Calculate loss for medoids. 
+
+Calculates the loss under the previously identified loss function of the medoid indices.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Transposed input data to find the medoids of \\
+\hline
+{\em medoid\+\_\+indices} & Indices of the medoids in the dataset. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_a4a9ac86ec0e9ae191ed6a9b0cd87b390}\label{classkm_1_1KMedoids_a4a9ac86ec0e9ae191ed6a9b0cd87b390}} 
+\index{km::KMedoids@{km::KMedoids}!checkAlgorithm@{checkAlgorithm}}
+\index{checkAlgorithm@{checkAlgorithm}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{checkAlgorithm()}{checkAlgorithm()}}
+{\footnotesize\ttfamily void km\+::\+KMedoids\+::check\+Algorithm (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{algorithm }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Checks whether algorithm input is valid. 
+
+Checks whether the user\textquotesingle{}s selected algorithm is a valid option.
+
+
+\begin{DoxyParams}{Parameters}
+{\em algorithm} & Name of the algorithm input by the user. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_ab5e65b731aca5ee57db67465ccfc8a78}\label{classkm_1_1KMedoids_ab5e65b731aca5ee57db67465ccfc8a78}} 
+\index{km::KMedoids@{km::KMedoids}!cos@{cos}}
+\index{cos@{cos}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{cos()}{cos()}}
+{\footnotesize\ttfamily double km\+::\+KMedoids\+::cos (\begin{DoxyParamCaption}\item[{const arma\+::mat \&}]{data,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+cos loss 
+
+Calculates the cosine loss between the datapoints at index i and j of the dataset
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Transposed input data to find the medoids of \\
+\hline
+{\em i} & Index of first datapoint \\
+\hline
+{\em j} & Index of second datapoint \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}\label{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}} 
+\index{km::KMedoids@{km::KMedoids}!fit@{fit}}
+\index{fit@{fit}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{fit()}{fit()}}
+{\footnotesize\ttfamily void km\+::\+KMedoids\+::fit (\begin{DoxyParamCaption}\item[{const arma\+::mat \&}]{input\+\_\+data,  }\item[{const std\+::string \&}]{loss }\end{DoxyParamCaption})}
+
+
+
+Finds medoids for the input data under identified loss function. 
+
+Primary function of the \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} class. Identifies medoids for input dataset after both the SWAP and BUILD steps, and outputs logs if verbosity is \texorpdfstring{$>$}{>}0
+
+
+\begin{DoxyParams}{Parameters}
+{\em input\+\_\+data} & Input data to find the medoids of \\
+\hline
+{\em loss} & The loss function used during medoid computation \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_ac61ed3b6949c85beee32b5ac89b04e69}\label{classkm_1_1KMedoids_ac61ed3b6949c85beee32b5ac89b04e69}} 
+\index{km::KMedoids@{km::KMedoids}!getAlgorithm@{getAlgorithm}}
+\index{getAlgorithm@{getAlgorithm}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{getAlgorithm()}{getAlgorithm()}}
+{\footnotesize\ttfamily std\+::string km\+::\+KMedoids\+::get\+Algorithm (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the algorithm for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. 
+
+Returns the algorithm used for identifying the medoids during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}} \mbox{\Hypertarget{classkm_1_1KMedoids_a4601172340297c9aa6c64b6dd437ebfe}\label{classkm_1_1KMedoids_a4601172340297c9aa6c64b6dd437ebfe}} 
+\index{km::KMedoids@{km::KMedoids}!getbuildConfidence@{getbuildConfidence}}
+\index{getbuildConfidence@{getbuildConfidence}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{getbuildConfidence()}{getbuildConfidence()}}
+{\footnotesize\ttfamily size\+\_\+t km\+::\+KMedoids\+::getbuild\+Confidence (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the constant build\+Confidence. 
+
+Returns the constant that affects the sensitivity of build confidence bounds that can be run during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}} \mbox{\Hypertarget{classkm_1_1KMedoids_afc3925e6c12dd7302b777fea6ea34f6b}\label{classkm_1_1KMedoids_afc3925e6c12dd7302b777fea6ea34f6b}} 
+\index{km::KMedoids@{km::KMedoids}!getLabels@{getLabels}}
+\index{getLabels@{getLabels}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{getLabels()}{getLabels()}}
+{\footnotesize\ttfamily arma\+::urowvec km\+::\+KMedoids\+::get\+Labels (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the medoid assignments for each datapoint. 
+
+Returns the medoid each input datapoint is assigned to after \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}} has been called and the final medoids have been identified \mbox{\Hypertarget{classkm_1_1KMedoids_a30e3d018e893d14323ccc713007677eb}\label{classkm_1_1KMedoids_a30e3d018e893d14323ccc713007677eb}} 
+\index{km::KMedoids@{km::KMedoids}!getMaxIter@{getMaxIter}}
+\index{getMaxIter@{getMaxIter}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{getMaxIter()}{getMaxIter()}}
+{\footnotesize\ttfamily size\+\_\+t km\+::\+KMedoids\+::get\+Max\+Iter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the maximum number of iterations for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. 
+
+Returns the maximum number of iterations that can be run during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}} \mbox{\Hypertarget{classkm_1_1KMedoids_a10a5a0a696f6fded3abd6ae95f880021}\label{classkm_1_1KMedoids_a10a5a0a696f6fded3abd6ae95f880021}} 
+\index{km::KMedoids@{km::KMedoids}!getMedoidsBuild@{getMedoidsBuild}}
+\index{getMedoidsBuild@{getMedoidsBuild}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{getMedoidsBuild()}{getMedoidsBuild()}}
+{\footnotesize\ttfamily arma\+::urowvec km\+::\+KMedoids\+::get\+Medoids\+Build (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the build medoids. 
+
+Returns the build medoids at the end of the BUILD step after \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}} has been called. \mbox{\Hypertarget{classkm_1_1KMedoids_a87e78dab85ac1401ea8d985eecdb3c4d}\label{classkm_1_1KMedoids_a87e78dab85ac1401ea8d985eecdb3c4d}} 
+\index{km::KMedoids@{km::KMedoids}!getMedoidsFinal@{getMedoidsFinal}}
+\index{getMedoidsFinal@{getMedoidsFinal}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{getMedoidsFinal()}{getMedoidsFinal()}}
+{\footnotesize\ttfamily arma\+::urowvec km\+::\+KMedoids\+::get\+Medoids\+Final (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the final medoids. 
+
+Returns the final medoids at the end of the SWAP step after \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}} has been called. \mbox{\Hypertarget{classkm_1_1KMedoids_ac3064fb9c05547d6f5d3ac48811877f9}\label{classkm_1_1KMedoids_ac3064fb9c05547d6f5d3ac48811877f9}} 
+\index{km::KMedoids@{km::KMedoids}!getNMedoids@{getNMedoids}}
+\index{getNMedoids@{getNMedoids}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{getNMedoids()}{getNMedoids()}}
+{\footnotesize\ttfamily size\+\_\+t km\+::\+KMedoids\+::get\+NMedoids (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the number of medoids. 
+
+Returns the number of medoids to be identified during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}} \mbox{\Hypertarget{classkm_1_1KMedoids_ad27740495edebaf17c3869f4b55d3320}\label{classkm_1_1KMedoids_ad27740495edebaf17c3869f4b55d3320}} 
+\index{km::KMedoids@{km::KMedoids}!getSteps@{getSteps}}
+\index{getSteps@{getSteps}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{getSteps()}{getSteps()}}
+{\footnotesize\ttfamily size\+\_\+t km\+::\+KMedoids\+::get\+Steps (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the number of swap steps. 
+
+Returns the number of SWAP steps completed during the last call to \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}} \mbox{\Hypertarget{classkm_1_1KMedoids_a51f21a00890e3a1ef460a2d0c94fb69f}\label{classkm_1_1KMedoids_a51f21a00890e3a1ef460a2d0c94fb69f}} 
+\index{km::KMedoids@{km::KMedoids}!getswapConfidence@{getswapConfidence}}
+\index{getswapConfidence@{getswapConfidence}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{getswapConfidence()}{getswapConfidence()}}
+{\footnotesize\ttfamily size\+\_\+t km\+::\+KMedoids\+::getswap\+Confidence (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the constant swap\+Confidence. 
+
+Returns the constant that affects the sensitivity of swap confidence bounds that can be run during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}} \mbox{\Hypertarget{classkm_1_1KMedoids_a18ee3582b5151506bca85341ebb66ae2}\label{classkm_1_1KMedoids_a18ee3582b5151506bca85341ebb66ae2}} 
+\index{km::KMedoids@{km::KMedoids}!getVerbosity@{getVerbosity}}
+\index{getVerbosity@{getVerbosity}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{getVerbosity()}{getVerbosity()}}
+{\footnotesize\ttfamily size\+\_\+t km\+::\+KMedoids\+::get\+Verbosity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the verbosity for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. 
+
+Returns the verbosity used during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}}, with 0 not creating a logfile, and \texorpdfstring{$>$}{>}0 creating a detailed logfile. \mbox{\Hypertarget{classkm_1_1KMedoids_a173f39c684caa33e35f910497e78a165}\label{classkm_1_1KMedoids_a173f39c684caa33e35f910497e78a165}} 
+\index{km::KMedoids@{km::KMedoids}!LINF@{LINF}}
+\index{LINF@{LINF}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{LINF()}{LINF()}}
+{\footnotesize\ttfamily double km\+::\+KMedoids\+::\+LINF (\begin{DoxyParamCaption}\item[{const arma\+::mat \&}]{data,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+L\+\_\+\+INFINITY loss. 
+
+Calculates the Manhattan loss between the datapoints at index i and j of the dataset
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Transposed input data to find the medoids of \\
+\hline
+{\em i} & Index of first datapoint \\
+\hline
+{\em j} & Index of second datapoint \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_a0b8bb9fd23956e25b4f0f4849183ba91}\label{classkm_1_1KMedoids_a0b8bb9fd23956e25b4f0f4849183ba91}} 
+\index{km::KMedoids@{km::KMedoids}!LP@{LP}}
+\index{LP@{LP}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{LP()}{LP()}}
+{\footnotesize\ttfamily double km\+::\+KMedoids\+::\+LP (\begin{DoxyParamCaption}\item[{const arma\+::mat \&}]{data,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+LP loss. 
+
+Calculates the LP loss between the datapoints at index i and j of the dataset
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Transposed input data to find the medoids of \\
+\hline
+{\em i} & Index of first datapoint \\
+\hline
+{\em j} & Index of second datapoint \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_a9f3affb3e61235f7aae5f136ab4dfae5}\label{classkm_1_1KMedoids_a9f3affb3e61235f7aae5f136ab4dfae5}} 
+\index{km::KMedoids@{km::KMedoids}!manhattan@{manhattan}}
+\index{manhattan@{manhattan}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{manhattan()}{manhattan()}}
+{\footnotesize\ttfamily double km\+::\+KMedoids\+::manhattan (\begin{DoxyParamCaption}\item[{const arma\+::mat \&}]{data,  }\item[{size\+\_\+t}]{i,  }\item[{size\+\_\+t}]{j }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Manhattan loss. 
+
+Calculates the Manhattan loss between the datapoints at index i and j of the dataset
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Transposed input data to find the medoids of \\
+\hline
+{\em i} & Index of first datapoint \\
+\hline
+{\em j} & Index of second datapoint \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_aba765d2e27af9d85b7eaf05699cee4a4}\label{classkm_1_1KMedoids_aba765d2e27af9d85b7eaf05699cee4a4}} 
+\index{km::KMedoids@{km::KMedoids}!setAlgorithm@{setAlgorithm}}
+\index{setAlgorithm@{setAlgorithm}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{setAlgorithm()}{setAlgorithm()}}
+{\footnotesize\ttfamily void km\+::\+KMedoids\+::set\+Algorithm (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{new\+\_\+alg }\end{DoxyParamCaption})}
+
+
+
+Sets the algorithm for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. 
+
+Sets the algorithm used for identifying the medoids during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+alg} & New algorithm to use \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_aca6efb798341eda10f94f7e7357d81f9}\label{classkm_1_1KMedoids_aca6efb798341eda10f94f7e7357d81f9}} 
+\index{km::KMedoids@{km::KMedoids}!setbuildConfidence@{setbuildConfidence}}
+\index{setbuildConfidence@{setbuildConfidence}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{setbuildConfidence()}{setbuildConfidence()}}
+{\footnotesize\ttfamily void km\+::\+KMedoids\+::setbuild\+Confidence (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{new\+\_\+build\+Confidence }\end{DoxyParamCaption})}
+
+
+
+Sets the constant build\+Confidence. 
+
+Sets the constant that affects the sensitivity of build confidence bounds that can be run during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+build\+Confidence} & New build\+Confidence \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_ab0c41b1a22079045c0d3ea4a9bb408af}\label{classkm_1_1KMedoids_ab0c41b1a22079045c0d3ea4a9bb408af}} 
+\index{km::KMedoids@{km::KMedoids}!setLossFn@{setLossFn}}
+\index{setLossFn@{setLossFn}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{setLossFn()}{setLossFn()}}
+{\footnotesize\ttfamily void km\+::\+KMedoids\+::set\+Loss\+Fn (\begin{DoxyParamCaption}\item[{std\+::string}]{loss }\end{DoxyParamCaption})}
+
+
+
+Sets the loss function. 
+
+Sets the loss function used during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em loss} & Loss function to be used e.\+g. L2 \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_a3a742098e57ded57fd606e08e0d315f0}\label{classkm_1_1KMedoids_a3a742098e57ded57fd606e08e0d315f0}} 
+\index{km::KMedoids@{km::KMedoids}!setMaxIter@{setMaxIter}}
+\index{setMaxIter@{setMaxIter}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{setMaxIter()}{setMaxIter()}}
+{\footnotesize\ttfamily void km\+::\+KMedoids\+::set\+Max\+Iter (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{new\+\_\+max }\end{DoxyParamCaption})}
+
+
+
+Sets the maximum number of iterations for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. 
+
+Sets the maximum number of iterations that can be run during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+max} & New maximum number of iterations to use \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_a0c43b66114a5c7ea104027f408cef110}\label{classkm_1_1KMedoids_a0c43b66114a5c7ea104027f408cef110}} 
+\index{km::KMedoids@{km::KMedoids}!setNMedoids@{setNMedoids}}
+\index{setNMedoids@{setNMedoids}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{setNMedoids()}{setNMedoids()}}
+{\footnotesize\ttfamily void km\+::\+KMedoids\+::set\+NMedoids (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{new\+\_\+num }\end{DoxyParamCaption})}
+
+
+
+Sets the number of medoids. 
+
+Sets the number of medoids to be identified during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}} \mbox{\Hypertarget{classkm_1_1KMedoids_acfd4e8a8696c6db5ec1d7c7682955e76}\label{classkm_1_1KMedoids_acfd4e8a8696c6db5ec1d7c7682955e76}} 
+\index{km::KMedoids@{km::KMedoids}!setswapConfidence@{setswapConfidence}}
+\index{setswapConfidence@{setswapConfidence}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{setswapConfidence()}{setswapConfidence()}}
+{\footnotesize\ttfamily void km\+::\+KMedoids\+::setswap\+Confidence (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{new\+\_\+swap\+Confidence }\end{DoxyParamCaption})}
+
+
+
+Sets the constant swap\+Confidence. 
+
+Sets the constant that affects the sensitivity of swap confidence bounds that can be run during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}}
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+swap\+Confidence} & New swap\+Confidence \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_a78a3340bb956d8295f70849910afc4f8}\label{classkm_1_1KMedoids_a78a3340bb956d8295f70849910afc4f8}} 
+\index{km::KMedoids@{km::KMedoids}!setVerbosity@{setVerbosity}}
+\index{setVerbosity@{setVerbosity}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{setVerbosity()}{setVerbosity()}}
+{\footnotesize\ttfamily void km\+::\+KMedoids\+::set\+Verbosity (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{new\+\_\+ver }\end{DoxyParamCaption})}
+
+
+
+Sets the verbosity for \mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}. 
+
+Sets the verbosity used during \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{km\+::\+KMedoids\+::fit}}, with 0 not creating a logfile, and \texorpdfstring{$>$}{>}0 creating a detailed logfile.
+
+
+\begin{DoxyParams}{Parameters}
+{\em new\+\_\+ver} & New verbosity to use \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classkm_1_1KMedoids_a87fea4440d2f3a1948afea492cb85159}\label{classkm_1_1KMedoids_a87fea4440d2f3a1948afea492cb85159}} 
+\index{km::KMedoids@{km::KMedoids}!swap\_sigma@{swap\_sigma}}
+\index{swap\_sigma@{swap\_sigma}!km::KMedoids@{km::KMedoids}}
+\doxysubsubsection{\texorpdfstring{swap\_sigma()}{swap\_sigma()}}
+{\footnotesize\ttfamily arma\+::mat km\+::\+KMedoids\+::swap\+\_\+sigma (\begin{DoxyParamCaption}\item[{const arma\+::mat \&}]{data,  }\item[{size\+\_\+t}]{batch\+\_\+size,  }\item[{arma\+::rowvec \&}]{best\+\_\+distances,  }\item[{arma\+::rowvec \&}]{second\+\_\+best\+\_\+distances,  }\item[{arma\+::urowvec \&}]{assignments }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Calculates confidence intervals in swap step. 
+
+Calculates the confidence intervals about the reward for each arm
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & Transposed input data to find the medoids of \\
+\hline
+{\em batch\+\_\+size} & Number of datapoints sampled for updating confidence intervals \\
+\hline
+{\em best\+\_\+distances} & Array of best distances from each point to previous set of medoids \\
+\hline
+{\em second\+\_\+best\+\_\+distances} & Array of second smallest distances from each point to previous set of medoids \\
+\hline
+{\em assignments} & Assignments of datapoints to their closest medoid \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/motiwari/\+Desktop/\+Bandit\+PAM/headers/kmedoids\+\_\+algorithm.\+hpp\item 
+/\+Users/motiwari/\+Desktop/\+Bandit\+PAM/src/kmedoids\+\_\+algorithm.\+cpp\end{DoxyCompactItemize}

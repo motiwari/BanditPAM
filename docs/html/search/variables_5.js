@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hlogfile_139',['hlogFile',['../structLogHelper.html#a084e11845451a653f46a48ab92c97ee8',1,'LogHelper']]]
+  ['n_5fmedoids_0',['n_medoids',['../classkm_1_1KMedoids.html#a7d8a592e525c919e2b124085b99b5400',1,'km::KMedoids']]]
 ];

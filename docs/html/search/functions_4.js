@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['init_111',['init',['../structLogHelper.html#a8bf957fb897ae5b548264f2f614879c5',1,'LogHelper']]]
+  ['kmedoids_0',['KMedoids',['../classkm_1_1KMedoids.html#ad8223737ca28d3eb65611a0a7e05e719',1,'km::KMedoids']]]
 ];

@@ -1,0 +1,27 @@
+\hypertarget{pam_8hpp_source}{}\doxysection{pam.\+hpp}
+\label{pam_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/pam.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/pam.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef HEADERS\_PAM\_HPP\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define HEADERS\_PAM\_HPP\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}kmedoids\_algorithm.hpp"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <armadillo>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <chrono>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <omp.h>}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classPAM}{PAM}} : \textcolor{keyword}{public} \mbox{\hyperlink{classkm_1_1KMedoids}{km::KMedoids}} \{}
+\DoxyCodeLine{21  \textcolor{keyword}{public}:}
+\DoxyCodeLine{28     \textcolor{keywordtype}{void} \mbox{\hyperlink{classPAM_a84a8494753002e7b074ddec6dc03d2f6}{fit\_naive}}(\textcolor{keyword}{const} arma::mat\& inputData);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{40     \textcolor{keywordtype}{void} \mbox{\hyperlink{classPAM_a0cf696edca43038adf5f84a34507ad15}{build\_naive}}(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, arma::urowvec\& medoidIndices);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{54     \textcolor{keywordtype}{void} \mbox{\hyperlink{classPAM_a27ea2558e50c83e6133128ae876fc42d}{swap\_naive}}(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, arma::urowvec\& medoidIndices, arma::urowvec\& assignments);}
+\DoxyCodeLine{55 \};}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// HEADERS\_PAM\_HPP\_}}
+
+\end{DoxyCode}

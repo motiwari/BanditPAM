@@ -1,0 +1,161 @@
+\hypertarget{kmedoids__algorithm_8hpp_source}{}\doxysection{kmedoids\+\_\+algorithm.\+hpp}
+\label{kmedoids__algorithm_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/kmedoids\_algorithm.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/kmedoids\_algorithm.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef HEADERS\_KMEDOIDS\_ALGORITHM\_HPP\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define HEADERS\_KMEDOIDS\_ALGORITHM\_HPP\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <armadillo>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <chrono>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <omp.h>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <unordered\_map>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <mutex>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }km \{}
+\DoxyCodeLine{32 \textcolor{keyword}{class }\mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}} \{}
+\DoxyCodeLine{33  \textcolor{keyword}{public}:}
+\DoxyCodeLine{34       \mbox{\hyperlink{classkm_1_1KMedoids_ad8223737ca28d3eb65611a0a7e05e719}{KMedoids}}(\textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a7d8a592e525c919e2b124085b99b5400}{n\_medoids}} = 5, \textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classkm_1_1KMedoids_ae444145a3bc114dd28a6c094fcfdf827}{algorithm}} = \textcolor{stringliteral}{"{}BanditPAM"{}}, \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a3145f9552f181042e786f350ca042a0c}{verbosity}} = 0, \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_af7c457dbb6c4c836b72624c9720aa8cb}{max\_iter}} = 1000,}
+\DoxyCodeLine{35               \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a068895dab1b234dae0b04c21e935a2cf}{buildConfidence}} = 1000, \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a8f29b104f30ae18296d6024d53d899df}{swapConfidence}} = 10000);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37       \mbox{\hyperlink{classkm_1_1KMedoids_a95542daf31e84a3e739731a7786b3655}{\string~KMedoids}}();}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39       \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoids_ac426d41296cc375d705f959c85954428}{fit}}(\textcolor{keyword}{const} arma::mat\& inputData, \textcolor{keyword}{const} std::string\& loss);}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41       \textcolor{comment}{// cache-\/related variables}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43       \textcolor{keywordtype}{size\_t} cache\_multiplier = 1000;}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45       \textcolor{keywordtype}{float}* cache; \textcolor{comment}{// array of floats}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47       arma::uvec permutation;}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49       \textcolor{keywordtype}{size\_t} permutation\_idx;}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51       std::unordered\_map<size\_t, size\_t> reindex; }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53       \textcolor{keywordtype}{bool} use\_perm = \textcolor{keyword}{true}; \textcolor{comment}{// set to false for debugging only, to measure speedup}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55       \textcolor{keywordtype}{bool} use\_cache\_p = \textcolor{keyword}{true}; \textcolor{comment}{// set to false for debugging only, to measure speedup}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57       \textcolor{comment}{// The functions below are getters for read-\/only attributes}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59       arma::urowvec \mbox{\hyperlink{classkm_1_1KMedoids_a87e78dab85ac1401ea8d985eecdb3c4d}{getMedoidsFinal}}();}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61       arma::urowvec \mbox{\hyperlink{classkm_1_1KMedoids_a10a5a0a696f6fded3abd6ae95f880021}{getMedoidsBuild}}();}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63       arma::urowvec \mbox{\hyperlink{classkm_1_1KMedoids_afc3925e6c12dd7302b777fea6ea34f6b}{getLabels}}();}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_ad27740495edebaf17c3869f4b55d3320}{getSteps}}();}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67       \textcolor{comment}{// The functions below are get/set functions for attributes}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_ac3064fb9c05547d6f5d3ac48811877f9}{getNMedoids}}();}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71       \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoids_a0c43b66114a5c7ea104027f408cef110}{setNMedoids}}(\textcolor{keywordtype}{size\_t} new\_num);}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73       std::string \mbox{\hyperlink{classkm_1_1KMedoids_ac61ed3b6949c85beee32b5ac89b04e69}{getAlgorithm}}();}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75       \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoids_aba765d2e27af9d85b7eaf05699cee4a4}{setAlgorithm}}(\textcolor{keyword}{const} std::string\& new\_alg); \textcolor{comment}{// pass by ref}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a18ee3582b5151506bca85341ebb66ae2}{getVerbosity}}();}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79       \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoids_a78a3340bb956d8295f70849910afc4f8}{setVerbosity}}(\textcolor{keywordtype}{size\_t} new\_ver);}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a30e3d018e893d14323ccc713007677eb}{getMaxIter}}();}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83       \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoids_a3a742098e57ded57fd606e08e0d315f0}{setMaxIter}}(\textcolor{keywordtype}{size\_t} new\_max);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a4601172340297c9aa6c64b6dd437ebfe}{getbuildConfidence}}();}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87       \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoids_aca6efb798341eda10f94f7e7357d81f9}{setbuildConfidence}}(\textcolor{keywordtype}{size\_t} new\_buildConfidence);}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a51f21a00890e3a1ef460a2d0c94fb69f}{getswapConfidence}}();}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91       \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoids_acfd4e8a8696c6db5ec1d7c7682955e76}{setswapConfidence}}(\textcolor{keywordtype}{size\_t} new\_swapConfidence);}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93       \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoids_ab0c41b1a22079045c0d3ea4a9bb408af}{setLossFn}}(std::string loss);}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95  \textcolor{keyword}{protected}:}
+\DoxyCodeLine{96       \textcolor{comment}{// The functions below are PAM's constituent functions}}
+\DoxyCodeLine{97       arma::rowvec \mbox{\hyperlink{classkm_1_1KMedoids_ac1969258393c29f860a4ed47536ce019}{build\_sigma}}(}
+\DoxyCodeLine{98         \textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}},}
+\DoxyCodeLine{99         arma::rowvec\& best\_distances,}
+\DoxyCodeLine{100         arma::uword batch\_size,}
+\DoxyCodeLine{101         \textcolor{keywordtype}{bool} use\_absolute}
+\DoxyCodeLine{102       );}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104       \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoids_a67edf8fc895cbb71be054fb95c918565}{calc\_best\_distances\_swap}}(}
+\DoxyCodeLine{105         \textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}},}
+\DoxyCodeLine{106         arma::urowvec\& medoidIndices,}
+\DoxyCodeLine{107         arma::rowvec\& best\_distances,}
+\DoxyCodeLine{108         arma::rowvec\& second\_distances,}
+\DoxyCodeLine{109         arma::urowvec\& assignments}
+\DoxyCodeLine{110       );}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112       arma::mat \mbox{\hyperlink{classkm_1_1KMedoids_a87fea4440d2f3a1948afea492cb85159}{swap\_sigma}}(}
+\DoxyCodeLine{113         \textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}},}
+\DoxyCodeLine{114         \textcolor{keywordtype}{size\_t} batch\_size,}
+\DoxyCodeLine{115         arma::rowvec\& best\_distances,}
+\DoxyCodeLine{116         arma::rowvec\& second\_best\_distances,}
+\DoxyCodeLine{117         arma::urowvec\& assignments}
+\DoxyCodeLine{118       );}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120       \textcolor{keywordtype}{double} \mbox{\hyperlink{classkm_1_1KMedoids_a1c48caa21d790c2cebd0d9886b0d4111}{calc\_loss}}(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, arma::urowvec\& medoidIndices);}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122       \textcolor{comment}{// Loss functions}}
+\DoxyCodeLine{123       \textcolor{keywordtype}{double} cachedLoss(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, \textcolor{keywordtype}{size\_t} i, \textcolor{keywordtype}{size\_t} j, \textcolor{keywordtype}{bool} use\_cache = \textcolor{keyword}{true}); \textcolor{comment}{// if you change use\_cache, also change use\_cache\_p}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125       \textcolor{keywordtype}{size\_t} lp;}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127       \textcolor{keywordtype}{double} \mbox{\hyperlink{classkm_1_1KMedoids_a0b8bb9fd23956e25b4f0f4849183ba91}{LP}}(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, \textcolor{keywordtype}{size\_t} i, \textcolor{keywordtype}{size\_t} j) \textcolor{keyword}{const};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129       \textcolor{keywordtype}{double} \mbox{\hyperlink{classkm_1_1KMedoids_a173f39c684caa33e35f910497e78a165}{LINF}}(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, \textcolor{keywordtype}{size\_t} i, \textcolor{keywordtype}{size\_t} j) \textcolor{keyword}{const};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131       \textcolor{keywordtype}{double} \mbox{\hyperlink{classkm_1_1KMedoids_ab5e65b731aca5ee57db67465ccfc8a78}{cos}}(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, \textcolor{keywordtype}{size\_t} i, \textcolor{keywordtype}{size\_t} j) \textcolor{keyword}{const};}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133       \textcolor{keywordtype}{double} \mbox{\hyperlink{classkm_1_1KMedoids_a9f3affb3e61235f7aae5f136ab4dfae5}{manhattan}}(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, \textcolor{keywordtype}{size\_t} i, \textcolor{keywordtype}{size\_t} j) \textcolor{keyword}{const};}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135       \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoids_a4a9ac86ec0e9ae191ed6a9b0cd87b390}{checkAlgorithm}}(\textcolor{keyword}{const} std::string\& \mbox{\hyperlink{classkm_1_1KMedoids_ae444145a3bc114dd28a6c094fcfdf827}{algorithm}});}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137       \textcolor{comment}{// Constructor params}}
+\DoxyCodeLine{138       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a7d8a592e525c919e2b124085b99b5400}{n\_medoids}}; }
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140       std::string \mbox{\hyperlink{classkm_1_1KMedoids_ae444145a3bc114dd28a6c094fcfdf827}{algorithm}}; }
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_af7c457dbb6c4c836b72624c9720aa8cb}{max\_iter}}; }
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144       \textcolor{comment}{// Properties of the KMedoids instance}}
+\DoxyCodeLine{145       arma::mat \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}; }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147       arma::urowvec \mbox{\hyperlink{classkm_1_1KMedoids_a1179ba0198699e438436ad3724d78ab3}{labels}}; }
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149       arma::urowvec \mbox{\hyperlink{classkm_1_1KMedoids_abc406948ac96646449a8a49ee2dac60c}{medoid\_indices\_build}}; }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151       arma::urowvec \mbox{\hyperlink{classkm_1_1KMedoids_ae2f54264348a90f2c4c11aae05fca06e}{medoid\_indices\_final}}; }
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153       double (\mbox{\hyperlink{classkm_1_1KMedoids}{KMedoids}}::*\mbox{\hyperlink{classkm_1_1KMedoids_a70d66a74b16ce7440eaec676bf76ab91}{lossFn}})(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, \textcolor{keywordtype}{size\_t} i, \textcolor{keywordtype}{size\_t} j) \textcolor{keyword}{const}; }
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a88969d67d5473d1e9dc4fc333234f9d2}{steps}}; }
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157       \textcolor{comment}{// Hyperparameters}}
+\DoxyCodeLine{158       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a068895dab1b234dae0b04c21e935a2cf}{buildConfidence}}; }
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a8f29b104f30ae18296d6024d53d899df}{swapConfidence}}; }
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162       \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{classkm_1_1KMedoids_a17d0a3d805cc5d3084ff5cf996b530cc}{precision}} = 0.001; }
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a016fb11aaa66ac25b1d072f370a5fab7}{batchSize}} = 100; }
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166       \textcolor{keywordtype}{size\_t} \mbox{\hyperlink{classkm_1_1KMedoids_a3145f9552f181042e786f350ca042a0c}{verbosity}}; }
+\DoxyCodeLine{167 \};}
+\DoxyCodeLine{168 \} \textcolor{comment}{// namespace km}}
+\DoxyCodeLine{169 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// HEADERS\_KMEDOIDS\_ALGORITHM\_HPP\_}}
+
+\end{DoxyCode}

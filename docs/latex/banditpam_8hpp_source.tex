@@ -1,0 +1,50 @@
+\hypertarget{banditpam_8hpp_source}{}\doxysection{banditpam.\+hpp}
+\label{banditpam_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/banditpam.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/banditpam.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef HEADERS\_BANDITPAM\_HPP\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define HEADERS\_BANDITPAM\_HPP\_}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}kmedoids\_algorithm.hpp"{}}}
+\DoxyCodeLine{5 }
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <armadillo>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <chrono>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <omp.h>}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{20 \textcolor{keyword}{class }\mbox{\hyperlink{classBanditPAM}{BanditPAM}} : \textcolor{keyword}{public} \mbox{\hyperlink{classkm_1_1KMedoids}{km::KMedoids}} \{}
+\DoxyCodeLine{21  \textcolor{keyword}{public}:}
+\DoxyCodeLine{28     \textcolor{keywordtype}{void} \mbox{\hyperlink{classBanditPAM_af60738cd57a8d67c35ec6f8c37032bfd}{fit\_bpam}}(\textcolor{keyword}{const} arma::mat\& inputData);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{43     \textcolor{keywordtype}{void} \mbox{\hyperlink{classBanditPAM_a0215aba5b2cf21a540cfceb32daeeaa0}{build}}(\textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}}, arma::urowvec\& medoidIndices, arma::mat\& medoids);}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{58     arma::rowvec \mbox{\hyperlink{classBanditPAM_ab480c162d1bc3828b6ff50d1422d38e0}{build\_target}}(}
+\DoxyCodeLine{59         \textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}},}
+\DoxyCodeLine{60         arma::uvec\& target,}
+\DoxyCodeLine{61         \textcolor{keywordtype}{size\_t} batch\_size,}
+\DoxyCodeLine{62         arma::rowvec\& best\_distances,}
+\DoxyCodeLine{63         \textcolor{keywordtype}{bool} use\_absolute}
+\DoxyCodeLine{64     );}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{81     \textcolor{keywordtype}{void} \mbox{\hyperlink{classBanditPAM_a9030a263a26355d014e0d52df0db1300}{swap}}(}
+\DoxyCodeLine{82         \textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}},}
+\DoxyCodeLine{83         arma::urowvec\& medoidIndices,}
+\DoxyCodeLine{84         arma::mat\& medoids,}
+\DoxyCodeLine{85         arma::urowvec\& assignments}
+\DoxyCodeLine{86     );}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{104     arma::vec \mbox{\hyperlink{classBanditPAM_a98a994a3625a4360e4ce246da144c576}{swap\_target}}(}
+\DoxyCodeLine{105         \textcolor{keyword}{const} arma::mat\& \mbox{\hyperlink{classkm_1_1KMedoids_a802d0a1a8ca4d09300b856097128d6b1}{data}},}
+\DoxyCodeLine{106         arma::urowvec\& medoidIndices,}
+\DoxyCodeLine{107         arma::uvec\& targets,}
+\DoxyCodeLine{108         \textcolor{keywordtype}{size\_t} batch\_size,}
+\DoxyCodeLine{109         arma::rowvec\& best\_distances,}
+\DoxyCodeLine{110         arma::rowvec\& second\_best\_distances,}
+\DoxyCodeLine{111         arma::urowvec\& assignments}
+\DoxyCodeLine{112     );}
+\DoxyCodeLine{113 \};}
+\DoxyCodeLine{114 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// HEADERS\_BANDITPAM\_HPP\_}}
+
+\end{DoxyCode}

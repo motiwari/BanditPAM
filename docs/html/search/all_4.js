@@ -1,8 +1,11 @@
 var searchData=
 [
-  ['fit_16',['fit',['../classKMedoids.html#ae241800e72a6b4a677333ffbf06e1798',1,'KMedoids']]],
-  ['fit_5fbpam_17',['fit_bpam',['../classKMedoids.html#afb08301b64e5be0b9f274a14908c7869',1,'KMedoids']]],
-  ['fit_5fnaive_18',['fit_naive',['../classKMedoids.html#a79fbb790f9f31bcaf1daa05e5eb5daa8',1,'KMedoids']]],
-  ['fitfn_19',['fitFn',['../classKMedoids.html#ac36a9e6347281ff72dc3ccd677f8c45a',1,'KMedoids']]],
-  ['fitpython_20',['fitPython',['../classKMedoidsWrapper.html#ab2ecd29ac541b705e77ffb9e202127f7',1,'KMedoidsWrapper']]]
+  ['fastpam1_0',['FastPAM1',['../classFastPAM1.html',1,'']]],
+  ['fastpam1_2ecpp_1',['fastpam1.cpp',['../fastpam1_8cpp.html',1,'']]],
+  ['fit_2',['fit',['../classkm_1_1KMedoids.html#ac426d41296cc375d705f959c85954428',1,'km::KMedoids']]],
+  ['fit_5fbpam_3',['fit_bpam',['../classBanditPAM.html#af60738cd57a8d67c35ec6f8c37032bfd',1,'BanditPAM']]],
+  ['fit_5ffastpam1_4',['fit_fastpam1',['../classFastPAM1.html#ad7237bd4d312a3c146d005b1e86dd1e4',1,'FastPAM1']]],
+  ['fit_5fnaive_5',['fit_naive',['../classPAM.html#a84a8494753002e7b074ddec6dc03d2f6',1,'PAM']]],
+  ['fit_5fpython_2ecpp_6',['fit_python.cpp',['../fit__python_8cpp.html',1,'']]],
+  ['fitpython_7',['fitPython',['../classKMedoidsWrapper.html#a797e0752e20ce1b32a4047f5c63b1730',1,'KMedoidsWrapper']]]
 ];

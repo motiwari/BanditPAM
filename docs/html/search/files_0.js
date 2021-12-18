@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['kmedoids_5fpywrapper_2ecpp_82',['kmedoids_pywrapper.cpp',['../kmedoids__pywrapper_8cpp.html',1,'']]],
-  ['kmedoids_5fucb_2ecpp_83',['kmedoids_ucb.cpp',['../kmedoids__ucb_8cpp.html',1,'']]]
+  ['banditpam_2ecpp_0',['banditpam.cpp',['../banditpam_8cpp.html',1,'']]],
+  ['build_5fmedoids_5fpython_2ecpp_1',['build_medoids_python.cpp',['../build__medoids__python_8cpp.html',1,'']]]
 ];
