@@ -11,7 +11,7 @@ def onFly(k, data, loss):
     kmed_naive.fit(data, loss)
 
     if (kmed_bpam.medoids.tolist() == kmed_naive.medoids.tolist()) and (
-        kmed_bpam.build_medoids.tolist() == kmed_naive.build_medoids.tolist()
+        sorted(kmed_bpam.build_medoids.tolist()) == sorted(kmed_naive.build_medoids.tolist())
     ):
         return 1
     else:
@@ -102,7 +102,7 @@ class PythonTests(unittest.TestCase):
         kmed2 = KMedoids(n_medoids=5, algorithm="BanditPAM")
         for num in scrna_schedule:
             scrna_test = scrna.head(num * 1000).to_numpy()
-            kmed2.fit(MNIST_test, "L1")
+            kmed2.fit(scrna_test, "L1")
             self.assertTrue(kmed2.steps < ((num / 10) ** 1.2) * kmed1.steps)
 
 
