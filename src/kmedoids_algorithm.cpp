@@ -262,6 +262,12 @@ void km::KMedoids::setswapConfidence(size_t new_swapConfidence) {
  * @param loss The loss function used during medoid computation
  */
 void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
+  batchSize = fmin(input_data.n_rows, batchSize);
+
+  if (input_data.n_rows == 0) {
+    throw std::invalid_argument("Dataset is empty");
+  }
+
   km::KMedoids::setLossFn(loss);
   if (algorithm == "naive") {
     static_cast<PAM*>(this)->fit_naive(input_data);
