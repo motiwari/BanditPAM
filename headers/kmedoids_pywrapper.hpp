@@ -34,7 +34,6 @@ public:
    * @param inputData Input data to find the medoids of
    * @param loss The loss function used during medoid computation
    * @param k The number of medoids to compute
-   * @param logFilename The name of the outputted log file
    */
   void fitPython(const py::array_t<double>& inputData, const std::string& loss, py::kwargs kw);
 

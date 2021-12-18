@@ -58,8 +58,7 @@ X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 
 # Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids = 3, algorithm = "BanditPAM")
-# Writes results to gmm_log
-kmed.fit(X, 'L2', "gmm_log")
+kmed.fit(X, 'L2')
 
 print(kmed.labels) # prints cluster assignments [0] * 40 + [1] * 40 + [2] * 40
 
@@ -91,7 +90,7 @@ X_tsne = TSNE(n_components = 2).fit_transform(X)
 
 # Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids = 10, algorithm = "BanditPAM")
-kmed.fit(X, 'L2', "mnist_log")
+kmed.fit(X, 'L2')
 
 # Visualize the data and the medoids via t-SNE:
 for p_idx, point in enumerate(X):
@@ -102,9 +101,6 @@ for p_idx, point in enumerate(X):
 
 plt.show()
 ```
-
-The corresponding logfile for this run, `mnist_log`, will contain the run's results
-and additional statistics in a format that can be easily read into json.
 
 ## Documentation
 
@@ -178,8 +174,6 @@ The expected output in the command line will be:
 ```
 Medoids: 694,168,306,714,324,959,527,251,800,737
 ```
-A file called `KMedoidsLogfile` with detailed logs during the process will also
-be present.
 
 ## Implementing a custom distance metric
 
