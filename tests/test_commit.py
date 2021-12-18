@@ -55,7 +55,6 @@ class PythonTests(unittest.TestCase):
         kmed_5 = KMedoids(
             n_medoids=5,
             algorithm="BanditPAM",
-            max_iter=1000,
         )
         kmed_5.fit(self.small_mnist, "L2")
 
@@ -69,7 +68,6 @@ class PythonTests(unittest.TestCase):
         kmed_10 = KMedoids(
             n_medoids=10,
             algorithm="BanditPAM",
-            max_iter=1000,
         )
         kmed_10.fit(self.small_mnist, "L2")
 
@@ -89,7 +87,6 @@ class PythonTests(unittest.TestCase):
         kmed_5 = KMedoids(
             n_medoids=5,
             algorithm="BanditPAM",
-            max_iter=1000,
         )
         kmed_5.fit(self.scrna.head(1000).to_numpy(), "L1")
 
@@ -103,7 +100,6 @@ class PythonTests(unittest.TestCase):
         kmed_10 = KMedoids(
             n_medoids=10,
             algorithm="BanditPAM",
-            max_iter=1000,
         )
         kmed_10.fit(self.scrna.head(1000).to_numpy(), "L1")
 
@@ -123,9 +119,9 @@ class PythonTests(unittest.TestCase):
         kmed = KMedoids()
 
         # initialized to empty
-        self.assertEqual([], kmed.medoids.tolist())
         self.assertEqual([], kmed.build_medoids.tolist())
-
+        self.assertEqual([], kmed.medoids.tolist())
+        
         # error on trying to fit on empty
         self.assertRaises(RuntimeError, kmed.fit(np.array([])), "L2")
 
