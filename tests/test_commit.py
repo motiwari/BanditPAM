@@ -3,17 +3,7 @@ from banditpam import KMedoids
 import pandas as pd
 import numpy as np
 
-
-def on_the_fly(k, data, loss):
-    kmed_bpam = KMedoids(n_medoids=k, algorithm="BanditPAM")
-    kmed_naive = KMedoids(n_medoids=k, algorithm="naive")
-    
-    kmed_bpam.fit(data, loss)
-    kmed_naive.fit(data, loss)
-
-    return 1 if (sorted((kmed_bpam.medoids.tolist())) == sorted(kmed_naive.medoids.tolist()) and \
-        (sorted(kmed_bpam.build_medoids.tolist()) == sorted(kmed_naive.build_medoids.tolist()))) else 0
-
+from utils import MNIST_K_SCHEDULE, NUM_SMALL_CASES, SMALL_SAMPLE_SIZE, PROPORTION_PASSING, on_the_fly
 
 class PythonTests(unittest.TestCase):
     small_mnist = pd.read_csv("./data/MNIST.csv", header=None).to_numpy()
@@ -27,22 +17,20 @@ class PythonTests(unittest.TestCase):
         Test 10 on-the-fly generated samples of 100 datapoints from mnist-70k dataset
         """
         count = 0
-        k_schedule = [4, 6, 8, 10] * 3
-        for i in range(10):
-            data = self.mnist_70k.sample(n=100).to_numpy()
-            count += on_the_fly(k=k_schedule[i], data=data, loss="L2")
-        self.assertTrue(count == 10)
+        for i in range(NUM_SMALL_CASES):
+            data = self.mnist_70k.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
+            count += on_the_fly(k=MNIST_K_SCHEDULE[i % len(MNIST_K_SCHEDULE)], data=data, loss="L2")
+        self.assertTrue(count == NUM_SMALL_CASES) # All cases must pass
 
     def test_small_on_the_fly_scrna(self):
         """
         Test 10 on-the-fly generated samples of 100 datapoints from scrna dataset
         """
         count = 0
-        k_schedule = [4, 6, 8, 10] * 3
-        for i in range(10):
-            data = self.scrna.sample(n=100).to_numpy()
-            count += on_the_fly(k=k_schedule[i], data=data, loss="L1")
-        self.assertTrue(count >= 8) # Occasionally some may fail due to degeneracy in the scRNA dataset
+        for i in range(NUM_SMALL_CASES):
+            data = self.scrna.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
+            count += on_the_fly(k=MNIST_K_SCHEDULE[i % len(MNIST_K_SCHEDULE)], data=data, loss="L1")
+        self.assertTrue(count >= PROPORTION_PASSING*NUM_SMALL_CASES) # Occasionally some may fail due to degeneracy in the scRNA dataset
 
     def test_small_cases_mnist(self):
         """

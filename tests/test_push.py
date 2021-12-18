@@ -3,20 +3,7 @@ from banditpam import KMedoids
 import pandas as pd
 import numpy as np
 
-
-def onFly(k, data, loss):
-    kmed_bpam = KMedoids(n_medoids=k, algorithm="BanditPAM")
-    kmed_naive = KMedoids(n_medoids=k, algorithm="naive")
-    kmed_bpam.fit(data, loss)
-    kmed_naive.fit(data, loss)
-
-    if (kmed_bpam.medoids.tolist() == kmed_naive.medoids.tolist()) and (
-        sorted(kmed_bpam.build_medoids.tolist()) == sorted(kmed_naive.build_medoids.tolist())
-    ):
-        return 1
-    else:
-        return 0
-
+from utils import MNIST_K_SCHEDULE, NUM_LARGE_CASES, on_the_fly
 
 class PythonTests(unittest.TestCase):
     small_mnist = pd.read_csv("./data/MNIST.csv", header=None).to_numpy()
@@ -25,54 +12,50 @@ class PythonTests(unittest.TestCase):
 
     scrna = pd.read_csv("./data/scrna_reformat.csv.gz", header=None)
 
-    def test_small_on_fly_mnist(self):
+    def test_small_on_the_fly_mnist(self):
         """
         Test 10 on-the-fly generated samples of 1000 datapoints from mnist-70k dataset
         Must get correct medoids on roughly 95% of cases
         """
         count = 0
-        k_schedule = [4, 6, 8, 10] * 12
-        for i in range(48):
+        for i in range(NUM_LARGE_CASES):
             data = self.mnist_70k.sample(n=1000).to_numpy()
-            count += onFly(k=k_schedule[i], data=data, loss="L2")
+            count += on_the_fly(k=MNIST_K_SCHEDULE[i % 4], data=data, loss="L2")
         self.assertTrue(count >= 45)
 
-    def test_small_on_fly_scrna(self):
+    def test_small_on_the_fly_scrna(self):
         """
         Test 10 on-the-fly generated samples of 1000 datapoints from scrna dataset
         Must get correct medoids on roughly 95% of cases
         """
         count = 0
-        k_schedule = [4, 6, 8, 10] * 12
-        for i in range(48):
+        for i in range(NUM_LARGE_CASES):
             data = self.scrna.sample(n=1000).to_numpy()
-            count += onFly(k=k_schedule[i], data=data, loss="L1")
+            count += on_the_fly(k=MNIST_K_SCHEDULE[i % 4], data=data, loss="L1")
         self.assertTrue(count >= 45)
 
-    def test_large_on_fly_mnist(self):
+    def test_large_on_the_fly_mnist(self):
         """
         Test 10 on-the-fly generated samples of 1000 datapoints from mnist-70k dataset
         Must get correct medoids on roughly 95% of cases
         """
         count = 0
-        k_schedule = [4, 6, 8, 10] * 12
-        size_schedule = [1000, 2000, 3000, 4000, 5000] * 10
-        for i in range(48):
-            data = mnist_70k.sample(n=size_schedule[i])
-            count += onFly(k=k_schedule[i], data=data, loss="L2")
+        size_schedule = [1000, 2000, 3000, 4000, 5000]
+        for i in range(NUM_LARGE_CASES):
+            data = mnist_70k.sample(n=size_schedule[i % 5])
+            count += on_the_fly(k=MNIST_K_SCHEDULE[i % 4], data=data, loss="L2")
         self.assertTrue(count >= 45)
 
-    def test_large_on_fly_scrna(self):
+    def test_large_on_the_fly_scrna(self):
         """
         Test 10 on-the-fly generated samples of 1000 datapoints from scrna dataset
         Must get correct medoids on roughly 95% of cases
         """
         count = 0
-        k_schedule = [4, 6, 8, 10] * 12
-        size_schedule = [1000, 2000, 3000, 4000, 5000] * 10
-        for i in range(48):
-            data = scrna.sample(n=size_schedule[i])
-            count += onFly(k=k_schedule[i], data=data, loss="L2")
+        size_schedule = [1000, 2000, 3000, 4000, 5000]
+        for i in range(NUM_LARGE_CASES):
+            data = scrna.sample(n=size_schedule[i % 5])
+            count += on_the_fly(k=MNIST_K_SCHEDULE[i % 4], data=data, loss="L2")
         self.assertTrue(count >= 45)
 
     def test_time_cases_mnist(self):
