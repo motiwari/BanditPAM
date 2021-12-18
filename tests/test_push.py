@@ -3,7 +3,7 @@ from banditpam import KMedoids
 import pandas as pd
 import numpy as np
 
-from utils import MNIST_K_SCHEDULE, NUM_LARGE_CASES, on_the_fly
+from utils import SMALL_K_SCHEDULE, N_SMALL_K, NUM_LARGE_CASES, PROPORTION_PASSING, on_the_fly
 
 class PythonTests(unittest.TestCase):
     small_mnist = pd.read_csv("./data/MNIST.csv", header=None).to_numpy()
@@ -20,8 +20,8 @@ class PythonTests(unittest.TestCase):
         count = 0
         for i in range(NUM_LARGE_CASES):
             data = self.mnist_70k.sample(n=1000).to_numpy()
-            count += on_the_fly(k=MNIST_K_SCHEDULE[i % 4], data=data, loss="L2")
-        self.assertTrue(count >= 45)
+            count += on_the_fly(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
+        self.assertTrue(count == NUM_LARGE_CASES)
 
     def test_small_on_the_fly_scrna(self):
         """
@@ -31,8 +31,8 @@ class PythonTests(unittest.TestCase):
         count = 0
         for i in range(NUM_LARGE_CASES):
             data = self.scrna.sample(n=1000).to_numpy()
-            count += on_the_fly(k=MNIST_K_SCHEDULE[i % 4], data=data, loss="L1")
-        self.assertTrue(count >= 45)
+            count += on_the_fly(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1")
+        self.assertTrue(count >= PROPORTION_PASSING*NUM_LARGE_CASES)
 
     def test_large_on_the_fly_mnist(self):
         """
@@ -43,8 +43,8 @@ class PythonTests(unittest.TestCase):
         size_schedule = [1000, 2000, 3000, 4000, 5000]
         for i in range(NUM_LARGE_CASES):
             data = mnist_70k.sample(n=size_schedule[i % 5])
-            count += on_the_fly(k=MNIST_K_SCHEDULE[i % 4], data=data, loss="L2")
-        self.assertTrue(count >= 45)
+            count += on_the_fly(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
+        self.assertTrue(count == NUM_LARGE_CASES)
 
     def test_large_on_the_fly_scrna(self):
         """
@@ -55,8 +55,8 @@ class PythonTests(unittest.TestCase):
         size_schedule = [1000, 2000, 3000, 4000, 5000]
         for i in range(NUM_LARGE_CASES):
             data = scrna.sample(n=size_schedule[i % 5])
-            count += on_the_fly(k=MNIST_K_SCHEDULE[i % 4], data=data, loss="L2")
-        self.assertTrue(count >= 45)
+            count += on_the_fly(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
+        self.assertTrue(count >= PROPORTION_PASSING*NUM_LARGE_CASES)
 
     def test_time_cases_mnist(self):
         """

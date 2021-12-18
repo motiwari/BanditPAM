@@ -1,9 +1,9 @@
 import unittest
-from banditpam import KMedoids
 import pandas as pd
 import numpy as np
 
-from utils import MNIST_K_SCHEDULE, NUM_SMALL_CASES, SMALL_SAMPLE_SIZE, PROPORTION_PASSING, on_the_fly
+from banditpam import KMedoids
+from utils import SMALL_K_SCHEDULE, N_SMALL_K, NUM_SMALL_CASES, SMALL_SAMPLE_SIZE, PROPORTION_PASSING, on_the_fly
 
 class PythonTests(unittest.TestCase):
     small_mnist = pd.read_csv("./data/MNIST.csv", header=None).to_numpy()
@@ -14,27 +14,30 @@ class PythonTests(unittest.TestCase):
 
     def test_small_on_the_fly_mnist(self):
         """
-        Test 10 on-the-fly generated samples of 100 datapoints from mnist-70k dataset
+        Test NUM_SMALL_CASES number of test cases with subsets of size 
+        SMALL_SAMPLE_SIZE randomly drawn from the full MNIST dataset
         """
         count = 0
         for i in range(NUM_SMALL_CASES):
             data = self.mnist_70k.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
-            count += on_the_fly(k=MNIST_K_SCHEDULE[i % len(MNIST_K_SCHEDULE)], data=data, loss="L2")
+            count += on_the_fly(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
         self.assertTrue(count == NUM_SMALL_CASES) # All cases must pass
 
     def test_small_on_the_fly_scrna(self):
         """
-        Test 10 on-the-fly generated samples of 100 datapoints from scrna dataset
+        Test NUM_SMALL_CASES number of test cases with subsets of size 
+        SMALL_SAMPLE_SIZE randomly drawn from the full scRNA dataset
         """
         count = 0
         for i in range(NUM_SMALL_CASES):
             data = self.scrna.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
-            count += on_the_fly(k=MNIST_K_SCHEDULE[i % len(MNIST_K_SCHEDULE)], data=data, loss="L1")
+            count += on_the_fly(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1")
         self.assertTrue(count >= PROPORTION_PASSING*NUM_SMALL_CASES) # Occasionally some may fail due to degeneracy in the scRNA dataset
 
     def test_small_cases_mnist(self):
         """
-        Test BanditPAM algorithm at 5 and 10 medoids on mnist dataset with known medoids
+        Test BanditPAM on a subset of MNIST with known solutions
+        for both k = 5 and k = 10, after both the BUILD and SWAP steps
         """
         kmed_5 = KMedoids(
             n_medoids=5,
@@ -68,7 +71,8 @@ class PythonTests(unittest.TestCase):
 
     def test_edge_cases(self):
         """
-        Test BanditPAM algorithm on edge cases
+        Test that BanditPAM raises errors on n_medoids being unspecified or 
+        an empty dataset
         """
         kmed = KMedoids()
 
