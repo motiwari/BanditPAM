@@ -10,7 +10,6 @@
  */
 
 #include "kmedoids_algorithm.hpp"
-#include "log_helper.hpp"
 
 #include <armadillo>
 #include <chrono>
@@ -22,11 +21,9 @@
 
 int main(int argc, char* argv[]) {
     std::string input_name;
-    std::string log_file_name = "KMedoidsLogfile";
     size_t k;
     int opt;
     int prev_ind;
-    size_t verbosity = 0;
     size_t max_iter = 1000;
     size_t buildConfidence = 1000;
     size_t swapConfidence = 10000;
@@ -48,10 +45,6 @@ int main(int argc, char* argv[]) {
                 input_name = optarg;
                 f_flag = true;
                 break;
-            // name of the output log file
-            case 's':
-                log_file_name = optarg;
-                break;
             // number of clusters to create
             case 'k':
                 k = std::stoi(optarg);
@@ -60,10 +53,6 @@ int main(int argc, char* argv[]) {
             // type of loss/distance function to use
             case 'l':
                 loss = optarg;
-                break;
-            // set the verbosity of the algorithm
-            case 'v':
-                verbosity = std::stoi(optarg);
                 break;
             case ':':
                 printf("option needs a value\n");
@@ -90,18 +79,7 @@ int main(int argc, char* argv[]) {
     arma::mat data;
     data.load(input_name);
     
-    km::KMedoids kmed(k, "BanditPAM", verbosity, max_iter, buildConfidence, swapConfidence, log_file_name);
+    km::KMedoids kmed(k, "BanditPAM", max_iter, buildConfidence, swapConfidence);
     kmed.fit(data, loss);
 
-    if (verbosity > 0) {
-      arma::rowvec meds = kmed.getMedoidsFinal();
-      std::cout << "Medoids: ";
-      for (size_t i = 0; i < meds.n_cols; i++) {
-        if (i == (meds.n_cols - 1)) {
-          std::cout << meds(i) << std::endl;
-        } else {
-          std::cout << meds(i) << ',';
-        }
-      }
-    }
 }

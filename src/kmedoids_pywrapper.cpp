@@ -15,7 +15,6 @@
 #include <armadillo>
 
 #include "kmedoids_algorithm.hpp"
-#include "log_helper.hpp"
 #include "kmedoids_pywrapper.hpp"
 
 #include <pybind11/pybind11.h>
@@ -32,22 +31,18 @@ PYBIND11_MODULE(banditpam, m) {
   m.def("get_max_threads", &omp_get_max_threads, "Returns max number of threads");
   m.def("set_num_threads", &omp_set_num_threads, "Set the maximum number of threads");
   py::class_<KMedoidsWrapper> cls(m, "KMedoids");
-  cls.def(py::init<int, std::string, int, int, int, int, std::string>(),
+  cls.def(py::init<int, std::string, int, int, int>(),
           py::arg("n_medoids") = NULL,
           py::arg("algorithm") = "BanditPAM",
-          py::arg("verbosity") = 0,
           py::arg("maxIter") = 1000,
           py::arg("buildConfidence") = 1000,
-          py::arg("swapConfidence") = 10000,
-          py::arg("logFilename") = "KMedoidsLogfile"
+          py::arg("swapConfidence") = 10000
   );
   cls.def_property("n_medoids", &KMedoidsWrapper::getNMedoids, &KMedoidsWrapper::setNMedoids);
   cls.def_property("algorithm", &KMedoidsWrapper::getAlgorithm, &KMedoidsWrapper::setAlgorithm);
-  cls.def_property("verbosity", &KMedoidsWrapper::getVerbosity, &KMedoidsWrapper::setVerbosity);
   cls.def_property("maxIter", &KMedoidsWrapper::getMaxIter, &KMedoidsWrapper::setMaxIter);
   cls.def_property("buildConfidence", &KMedoidsWrapper::getbuildConfidence, &KMedoidsWrapper::setbuildConfidence);
   cls.def_property("swapConfidence", &KMedoidsWrapper::getswapConfidence, &KMedoidsWrapper::setswapConfidence);
-  cls.def_property("logFilename", &KMedoidsWrapper::getLogFilename, &KMedoidsWrapper::setLogFilename);
   medoids_python(cls);
   build_medoids_python(cls);
   labels_python(cls);

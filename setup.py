@@ -349,6 +349,5 @@ setup(
         os.path.join("headers", "banditpam.hpp"),
         os.path.join("headers", "fastpam1.hpp"),
         os.path.join("headers", "pam.hpp"),
-        os.path.join("headers", "log_helper.hpp"),
     ],
 )

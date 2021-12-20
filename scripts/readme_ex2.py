@@ -10,7 +10,7 @@ X_tsne = TSNE(n_components=2).fit_transform(X)
 
 # Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids=10, algorithm="BanditPAM")
-kmed.fit(X, "L2", "mnist_log")
+kmed.fit(X, "L2")
 
 # Visualize the data and the medoids via t-SNE:
 for p_idx, point in enumerate(X):

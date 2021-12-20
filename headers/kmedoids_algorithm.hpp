@@ -1,7 +1,6 @@
 #ifndef HEADERS_KMEDOIDS_ALGORITHM_HPP_
 #define HEADERS_KMEDOIDS_ALGORITHM_HPP_
 
-#include "log_helper.hpp"
 
 #include <armadillo>
 #include <vector>
@@ -26,16 +25,14 @@ namespace km {
    *  @param n_medoids Number of medoids/clusters to create
    *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
    *  the "BanditPAM" algorithm, or "naive" to use PAM
-   *  @param verbosity Verbosity of the algorithm, 0 will have no log file, 1 will create a log file
    *  @param max_iter The maximum number of iterations the algorithm runs for
    *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
    *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
-   *  @param logFilename The name of the output log file
    */
 class KMedoids {
  public:
-      KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t verbosity = 0, size_t max_iter = 1000,
-              size_t buildConfidence = 1000, size_t swapConfidence = 10000, std::string logFilename = "KMedoidsLogfile");
+      KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t max_iter = 1000,
+              size_t buildConfidence = 1000, size_t swapConfidence = 10000);
 
       ~KMedoids();
 
@@ -77,10 +74,6 @@ class KMedoids {
 
       void setAlgorithm(const std::string& new_alg); // pass by ref
 
-      size_t getVerbosity();
-
-      void setVerbosity(size_t new_ver);
-
       size_t getMaxIter();
 
       void setMaxIter(size_t new_max);
@@ -92,10 +85,6 @@ class KMedoids {
       size_t getswapConfidence();
 
       void setswapConfidence(size_t new_swapConfidence);
-
-      std::string getLogFilename();
-
-      void setLogFilename(const std::string& new_lname);
 
       void setLossFn(std::string loss);
 
@@ -123,8 +112,6 @@ class KMedoids {
         arma::rowvec& second_best_distances,
         arma::rowvec& assignments
       );
-
-      void sigma_log(arma::mat& sigma);
 
       double calc_loss(const arma::mat& data, arma::rowvec& medoidIndices);
 
@@ -161,8 +148,6 @@ class KMedoids {
 
       double (KMedoids::*lossFn)(const arma::mat& data, size_t i, size_t j) const; ///< loss function used during KMedoids::fit
 
-      LogHelper logHelper; ///< helper object for making formatted logs
-
       size_t steps; ///< number of actual swap iterations taken by the algorithm
 
       // Hyperparameters
@@ -173,10 +158,6 @@ class KMedoids {
       const double precision = 0.001; ///< bound for double comparison precision
 
       const size_t batchSize = 100; ///< batch size for computation steps
-
-      size_t verbosity; ///< determines whether KMedoids::fit outputs a logfile
-
-      std::string logFilename; ///< name of the logfile output (verbosity permitting)
 };
 } // namespace km
 #endif // HEADERS_KMEDOIDS_ALGORITHM_HPP_

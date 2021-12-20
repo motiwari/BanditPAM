@@ -97,9 +97,6 @@ void PAM::build_naive(
     }
     use_absolute = false; // use difference of loss for sigma and sampling,
                           // not absolute
-    logHelper.loss_build.push_back(minDistance/N);
-    logHelper.p_build.push_back(static_cast<float>(1)/static_cast<float>(p));
-    logHelper.comp_exact_build.push_back(N);
   }
 }
 
@@ -139,9 +136,7 @@ void PAM::swap_naive(
                                    second_distances,
                                    assignments);
   
-  // write the sigma distribution to logfile
-  km::KMedoids::sigma_log(sigma);
-
+  
   // iterate across the current medoids
   for (size_t k = 0; k < n_medoids; k++) {
     // for every point in our dataset, let it serve as a "base" point
@@ -173,7 +168,4 @@ void PAM::swap_naive(
     }
   }
   medoid_indices(medoid_to_swap) = best;
-  logHelper.loss_swap.push_back(minDistance/N);
-  logHelper.p_swap.push_back(static_cast<float>(1)/static_cast<float>(p));
-  logHelper.comp_exact_swap.push_back(N*n_medoids);
 }

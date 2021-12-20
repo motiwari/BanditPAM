@@ -80,11 +80,11 @@ class PythonTests(unittest.TestCase):
         Evaluate the n*log(n) scaling of the BanditPAM algorithm on MNIST datasets.
         """
         MNIST_10k = mnist_70k.head(10000).to_numpy()
-        kmed1 = KMedoids(n_medoids=5, algorithm="BanditPAM", verbosity=0)
+        kmed1 = KMedoids(n_medoids=5, algorithm="BanditPAM")
         kmed1.fit(MNIST_10k, "L2")
 
         MNIST_schedule = [20, 40, 70]
-        kmed2 = KMedoids(n_medoids=5, algorithm="BanditPAM", verbosity=0)
+        kmed2 = KMedoids(n_medoids=5, algorithm="BanditPAM")
         for num in MNIST_schedule:
             MNIST_test = mnist_70k.head(num * 1000).to_numpy()
             kmed2.fit(MNIST_test, "L2")
@@ -95,11 +95,11 @@ class PythonTests(unittest.TestCase):
         Evaluate the n*log(n) scaling of the BanditPAM algorithm on scRNA datasets.
         """
         SCRNA_10k = scrna.head(10000).to_numpy()
-        kmed1 = KMedoids(n_medoids=5, algorithm="BanditPAM", verbosity=0)
+        kmed1 = KMedoids(n_medoids=5, algorithm="BanditPAM")
         kmed1.fit(SCRNA_10k, "L1")
 
         scrna_schedule = [20, 30, 40]
-        kmed2 = KMedoids(n_medoids=5, algorithm="BanditPAM", verbosity=0)
+        kmed2 = KMedoids(n_medoids=5, algorithm="BanditPAM")
         for num in scrna_schedule:
             scrna_test = scrna.head(num * 1000).to_numpy()
             kmed2.fit(MNIST_test, "L1")
