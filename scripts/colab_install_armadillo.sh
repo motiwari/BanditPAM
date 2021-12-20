@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# Unzip the files to their appropriate places
+# Install dependencies on Google Colab machine
+
+apt install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
+
+# Copies and unzips the files to their appropriate places
 
 cp /content/BanditPAM/scripts/colab_files/usr-include-armadillo /usr/include/armadillo
 cp /content/BanditPAM/scripts/colab_files/usr-lib-x86_64-linux-gnu-pkgconfig-armadillo.pc /usr/lib/x86_64-linux-gnu/pkgconfig/armadillo.pc
