@@ -34,7 +34,7 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
       cache[idx] = -1;
     }
 
-    permutation = arma::linspace<arma::uvec>(0, n-1);
+    permutation = arma::randperm(n);
     permutation_idx = 0;
     reindex = {};
     for (size_t counter = 0; counter < m; counter++) { // TODO: Can we parallelize this?
@@ -183,11 +183,15 @@ arma::rowvec BanditPAM::build_target(
     arma::uvec tmp_refs;
     // TODO: Make this wraparound properly, last batch_size elements are dropped
     // TODO: Check batch_size is < N
-    if ((permutation_idx + batch_size - 1) >= N) {
-      permutation_idx = 0;
+    if (use_perm) {
+      if ((permutation_idx + batch_size - 1) >= N) {
+        permutation_idx = 0;
+      }
+      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
+      permutation_idx += batch_size;
+    } else {
+       tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
     }
-    tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
-    permutation_idx += batch_size;
 
 #pragma omp parallel for
     for (size_t i = 0; i < target.n_rows; i++) {
@@ -368,11 +372,15 @@ arma::vec BanditPAM::swap_target(
     arma::uvec tmp_refs;
     // TODO: Make this wraparound properly, last batch_size elements are dropped
     // TODO: Check batch_size is < N
-    if ((permutation_idx + batch_size - 1) >= N) {
-      permutation_idx = 0;
+    if (use_perm) {
+      if ((permutation_idx + batch_size - 1) >= N) {
+        permutation_idx = 0;
+      }
+      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
+      permutation_idx += batch_size;
+    } else {
+       tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
     }
-    tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
-    permutation_idx += batch_size;
 
 // for each considered swap
 #pragma omp parallel for
