@@ -294,15 +294,11 @@ arma::rowvec km::KMedoids::build_sigma(
     arma::uvec tmp_refs;
     // TODO: Make this wraparound properly, last batch_size elements are dropped
     // TODO: Check batch_size is < N
-    if (use_perm) {
-      if ((permutation_idx + batch_size - 1) >= N) {
+    if ((permutation_idx + batch_size - 1) >= N) {
         permutation_idx = 0;
       }
       tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
       permutation_idx += batch_size;
-    } else {
-       tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
-    }
     
     arma::vec sample(batch_size);
     arma::rowvec updated_sigma(N); 
@@ -394,15 +390,11 @@ arma::mat km::KMedoids::swap_sigma(
     arma::uvec tmp_refs;
     // TODO: Make this wraparound properly, last batch_size elements are dropped
     // TODO: Check batch_size is < N
-    if (use_perm) {
-      if ((permutation_idx + batch_size - 1) >= N) {
-        permutation_idx = 0;
-      }
-      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
-      permutation_idx += batch_size;
-    } else {
-       tmp_refs = arma::randperm(N, batch_size); // without replacement, requires updated version of armadillo
+    if ((permutation_idx + batch_size - 1) >= N) {
+      permutation_idx = 0;
     }
+    tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batch_size - 1); // inclusive of both indices
+    permutation_idx += batch_size;
 
     arma::vec sample(batch_size);
 // for each considered swap
