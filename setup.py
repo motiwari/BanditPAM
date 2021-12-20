@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 
 
 class get_pybind_include(object):
@@ -164,14 +164,14 @@ def check_linux_package_installation(pkg_name):
     cmd = ["dpkg", "-s", pkg_name]
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     output, _error = process.communicate()
-    # if output.decode() == "":
-    #     raise Warning(
-    #         "WARNING: Need to install %s! \
-    #         Please ensure all dependencies are installed via your package manager (apt, yum, etc.): \
-    #         build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev \
-    #         libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
-    #         % (pkg_name)
-    #     )
+    if output.decode() == "":
+        raise Warning(
+            "WARNING: Need to install %s! \
+            Please ensure all dependencies are installed via your package manager (apt, yum, etc.): \
+            build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev \
+            libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
+            % (pkg_name)
+        )
     return output.decode().strip()
 
 
@@ -191,6 +191,19 @@ def install_check_ubuntu():
         "libffi-dev",
         "zlib1g-dev",
     ]
+
+    # If we're in Google Colab, we need to manually copy over the prebuilt armadillo libraries
+    # NOTE: This only works for Google Colab instances with Ubuntu 18.04 Runtimes!
+    try:
+        import google.colab
+        in_colab = True
+    except:
+        in_colab = False
+    
+    if in_colab:
+        # TODO: Dangerous os.system() call: https://stackoverflow.com/a/51329156
+        os.system('/content/BanditPAM/scripts/colab_install_armadillo.sh')
+        
 
     for dep in dependencies:
         check_linux_package_installation(dep)
