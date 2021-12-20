@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "1.0.3"
+__version__ = "1.0.4"
 
 
 class get_pybind_include(object):
@@ -175,6 +175,23 @@ def check_linux_package_installation(pkg_name):
     return output.decode().strip()
 
 
+def setup_colab():
+    # If we're in Google Colab, we need to manually copy over the prebuilt armadillo libraries
+    # NOTE: This only works for Google Colab instances with Ubuntu 18.04 Runtimes!
+    try:
+        import google.colab
+        in_colab = True
+    except:
+        in_colab = False
+    
+    if in_colab:
+        # TODO: Dangerous os.system() call: https://stackoverflow.com/a/51329156
+        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git')
+        os.system('cd BanditPAM && git checkout colab_install')
+        os.system('/content/BanditPAM/scripts/colab_install_armadillo.sh')
+        os.system('rm -rf /content/BanditPAM')
+
+
 def install_check_ubuntu():
     # Make sure linux packages are installed
     dependencies = [
@@ -192,18 +209,7 @@ def install_check_ubuntu():
         "zlib1g-dev",
     ]
 
-    # If we're in Google Colab, we need to manually copy over the prebuilt armadillo libraries
-    # NOTE: This only works for Google Colab instances with Ubuntu 18.04 Runtimes!
-    try:
-        import google.colab
-        in_colab = True
-    except:
-        in_colab = False
-    
-    if in_colab:
-        # TODO: Dangerous os.system() call: https://stackoverflow.com/a/51329156
-        os.system('/content/BanditPAM/scripts/colab_install_armadillo.sh')
-        
+    setup_colab()
 
     for dep in dependencies:
         check_linux_package_installation(dep)
