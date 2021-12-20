@@ -34,7 +34,7 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
       cache[idx] = -1;
     }
 
-    permutation = arma::linspace<uvec>(0, n-1);
+    permutation = arma::linspace<arma::uvec>(0, n-1);
     permutation_idx = 0;
     reindex = {};
     for (size_t counter = 0; counter < m; counter++) { // TODO: Can we parallelize this?
@@ -231,6 +231,7 @@ void BanditPAM::swap(
   arma::mat& medoids,
   arma::rowvec& assignments) {
     size_t N = data.n_cols;
+    size_t p = (N * n_medoids * swapConfidence); // reciprocal
 
     arma::mat sigma(n_medoids, N, arma::fill::zeros);
 
