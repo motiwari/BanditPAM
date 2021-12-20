@@ -18,4 +18,4 @@ mkdir build && cd build && cmake .. && make
 cd /content/BanditPAM/headers/carma/extern/armadillo-code
 mkdir build && cd build && cmake .. && make && make install
 
-pip install /content/BanditPAM
+pip install --no-cache-dir /content/BanditPAM
