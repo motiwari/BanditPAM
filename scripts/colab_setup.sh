@@ -6,7 +6,7 @@ apt install build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev 
 # Should be in /content/
 curl -XGET https://codeload.github.com/Kitware/CMake/tar.gz/refs/tags/v3.22.1 > cmake-v3.22.1.tar.gz
 tar -xvzf cmake-v3.22.1.tar.gz
-cd CMake-v3.22.1
+cd CMake-3.22.1
 mkdir build && cd build && cmake .. && make && make install
 
 git clone https://github.com/ThrunGroup/BanditPAM.git
