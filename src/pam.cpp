@@ -57,7 +57,6 @@ void PAM::build_naive(
   const arma::mat& data,
   arma::rowvec& medoid_indices) {
   size_t N = data.n_cols;
-  size_t p = (buildConfidence * N); // reciprocal
   bool use_absolute = true;
   arma::rowvec estimates(N, arma::fill::zeros);
   arma::rowvec best_distances(N);
@@ -121,7 +120,6 @@ void PAM::swap_naive(
   size_t best = 0;
   size_t medoid_to_swap = 0;
   size_t N = data.n_cols;
-  size_t p = (N * n_medoids * swapConfidence); // reciprocal
   arma::mat sigma(n_medoids, N, arma::fill::zeros);
   arma::rowvec best_distances(N);
   arma::rowvec second_distances(N);
