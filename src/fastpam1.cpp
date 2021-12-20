@@ -61,7 +61,6 @@ void FastPAM1::build_fastpam1(
   arma::rowvec& medoid_indices
 ) {
   size_t N = data.n_cols;
-  int p = (buildConfidence * N); // reciprocal
   bool use_absolute = true;
   arma::rowvec estimates(N, arma::fill::zeros);
   arma::rowvec best_distances(N);
@@ -128,7 +127,6 @@ void FastPAM1::swap_fastpam1(
   size_t best = 0;
   size_t medoid_to_swap = 0;
   size_t N = data.n_cols;
-  int p = (N * n_medoids * swapConfidence); // reciprocal
   arma::mat sigma(n_medoids, N, arma::fill::zeros);
   arma::rowvec best_distances(N);
   arma::rowvec second_distances(N);
