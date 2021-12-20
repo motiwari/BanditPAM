@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "1.0.4"
+__version__ = "1.0.5"
 
 
 class get_pybind_include(object):
@@ -181,13 +181,13 @@ def setup_colab():
     try:
         import google.colab
         in_colab = True
-    except:
+    except: #TODO: Better exception handling
         in_colab = False
     
     if in_colab:
         # TODO: Dangerous os.system() call: https://stackoverflow.com/a/51329156
-        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git')
-        os.system('cd BanditPAM && git checkout colab_install')
+        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git /content/BanditPAM')
+        os.system('cd /content/BanditPAM && git checkout colab_install')
         os.system('/content/BanditPAM/scripts/colab_install_armadillo.sh')
         os.system('rm -rf /content/BanditPAM')
 
