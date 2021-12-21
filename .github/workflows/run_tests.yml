@@ -13,19 +13,31 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Ubuntu dependencies
-        run: sudo apt install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev libarmadillo-dev
+        run: |
+          sudo apt install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev libarmadillo-dev
       - name: Install Python dependencies 
         run: |
           python -m pip install --upgrade pip
           pip install flake8 pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Install carma
+        run: |
+          git clone https://github.com/RUrlus/carma.git
+          cd carma
+          mkdir build
+          cd build
+          cmake -DCARMA_INSTALL_LIB=ON ..
+          cmake --build . --config Release --target install
+          cd ~
       # - name: Lint with flake8
       #   run: |
       #     # stop the build if there are Python syntax errors or undefined names
       #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
       #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
       #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Commit tests
+      - name: Install BanditPAM package
         run: |
           pip install -vvv -e .
+      - name: Run commit tests
+        run: |
           pytest tests/test_commit.py 
