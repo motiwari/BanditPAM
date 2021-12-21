@@ -95,8 +95,6 @@ namespace km {
               best_distances(l) = cost;
           }
       }
-      use_absolute = false; // use difference of loss for sigma and sampling,
-                            // not absolute
     }
   }
 
