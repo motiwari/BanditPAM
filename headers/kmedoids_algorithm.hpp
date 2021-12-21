@@ -89,24 +89,11 @@ class KMedoids {
 
  protected:
       // The functions below are PAM's constituent functions
-      arma::rowvec build_sigma(
-        const arma::mat& data,
-        arma::rowvec& best_distances,
-        bool use_absolute
-      );
-
       void calc_best_distances_swap(
         const arma::mat& data,
         arma::urowvec& medoidIndices,
         arma::rowvec& best_distances,
         arma::rowvec& second_distances,
-        arma::urowvec& assignments
-      );
-
-      arma::mat swap_sigma(
-        const arma::mat& data,
-        arma::rowvec& best_distances,
-        arma::rowvec& second_best_distances,
         arma::urowvec& assignments
       );
 

@@ -279,58 +279,6 @@ void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
 }
 
 /**
- * \brief Calculates confidence intervals in build step
- *
- * Calculates the confidence intervals about the reward for each arm
- *
- * @param data Transposed input data to find the medoids of
- * intervals
- * @param best_distances Array of best distances from each point to previous set
- * of medoids
- * @param use_aboslute Determines whether the absolute cost is added to the total
- */
-arma::rowvec km::KMedoids::build_sigma(
-  const arma::mat& data,
-  arma::rowvec& best_distances,
-  bool use_absolute) {
-    size_t N = data.n_cols;
-    
-    arma::uvec tmp_refs;
-    // TODO: Make this wraparound properly, last batch_size elements are dropped
-    if (use_perm) {
-      if ((permutation_idx + batchSize - 1) >= N) {
-        permutation_idx = 0;
-      }
-      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batchSize - 1); // inclusive of both indices
-      permutation_idx += batchSize;
-    } else {
-       tmp_refs = arma::randperm(N, batchSize); // without replacement, requires updated version of armadillo
-    }
-    
-    arma::vec sample(batchSize);
-    arma::rowvec updated_sigma(N); 
-// for each possible swap
-#pragma omp parallel for
-    for (size_t i = 0; i < N; i++) {
-        // gather a sample of points
-        for (size_t j = 0; j < batchSize; j++) {
-            double cost = km::KMedoids::cachedLoss(data, i, tmp_refs(j));
-            if (use_absolute) {
-                sample(j) = cost;
-            } else {
-                sample(j) = cost < best_distances(tmp_refs(j))
-                              ? cost
-                              : best_distances(tmp_refs(j));
-                sample(j) -= best_distances(tmp_refs(j));
-            }
-        }
-        updated_sigma(i) = arma::stddev(sample);
-    }
-
-    return updated_sigma;
-}
-
-/**
  * \brief Calculates distances in swap step
  *
  * Calculates the best and second best distances for each datapoint to one of
@@ -369,72 +317,7 @@ void km::KMedoids::calc_best_distances_swap(
     }
 }
 
-/**
- * \brief Calculates confidence intervals in swap step
- *
- * Calculates the confidence intervals about the reward for each arm
- *
- * @param data Transposed input data to find the medoids of
- * intervals
- * @param best_distances Array of best distances from each point to previous set
- * of medoids
- * @param second_best_distances Array of second smallest distances from each
- * point to previous set of medoids
- * @param assignments Assignments of datapoints to their closest medoid
- */
-arma::mat km::KMedoids::swap_sigma(
-  const arma::mat& data,
-  arma::rowvec& best_distances,
-  arma::rowvec& second_best_distances,
-  arma::urowvec& assignments)
-{   
-    size_t N = data.n_cols;
-    size_t K = n_medoids;
-    arma::mat updated_sigma(K, N, arma::fill::zeros);
-    
-    arma::uvec tmp_refs;
-    // TODO: Make this wraparound properly, last batch_size elements are dropped
-    if (use_perm) {
-      if ((permutation_idx + batchSize - 1) >= N) {
-        permutation_idx = 0;
-      }
-      tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batchSize - 1); // inclusive of both indices
-      permutation_idx += batchSize;
-    } else {
-       tmp_refs = arma::randperm(N, batchSize); // without replacement, requires updated version of armadillo
-    }
 
-    arma::vec sample(batchSize);
-// for each considered swap
-#pragma omp parallel for
-    for (size_t i = 0; i < K * N; i++) {
-        // extract data point of swap
-        size_t n = i / K;
-        size_t k = i % K;
-
-        // calculate change in loss for some subset of the data
-        for (size_t j = 0; j < batchSize; j++) {
-            double cost = km::KMedoids::cachedLoss(data, n, tmp_refs(j));
-
-            if (k == assignments(tmp_refs(j))) {
-                if (cost < second_best_distances(tmp_refs(j))) {
-                    sample(j) = cost;
-                } else {
-                    sample(j) = second_best_distances(tmp_refs(j));
-                }
-            } else {
-                if (cost < best_distances(tmp_refs(j))) {
-                    sample(j) = cost;
-                } else {
-                    sample(j) = best_distances(tmp_refs(j));
-                }
-            }
-            sample(j) -= best_distances(tmp_refs(j));
-        }
-        updated_sigma(k, n) = arma::stddev(sample);
-    }
-  return updated_sigma;
-}
 
 /**
  * \brief Calculate loss for medoids

@@ -27,6 +27,23 @@ class BanditPAM : public km::KMedoids {
     */
     void fit_bpam(const arma::mat& inputData);
 
+    /**
+     * \brief Calculates confidence intervals in build step
+     *
+     * Calculates the confidence intervals about the reward for each arm
+     *
+     * @param data Transposed input data to find the medoids of
+     * intervals
+     * @param best_distances Array of best distances from each point to previous set
+     * of medoids
+     * @param use_aboslute Determines whether the absolute cost is added to the total
+     */
+    arma::rowvec build_sigma(
+        const arma::mat& data,
+        arma::rowvec& best_distances,
+        bool use_absolute
+    );
+
     /*! \brief Build step for BanditPAM
     *
     *  Runs build step for the BanditPAM algorithm. Draws batch sizes with replacement
@@ -60,6 +77,26 @@ class BanditPAM : public km::KMedoids {
         arma::rowvec& best_distances,
         bool use_absolute,
         size_t exact
+    );
+
+    /**
+     * \brief Calculates confidence intervals in swap step
+     *
+     * Calculates the confidence intervals about the reward for each arm
+     *
+     * @param data Transposed input data to find the medoids of
+     * intervals
+     * @param best_distances Array of best distances from each point to previous set
+     * of medoids
+     * @param second_best_distances Array of second smallest distances from each
+     * point to previous set of medoids
+     * @param assignments Assignments of datapoints to their closest medoid
+     */
+    arma::mat swap_sigma(
+        const arma::mat& data,
+        arma::rowvec& best_distances,
+        arma::rowvec& second_best_distances,
+        arma::urowvec& assignments
     );
 
     /*! \brief Swap step for BanditPAM

@@ -57,7 +57,6 @@ void PAM::build_naive(
   const arma::mat& data,
   arma::urowvec& medoid_indices) {
   size_t N = data.n_cols;
-  bool use_absolute = true;
   arma::rowvec estimates(N, arma::fill::zeros);
   arma::rowvec best_distances(N);
   best_distances.fill(std::numeric_limits<double>::infinity());
@@ -90,8 +89,6 @@ void PAM::build_naive(
             best_distances(l) = cost;
         }
     }
-    use_absolute = false; // use difference of loss for sigma and sampling,
-                          // not absolute
   }
 }
 

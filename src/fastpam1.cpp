@@ -69,8 +69,6 @@ void FastPAM1::build_fastpam1(
   for (size_t k = 0; k < n_medoids; k++) {
     double minDistance = std::numeric_limits<double>::infinity();
     int best = 0;
-    sigma = km::KMedoids::build_sigma(
-                          data, best_distances, use_absolute); 
     // fixes a base datapoint
     for (size_t i = 0; i < data.n_cols; i++) {
       double total = 0;
@@ -135,11 +133,6 @@ void FastPAM1::swap_fastpam1(
   // calculate quantities needed for swap, best_distances and sigma
   km::KMedoids::calc_best_distances_swap(
     data, medoid_indices, best_distances, second_distances, assignments);
-
-  sigma = km::KMedoids::swap_sigma(data,
-                                   best_distances,
-                                   second_distances,
-                                   assignments);
   
   // for every point in our dataset, let it serve as a new medoid
   for (size_t i = 0; i < data.n_cols; i++) {
