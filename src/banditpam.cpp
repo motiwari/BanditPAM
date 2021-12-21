@@ -109,7 +109,6 @@ void BanditPAM::build(
               ((T_samples + batchSize) >= N_mat) != exact_mask;
             if (arma::accu(compute_exactly) > 0) {
                 arma::uvec targets = find(compute_exactly);
-                logHelper.comp_exact_build.push_back(targets.n_rows);
                 arma::rowvec result =
                   build_target(data, targets, N, best_distances, use_absolute); // induced loss for these targets over all reference points
                 estimates.cols(targets) = result;
@@ -155,8 +154,6 @@ void BanditPAM::build(
         }
         use_absolute = false; // use difference of loss for sigma and sampling,
                               // not absolute
-        logHelper.loss_build.push_back(arma::mean(arma::mean(best_distances)));
-        logHelper.p_build.push_back(static_cast<float>(1)/static_cast<float>(p));
     }
 }
 
@@ -285,7 +282,6 @@ void BanditPAM::swap(
             arma::uvec targets = arma::find(compute_exactly);
 
             if (targets.size() > 0) {
-                logHelper.comp_exact_swap.push_back(targets.size());
                 arma::vec result = swap_target(data,
                                                medoid_indices,
                                                targets,
@@ -342,9 +338,7 @@ void BanditPAM::swap(
         medoids.col(k) = data.col(medoid_indices(k));
         calc_best_distances_swap(
           data, medoid_indices, best_distances, second_distances, assignments);
-        sigma_log(sigma);
-        logHelper.loss_swap.push_back(arma::mean(arma::mean(best_distances)));
-        logHelper.p_swap.push_back(static_cast<float>(1)/static_cast<float>(p));
+
     }
 }
 
@@ -355,7 +349,6 @@ void BanditPAM::swap(
  * in the swap step and returns a list of the estimated reward.
  *
  * @param data Transposed input data to find the medoids of
- * @param sigma Dispersion paramater for each datapoint
  * @param targets Set of target datapoints to be estimated
  * @param batch_size Number of datapoints sampled for updating confidence
  * intervals

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 for PYBIN in /opt/python/*3*/bin; do
   "${PYBIN}/python" setup.py sdist bdist_wheel
 done

@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
 cd "${0%/*}/../.."
 echo 'Running tests'
 

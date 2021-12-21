@@ -25,11 +25,9 @@ namespace py = pybind11;
  * @param inputData Input data to find the medoids of
  * @param loss The loss function used during medoid computation
  * @param k The number of medoids to compute
- * @param logFilename The name of the outputted log file
  */
 void KMedoidsWrapper::fitPython(const py::array_t<double>& inputData, 
-                                const std::string& loss, 
-                                const std::string& logFilename,
+                                const std::string& loss,
                                 py::kwargs kw
     ) 
 {
@@ -50,7 +48,6 @@ void KMedoidsWrapper::fitPython(const py::array_t<double>& inputData,
     if ((kw.size() != 0) && (kw.contains("k"))) {
         KMedoids::setNMedoids(py::cast<int>(kw["k"]));
     }
-    KMedoids::setLogFilename(logFilename);
     KMedoids::fit(carma::arr_to_mat<double>(inputData), loss);
 }
 

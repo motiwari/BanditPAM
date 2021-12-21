@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "1.0.2"
+__version__ = "1.0.5"
 
 
 class get_pybind_include(object):
@@ -166,13 +166,29 @@ def check_linux_package_installation(pkg_name):
     output, _error = process.communicate()
     if output.decode() == "":
         raise Exception(
-            "Error: Need to install %s via homebrew! \
+            "Error: Need to install %s! \
             Please ensure all dependencies are installed via your package manager (apt, yum, etc.): \
             build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev \
             libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
             % (pkg_name)
         )
     return output.decode().strip()
+
+
+def setup_colab():
+    # If we're in Google Colab, we need to manually copy over the prebuilt armadillo libraries
+    # NOTE: This only works for Google Colab instances with Ubuntu 18.04 Runtimes!
+    try:
+        import google.colab
+        in_colab = True
+    except: #TODO: Better exception handling
+        in_colab = False
+    
+    if in_colab:
+        # TODO: Dangerous os.system() call: https://stackoverflow.com/a/51329156
+        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git /content/BanditPAM')
+        os.system('/content/BanditPAM/scripts/colab_install_armadillo.sh')
+        os.system('rm -rf /content/BanditPAM')
 
 
 def install_check_ubuntu():
@@ -191,6 +207,8 @@ def install_check_ubuntu():
         "libffi-dev",
         "zlib1g-dev",
     ]
+
+    setup_colab()
 
     for dep in dependencies:
         check_linux_package_installation(dep)
@@ -349,6 +367,5 @@ setup(
         os.path.join("headers", "banditpam.hpp"),
         os.path.join("headers", "fastpam1.hpp"),
         os.path.join("headers", "pam.hpp"),
-        os.path.join("headers", "log_helper.hpp"),
     ],
 )

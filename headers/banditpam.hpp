@@ -2,7 +2,6 @@
 #define HEADERS_BANDITPAM_HPP_
 
 #include "kmedoids_algorithm.hpp"
-#include "log_helper.hpp"
 
 #include <armadillo>
 #include <vector>
@@ -92,7 +91,6 @@ class BanditPAM : public km::KMedoids {
     *  in the swap step and returns a list of the estimated reward.
     *
     *  @param data Transposed input data to find the medoids of
-    *  @param sigma Dispersion paramater for each datapoint
     *  @param targets Set of target datapoints to be estimated
     *  @param batch_size Number of datapoints sampled for updating confidence
     *  intervals

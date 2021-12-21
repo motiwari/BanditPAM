@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 [ ! -e ./.git/hooks/pre-commit ] || rm ./.git/hooks/pre-commit
 [ ! -e ./.git/hooks/pre-push ] || rm ./.git/hooks/pre-push

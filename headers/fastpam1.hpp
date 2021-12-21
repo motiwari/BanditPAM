@@ -2,7 +2,6 @@
 #define HEADERS_FASTPAM1_HPP_
 
 #include "kmedoids_algorithm.hpp"
-#include "log_helper.hpp"
 
 #include <armadillo>
 #include <vector>

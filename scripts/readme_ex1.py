@@ -10,8 +10,7 @@ X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 
 # Fit the data with BanditPAM:
 kmed = KMedoids(n_medoids=3, algorithm="BanditPAM")
-# Writes results to gmm_log
-kmed.fit(X, "L2", "gmm_log")
+kmed.fit(X, "L2")
 
 print(kmed.labels) # prints cluster assignments, [0] * 40 + [1] * 40 + [2] * 40
 

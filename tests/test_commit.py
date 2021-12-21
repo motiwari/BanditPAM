@@ -55,8 +55,6 @@ class PythonTests(unittest.TestCase):
             n_medoids=5,
             algorithm="BanditPAM",
             max_iter=1000,
-            verbosity=0,
-            logFilename="KMedoidsLogfile",
         )
         kmed_5.fit(self.small_mnist, "L2")
 
@@ -71,8 +69,6 @@ class PythonTests(unittest.TestCase):
             n_medoids=10,
             algorithm="BanditPAM",
             max_iter=1000,
-            verbosity=0,
-            logFilename="KMedoidsLogfile",
         )
         kmed_10.fit(self.small_mnist, "L2")
 
@@ -93,8 +89,6 @@ class PythonTests(unittest.TestCase):
             n_medoids=5,
             algorithm="BanditPAM",
             max_iter=1000,
-            verbosity=0,
-            logFilename="KMedoidsLogfile",
         )
         kmed_5.fit(self.scrna.head(1000).to_numpy(), "L1")
 
@@ -109,8 +103,6 @@ class PythonTests(unittest.TestCase):
             n_medoids=10,
             algorithm="BanditPAM",
             max_iter=1000,
-            verbosity=0,
-            logFilename="KMedoidsLogfile",
         )
         kmed_10.fit(self.scrna.head(1000).to_numpy(), "L1")
 

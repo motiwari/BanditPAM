@@ -7,7 +7,6 @@
  */
 
 #include "kmedoids_algorithm.hpp"
-#include "log_helper.hpp"
 #include "fastpam1.hpp"
 #include "pam.hpp"
 #include "banditpam.hpp"
@@ -27,23 +26,17 @@
  *  @param n_medoids Number of medoids/clusters to create
  *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
  *  the "Bandit-PAM" algorithm, or "naive" to use the naive method
- *  @param verbosity Verbosity of the algorithm, 0 will have no log file
- *  emitted, 1 will emit a log file
  *  @param max_iter The maximum number of iterations the algorithm runs for
  *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
  *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
- *  @param logFilename The name of the output log file
  */
-km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm, size_t verbosity,
-                   size_t max_iter, size_t buildConfidence, size_t swapConfidence,
-                   std::string logFilename
+km::KMedoids::KMedoids(size_t n_medoids, const std::string& algorithm,
+                   size_t max_iter, size_t buildConfidence, size_t swapConfidence
     ): n_medoids(n_medoids),
        algorithm(algorithm),
        max_iter(max_iter),
        buildConfidence(buildConfidence),
-       swapConfidence(swapConfidence),
-       verbosity(verbosity),
-       logFilename(logFilename) {
+       swapConfidence(swapConfidence) {
   km::KMedoids::checkAlgorithm(algorithm);
 }
 
@@ -195,28 +188,6 @@ void km::KMedoids::setAlgorithm(const std::string& new_alg) {
 }
 
 /**
- *  \brief Returns the verbosity for KMedoids
- *
- *  Returns the verbosity used during km::KMedoids::fit, with 0 not creating a
- *  logfile, and >0 creating a detailed logfile.
- */
-size_t km::KMedoids::getVerbosity() {
-  return verbosity;
-}
-
-/**
- *  \brief Sets the verbosity for KMedoids
- *
- *  Sets the verbosity used during km::KMedoids::fit, with 0 not creating a
- *  logfile, and >0 creating a detailed logfile.
- *
- *  @param new_ver New verbosity to use
- */
-void km::KMedoids::setVerbosity(size_t new_ver) {
-  verbosity = new_ver;
-}
-
-/**
  *  \brief Returns the maximum number of iterations for KMedoids
  *
  *  Returns the maximum number of iterations that can be run during
@@ -282,32 +253,10 @@ void km::KMedoids::setswapConfidence(size_t new_swapConfidence) {
 }
 
 /**
- *  \brief Returns the log filename for KMedoids
- *
- *  Returns the name of the logfile that will be output at the end of
- *  km::KMedoids::fit if verbosity is >0
- */
-std::string km::KMedoids::getLogFilename() {
-  return logFilename;
-}
-
-/**
- *  \brief Sets the log filename for KMedoids
- *
- *  Sets the name of the logfile that will be output at the end of
- *  km::KMedoids::fit if verbosity is >0
- *
- *  @param new_lname New logfile name
- */
-void km::KMedoids::setLogFilename(const std::string& new_lname) {
-  logFilename = new_lname;
-}
-
-/**
  * \brief Finds medoids for the input data under identified loss function
  *
  * Primary function of the KMedoids class. Identifies medoids for input dataset
- * after both the SWAP and BUILD steps, and outputs logs if verbosity is >0
+ * after both the SWAP and BUILD steps
  *
  * @param input_data Input data to find the medoids of
  * @param loss The loss function used during medoid computation
@@ -320,13 +269,6 @@ void km::KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
     static_cast<BanditPAM*>(this)->fit_bpam(input_data);
   } else if (algorithm == "FastPAM1") {
     static_cast<FastPAM1*>(this)->fit_fastpam1(input_data);
-  }
-
-  if (this->verbosity > 0) {
-      this->logHelper.init(this->logFilename);
-      this->logHelper.writeProfile(this->medoid_indices_build, this->medoid_indices_final, this->steps,
-                                                        this->logHelper.loss_swap.back());
-      this->logHelper.close();
   }
 }
 
@@ -382,16 +324,6 @@ arma::rowvec km::KMedoids::build_sigma(
         updated_sigma(i) = arma::stddev(sample);
     }
 
-    arma::rowvec P = {0.25, 0.5, 0.75};
-    arma::rowvec Q = arma::quantile(updated_sigma, P);
-    std::ostringstream sigma_out;
-    sigma_out << "min: " << arma::min(updated_sigma)
-              << ", 25th: " << Q(0)
-              << ", median: " << Q(1)
-              << ", 75th: " << Q(2)
-              << ", max: " << arma::max(updated_sigma)
-              << ", mean: " << arma::mean(updated_sigma);
-    logHelper.sigma_build.push_back(sigma_out.str());
     return updated_sigma;
 }
 
@@ -504,27 +436,6 @@ arma::mat km::KMedoids::swap_sigma(
   return updated_sigma;
 }
 
-/**
-* \brief Write the sigma distribution into logfile
-*
-* Calculates the statistical measures of the sigma distribution
-* and writes the results to the log file.
-*
-* @param sigma Dispersion paramater for each datapoint
-*/
-void km::KMedoids::sigma_log(arma::mat& sigma) {
-  arma::rowvec flat_sigma = sigma.as_row();
-  arma::rowvec P = {0.25, 0.5, 0.75};
-  arma::rowvec Q = arma::quantile(flat_sigma, P);
-  std::ostringstream sigma_out;
-  sigma_out << "min: " << arma::min(flat_sigma)
-            << ", 25th: " << Q(0)
-            << ", median: " << Q(1)
-            << ", 75th: " << Q(2)
-            << ", max: " << arma::max(flat_sigma)
-            << ", mean: " << arma::mean(flat_sigma);
-  logHelper.sigma_swap.push_back(sigma_out.str());
-}
 
 /**
  * \brief Calculate loss for medoids

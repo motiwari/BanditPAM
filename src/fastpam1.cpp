@@ -61,7 +61,6 @@ void FastPAM1::build_fastpam1(
   arma::rowvec& medoid_indices
 ) {
   size_t N = data.n_cols;
-  int p = (buildConfidence * N); // reciprocal
   bool use_absolute = true;
   arma::rowvec estimates(N, arma::fill::zeros);
   arma::rowvec best_distances(N);
@@ -100,9 +99,6 @@ void FastPAM1::build_fastpam1(
     }
     use_absolute = false; // use difference of loss for sigma and sampling,
                           // not absolute
-    logHelper.loss_build.push_back(minDistance/N);
-    logHelper.p_build.push_back(static_cast<float>(1)/static_cast<float>(p));
-    logHelper.comp_exact_build.push_back(N);
   }
 }
 
@@ -131,7 +127,6 @@ void FastPAM1::swap_fastpam1(
   size_t best = 0;
   size_t medoid_to_swap = 0;
   size_t N = data.n_cols;
-  int p = (N * n_medoids * swapConfidence); // reciprocal
   arma::mat sigma(n_medoids, N, arma::fill::zeros);
   arma::rowvec best_distances(N);
   arma::rowvec second_distances(N);
@@ -147,8 +142,6 @@ void FastPAM1::swap_fastpam1(
                                    second_distances,
                                    assignments);
   
-  // write the sigma distribution to logfile
-  km::KMedoids::sigma_log(sigma);
   // for every point in our dataset, let it serve as a new medoid
   for (size_t i = 0; i < data.n_cols; i++) {
       double di = best_distances(i);
@@ -189,7 +182,4 @@ void FastPAM1::swap_fastpam1(
   } else {
       minDistance = arma::sum(best_distances);
   }
-  logHelper.loss_swap.push_back(minDistance/N);
-  logHelper.p_swap.push_back(static_cast<float>(1)/static_cast<float>(p));
-  logHelper.comp_exact_swap.push_back(N*n_medoids);
 }

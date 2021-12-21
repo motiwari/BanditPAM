@@ -9,7 +9,6 @@
 #include <armadillo>
 
 #include "kmedoids_algorithm.hpp"
-#include "log_helper.hpp"
 
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
@@ -37,7 +36,7 @@ public:
    * @param k The number of medoids to compute
    * @param logFilename The name of the outputted log file
    */
-  void fitPython(const py::array_t<double>& inputData, const std::string& loss, const std::string& logFilename, py::kwargs kw);
+  void fitPython(const py::array_t<double>& inputData, const std::string& loss, py::kwargs kw);
 
   /**
    *  \brief Returns the final medoids
