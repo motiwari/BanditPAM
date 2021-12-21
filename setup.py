@@ -187,7 +187,6 @@ def setup_colab():
     if in_colab:
         # TODO: Dangerous os.system() call: https://stackoverflow.com/a/51329156
         os.system('git clone https://github.com/ThrunGroup/BanditPAM.git /content/BanditPAM')
-        os.system('cd /content/BanditPAM && git checkout colab_install')
         os.system('/content/BanditPAM/scripts/colab_install_armadillo.sh')
         os.system('rm -rf /content/BanditPAM')
 
