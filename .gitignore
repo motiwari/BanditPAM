@@ -22,3 +22,5 @@ var/
 BanditPAM.egg-info/
 build/
 tmp/
+banditpam.cpython*
+gmm_log
