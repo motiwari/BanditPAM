@@ -27,10 +27,8 @@ jobs:
           cd carma
           mkdir build
           cd build
-          cmake --version
           sudo cmake -DCARMA_INSTALL_LIB=ON ..
           sudo cmake --build . --config Release --target install
-          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
           cd ~
       # - name: Lint with flake8
       #   run: |
@@ -40,10 +38,9 @@ jobs:
       #     flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Install BanditPAM package
         run: |
-          echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
           pip install -vvv -e .
         env:
-          LD_LIBRARY_PATH: . # for linux
+          CPLUS_INCLUDE_PATH: /usr/local/include/carma:/usr/local/include/carma/carma
       - name: Run commit tests
         run: |
           pytest tests/test_commit.py 

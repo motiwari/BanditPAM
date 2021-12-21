@@ -157,12 +157,11 @@ This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
 Once the executable has been built, it can be invoked with:
 ```
-/BanditPAM/build/src/BanditPAM -f [path/to/input.csv] -k [number of clusters] -v [verbosity level]
+/BanditPAM/build/src/BanditPAM -f [path/to/input.csv] -k [number of clusters]
 ```
 
 * `-f` is mandatory and specifies the path to the dataset
 * `-k` is mandatory and specifies the number of clusters with which to fit the data
-* `-v` is optional and specifies the verbosity level.
 
 For example, if you ran `./env_setup.sh` and downloaded the MNIST dataset, you could run:
 
