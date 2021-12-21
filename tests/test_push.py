@@ -3,7 +3,7 @@ from banditpam import KMedoids
 import pandas as pd
 import numpy as np
 
-from utils import SMALL_K_SCHEDULE, N_SMALL_K, NUM_LARGE_CASES, PROPORTION_PASSING, on_the_fly
+from utils import *
 
 class PythonTests(unittest.TestCase):
     mnist_70k = pd.read_csv("data/MNIST_70k.csv", sep=" ", header=None)
