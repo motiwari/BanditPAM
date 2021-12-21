@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 from banditpam import KMedoids
-from utils import SMALL_K_SCHEDULE, N_SMALL_K, NUM_SMALL_CASES, SMALL_SAMPLE_SIZE, PROPORTION_PASSING, on_the_fly
+from utils import *
 
 class PythonTests(unittest.TestCase):
     small_mnist = pd.read_csv("data/MNIST_100.csv", header=None).to_numpy()
@@ -20,7 +20,7 @@ class PythonTests(unittest.TestCase):
         count = 0
         for i in range(NUM_SMALL_CASES):
             data = self.mnist_70k.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
-            count += on_the_fly(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
+            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
         self.assertTrue(count == NUM_SMALL_CASES) # All cases must pass
 
     def test_small_on_the_fly_scrna(self):
@@ -31,7 +31,7 @@ class PythonTests(unittest.TestCase):
         count = 0
         for i in range(NUM_SMALL_CASES):
             data = self.scrna.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
-            count += on_the_fly(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1")
+            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1")
         self.assertTrue(count >= PROPORTION_PASSING*NUM_SMALL_CASES) # Occasionally some may fail due to degeneracy in the scRNA dataset
 
     def test_small_mnist_cases(self):
