@@ -28,120 +28,120 @@ namespace km {
    *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
    *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
    */
-class KMedoids {
- public:
-      KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t max_iter = 1000,
-              size_t buildConfidence = 1000, size_t swapConfidence = 10000);
+  class KMedoids {
+  public:
+        KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t max_iter = 1000,
+                size_t buildConfidence = 1000, size_t swapConfidence = 10000);
 
-      ~KMedoids();
+        ~KMedoids();
 
-      void fit(const arma::mat& inputData, const std::string& loss);
+        void fit(const arma::mat& inputData, const std::string& loss);
 
-      // cache-related variables
+        // cache-related variables
 
-      size_t cache_multiplier = 1000;
+        size_t cache_multiplier = 1000;
 
-      float* cache; // array of floats
+        float* cache; // array of floats
 
-      arma::uvec permutation;
+        arma::uvec permutation;
 
-      size_t permutation_idx;
+        size_t permutation_idx;
 
-      std::unordered_map<size_t, size_t> reindex; 
+        std::unordered_map<size_t, size_t> reindex; 
 
-      bool use_perm = true; // set to false for debugging only, to measure speedup
+        bool use_perm = true; // set to false for debugging only, to measure speedup
 
-      bool use_cache_p = true; // set to false for debugging only, to measure speedup
+        bool use_cache_p = true; // set to false for debugging only, to measure speedup
 
-      // The functions below are getters for read-only attributes
+        // The functions below are getters for read-only attributes
 
-      arma::urowvec getMedoidsFinal();
+        arma::urowvec getMedoidsFinal();
 
-      arma::urowvec getMedoidsBuild();
+        arma::urowvec getMedoidsBuild();
 
-      arma::urowvec getLabels();
+        arma::urowvec getLabels();
 
-      size_t getSteps();
+        size_t getSteps();
 
-      // The functions below are get/set functions for attributes
+        // The functions below are get/set functions for attributes
 
-      size_t getNMedoids();
+        size_t getNMedoids();
 
-      void setNMedoids(size_t new_num);
+        void setNMedoids(size_t new_num);
 
-      std::string getAlgorithm();
+        std::string getAlgorithm();
 
-      void setAlgorithm(const std::string& new_alg); // pass by ref
+        void setAlgorithm(const std::string& new_alg); // pass by ref
 
-      size_t getMaxIter();
+        size_t getMaxIter();
 
-      void setMaxIter(size_t new_max);
+        void setMaxIter(size_t new_max);
 
-      size_t getbuildConfidence();
+        size_t getbuildConfidence();
 
-      void setbuildConfidence(size_t new_buildConfidence);
+        void setbuildConfidence(size_t new_buildConfidence);
 
-      size_t getswapConfidence();
+        size_t getswapConfidence();
 
-      void setswapConfidence(size_t new_swapConfidence);
+        void setswapConfidence(size_t new_swapConfidence);
 
-      void setLossFn(std::string loss);
+        void setLossFn(std::string loss);
 
- protected:
-      // The functions below are PAM's constituent functions
-      void calc_best_distances_swap(
-        const arma::mat& data,
-        arma::urowvec& medoidIndices,
-        arma::rowvec& best_distances,
-        arma::rowvec& second_distances,
-        arma::urowvec& assignments
-      );
+  protected:
+        // The functions below are PAM's constituent functions
+        void calc_best_distances_swap(
+          const arma::mat& data,
+          arma::urowvec& medoidIndices,
+          arma::rowvec& best_distances,
+          arma::rowvec& second_distances,
+          arma::urowvec& assignments
+        );
 
-      double calc_loss(const arma::mat& data, arma::urowvec& medoidIndices);
+        double calc_loss(const arma::mat& data, arma::urowvec& medoidIndices);
 
-      // Loss functions
-      double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = true); // if you change use_cache, also change use_cache_p
+        // Loss functions
+        double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = true); // if you change use_cache, also change use_cache_p
 
-      size_t lp;
+        size_t lp;
 
-      double LP(const arma::mat& data, size_t i, size_t j) const;
+        double LP(const arma::mat& data, size_t i, size_t j) const;
 
-      double LINF(const arma::mat& data, size_t i, size_t j) const;
+        double LINF(const arma::mat& data, size_t i, size_t j) const;
 
-      double cos(const arma::mat& data, size_t i, size_t j) const;
+        double cos(const arma::mat& data, size_t i, size_t j) const;
 
-      double manhattan(const arma::mat& data, size_t i, size_t j) const;
+        double manhattan(const arma::mat& data, size_t i, size_t j) const;
 
-      void checkAlgorithm(const std::string& algorithm);
+        void checkAlgorithm(const std::string& algorithm);
 
-      // Constructor params
-      size_t n_medoids; ///< number of medoids identified for a given dataset
+        // Constructor params
+        size_t n_medoids; ///< number of medoids identified for a given dataset
 
-      std::string algorithm; ///< options: "naive" and "BanditPAM"
+        std::string algorithm; ///< options: "naive" and "BanditPAM"
 
-      size_t max_iter; ///< maximum number of iterations during KMedoids::fit
+        size_t max_iter; ///< maximum number of iterations during KMedoids::fit
 
-      // Properties of the KMedoids instance
-      arma::mat data; ///< input data used during KMedoids::fit
+        // Properties of the KMedoids instance
+        arma::mat data; ///< input data used during KMedoids::fit
 
-      arma::urowvec labels; ///< assignments of each datapoint to its medoid
+        arma::urowvec labels; ///< assignments of each datapoint to its medoid
 
-      arma::urowvec medoid_indices_build; ///< medoids at the end of build step
+        arma::urowvec medoid_indices_build; ///< medoids at the end of build step
 
-      arma::urowvec medoid_indices_final; ///< medoids at the end of the swap step
+        arma::urowvec medoid_indices_final; ///< medoids at the end of the swap step
 
-      double (KMedoids::*lossFn)(const arma::mat& data, size_t i, size_t j) const; ///< loss function used during KMedoids::fit
+        double (KMedoids::*lossFn)(const arma::mat& data, size_t i, size_t j) const; ///< loss function used during KMedoids::fit
 
-      size_t steps; ///< number of actual swap iterations taken by the algorithm
+        size_t steps; ///< number of actual swap iterations taken by the algorithm
 
-      // Hyperparameters
-      size_t buildConfidence; ///< constant that affects the sensitivity of build confidence bounds
+        // Hyperparameters
+        size_t buildConfidence; ///< constant that affects the sensitivity of build confidence bounds
 
-      size_t swapConfidence; ///< constant that affects the sensitiviy of swap confidence bounds
+        size_t swapConfidence; ///< constant that affects the sensitiviy of swap confidence bounds
 
-      const double precision = 0.001; ///< bound for double comparison precision
+        const double precision = 0.001; ///< bound for double comparison precision
 
-      size_t batchSize = 100; ///< batch size for computation steps
+        size_t batchSize = 100; ///< batch size for computation steps
   };
 } // namespace km
 #endif // HEADERS_KMEDOIDS_ALGORITHM_HPP_
