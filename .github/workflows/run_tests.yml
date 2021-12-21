@@ -27,6 +27,7 @@ jobs:
           cd carma
           mkdir build
           cd build
+          cmake --version
           sudo cmake -DCARMA_INSTALL_LIB=ON ..
           sudo cmake --build . --config Release --target install
           echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
