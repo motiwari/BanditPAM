@@ -20,11 +20,11 @@ chmod +x build_docker.sh
 ######### Get data #########
 mkdir -p data
 #### Get SCRNA data
-[[ ! -f ./data/scrna_reformat.csv.gz ]] && echo "Downloading SCRNA..." && download http://web.stanford.edu/~ericsf/scrna_reformat.csv.gz ./data/scrna_reformat.csv.gz
+[[ ! -f data/scrna_reformat.csv.gz ]] && echo "Downloading SCRNA..." && download https://motiwari.com/banditpam_data/scrna_reformat.csv.gz data/scrna_reformat.csv.gz
 
 #### Get MNIST data
-[[ ! -f ./data/MNIST.csv ]] && echo "Downloading small MNIST..." && download http://web.stanford.edu/~ericsf/mnist.csv ./data/MNIST.csv
-[[ ! -f ./data/MNIST-70k.csv ]] && "Downloading full MNIST..." && download http://web.stanford.edu/~ericsf/MNIST-70k.csv ./data/MNIST-70k.csv
+[[ ! -f data/MNIST.csv ]] && echo "Downloading small MNIST..." && download https://motiwari.com/banditpam_data/MNIST_100.csv data/MNIST_100.csv
+[[ ! -f data/MNIST-70k.csv ]] && "Downloading full MNIST..." && download https://motiwari.com/banditpam_data/MNIST_70k.tar.gz data/MNIST_70k.tar.gz
 
 ######### Run scripts #########
 
