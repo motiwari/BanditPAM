@@ -154,7 +154,7 @@ class KMedoids {
 
       const double precision = 0.001; ///< bound for double comparison precision
 
-      const size_t batchSize = 100; ///< batch size for computation steps
+      size_t batchSize = 100; ///< batch size for computation steps
   };
 } // namespace km
 #endif // HEADERS_KMEDOIDS_ALGORITHM_HPP_
