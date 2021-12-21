@@ -22,6 +22,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Install carma
         run: |
+          cd ~
           git clone https://github.com/RUrlus/carma.git
           cd carma
           mkdir build
@@ -38,6 +39,8 @@ jobs:
       - name: Install BanditPAM package
         run: |
           pip install -vvv -e .
+        env:
+          LD_LIBRARY_PATH: . # for linux
       - name: Run commit tests
         run: |
           pytest tests/test_commit.py 
