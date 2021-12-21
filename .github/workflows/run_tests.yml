@@ -52,6 +52,10 @@ jobs:
         # Would need to make a respective include change for clang 
         env:
           CPLUS_INCLUDE_PATH: /usr/local/include/carma
-      - name: Run commit tests
+      - name: Run commit tests, downloading data files as necessary
         run: |
+          mkdir -p data
+          curl -XGET http://web.stanford.edu/~ericsf/mnist.csv > data/mnist.csv
+          curl -XGET http://web.stanford.edu/~ericsf/MNIST-70k.csv > data/MNIST-70k.csv
+          curl -XGET http://web.stanford.edu/~ericsf/scrna_reformat.csv.gz > data/scrna_reformat.csv.gz
           pytest tests/test_commit.py 

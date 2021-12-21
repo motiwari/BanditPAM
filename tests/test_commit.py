@@ -6,7 +6,7 @@ from banditpam import KMedoids
 from utils import SMALL_K_SCHEDULE, N_SMALL_K, NUM_SMALL_CASES, SMALL_SAMPLE_SIZE, PROPORTION_PASSING, on_the_fly
 
 class PythonTests(unittest.TestCase):
-    small_mnist = pd.read_csv("./data/MNIST.csv", header=None).to_numpy()
+    small_mnist = pd.read_csv("./data/mnist.csv", header=None).to_numpy()
 
     mnist_70k = pd.read_csv("./data/MNIST-70k.csv", sep=" ", header=None)
 
