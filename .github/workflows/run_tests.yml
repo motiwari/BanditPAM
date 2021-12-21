@@ -24,7 +24,7 @@ jobs:
       - name: Install Armadillo 10.7.5+
         run: |
           cd ~
-          git clone git clone https://gitlab.com/conradsnicta/armadillo-code.git
+          git clone https://gitlab.com/conradsnicta/armadillo-code.git
           cd armadillo-code
           sudo cmake .
           sudo make install
