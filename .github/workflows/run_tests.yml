@@ -15,7 +15,14 @@ jobs:
       - name: Install Ubuntu dependencies
         run: |
           sudo apt update
-          sudo apt install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev libarmadillo-dev
+          sudo apt install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
+      - name: Install Armadillo 10.7.5+
+        run: |
+          cd ~
+          git clone git clone https://gitlab.com/conradsnicta/armadillo-code.git
+          cd armadillo-code
+          sudo cmake .
+          sudo make install
       - name: Install Python dependencies 
         run: |
           python -m pip install --upgrade pip
