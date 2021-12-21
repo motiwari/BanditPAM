@@ -165,8 +165,8 @@ def check_linux_package_installation(pkg_name):
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     output, _error = process.communicate()
     if output.decode() == "":
-        raise Warning(
-            "WARNING: Need to install %s! \
+        raise Exception(
+            "Error: Need to install %s! \
             Please ensure all dependencies are installed via your package manager (apt, yum, etc.): \
             build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev \
             libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
