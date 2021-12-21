@@ -14,7 +14,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install Ubuntu dependencies
         run: |
-        apt install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
+        sudo apt-get install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
       - name: Install Python dependencies 
         run: |
           python -m pip install --upgrade pip
