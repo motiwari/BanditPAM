@@ -26,8 +26,8 @@ jobs:
           cd carma
           mkdir build
           cd build
-          cmake -DCARMA_INSTALL_LIB=ON ..
-          cmake --build . --config Release --target install
+          sudo cmake -DCARMA_INSTALL_LIB=ON ..
+          sudo cmake --build . --config Release --target install
           cd ~
       # - name: Lint with flake8
       #   run: |
