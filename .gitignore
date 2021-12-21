@@ -4,7 +4,7 @@
 .project
 .vscode/
 data/MNIST_CSV.csv
-data/MNIST-*.csv
+data/MNIST_*.csv
 data/scrna*
 build/
 data/data.csv

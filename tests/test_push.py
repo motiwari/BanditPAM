@@ -6,9 +6,10 @@ import numpy as np
 from utils import SMALL_K_SCHEDULE, N_SMALL_K, NUM_LARGE_CASES, PROPORTION_PASSING, on_the_fly
 
 class PythonTests(unittest.TestCase):
-    mnist_70k = pd.read_csv("./data/MNIST-70k.csv", sep=" ", header=None)
+    mnist_70k = pd.read_csv("data/MNIST_70k.csv", sep=" ", header=None)
     print("Loaded MNIST")
-    # scrna = pd.read_csv("./data/scrna_reformat.csv.gz", header=None)
+    # scrna = pd.read_csv("data/scrna_reformat.csv.gz", header=None)
+    # print("Loaded scRNA")
 
     def test_small_on_the_fly_mnist(self):
         """
