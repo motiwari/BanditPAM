@@ -48,7 +48,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --exclude headers/carma
       - name: Lint with cpplint
         run: |
-          cpplint --exclude=headers/carma --exclude=build --filter=-legal/copyright --recursive .
+          cpplint --exclude=headers/carma --exclude=build --filter=-legal/copyright --filter=-build/c++11 --recursive .
       - name: Install BanditPAM package
         run: |
           pip install -vvv -e .
