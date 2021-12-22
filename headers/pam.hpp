@@ -6,7 +6,6 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
-#include <chrono>
 
 #include "kmedoids_algorithm.hpp"
 
