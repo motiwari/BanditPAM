@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-import numpy as np
+import time
 
 from banditpam import KMedoids
 from utils import bpam_agrees_pam
@@ -35,14 +35,17 @@ class LargerTests(unittest.TestCase):
         Verify that BanditPAM scales as O(nlogn) on the MNIST dataset.
         """
         MNIST_10k = self.mnist_70k.head(LARGE_SAMPLE_SIZE).to_numpy()
-        kmed1 = KMedoids(n_medoids=5, algorithm="BanditPAM")
-        kmed1.fit(MNIST_10k, "L2")
+        kmed = KMedoids(n_medoids=5, algorithm="BanditPAM")
+        start = time.time()
+        kmed.fit(MNIST_10k, "L2")
+        baseline_runtime = time.time() - start
 
-        kmed2 = KMedoids(n_medoids=5, algorithm="BanditPAM")
         for size_multiplier in MNIST_SIZE_MULTIPLIERS:
             MNIST_test = self.mnist_70k.head(size_multiplier * LARGE_SAMPLE_SIZE).to_numpy()
-            kmed2.fit(MNIST_test, "L2")
-            self.assertTrue(kmed2.steps < (size_multiplier ** SCALING_EXPONENT) * kmed1.steps)
+            start = time.time()
+            kmed.fit(MNIST_test, "L2")
+            runtime = time.time() - start
+            self.assertTrue(runtime < (size_multiplier ** SCALING_EXPONENT) * baseline_runtime)
 
     def test_medium_scrna(self):
         """
@@ -72,14 +75,17 @@ class LargerTests(unittest.TestCase):
         Verify that BanditPAM scales as O(nlogn) on the MNIST dataset.
         """
         SCRNA_10k = self.scrna.head(LARGE_SAMPLE_SIZE).to_numpy()
-        kmed1 = KMedoids(n_medoids=5, algorithm="BanditPAM")
-        kmed1.fit(SCRNA_10k, "L1")
+        kmed = KMedoids(n_medoids=5, algorithm="BanditPAM")
+        start = time.time()
+        kmed.fit(SCRNA_10k, "L1")
+        baseline_runtime = time.time() - start
 
-        kmed2 = KMedoids(n_medoids=5, algorithm="BanditPAM")
         for size_multiplier in SCRNA_SIZE_MULTIPLIERS:
             scrna_test = self.scrna.head(size_multiplier * LARGE_SAMPLE_SIZE).to_numpy()
-            kmed2.fit(scrna_test, "L1")
-            self.assertTrue(kmed2.steps < (size_multiplier ** SCALING_EXPONENT) * kmed1.steps)
+            start = time.time()
+            kmed.fit(scrna_test, "L1")
+            runtime = time.time() - start
+            self.assertTrue(runtime < (size_multiplier ** SCALING_EXPONENT) * baseline_runtime)
 
 if __name__ == "__main__":
     unittest.main()
