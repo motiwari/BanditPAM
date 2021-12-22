@@ -67,6 +67,6 @@ jobs:
       - name: Run smaller suite of test cases
         run : |
           pytest tests/test_smaller.py 
-      - name: Run larger suite of test cases
-        run : |
-          pytest tests/test_larger.py 
+      # - name: Run larger suite of test cases
+      #   run : |
+      #     pytest tests/test_larger.py 

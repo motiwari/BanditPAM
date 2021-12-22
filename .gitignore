@@ -22,3 +22,4 @@ var/
 BanditPAM.egg-info/
 build/
 tmp/
+banditpam.cpython-38-darwin.so

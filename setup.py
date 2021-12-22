@@ -259,7 +259,7 @@ class BuildExt(build_ext):
 
     if sys.platform == "darwin":
         install_check_mac()
-        assert compiler_check() == 'clang', "Need to install LLVM clang!"
+        # assert compiler_check() == 'clang', "Need to install LLVM clang!"
         darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.7", "-O3"]
         c_opts["unix"] += darwin_opts
         l_opts["unix"] += darwin_opts
@@ -284,7 +284,7 @@ class BuildExt(build_ext):
 
         compiler_name = compiler_check()
         if sys.platform == "darwin":
-            assert compiler_name == 'clang', "Need to install LLVM clang!"
+            # assert compiler_name == 'clang', "Need to install LLVM clang!"
             link_opts.append('-lomp')
         else:
             if compiler_name == 'clang':
