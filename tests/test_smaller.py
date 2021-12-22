@@ -4,7 +4,14 @@ import numpy as np
 
 from banditpam import KMedoids
 from utils import bpam_agrees_pam
-from constants import *
+from constants import (
+    NUM_SMALL_CASES,
+    SMALL_K_SCHEDULE,
+    N_SMALL_K,
+    SMALL_SAMPLE_SIZE,
+    PROPORTION_PASSING,
+)
+
 
 class SmallerTests(unittest.TestCase):
     small_mnist = pd.read_csv("data/MNIST_100.csv", header=None).to_numpy()
@@ -13,23 +20,36 @@ class SmallerTests(unittest.TestCase):
 
     def test_small_mnist(self):
         """
-        Test NUM_SMALL_CASES number of test cases with subsets of size 
+        Test NUM_SMALL_CASES number of test cases with subsets of size
         SMALL_SAMPLE_SIZE randomly drawn from the full MNIST dataset
         """
         for i in range(NUM_SMALL_CASES):
             data = self.mnist_70k.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
-            _ = bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2", test_build=True, assert_immediately=True)
+            _ = bpam_agrees_pam(
+                k=SMALL_K_SCHEDULE[i % N_SMALL_K],
+                data=data,
+                loss="L2",
+                test_build=True,
+                assert_immediately=True,
+            )
 
     def test_small_scrna(self):
         """
-        Test NUM_SMALL_CASES number of test cases with subsets of size 
+        Test NUM_SMALL_CASES number of test cases with subsets of size
         SMALL_SAMPLE_SIZE randomly drawn from the full scRNA dataset
         """
         count = 0
         for i in range(NUM_SMALL_CASES):
             data = self.scrna.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
-            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1", test_build=True, assert_immediately=False)
-        self.assertTrue(count >= PROPORTION_PASSING*NUM_SMALL_CASES) # Occasionally some may fail due to degeneracy in the scRNA dataset
+            count += bpam_agrees_pam(
+                k=SMALL_K_SCHEDULE[i % N_SMALL_K],
+                data=data,
+                loss="L1",
+                test_build=True,
+                assert_immediately=False,
+                )
+        # Occasionally some may fail due to degeneracy in the scRNA dataset
+        self.assertTrue(count >= PROPORTION_PASSING*NUM_SMALL_CASES)
 
     def test_small_mnist_known_cases(self):
         """
@@ -43,11 +63,11 @@ class SmallerTests(unittest.TestCase):
         kmed_5.fit(self.small_mnist, "L2")
 
         self.assertEqual(
-            sorted(kmed_5.build_medoids.tolist()), 
+            sorted(kmed_5.build_medoids.tolist()),
             [16, 24, 32, 70, 87]
         )
         self.assertEqual(
-            sorted(kmed_5.medoids.tolist()), 
+            sorted(kmed_5.medoids.tolist()),
             [23, 30, 49, 70, 99]
         )
 
@@ -68,7 +88,7 @@ class SmallerTests(unittest.TestCase):
 
     def test_edge_cases(self):
         """
-        Test that BanditPAM raises errors on n_medoids being unspecified or 
+        Test that BanditPAM raises errors on n_medoids being unspecified or
         an empty dataset
         """
         kmed = KMedoids()
@@ -76,7 +96,7 @@ class SmallerTests(unittest.TestCase):
         # initialized to empty
         self.assertEqual([], kmed.build_medoids[0].tolist())
         self.assertEqual([], kmed.medoids[0].tolist())
-        
+
         # error that no value of k has been passed
         self.assertRaises(ValueError, kmed.fit, np.array([]), "L2")
 

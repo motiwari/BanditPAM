@@ -38,13 +38,16 @@ class get_numpy_include(object):
 def compiler_check():
     """
     This is necessary because setuptools will use the compiler that compiled
-    python -- even if the user specifies another one! -- for some of the
-    compilation process
+    python for some of the compilation process, even if the user specifies
+    another one!
     """
     try:
-        return 'clang' if 'clang' in distutils.sysconfig.get_config_vars()['CC'] else 'gcc'
-    except KeyError as _e:
-        # The 'CC' environment variable hasn't been set. In this case, search for clang and gcc
+        return 'clang' \
+            if 'clang' in distutils.sysconfig.get_config_vars()['CC'] \
+            else 'gcc'
+    except KeyError:
+        # The 'CC' environment variable hasn't been set.
+        # In this case, search for clang and gcc
         # Borrowed from https://github.com/clab/dynet/blob/master/setup.py
         if distutils.spawn.find_executable('clang') is not None:
             return 'clang'
@@ -90,7 +93,8 @@ def cpp_flag(compiler):
         if has_flag(compiler, flag):
             return flag
 
-    raise RuntimeError("Unsupported compiler -- at least C++11 support is needed!")
+    raise RuntimeError("Unsupported compiler -- \
+        at least C++11 support is needed!")
 
 
 def check_brew_package(pkg_name):
@@ -99,7 +103,8 @@ def check_brew_package(pkg_name):
     output, _error = process.communicate()
     if output.decode() == "":
         raise Exception(
-            "Error: Need to install %s via homebrew! Please run `brew install %s`"
+            "Error: Need to install %s via homebrew! \
+            Please run `brew install %s`"
             % (pkg_name, pkg_name)
         )
     return output.decode().strip()
@@ -110,12 +115,13 @@ def check_brew_installation():
     process = subprocess.Popen(brew_cmd, stdout=subprocess.PIPE)
     output, _error = process.communicate()
     if output.decode() == "":
-        raise Exception("Error: Need to install homebrew! Please see https://brew.sh")
+        raise Exception("Error: Need to install homebrew! \
+            Please see https://brew.sh")
 
 
 def check_numpy_installation():
     try:
-        import numpy
+        import numpy  # noqa: F401
     except ModuleNotFoundError:
         raise Exception("Need to install numpy!")
 
@@ -130,11 +136,11 @@ def install_check_mac():
     # Check that LLVM clang, libomp, and armadillo are installed
     llvm_loc = check_brew_package(
         "llvm"
-    )  # We need to use LLVM clang since Apple's clang doesn't support OpenMP
-    _libomp_loc = check_brew_package("libomp")
-    _arma_loc = check_brew_package("armadillo")
+    )  # We need to use LLVM clang since Apple's doesn't support OpenMP
+    check_brew_package("libomp")
+    check_brew_package("armadillo")
 
-    # Set compiler to LLVM clang on Mac, since Apple clang doesn't support OpenMP
+    # Set compiler to LLVM clang on Mac for OpenMP support
     os.environ["CC"] = os.path.join(llvm_loc, "bin", "clang")
 
 
@@ -147,14 +153,22 @@ def check_omp_install_linux():
 def check_armadillo_install_linux():
     # Since armadillo is a C++ extension, just check if it exists
     cmd = ["find", "/", "-iname", "armadillo"]
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    process = subprocess.Popen(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+                            )
     output, _error = process.communicate()
     if output.decode() == "":
         print(
             "Warning: Armadillo may not be installed. \
             Please build it from",
             os.path.join(
-                "BanditPAM", "headers", "carma", "third_party", "armadillo-code"
+                "BanditPAM",
+                "headers",
+                "carma",
+                "third_party",
+                "armadillo-code",
             ),
         )
     return output.decode().strip()
@@ -167,26 +181,31 @@ def check_linux_package_installation(pkg_name):
     if output.decode() == "":
         raise Exception(
             "Error: Need to install %s! \
-            Please ensure all dependencies are installed via your package manager (apt, yum, etc.): \
-            build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev \
-            libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
+            Please ensure all dependencies are installed \
+            via your package manager (apt, yum, etc.): \
+            build-essential checkinstall libreadline-gplv2-dev \
+            libncursesw5-dev libssl-dev libsqlite3-dev tk-dev \
+            libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
             % (pkg_name)
         )
     return output.decode().strip()
 
 
 def setup_colab():
-    # If we're in Google Colab, we need to manually copy over the prebuilt armadillo libraries
-    # NOTE: This only works for Google Colab instances with Ubuntu 18.04 Runtimes!
+    # If we're in Google Colab, we need to manually copy over
+    # the prebuilt armadillo libraries
+    # NOTE: This only works for Colab instances with Ubuntu 18.04 Runtimes!
     try:
-        import google.colab
+        import google.colab  # noqa: F401
         in_colab = True
-    except: #TODO: Better exception handling
+    except ModuleNotFoundError:
         in_colab = False
-    
+
     if in_colab:
-        # TODO: Dangerous os.system() call: https://stackoverflow.com/a/51329156
-        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git /content/BanditPAM')
+        # TODO: Dangerous os.system() call.
+        # See https://stackoverflow.com/a/51329156
+        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git \
+            /content/BanditPAM')
         os.system('/content/BanditPAM/scripts/colab_install_armadillo.sh')
         os.system('rm -rf /content/BanditPAM')
 
@@ -260,10 +279,9 @@ class BuildExt(build_ext):
 
         opts.append("-Wno-register")
         opts.append(cpp_flag(self.compiler))
-        opts.append("-O3")  # Add it here as well, in case of Windows installation
+        opts.append("-O3")
         opts.append("-fopenmp")
 
-        # TODO: Change OMP library library name based on gcc vs clang instead of based on OS
         compiler_name = compiler_check()
         if sys.platform == "darwin":
             assert compiler_name == 'clang', "Need to install LLVM clang!"
@@ -280,7 +298,10 @@ class BuildExt(build_ext):
 
         for ext in self.extensions:
             ext.define_macros = [
-                ("VERSION_INFO", '"{}"'.format(self.distribution.get_version()))
+                (
+                    "VERSION_INFO",
+                    '"{}"'.format(self.distribution.get_version())
+                )
             ]
             ext.extra_compile_args = opts
             ext.extra_link_args = link_opts
@@ -297,7 +318,7 @@ if sys.platform == "linux" or sys.platform == "linux2":
         "headers/carma/include",
         "/usr/local/include",
     ]
-    
+
 else:  # OSX
     include_dirs = [
         get_pybind_include(),
@@ -312,7 +333,7 @@ else:  # OSX
 compiler_name = compiler_check()
 if compiler_name == "clang":
     libraries = ["armadillo", "omp"]
-else: # gcc
+else:  # gcc
     libraries = ["armadillo", "gomp"]
 
 ext_modules = [
@@ -348,7 +369,8 @@ setup(
     maintainer="Mo Tiwari",
     author_email="motiwari@stanford.edu",
     url="https://github.com/ThrunGroup/BanditPAM",
-    description="BanditPAM: A state-of-the-art, high-performance k-medoids algorithm.",
+    description="BanditPAM: A state-of-the-art, \
+        high-performance k-medoids algorithm.",
     long_description=long_description,
     ext_modules=ext_modules,
     setup_requires=["pybind11>=2.5.0", "numpy>=1.18"],

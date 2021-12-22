@@ -4,7 +4,19 @@ import time
 
 from banditpam import KMedoids
 from utils import bpam_agrees_pam
-from constants import *
+from constants import (
+    NUM_MEDIUM_CASES,
+    SMALL_K_SCHEDULE,
+    N_SMALL_K,
+    MEDIUM_SAMPLE_SIZE,
+    LARGE_SAMPLE_SIZE,
+    MEDIUM_SIZE_SCHEDULE,
+    NUM_MEDIUM_SIZES,
+    MNIST_SIZE_MULTIPLIERS,
+    SCRNA_SIZE_MULTIPLIERS,
+    PROPORTION_PASSING,
+    SCALING_EXPONENT
+)
 
 
 class LargerTests(unittest.TestCase):
@@ -13,12 +25,18 @@ class LargerTests(unittest.TestCase):
 
     def test_medium_mnist(self):
         """
-        Generate NUM_MEDIUM_CASES random subsets of MNIST 
+        Generate NUM_MEDIUM_CASES random subsets of MNIST
         of size MEDIUM_SAMPLE_SIZE and verify BanditPAM agrees with PAM
         """
         for i in range(NUM_MEDIUM_CASES):
             data = self.mnist_70k.sample(n=MEDIUM_SAMPLE_SIZE).to_numpy()
-            _ = bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2", test_build=True, assert_immediately=True)
+            _ = bpam_agrees_pam(
+                k=SMALL_K_SCHEDULE[i % N_SMALL_K],
+                data=data,
+                loss="L2",
+                test_build=True,
+                assert_immediately=True,
+            )
 
     def test_various_medium_mnist(self):
         """
@@ -27,8 +45,15 @@ class LargerTests(unittest.TestCase):
         we can only do this for fairly small sizes in MEDIUM_SIZE_SCHEDULE
         """
         for i in range(NUM_MEDIUM_CASES):
-            data = self.mnist_70k.sample(n=MEDIUM_SIZE_SCHEDULE[i % NUM_MEDIUM_SIZES])
-            _ = bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2", test_build=True, assert_immediately=True)
+            size = MEDIUM_SIZE_SCHEDULE[i % NUM_MEDIUM_SIZES]
+            data = self.mnist_70k.sample(n=size)
+            _ = bpam_agrees_pam(
+                k=SMALL_K_SCHEDULE[i % N_SMALL_K],
+                data=data,
+                loss="L2",
+                test_build=True,
+                assert_immediately=True,
+            )
 
     def test_time_cases_mnist(self):
         """
@@ -38,24 +63,33 @@ class LargerTests(unittest.TestCase):
         kmed = KMedoids(n_medoids=5, algorithm="BanditPAM")
         start = time.time()
         kmed.fit(MNIST_10k, "L2")
-        baseline_runtime = time.time() - start
+        base_runtime = time.time() - start
 
         for size_multiplier in MNIST_SIZE_MULTIPLIERS:
-            MNIST_test = self.mnist_70k.head(size_multiplier * LARGE_SAMPLE_SIZE).to_numpy()
+            size = size_multiplier * LARGE_SAMPLE_SIZE
+            MNIST_test = self.mnist_70k.head(n=size).to_numpy()
             start = time.time()
             kmed.fit(MNIST_test, "L2")
             runtime = time.time() - start
-            self.assertTrue(runtime < (size_multiplier ** SCALING_EXPONENT) * baseline_runtime)
+            self.assertTrue(
+                runtime < (size_multiplier ** SCALING_EXPONENT) * base_runtime
+            )
 
     def test_medium_scrna(self):
         """
-        Generate NUM_MEDIUM_CASES random subsets of MNIST 
+        Generate NUM_MEDIUM_CASES random subsets of MNIST
         of size MEDIUM_SAMPLE_SIZE and verify BanditPAM agrees with PAM
         """
         count = 0
         for i in range(NUM_MEDIUM_CASES):
             data = self.scrna.sample(n=MEDIUM_SAMPLE_SIZE).to_numpy()
-            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1", test_build=False, assert_immediately=False)
+            count += bpam_agrees_pam(
+                k=SMALL_K_SCHEDULE[i % N_SMALL_K],
+                data=data,
+                loss="L1",
+                test_build=False,
+                assert_immediately=False
+            )
         self.assertTrue(count >= PROPORTION_PASSING*NUM_MEDIUM_CASES)
 
     def test_various_medium_scrna(self):
@@ -66,8 +100,14 @@ class LargerTests(unittest.TestCase):
         """
         count = 0
         for i in range(NUM_MEDIUM_CASES):
-            data = self.scrna.sample(n=MEDIUM_SIZE_SCHEDULE[i % NUM_MEDIUM_SIZES])
-            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2", test_build=False, assert_immediately=False)
+            size = MEDIUM_SIZE_SCHEDULE[i % NUM_MEDIUM_SIZES]
+            data = self.scrna.sample(n=size)
+            count += bpam_agrees_pam(
+                k=SMALL_K_SCHEDULE[i % N_SMALL_K],
+                data=data, loss="L2",
+                test_build=False,
+                assert_immediately=False
+            )
         self.assertTrue(count >= PROPORTION_PASSING*NUM_MEDIUM_CASES)
 
     def test_time_cases_scrna(self):
@@ -78,14 +118,18 @@ class LargerTests(unittest.TestCase):
         kmed = KMedoids(n_medoids=5, algorithm="BanditPAM")
         start = time.time()
         kmed.fit(SCRNA_10k, "L1")
-        baseline_runtime = time.time() - start
+        base_runtime = time.time() - start
 
         for size_multiplier in SCRNA_SIZE_MULTIPLIERS:
-            scrna_test = self.scrna.head(size_multiplier * LARGE_SAMPLE_SIZE).to_numpy()
+            size = size_multiplier * LARGE_SAMPLE_SIZE
+            scrna_test = self.scrna.head(n=size).to_numpy()
             start = time.time()
             kmed.fit(scrna_test, "L1")
             runtime = time.time() - start
-            self.assertTrue(runtime < (size_multiplier ** SCALING_EXPONENT) * baseline_runtime)
+            self.assertTrue(
+                runtime < (size_multiplier ** SCALING_EXPONENT) * base_runtime
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

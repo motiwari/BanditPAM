@@ -1,14 +1,15 @@
 from banditpam import KMedoids
 
+
 def bpam_agrees_pam(k, data, loss, test_build=False, assert_immediately=False):
     """
     Parameters:
         k: Number of medoids
         data: Input data to fit
         loss: Loss function to use for clustering
-        test_build: Verify whether BanditPAM and PAM's medoids agree 
+        test_build: Verify whether BanditPAM and PAM's medoids agree
             after the BUILD step
-        assert_immediately: Fail immediately if medoids disagree. 
+        assert_immediately: Fail immediately if medoids disagree.
             Set to false to test the proportion of passing tests
 
     Returns:
@@ -30,13 +31,19 @@ def bpam_agrees_pam(k, data, loss, test_build=False, assert_immediately=False):
         bpam_and_pam_agree &= (bpam_build_medoids == pam_build_medoids)
 
     if assert_immediately:
-        error_message = ''.join(map(str, 
-            ["BanditPAM and PAM disagree!", 
-            "\nBanditPAM build medoids:", bpam_build_medoids, 
-            "\nPAM build medoids:", pam_build_medoids, 
-            "\nBanditPAM final medoids:", bpam_final_medoids, 
-            "\nPAM final medoids", pam_final_medoids]
-            ))
+        error_message = ''.join(map(str, [
+                                        "BanditPAM and PAM disagree!",
+                                        "\nBanditPAM build medoids:",
+                                        bpam_build_medoids,
+                                        "\nPAM build medoids:",
+                                        pam_build_medoids,
+                                        "\nBanditPAM final medoids:",
+                                        bpam_final_medoids,
+                                        "\nPAM final medoids",
+                                        pam_final_medoids,
+                                        ]
+                                    )
+                                )
         assert bpam_and_pam_agree, error_message
 
     return bpam_and_pam_agree

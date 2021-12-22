@@ -12,7 +12,7 @@ X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 kmed = KMedoids(n_medoids=3, algorithm="BanditPAM")
 kmed.fit(X, "L2")
 
-print(kmed.labels) # prints cluster assignments, [0] * 40 + [1] * 40 + [2] * 40
+print(kmed.labels)  # prints cluster assignments [0] * 40 + [1] * 40 + [2] * 40
 
 # Visualize the data and the medoids:
 for p_idx, point in enumerate(X):
