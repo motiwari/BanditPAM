@@ -1,25 +1,26 @@
 #ifndef HEADERS_PAM_HPP_
 #define HEADERS_PAM_HPP_
 
-#include "kmedoids_algorithm.hpp"
-
+#include <omp.h>
 #include <armadillo>
 #include <vector>
 #include <fstream>
 #include <iostream>
 #include <chrono>
-#include <omp.h>
+
+#include "kmedoids_algorithm.hpp"
+
 
 
 namespace km {
-    /**
-     *  \brief Class implementation for PAM algorithm.
-     *
-     *  PAM class. Consists of all necessary functions to implement
-     *  PAM algorithm.
-     *
-     */
-    class PAM : public km::KMedoids {
+/**
+ *  \brief Class implementation for PAM algorithm.
+ *
+ *  PAM class. Consists of all necessary functions to implement
+ *  PAM algorithm.
+ *
+ */
+class PAM : public km::KMedoids {
     public:
         /*! \brief Runs PAM algorithm.
         *
@@ -39,7 +40,9 @@ namespace km {
         *  @param medoid_indices Uninitialized array of medoids that is modified in place
         *  as medoids are identified
         */
-        void build_naive(const arma::mat& data, arma::urowvec& medoidIndices);
+        void build_naive(
+            const arma::mat& data,
+            arma::urowvec& medoidIndices);
 
         /*! \brief Swap step for the PAM algorithm
         *
@@ -53,7 +56,10 @@ namespace km {
         *  @param assignments Uninitialized array of indices corresponding to each
         *  datapoint assigned the index of the medoid it is closest to
         */
-        void swap_naive(const arma::mat& data, arma::urowvec& medoidIndices, arma::urowvec& assignments);
-    };
-} // namespace km
-#endif // HEADERS_PAM_HPP_
+        void swap_naive(
+            const arma::mat& data,
+            arma::urowvec& medoidIndices,
+            arma::urowvec& assignments);
+};
+}  // namespace km
+#endif  // HEADERS_PAM_HPP_

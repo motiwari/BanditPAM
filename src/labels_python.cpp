@@ -7,12 +7,12 @@
  * 
  */
 
-#include "kmedoids_pywrapper.hpp"
-
-#include <carma>
-#include <armadillo>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
+#include <carma>
+#include <armadillo>
+
+#include "kmedoids_pywrapper.hpp"
 
 namespace py = pybind11;
 

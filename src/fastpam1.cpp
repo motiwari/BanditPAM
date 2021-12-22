@@ -65,7 +65,7 @@ namespace km {
     arma::rowvec estimates(N, arma::fill::zeros);
     arma::rowvec best_distances(N);
     best_distances.fill(std::numeric_limits<double>::infinity());
-    arma::rowvec sigma(N); // standard deviation of induced losses on reference points
+    arma::rowvec sigma(N);
     for (size_t k = 0; k < n_medoids; k++) {
       double minDistance = std::numeric_limits<double>::infinity();
       int best = 0;
@@ -131,7 +131,7 @@ namespace km {
     // calculate quantities needed for swap, best_distances and sigma
     KMedoids::calc_best_distances_swap(
       data, medoid_indices, best_distances, second_distances, assignments);
-    
+
     // for every point in our dataset, let it serve as a new medoid
     for (size_t i = 0; i < data.n_cols; i++) {
         double di = best_distances(i);
@@ -144,7 +144,9 @@ namespace km {
                 if (dij < second_distances(j)) {
                     delta_td.at(assignments(j)) += (dij - best_distances(j));
                 } else {
-                    delta_td.at(assignments(j)) += (second_distances(j) - best_distances(j));
+                    delta_td.at(
+                      assignments(j)) +=
+                        (second_distances(j) - best_distances(j));
                 }
                 // reassignment check
                 if (dij < best_distances(j)) {
@@ -173,4 +175,4 @@ namespace km {
         minDistance = arma::sum(best_distances);
     }
   }
-} // namespace km
+}  // namespace km

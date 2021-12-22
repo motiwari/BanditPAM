@@ -9,15 +9,15 @@
  * ./src/build/BanditPAM -f [path/to/input] -k [number of clusters]
  */
 
-#include "kmedoids_algorithm.hpp"
-
+#include <unistd.h>
 #include <armadillo>
 #include <chrono>
 #include <fstream>
-#include <unistd.h>
 #include <exception>
 #include <regex>
 #include <filesystem>
+
+#include "kmedoids_algorithm.hpp"
 
 int main(int argc, char* argv[]) {
     std::string input_name;
@@ -33,7 +33,6 @@ int main(int argc, char* argv[]) {
     const int ARGUMENT_ERROR_CODE = 1;
 
     while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:s:")) != -1) {
-
         if ( optind == prev_ind + 2 && *optarg == '-' ) {
         opt = ':';
         --optind;
@@ -65,11 +64,14 @@ int main(int argc, char* argv[]) {
 
     try {
       if (!f_flag) {
-        throw std::invalid_argument("error: Must specify input file via -f flag");
+        throw std::invalid_argument(
+          "Error: Must specify input file via -f flag");
       } else if (!k_flag) {
-        throw std::invalid_argument("error: Must specify number of clusters via -k flag");
+        throw std::invalid_argument(
+          "Error: Must specify number of clusters via -k flag");
       } else if (!std::filesystem::exists(input_name)) {
-        throw std::invalid_argument("error: The file does not exist");
+        throw std::invalid_argument(
+          "Error: The file does not exist");
       }
     } catch (std::invalid_argument& e) {
       std::cout << e.what() << std::endl;
@@ -78,8 +80,11 @@ int main(int argc, char* argv[]) {
 
     arma::mat data;
     data.load(input_name);
-    
-    km::KMedoids kmed(k, "BanditPAM", max_iter, buildConfidence, swapConfidence);
+    km::KMedoids kmed(
+      k,
+      "BanditPAM",
+      max_iter,
+      buildConfidence,
+      swapConfidence);
     kmed.fit(data, loss);
-
 }

@@ -1,24 +1,25 @@
 #ifndef HEADERS_FASTPAM1_HPP_
 #define HEADERS_FASTPAM1_HPP_
 
-#include "kmedoids_algorithm.hpp"
-
+#include <omp.h>
 #include <armadillo>
 #include <vector>
 #include <fstream>
 #include <iostream>
 #include <chrono>
-#include <omp.h>
+
+#include "kmedoids_algorithm.hpp"
+
 
 namespace km {
-    /**
-     *  \brief Class implementation for FastPAM1 algorithm.
-     *
-     *  FastPAM1 class. Consists of all necessary functions to implement
-     *  FastPAM1 algorithm.
-     *
-     */
-    class FastPAM1 : public km::KMedoids {
+/**
+ *  \brief Class implementation for FastPAM1 algorithm.
+ *
+ *  FastPAM1 class. Consists of all necessary functions to implement
+ *  FastPAM1 algorithm.
+ *
+ */
+class FastPAM1 : public km::KMedoids {
     public:
         /*! \brief Runs FastPAM1 algorithm.
         *
@@ -38,7 +39,9 @@ namespace km {
         *  @param medoid_indices Uninitialized array of medoids that is modified in place
         *  as medoids are identified
         */
-        void build_fastpam1(const arma::mat& data, arma::urowvec& medoid_indices);
+        void build_fastpam1(
+            const arma::mat& data,
+            arma::urowvec& medoid_indices);
 
         /*! \brief Swap step for the FastPAM1 algorithm
         *
@@ -54,7 +57,9 @@ namespace km {
         *  @param assignments Uninitialized array of indices corresponding to each
         *  datapoint assigned the index of the medoid it is closest to
         */
-        void swap_fastpam1(const arma::mat& data, arma::urowvec& medoid_indices, arma::urowvec& assignments);
-    };
-} // namespace km
-#endif // HEADERS_FASTPAM1_HPP_
+        void swap_fastpam1(const arma::mat& data,
+            arma::urowvec& medoid_indices,
+            arma::urowvec& assignments);
+};
+}  // namespace km
+#endif  // HEADERS_FASTPAM1_HPP_

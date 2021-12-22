@@ -7,12 +7,12 @@
  * 
  */
 
-#include "kmedoids_pywrapper.hpp"
-
-#include <carma>
-#include <armadillo>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
+#include <carma>
+#include <armadillo>
+
+#include "kmedoids_pywrapper.hpp"
 
 namespace py = pybind11;
 
@@ -24,12 +24,14 @@ namespace py = pybind11;
  */
 py::array_t<arma::uword> KMedoidsWrapper::getMedoidsFinalPython() {
     if (KMedoids::getMedoidsFinal().size() > 1) {
-        return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsFinal()).squeeze();
+        return carma::row_to_arr<arma::uword>(
+            KMedoids::getMedoidsFinal()).squeeze();
     } else {
         return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsFinal());
     }
 }
 
 void medoids_python(py::class_<KMedoidsWrapper> &cls) {
-    cls.def_property_readonly("medoids", &KMedoidsWrapper::getMedoidsFinalPython);
+    cls.def_property_readonly("medoids",
+    &KMedoidsWrapper::getMedoidsFinalPython);
 }

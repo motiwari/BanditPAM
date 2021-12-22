@@ -1,12 +1,12 @@
 #ifndef HEADERS_KMEDOIDS_ALGORITHM_HPP_
 #define HEADERS_KMEDOIDS_ALGORITHM_HPP_
 
+#include <omp.h>
 #include <armadillo>
 #include <vector>
 #include <fstream>
 #include <iostream>
 #include <chrono>
-#include <omp.h>
 #include <tuple>
 #include <functional>
 #include <unordered_map>
@@ -15,23 +15,27 @@
 
 
 namespace km {
-  /**
-   *  \brief Class implementation for running KMedoids methods.
-   *
-   *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
-   *  for a particular set of input data.
-   *
-   *  @param n_medoids Number of medoids/clusters to create
-   *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
-   *  the "BanditPAM" algorithm, or "naive" to use PAM
-   *  @param max_iter The maximum number of iterations the algorithm runs for
-   *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
-   *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
-   */
-  class KMedoids {
+/**
+ *  \brief Class implementation for running KMedoids methods.
+ *
+ *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
+ *  for a particular set of input data.
+ *
+ *  @param n_medoids Number of medoids/clusters to create
+ *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
+ *  the "BanditPAM" algorithm, or "naive" to use PAM
+ *  @param max_iter The maximum number of iterations the algorithm runs for
+ *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
+ *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
+ */
+class KMedoids {
   public:
-        KMedoids(size_t n_medoids = 5, const std::string& algorithm = "BanditPAM", size_t max_iter = 1000,
-                size_t buildConfidence = 1000, size_t swapConfidence = 10000);
+        KMedoids(
+          size_t n_medoids = 5,
+          const std::string& algorithm = "BanditPAM",
+          size_t max_iter = 1000,
+          size_t buildConfidence = 1000,
+          size_t swapConfidence = 10000);
 
         ~KMedoids();
 
@@ -41,17 +45,19 @@ namespace km {
 
         size_t cache_multiplier = 1000;
 
-        float* cache; // array of floats
+        float* cache;
 
         arma::uvec permutation;
 
         size_t permutation_idx;
 
-        std::unordered_map<size_t, size_t> reindex; 
+        std::unordered_map<size_t, size_t> reindex;
 
-        bool use_perm = true; // set to false for debugging only, to measure speedup
+        // set to false for debugging only, to measure speedup
+        bool use_perm = true;
 
-        bool use_cache_p = true; // set to false for debugging only, to measure speedup
+        // set to false for debugging only, to measure speedup
+        bool use_cache_p = true;
 
         // The functions below are getters for read-only attributes
 
@@ -71,7 +77,7 @@ namespace km {
 
         std::string getAlgorithm();
 
-        void setAlgorithm(const std::string& new_alg); // pass by ref
+        void setAlgorithm(const std::string& new_alg);
 
         size_t getMaxIter();
 
@@ -94,13 +100,19 @@ namespace km {
           arma::urowvec& medoidIndices,
           arma::rowvec& best_distances,
           arma::rowvec& second_distances,
-          arma::urowvec& assignments
-        );
+          arma::urowvec& assignments);
 
-        double calc_loss(const arma::mat& data, arma::urowvec& medoidIndices);
+        double calc_loss(
+          const arma::mat& data,
+          arma::urowvec& medoidIndices);
 
         // Loss functions
-        double cachedLoss(const arma::mat& data, size_t i, size_t j, bool use_cache = true); // if you change use_cache, also change use_cache_p
+        // if you change use_cache, also change use_cache_p
+        double cachedLoss(
+          const arma::mat& data,
+          size_t i,
+          size_t j,
+          bool use_cache = true);
 
         size_t lp;
 
@@ -115,33 +127,37 @@ namespace km {
         void checkAlgorithm(const std::string& algorithm);
 
         // Constructor params
-        size_t n_medoids; ///< number of medoids identified for a given dataset
+        size_t n_medoids;
 
-        std::string algorithm; ///< options: "naive" and "BanditPAM"
+        std::string algorithm;
 
-        size_t max_iter; ///< maximum number of iterations during KMedoids::fit
+        size_t max_iter;
 
         // Properties of the KMedoids instance
-        arma::mat data; ///< input data used during KMedoids::fit
+        arma::mat data;
 
-        arma::urowvec labels; ///< assignments of each datapoint to its medoid
+        arma::urowvec labels;
 
-        arma::urowvec medoid_indices_build; ///< medoids at the end of build step
+        arma::urowvec medoid_indices_build;
 
-        arma::urowvec medoid_indices_final; ///< medoids at the end of the swap step
+        arma::urowvec medoid_indices_final;
 
-        double (KMedoids::*lossFn)(const arma::mat& data, size_t i, size_t j) const; ///< loss function used during KMedoids::fit
+        double (KMedoids::*lossFn)(
+          const arma::mat& data,
+          size_t i,
+          size_t j)
+          const;
 
-        size_t steps; ///< number of actual swap iterations taken by the algorithm
+        size_t steps;
 
         // Hyperparameters
-        size_t buildConfidence; ///< constant that affects the sensitivity of build confidence bounds
+        size_t buildConfidence;
 
-        size_t swapConfidence; ///< constant that affects the sensitiviy of swap confidence bounds
+        size_t swapConfidence;
 
-        const double precision = 0.001; ///< bound for double comparison precision
+        const double precision = 0.001;
 
-        size_t batchSize = 100; ///< batch size for computation steps
-  };
-} // namespace km
-#endif // HEADERS_KMEDOIDS_ALGORITHM_HPP_
+        size_t batchSize = 100;
+};
+}  // namespace km
+#endif  // HEADERS_KMEDOIDS_ALGORITHM_HPP_

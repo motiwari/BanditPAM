@@ -1,24 +1,25 @@
 #ifndef HEADERS_BANDITPAM_HPP_
 #define HEADERS_BANDITPAM_HPP_
 
-#include "kmedoids_algorithm.hpp"
-
+#include <omp.h>
 #include <armadillo>
 #include <vector>
 #include <fstream>
 #include <iostream>
 #include <chrono>
-#include <omp.h>
+
+
+#include "kmedoids_algorithm.hpp"
 
 namespace km {
-    /**
-     *  \brief Class implementation for BanditPAM algorithm.
-     *
-     *  BanditPAM class. Consists of all necessary functions to implement
-     *  BanditPAM algorithm.
-     *
-     */
-    class BanditPAM : public km::KMedoids {
+/**
+ *  \brief Class implementation for BanditPAM algorithm.
+ *
+ *  BanditPAM class. Consists of all necessary functions to implement
+ *  BanditPAM algorithm.
+ *
+ */
+class BanditPAM : public km::KMedoids {
     public:
         /*! \brief Runs BanditPAM algorithm.
         *
@@ -41,9 +42,8 @@ namespace km {
          */
         arma::rowvec build_sigma(
             const arma::mat& data,
-            arma::rowvec& best_distances,
-            bool use_absolute
-        );
+            const arma::rowvec& best_distances,
+            bool use_absolute);
 
         /*! \brief Build step for BanditPAM
         *
@@ -58,7 +58,10 @@ namespace km {
         *  @param medoids Matrix of possible medoids that is updated as the bandit
         *  learns which datapoints will be unlikely to be good candidates
         */
-        void build(const arma::mat& data, arma::urowvec& medoidIndices, arma::mat& medoids);
+        void build(
+            const arma::mat& data,
+            arma::urowvec& medoidIndices,
+            arma::mat& medoids);
 
         /*! \brief Estimates the mean reward for each arm in build step
         *
@@ -77,8 +80,7 @@ namespace km {
             arma::uvec& target,
             arma::rowvec& best_distances,
             bool use_absolute,
-            size_t exact
-        );
+            size_t exact);
 
         /**
          * \brief Calculates confidence intervals in swap step
@@ -97,8 +99,7 @@ namespace km {
             const arma::mat& data,
             arma::rowvec& best_distances,
             arma::rowvec& second_best_distances,
-            arma::urowvec& assignments
-        );
+            arma::urowvec& assignments);
 
         /*! \brief Swap step for BanditPAM
         *
@@ -119,8 +120,7 @@ namespace km {
             const arma::mat& data,
             arma::urowvec& medoidIndices,
             arma::mat& medoids,
-            arma::urowvec& assignments
-        );
+            arma::urowvec& assignments);
 
         /*! \brief Estimates the mean reward for each arm in swap step
         *
@@ -143,8 +143,7 @@ namespace km {
             arma::rowvec& best_distances,
             arma::rowvec& second_best_distances,
             arma::urowvec& assignments,
-            size_t exact
-        );
-    };
-}
-#endif // HEADERS_BANDITPAM_HPP_
+            size_t exact);
+};
+}  // namespace km
+#endif  // HEADERS_BANDITPAM_HPP_

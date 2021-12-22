@@ -31,14 +31,15 @@ namespace km {
       cache = new float[n * m];
 
   #pragma omp parallel for
-      for (size_t idx = 0; idx < m*n; idx++){
+      for (size_t idx = 0; idx < m*n; idx++) {
         cache[idx] = -1;
       }
 
       permutation = arma::randperm(n);
       permutation_idx = 0;
       reindex = {};
-      for (size_t counter = 0; counter < m; counter++) { // TODO: Can we parallelize this?
+      // TODO(@motiwari): Can we parallelize this?
+      for (size_t counter = 0; counter < m; counter++) {
           reindex[permutation[counter]] = counter;
       }
     }
@@ -70,24 +71,28 @@ namespace km {
    */
   arma::rowvec BanditPAM::build_sigma(
     const arma::mat& data,
-    arma::rowvec& best_distances,
+    const arma::rowvec& best_distances,
     bool use_absolute) {
       size_t N = data.n_cols;
-      
       arma::uvec tmp_refs;
-      // TODO: Make this wraparound properly, last batch_size elements are dropped
+      // TODO(@motiwari): Make this wraparound properly as
+      // last batch_size elements are dropped
       if (use_perm) {
         if ((permutation_idx + batchSize - 1) >= N) {
           permutation_idx = 0;
         }
-        tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batchSize - 1); // inclusive of both indices
+        // inclusive of both indices
+        tmp_refs = permutation.subvec(
+          permutation_idx,
+          permutation_idx + batchSize - 1);
         permutation_idx += batchSize;
       } else {
-        tmp_refs = arma::randperm(N, batchSize); // without replacement, requires updated version of armadillo
+        // sample without replacement, requires updated version of armadillo
+        tmp_refs = arma::randperm(N, batchSize);
       }
-      
+
       arma::vec sample(batchSize);
-      arma::rowvec updated_sigma(N); 
+      arma::rowvec updated_sigma(N);
   // for each possible swap
   #pragma omp parallel for
       for (size_t i = 0; i < N; i++) {
@@ -127,23 +132,20 @@ namespace km {
     const arma::mat& data,
     arma::urowvec& medoid_indices,
     arma::mat& medoids) {
-      // Parameters
       size_t N = data.n_cols;
       arma::rowvec N_mat(N);
       N_mat.fill(N);
-      size_t p = (buildConfidence * N); // reciprocal of
+      size_t p = (buildConfidence * N);
       bool use_absolute = true;
       arma::rowvec estimates(N, arma::fill::zeros);
       arma::rowvec best_distances(N);
       best_distances.fill(std::numeric_limits<double>::infinity());
-      arma::rowvec sigma(N); // standard deviation of induced losses on reference points
-      arma::urowvec candidates(
-        N,
-        arma::fill::ones); // one hot encoding of candidates -- points not filtered out yet
+      arma::rowvec sigma(N);
+      arma::urowvec candidates(N, arma::fill::ones);
       arma::rowvec lcbs(N);
       arma::rowvec ucbs(N);
-      arma::rowvec T_samples(N, arma::fill::zeros); // number of times calculating induced loss for reference point
-      arma::rowvec exact_mask(N, arma::fill::zeros); // computed the loss exactly for this datapoint
+      arma::rowvec T_samples(N, arma::fill::zeros);
+      arma::rowvec exact_mask(N, arma::fill::zeros);
 
       for (size_t k = 0; k < n_medoids; k++) {
           // instantiate medoids one-by-online
@@ -153,16 +155,21 @@ namespace km {
           T_samples.fill(0);
           exact_mask.fill(0);
           estimates.fill(0);
+          // compute std dev amongst batch of reference points
           sigma = build_sigma(
-                  data, best_distances, use_absolute); // computes std dev amongst batch of reference points
+                  data, best_distances, use_absolute);
 
-          while (arma::sum(candidates) > precision) { // while some candidates exist
+          while (arma::sum(candidates) > precision) {
               arma::umat compute_exactly =
                 ((T_samples + batchSize) >= N_mat) != exact_mask;
               if (arma::accu(compute_exactly) > 0) {
                   arma::uvec targets = find(compute_exactly);
-                  arma::rowvec result =
-                    build_target(data, targets, best_distances, use_absolute, N); // induced loss for these targets over all reference points
+                  arma::rowvec result = build_target(
+                    data,
+                    targets,
+                    best_distances,
+                    use_absolute,
+                    N);
                   estimates.cols(targets) = result;
                   ucbs.cols(targets) = result;
                   lcbs.cols(targets) = result;
@@ -175,11 +182,12 @@ namespace km {
               }
               arma::uvec targets = arma::find(candidates);
               arma::rowvec result = build_target(
-                data, targets, best_distances, use_absolute, 0); // induced loss for the targets (sample)
+                data, targets, best_distances, use_absolute, 0);
+              // update the running average
               estimates.cols(targets) =
                 ((T_samples.cols(targets) % estimates.cols(targets)) +
                 (result * batchSize)) /
-                (batchSize + T_samples.cols(targets)); // update the running average
+                (batchSize + T_samples.cols(targets));
               T_samples.cols(targets) += batchSize;
               arma::rowvec adjust(targets.n_rows);
               adjust.fill(p);
@@ -204,8 +212,9 @@ namespace km {
                   best_distances(i) = cost;
               }
           }
-          use_absolute = false; // use difference of loss for sigma and sampling,
-                                // not absolute
+
+          // use difference of loss for sigma and sampling, not absolute
+          use_absolute = false;
       }
   }
 
@@ -217,9 +226,9 @@ namespace km {
    *
    * @param data Transposed input data to find the medoids of
    * @param target Set of target datapoints to be estimated
-   * intervals
-   * @param best_distances Array of best distances from each point to previous set
-   * of medoids
+   *  intervals
+   * @param best_distances Array of best distances from each point to previous
+   *  set of medoids
    * @param use_absolute Determines whether the absolute cost is added to the total
    */
   arma::rowvec BanditPAM::build_target(
@@ -234,17 +243,21 @@ namespace km {
         tmp_batch_size = N;
       }
       arma::rowvec estimates(target.n_rows, arma::fill::zeros);
-      
       arma::uvec tmp_refs;
-      // TODO: Make this wraparound properly, last batch_size elements are dropped
+      // TODO(@motiwari): Make this wraparound properly
+      // as last batch_size elements are dropped
       if (use_perm) {
         if ((permutation_idx + tmp_batch_size - 1) >= N) {
           permutation_idx = 0;
         }
-        tmp_refs = permutation.subvec(permutation_idx, permutation_idx + tmp_batch_size - 1); // inclusive of both indices
+        // inclusive of both indices
+        tmp_refs = permutation.subvec(
+          permutation_idx,
+          permutation_idx + tmp_batch_size - 1);
         permutation_idx += tmp_batch_size;
       } else {
-        tmp_refs = arma::randperm(N, tmp_batch_size); // without replacement, requires updated version of armadillo
+        // without replacement, requires updated version of armadillo
+        tmp_refs = arma::randperm(N, tmp_batch_size);
       }
 
   #pragma omp parallel for
@@ -284,22 +297,25 @@ namespace km {
     const arma::mat& data,
     arma::rowvec& best_distances,
     arma::rowvec& second_best_distances,
-    arma::urowvec& assignments)
-  {   
+    arma::urowvec& assignments) {
       size_t N = data.n_cols;
       size_t K = n_medoids;
       arma::mat updated_sigma(K, N, arma::fill::zeros);
-      
       arma::uvec tmp_refs;
-      // TODO: Make this wraparound properly, last batch_size elements are dropped
+      // TODO(@motiwari): Make this wraparound properly
+      // as last batch_size elements are dropped
       if (use_perm) {
         if ((permutation_idx + batchSize - 1) >= N) {
           permutation_idx = 0;
         }
-        tmp_refs = permutation.subvec(permutation_idx, permutation_idx + batchSize - 1); // inclusive of both indices
+        // inclusive of both indices
+        tmp_refs = permutation.subvec(
+          permutation_idx,
+          permutation_idx + batchSize - 1);
         permutation_idx += batchSize;
       } else {
-        tmp_refs = arma::randperm(N, batchSize); // without replacement, requires updated version of armadillo
+        // without replacement, requires updated version of armadillo
+        tmp_refs = arma::randperm(N, batchSize);
       }
 
       arma::vec sample(batchSize);
@@ -356,7 +372,7 @@ namespace km {
     arma::mat& medoids,
     arma::urowvec& assignments) {
       size_t N = data.n_cols;
-      size_t p = (N * n_medoids * swapConfidence); // reciprocal
+      size_t p = (N * n_medoids * swapConfidence);
 
       arma::mat sigma(n_medoids, N, arma::fill::zeros);
 
@@ -378,7 +394,11 @@ namespace km {
 
           // calculate quantities needed for swap, best_distances and sigma
           calc_best_distances_swap(
-            data, medoid_indices, best_distances, second_distances, assignments);
+            data,
+            medoid_indices,
+            best_distances,
+            second_distances,
+            assignments);
 
           sigma = swap_sigma(data,
                             best_distances,
@@ -393,10 +413,14 @@ namespace km {
           // while there is at least one candidate (double comparison issues)
           while (arma::accu(candidates) > 0.5) {
               calc_best_distances_swap(
-                data, medoid_indices, best_distances, second_distances, assignments);
+                data,
+                medoid_indices,
+                best_distances,
+                second_distances,
+                assignments);
 
-              // compute exactly if it's been samples more than N times and hasn't
-              // been computed exactly already
+              // compute exactly if it's been samples more than N times and
+              // hasn't been computed exactly already
               arma::umat compute_exactly =
                 ((T_samples + batchSize) >= N) != (exact_mask);
               arma::uvec targets = arma::find(compute_exactly);
@@ -436,7 +460,7 @@ namespace km {
               arma::vec adjust(targets.n_rows);
               adjust.fill(p);
               adjust = arma::log(adjust);
-              arma::vec cb_delta = sigma.elem(targets) % 
+              arma::vec cb_delta = sigma.elem(targets) %
                                   arma::sqrt(adjust / T_samples.elem(targets));
 
               ucbs.elem(targets) = estimates.elem(targets) + cb_delta;
@@ -457,7 +481,11 @@ namespace km {
           medoid_indices(k) = n;
           medoids.col(k) = data.col(medoid_indices(k));
           calc_best_distances_swap(
-            data, medoid_indices, best_distances, second_distances, assignments);
+            data,
+            medoid_indices,
+            best_distances,
+            second_distances,
+            assignments);
       }
   }
 
@@ -493,15 +521,20 @@ namespace km {
       }
 
       arma::uvec tmp_refs;
-      // TODO: Make this wraparound properly, last batch_size elements are dropped
+      // TODO(@motiwari): Make this wraparound properly
+      // as last batch_size elements are dropped
       if (use_perm) {
         if ((permutation_idx + tmp_batch_size - 1) >= N) {
           permutation_idx = 0;
         }
-        tmp_refs = permutation.subvec(permutation_idx, permutation_idx + tmp_batch_size - 1); // inclusive of both indices
+        // inclusive of both indices
+        tmp_refs = permutation.subvec(
+          permutation_idx,
+          permutation_idx + tmp_batch_size - 1);
         permutation_idx += tmp_batch_size;
       } else {
-        tmp_refs = arma::randperm(N, tmp_batch_size); // without replacement, requires updated version of armadillo
+        // without replacement, requires updated version of armadillo
+        tmp_refs = arma::randperm(N, tmp_batch_size);
       }
 
   // for each considered swap
@@ -533,4 +566,4 @@ namespace km {
       }
       return estimates;
   }
-} // namespace km
+}  // namespace km

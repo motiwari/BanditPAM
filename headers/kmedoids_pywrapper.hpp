@@ -1,17 +1,17 @@
-#ifndef KMEDOIDS_PYWRAPPER_H_
-#define KMEDOIDS_PYWRAPPER_H_
+#ifndef HEADERS_KMEDOIDS_PYWRAPPER_HPP_
+#define HEADERS_KMEDOIDS_PYWRAPPER_HPP_
 
 /* 
  * We perform these imports first because kmedoids_pywrapper is compiled first
  * when building the python package, and carma must be 'include'd before armadillo
  */
-#include <carma>
-#include <armadillo>
-
-#include "kmedoids_algorithm.hpp"
-
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
+#include <carma>
+#include <armadillo>
+#include <string>
+
+#include "kmedoids_algorithm.hpp"
 
 namespace py = pybind11;
 
@@ -22,63 +22,67 @@ namespace py = pybind11;
  *  the C++ code in Python.
  */
 class KMedoidsWrapper : public km::KMedoids {
-public:
-  using km::KMedoids::KMedoids;
+  public:
+    using km::KMedoids::KMedoids;
 
-  /**
-   * \brief Python binding for fitting a KMedoids object to the
-   *
-   * This is the primary function of the KMedoids module: this finds the build and swap
-   * medoids for the desired data
-   *
-   * @param inputData Input data to find the medoids of
-   * @param loss The loss function used during medoid computation
-   * @param k The number of medoids to compute
-   */
-  void fitPython(const py::array_t<double>& inputData, const std::string& loss, py::kwargs kw);
+    /**
+     * \brief Python binding for fitting a KMedoids object to the
+     *
+     * This is the primary function of the KMedoids module: this finds the build and swap
+     * medoids for the desired data
+     *
+     * @param inputData Input data to find the medoids of
+     * @param loss The loss function used during medoid computation
+     * @param k The number of medoids to compute
+     */
+    void fitPython(
+      const py::array_t<double>& inputData,
+      const std::string& loss,
+      py::kwargs kw);
 
-  /**
-   *  \brief Returns the final medoids
-   *
-   *  Returns as a numpy array the final medoids at the end of the SWAP step
-   *  after KMedoids::fit has been called.
-   */
-  py::array_t<arma::uword> getMedoidsFinalPython();
+    /**
+     *  \brief Returns the final medoids
+     *
+     *  Returns as a numpy array the final medoids at the end of the SWAP step
+     *  after KMedoids::fit has been called.
+     */
+    py::array_t<arma::uword> getMedoidsFinalPython();
 
-  /**
-   *  \brief Returns the build medoids
-   *
-   *  Returns as a numpy array the build medoids at the end of the BUILD step
-   *  after KMedoids::fit has been called.
-   */
-  py::array_t<arma::uword> getMedoidsBuildPython();
+    /**
+     *  \brief Returns the build medoids
+     *
+     *  Returns as a numpy array the build medoids at the end of the BUILD step
+     *  after KMedoids::fit has been called.
+     */
+    py::array_t<arma::uword> getMedoidsBuildPython();
 
-  /**
-   *  \brief Returns the medoid assignments for each datapoint
-   *
-   *  Returns as a numpy array the medoid each input datapoint is assigned to
-   *  after KMedoids::fit is called and the final medoids have been identified
-   */
-  py::array_t<arma::uword> getLabelsPython();
+    /**
+     *  \brief Returns the medoid assignments for each datapoint
+     *
+     *  Returns as a numpy array the medoid each input datapoint is assigned to
+     *  after KMedoids::fit is called and the final medoids have been identified
+     */
+    py::array_t<arma::uword> getLabelsPython();
 
-  /**
-   *  \brief Returns the number of swap steps
-   *
-   *  Returns the number of SWAP steps completed during the last call to
-   *  KMedoids::fit
-   */
-  int getStepsPython();
+    /**
+     *  \brief Returns the number of swap steps
+     *
+     *  Returns the number of SWAP steps completed during the last call to
+     *  KMedoids::fit
+     */
+    int getStepsPython();
 };
 
-// The functions below correspond to the class methods for Python bindings
-void fit_python(py::class_<KMedoidsWrapper> &);
+  // The functions below correspond to the class methods for Python bindings
+  // TODO(@motiwari): Encapsulate these
+  void fit_python(py::class_<KMedoidsWrapper> &);
 
-void medoids_python(py::class_<KMedoidsWrapper> &);
+  void medoids_python(py::class_<KMedoidsWrapper> &);
 
-void build_medoids_python(py::class_<KMedoidsWrapper> &);
+  void build_medoids_python(py::class_<KMedoidsWrapper> &);
 
-void labels_python(py::class_<KMedoidsWrapper> &);
+  void labels_python(py::class_<KMedoidsWrapper> &);
 
-void steps_python(py::class_<KMedoidsWrapper> &);
+  void steps_python(py::class_<KMedoidsWrapper> &);
 
-# endif // KMEDOIDS_PYWRAPPER_H_
+#endif  // HEADERS_KMEDOIDS_PYWRAPPER_HPP_

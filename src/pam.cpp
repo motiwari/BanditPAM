@@ -128,8 +128,10 @@ namespace km {
         for (size_t j = 0; j < data.n_cols; j++) {
           // compute distance between base point and every other datapoint
           double cost = KMedoids::cachedLoss(data, i, j);
-          // (i) if x_j is not assigned to k: compares this with the cached best distance 
-          // (ii) if x_j is assigned to k: compares this with the cached second best distance
+          // if x_j is NOT assigned to k: compares this with
+          //   the cached best distance
+          // if x_j is assigned to k: compares this with
+          //   the cached second best distance
           if (assignments(j) != k) {
             if (best_distances(j) < cost) {
               cost = best_distances(j);
@@ -141,8 +143,8 @@ namespace km {
           }
           total += cost;
         }
-        // if total distance for new base point is better than that of the medoid,
-        // update the best index identified so far
+        // if total distance for new base point is better than
+        // that of the medoid, update the best index identified so far
         if (total < minDistance) {
           minDistance = total;
           best = i;
@@ -152,4 +154,4 @@ namespace km {
     }
     medoid_indices(medoid_to_swap) = best;
   }
-} // namespace km
+}  // namespace km
