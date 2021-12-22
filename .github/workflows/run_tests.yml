@@ -48,7 +48,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --exclude headers/carma
       - name: Lint with cpplint
         run: |
-          cpplint --exclude=headers/carma --exclude=build --filter=-legal/copyright --filter=-build/c++11 --recursive .
+          cpplint --exclude=headers/carma --exclude=build --filter=-legal/copyright,-build/c++11 --recursive .
       - name: Install BanditPAM package
         run: |
           pip install -vvv -e .
@@ -73,3 +73,12 @@ jobs:
       # - name: Run larger suite of test cases
       #   run : |
       #     pytest tests/test_larger.py 
+      - name: Verify that the C++ executable compiles and runs
+        run : |
+          git clone https://github.com/ThrunGroup/BanditPAM/tree/dev
+          cd BanditPAM
+          mkdir build
+          cd build
+          sudo cmake ..
+          sudo make
+          src/BanditPAM -f ../data/MNIST_1k.csv
