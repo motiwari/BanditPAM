@@ -26,6 +26,6 @@ int KMedoidsWrapper::getStepsPython() {
     return KMedoids::getSteps();
 }
 
-void steps_python(py::class_<KMedoidsWrapper> &cls) {
-    cls.def_property_readonly("steps", &KMedoidsWrapper::getStepsPython);
+void steps_python(py::class_<KMedoidsWrapper> *cls) {
+    cls->def_property_readonly("steps", &KMedoidsWrapper::getStepsPython);
 }

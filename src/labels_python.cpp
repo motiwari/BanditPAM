@@ -30,7 +30,7 @@ py::array_t<arma::uword> KMedoidsWrapper::getLabelsPython() {
     }
 }
 
-void labels_python(py::class_<KMedoidsWrapper> &cls) {
-    cls.def_property_readonly("labels", &KMedoidsWrapper::getLabelsPython);
+void labels_python(py::class_<KMedoidsWrapper> *cls) {
+    cls->def_property_readonly("labels", &KMedoidsWrapper::getLabelsPython);
 }
 

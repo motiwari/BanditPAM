@@ -48,11 +48,11 @@ PYBIND11_MODULE(banditpam, m) {
     &KMedoidsWrapper::getbuildConfidence, &KMedoidsWrapper::setbuildConfidence);
   cls.def_property("swapConfidence",
     &KMedoidsWrapper::getswapConfidence, &KMedoidsWrapper::setswapConfidence);
-  medoids_python(cls);
-  build_medoids_python(cls);
-  labels_python(cls);
-  steps_python(cls);
-  fit_python(cls);
+  medoids_python(&cls);
+  build_medoids_python(&cls);
+  labels_python(&cls);
+  steps_python(&cls);
+  fit_python(&cls);
 #ifdef VERSION_INFO
   m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
 #else

@@ -75,14 +75,14 @@ class KMedoidsWrapper : public km::KMedoids {
 
   // The functions below correspond to the class methods for Python bindings
   // TODO(@motiwari): Encapsulate these
-  void fit_python(py::class_<KMedoidsWrapper> &);
+  void fit_python(py::class_<KMedoidsWrapper> *);
 
-  void medoids_python(py::class_<KMedoidsWrapper> &);
+  void medoids_python(py::class_<KMedoidsWrapper> *);
 
-  void build_medoids_python(py::class_<KMedoidsWrapper> &);
+  void build_medoids_python(py::class_<KMedoidsWrapper> *);
 
-  void labels_python(py::class_<KMedoidsWrapper> &);
+  void labels_python(py::class_<KMedoidsWrapper> *);
 
-  void steps_python(py::class_<KMedoidsWrapper> &);
+  void steps_python(py::class_<KMedoidsWrapper> *);
 
 #endif  // HEADERS_KMEDOIDS_PYWRAPPER_HPP_

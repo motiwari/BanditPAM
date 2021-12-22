@@ -33,8 +33,7 @@ void KMedoidsWrapper::fitPython(const py::array_t<double>& inputData,
     try {
         if (KMedoids::getNMedoids() == 0) {  // Check for 0 as NULL
             if (kw.size() == 0) {
-                throw py::value_error(
-                    "Must specify number of medoids via n_medoids in KMedoids or k in fit function.");
+                throw py::value_error("Error: must specify number of medoids.");
             }
         }
     } catch (py::value_error &e) {
@@ -50,6 +49,6 @@ void KMedoidsWrapper::fitPython(const py::array_t<double>& inputData,
     KMedoids::fit(carma::arr_to_mat<double>(inputData), loss);
 }
 
-void fit_python(py::class_<KMedoidsWrapper> &cls) {
-    cls.def("fit", &KMedoidsWrapper::fitPython);
+void fit_python(py::class_<KMedoidsWrapper> *cls) {
+    cls->def("fit", &KMedoidsWrapper::fitPython);
 }

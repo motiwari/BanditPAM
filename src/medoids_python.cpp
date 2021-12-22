@@ -31,7 +31,7 @@ py::array_t<arma::uword> KMedoidsWrapper::getMedoidsFinalPython() {
     }
 }
 
-void medoids_python(py::class_<KMedoidsWrapper> &cls) {
-    cls.def_property_readonly("medoids",
+void medoids_python(py::class_<KMedoidsWrapper> *cls) {
+    cls->def_property_readonly("medoids",
     &KMedoidsWrapper::getMedoidsFinalPython);
 }
