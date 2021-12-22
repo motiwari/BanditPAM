@@ -30,7 +30,7 @@ namespace km {
       size_t m = fmin(n, ceil(log10(data.n_cols) * cache_multiplier));
       cache = new float[n * m];
 
-  #pragma omp parallel for
+      #pragma omp parallel for
       for (size_t idx = 0; idx < m*n; idx++) {
         cache[idx] = -1;
       }
@@ -93,8 +93,8 @@ namespace km {
 
       arma::vec sample(batchSize);
       arma::rowvec updated_sigma(N);
-  // for each possible swap
-  #pragma omp parallel for
+      // for each possible swap
+      #pragma omp parallel for
       for (size_t i = 0; i < N; i++) {
           // gather a sample of points
           for (size_t j = 0; j < batchSize; j++) {
@@ -260,7 +260,7 @@ namespace km {
         tmp_refs = arma::randperm(N, tmp_batch_size);
       }
 
-  #pragma omp parallel for
+      #pragma omp parallel for
       for (size_t i = 0; i < target.n_rows; i++) {
           double total = 0;
           for (size_t j = 0; j < tmp_refs.n_rows; j++) {
@@ -319,8 +319,8 @@ namespace km {
       }
 
       arma::vec sample(batchSize);
-  // for each considered swap
-  #pragma omp parallel for
+      // for each considered swap
+      #pragma omp parallel for
       for (size_t i = 0; i < K * N; i++) {
           // extract data point of swap
           size_t n = i / K;
@@ -538,7 +538,7 @@ namespace km {
       }
 
   // for each considered swap
-  #pragma omp parallel for
+      #pragma omp parallel for
       for (size_t i = 0; i < targets.n_rows; i++) {
           double total = 0;
           // extract data point of swap
