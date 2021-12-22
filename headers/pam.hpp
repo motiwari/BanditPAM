@@ -42,7 +42,7 @@ class PAM : public km::KMedoids {
     */
     void build_naive(
       const arma::mat& data,
-      arma::urowvec& medoidIndices);
+      arma::urowvec* medoidIndices);
 
     /*! \brief Swap step for the PAM algorithm
     *
@@ -58,8 +58,8 @@ class PAM : public km::KMedoids {
     */
     void swap_naive(
       const arma::mat& data,
-      arma::urowvec& medoidIndices,
-      arma::urowvec& assignments);
+      arma::urowvec* medoidIndices,
+      arma::urowvec* assignments);
 };
 }  // namespace km
 #endif  // HEADERS_PAM_HPP_

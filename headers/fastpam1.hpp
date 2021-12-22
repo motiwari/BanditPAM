@@ -41,7 +41,7 @@ class FastPAM1 : public km::KMedoids {
     */
     void build_fastpam1(
       const arma::mat& data,
-      arma::urowvec& medoid_indices);
+      arma::urowvec* medoid_indices);
 
     /*! \brief Swap step for the FastPAM1 algorithm
     *
@@ -58,8 +58,8 @@ class FastPAM1 : public km::KMedoids {
     *  datapoint assigned the index of the medoid it is closest to
     */
     void swap_fastpam1(const arma::mat& data,
-      arma::urowvec& medoid_indices,
-      arma::urowvec& assignments);
+      arma::urowvec* medoid_indices,
+      arma::urowvec* assignments);
 };
 }  // namespace km
 #endif  // HEADERS_FASTPAM1_HPP_
