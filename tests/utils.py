@@ -16,15 +16,15 @@ def bpam_agrees_pam(k, data, loss, test_build=False, assert_immediately=False):
         bpam_and_pam_agree: 1 if BanditPAM and PAM agree, 0 otherwise
     """
     kmed_bpam = KMedoids(n_medoids=k, algorithm="BanditPAM")
-    kmed_naive = KMedoids(n_medoids=k, algorithm="naive")
+    kmed_fp1 = KMedoids(n_medoids=k, algorithm="FastPAM1")
     kmed_bpam.fit(data, loss)
-    kmed_naive.fit(data, loss)
+    kmed_fp1.fit(data, loss)
 
     bpam_build_medoids = sorted(kmed_bpam.build_medoids.tolist())
-    pam_build_medoids = sorted(kmed_naive.build_medoids.tolist())
+    pam_build_medoids = sorted(kmed_fp1.build_medoids.tolist())
 
     bpam_final_medoids = sorted(kmed_bpam.medoids.tolist())
-    pam_final_medoids = sorted(kmed_naive.medoids.tolist())
+    pam_final_medoids = sorted(kmed_fp1.medoids.tolist())
 
     bpam_and_pam_agree = 1 if bpam_final_medoids == pam_final_medoids else 0
     if test_build:
