@@ -75,8 +75,9 @@ jobs:
       #     pytest tests/test_larger.py 
       - name: Verify that the C++ executable compiles and runs
         run : |
-          git clone https://github.com/ThrunGroup/BanditPAM/tree/dev
+          git clone https://github.com/ThrunGroup/BanditPAM
           cd BanditPAM
+          git checkout dev
           mkdir build
           cd build
           sudo cmake ..

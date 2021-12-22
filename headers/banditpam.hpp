@@ -44,6 +44,25 @@ class BanditPAM : public km::KMedoids {
     const arma::rowvec& best_distances,
     bool use_absolute);
 
+  /*! \brief Estimates the mean reward for each arm in build step
+  *
+  *  Estimates the mean reward (or loss) for each arm in the identified targets
+  *  in the build step and returns a list of the estimated reward.
+  *
+  *  @param data Transposed input data to find the medoids of
+  *  @param target Set of target datapoints to be estimated
+  *  intervals
+  *  @param best_distances Array of best distances from each point to previous set
+  *  of medoids
+  *  @param use_absolute Determines whether the absolute cost is added to the total
+  */
+  arma::rowvec build_target(
+    const arma::mat& data,
+    arma::uvec* target,
+    arma::rowvec* best_distances,
+    bool use_absolute,
+    size_t exact);
+
   /*! \brief Build step for BanditPAM
   *
   *  Runs build step for the BanditPAM algorithm. Draws batch sizes with replacement
@@ -62,23 +81,27 @@ class BanditPAM : public km::KMedoids {
     arma::urowvec* medoidIndices,
     arma::mat* medoids);
 
-  /*! \brief Estimates the mean reward for each arm in build step
+  /*! \brief Estimates the mean reward for each arm in swap step
   *
   *  Estimates the mean reward (or loss) for each arm in the identified targets
-  *  in the build step and returns a list of the estimated reward.
+  *  in the swap step and returns a list of the estimated reward.
   *
   *  @param data Transposed input data to find the medoids of
-  *  @param target Set of target datapoints to be estimated
+  *  @param targets Set of target datapoints to be estimated
   *  intervals
   *  @param best_distances Array of best distances from each point to previous set
   *  of medoids
-  *  @param use_absolute Determines whether the absolute cost is added to the total
+  *  @param second_best_distances Array of second smallest distances from each
+  *  point to previous set of medoids
+  *  @param assignments Assignments of datapoints to their closest medoid
   */
-  arma::rowvec build_target(
+  arma::vec swap_target(
     const arma::mat& data,
-    arma::uvec* target,
+    arma::urowvec* medoidIndices,
+    arma::uvec* targets,
     arma::rowvec* best_distances,
-    bool use_absolute,
+    arma::rowvec* second_best_distances,
+    arma::urowvec* assignments,
     size_t exact);
 
   /**
@@ -120,29 +143,6 @@ class BanditPAM : public km::KMedoids {
     arma::urowvec* medoidIndices,
     arma::mat* medoids,
     arma::urowvec* assignments);
-
-  /*! \brief Estimates the mean reward for each arm in swap step
-  *
-  *  Estimates the mean reward (or loss) for each arm in the identified targets
-  *  in the swap step and returns a list of the estimated reward.
-  *
-  *  @param data Transposed input data to find the medoids of
-  *  @param targets Set of target datapoints to be estimated
-  *  intervals
-  *  @param best_distances Array of best distances from each point to previous set
-  *  of medoids
-  *  @param second_best_distances Array of second smallest distances from each
-  *  point to previous set of medoids
-  *  @param assignments Assignments of datapoints to their closest medoid
-  */
-  arma::vec swap_target(
-    const arma::mat& data,
-    arma::urowvec* medoidIndices,
-    arma::uvec* targets,
-    arma::rowvec* best_distances,
-    arma::rowvec* second_best_distances,
-    arma::urowvec* assignments,
-    size_t exact);
 };
 }  // namespace km
 #endif  // HEADERS_BANDITPAM_HPP_

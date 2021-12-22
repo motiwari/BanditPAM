@@ -113,6 +113,67 @@ arma::rowvec BanditPAM::build_sigma(
 }
 
 /**
+ * \brief Estimates the mean reward for each arm in build step
+ *
+ * Estimates the mean reward (or loss) for each arm in the identified targets
+ * in the build step and returns a list of the estimated reward.
+ *
+ * @param data Transposed input data to find the medoids of
+ * @param target Set of target datapoints to be estimated
+ *  intervals
+ * @param best_distances Array of best distances from each point to previous
+ *  set of medoids
+ * @param use_absolute Determines whether the absolute cost is added to the total
+ */
+arma::rowvec BanditPAM::build_target(
+  const arma::mat& data,
+  arma::uvec* target,
+  arma::rowvec* best_distances,
+  bool use_absolute,
+  size_t exact = 0) {
+    size_t N = data.n_cols;
+    size_t tmp_batch_size = batchSize;
+    if (exact > 0) {
+      tmp_batch_size = N;
+    }
+    arma::rowvec estimates(target->n_rows, arma::fill::zeros);
+    arma::uvec tmp_refs;
+    // TODO(@motiwari): Make this wraparound properly
+    // as last batch_size elements are dropped
+    if (use_perm) {
+      if ((permutation_idx + tmp_batch_size - 1) >= N) {
+        permutation_idx = 0;
+      }
+      // inclusive of both indices
+      tmp_refs = permutation.subvec(
+        permutation_idx,
+        permutation_idx + tmp_batch_size - 1);
+      permutation_idx += tmp_batch_size;
+    } else {
+      tmp_refs = arma::randperm(N, tmp_batch_size);
+    }
+
+    #pragma omp parallel for
+    for (size_t i = 0; i < target->n_rows; i++) {
+        double total = 0;
+        for (size_t j = 0; j < tmp_refs.n_rows; j++) {
+            double cost =
+              KMedoids::cachedLoss(data, (*target)(i), tmp_refs(j));
+            if (use_absolute) {
+                total += cost;
+            } else {
+                total += cost < (*best_distances)(tmp_refs(j))
+                          ? cost
+                          : (*best_distances)(tmp_refs(j));
+                total -= (*best_distances)(tmp_refs(j));
+            }
+        }
+        estimates(i) = total / tmp_batch_size;
+    }
+    return estimates;
+}
+
+/**
  * \brief Build step for BanditPAM
  *
  * Runs build step for the BanditPAM algorithm. Draws batch sizes with replacement
@@ -214,71 +275,9 @@ void BanditPAM::build(
                 best_distances(i) = cost;
             }
         }
-
         // use difference of loss for sigma and sampling, not absolute
         use_absolute = false;
     }
-}
-
-/**
- * \brief Estimates the mean reward for each arm in build step
- *
- * Estimates the mean reward (or loss) for each arm in the identified targets
- * in the build step and returns a list of the estimated reward.
- *
- * @param data Transposed input data to find the medoids of
- * @param target Set of target datapoints to be estimated
- *  intervals
- * @param best_distances Array of best distances from each point to previous
- *  set of medoids
- * @param use_absolute Determines whether the absolute cost is added to the total
- */
-arma::rowvec BanditPAM::build_target(
-  const arma::mat& data,
-  arma::uvec* target,
-  arma::rowvec* best_distances,
-  bool use_absolute,
-  size_t exact = 0) {
-    size_t N = data.n_cols;
-    size_t tmp_batch_size = batchSize;
-    if (exact > 0) {
-      tmp_batch_size = N;
-    }
-    arma::rowvec estimates(target->n_rows, arma::fill::zeros);
-    arma::uvec tmp_refs;
-    // TODO(@motiwari): Make this wraparound properly
-    // as last batch_size elements are dropped
-    if (use_perm) {
-      if ((permutation_idx + tmp_batch_size - 1) >= N) {
-        permutation_idx = 0;
-      }
-      // inclusive of both indices
-      tmp_refs = permutation.subvec(
-        permutation_idx,
-        permutation_idx + tmp_batch_size - 1);
-      permutation_idx += tmp_batch_size;
-    } else {
-      tmp_refs = arma::randperm(N, tmp_batch_size);
-    }
-
-    #pragma omp parallel for
-    for (size_t i = 0; i < target->n_rows; i++) {
-        double total = 0;
-        for (size_t j = 0; j < tmp_refs.n_rows; j++) {
-            double cost =
-              KMedoids::cachedLoss(data, (*target)(i), tmp_refs(j));
-            if (use_absolute) {
-                total += cost;
-            } else {
-                total += cost < (*best_distances)(tmp_refs(j))
-                          ? cost
-                          : (*best_distances)(tmp_refs(j));
-                total -= (*best_distances)(tmp_refs(j));
-            }
-        }
-        estimates(i) = total / tmp_batch_size;
-    }
-    return estimates;
 }
 
 /**
@@ -348,6 +347,83 @@ arma::mat BanditPAM::swap_sigma(
         updated_sigma(k, n) = arma::stddev(sample);
     }
   return updated_sigma;
+}
+
+/**
+ * \brief Estimates the mean reward for each arm in swap step
+ *
+ * Estimates the mean reward (or loss) for each arm in the identified targets
+ * in the swap step and returns a list of the estimated reward.
+ *
+ * @param data Transposed input data to find the medoids of
+ * @param targets Set of target datapoints to be estimated
+ * intervals
+ * @param best_distances Array of best distances from each point to previous set
+ * of medoids
+ * @param second_best_distances Array of second smallest distances from each
+ * point to previous set of medoids
+ * @param assignments Assignments of datapoints to their closest medoid
+ */
+arma::vec BanditPAM::swap_target(
+  const arma::mat& data,
+  arma::urowvec* medoid_indices,
+  arma::uvec* targets,
+  arma::rowvec* best_distances,
+  arma::rowvec* second_best_distances,
+  arma::urowvec* assignments,
+  size_t exact = 0) {
+    size_t N = data.n_cols;
+    arma::vec estimates(targets->n_rows, arma::fill::zeros);
+
+    size_t tmp_batch_size = batchSize;
+    if (exact > 0) {
+      tmp_batch_size = N;
+    }
+
+    arma::uvec tmp_refs;
+    // TODO(@motiwari): Make this wraparound properly
+    // as last batch_size elements are dropped
+    if (use_perm) {
+      if ((permutation_idx + tmp_batch_size - 1) >= N) {
+        permutation_idx = 0;
+      }
+      // inclusive of both indices
+      tmp_refs = permutation.subvec(
+        permutation_idx,
+        permutation_idx + tmp_batch_size - 1);
+      permutation_idx += tmp_batch_size;
+    } else {
+      tmp_refs = arma::randperm(N, tmp_batch_size);
+    }
+
+    // for each considered swap
+    #pragma omp parallel for
+    for (size_t i = 0; i < targets->n_rows; i++) {
+        double total = 0;
+        // extract data point of swap
+        size_t n = (*targets)(i) / medoid_indices->n_cols;
+        size_t k = (*targets)(i) % medoid_indices->n_cols;
+        // calculate total loss for some subset of the data
+        for (size_t j = 0; j < tmp_batch_size; j++) {
+            double cost = KMedoids::cachedLoss(data, n, tmp_refs(j));
+            if (k == (*assignments)(tmp_refs(j))) {
+                if (cost < (*second_best_distances)(tmp_refs(j))) {
+                    total += cost;
+                } else {
+                    total += (*second_best_distances)(tmp_refs(j));
+                }
+            } else {
+                if (cost < (*best_distances)(tmp_refs(j))) {
+                    total += cost;
+                } else {
+                    total += (*best_distances)(tmp_refs(j));
+                }
+            }
+            total -= (*best_distances)(tmp_refs(j));
+        }
+        estimates(i) = total / tmp_refs.n_rows;
+    }
+    return estimates;
 }
 
 /**
@@ -487,82 +563,5 @@ void BanditPAM::swap(
           &second_distances,
           assignments);
     }
-}
-
-/**
- * \brief Estimates the mean reward for each arm in swap step
- *
- * Estimates the mean reward (or loss) for each arm in the identified targets
- * in the swap step and returns a list of the estimated reward.
- *
- * @param data Transposed input data to find the medoids of
- * @param targets Set of target datapoints to be estimated
- * intervals
- * @param best_distances Array of best distances from each point to previous set
- * of medoids
- * @param second_best_distances Array of second smallest distances from each
- * point to previous set of medoids
- * @param assignments Assignments of datapoints to their closest medoid
- */
-arma::vec BanditPAM::swap_target(
-  const arma::mat& data,
-  arma::urowvec* medoid_indices,
-  arma::uvec* targets,
-  arma::rowvec* best_distances,
-  arma::rowvec* second_best_distances,
-  arma::urowvec* assignments,
-  size_t exact = 0) {
-    size_t N = data.n_cols;
-    arma::vec estimates(targets->n_rows, arma::fill::zeros);
-
-    size_t tmp_batch_size = batchSize;
-    if (exact > 0) {
-      tmp_batch_size = N;
-    }
-
-    arma::uvec tmp_refs;
-    // TODO(@motiwari): Make this wraparound properly
-    // as last batch_size elements are dropped
-    if (use_perm) {
-      if ((permutation_idx + tmp_batch_size - 1) >= N) {
-        permutation_idx = 0;
-      }
-      // inclusive of both indices
-      tmp_refs = permutation.subvec(
-        permutation_idx,
-        permutation_idx + tmp_batch_size - 1);
-      permutation_idx += tmp_batch_size;
-    } else {
-      tmp_refs = arma::randperm(N, tmp_batch_size);
-    }
-
-    // for each considered swap
-    #pragma omp parallel for
-    for (size_t i = 0; i < targets->n_rows; i++) {
-        double total = 0;
-        // extract data point of swap
-        size_t n = (*targets)(i) / medoid_indices->n_cols;
-        size_t k = (*targets)(i) % medoid_indices->n_cols;
-        // calculate total loss for some subset of the data
-        for (size_t j = 0; j < tmp_batch_size; j++) {
-            double cost = KMedoids::cachedLoss(data, n, tmp_refs(j));
-            if (k == (*assignments)(tmp_refs(j))) {
-                if (cost < (*second_best_distances)(tmp_refs(j))) {
-                    total += cost;
-                } else {
-                    total += (*second_best_distances)(tmp_refs(j));
-                }
-            } else {
-                if (cost < (*best_distances)(tmp_refs(j))) {
-                    total += cost;
-                } else {
-                    total += (*best_distances)(tmp_refs(j));
-                }
-            }
-            total -= (*best_distances)(tmp_refs(j));
-        }
-        estimates(i) = total / tmp_refs.n_rows;
-    }
-    return estimates;
 }
 }  // namespace km
