@@ -16,11 +16,9 @@ class SmallerTests(unittest.TestCase):
         Test NUM_SMALL_CASES number of test cases with subsets of size 
         SMALL_SAMPLE_SIZE randomly drawn from the full MNIST dataset
         """
-        count = 0
         for i in range(NUM_SMALL_CASES):
             data = self.mnist_70k.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
-            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
-        self.assertTrue(count == NUM_SMALL_CASES) # All cases must pass
+            _ = bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2", test_build=True, assert_immediately=True)
 
     def test_small_scrna(self):
         """
@@ -30,7 +28,7 @@ class SmallerTests(unittest.TestCase):
         count = 0
         for i in range(NUM_SMALL_CASES):
             data = self.scrna.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
-            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1")
+            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1", test_build=True, assert_immediately=False)
         self.assertTrue(count >= PROPORTION_PASSING*NUM_SMALL_CASES) # Occasionally some may fail due to degeneracy in the scRNA dataset
 
     def test_small_mnist_known_cases(self):

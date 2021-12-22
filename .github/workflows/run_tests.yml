@@ -48,12 +48,11 @@ jobs:
       - name: Install BanditPAM package
         run: |
           pip install -vvv -e .
-        
-        # The default compiler on the Github Ubuntu runners is gcc
-        # Would need to make a respective include change for clang 
         env:
+          # The default compiler on the Github Ubuntu runners is gcc
+          # Would need to make a respective include change for clang 
           CPLUS_INCLUDE_PATH: /usr/local/include/carma
-      - name: Run commit tests, downloading data files as necessary
+      - name: Downloading data files for tests
         run: |
           mkdir -p data
           curl -XGET https://motiwari.com/banditpam_data/scRNA_1k.csv > data/scRNA_1k.csv
@@ -64,4 +63,9 @@ jobs:
           tar -xzvf data/MNIST_10k.tar.gz -C data
           curl -XGET https://motiwari.com/banditpam_data/MNIST_70k.tar.gz > data/MNIST_70k.tar.gz
           tar -xzvf data/MNIST_70k.tar.gz -C data
+      - name: Run smaller suite of test cases
+        run : |
           pytest tests/test_commit.py 
+      - name: Run larger suite of test cases
+        run : |
+          pytest tests/test_push.py 

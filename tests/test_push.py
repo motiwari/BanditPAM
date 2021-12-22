@@ -16,11 +16,9 @@ class LargerTests(unittest.TestCase):
         Generate NUM_MEDIUM_CASES random subsets of MNIST 
         of size MEDIUM_SAMPLE_SIZE and verify BanditPAM agrees with PAM
         """
-        count = 0
         for i in range(NUM_MEDIUM_CASES):
             data = self.mnist_70k.sample(n=MEDIUM_SAMPLE_SIZE).to_numpy()
-            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
-        self.assertTrue(count == NUM_MEDIUM_CASES)
+            _ = bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2", test_build=True, assert_immediately=True)
 
     def test_various_medium_mnist(self):
         """
@@ -28,11 +26,9 @@ class LargerTests(unittest.TestCase):
         and verify BanditPAM agrees with PAM. Since PAM is very slow,
         we can only do this for fairly small sizes in MEDIUM_SIZE_SCHEDULE
         """
-        count = 0
         for i in range(NUM_MEDIUM_CASES):
             data = self.mnist_70k.sample(n=MEDIUM_SIZE_SCHEDULE[i % NUM_MEDIUM_SIZES])
-            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
-        self.assertTrue(count == NUM_MEDIUM_CASES)
+            _ = bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2", test_build=True, assert_immediately=True)
 
     def test_time_cases_mnist(self):
         """
@@ -56,7 +52,7 @@ class LargerTests(unittest.TestCase):
         count = 0
         for i in range(NUM_MEDIUM_CASES):
             data = self.scrna.sample(n=MEDIUM_SAMPLE_SIZE).to_numpy()
-            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1")
+            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1", test_build=False, assert_immediately=False)
         self.assertTrue(count >= PROPORTION_PASSING*NUM_MEDIUM_CASES)
 
     def test_various_medium_scrna(self):
@@ -68,7 +64,7 @@ class LargerTests(unittest.TestCase):
         count = 0
         for i in range(NUM_MEDIUM_CASES):
             data = self.scrna.sample(n=MEDIUM_SIZE_SCHEDULE[i % NUM_MEDIUM_SIZES])
-            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
+            count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2", test_build=False, assert_immediately=False)
         self.assertTrue(count >= PROPORTION_PASSING*NUM_MEDIUM_CASES)
 
     def test_time_cases_scrna(self):
