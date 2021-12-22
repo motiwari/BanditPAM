@@ -82,4 +82,4 @@ jobs:
           cd build
           sudo cmake ..
           sudo make
-          src/BanditPAM -f ../data/MNIST_1k.csv
+          src/BanditPAM -f ../data/MNIST_1k.csv -k 5
