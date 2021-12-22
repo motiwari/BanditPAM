@@ -22,55 +22,55 @@ namespace py = pybind11;
  *  the C++ code in Python.
  */
 class KMedoidsWrapper : public km::KMedoids {
-  public:
-    using km::KMedoids::KMedoids;
+ public:
+  using km::KMedoids::KMedoids;
 
-    /**
-     * \brief Python binding for fitting a KMedoids object to the
-     *
-     * This is the primary function of the KMedoids module: this finds the build and swap
-     * medoids for the desired data
-     *
-     * @param inputData Input data to find the medoids of
-     * @param loss The loss function used during medoid computation
-     * @param k The number of medoids to compute
-     */
-    void fitPython(
-      const py::array_t<double>& inputData,
-      const std::string& loss,
-      py::kwargs kw);
+  /**
+   * \brief Python binding for fitting a KMedoids object to the
+   *
+   * This is the primary function of the KMedoids module: this finds the build and swap
+   * medoids for the desired data
+   *
+   * @param inputData Input data to find the medoids of
+   * @param loss The loss function used during medoid computation
+   * @param k The number of medoids to compute
+   */
+  void fitPython(
+    const py::array_t<double>& inputData,
+    const std::string& loss,
+    py::kwargs kw);
 
-    /**
-     *  \brief Returns the final medoids
-     *
-     *  Returns as a numpy array the final medoids at the end of the SWAP step
-     *  after KMedoids::fit has been called.
-     */
-    py::array_t<arma::uword> getMedoidsFinalPython();
+  /**
+   *  \brief Returns the final medoids
+   *
+   *  Returns as a numpy array the final medoids at the end of the SWAP step
+   *  after KMedoids::fit has been called.
+   */
+  py::array_t<arma::uword> getMedoidsFinalPython();
 
-    /**
-     *  \brief Returns the build medoids
-     *
-     *  Returns as a numpy array the build medoids at the end of the BUILD step
-     *  after KMedoids::fit has been called.
-     */
-    py::array_t<arma::uword> getMedoidsBuildPython();
+  /**
+   *  \brief Returns the build medoids
+   *
+   *  Returns as a numpy array the build medoids at the end of the BUILD step
+   *  after KMedoids::fit has been called.
+   */
+  py::array_t<arma::uword> getMedoidsBuildPython();
 
-    /**
-     *  \brief Returns the medoid assignments for each datapoint
-     *
-     *  Returns as a numpy array the medoid each input datapoint is assigned to
-     *  after KMedoids::fit is called and the final medoids have been identified
-     */
-    py::array_t<arma::uword> getLabelsPython();
+  /**
+   *  \brief Returns the medoid assignments for each datapoint
+   *
+   *  Returns as a numpy array the medoid each input datapoint is assigned to
+   *  after KMedoids::fit is called and the final medoids have been identified
+   */
+  py::array_t<arma::uword> getLabelsPython();
 
-    /**
-     *  \brief Returns the number of swap steps
-     *
-     *  Returns the number of SWAP steps completed during the last call to
-     *  KMedoids::fit
-     */
-    int getStepsPython();
+  /**
+   *  \brief Returns the number of swap steps
+   *
+   *  Returns the number of SWAP steps completed during the last call to
+   *  KMedoids::fit
+   */
+  int getStepsPython();
 };
 
   // The functions below correspond to the class methods for Python bindings
