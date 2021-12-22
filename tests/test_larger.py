@@ -71,6 +71,8 @@ class LargerTests(unittest.TestCase):
             start = time.time()
             kmed.fit(MNIST_test, "L2")
             runtime = time.time() - start
+            # TODO(@motiwari): Timing test will not work
+            # need to compute it over number of steps
             self.assertTrue(
                 runtime < (size_multiplier ** SCALING_EXPONENT) * base_runtime
             )
@@ -126,6 +128,8 @@ class LargerTests(unittest.TestCase):
             start = time.time()
             kmed.fit(scrna_test, "L1")
             runtime = time.time() - start
+            # TODO(@motiwari): Timing test will not work
+            # need to compute it over number of steps
             self.assertTrue(
                 runtime < (size_multiplier ** SCALING_EXPONENT) * base_runtime
             )

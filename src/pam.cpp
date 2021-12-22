@@ -14,18 +14,18 @@
 
 namespace km {
 /**
- * \brief Runs naive PAM algorithm.
+ * \brief Runs PAM algorithm.
  *
  * Run the PAM algorithm to identify a dataset's medoids.
  *
  * @param input_data Input data to find the medoids of
  */
-void PAM::fit_naive(const arma::mat& input_data) {
+void PAM::fit_pam(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
   arma::urowvec medoid_indices(n_medoids);
   // runs build step
-  PAM::build_naive(data, &medoid_indices);
+  PAM::build_pam(data, &medoid_indices);
   steps = 0;
   medoid_indices_build = medoid_indices;
   arma::urowvec assignments(data.n_cols);
@@ -34,7 +34,7 @@ void PAM::fit_naive(const arma::mat& input_data) {
   while (i < max_iter && medoidChange) {
     auto previous(medoid_indices);
     // runs swap step as necessary
-    PAM::swap_naive(data, &medoid_indices, &assignments);
+    PAM::swap_pam(data, &medoid_indices, &assignments);
     medoidChange = arma::any(medoid_indices != previous);
     i++;
   }
@@ -54,7 +54,7 @@ void PAM::fit_naive(const arma::mat& input_data) {
  * @param medoid_indices Uninitialized array of medoids that is modified in place
  * as medoids are identified
  */
-void PAM::build_naive(
+void PAM::build_pam(
   const arma::mat& data,
   arma::urowvec* medoid_indices) {
   size_t N = data.n_cols;
@@ -106,7 +106,7 @@ void PAM::build_naive(
  * @param assignments Uninitialized array of indices corresponding to each
  * datapoint assigned the index of the medoid it is closest to
  */
-void PAM::swap_naive(
+void PAM::swap_pam(
   const arma::mat& data,
   arma::urowvec* medoid_indices,
   arma::urowvec* assignments) {

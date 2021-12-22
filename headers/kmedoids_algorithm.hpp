@@ -22,8 +22,8 @@ namespace km {
  *  for a particular set of input data.
  *
  *  @param n_medoids Number of medoids/clusters to create
- *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
- *  the "BanditPAM" algorithm, or "naive" to use PAM
+ *  @param algorithm Algorithm used to find medoids; options are "BanditPAM",
+ *    "PAM", or "FastPAM1"
  *  @param max_iter The maximum number of iterations the algorithm runs for
  *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
  *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds

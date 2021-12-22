@@ -25,8 +25,8 @@ namespace km {
  *  for a particular set of input data.
  *
  *  @param n_medoids Number of medoids/clusters to create
- *  @param algorithm Algorithm used to find medoids; options are "BanditPAM" for
- *  the "Bandit-PAM" algorithm, or "naive" to use the naive method
+ *  @param algorithm Algorithm used to find medoids; options are
+ *    "BanditPAM", "PAM", or "FastPAM1"
  *  @param max_iter The maximum number of iterations the algorithm runs for
  *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
  *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
@@ -85,7 +85,7 @@ double KMedoids::cachedLoss(
  */
 void KMedoids::checkAlgorithm(const std::string& algorithm) {
   if ((algorithm != "BanditPAM") &&
-      (algorithm != "naive") &&
+      (algorithm != "PAM") &&
       (algorithm != "FastPAM1")) {
     throw "unrecognized algorithm";
   }
@@ -281,8 +281,8 @@ void KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
   }
 
   KMedoids::setLossFn(loss);
-  if (algorithm == "naive") {
-    static_cast<PAM*>(this)->fit_naive(input_data);
+  if (algorithm == "PAM") {
+    static_cast<PAM*>(this)->fit_pam(input_data);
   } else if (algorithm == "BanditPAM") {
     static_cast<BanditPAM*>(this)->fit_bpam(input_data);
   } else if (algorithm == "FastPAM1") {
