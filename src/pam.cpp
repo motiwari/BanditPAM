@@ -118,7 +118,11 @@ namespace km {
     arma::rowvec second_distances(N);
 
     KMedoids::calc_best_distances_swap(
-      data, medoid_indices, best_distances, second_distances, assignments);
+      data,
+      &medoid_indices,
+      &best_distances,
+      &second_distances,
+      &assignments);
 
     // iterate across the current medoids
     for (size_t k = 0; k < n_medoids; k++) {

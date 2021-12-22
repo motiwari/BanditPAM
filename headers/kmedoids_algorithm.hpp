@@ -97,14 +97,14 @@ class KMedoids {
     // The functions below are PAM's constituent functions
     void calc_best_distances_swap(
       const arma::mat& data,
-      arma::urowvec& medoidIndices,
-      arma::rowvec& best_distances,
-      arma::rowvec& second_distances,
-      arma::urowvec& assignments);
+      arma::urowvec* medoidIndices,
+      arma::rowvec* best_distances,
+      arma::rowvec* second_distances,
+      arma::urowvec* assignments);
 
     double calc_loss(
       const arma::mat& data,
-      arma::urowvec& medoidIndices);
+      arma::urowvec* medoidIndices);
 
     // Loss functions
     // if you change use_cache, also change use_cache_p

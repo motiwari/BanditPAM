@@ -130,7 +130,11 @@ namespace km {
 
     // calculate quantities needed for swap, best_distances and sigma
     KMedoids::calc_best_distances_swap(
-      data, medoid_indices, best_distances, second_distances, assignments);
+      data,
+      &medoid_indices,
+      &best_distances,
+      &second_distances,
+      &assignments);
 
     // for every point in our dataset, let it serve as a new medoid
     for (size_t i = 0; i < data.n_cols; i++) {

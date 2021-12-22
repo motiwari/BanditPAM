@@ -306,26 +306,26 @@ namespace km {
    */
   void KMedoids::calc_best_distances_swap(
     const arma::mat& data,
-    arma::urowvec& medoid_indices,
-    arma::rowvec& best_distances,
-    arma::rowvec& second_distances,
-    arma::urowvec& assignments) {
+    arma::urowvec* medoid_indices,
+    arma::rowvec* best_distances,
+    arma::rowvec* second_distances,
+    arma::urowvec* assignments) {
     #pragma omp parallel for
     for (size_t i = 0; i < data.n_cols; i++) {
         double best = std::numeric_limits<double>::infinity();
         double second = std::numeric_limits<double>::infinity();
-        for (size_t k = 0; k < medoid_indices.n_cols; k++) {
-            double cost = KMedoids::cachedLoss(data, i, medoid_indices(k));
+        for (size_t k = 0; k < medoid_indices->n_cols; k++) {
+            double cost = KMedoids::cachedLoss(data, i, (*medoid_indices)(k));
             if (cost < best) {
-                assignments(i) = k;
+                (*assignments)(i) = k;
                 second = best;
                 best = cost;
             } else if (cost < second) {
                 second = cost;
             }
         }
-        best_distances(i) = best;
-        second_distances(i) = second;
+        (*best_distances)(i) = best;
+        (*second_distances)(i) = second;
     }
   }
 
@@ -342,7 +342,7 @@ namespace km {
    */
   double KMedoids::calc_loss(
     const arma::mat& data,
-    arma::urowvec& medoid_indices) {
+    arma::urowvec* medoid_indices) {
       double total = 0;
 
       // TODO(@motiwari): is this parallel loop accumulating properly?
@@ -353,7 +353,7 @@ namespace km {
               double currCost = KMedoids::cachedLoss(
                 data,
                 i,
-                medoid_indices(k));
+                (*medoid_indices)(k));
               if (currCost < cost) {
                   cost = currCost;
               }

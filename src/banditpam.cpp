@@ -47,13 +47,13 @@ namespace km {
     arma::mat medoids_mat(data.n_rows, n_medoids);
     arma::urowvec medoid_indices(n_medoids);
     // runs build step
-    BanditPAM::build(data, medoid_indices, medoids_mat);
+    BanditPAM::build(data, &medoid_indices, &medoids_mat);
     steps = 0;
 
     medoid_indices_build = medoid_indices;
     arma::urowvec assignments(data.n_cols);
     // runs swap step
-    BanditPAM::swap(data, medoid_indices, medoids_mat, assignments);
+    BanditPAM::swap(data, &medoid_indices, &medoids_mat, &assignments);
     medoid_indices_final = medoid_indices;
     labels = assignments;
   }
@@ -130,8 +130,8 @@ namespace km {
    */
   void BanditPAM::build(
     const arma::mat& data,
-    arma::urowvec& medoid_indices,
-    arma::mat& medoids) {
+    arma::urowvec* medoid_indices,
+    arma::mat* medoids) {
       size_t N = data.n_cols;
       arma::rowvec N_mat(N);
       N_mat.fill(N);
@@ -166,8 +166,8 @@ namespace km {
                   arma::uvec targets = find(compute_exactly);
                   arma::rowvec result = build_target(
                     data,
-                    targets,
-                    best_distances,
+                    &targets,
+                    &best_distances,
                     use_absolute,
                     N);
                   estimates.cols(targets) = result;
@@ -182,7 +182,11 @@ namespace km {
               }
               arma::uvec targets = arma::find(candidates);
               arma::rowvec result = build_target(
-                data, targets, best_distances, use_absolute, 0);
+                data,
+                &targets,
+                &best_distances,
+                use_absolute,
+                0);
               // update the running average
               estimates.cols(targets) =
                 ((T_samples.cols(targets) % estimates.cols(targets)) +
@@ -201,13 +205,13 @@ namespace km {
               step_count++;
           }
 
-          medoid_indices.at(k) = lcbs.index_min();
-          medoids.unsafe_col(k) = data.unsafe_col(medoid_indices(k));
+          medoid_indices->at(k) = lcbs.index_min();
+          medoids->unsafe_col(k) = data.unsafe_col((*medoid_indices)(k));
 
           // don't need to do this on final iteration
           #pragma omp parallel for
           for (size_t i = 0; i < N; i++) {
-              double cost = KMedoids::cachedLoss(data, i, medoid_indices(k));
+              double cost = KMedoids::cachedLoss(data, i, (*medoid_indices)(k));
               if (cost < best_distances(i)) {
                   best_distances(i) = cost;
               }
@@ -233,8 +237,8 @@ namespace km {
    */
   arma::rowvec BanditPAM::build_target(
     const arma::mat& data,
-    arma::uvec& target,
-    arma::rowvec& best_distances,
+    arma::uvec* target,
+    arma::rowvec* best_distances,
     bool use_absolute,
     size_t exact = 0) {
       size_t N = data.n_cols;
@@ -242,7 +246,7 @@ namespace km {
       if (exact > 0) {
         tmp_batch_size = N;
       }
-      arma::rowvec estimates(target.n_rows, arma::fill::zeros);
+      arma::rowvec estimates(target->n_rows, arma::fill::zeros);
       arma::uvec tmp_refs;
       // TODO(@motiwari): Make this wraparound properly
       // as last batch_size elements are dropped
@@ -261,18 +265,18 @@ namespace km {
       }
 
       #pragma omp parallel for
-      for (size_t i = 0; i < target.n_rows; i++) {
+      for (size_t i = 0; i < target->n_rows; i++) {
           double total = 0;
           for (size_t j = 0; j < tmp_refs.n_rows; j++) {
               double cost =
-                KMedoids::cachedLoss(data, target(i), tmp_refs(j));
+                KMedoids::cachedLoss(data, (*target)(i), tmp_refs(j));
               if (use_absolute) {
                   total += cost;
               } else {
-                  total += cost < best_distances(tmp_refs(j))
+                  total += cost < (*best_distances)(tmp_refs(j))
                             ? cost
-                            : best_distances(tmp_refs(j));
-                  total -= best_distances(tmp_refs(j));
+                            : (*best_distances)(tmp_refs(j));
+                  total -= (*best_distances)(tmp_refs(j));
               }
           }
           estimates(i) = total / tmp_batch_size;
@@ -295,9 +299,9 @@ namespace km {
    */
   arma::mat BanditPAM::swap_sigma(
     const arma::mat& data,
-    arma::rowvec& best_distances,
-    arma::rowvec& second_best_distances,
-    arma::urowvec& assignments) {
+    arma::rowvec* best_distances,
+    arma::rowvec* second_best_distances,
+    arma::urowvec* assignments) {
       size_t N = data.n_cols;
       size_t K = n_medoids;
       arma::mat updated_sigma(K, N, arma::fill::zeros);
@@ -330,20 +334,20 @@ namespace km {
           for (size_t j = 0; j < batchSize; j++) {
               double cost = KMedoids::cachedLoss(data, n, tmp_refs(j));
 
-              if (k == assignments(tmp_refs(j))) {
-                  if (cost < second_best_distances(tmp_refs(j))) {
+              if (k == (*assignments)(tmp_refs(j))) {
+                  if (cost < (*second_best_distances)(tmp_refs(j))) {
                       sample(j) = cost;
                   } else {
-                      sample(j) = second_best_distances(tmp_refs(j));
+                      sample(j) = (*second_best_distances)(tmp_refs(j));
                   }
               } else {
-                  if (cost < best_distances(tmp_refs(j))) {
+                  if (cost < (*best_distances)(tmp_refs(j))) {
                       sample(j) = cost;
                   } else {
-                      sample(j) = best_distances(tmp_refs(j));
+                      sample(j) = (*best_distances)(tmp_refs(j));
                   }
               }
-              sample(j) -= best_distances(tmp_refs(j));
+              sample(j) -= (*best_distances)(tmp_refs(j));
           }
           updated_sigma(k, n) = arma::stddev(sample);
       }
@@ -368,9 +372,9 @@ namespace km {
    */
   void BanditPAM::swap(
     const arma::mat& data,
-    arma::urowvec& medoid_indices,
-    arma::mat& medoids,
-    arma::urowvec& assignments) {
+    arma::urowvec* medoid_indices,
+    arma::mat* medoids,
+    arma::urowvec* assignments) {
       size_t N = data.n_cols;
       size_t p = (N * n_medoids * swapConfidence);
 
@@ -396,13 +400,13 @@ namespace km {
           calc_best_distances_swap(
             data,
             medoid_indices,
-            best_distances,
-            second_distances,
+            &best_distances,
+            &second_distances,
             assignments);
 
           sigma = swap_sigma(data,
-                            best_distances,
-                            second_distances,
+                            &best_distances,
+                            &second_distances,
                             assignments);
 
           candidates.fill(1);
@@ -415,8 +419,8 @@ namespace km {
               calc_best_distances_swap(
                 data,
                 medoid_indices,
-                best_distances,
-                second_distances,
+                &best_distances,
+                &second_distances,
                 assignments);
 
               // compute exactly if it's been samples more than N times and
@@ -428,9 +432,9 @@ namespace km {
               if (targets.size() > 0) {
                   arma::vec result = swap_target(data,
                                                 medoid_indices,
-                                                targets,
-                                                best_distances,
-                                                second_distances,
+                                                &targets,
+                                                &best_distances,
+                                                &second_distances,
                                                 assignments,
                                                 N);
                   estimates.elem(targets) = result;
@@ -447,9 +451,9 @@ namespace km {
               targets = arma::find(candidates);
               arma::vec result = swap_target(data,
                                             medoid_indices,
-                                            targets,
-                                            best_distances,
-                                            second_distances,
+                                            &targets,
+                                            &best_distances,
+                                            &second_distances,
                                             assignments,
                                             0);
               estimates.elem(targets) =
@@ -471,20 +475,20 @@ namespace km {
           // now switch medoids
           arma::uword new_medoid = lcbs.index_min();
           // extract medoid of swap
-          size_t k = new_medoid % medoids.n_cols;
+          size_t k = new_medoid % medoids->n_cols;
 
           // extract data point of swap
-          size_t n = new_medoid / medoids.n_cols;
-          swap_performed = medoid_indices(k) != n;
+          size_t n = new_medoid / medoids->n_cols;
+          swap_performed = (*medoid_indices)(k) != n;
           steps++;
 
-          medoid_indices(k) = n;
-          medoids.col(k) = data.col(medoid_indices(k));
+          (*medoid_indices)(k) = n;
+          medoids->col(k) = data.col((*medoid_indices)(k));
           calc_best_distances_swap(
             data,
             medoid_indices,
-            best_distances,
-            second_distances,
+            &best_distances,
+            &second_distances,
             assignments);
       }
   }
@@ -506,14 +510,14 @@ namespace km {
    */
   arma::vec BanditPAM::swap_target(
     const arma::mat& data,
-    arma::urowvec& medoid_indices,
-    arma::uvec& targets,
-    arma::rowvec& best_distances,
-    arma::rowvec& second_best_distances,
-    arma::urowvec& assignments,
+    arma::urowvec* medoid_indices,
+    arma::uvec* targets,
+    arma::rowvec* best_distances,
+    arma::rowvec* second_best_distances,
+    arma::urowvec* assignments,
     size_t exact = 0) {
       size_t N = data.n_cols;
-      arma::vec estimates(targets.n_rows, arma::fill::zeros);
+      arma::vec estimates(targets->n_rows, arma::fill::zeros);
 
       size_t tmp_batch_size = batchSize;
       if (exact > 0) {
@@ -539,28 +543,28 @@ namespace km {
 
   // for each considered swap
       #pragma omp parallel for
-      for (size_t i = 0; i < targets.n_rows; i++) {
+      for (size_t i = 0; i < targets->n_rows; i++) {
           double total = 0;
           // extract data point of swap
-          size_t n = targets(i) / medoid_indices.n_cols;
-          size_t k = targets(i) % medoid_indices.n_cols;
+          size_t n = (*targets)(i) / medoid_indices->n_cols;
+          size_t k = (*targets)(i) % medoid_indices->n_cols;
           // calculate total loss for some subset of the data
           for (size_t j = 0; j < tmp_batch_size; j++) {
               double cost = KMedoids::cachedLoss(data, n, tmp_refs(j));
-              if (k == assignments(tmp_refs(j))) {
-                  if (cost < second_best_distances(tmp_refs(j))) {
+              if (k == (*assignments)(tmp_refs(j))) {
+                  if (cost < (*second_best_distances)(tmp_refs(j))) {
                       total += cost;
                   } else {
-                      total += second_best_distances(tmp_refs(j));
+                      total += (*second_best_distances)(tmp_refs(j));
                   }
               } else {
-                  if (cost < best_distances(tmp_refs(j))) {
+                  if (cost < (*best_distances)(tmp_refs(j))) {
                       total += cost;
                   } else {
-                      total += best_distances(tmp_refs(j));
+                      total += (*best_distances)(tmp_refs(j));
                   }
               }
-              total -= best_distances(tmp_refs(j));
+              total -= (*best_distances)(tmp_refs(j));
           }
           estimates(i) = total / tmp_refs.n_rows;
       }

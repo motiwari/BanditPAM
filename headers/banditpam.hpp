@@ -60,8 +60,8 @@ class BanditPAM : public km::KMedoids {
   */
   void build(
     const arma::mat& data,
-    arma::urowvec& medoidIndices,
-    arma::mat& medoids);
+    arma::urowvec* medoidIndices,
+    arma::mat* medoids);
 
   /*! \brief Estimates the mean reward for each arm in build step
   *
@@ -77,8 +77,8 @@ class BanditPAM : public km::KMedoids {
   */
   arma::rowvec build_target(
     const arma::mat& data,
-    arma::uvec& target,
-    arma::rowvec& best_distances,
+    arma::uvec* target,
+    arma::rowvec* best_distances,
     bool use_absolute,
     size_t exact);
 
@@ -97,9 +97,9 @@ class BanditPAM : public km::KMedoids {
    */
   arma::mat swap_sigma(
     const arma::mat& data,
-    arma::rowvec& best_distances,
-    arma::rowvec& second_best_distances,
-    arma::urowvec& assignments);
+    arma::rowvec* best_distances,
+    arma::rowvec* second_best_distances,
+    arma::urowvec* assignments);
 
   /*! \brief Swap step for BanditPAM
   *
@@ -118,9 +118,9 @@ class BanditPAM : public km::KMedoids {
   */
   void swap(
     const arma::mat& data,
-    arma::urowvec& medoidIndices,
-    arma::mat& medoids,
-    arma::urowvec& assignments);
+    arma::urowvec* medoidIndices,
+    arma::mat* medoids,
+    arma::urowvec* assignments);
 
   /*! \brief Estimates the mean reward for each arm in swap step
   *
@@ -138,11 +138,11 @@ class BanditPAM : public km::KMedoids {
   */
   arma::vec swap_target(
     const arma::mat& data,
-    arma::urowvec& medoidIndices,
-    arma::uvec& targets,
-    arma::rowvec& best_distances,
-    arma::rowvec& second_best_distances,
-    arma::urowvec& assignments,
+    arma::urowvec* medoidIndices,
+    arma::uvec* targets,
+    arma::rowvec* best_distances,
+    arma::rowvec* second_best_distances,
+    arma::urowvec* assignments,
     size_t exact);
 };
 }  // namespace km
