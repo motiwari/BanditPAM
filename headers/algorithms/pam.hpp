@@ -1,5 +1,5 @@
-#ifndef HEADERS_PAM_HPP_
-#define HEADERS_PAM_HPP_
+#ifndef HEADERS_ALGORITHMS_PAM_HPP_
+#define HEADERS_ALGORITHMS_PAM_HPP_
 
 #include <omp.h>
 #include <armadillo>
@@ -61,4 +61,4 @@ class PAM : public km::KMedoids {
       arma::urowvec* assignments);
 };
 }  // namespace km
-#endif  // HEADERS_PAM_HPP_
+#endif  // HEADERS_ALGORITHMS_PAM_HPP_

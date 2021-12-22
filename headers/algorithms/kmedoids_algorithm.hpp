@@ -1,5 +1,5 @@
-#ifndef HEADERS_KMEDOIDS_ALGORITHM_HPP_
-#define HEADERS_KMEDOIDS_ALGORITHM_HPP_
+#ifndef HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_
+#define HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_
 
 #include <omp.h>
 #include <armadillo>
@@ -158,4 +158,4 @@ class KMedoids {
     size_t batchSize = 100;
 };
 }  // namespace km
-#endif  // HEADERS_KMEDOIDS_ALGORITHM_HPP_
+#endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_

@@ -1,5 +1,5 @@
-#ifndef HEADERS_FASTPAM1_HPP_
-#define HEADERS_FASTPAM1_HPP_
+#ifndef HEADERS_ALGORITHMS_FASTPAM1_HPP_
+#define HEADERS_ALGORITHMS_FASTPAM1_HPP_
 
 #include <omp.h>
 #include <armadillo>
@@ -61,4 +61,4 @@ class FastPAM1 : public km::KMedoids {
       arma::urowvec* assignments);
 };
 }  // namespace km
-#endif  // HEADERS_FASTPAM1_HPP_
+#endif  // HEADERS_ALGORITHMS_FASTPAM1_HPP_

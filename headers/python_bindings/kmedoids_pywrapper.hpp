@@ -1,5 +1,5 @@
-#ifndef HEADERS_KMEDOIDS_PYWRAPPER_HPP_
-#define HEADERS_KMEDOIDS_PYWRAPPER_HPP_
+#ifndef HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_
+#define HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_
 
 /* 
  * We perform these imports first because kmedoids_pywrapper is compiled first
@@ -85,4 +85,4 @@ class KMedoidsWrapper : public km::KMedoids {
 
   void steps_python(py::class_<KMedoidsWrapper> *);
 
-#endif  // HEADERS_KMEDOIDS_PYWRAPPER_HPP_
+#endif  // HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_

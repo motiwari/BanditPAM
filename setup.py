@@ -204,10 +204,12 @@ def setup_colab():
     if in_colab:
         # TODO: Dangerous os.system() call.
         # See https://stackoverflow.com/a/51329156
-        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git \
-            /content/BanditPAM')
-        os.system('/content/BanditPAM/scripts/colab_install_armadillo.sh')
-        os.system('rm -rf /content/BanditPAM')
+        repo_location = os.path.join("/", "content", "BanditPAM")
+        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git' +
+                  repo_location)
+        os.system(repo_location +
+                  '/scripts/colab_files/colab_install_armadillo.sh')
+        os.system('rm -rf ' + repo_location)
 
 
 def install_check_ubuntu():
@@ -243,7 +245,7 @@ def install_check_ubuntu():
 
 
 def is_ubuntu():
-    cmd = ["cat", "/etc/issue"]
+    cmd = ["cat", os.path.join("/", "etc", "issue")]
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     output, _error = process.communicate()
     return "Ubuntu" in output.decode()
@@ -314,9 +316,11 @@ if sys.platform == "linux" or sys.platform == "linux2":
         get_pybind_include(),
         get_numpy_include(),
         "headers",
-        "headers/carma/include/carma_bits",
-        "headers/carma/include",
-        "/usr/local/include",
+        os.path.join("headers", "algorithms"),
+        os.path.join("headers", "python_bindings"),
+        os.path.join("headers", "carma", "include"),
+        os.path.join("headers", "carma", "include", "carma_bits"),
+        os.path.join("/", "usr", "local", "include"),
     ]
 
 else:  # OSX
@@ -324,10 +328,12 @@ else:  # OSX
         get_pybind_include(),
         get_numpy_include(),
         "headers",
-        "headers/carma/include",
-        "headers/carma/include/carma",
-        "headers/carma/include/carma/carma",
-        "/usr/local/include",
+        os.path.join("headers", "algorithms"),
+        os.path.join("headers", "python_bindings"),
+        os.path.join("headers", "carma", "include"),
+        os.path.join("headers", "carma", "include", "carma"),
+        os.path.join("headers", "carma", "include", "carma", "carma"),
+        os.path.join("/", "usr", "local", "include"),
     ]
 
 compiler_name = compiler_check()
@@ -340,19 +346,19 @@ ext_modules = [
     Extension(
         "banditpam",
         [
-            os.path.join("src", "kmedoids_pywrapper.cpp"),
-            os.path.join("src", "kmedoids_algorithm.cpp"),
-            os.path.join("src", "pam.cpp"),
-            os.path.join("src", "banditpam.cpp"),
-            os.path.join("src", "fastpam1.cpp"),
-            os.path.join("src", "fit_python.cpp"),
-            os.path.join("src", "medoids_python.cpp"),
-            os.path.join("src", "build_medoids_python.cpp"),
-            os.path.join("src", "labels_python.cpp"),
-            os.path.join("src", "steps_python.cpp"),
+            os.path.join("src", "algorithms", "kmedoids_algorithm.cpp"),
+            os.path.join("src", "algorithms", "pam.cpp"),
+            os.path.join("src", "algorithms", "banditpam.cpp"),
+            os.path.join("src", "algorithms", "fastpam1.cpp"),
+            os.path.join("src", "python_bindings", "kmedoids_pywrapper.cpp"),
+            os.path.join("src", "python_bindings", "fit_python.cpp"),
+            os.path.join("src", "python_bindings", "medoids_python.cpp"),
+            os.path.join("src", "python_bindings", "build_medoids_python.cpp"),
+            os.path.join("src", "python_bindings", "labels_python.cpp"),
+            os.path.join("src", "python_bindings", "steps_python.cpp"),
         ],
         include_dirs=include_dirs,
-        library_dirs=["/usr/local/lib"],
+        library_dirs=[os.path.join("/", "usr", "local", "lib")],
         libraries=libraries,
         language="c++1y",  # TODO: modify this based on cpp_flag(compiler)
         extra_compile_args=["-static-libstdc++"],
@@ -384,10 +390,10 @@ setup(
         "Operating System :: OS Independent",
     ],
     headers=[
-        os.path.join("headers", "kmedoids_algorithm.hpp"),
-        os.path.join("headers", "kmedoids_pywrapper.hpp"),
-        os.path.join("headers", "banditpam.hpp"),
-        os.path.join("headers", "fastpam1.hpp"),
-        os.path.join("headers", "pam.hpp"),
+        os.path.join("headers", "algorithms", "kmedoids_algorithm.hpp"),
+        os.path.join("headers", "algorithms", "banditpam.hpp"),
+        os.path.join("headers", "algorithms", "fastpam1.hpp"),
+        os.path.join("headers", "algorithms", "pam.hpp"),
+        os.path.join("headers", "python_bindings", "kmedoids_pywrapper.hpp"),
     ],
 )

@@ -1,5 +1,5 @@
-#ifndef HEADERS_BANDITPAM_HPP_
-#define HEADERS_BANDITPAM_HPP_
+#ifndef HEADERS_ALGORITHMS_BANDITPAM_HPP_
+#define HEADERS_ALGORITHMS_BANDITPAM_HPP_
 
 #include <omp.h>
 #include <armadillo>
@@ -145,4 +145,4 @@ class BanditPAM : public km::KMedoids {
     arma::urowvec* assignments);
 };
 }  // namespace km
-#endif  // HEADERS_BANDITPAM_HPP_
+#endif  // HEADERS_ALGORITHMS_BANDITPAM_HPP_
