@@ -6,12 +6,12 @@ from banditpam import KMedoids
 from utils import bpam_agrees_pam
 from constants import *
 
-class PythonTests(unittest.TestCase):
+class SmallerTests(unittest.TestCase):
     small_mnist = pd.read_csv("data/MNIST_100.csv", header=None).to_numpy()
     mnist_70k = pd.read_csv("data/MNIST_70k.csv", sep=" ", header=None)
     scrna = pd.read_csv("data/scrna_reformat.csv.gz", header=None)
 
-    def test_small_on_the_fly_mnist(self):
+    def test_small_mnist(self):
         """
         Test NUM_SMALL_CASES number of test cases with subsets of size 
         SMALL_SAMPLE_SIZE randomly drawn from the full MNIST dataset
@@ -22,7 +22,7 @@ class PythonTests(unittest.TestCase):
             count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L2")
         self.assertTrue(count == NUM_SMALL_CASES) # All cases must pass
 
-    def test_small_on_the_fly_scrna(self):
+    def test_small_scrna(self):
         """
         Test NUM_SMALL_CASES number of test cases with subsets of size 
         SMALL_SAMPLE_SIZE randomly drawn from the full scRNA dataset
@@ -33,7 +33,7 @@ class PythonTests(unittest.TestCase):
             count += bpam_agrees_pam(k=SMALL_K_SCHEDULE[i % N_SMALL_K], data=data, loss="L1")
         self.assertTrue(count >= PROPORTION_PASSING*NUM_SMALL_CASES) # Occasionally some may fail due to degeneracy in the scRNA dataset
 
-    def test_small_mnist_cases(self):
+    def test_small_mnist_known_cases(self):
         """
         Test BanditPAM on a subset of MNIST with known solutions
         for both k = 5 and k = 10, after both the BUILD and SWAP steps
