@@ -1,15 +1,17 @@
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+    rev: master
     hooks:
     -   id: check-yaml
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
 -   repo: https://github.com/psf/black
-    rev: 19.3b0
+    rev: main
     hooks:
     -   id: black
 -   repo: https://github.com/bmorcos/pre-commit-hooks-cpp
     rev: master
     hooks:
     -   id: cpplint
+    -   id: clang-format
+    -   id: cppcheck
