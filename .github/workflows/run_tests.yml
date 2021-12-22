@@ -65,7 +65,7 @@ jobs:
           tar -xzvf data/MNIST_70k.tar.gz -C data
       - name: Run smaller suite of test cases
         run : |
-          pytest tests/test_commit.py 
+          pytest tests/test_smaller.py 
       - name: Run larger suite of test cases
         run : |
-          pytest tests/test_push.py 
+          pytest tests/test_larger.py 

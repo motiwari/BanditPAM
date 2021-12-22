@@ -196,7 +196,7 @@ To run the full suite of tests, run in the root directory:
 /BanditPAM$ python -m unittest discover -s tests
 ```
 
-Alternatively, to run a "smaller" set of tests, from the main repo folder run `python tests/test_commit.py` or `python tests/test_push.py` to run a set of longer, more intensive tests.
+Alternatively, to run a "smaller" set of tests, from the main repo folder run `python tests/test_smaller.py` or `python tests/test_larger.py` to run a set of longer, more intensive tests.
 
 ## Reproducing Figures from the Paper
 
