@@ -10,11 +10,8 @@
  */
 
 #include <unistd.h>
-#include <armadillo>
-#include <chrono>
 #include <fstream>
 #include <exception>
-#include <regex>
 #include <filesystem>
 
 #include "kmedoids_algorithm.hpp"

@@ -10,7 +10,6 @@
 
 #include <armadillo>
 #include <unordered_map>
-#include <regex>
 #include <cmath>
 
 namespace km {

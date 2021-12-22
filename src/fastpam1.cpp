@@ -15,7 +15,6 @@
 
 #include <armadillo>
 #include <unordered_map>
-#include <regex>
 
 namespace km {
 /**
