@@ -35,13 +35,4 @@ else
   echo "Docker image banditpam/cpp:latest already exists. Skipping execution of build_docker.sh."
 fi
 
-GIT_DIR=$(git rev-parse --git-dir)
-
-if [[ -f $GIT_DIR/hooks/pre-push && -f $GIT_DIR/hooks/pre-commit ]]; then
-   echo "Hooks already exist. Skipping execution of scripts/install-hooks.sh."
-else
-   echo "Runnin install-hooks.sh"
-   sh scripts/install-hooks.sh
-fi
-
 echo "Done"
