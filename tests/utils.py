@@ -1,7 +1,14 @@
 from banditpam import KMedoids
+import numpy as np
 
 
-def bpam_agrees_pam(k, data, loss, test_build=False, assert_immediately=False):
+def bpam_agrees_pam(
+    k: int,
+    data: np.array,
+    loss: str,
+    test_build: bool = False,
+    assert_immediately: bool = False,
+):
     """
     Parameters:
         k: Number of medoids

@@ -57,7 +57,7 @@ def compiler_check():
     raise Exception("No C++ compiler was found. Please install LLVM clang.")
 
 
-def has_flag(compiler, flagname):
+def has_flag(compiler: str, flagname: str):
     """
     Return a boolean indicating whether a flag name is supported on
     the specified compiler.
@@ -77,7 +77,7 @@ def has_flag(compiler, flagname):
     return True
 
 
-def cpp_flag(compiler):
+def cpp_flag(compiler: str):
     """
     Return the -std=c++[11/14/17] compiler flag.
     The newer version is prefered over c++11 (when it is available).
@@ -97,7 +97,7 @@ def cpp_flag(compiler):
         at least C++11 support is needed!")
 
 
-def check_brew_package(pkg_name):
+def check_brew_package(pkg_name: str):
     brew_cmd = ["brew", "--prefix", pkg_name]
     process = subprocess.Popen(brew_cmd, stdout=subprocess.PIPE)
     output, _error = process.communicate()
@@ -174,7 +174,7 @@ def check_armadillo_install_linux():
     return output.decode().strip()
 
 
-def check_linux_package_installation(pkg_name):
+def check_linux_package_installation(pkg_name: str):
     cmd = ["dpkg", "-s", pkg_name]
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     output, _error = process.communicate()

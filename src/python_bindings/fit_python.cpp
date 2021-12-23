@@ -49,7 +49,7 @@ void km::KMedoidsWrapper::fitPython(
   KMedoids::fit(carma::arr_to_mat<double>(inputData), loss);
 }
 
-void km::fit_python(pybind11::class_<KMedoidsWrapper> *cls) {
+void fit_python(pybind11::class_<KMedoidsWrapper> *cls) {
   cls->def("fit", &KMedoidsWrapper::fitPython);
 }
 }  // namespace km
