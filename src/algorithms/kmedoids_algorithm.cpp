@@ -54,9 +54,9 @@ KMedoids::~KMedoids() {;}  // TODO(@motiwari): Need semicolons?
 
 double KMedoids::cachedLoss(
   const arma::mat& data,
-  size_t i,
-  size_t j,
-  bool use_cache) {
+  const size_t i,
+  const size_t j,
+  const bool use_cache) {
   if (!use_cache) {
     return (this->*lossFn)(data, i, j);
   }
@@ -306,7 +306,7 @@ void KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
  */
 void KMedoids::calc_best_distances_swap(
   const arma::mat& data,
-  arma::urowvec* medoid_indices,
+  const arma::urowvec* medoid_indices,
   arma::rowvec* best_distances,
   arma::rowvec* second_distances,
   arma::urowvec* assignments) {
@@ -340,7 +340,7 @@ void KMedoids::calc_best_distances_swap(
  */
 double KMedoids::calc_loss(
   const arma::mat& data,
-  arma::urowvec* medoid_indices) {
+  const arma::urowvec* medoid_indices) {
     double total = 0;
 
     // TODO(@motiwari): is this parallel loop accumulating properly?

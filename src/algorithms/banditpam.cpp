@@ -71,7 +71,7 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
 arma::rowvec BanditPAM::build_sigma(
   const arma::mat& data,
   const arma::rowvec& best_distances,
-  bool use_absolute) {
+  const bool use_absolute) {
   size_t N = data.n_cols;
   arma::uvec tmp_refs;
   // TODO(@motiwari): Make this wraparound properly as
@@ -125,10 +125,10 @@ arma::rowvec BanditPAM::build_sigma(
  */
 arma::rowvec BanditPAM::build_target(
   const arma::mat& data,
-  arma::uvec* target,
-  arma::rowvec* best_distances,
-  bool use_absolute,
-  size_t exact = 0) {
+  const arma::uvec* target,
+  const arma::rowvec* best_distances,
+  const bool use_absolute,
+  const size_t exact = 0) {
   size_t N = data.n_cols;
   size_t tmp_batch_size = batchSize;
   if (exact > 0) {
@@ -290,9 +290,9 @@ void BanditPAM::build(
  */
 arma::mat BanditPAM::swap_sigma(
   const arma::mat& data,
-  arma::rowvec* best_distances,
-  arma::rowvec* second_best_distances,
-  arma::urowvec* assignments) {
+  const arma::rowvec* best_distances,
+  const arma::rowvec* second_best_distances,
+  const arma::urowvec* assignments) {
   size_t N = data.n_cols;
   size_t K = n_medoids;
   arma::mat updated_sigma(K, N, arma::fill::zeros);
@@ -361,12 +361,12 @@ arma::mat BanditPAM::swap_sigma(
  */
 arma::vec BanditPAM::swap_target(
   const arma::mat& data,
-  arma::urowvec* medoid_indices,
-  arma::uvec* targets,
-  arma::rowvec* best_distances,
-  arma::rowvec* second_best_distances,
-  arma::urowvec* assignments,
-  size_t exact = 0) {
+  const arma::urowvec* medoid_indices,
+  const arma::uvec* targets,
+  const arma::rowvec* best_distances,
+  const arma::rowvec* second_best_distances,
+  const arma::urowvec* assignments,
+  const size_t exact = 0) {
   size_t N = data.n_cols;
   arma::vec estimates(targets->n_rows, arma::fill::zeros);
 

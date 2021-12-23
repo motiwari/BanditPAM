@@ -42,7 +42,7 @@ class BanditPAM : public km::KMedoids {
   arma::rowvec build_sigma(
     const arma::mat& data,
     const arma::rowvec& best_distances,
-    bool use_absolute);
+    const bool use_absolute);
 
   /*! \brief Estimates the mean reward for each arm in build step
   *
@@ -58,10 +58,10 @@ class BanditPAM : public km::KMedoids {
   */
   arma::rowvec build_target(
     const arma::mat& data,
-    arma::uvec* target,
-    arma::rowvec* best_distances,
-    bool use_absolute,
-    size_t exact);
+    const arma::uvec* target,
+    const arma::rowvec* best_distances,
+    const bool use_absolute,
+    const size_t exact);
 
   /*! \brief Build step for BanditPAM
   *
@@ -81,6 +81,25 @@ class BanditPAM : public km::KMedoids {
     arma::urowvec* medoidIndices,
     arma::mat* medoids);
 
+  /**
+   * \brief Calculates confidence intervals in swap step
+   *
+   * Calculates the confidence intervals about the reward for each arm
+   *
+   * @param data Transposed input data to find the medoids of
+   * intervals
+   * @param best_distances Array of best distances from each point to previous set
+   * of medoids
+   * @param second_best_distances Array of second smallest distances from each
+   * point to previous set of medoids
+   * @param assignments Assignments of datapoints to their closest medoid
+   */
+  arma::mat swap_sigma(
+    const arma::mat& data,
+    const arma::rowvec* best_distances,
+    const arma::rowvec* second_best_distances,
+    const arma::urowvec* assignments);
+
   /*! \brief Estimates the mean reward for each arm in swap step
   *
   *  Estimates the mean reward (or loss) for each arm in the identified targets
@@ -97,31 +116,12 @@ class BanditPAM : public km::KMedoids {
   */
   arma::vec swap_target(
     const arma::mat& data,
-    arma::urowvec* medoidIndices,
-    arma::uvec* targets,
-    arma::rowvec* best_distances,
-    arma::rowvec* second_best_distances,
-    arma::urowvec* assignments,
-    size_t exact);
-
-  /**
-   * \brief Calculates confidence intervals in swap step
-   *
-   * Calculates the confidence intervals about the reward for each arm
-   *
-   * @param data Transposed input data to find the medoids of
-   * intervals
-   * @param best_distances Array of best distances from each point to previous set
-   * of medoids
-   * @param second_best_distances Array of second smallest distances from each
-   * point to previous set of medoids
-   * @param assignments Assignments of datapoints to their closest medoid
-   */
-  arma::mat swap_sigma(
-    const arma::mat& data,
-    arma::rowvec* best_distances,
-    arma::rowvec* second_best_distances,
-    arma::urowvec* assignments);
+    const arma::urowvec* medoidIndices,
+    const arma::uvec* targets,
+    const arma::rowvec* best_distances,
+    const arma::rowvec* second_best_distances,
+    const arma::urowvec* assignments,
+    const size_t exact);
 
   /*! \brief Swap step for BanditPAM
   *

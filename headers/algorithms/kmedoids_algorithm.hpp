@@ -94,21 +94,21 @@ class KMedoids {
  protected:
   void calc_best_distances_swap(
     const arma::mat& data,
-    arma::urowvec* medoidIndices,
+    const arma::urowvec* medoidIndices,
     arma::rowvec* best_distances,
     arma::rowvec* second_distances,
     arma::urowvec* assignments);
 
   double calc_loss(
     const arma::mat& data,
-    arma::urowvec* medoidIndices);
+    const arma::urowvec* medoidIndices);
 
   // if you change use_cache, also change use_cache_p
   double cachedLoss(
     const arma::mat& data,
-    size_t i,
-    size_t j,
-    bool use_cache = true);
+    const size_t i,
+    const size_t j,
+    const bool use_cache = true);
 
   // Loss functions
   size_t lp;
