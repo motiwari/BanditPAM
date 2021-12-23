@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BanditPAM: /Users/motiwari/Desktop/BanditPAM/src/algorithms Directory Reference</title>
+<title>BanditPAM: /Users/motiwari/Desktop/BanditPAM/src/algorithms/kmedoids_algorithm.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,31 +66,43 @@ $(function() {
 </div>
 </div><!-- top -->
 <div class="header">
-  <div class="headertitle"><div class="title">algorithms Directory Reference</div></div>
+  <div class="headertitle"><div class="title">kmedoids_algorithm.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Directory dependency graph for algorithms:</div>
+<div class="textblock"><code>#include &lt;omp.h&gt;</code><br />
+<code>#include &lt;armadillo&gt;</code><br />
+<code>#include &lt;unordered_map&gt;</code><br />
+<code>#include &lt;regex&gt;</code><br />
+<code>#include &quot;kmedoids_algorithm.hpp&quot;</code><br />
+<code>#include &quot;fastpam1.hpp&quot;</code><br />
+<code>#include &quot;pam.hpp&quot;</code><br />
+<code>#include &quot;banditpam.hpp&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for kmedoids_algorithm.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="dir_e6df591b0639d4c4807ef64d058833e2_dep.png" border="0" usemap="#adir__e6df591b0639d4c4807ef64d058833e2__dep" alt="/Users/motiwari/Desktop/BanditPAM/src/algorithms"/></div>
-<map name="adir__e6df591b0639d4c4807ef64d058833e2__dep" id="adir__e6df591b0639d4c4807ef64d058833e2__dep">
-<area shape="rect" href="dir_e6df591b0639d4c4807ef64d058833e2.html" title="algorithms" alt="" coords="27,52,111,100"/>
-<area shape="rect" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html" title="src" alt="" coords="16,16,123,111"/>
+<div class="center"><img src="kmedoids__algorithm_8cpp__incl.png" border="0" usemap="#a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2algorithms_2kmedoids__algorithm_8cpp" alt=""/></div>
+<map name="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2algorithms_2kmedoids__algorithm_8cpp" id="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2algorithms_2kmedoids__algorithm_8cpp">
+<area shape="rect" title=" " alt="" coords="329,5,507,61"/>
+<area shape="rect" title=" " alt="" coords="166,259,225,285"/>
+<area shape="rect" title=" " alt="" coords="343,259,419,285"/>
+<area shape="rect" title=" " alt="" coords="5,259,121,285"/>
+<area shape="rect" title=" " alt="" coords="358,109,414,136"/>
+<area shape="rect" href="kmedoids__algorithm_8hpp_source.html" title=" " alt="" coords="487,184,653,211"/>
+<area shape="rect" href="fastpam1_8hpp_source.html" title=" " alt="" coords="587,109,689,136"/>
+<area shape="rect" href="pam_8hpp_source.html" title=" " alt="" coords="489,109,563,136"/>
+<area shape="rect" href="banditpam_8hpp_source.html" title=" " alt="" coords="713,109,824,136"/>
+<area shape="rect" title=" " alt="" coords="839,259,898,285"/>
+<area shape="rect" title=" " alt="" coords="703,259,770,285"/>
+<area shape="rect" title=" " alt="" coords="984,259,1057,285"/>
+<area shape="rect" title=" " alt="" coords="625,259,675,285"/>
+<area shape="rect" title=" " alt="" coords="443,259,521,285"/>
+<area shape="rect" title=" " alt="" coords="545,259,600,285"/>
 </map>
 </div>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
-Files</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="banditpam_8cpp.html">banditpam.cpp</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fastpam1_8cpp.html">fastpam1.cpp</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kmedoids__algorithm_8cpp.html">kmedoids_algorithm.cpp</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="pam_8cpp.html">pam.cpp</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-</div><!-- contents -->
+</div><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><dl class="section date"><dt>Date</dt><dd>2020-06-10</dd></dl>
+<p>This file contains the primary C++ implementation of the BanditPAM code. </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3

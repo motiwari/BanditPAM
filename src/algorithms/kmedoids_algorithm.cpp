@@ -1,5 +1,5 @@
 /**
- * @file kmedoids_ucb.cpp
+ * @file kmedoids_algorithm.cpp
  * @date 2020-06-10
  *
  * This file contains the primary C++ implementation of the BanditPAM code.

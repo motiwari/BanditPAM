@@ -39,24 +39,6 @@ class KMedoids {
 
   void fit(const arma::mat& inputData, const std::string& loss);
 
-  // cache-related variables
-
-  size_t cache_multiplier = 1000;
-
-  float* cache;
-
-  arma::uvec permutation;
-
-  size_t permutation_idx;
-
-  std::unordered_map<size_t, size_t> reindex;
-
-  // set to false for debugging only, to measure speedup
-  bool use_perm = true;
-
-  // set to false for debugging only, to measure speedup
-  bool use_cache_p = true;
-
   // The functions below are getters for read-only attributes
 
   arma::urowvec getMedoidsFinal() const;
@@ -90,6 +72,27 @@ class KMedoids {
   void setswapConfidence(size_t new_swapConfidence);
 
   void setLossFn(std::string loss);
+
+  /// The cache will be of size cache_multiplier*nlogn
+  size_t cache_multiplier = 1000;
+
+  /// The cache which stores pairwise distance computations
+  float* cache;
+
+  /// The permutation in which to sample the reference points
+  arma::uvec permutation;
+
+  /// The index of our current position in the permutated points
+  size_t permutation_idx;
+
+  /// A map from permutation index of each point to its original index
+  std::unordered_map<size_t, size_t> reindex;
+
+  /// Used for debugging only to toggle a fixed permutation of points
+  bool use_perm = true;
+
+  /// Used for debugging only to toggle use of the cache
+  bool use_cache_p = true;
 
  protected:
   void calc_best_distances_swap(

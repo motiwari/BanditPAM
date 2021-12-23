@@ -154,24 +154,31 @@ Public Member Functions</h2></td></tr>
 Public Attributes</h2></td></tr>
 <tr class="memitem:afef3fcd749d67ee223fd173d03a46af5"><td class="memItemLeft" align="right" valign="top"><a id="afef3fcd749d67ee223fd173d03a46af5" name="afef3fcd749d67ee223fd173d03a46af5"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>cache_multiplier</b> = 1000</td></tr>
+<tr class="memdesc:afef3fcd749d67ee223fd173d03a46af5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cache will be of size cache_multiplier*nlogn. <br /></td></tr>
 <tr class="separator:afef3fcd749d67ee223fd173d03a46af5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf5999794e1e6a9cf7587b45af7965d4"><td class="memItemLeft" align="right" valign="top"><a id="aaf5999794e1e6a9cf7587b45af7965d4" name="aaf5999794e1e6a9cf7587b45af7965d4"></a>
 float *&#160;</td><td class="memItemRight" valign="bottom"><b>cache</b></td></tr>
+<tr class="memdesc:aaf5999794e1e6a9cf7587b45af7965d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cache which stores pairwise distance computations. <br /></td></tr>
 <tr class="separator:aaf5999794e1e6a9cf7587b45af7965d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46b93a3254181304f495ae4afd38c926"><td class="memItemLeft" align="right" valign="top"><a id="a46b93a3254181304f495ae4afd38c926" name="a46b93a3254181304f495ae4afd38c926"></a>
 arma::uvec&#160;</td><td class="memItemRight" valign="bottom"><b>permutation</b></td></tr>
+<tr class="memdesc:a46b93a3254181304f495ae4afd38c926"><td class="mdescLeft">&#160;</td><td class="mdescRight">The permutation in which to sample the reference points. <br /></td></tr>
 <tr class="separator:a46b93a3254181304f495ae4afd38c926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab61cd26a588c5eabf8e3422c1018aa8d"><td class="memItemLeft" align="right" valign="top"><a id="ab61cd26a588c5eabf8e3422c1018aa8d" name="ab61cd26a588c5eabf8e3422c1018aa8d"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>permutation_idx</b></td></tr>
+<tr class="memdesc:ab61cd26a588c5eabf8e3422c1018aa8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of our current position in the permutated points. <br /></td></tr>
 <tr class="separator:ab61cd26a588c5eabf8e3422c1018aa8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab55aa7e43d9680645eb4c6c429440a6"><td class="memItemLeft" align="right" valign="top"><a id="aab55aa7e43d9680645eb4c6c429440a6" name="aab55aa7e43d9680645eb4c6c429440a6"></a>
 std::unordered_map&lt; size_t, size_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>reindex</b></td></tr>
+<tr class="memdesc:aab55aa7e43d9680645eb4c6c429440a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A map from permutation index of each point to its original index. <br /></td></tr>
 <tr class="separator:aab55aa7e43d9680645eb4c6c429440a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2041c73d811dfe6f152b36e81c6e632"><td class="memItemLeft" align="right" valign="top"><a id="ae2041c73d811dfe6f152b36e81c6e632" name="ae2041c73d811dfe6f152b36e81c6e632"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>use_perm</b> = true</td></tr>
+<tr class="memdesc:ae2041c73d811dfe6f152b36e81c6e632"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for debugging only to toggle a fixed permutation of points. <br /></td></tr>
 <tr class="separator:ae2041c73d811dfe6f152b36e81c6e632"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adacf668171943d8431a1fb8f42b2e383"><td class="memItemLeft" align="right" valign="top"><a id="adacf668171943d8431a1fb8f42b2e383" name="adacf668171943d8431a1fb8f42b2e383"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>use_cache_p</b> = true</td></tr>
+<tr class="memdesc:adacf668171943d8431a1fb8f42b2e383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for debugging only to toggle use of the cache. <br /></td></tr>
 <tr class="separator:adacf668171943d8431a1fb8f42b2e383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
@@ -1090,7 +1097,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/motiwari/Desktop/BanditPAM/headers/algorithms/<a class="el" href="kmedoids__algorithm_8hpp_source.html">kmedoids_algorithm.hpp</a></li>
-<li>/Users/motiwari/Desktop/BanditPAM/src/algorithms/kmedoids_algorithm.cpp</li>
+<li>/Users/motiwari/Desktop/BanditPAM/src/algorithms/<a class="el" href="kmedoids__algorithm_8cpp.html">kmedoids_algorithm.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

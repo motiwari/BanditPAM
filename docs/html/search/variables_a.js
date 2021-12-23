@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['log_5fmax_0',['log_max',['../group__constants.html#ga2715186235eb30b755cae9c03e7fd804',1,'Datum']]],
-  ['log_5fmin_1',['log_min',['../group__constants.html#ga87b5749ce3ec3da9f0e82205093f110f',1,'Datum']]],
-  ['log_5fsqrt2pi_2',['log_sqrt2pi',['../group__constants.html#gaa5b9ceac27c11657b0efc9e223f3fe61',1,'Datum']]]
+  ['use_5fcache_5fp_0',['use_cache_p',['../classkm_1_1KMedoids.html#adacf668171943d8431a1fb8f42b2e383',1,'km::KMedoids']]],
+  ['use_5fperm_1',['use_perm',['../classkm_1_1KMedoids.html#ae2041c73d811dfe6f152b36e81c6e632',1,'km::KMedoids']]]
 ];
