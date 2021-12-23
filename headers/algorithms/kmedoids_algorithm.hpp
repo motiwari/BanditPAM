@@ -59,33 +59,33 @@ class KMedoids {
 
   // The functions below are getters for read-only attributes
 
-  arma::urowvec getMedoidsFinal();
+  arma::urowvec getMedoidsFinal() const;
 
-  arma::urowvec getMedoidsBuild();
+  arma::urowvec getMedoidsBuild() const;
 
-  arma::urowvec getLabels();
+  arma::urowvec getLabels() const;
 
-  size_t getSteps();
+  size_t getSteps() const;
 
   // The functions below are get/set functions for attributes
 
-  size_t getNMedoids();
+  size_t getNMedoids() const;
 
   void setNMedoids(size_t new_num);
 
-  std::string getAlgorithm();
+  std::string getAlgorithm() const;
 
   void setAlgorithm(const std::string& new_alg);
 
-  size_t getMaxIter();
+  size_t getMaxIter() const;
 
   void setMaxIter(size_t new_max);
 
-  size_t getbuildConfidence();
+  size_t getbuildConfidence() const;
 
   void setbuildConfidence(size_t new_buildConfidence);
 
-  size_t getswapConfidence();
+  size_t getswapConfidence() const;
 
   void setswapConfidence(size_t new_swapConfidence);
 
@@ -121,7 +121,7 @@ class KMedoids {
 
   double manhattan(const arma::mat& data, size_t i, size_t j) const;
 
-  void checkAlgorithm(const std::string& algorithm);
+  void checkAlgorithm(const std::string& algorithm) const;
 
   // Constructor params
   size_t n_medoids;

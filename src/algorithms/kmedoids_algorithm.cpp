@@ -83,7 +83,7 @@ double KMedoids::cachedLoss(
  *
  *  @param algorithm Name of the algorithm input by the user.
  */
-void KMedoids::checkAlgorithm(const std::string& algorithm) {
+void KMedoids::checkAlgorithm(const std::string& algorithm) const {
   if ((algorithm != "BanditPAM") &&
       (algorithm != "PAM") &&
       (algorithm != "FastPAM1")) {
@@ -97,7 +97,7 @@ void KMedoids::checkAlgorithm(const std::string& algorithm) {
  *  Returns the build medoids at the end of the BUILD step after KMedoids::fit
  *  has been called.
  */
-arma::urowvec KMedoids::getMedoidsBuild() {
+arma::urowvec KMedoids::getMedoidsBuild() const {
   return medoid_indices_build;
 }
 
@@ -107,7 +107,7 @@ arma::urowvec KMedoids::getMedoidsBuild() {
  *  Returns the final medoids at the end of the SWAP step after KMedoids::fit
  *  has been called.
  */
-arma::urowvec KMedoids::getMedoidsFinal() {
+arma::urowvec KMedoids::getMedoidsFinal() const {
   return medoid_indices_final;
 }
 
@@ -117,7 +117,7 @@ arma::urowvec KMedoids::getMedoidsFinal() {
  *  Returns the medoid each input datapoint is assigned to after KMedoids::fit
  *  has been called and the final medoids have been identified
  */
-arma::urowvec KMedoids::getLabels() {
+arma::urowvec KMedoids::getLabels() const {
   return labels;
 }
 
@@ -127,7 +127,7 @@ arma::urowvec KMedoids::getLabels() {
  *  Returns the number of SWAP steps completed during the last call to
  *  KMedoids::fit
  */
-size_t KMedoids::getSteps() {
+size_t KMedoids::getSteps() const {
   return steps;
 }
 
@@ -165,7 +165,7 @@ void KMedoids::setLossFn(std::string loss) {
  *
  *  Returns the number of medoids to be identified during KMedoids::fit
  */
-size_t KMedoids::getNMedoids() {
+size_t KMedoids::getNMedoids() const {
   return n_medoids;
 }
 
@@ -183,7 +183,7 @@ void KMedoids::setNMedoids(size_t new_num) {
  *
  *  Returns the algorithm used for identifying the medoids during KMedoids::fit
  */
-std::string KMedoids::getAlgorithm() {
+std::string KMedoids::getAlgorithm() const {
   return algorithm;
 }
 
@@ -205,7 +205,7 @@ void KMedoids::setAlgorithm(const std::string& new_alg) {
  *  Returns the maximum number of iterations that can be run during
  *  KMedoids::fit
  */
-size_t KMedoids::getMaxIter() {
+size_t KMedoids::getMaxIter() const {
   return max_iter;
 }
 
@@ -226,7 +226,7 @@ void KMedoids::setMaxIter(size_t new_max) {
  *  Returns the constant that affects the sensitivity of build confidence bounds
  *  that can be run during KMedoids::fit
  */
-size_t KMedoids::getbuildConfidence() {
+size_t KMedoids::getbuildConfidence() const {
   return buildConfidence;
 }
 
@@ -248,7 +248,7 @@ void KMedoids::setbuildConfidence(size_t new_buildConfidence) {
  *  Returns the constant that affects the sensitivity of swap confidence bounds
  *  that can be run during KMedoids::fit
  */
-size_t KMedoids::getswapConfidence() {
+size_t KMedoids::getswapConfidence() const {
   return swapConfidence;
 }
 
