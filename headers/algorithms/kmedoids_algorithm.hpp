@@ -141,8 +141,8 @@ class KMedoids {
 
   double (KMedoids::*lossFn)(
     const arma::mat& data,
-    size_t i,
-    size_t j)
+    const size_t i,
+    const size_t j)
     const;
 
   size_t steps;
