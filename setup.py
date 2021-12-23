@@ -43,7 +43,7 @@ def compiler_check():
     """
     try:
         return 'clang' \
-            if 'clang' in distutils.sysconfig.get_config_vars()['CC'] \
+            if 'clang' in distutils.sysconfig.get_config_vars()["CC"] \
             else 'gcc'
     except KeyError:
         # The 'CC' environment variable hasn't been set.
@@ -141,7 +141,8 @@ def install_check_mac():
     check_brew_package("armadillo")
 
     # Set compiler to LLVM clang on Mac for OpenMP support
-    os.environ["CC"] = os.path.join(llvm_loc, "bin", "clang")
+    distutils.sysconfig.get_config_vars()["CC"] = \
+        os.path.join(llvm_loc, "bin", "clang")
 
 
 def check_omp_install_linux():
@@ -261,7 +262,7 @@ class BuildExt(build_ext):
 
     if sys.platform == "darwin":
         install_check_mac()
-        # assert compiler_check() == 'clang', "Need to install LLVM clang!"
+        assert compiler_check() == 'clang', "Need to install LLVM clang!"
         darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.7", "-O3"]
         c_opts["unix"] += darwin_opts
         l_opts["unix"] += darwin_opts
@@ -286,7 +287,7 @@ class BuildExt(build_ext):
 
         compiler_name = compiler_check()
         if sys.platform == "darwin":
-            # assert compiler_name == 'clang', "Need to install LLVM clang!"
+            assert compiler_name == 'clang', "Need to install LLVM clang!"
             link_opts.append('-lomp')
         else:
             if compiler_name == 'clang':

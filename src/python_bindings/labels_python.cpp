@@ -29,7 +29,7 @@ pybind11::array_t<arma::uword> km::KMedoidsWrapper::getLabelsPython() {
   }
 }
 
-void km::labels_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
+void labels_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
   cls->def_property_readonly("labels", &km::KMedoidsWrapper::getLabelsPython);
 }
 }  // namespace km

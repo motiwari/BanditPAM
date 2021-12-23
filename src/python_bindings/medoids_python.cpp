@@ -30,7 +30,7 @@ pybind11::array_t<arma::uword> km::KMedoidsWrapper::getMedoidsFinalPython() {
   }
 }
 
-void km::medoids_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
+void medoids_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
   cls->def_property_readonly("medoids",
     &KMedoidsWrapper::getMedoidsFinalPython);
 }
