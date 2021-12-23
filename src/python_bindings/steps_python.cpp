@@ -14,18 +14,18 @@
 
 #include "kmedoids_pywrapper.hpp"
 
-namespace py = pybind11;
-
+namespace km {
 /**
  *  \brief Returns the number of swap steps
  *
  *  Returns the number of SWAP steps completed during the last call to
  *  KMedoids::fit
  */
-int KMedoidsWrapper::getStepsPython() {
+int km::KMedoidsWrapper::getStepsPython() {
     return KMedoids::getSteps();
 }
 
-void steps_python(py::class_<KMedoidsWrapper> *cls) {
+void km::steps_python(pybind11::class_<KMedoidsWrapper> *cls) {
     cls->def_property_readonly("steps", &KMedoidsWrapper::getStepsPython);
 }
+}   // namespace km;

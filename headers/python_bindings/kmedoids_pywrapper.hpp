@@ -13,8 +13,7 @@
 
 #include "kmedoids_algorithm.hpp"
 
-namespace py = pybind11;
-
+namespace km {
 /**
  *  \brief Python wrapper for KMedoids class.
  *
@@ -23,8 +22,7 @@ namespace py = pybind11;
  */
 class KMedoidsWrapper : public km::KMedoids {
  public:
-  using km::KMedoids::KMedoids;
-
+  using km::KMedoids::KMedoids;  // TODO(@motiwari): fix?
   /**
    * \brief Python binding for fitting a KMedoids object to the
    *
@@ -36,9 +34,9 @@ class KMedoidsWrapper : public km::KMedoids {
    * @param k The number of medoids to compute
    */
   void fitPython(
-    const py::array_t<double>& inputData,
+    const pybind11::array_t<double>& inputData,
     const std::string& loss,
-    py::kwargs kw);
+    pybind11::kwargs kw);
 
   /**
    *  \brief Returns the final medoids
@@ -46,7 +44,7 @@ class KMedoidsWrapper : public km::KMedoids {
    *  Returns as a numpy array the final medoids at the end of the SWAP step
    *  after KMedoids::fit has been called.
    */
-  py::array_t<arma::uword> getMedoidsFinalPython();
+  pybind11::array_t<arma::uword> getMedoidsFinalPython();
 
   /**
    *  \brief Returns the build medoids
@@ -54,7 +52,7 @@ class KMedoidsWrapper : public km::KMedoids {
    *  Returns as a numpy array the build medoids at the end of the BUILD step
    *  after KMedoids::fit has been called.
    */
-  py::array_t<arma::uword> getMedoidsBuildPython();
+  pybind11::array_t<arma::uword> getMedoidsBuildPython();
 
   /**
    *  \brief Returns the medoid assignments for each datapoint
@@ -62,7 +60,7 @@ class KMedoidsWrapper : public km::KMedoids {
    *  Returns as a numpy array the medoid each input datapoint is assigned to
    *  after KMedoids::fit is called and the final medoids have been identified
    */
-  py::array_t<arma::uword> getLabelsPython();
+  pybind11::array_t<arma::uword> getLabelsPython();
 
   /**
    *  \brief Returns the number of swap steps
@@ -73,16 +71,16 @@ class KMedoidsWrapper : public km::KMedoids {
   int getStepsPython();
 };
 
-  // The functions below correspond to the class methods for Python bindings
-  // TODO(@motiwari): Encapsulate these
-  void fit_python(py::class_<KMedoidsWrapper> *);
+// The functions below correspond to the class methods for Python bindings
+// TODO(@motiwari): Encapsulate these
+void fit_python(pybind11::class_<km::KMedoidsWrapper> *);
 
-  void medoids_python(py::class_<KMedoidsWrapper> *);
+void medoids_python(pybind11::class_<km::KMedoidsWrapper> *);
 
-  void build_medoids_python(py::class_<KMedoidsWrapper> *);
+void build_medoids_python(pybind11::class_<km::KMedoidsWrapper> *);
 
-  void labels_python(py::class_<KMedoidsWrapper> *);
+void labels_python(pybind11::class_<km::KMedoidsWrapper> *);
 
-  void steps_python(py::class_<KMedoidsWrapper> *);
-
+void steps_python(pybind11::class_<km::KMedoidsWrapper> *);
+}  //namespace km
 #endif  // HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_

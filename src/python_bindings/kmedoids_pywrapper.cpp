@@ -23,21 +23,20 @@
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
 
-namespace py = pybind11;
-
+namespace km {
 PYBIND11_MODULE(banditpam, m) {
   m.doc() = "BanditPAM Python library, implemented in C++";
   m.def("get_max_threads",
     &omp_get_max_threads, "Returns max number of threads");
   m.def("set_num_threads",
     &omp_set_num_threads, "Set the maximum number of threads");
-  py::class_<KMedoidsWrapper> cls(m, "KMedoids");
-  cls.def(py::init<int, std::string, int, int, int>(),
-          py::arg("n_medoids") = NULL,
-          py::arg("algorithm") = "BanditPAM",
-          py::arg("maxIter") = 1000,
-          py::arg("buildConfidence") = 1000,
-          py::arg("swapConfidence") = 10000);
+  pybind11::class_<KMedoidsWrapper> cls(m, "KMedoids");
+  cls.def(pybind11::init<int, std::string, int, int, int>(),
+          pybind11::arg("n_medoids") = NULL,
+          pybind11::arg("algorithm") = "BanditPAM",
+          pybind11::arg("maxIter") = 1000,
+          pybind11::arg("buildConfidence") = 1000,
+          pybind11::arg("swapConfidence") = 10000);
   cls.def_property("n_medoids",
     &KMedoidsWrapper::getNMedoids, &KMedoidsWrapper::setNMedoids);
   cls.def_property("algorithm",
@@ -59,3 +58,4 @@ PYBIND11_MODULE(banditpam, m) {
   m.attr("__version__") = "dev";
 #endif
 }
+}  // namespace km

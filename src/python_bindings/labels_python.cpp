@@ -14,15 +14,14 @@
 
 #include "kmedoids_pywrapper.hpp"
 
-namespace py = pybind11;
-
+namespace km {
 /**
  *  \brief Returns the medoid assignments for each datapoint
  *
  *  Returns as a numpy array the medoid each input datapoint is assigned to
  *  after KMedoids::fit is called and the final medoids have been identified
  */
-py::array_t<arma::uword> KMedoidsWrapper::getLabelsPython() {
+pybind11::array_t<arma::uword> km::KMedoidsWrapper::getLabelsPython() {
     if (KMedoids::getLabels().size() > 1) {
         return carma::row_to_arr<arma::uword>(KMedoids::getLabels()).squeeze();
     } else {
@@ -30,7 +29,7 @@ py::array_t<arma::uword> KMedoidsWrapper::getLabelsPython() {
     }
 }
 
-void labels_python(py::class_<KMedoidsWrapper> *cls) {
-    cls->def_property_readonly("labels", &KMedoidsWrapper::getLabelsPython);
+void km::labels_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
+    cls->def_property_readonly("labels", &km::KMedoidsWrapper::getLabelsPython);
 }
-
+}   // namespace km;

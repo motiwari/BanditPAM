@@ -13,8 +13,7 @@
 
 #include "kmedoids_pywrapper.hpp"
 
-namespace py = pybind11;
-
+namespace km {
 /**
  * \brief Python binding for fitting a KMedoids object to the
  *
@@ -25,18 +24,19 @@ namespace py = pybind11;
  * @param loss The loss function used during medoid computation
  * @param k The number of medoids to compute
  */
-void KMedoidsWrapper::fitPython(const py::array_t<double>& inputData,
+void km::KMedoidsWrapper::fitPython(
+                                const pybind11::array_t<double>& inputData,
                                 const std::string& loss,
-                                py::kwargs kw) {
+                                pybind11::kwargs kw) {
     // throw an error if the number of medoids is not specified in either
     // the KMedoids object or the fitPython function
     try {
         if (KMedoids::getNMedoids() == 0) {  // Check for 0 as NULL
             if (kw.size() == 0) {
-                throw py::value_error("Error: must specify number of medoids.");
+                throw pybind11::value_error("Error: must specify number of medoids.");
             }
         }
-    } catch (py::value_error &e) {
+    } catch (pybind11::value_error &e) {
         // Throw it again (pybind11 will raise ValueError)
         // TODO(@motiwari): Make this more informative
         throw;
@@ -44,11 +44,12 @@ void KMedoidsWrapper::fitPython(const py::array_t<double>& inputData,
     // if k is specified here, then
     // we set the number of medoids as k and override previous value
     if ((kw.size() != 0) && (kw.contains("k"))) {
-        KMedoids::setNMedoids(py::cast<int>(kw["k"]));
+        KMedoids::setNMedoids(pybind11::cast<int>(kw["k"]));
     }
     KMedoids::fit(carma::arr_to_mat<double>(inputData), loss);
 }
 
-void fit_python(py::class_<KMedoidsWrapper> *cls) {
+void km::fit_python(pybind11::class_<KMedoidsWrapper> *cls) {
     cls->def("fit", &KMedoidsWrapper::fitPython);
 }
+}   // namespace km;

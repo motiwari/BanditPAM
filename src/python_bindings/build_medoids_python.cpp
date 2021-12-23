@@ -14,15 +14,14 @@
 
 #include "kmedoids_pywrapper.hpp"
 
-namespace py = pybind11;
-
+namespace km {
 /**
  *  \brief Returns the build medoids
  *
  *  Returns as a numpy array the build medoids at the end of the BUILD step
  *  after KMedoids::fit has been called.
  */
-py::array_t<arma::uword> KMedoidsWrapper::getMedoidsBuildPython() {
+pybind11::array_t<arma::uword> km::KMedoidsWrapper::getMedoidsBuildPython() {
   if (KMedoids::getMedoidsBuild().size() > 1) {
     return
       carma::row_to_arr<arma::uword>(KMedoids::getMedoidsBuild()).squeeze();
@@ -31,7 +30,8 @@ py::array_t<arma::uword> KMedoidsWrapper::getMedoidsBuildPython() {
   }
 }
 
-void build_medoids_python(py::class_<KMedoidsWrapper> *cls) {
+void km::build_medoids_python(pybind11::class_<KMedoidsWrapper> *cls) {
     cls->def_property_readonly("build_medoids",
         &KMedoidsWrapper::getMedoidsBuildPython);
 }
+}   // namespace km;
