@@ -87,6 +87,7 @@ void KMedoids::checkAlgorithm(const std::string& algorithm) const {
   if ((algorithm != "BanditPAM") &&
       (algorithm != "PAM") &&
       (algorithm != "FastPAM1")) {
+    // TODO(@motiwari): Better error type
     throw "unrecognized algorithm";
   }
 }
@@ -239,6 +240,10 @@ size_t KMedoids::getbuildConfidence() const {
  *  @param new_buildConfidence New buildConfidence
  */
 void KMedoids::setbuildConfidence(size_t new_buildConfidence) {
+  if (algorithm != "BanditPAM") {
+    // TODO(@motiwari): Better error type
+    throw "Cannot set buildConfidence when not using BanditPAM";
+  }
   buildConfidence = new_buildConfidence;
 }
 
@@ -261,6 +266,10 @@ size_t KMedoids::getswapConfidence() const {
  *  @param new_swapConfidence New swapConfidence
  */
 void KMedoids::setswapConfidence(size_t new_swapConfidence) {
+  if (algorithm != "BanditPAM") {
+    // TODO(@motiwari): Better error type
+    throw "Cannot set buildConfidence when not using BanditPAM";
+  }
   swapConfidence = new_swapConfidence;
 }
 
@@ -341,23 +350,19 @@ void KMedoids::calc_best_distances_swap(
 double KMedoids::calc_loss(
   const arma::mat& data,
   const arma::urowvec* medoid_indices) {
-    double total = 0;
-
-    // TODO(@motiwari): is this parallel loop accumulating properly?
-    #pragma omp parallel for
-    for (size_t i = 0; i < data.n_cols; i++) {
-      double cost = std::numeric_limits<double>::infinity();
-      for (size_t k = 0; k < n_medoids; k++) {
-        double currCost = KMedoids::cachedLoss(
-          data,
-          i,
-          (*medoid_indices)(k));
-        if (currCost < cost) {
-          cost = currCost;
-        }
+  double total = 0;
+  // TODO(@motiwari): is this parallel loop accumulating properly?
+  #pragma omp parallel for
+  for (size_t i = 0; i < data.n_cols; i++) {
+    double cost = std::numeric_limits<double>::infinity();
+    for (size_t k = 0; k < n_medoids; k++) {
+      double currCost = KMedoids::cachedLoss(data, i, (*medoid_indices)(k));
+      if (currCost < cost) {
+        cost = currCost;
       }
-      total += cost;
     }
+    total += cost;
+  }
   return total;
 }
 
