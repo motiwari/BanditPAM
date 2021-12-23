@@ -1,0 +1,157 @@
+\hypertarget{fn__log__det_8hpp_source}{}\doxysection{fn\+\_\+log\+\_\+det.\+hpp}
+\label{fn__log__det_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_log\_det.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_log\_det.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{26 \mbox{\hyperlink{group__fn__log__det_gad3e63c713e6a1712b8c82337be5ec577}{log\_det}}}
+\DoxyCodeLine{27   (}
+\DoxyCodeLine{28         \textcolor{keyword}{typename} T1::elem\_type\&          out\_val,}
+\DoxyCodeLine{29         \textcolor{keyword}{typename} T1::pod\_type\&           out\_sign,}
+\DoxyCodeLine{30   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{31   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{32   )}
+\DoxyCodeLine{33   \{}
+\DoxyCodeLine{34   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{35   arma\_ignore(junk);}
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{38   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_log\_det::apply\_direct(out\_val, out\_sign, X.get\_ref());}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{43     \{}
+\DoxyCodeLine{44     out\_val  = eT(\mbox{\hyperlink{classDatum}{Datum<T>::nan}});}
+\DoxyCodeLine{45     out\_sign = T(0);}
+\DoxyCodeLine{46     }
+\DoxyCodeLine{47     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}log\_det(): failed to find determinant"{}});}
+\DoxyCodeLine{48     \}}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{51   \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{56 \textcolor{keyword}{inline}}
+\DoxyCodeLine{57 arma\_warn\_unused}
+\DoxyCodeLine{58 std::complex<typename T1::pod\_type>}
+\DoxyCodeLine{59 \mbox{\hyperlink{group__fn__log__det_gad3e63c713e6a1712b8c82337be5ec577}{log\_det}}}
+\DoxyCodeLine{60   (}
+\DoxyCodeLine{61   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{62   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{63   )}
+\DoxyCodeLine{64   \{}
+\DoxyCodeLine{65   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{66   arma\_ignore(junk);}
+\DoxyCodeLine{67   }
+\DoxyCodeLine{68   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{69   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   eT out\_val  = eT(0);}
+\DoxyCodeLine{72    T out\_sign =  T(0);}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_log\_det::apply\_direct(out\_val, out\_sign, X.get\_ref());}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{77     \{}
+\DoxyCodeLine{78     out\_val  = eT(\mbox{\hyperlink{classDatum}{Datum<T>::nan}});}
+\DoxyCodeLine{79     out\_sign = T(0);}
+\DoxyCodeLine{80     }
+\DoxyCodeLine{81     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}log\_det(): failed to find determinant"{}});}
+\DoxyCodeLine{82     \}}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keywordflow}{return} (out\_sign >= T(1)) ? std::complex<T>(out\_val) : (out\_val + std::complex<T>(T(0),\mbox{\hyperlink{classDatum}{Datum}}<T>::pi));}
+\DoxyCodeLine{85   \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{comment}{//}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{94 \textcolor{keyword}{inline}}
+\DoxyCodeLine{95 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{96 log\_det\_sympd}
+\DoxyCodeLine{97   (}
+\DoxyCodeLine{98         \textcolor{keyword}{typename} T1::pod\_type\&           out\_val,}
+\DoxyCodeLine{99   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{100   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{101   )}
+\DoxyCodeLine{102   \{}
+\DoxyCodeLine{103   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{104   arma\_ignore(junk);}
+\DoxyCodeLine{105   }
+\DoxyCodeLine{106   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{107   }
+\DoxyCodeLine{108   out\_val = T(0);}
+\DoxyCodeLine{109   }
+\DoxyCodeLine{110   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_log\_det\_sympd::apply\_direct(out\_val, X.get\_ref());}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{113     \{}
+\DoxyCodeLine{114     out\_val = \mbox{\hyperlink{classDatum}{Datum<T>::nan}};}
+\DoxyCodeLine{115     }
+\DoxyCodeLine{116     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}log\_det\_sympd(): given matrix is not symmetric positive definite"{}});}
+\DoxyCodeLine{117     \}}
+\DoxyCodeLine{118   }
+\DoxyCodeLine{119   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{120   \}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{125 \textcolor{keyword}{inline}}
+\DoxyCodeLine{126 arma\_warn\_unused}
+\DoxyCodeLine{127 \textcolor{keyword}{typename} T1::pod\_type}
+\DoxyCodeLine{128 log\_det\_sympd}
+\DoxyCodeLine{129   (}
+\DoxyCodeLine{130   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{131   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{132   )}
+\DoxyCodeLine{133   \{}
+\DoxyCodeLine{134   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{135   arma\_ignore(junk);}
+\DoxyCodeLine{136   }
+\DoxyCodeLine{137   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{138   }
+\DoxyCodeLine{139   T out\_val = T(0);}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_log\_det\_sympd::apply\_direct(out\_val, X.get\_ref());}
+\DoxyCodeLine{142   }
+\DoxyCodeLine{143   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{144     \{}
+\DoxyCodeLine{145     out\_val = \mbox{\hyperlink{classDatum}{Datum<T>::nan}};}
+\DoxyCodeLine{146     }
+\DoxyCodeLine{147     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}log\_det\_sympd(): given matrix is not symmetric positive definite"{}});}
+\DoxyCodeLine{148     \}}
+\DoxyCodeLine{149   }
+\DoxyCodeLine{150   \textcolor{keywordflow}{return} out\_val;}
+\DoxyCodeLine{151   \}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 }
+
+\end{DoxyCode}

@@ -1,0 +1,165 @@
+\hypertarget{def__blas_8hpp_source}{}\doxysection{def\+\_\+blas.\+hpp}
+\label{def__blas_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/def\_blas.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/def\_blas.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#ifdef ARMA\_USE\_BLAS}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#if defined(dgemm) || defined(DGEMM)}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: detected possible interference with definitions of BLAS functions;"{}})}
+\DoxyCodeLine{22 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: include the armadillo header before any other header as a workaround"{}})}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#if defined(ARMA\_BLAS\_NOEXCEPT)}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{  \#undef  ARMA\_NOEXCEPT}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{  \#define ARMA\_NOEXCEPT noexcept}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{  \#undef  ARMA\_NOEXCEPT}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{  \#define ARMA\_NOEXCEPT}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#if !defined(ARMA\_BLAS\_CAPITALS)}}
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37 \textcolor{preprocessor}{  \#define arma\_sasum sasum}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{  \#define arma\_dasum dasum}}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40 \textcolor{preprocessor}{  \#define arma\_snrm2 snrm2}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{  \#define arma\_dnrm2 dnrm2}}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43 \textcolor{preprocessor}{  \#define arma\_sdot  sdot}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{  \#define arma\_ddot  ddot}}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46 \textcolor{preprocessor}{  \#define arma\_sgemv sgemv}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{  \#define arma\_dgemv dgemv}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{  \#define arma\_cgemv cgemv}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{  \#define arma\_zgemv zgemv}}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51 \textcolor{preprocessor}{  \#define arma\_sgemm sgemm}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{  \#define arma\_dgemm dgemm}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{  \#define arma\_cgemm cgemm}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{  \#define arma\_zgemm zgemm}}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56 \textcolor{preprocessor}{  \#define arma\_ssyrk ssyrk}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{  \#define arma\_dsyrk dsyrk}}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59 \textcolor{preprocessor}{  \#define arma\_cherk cherk}}
+\DoxyCodeLine{60 \textcolor{preprocessor}{  \#define arma\_zherk zherk}}
+\DoxyCodeLine{61   }
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64 \textcolor{preprocessor}{  \#define arma\_sasum SASUM}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{  \#define arma\_dasum DASUM}}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67 \textcolor{preprocessor}{  \#define arma\_snrm2 SNRM2}}
+\DoxyCodeLine{68 \textcolor{preprocessor}{  \#define arma\_dnrm2 DNRM2}}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70 \textcolor{preprocessor}{  \#define arma\_sdot  SDOT}}
+\DoxyCodeLine{71 \textcolor{preprocessor}{  \#define arma\_ddot  DDOT}}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73 \textcolor{preprocessor}{  \#define arma\_sgemv SGEMV}}
+\DoxyCodeLine{74 \textcolor{preprocessor}{  \#define arma\_dgemv DGEMV}}
+\DoxyCodeLine{75 \textcolor{preprocessor}{  \#define arma\_cgemv CGEMV}}
+\DoxyCodeLine{76 \textcolor{preprocessor}{  \#define arma\_zgemv ZGEMV}}
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78 \textcolor{preprocessor}{  \#define arma\_sgemm SGEMM}}
+\DoxyCodeLine{79 \textcolor{preprocessor}{  \#define arma\_dgemm DGEMM}}
+\DoxyCodeLine{80 \textcolor{preprocessor}{  \#define arma\_cgemm CGEMM}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{  \#define arma\_zgemm ZGEMM}}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83 \textcolor{preprocessor}{  \#define arma\_ssyrk SSYRK}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{  \#define arma\_dsyrk DSYRK}}
+\DoxyCodeLine{85   }
+\DoxyCodeLine{86 \textcolor{preprocessor}{  \#define arma\_cherk CHERK}}
+\DoxyCodeLine{87 \textcolor{preprocessor}{  \#define arma\_zherk ZHERK}}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{comment}{// NOTE: "{}For arguments of CHARACTER type, the character length is passed as a hidden argument at the end of the argument list."{}}}
+\DoxyCodeLine{93 \textcolor{comment}{// NOTE: https://gcc.gnu.org/onlinedocs/gfortran/Argument-\/passing-\/conventions.html}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}}}
+\DoxyCodeLine{97 \{}
+\DoxyCodeLine{98 \textcolor{preprocessor}{\#if defined(ARMA\_USE\_FORTRAN\_HIDDEN\_ARGS)}}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \textcolor{keywordtype}{float}  arma\_fortran(arma\_sasum)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*  x, \textcolor{keyword}{const} blas\_int* incx) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{101   \textcolor{keywordtype}{double} arma\_fortran(arma\_dasum)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* x, \textcolor{keyword}{const} blas\_int* incx) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{102   }
+\DoxyCodeLine{103   \textcolor{keywordtype}{float}  arma\_fortran(arma\_snrm2)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*  x, \textcolor{keyword}{const} blas\_int* incx) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{104   \textcolor{keywordtype}{double} arma\_fortran(arma\_dnrm2)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* x, \textcolor{keyword}{const} blas\_int* incx) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{105   }
+\DoxyCodeLine{106   \textcolor{keywordtype}{float}  arma\_fortran(arma\_sdot)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*  x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*  y, \textcolor{keyword}{const} blas\_int* incy) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{107   \textcolor{keywordtype}{double} arma\_fortran(arma\_ddot)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* y, \textcolor{keyword}{const} blas\_int* incy) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{108   }
+\DoxyCodeLine{109   \textcolor{keywordtype}{void} arma\_fortran(arma\_sgemv)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    alpha, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    beta, \textcolor{keywordtype}{float}*    y, \textcolor{keyword}{const} blas\_int* incy, blas\_len transA\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{110   \textcolor{keywordtype}{void} arma\_fortran(arma\_dgemv)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   alpha, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   beta, \textcolor{keywordtype}{double}*   y, \textcolor{keyword}{const} blas\_int* incy, blas\_len transA\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{111   \textcolor{keywordtype}{void} arma\_fortran(arma\_cgemv)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_cxf* alpha, \textcolor{keyword}{const} blas\_cxf* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} blas\_cxf* x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} blas\_cxf* beta, blas\_cxf* y, \textcolor{keyword}{const} blas\_int* incy, blas\_len transA\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{112   \textcolor{keywordtype}{void} arma\_fortran(arma\_zgemv)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_cxd* alpha, \textcolor{keyword}{const} blas\_cxd* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} blas\_cxd* x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} blas\_cxd* beta, blas\_cxd* y, \textcolor{keyword}{const} blas\_int* incy, blas\_len transA\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{113   }
+\DoxyCodeLine{114   \textcolor{keywordtype}{void} arma\_fortran(arma\_sgemm)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transB, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    alpha, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} blas\_int* ldB, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    beta, \textcolor{keywordtype}{float}*    C, \textcolor{keyword}{const} blas\_int* ldC, blas\_len transA\_len, blas\_len transB\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{115   \textcolor{keywordtype}{void} arma\_fortran(arma\_dgemm)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transB, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   alpha, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} blas\_int* ldB, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   beta, \textcolor{keywordtype}{double}*   C, \textcolor{keyword}{const} blas\_int* ldC, blas\_len transA\_len, blas\_len transB\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{116   \textcolor{keywordtype}{void} arma\_fortran(arma\_cgemm)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transB, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} blas\_cxf* alpha, \textcolor{keyword}{const} blas\_cxf* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} blas\_cxf* \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} blas\_int* ldB, \textcolor{keyword}{const} blas\_cxf* beta, blas\_cxf* C, \textcolor{keyword}{const} blas\_int* ldC, blas\_len transA\_len, blas\_len transB\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{117   \textcolor{keywordtype}{void} arma\_fortran(arma\_zgemm)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transB, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} blas\_cxd* alpha, \textcolor{keyword}{const} blas\_cxd* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} blas\_cxd* \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} blas\_int* ldB, \textcolor{keyword}{const} blas\_cxd* beta, blas\_cxd* C, \textcolor{keyword}{const} blas\_int* ldC, blas\_len transA\_len, blas\_len transB\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{118   }
+\DoxyCodeLine{119   \textcolor{keywordtype}{void} arma\_fortran(arma\_ssyrk)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* uplo, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const}  \textcolor{keywordtype}{float}* alpha, \textcolor{keyword}{const}  \textcolor{keywordtype}{float}* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const}  \textcolor{keywordtype}{float}* beta,  \textcolor{keywordtype}{float}* C, \textcolor{keyword}{const} blas\_int* ldC, blas\_len uplo\_len, blas\_len transA\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{120   \textcolor{keywordtype}{void} arma\_fortran(arma\_dsyrk)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* uplo, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* alpha, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* beta, \textcolor{keywordtype}{double}* C, \textcolor{keyword}{const} blas\_int* ldC, blas\_len uplo\_len, blas\_len transA\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{121   }
+\DoxyCodeLine{122   \textcolor{keywordtype}{void} arma\_fortran(arma\_cherk)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* uplo, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const}  \textcolor{keywordtype}{float}* alpha, \textcolor{keyword}{const} blas\_cxf* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const}  \textcolor{keywordtype}{float}* beta, blas\_cxf* C, \textcolor{keyword}{const} blas\_int* ldC, blas\_len uplo\_len, blas\_len transA\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{123   \textcolor{keywordtype}{void} arma\_fortran(arma\_zherk)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* uplo, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* alpha, \textcolor{keyword}{const} blas\_cxd* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* beta, blas\_cxd* C, \textcolor{keyword}{const} blas\_int* ldC, blas\_len uplo\_len, blas\_len transA\_len) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{124   }
+\DoxyCodeLine{125 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{126   }
+\DoxyCodeLine{127   \textcolor{comment}{// prototypes without hidden arguments}}
+\DoxyCodeLine{128   }
+\DoxyCodeLine{129   \textcolor{keywordtype}{float}  arma\_fortran(arma\_sasum)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*  x, \textcolor{keyword}{const} blas\_int* incx) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{130   \textcolor{keywordtype}{double} arma\_fortran(arma\_dasum)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* x, \textcolor{keyword}{const} blas\_int* incx) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   \textcolor{keywordtype}{float}  arma\_fortran(arma\_snrm2)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*  x, \textcolor{keyword}{const} blas\_int* incx) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{133   \textcolor{keywordtype}{double} arma\_fortran(arma\_dnrm2)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* x, \textcolor{keyword}{const} blas\_int* incx) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   \textcolor{keywordtype}{float}  arma\_fortran(arma\_sdot)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*  x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*  y, \textcolor{keyword}{const} blas\_int* incy) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{136   \textcolor{keywordtype}{double} arma\_fortran(arma\_ddot)(\textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* y, \textcolor{keyword}{const} blas\_int* incy) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   \textcolor{keywordtype}{void} arma\_fortran(arma\_sgemv)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    alpha, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    beta, \textcolor{keywordtype}{float}*    y, \textcolor{keyword}{const} blas\_int* incy) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{139   \textcolor{keywordtype}{void} arma\_fortran(arma\_dgemv)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   alpha, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   beta, \textcolor{keywordtype}{double}*   y, \textcolor{keyword}{const} blas\_int* incy) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{140   \textcolor{keywordtype}{void} arma\_fortran(arma\_cgemv)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_cxf* alpha, \textcolor{keyword}{const} blas\_cxf* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} blas\_cxf* x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} blas\_cxf* beta, blas\_cxf* y, \textcolor{keyword}{const} blas\_int* incy) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{141   \textcolor{keywordtype}{void} arma\_fortran(arma\_zgemv)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_cxd* alpha, \textcolor{keyword}{const} blas\_cxd* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} blas\_cxd* x, \textcolor{keyword}{const} blas\_int* incx, \textcolor{keyword}{const} blas\_cxd* beta, blas\_cxd* y, \textcolor{keyword}{const} blas\_int* incy) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{142   }
+\DoxyCodeLine{143   \textcolor{keywordtype}{void} arma\_fortran(arma\_sgemm)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transB, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    alpha, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} blas\_int* ldB, \textcolor{keyword}{const} \textcolor{keywordtype}{float}*    beta, \textcolor{keywordtype}{float}*    C, \textcolor{keyword}{const} blas\_int* ldC) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{144   \textcolor{keywordtype}{void} arma\_fortran(arma\_dgemm)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transB, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   alpha, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} blas\_int* ldB, \textcolor{keyword}{const} \textcolor{keywordtype}{double}*   beta, \textcolor{keywordtype}{double}*   C, \textcolor{keyword}{const} blas\_int* ldC) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{145   \textcolor{keywordtype}{void} arma\_fortran(arma\_cgemm)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transB, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} blas\_cxf* alpha, \textcolor{keyword}{const} blas\_cxf* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} blas\_cxf* \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} blas\_int* ldB, \textcolor{keyword}{const} blas\_cxf* beta, blas\_cxf* C, \textcolor{keyword}{const} blas\_int* ldC) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{146   \textcolor{keywordtype}{void} arma\_fortran(arma\_zgemm)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transB, \textcolor{keyword}{const} blas\_int* m, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} blas\_cxd* alpha, \textcolor{keyword}{const} blas\_cxd* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} blas\_cxd* \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} blas\_int* ldB, \textcolor{keyword}{const} blas\_cxd* beta, blas\_cxd* C, \textcolor{keyword}{const} blas\_int* ldC) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{147   }
+\DoxyCodeLine{148   \textcolor{keywordtype}{void} arma\_fortran(arma\_ssyrk)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* uplo, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const}  \textcolor{keywordtype}{float}* alpha, \textcolor{keyword}{const}  \textcolor{keywordtype}{float}* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const}  \textcolor{keywordtype}{float}* beta,  \textcolor{keywordtype}{float}* C, \textcolor{keyword}{const} blas\_int* ldC) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{149   \textcolor{keywordtype}{void} arma\_fortran(arma\_dsyrk)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* uplo, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* alpha, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* beta, \textcolor{keywordtype}{double}* C, \textcolor{keyword}{const} blas\_int* ldC) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{150   }
+\DoxyCodeLine{151   \textcolor{keywordtype}{void} arma\_fortran(arma\_cherk)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* uplo, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const}  \textcolor{keywordtype}{float}* alpha, \textcolor{keyword}{const}  blas\_cxf* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const}  \textcolor{keywordtype}{float}* beta, blas\_cxf* C, \textcolor{keyword}{const} blas\_int* ldC) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{152   \textcolor{keywordtype}{void} arma\_fortran(arma\_zherk)(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* uplo, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* transA, \textcolor{keyword}{const} blas\_int* n, \textcolor{keyword}{const} blas\_int* k, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* alpha, \textcolor{keyword}{const}  blas\_cxd* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} blas\_int* ldA, \textcolor{keyword}{const} \textcolor{keywordtype}{double}* beta, blas\_cxd* C, \textcolor{keyword}{const} blas\_int* ldC) ARMA\_NOEXCEPT;}
+\DoxyCodeLine{153   }
+\DoxyCodeLine{154 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{155 \}}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157 \textcolor{preprocessor}{\#undef ARMA\_NOEXCEPT}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

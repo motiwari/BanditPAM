@@ -1,0 +1,44 @@
+\hypertarget{mtGlueCube__bones_8hpp_source}{}\doxysection{mt\+Glue\+Cube\+\_\+bones.\+hpp}
+\label{mtGlueCube__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/mtGlueCube\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/mtGlueCube\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type>}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classmtGlueCube}{mtGlueCube}} : \textcolor{keyword}{public} \mbox{\hyperlink{structBaseCube}{BaseCube}}< out\_eT, mtGlueCube<out\_eT, T1, T2, glue\_type> >}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   }
+\DoxyCodeLine{27   \textcolor{keyword}{typedef}          out\_eT                       elem\_type;}
+\DoxyCodeLine{28   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<out\_eT>::result pod\_type;}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   arma\_inline  \mbox{\hyperlink{classmtGlueCube}{mtGlueCube}}(\textcolor{keyword}{const} T1\& in\_A, \textcolor{keyword}{const} T2\& in\_B);}
+\DoxyCodeLine{31   arma\_inline  \mbox{\hyperlink{classmtGlueCube}{mtGlueCube}}(\textcolor{keyword}{const} T1\& in\_A, \textcolor{keyword}{const} T2\& in\_B, \textcolor{keyword}{const} uword in\_aux\_uword);}
+\DoxyCodeLine{32   arma\_inline \mbox{\hyperlink{classmtGlueCube}{\string~mtGlueCube}}();}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   arma\_aligned \textcolor{keyword}{const} T1\&   \mbox{\hyperlink{classmtGlueCube_a33f7e73f281ba5475b1e50639192f974}{A}};         }
+\DoxyCodeLine{35   arma\_aligned \textcolor{keyword}{const} T2\&   \mbox{\hyperlink{classmtGlueCube_a1f5be5b0df3a0363d46ce2a1afaea316}{B}};         }
+\DoxyCodeLine{36   arma\_aligned       uword \mbox{\hyperlink{classmtGlueCube_ad0f1f4dc5a55c922b5665a4e4208f9a6}{aux\_uword}}; }
+\DoxyCodeLine{37   \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 }
+
+\end{DoxyCode}

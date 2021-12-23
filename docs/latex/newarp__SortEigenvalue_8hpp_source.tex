@@ -1,0 +1,207 @@
+\hypertarget{newarp__SortEigenvalue_8hpp_source}{}\doxysection{newarp\+\_\+\+Sort\+Eigenvalue.\+hpp}
+\label{newarp__SortEigenvalue_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_SortEigenvalue.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_SortEigenvalue.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }newarp}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{comment}{// When comparing eigenvalues, we first calculate the "{}target"{} to sort.}}
+\DoxyCodeLine{22 \textcolor{comment}{// For example, if we want to choose the eigenvalues with largest magnitude, the target will be -\/std::abs(x).}}
+\DoxyCodeLine{23 \textcolor{comment}{// The minus sign is due to the fact that std::sort() sorts in ascending order.}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{comment}{// default target: throw an exception}}
+\DoxyCodeLine{27 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule>}
+\DoxyCodeLine{28 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget}}}
+\DoxyCodeLine{29   \{}
+\DoxyCodeLine{30   arma\_inline \textcolor{keyword}{static} \textcolor{keyword}{typename} get\_pod\_type<eT>::result get(\textcolor{keyword}{const} eT\& val)}
+\DoxyCodeLine{31     \{}
+\DoxyCodeLine{32     arma\_ignore(val);}
+\DoxyCodeLine{33     arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}newarp::SortingTarget: incompatible selection rule"{}});}
+\DoxyCodeLine{34     }
+\DoxyCodeLine{35     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result out\_T;}
+\DoxyCodeLine{36     \textcolor{keywordflow}{return} out\_T(0);}
+\DoxyCodeLine{37     \}}
+\DoxyCodeLine{38   \};}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{comment}{// specialisation for LARGEST\_MAGN: this covers [float, double, complex] x [LARGEST\_MAGN]}}
+\DoxyCodeLine{42 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{43 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget}}<eT, \mbox{\hyperlink{structnewarp_1_1EigsSelect}{EigsSelect}}::LARGEST\_MAGN>}
+\DoxyCodeLine{44   \{}
+\DoxyCodeLine{45   arma\_inline \textcolor{keyword}{static} \textcolor{keyword}{typename} get\_pod\_type<eT>::result get(\textcolor{keyword}{const} eT\& val)}
+\DoxyCodeLine{46     \{}
+\DoxyCodeLine{47     \textcolor{keywordflow}{return} -\/std::abs(val);}
+\DoxyCodeLine{48     \}}
+\DoxyCodeLine{49   \};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{comment}{// specialisation for LARGEST\_REAL: this covers [complex] x [LARGEST\_REAL]}}
+\DoxyCodeLine{53 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{54 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget}}<std::complex<T>, \mbox{\hyperlink{structnewarp_1_1EigsSelect_ab0260df9bdbb849be305fa8461b6bcf8a756f06e596b131444eb8891e5aed7d21}{EigsSelect::LARGEST\_REAL}}>}
+\DoxyCodeLine{55   \{}
+\DoxyCodeLine{56   arma\_inline \textcolor{keyword}{static} T get(\textcolor{keyword}{const} std::complex<T>\& val)}
+\DoxyCodeLine{57     \{}
+\DoxyCodeLine{58     \textcolor{keywordflow}{return} -\/val.real();}
+\DoxyCodeLine{59     \}}
+\DoxyCodeLine{60   \};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{comment}{// specialisation for LARGEST\_IMAG: this covers [complex] x [LARGEST\_IMAG]}}
+\DoxyCodeLine{64 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{65 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget}}<std::complex<T>, \mbox{\hyperlink{structnewarp_1_1EigsSelect_ab0260df9bdbb849be305fa8461b6bcf8a45162a1bdf67085245afccf065dbdedb}{EigsSelect::LARGEST\_IMAG}}>}
+\DoxyCodeLine{66   \{}
+\DoxyCodeLine{67   arma\_inline \textcolor{keyword}{static} T get(\textcolor{keyword}{const} std::complex<T>\& val)}
+\DoxyCodeLine{68     \{}
+\DoxyCodeLine{69     \textcolor{keywordflow}{return} -\/std::abs(val.imag());}
+\DoxyCodeLine{70     \}}
+\DoxyCodeLine{71   \};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{comment}{// specialisation for LARGEST\_ALGE: this covers [float, double] x [LARGEST\_ALGE]}}
+\DoxyCodeLine{75 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{76 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget}}<eT, \mbox{\hyperlink{structnewarp_1_1EigsSelect}{EigsSelect}}::LARGEST\_ALGE>}
+\DoxyCodeLine{77   \{}
+\DoxyCodeLine{78   arma\_inline \textcolor{keyword}{static} eT get(\textcolor{keyword}{const} eT\& val)}
+\DoxyCodeLine{79     \{}
+\DoxyCodeLine{80     \textcolor{keywordflow}{return} -\/val;}
+\DoxyCodeLine{81     \}}
+\DoxyCodeLine{82   \};}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{comment}{// Here BOTH\_ENDS is the same as LARGEST\_ALGE, but we need some additional steps,}}
+\DoxyCodeLine{86 \textcolor{comment}{// which are done in SymEigsSolver => retrieve\_ritzpair().}}
+\DoxyCodeLine{87 \textcolor{comment}{// There we move the smallest values to the proper locations.}}
+\DoxyCodeLine{88 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{89 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget}}<eT, \mbox{\hyperlink{structnewarp_1_1EigsSelect}{EigsSelect}}::BOTH\_ENDS>}
+\DoxyCodeLine{90   \{}
+\DoxyCodeLine{91   arma\_inline \textcolor{keyword}{static} eT get(\textcolor{keyword}{const} eT\& val)}
+\DoxyCodeLine{92     \{}
+\DoxyCodeLine{93     \textcolor{keywordflow}{return} -\/val;}
+\DoxyCodeLine{94     \}}
+\DoxyCodeLine{95   \};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{comment}{// specialisation for SMALLEST\_MAGN: this covers [float, double, complex] x [SMALLEST\_MAGN]}}
+\DoxyCodeLine{99 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{100 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget}}<eT, \mbox{\hyperlink{structnewarp_1_1EigsSelect}{EigsSelect}}::SMALLEST\_MAGN>}
+\DoxyCodeLine{101   \{}
+\DoxyCodeLine{102   arma\_inline \textcolor{keyword}{static} \textcolor{keyword}{typename} get\_pod\_type<eT>::result get(\textcolor{keyword}{const} eT\& val)}
+\DoxyCodeLine{103     \{}
+\DoxyCodeLine{104     \textcolor{keywordflow}{return} std::abs(val);}
+\DoxyCodeLine{105     \}}
+\DoxyCodeLine{106   \};}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{comment}{// specialisation for SMALLEST\_REAL: this covers [complex] x [SMALLEST\_REAL]}}
+\DoxyCodeLine{110 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{111 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget}}<std::complex<T>, \mbox{\hyperlink{structnewarp_1_1EigsSelect_ab0260df9bdbb849be305fa8461b6bcf8a796f43d9bded1e3d8cd6fcb0e9332034}{EigsSelect::SMALLEST\_REAL}}>}
+\DoxyCodeLine{112   \{}
+\DoxyCodeLine{113   arma\_inline \textcolor{keyword}{static} T get(\textcolor{keyword}{const} std::complex<T>\& val)}
+\DoxyCodeLine{114     \{}
+\DoxyCodeLine{115     \textcolor{keywordflow}{return} val.real();}
+\DoxyCodeLine{116     \}}
+\DoxyCodeLine{117   \};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{comment}{// specialisation for SMALLEST\_IMAG: this covers [complex] x [SMALLEST\_IMAG]}}
+\DoxyCodeLine{121 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{122 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget}}<std::complex<T>, \mbox{\hyperlink{structnewarp_1_1EigsSelect_ab0260df9bdbb849be305fa8461b6bcf8a67c735c61b3cd8f2e472a340b8c4abab}{EigsSelect::SMALLEST\_IMAG}}>}
+\DoxyCodeLine{123   \{}
+\DoxyCodeLine{124   arma\_inline \textcolor{keyword}{static} T get(\textcolor{keyword}{const} std::complex<T>\& val)}
+\DoxyCodeLine{125     \{}
+\DoxyCodeLine{126     \textcolor{keywordflow}{return} std::abs(val.imag());}
+\DoxyCodeLine{127     \}}
+\DoxyCodeLine{128   \};}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 \textcolor{comment}{// specialisation for SMALLEST\_ALGE: this covers [float, double] x [SMALLEST\_ALGE]}}
+\DoxyCodeLine{132 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{133 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget}}<eT, \mbox{\hyperlink{structnewarp_1_1EigsSelect}{EigsSelect}}::SMALLEST\_ALGE>}
+\DoxyCodeLine{134   \{}
+\DoxyCodeLine{135   arma\_inline \textcolor{keyword}{static} eT get(\textcolor{keyword}{const} eT\& val)}
+\DoxyCodeLine{136     \{}
+\DoxyCodeLine{137     \textcolor{keywordflow}{return} val;}
+\DoxyCodeLine{138     \}}
+\DoxyCodeLine{139   \};}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 \textcolor{comment}{// Sort eigenvalues and return the order index}}
+\DoxyCodeLine{143 \textcolor{keyword}{template}<\textcolor{keyword}{typename} PairType>}
+\DoxyCodeLine{144 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1PairComparator}{PairComparator}}}
+\DoxyCodeLine{145   \{}
+\DoxyCodeLine{146   arma\_inline \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} PairType\& v1, \textcolor{keyword}{const} PairType\& v2)}
+\DoxyCodeLine{147     \{}
+\DoxyCodeLine{148     \textcolor{keywordflow}{return} v1.first < v2.first;}
+\DoxyCodeLine{149     \}}
+\DoxyCodeLine{150   \};}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule>}
+\DoxyCodeLine{154 \textcolor{keyword}{class }\mbox{\hyperlink{classnewarp_1_1SortEigenvalue}{SortEigenvalue}}}
+\DoxyCodeLine{155   \{}
+\DoxyCodeLine{156   \textcolor{keyword}{private}:}
+\DoxyCodeLine{157   }
+\DoxyCodeLine{158   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result TargetType;  \textcolor{comment}{// type of the sorting target, will be a floating number type, eg. double}}
+\DoxyCodeLine{159   \textcolor{keyword}{typedef} std::pair<TargetType, uword>      PairType;    \textcolor{comment}{// type of the sorting pair, including the sorting target and the index}}
+\DoxyCodeLine{160   }
+\DoxyCodeLine{161   std::vector<PairType> pair\_sort;}
+\DoxyCodeLine{162   }
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164   \textcolor{keyword}{public}:}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166   \textcolor{keyword}{inline}}
+\DoxyCodeLine{167   \mbox{\hyperlink{classnewarp_1_1SortEigenvalue}{SortEigenvalue}}(\textcolor{keyword}{const} eT* start, \textcolor{keyword}{const} uword size)}
+\DoxyCodeLine{168     : pair\_sort(size)}
+\DoxyCodeLine{169     \{}
+\DoxyCodeLine{170     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{171     }
+\DoxyCodeLine{172     \textcolor{keywordflow}{for}(uword i = 0; i < size; i++)}
+\DoxyCodeLine{173       \{}
+\DoxyCodeLine{174       pair\_sort[i].first  = \mbox{\hyperlink{structnewarp_1_1SortingTarget}{SortingTarget<eT, SelectionRule>::get}}(start[i]);}
+\DoxyCodeLine{175       pair\_sort[i].second = i;}
+\DoxyCodeLine{176       \}}
+\DoxyCodeLine{177     }
+\DoxyCodeLine{178     \mbox{\hyperlink{structnewarp_1_1PairComparator}{PairComparator<PairType>}} comp;}
+\DoxyCodeLine{179     }
+\DoxyCodeLine{180     std::sort(pair\_sort.begin(), pair\_sort.end(), comp);}
+\DoxyCodeLine{181     \}}
+\DoxyCodeLine{182   }
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   \textcolor{keyword}{inline}}
+\DoxyCodeLine{185   std::vector<uword>}
+\DoxyCodeLine{186   index()}
+\DoxyCodeLine{187     \{}
+\DoxyCodeLine{188     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{189     }
+\DoxyCodeLine{190     \textcolor{keyword}{const} uword \mbox{\hyperlink{group__python__builtins_gaeff368081ac50b8fe2cc0230d96e3acb}{len}} = pair\_sort.size();}
+\DoxyCodeLine{191     }
+\DoxyCodeLine{192     std::vector<uword> ind(\mbox{\hyperlink{group__python__builtins_gaeff368081ac50b8fe2cc0230d96e3acb}{len}});}
+\DoxyCodeLine{193     }
+\DoxyCodeLine{194     \textcolor{keywordflow}{for}(uword i = 0; i < \mbox{\hyperlink{group__python__builtins_gaeff368081ac50b8fe2cc0230d96e3acb}{len}}; i++) \{ ind[i] = pair\_sort[i].second; \}}
+\DoxyCodeLine{195     }
+\DoxyCodeLine{196     \textcolor{keywordflow}{return} ind;}
+\DoxyCodeLine{197     \}}
+\DoxyCodeLine{198   \};}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 \}  \textcolor{comment}{// namespace newarp}}
+
+\end{DoxyCode}

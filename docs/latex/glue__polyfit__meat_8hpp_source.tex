@@ -1,0 +1,134 @@
+\hypertarget{glue__polyfit__meat_8hpp_source}{}\doxysection{glue\+\_\+polyfit\+\_\+meat.\+hpp}
+\label{glue__polyfit__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_polyfit\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_polyfit\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{25 glue\_polyfit::apply\_noalias(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}\& Y, \textcolor{keyword}{const} uword N)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{comment}{// create Vandermonde matrix}}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \mbox{\hyperlink{classMat}{Mat<eT>}} V(X.n\_elem, N+1, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   V.tail\_cols(1).ones();}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keywordflow}{for}(uword i=1; i <= N; ++i)}
+\DoxyCodeLine{36     \{}
+\DoxyCodeLine{37     \textcolor{keyword}{const} uword j = N-\/i;}
+\DoxyCodeLine{38     }
+\DoxyCodeLine{39     \mbox{\hyperlink{classCol}{Col<eT>}} V\_col\_j  (V.colptr(j  ), V.n\_rows, \textcolor{keyword}{false}, \textcolor{keyword}{false});}
+\DoxyCodeLine{40     \mbox{\hyperlink{classCol}{Col<eT>}} V\_col\_jp1(V.colptr(j+1), V.n\_rows, \textcolor{keyword}{false}, \textcolor{keyword}{false});}
+\DoxyCodeLine{41     }
+\DoxyCodeLine{42     V\_col\_j = V\_col\_jp1 \% X;}
+\DoxyCodeLine{43     \}}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \mbox{\hyperlink{classMat}{Mat<eT>}} Q;}
+\DoxyCodeLine{46   \mbox{\hyperlink{classMat}{Mat<eT>}} R;}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status1 = auxlib::qr\_econ(Q, R, V);}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   \textcolor{keywordflow}{if}(status1 == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status2 = auxlib::solve\_trimat\_fast(out, R, (Q.t() * Y), uword(0));}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keywordflow}{if}(status2 == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{57   \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{62 \textcolor{keyword}{inline}}
+\DoxyCodeLine{63 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{64 glue\_polyfit::apply\_direct(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X\_expr, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& Y\_expr, \textcolor{keyword}{const} uword N)}
+\DoxyCodeLine{65   \{}
+\DoxyCodeLine{66   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{67   }
+\DoxyCodeLine{68   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} UX(X\_expr.get\_ref());}
+\DoxyCodeLine{71   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T2>}} UY(Y\_expr.get\_ref());}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = UX.M;}
+\DoxyCodeLine{74   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& Y = UY.M;}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   arma\_debug\_check}
+\DoxyCodeLine{77     (}
+\DoxyCodeLine{78     ( ((X.is\_vec() == \textcolor{keyword}{false}) \&\& (X.is\_empty() == \textcolor{keyword}{false})) || ((Y.is\_vec() == \textcolor{keyword}{false}) \&\& (Y.is\_empty() == \textcolor{keyword}{false})) ),}
+\DoxyCodeLine{79     \textcolor{stringliteral}{"{}polyfit(): given object must be a vector"{}}}
+\DoxyCodeLine{80     );}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   arma\_debug\_check( (X.n\_elem != Y.n\_elem), \textcolor{stringliteral}{"{}polyfit(): given vectors must have the same number of elements"{}} );}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keywordflow}{if}(X.n\_elem == 0)}
+\DoxyCodeLine{85     \{}
+\DoxyCodeLine{86     out.reset();}
+\DoxyCodeLine{87     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{88     \}}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90   arma\_debug\_check( (N >= X.n\_elem), \textcolor{stringliteral}{"{}polyfit(): N must be less than the number of elements in X"{}} );}
+\DoxyCodeLine{91   }
+\DoxyCodeLine{92   \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}} X\_as\_colvec( \textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(X.memptr()), X.n\_elem, \textcolor{keyword}{false}, \textcolor{keyword}{false});}
+\DoxyCodeLine{93   \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}} Y\_as\_colvec( \textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(Y.memptr()), Y.n\_elem, \textcolor{keyword}{false}, \textcolor{keyword}{false});}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   \textcolor{keywordtype}{bool} status = \textcolor{keyword}{false};}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keywordflow}{if}(UX.is\_alias(out) || UY.is\_alias(out))}
+\DoxyCodeLine{98     \{}
+\DoxyCodeLine{99     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{100     status = glue\_polyfit::apply\_noalias(tmp, X\_as\_colvec, Y\_as\_colvec, N);}
+\DoxyCodeLine{101     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{102     \}}
+\DoxyCodeLine{103   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{104     \{}
+\DoxyCodeLine{105     status = glue\_polyfit::apply\_noalias(out, X\_as\_colvec, Y\_as\_colvec, N);}
+\DoxyCodeLine{106     \}}
+\DoxyCodeLine{107   }
+\DoxyCodeLine{108   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{109   \}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{114 \textcolor{keyword}{inline}}
+\DoxyCodeLine{115 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{116 glue\_polyfit::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_polyfit>}}\& expr)}
+\DoxyCodeLine{117   \{}
+\DoxyCodeLine{118   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = glue\_polyfit::apply\_direct(out, expr.\mbox{\hyperlink{classGlue_a22423031a9f05101ad23dfd897c6f1ab}{A}}, expr.\mbox{\hyperlink{classGlue_a1b3a6b5891d84915448f3084e66476c6}{B}}, expr.\mbox{\hyperlink{classGlue_a4f3211f4584d498b0563c3ac2ee4e256}{aux\_uword}});}
+\DoxyCodeLine{121   }
+\DoxyCodeLine{122   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{123     \{}
+\DoxyCodeLine{124     out.soft\_reset();}
+\DoxyCodeLine{125     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}polyfit(): failed"{}});}
+\DoxyCodeLine{126     \}}
+\DoxyCodeLine{127   \}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 }
+
+\end{DoxyCode}

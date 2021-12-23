@@ -1,0 +1,1803 @@
+\hypertarget{MapMat__meat_8hpp_source}{}\doxysection{Map\+Mat\+\_\+meat.\+hpp}
+\label{MapMat__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/MapMat\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/MapMat\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \mbox{\hyperlink{classMapMat}{MapMat<eT>::\string~MapMat}}()}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   \textcolor{keywordflow}{if}(map\_ptr)  \{ (*map\_ptr).clear();  \textcolor{keyword}{delete} map\_ptr; \}}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{comment}{// try to expose buggy user code that accesses deleted objects}}
+\DoxyCodeLine{31   \textcolor{keywordflow}{if}(arma\_config::debug)  \{ map\_ptr = \textcolor{keyword}{nullptr}; \}}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   arma\_type\_check(( \mbox{\hyperlink{structis__supported__elem__type}{is\_supported\_elem\_type<eT>::value}} == \textcolor{keyword}{false} ));}
+\DoxyCodeLine{34   \}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{39 \textcolor{keyword}{inline}}
+\DoxyCodeLine{40 \mbox{\hyperlink{classMapMat}{MapMat<eT>::MapMat}}()}
+\DoxyCodeLine{41   : n\_rows (0)}
+\DoxyCodeLine{42   , n\_cols (0)}
+\DoxyCodeLine{43   , n\_elem (0)}
+\DoxyCodeLine{44   , map\_ptr(nullptr)}
+\DoxyCodeLine{45   \{}
+\DoxyCodeLine{46   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   init\_cold();}
+\DoxyCodeLine{49   \}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{54 \textcolor{keyword}{inline}}
+\DoxyCodeLine{55 \mbox{\hyperlink{classMapMat}{MapMat<eT>::MapMat}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols)}
+\DoxyCodeLine{56   : n\_rows (in\_n\_rows)}
+\DoxyCodeLine{57   , n\_cols (in\_n\_cols)}
+\DoxyCodeLine{58   , n\_elem (in\_n\_rows * in\_n\_cols)}
+\DoxyCodeLine{59   , map\_ptr(nullptr)}
+\DoxyCodeLine{60   \{}
+\DoxyCodeLine{61   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   init\_cold();}
+\DoxyCodeLine{64   \}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{69 \textcolor{keyword}{inline}}
+\DoxyCodeLine{70 \mbox{\hyperlink{classMapMat}{MapMat<eT>::MapMat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{71   : n\_rows (s.n\_rows)}
+\DoxyCodeLine{72   , n\_cols (s.n\_cols)}
+\DoxyCodeLine{73   , n\_elem (s.n\_rows * s.n\_cols)}
+\DoxyCodeLine{74   , map\_ptr(nullptr)}
+\DoxyCodeLine{75   \{}
+\DoxyCodeLine{76   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78   init\_cold();}
+\DoxyCodeLine{79   \}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{84 \textcolor{keyword}{inline}}
+\DoxyCodeLine{85 \mbox{\hyperlink{classMapMat}{MapMat<eT>::MapMat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMapMat}{MapMat<eT>}}\& x)}
+\DoxyCodeLine{86   : n\_rows (0)}
+\DoxyCodeLine{87   , n\_cols (0)}
+\DoxyCodeLine{88   , n\_elem (0)}
+\DoxyCodeLine{89   , map\_ptr(nullptr)}
+\DoxyCodeLine{90   \{}
+\DoxyCodeLine{91   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{92   }
+\DoxyCodeLine{93   init\_cold();}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   (*this).operator=(x);}
+\DoxyCodeLine{96   \}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{101 \textcolor{keyword}{inline}}
+\DoxyCodeLine{102 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{103 \mbox{\hyperlink{classMapMat}{MapMat<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMapMat}{MapMat<eT>}}\& x)}
+\DoxyCodeLine{104   \{}
+\DoxyCodeLine{105   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{106   }
+\DoxyCodeLine{107   \textcolor{keywordflow}{if}(\textcolor{keyword}{this} == \&x)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{108   }
+\DoxyCodeLine{109   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_rows) = x.n\_rows;}
+\DoxyCodeLine{110   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_cols) = x.n\_cols;}
+\DoxyCodeLine{111   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_elem) = x.n\_elem;}
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   (*map\_ptr) = *(x.map\_ptr);}
+\DoxyCodeLine{114   \}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{119 \textcolor{keyword}{inline}}
+\DoxyCodeLine{120 \mbox{\hyperlink{classMapMat}{MapMat<eT>::MapMat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& x)}
+\DoxyCodeLine{121   : n\_rows (0)}
+\DoxyCodeLine{122   , n\_cols (0)}
+\DoxyCodeLine{123   , n\_elem (0)}
+\DoxyCodeLine{124   , map\_ptr(nullptr)}
+\DoxyCodeLine{125   \{}
+\DoxyCodeLine{126   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{127   }
+\DoxyCodeLine{128   init\_cold();}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   (*this).operator=(x);}
+\DoxyCodeLine{131   \}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{136 \textcolor{keyword}{inline}}
+\DoxyCodeLine{137 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{138 \mbox{\hyperlink{classMapMat}{MapMat<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& x)}
+\DoxyCodeLine{139   \{}
+\DoxyCodeLine{140   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{141   }
+\DoxyCodeLine{142   \textcolor{keyword}{const} uword x\_n\_rows = x.n\_rows;}
+\DoxyCodeLine{143   \textcolor{keyword}{const} uword x\_n\_cols = x.n\_cols;}
+\DoxyCodeLine{144   }
+\DoxyCodeLine{145   (*this).zeros(x\_n\_rows, x\_n\_cols);}
+\DoxyCodeLine{146   }
+\DoxyCodeLine{147   \textcolor{keywordflow}{if}(x.n\_nonzero == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{148   }
+\DoxyCodeLine{149   \textcolor{keyword}{const}    eT* x\_values      = x.values;}
+\DoxyCodeLine{150   \textcolor{keyword}{const} uword* x\_row\_indices = x.row\_indices;}
+\DoxyCodeLine{151   \textcolor{keyword}{const} uword* x\_col\_ptrs    = x.col\_ptrs;}
+\DoxyCodeLine{152   }
+\DoxyCodeLine{153   map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{154   }
+\DoxyCodeLine{155   \textcolor{keywordflow}{for}(uword col = 0; col < x\_n\_cols; ++col)}
+\DoxyCodeLine{156     \{}
+\DoxyCodeLine{157     \textcolor{keyword}{const} uword start = x\_col\_ptrs[col    ];}
+\DoxyCodeLine{158     \textcolor{keyword}{const} uword end   = x\_col\_ptrs[col + 1];}
+\DoxyCodeLine{159     }
+\DoxyCodeLine{160     \textcolor{keywordflow}{for}(uword i = start; i < end; ++i)}
+\DoxyCodeLine{161       \{}
+\DoxyCodeLine{162       \textcolor{keyword}{const} uword row = x\_row\_indices[i];}
+\DoxyCodeLine{163       \textcolor{keyword}{const} eT    val = x\_values[i];}
+\DoxyCodeLine{164       }
+\DoxyCodeLine{165       \textcolor{keyword}{const} uword index = (x\_n\_rows * col) + row;}
+\DoxyCodeLine{166       }
+\DoxyCodeLine{167       map\_ref.emplace\_hint(map\_ref.cend(), index, val);}
+\DoxyCodeLine{168       \}}
+\DoxyCodeLine{169     \}}
+\DoxyCodeLine{170   \}}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{175 \textcolor{keyword}{inline}}
+\DoxyCodeLine{176 \mbox{\hyperlink{classMapMat}{MapMat<eT>::MapMat}}(\mbox{\hyperlink{classMapMat}{MapMat<eT>}}\&\& x)}
+\DoxyCodeLine{177   : n\_rows (x.n\_rows )}
+\DoxyCodeLine{178   , n\_cols (x.n\_cols )}
+\DoxyCodeLine{179   , n\_elem (x.n\_elem )}
+\DoxyCodeLine{180   , map\_ptr(x.map\_ptr)}
+\DoxyCodeLine{181   \{}
+\DoxyCodeLine{182   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(x.n\_rows)  = 0;}
+\DoxyCodeLine{185   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(x.n\_cols)  = 0;}
+\DoxyCodeLine{186   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(x.n\_elem)  = 0;}
+\DoxyCodeLine{187   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(x.map\_ptr) = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{188   \}}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{193 \textcolor{keyword}{inline}}
+\DoxyCodeLine{194 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{195 \mbox{\hyperlink{classMapMat}{MapMat<eT>::operator=}}(\mbox{\hyperlink{classMapMat}{MapMat<eT>}}\&\& x)}
+\DoxyCodeLine{196   \{}
+\DoxyCodeLine{197   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{198   }
+\DoxyCodeLine{199   reset();}
+\DoxyCodeLine{200   }
+\DoxyCodeLine{201   \textcolor{keywordflow}{if}(map\_ptr)  \{ \textcolor{keyword}{delete} map\_ptr; \}}
+\DoxyCodeLine{202   }
+\DoxyCodeLine{203   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_rows)  = x.n\_rows;}
+\DoxyCodeLine{204   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_cols)  = x.n\_cols;}
+\DoxyCodeLine{205   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_elem)  = x.n\_elem;}
+\DoxyCodeLine{206   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(map\_ptr) = x.map\_ptr;}
+\DoxyCodeLine{207   }
+\DoxyCodeLine{208   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(x.n\_rows)  = 0;}
+\DoxyCodeLine{209   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(x.n\_cols)  = 0;}
+\DoxyCodeLine{210   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(x.n\_elem)  = 0;}
+\DoxyCodeLine{211   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(x.map\_ptr) = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{212   \}}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{217 \textcolor{keyword}{inline}}
+\DoxyCodeLine{218 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{219 \mbox{\hyperlink{classMapMat}{MapMat<eT>::reset}}()}
+\DoxyCodeLine{220   \{}
+\DoxyCodeLine{221   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{222   }
+\DoxyCodeLine{223   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_rows) = 0;}
+\DoxyCodeLine{224   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_cols) = 0;}
+\DoxyCodeLine{225   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_elem) = 0;}
+\DoxyCodeLine{226   }
+\DoxyCodeLine{227   \textcolor{keywordflow}{if}((*map\_ptr).empty() == \textcolor{keyword}{false})  \{ (*map\_ptr).clear(); \}}
+\DoxyCodeLine{228   \}}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{233 \textcolor{keyword}{inline}}
+\DoxyCodeLine{234 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{235 \mbox{\hyperlink{classMapMat}{MapMat<eT>::set\_size}}(\textcolor{keyword}{const} uword in\_n\_rows)}
+\DoxyCodeLine{236   \{}
+\DoxyCodeLine{237   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{238   }
+\DoxyCodeLine{239   init\_warm(in\_n\_rows, 1);}
+\DoxyCodeLine{240   \}}
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{245 \textcolor{keyword}{inline}}
+\DoxyCodeLine{246 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{247 \mbox{\hyperlink{classMapMat}{MapMat<eT>::set\_size}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols)}
+\DoxyCodeLine{248   \{}
+\DoxyCodeLine{249   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{250   }
+\DoxyCodeLine{251   init\_warm(in\_n\_rows, in\_n\_cols);}
+\DoxyCodeLine{252   \}}
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{257 \textcolor{keyword}{inline}}
+\DoxyCodeLine{258 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{259 \mbox{\hyperlink{classMapMat}{MapMat<eT>::set\_size}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{260   \{}
+\DoxyCodeLine{261   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{262   }
+\DoxyCodeLine{263   init\_warm(s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{264   \}}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{269 \textcolor{keyword}{inline}}
+\DoxyCodeLine{270 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{271 \mbox{\hyperlink{classMapMat}{MapMat<eT>::zeros}}()}
+\DoxyCodeLine{272   \{}
+\DoxyCodeLine{273   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{274   }
+\DoxyCodeLine{275   (*map\_ptr).clear();}
+\DoxyCodeLine{276   \}}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{278 }
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{281 \textcolor{keyword}{inline}}
+\DoxyCodeLine{282 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{283 \mbox{\hyperlink{classMapMat}{MapMat<eT>::zeros}}(\textcolor{keyword}{const} uword in\_n\_rows)}
+\DoxyCodeLine{284   \{}
+\DoxyCodeLine{285   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{286   }
+\DoxyCodeLine{287   init\_warm(in\_n\_rows, 1);}
+\DoxyCodeLine{288   }
+\DoxyCodeLine{289   (*map\_ptr).clear();}
+\DoxyCodeLine{290   \}}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{295 \textcolor{keyword}{inline}}
+\DoxyCodeLine{296 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{297 \mbox{\hyperlink{classMapMat}{MapMat<eT>::zeros}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols)}
+\DoxyCodeLine{298   \{}
+\DoxyCodeLine{299   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{300   }
+\DoxyCodeLine{301   init\_warm(in\_n\_rows, in\_n\_cols);}
+\DoxyCodeLine{302   }
+\DoxyCodeLine{303   (*map\_ptr).clear();}
+\DoxyCodeLine{304   \}}
+\DoxyCodeLine{305 }
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307 }
+\DoxyCodeLine{308 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{309 \textcolor{keyword}{inline}}
+\DoxyCodeLine{310 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{311 \mbox{\hyperlink{classMapMat}{MapMat<eT>::zeros}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{312   \{}
+\DoxyCodeLine{313   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{314   }
+\DoxyCodeLine{315   init\_warm(s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{316   }
+\DoxyCodeLine{317   (*map\_ptr).clear();}
+\DoxyCodeLine{318   \}}
+\DoxyCodeLine{319 }
+\DoxyCodeLine{320 }
+\DoxyCodeLine{321 }
+\DoxyCodeLine{322 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{323 \textcolor{keyword}{inline}}
+\DoxyCodeLine{324 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{325 \mbox{\hyperlink{classMapMat}{MapMat<eT>::eye}}()}
+\DoxyCodeLine{326   \{}
+\DoxyCodeLine{327   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{328   }
+\DoxyCodeLine{329   (*this).eye(n\_rows, n\_cols);}
+\DoxyCodeLine{330   \}}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333 }
+\DoxyCodeLine{334 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{335 \textcolor{keyword}{inline}}
+\DoxyCodeLine{336 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{337 \mbox{\hyperlink{classMapMat}{MapMat<eT>::eye}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols)}
+\DoxyCodeLine{338   \{}
+\DoxyCodeLine{339   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{340   }
+\DoxyCodeLine{341   zeros(in\_n\_rows, in\_n\_cols);}
+\DoxyCodeLine{342   }
+\DoxyCodeLine{343   \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(in\_n\_rows, in\_n\_cols);}
+\DoxyCodeLine{344   }
+\DoxyCodeLine{345   map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{346   }
+\DoxyCodeLine{347   \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{348     \{}
+\DoxyCodeLine{349     \textcolor{keyword}{const} uword index = (in\_n\_rows * i) + i;}
+\DoxyCodeLine{350     }
+\DoxyCodeLine{351     map\_ref.emplace\_hint(map\_ref.cend(), index, eT(1));}
+\DoxyCodeLine{352     \}}
+\DoxyCodeLine{353   \}}
+\DoxyCodeLine{354 }
+\DoxyCodeLine{355 }
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{358 \textcolor{keyword}{inline}}
+\DoxyCodeLine{359 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{360 \mbox{\hyperlink{classMapMat}{MapMat<eT>::eye}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{361   \{}
+\DoxyCodeLine{362   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{363   }
+\DoxyCodeLine{364   (*this).eye(s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{365   \}}
+\DoxyCodeLine{366 }
+\DoxyCodeLine{367 }
+\DoxyCodeLine{368 }
+\DoxyCodeLine{369 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{370 \textcolor{keyword}{inline}}
+\DoxyCodeLine{371 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{372 \mbox{\hyperlink{classMapMat}{MapMat<eT>::speye}}()}
+\DoxyCodeLine{373   \{}
+\DoxyCodeLine{374   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{375   }
+\DoxyCodeLine{376   (*this).eye();}
+\DoxyCodeLine{377   \}}
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379 }
+\DoxyCodeLine{380 }
+\DoxyCodeLine{381 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{382 \textcolor{keyword}{inline}}
+\DoxyCodeLine{383 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{384 \mbox{\hyperlink{classMapMat}{MapMat<eT>::speye}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols)}
+\DoxyCodeLine{385   \{}
+\DoxyCodeLine{386   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{387   }
+\DoxyCodeLine{388   (*this).eye(in\_n\_rows, in\_n\_cols);}
+\DoxyCodeLine{389   \}}
+\DoxyCodeLine{390 }
+\DoxyCodeLine{391 }
+\DoxyCodeLine{392 }
+\DoxyCodeLine{393 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{394 \textcolor{keyword}{inline}}
+\DoxyCodeLine{395 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{396 \mbox{\hyperlink{classMapMat}{MapMat<eT>::speye}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{397   \{}
+\DoxyCodeLine{398   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{399   }
+\DoxyCodeLine{400   (*this).eye(s);}
+\DoxyCodeLine{401   \}}
+\DoxyCodeLine{402 }
+\DoxyCodeLine{403 }
+\DoxyCodeLine{404 }
+\DoxyCodeLine{405 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{406 arma\_inline}
+\DoxyCodeLine{407 arma\_warn\_unused}
+\DoxyCodeLine{408 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>}}}
+\DoxyCodeLine{409 \mbox{\hyperlink{classMapMat}{MapMat<eT>::operator[]}}(\textcolor{keyword}{const} uword index)}
+\DoxyCodeLine{410   \{}
+\DoxyCodeLine{411   \textcolor{keywordflow}{return} \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>}}(*\textcolor{keyword}{this}, index);}
+\DoxyCodeLine{412   \}}
+\DoxyCodeLine{413 }
+\DoxyCodeLine{414 }
+\DoxyCodeLine{415 }
+\DoxyCodeLine{416 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{417 \textcolor{keyword}{inline}}
+\DoxyCodeLine{418 arma\_warn\_unused}
+\DoxyCodeLine{419 eT}
+\DoxyCodeLine{420 \mbox{\hyperlink{classMapMat}{MapMat<eT>::operator[]}}(\textcolor{keyword}{const} uword index)\textcolor{keyword}{ const}}
+\DoxyCodeLine{421 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{422   map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{423   }
+\DoxyCodeLine{424   \textcolor{keyword}{typename} map\_type::const\_iterator it     = map\_ref.find(index);}
+\DoxyCodeLine{425   \textcolor{keyword}{typename} map\_type::const\_iterator it\_end = map\_ref.end();}
+\DoxyCodeLine{426   }
+\DoxyCodeLine{427   \textcolor{keywordflow}{return} (it != it\_end) ? eT((*it).second) : eT(0);}
+\DoxyCodeLine{428   \}}
+\DoxyCodeLine{429 }
+\DoxyCodeLine{430 }
+\DoxyCodeLine{431 }
+\DoxyCodeLine{432 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{433 arma\_inline}
+\DoxyCodeLine{434 arma\_warn\_unused}
+\DoxyCodeLine{435 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>}}}
+\DoxyCodeLine{436 \mbox{\hyperlink{classMapMat}{MapMat<eT>::operator()}}(\textcolor{keyword}{const} uword index)}
+\DoxyCodeLine{437   \{}
+\DoxyCodeLine{438   arma\_debug\_check\_bounds( (index >= n\_elem), \textcolor{stringliteral}{"{}MapMat::operator(): index out of bounds"{}} );}
+\DoxyCodeLine{439   }
+\DoxyCodeLine{440   \textcolor{keywordflow}{return} \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>}}(*\textcolor{keyword}{this}, index);}
+\DoxyCodeLine{441   \}}
+\DoxyCodeLine{442 }
+\DoxyCodeLine{443 }
+\DoxyCodeLine{444 }
+\DoxyCodeLine{445 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{446 \textcolor{keyword}{inline}}
+\DoxyCodeLine{447 arma\_warn\_unused}
+\DoxyCodeLine{448 eT}
+\DoxyCodeLine{449 \mbox{\hyperlink{classMapMat}{MapMat<eT>::operator()}}(\textcolor{keyword}{const} uword index)\textcolor{keyword}{ const}}
+\DoxyCodeLine{450 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{451   arma\_debug\_check\_bounds( (index >= n\_elem), \textcolor{stringliteral}{"{}MapMat::operator(): index out of bounds"{}} );}
+\DoxyCodeLine{452   }
+\DoxyCodeLine{453   map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{454   }
+\DoxyCodeLine{455   \textcolor{keyword}{typename} map\_type::const\_iterator it     = map\_ref.find(index);}
+\DoxyCodeLine{456   \textcolor{keyword}{typename} map\_type::const\_iterator it\_end = map\_ref.end();}
+\DoxyCodeLine{457   }
+\DoxyCodeLine{458   \textcolor{keywordflow}{return} (it != it\_end) ? eT((*it).second) : eT(0);}
+\DoxyCodeLine{459   \}}
+\DoxyCodeLine{460 }
+\DoxyCodeLine{461 }
+\DoxyCodeLine{462 }
+\DoxyCodeLine{463 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{464 arma\_inline}
+\DoxyCodeLine{465 arma\_warn\_unused}
+\DoxyCodeLine{466 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>}}}
+\DoxyCodeLine{467 \mbox{\hyperlink{classMapMat}{MapMat<eT>::at}}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col)}
+\DoxyCodeLine{468   \{}
+\DoxyCodeLine{469   \textcolor{keyword}{const} uword index = (n\_rows * in\_col) + in\_row;}
+\DoxyCodeLine{470   }
+\DoxyCodeLine{471   \textcolor{keywordflow}{return} \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>}}(*\textcolor{keyword}{this}, index);}
+\DoxyCodeLine{472   \}}
+\DoxyCodeLine{473 }
+\DoxyCodeLine{474 }
+\DoxyCodeLine{475 }
+\DoxyCodeLine{476 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{477 \textcolor{keyword}{inline}}
+\DoxyCodeLine{478 arma\_warn\_unused}
+\DoxyCodeLine{479 eT}
+\DoxyCodeLine{480 \mbox{\hyperlink{classMapMat}{MapMat<eT>::at}}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col)\textcolor{keyword}{ const}}
+\DoxyCodeLine{481 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{482   \textcolor{keyword}{const} uword index = (n\_rows * in\_col) + in\_row;}
+\DoxyCodeLine{483   }
+\DoxyCodeLine{484   map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{485   }
+\DoxyCodeLine{486   \textcolor{keyword}{typename} map\_type::const\_iterator it     = map\_ref.find(index);}
+\DoxyCodeLine{487   \textcolor{keyword}{typename} map\_type::const\_iterator it\_end = map\_ref.end();}
+\DoxyCodeLine{488   }
+\DoxyCodeLine{489   \textcolor{keywordflow}{return} (it != it\_end) ? eT((*it).second) : eT(0);}
+\DoxyCodeLine{490   \}}
+\DoxyCodeLine{491 }
+\DoxyCodeLine{492 }
+\DoxyCodeLine{493 }
+\DoxyCodeLine{494 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{495 arma\_inline}
+\DoxyCodeLine{496 arma\_warn\_unused}
+\DoxyCodeLine{497 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>}}}
+\DoxyCodeLine{498 \mbox{\hyperlink{classMapMat}{MapMat<eT>::operator()}}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col)}
+\DoxyCodeLine{499   \{}
+\DoxyCodeLine{500   arma\_debug\_check\_bounds( ((in\_row >= n\_rows) || (in\_col >= n\_cols)), \textcolor{stringliteral}{"{}MapMat::operator(): index out of bounds"{}} );}
+\DoxyCodeLine{501   }
+\DoxyCodeLine{502   \textcolor{keyword}{const} uword index = (n\_rows * in\_col) + in\_row;}
+\DoxyCodeLine{503   }
+\DoxyCodeLine{504   \textcolor{keywordflow}{return} \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>}}(*\textcolor{keyword}{this}, index);}
+\DoxyCodeLine{505   \}}
+\DoxyCodeLine{506 }
+\DoxyCodeLine{507 }
+\DoxyCodeLine{508 }
+\DoxyCodeLine{509 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{510 \textcolor{keyword}{inline}}
+\DoxyCodeLine{511 arma\_warn\_unused}
+\DoxyCodeLine{512 eT}
+\DoxyCodeLine{513 \mbox{\hyperlink{classMapMat}{MapMat<eT>::operator()}}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col)\textcolor{keyword}{ const}}
+\DoxyCodeLine{514 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{515   arma\_debug\_check\_bounds( ((in\_row >= n\_rows) || (in\_col >= n\_cols)), \textcolor{stringliteral}{"{}MapMat::operator(): index out of bounds"{}} );}
+\DoxyCodeLine{516   }
+\DoxyCodeLine{517   \textcolor{keyword}{const} uword index = (n\_rows * in\_col) + in\_row;}
+\DoxyCodeLine{518   }
+\DoxyCodeLine{519   map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{520   }
+\DoxyCodeLine{521   \textcolor{keyword}{typename} map\_type::const\_iterator it     = map\_ref.find(index);}
+\DoxyCodeLine{522   \textcolor{keyword}{typename} map\_type::const\_iterator it\_end = map\_ref.end();}
+\DoxyCodeLine{523   }
+\DoxyCodeLine{524   \textcolor{keywordflow}{return} (it != it\_end) ? eT((*it).second) : eT(0);}
+\DoxyCodeLine{525   \}}
+\DoxyCodeLine{526 }
+\DoxyCodeLine{527 }
+\DoxyCodeLine{528 }
+\DoxyCodeLine{529 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{530 \textcolor{keyword}{inline}}
+\DoxyCodeLine{531 arma\_warn\_unused}
+\DoxyCodeLine{532 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{533 \mbox{\hyperlink{classMapMat}{MapMat<eT>::is\_empty}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{534 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{535   \textcolor{keywordflow}{return} (n\_elem == 0);}
+\DoxyCodeLine{536   \}}
+\DoxyCodeLine{537 }
+\DoxyCodeLine{538 }
+\DoxyCodeLine{539 }
+\DoxyCodeLine{540 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{541 \textcolor{keyword}{inline}}
+\DoxyCodeLine{542 arma\_warn\_unused}
+\DoxyCodeLine{543 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{544 \mbox{\hyperlink{classMapMat}{MapMat<eT>::is\_vec}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{545 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{546   \textcolor{keywordflow}{return} ( (n\_rows == 1) || (n\_cols == 1) );}
+\DoxyCodeLine{547   \}}
+\DoxyCodeLine{548 }
+\DoxyCodeLine{549 }
+\DoxyCodeLine{550 }
+\DoxyCodeLine{551 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{552 \textcolor{keyword}{inline}}
+\DoxyCodeLine{553 arma\_warn\_unused}
+\DoxyCodeLine{554 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{555 \mbox{\hyperlink{classMapMat}{MapMat<eT>::is\_rowvec}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{556 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{557   \textcolor{keywordflow}{return} (n\_rows == 1);}
+\DoxyCodeLine{558   \}}
+\DoxyCodeLine{559 }
+\DoxyCodeLine{560 }
+\DoxyCodeLine{561 }
+\DoxyCodeLine{563 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{564 \textcolor{keyword}{inline}}
+\DoxyCodeLine{565 arma\_warn\_unused}
+\DoxyCodeLine{566 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{567 \mbox{\hyperlink{group__MapMat_gae41440178c4be69cb39d521a7c0deb9f}{MapMat<eT>::is\_colvec}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{568 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{569   \textcolor{keywordflow}{return} (n\_cols == 1);}
+\DoxyCodeLine{570   \}}
+\DoxyCodeLine{571 }
+\DoxyCodeLine{572 }
+\DoxyCodeLine{573 }
+\DoxyCodeLine{574 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{575 \textcolor{keyword}{inline}}
+\DoxyCodeLine{576 arma\_warn\_unused}
+\DoxyCodeLine{577 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{578 \mbox{\hyperlink{classMapMat}{MapMat<eT>::is\_square}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{579 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{580   \textcolor{keywordflow}{return} (n\_rows == n\_cols);}
+\DoxyCodeLine{581   \}}
+\DoxyCodeLine{582 }
+\DoxyCodeLine{583 }
+\DoxyCodeLine{584 }
+\DoxyCodeLine{585 \textcolor{comment}{// this function is for debugging purposes only}}
+\DoxyCodeLine{586 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{587 \textcolor{keyword}{inline}}
+\DoxyCodeLine{588 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{589 \mbox{\hyperlink{classMapMat}{MapMat<eT>::sprandu}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols, \textcolor{keyword}{const} \textcolor{keywordtype}{double} density)}
+\DoxyCodeLine{590   \{}
+\DoxyCodeLine{591   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{592   }
+\DoxyCodeLine{593   zeros(in\_n\_rows, in\_n\_cols);}
+\DoxyCodeLine{594   }
+\DoxyCodeLine{595   \textcolor{keyword}{const} uword N = uword(density * \textcolor{keywordtype}{double}(n\_elem));}
+\DoxyCodeLine{596   }
+\DoxyCodeLine{597   \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}    vals(N, fill::randu);}
+\DoxyCodeLine{598   \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<uword>}} indx = linspace< Col<uword> >(0, ((n\_elem > 0) ? uword(n\_elem-\/1) : uword(0)) , N);}
+\DoxyCodeLine{599   }
+\DoxyCodeLine{600   \textcolor{keyword}{const} eT*    vals\_mem = vals.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{601   \textcolor{keyword}{const} uword* indx\_mem = indx.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{602   }
+\DoxyCodeLine{603   map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{604   }
+\DoxyCodeLine{605   \textcolor{keywordflow}{for}(uword i=0; i < N; ++i)}
+\DoxyCodeLine{606     \{}
+\DoxyCodeLine{607     \textcolor{keyword}{const} uword index = indx\_mem[i];}
+\DoxyCodeLine{608     \textcolor{keyword}{const} eT    val   = vals\_mem[i];}
+\DoxyCodeLine{609     }
+\DoxyCodeLine{610     map\_ref.emplace\_hint(map\_ref.cend(), index, val);}
+\DoxyCodeLine{611     \}}
+\DoxyCodeLine{612   \}}
+\DoxyCodeLine{613 }
+\DoxyCodeLine{614 }
+\DoxyCodeLine{615 }
+\DoxyCodeLine{616 \textcolor{comment}{// this function is for debugging purposes only}}
+\DoxyCodeLine{617 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{618 \textcolor{keyword}{inline}}
+\DoxyCodeLine{619 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{620 \mbox{\hyperlink{classMapMat}{MapMat<eT>::print}}(\textcolor{keyword}{const} std::string\& extra\_text)\textcolor{keyword}{ const}}
+\DoxyCodeLine{621 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{622   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{623   }
+\DoxyCodeLine{624   \textcolor{keywordflow}{if}(extra\_text.length() != 0)}
+\DoxyCodeLine{625     \{}
+\DoxyCodeLine{626     \textcolor{keyword}{const} std::streamsize orig\_width = get\_cout\_stream().width();}
+\DoxyCodeLine{627     }
+\DoxyCodeLine{628     get\_cout\_stream() << extra\_text << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{629     }
+\DoxyCodeLine{630     get\_cout\_stream().width(orig\_width);}
+\DoxyCodeLine{631     \}}
+\DoxyCodeLine{632   }
+\DoxyCodeLine{633   map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{634   }
+\DoxyCodeLine{635   \textcolor{keyword}{const} uword n\_nonzero = uword(map\_ref.size());}
+\DoxyCodeLine{636   }
+\DoxyCodeLine{637   \textcolor{keyword}{const} \textcolor{keywordtype}{double} density = (n\_elem > 0) ? ((\textcolor{keywordtype}{double}(n\_nonzero) / \textcolor{keywordtype}{double}(n\_elem))*double(100)) : \textcolor{keywordtype}{double}(0);}
+\DoxyCodeLine{638   }
+\DoxyCodeLine{639   get\_cout\_stream()}
+\DoxyCodeLine{640     << \textcolor{stringliteral}{"{}[matrix size: "{}} << n\_rows << \textcolor{charliteral}{'x'} << n\_cols << \textcolor{stringliteral}{"{}; n\_nonzero: "{}} << n\_nonzero}
+\DoxyCodeLine{641     << \textcolor{stringliteral}{"{}; density: "{}} << density << \textcolor{stringliteral}{"{}\%]\(\backslash\)n\(\backslash\)n"{}};}
+\DoxyCodeLine{642   }
+\DoxyCodeLine{643   \textcolor{keywordflow}{if}(n\_nonzero > 0)}
+\DoxyCodeLine{644     \{}
+\DoxyCodeLine{645     \textcolor{keyword}{typename} map\_type::const\_iterator it = map\_ref.begin();}
+\DoxyCodeLine{646 }
+\DoxyCodeLine{647     \textcolor{keywordflow}{for}(uword i=0; i < n\_nonzero; ++i)}
+\DoxyCodeLine{648       \{}
+\DoxyCodeLine{649       \textcolor{keyword}{const} std::pair<uword, eT>\& entry = (*it);}
+\DoxyCodeLine{650       }
+\DoxyCodeLine{651       \textcolor{keyword}{const} uword index = entry.first;}
+\DoxyCodeLine{652       \textcolor{keyword}{const} eT    val   = entry.second;}
+\DoxyCodeLine{653       }
+\DoxyCodeLine{654       \textcolor{keyword}{const} uword row = index \% n\_rows;}
+\DoxyCodeLine{655       \textcolor{keyword}{const} uword col = index / n\_rows;}
+\DoxyCodeLine{656       }
+\DoxyCodeLine{657       get\_cout\_stream() << \textcolor{charliteral}{'('} << row << \textcolor{stringliteral}{"{}, "{}} << col << \textcolor{stringliteral}{"{}) "{}};}
+\DoxyCodeLine{658       get\_cout\_stream() << val << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{659       }
+\DoxyCodeLine{660       ++it;}
+\DoxyCodeLine{661       \}}
+\DoxyCodeLine{662     \}}
+\DoxyCodeLine{663   }
+\DoxyCodeLine{664   get\_cout\_stream().flush();}
+\DoxyCodeLine{665   \}}
+\DoxyCodeLine{666 }
+\DoxyCodeLine{667 }
+\DoxyCodeLine{668 }
+\DoxyCodeLine{669 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{670 \textcolor{keyword}{inline}}
+\DoxyCodeLine{671 uword}
+\DoxyCodeLine{672 \mbox{\hyperlink{classMapMat}{MapMat<eT>::get\_n\_nonzero}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{673 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{674   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{675   }
+\DoxyCodeLine{676   \textcolor{keywordflow}{return} uword((*map\_ptr).size());}
+\DoxyCodeLine{677   \}}
+\DoxyCodeLine{678 }
+\DoxyCodeLine{679 }
+\DoxyCodeLine{680 }
+\DoxyCodeLine{681 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{682 \textcolor{keyword}{inline}}
+\DoxyCodeLine{683 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{684 \mbox{\hyperlink{classMapMat}{MapMat<eT>::get\_locval\_format}}(\mbox{\hyperlink{classMat}{umat}}\& locs, \mbox{\hyperlink{classCol}{Col<eT>}}\& vals)\textcolor{keyword}{ const}}
+\DoxyCodeLine{685 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{686   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{687   }
+\DoxyCodeLine{688   map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{689   }
+\DoxyCodeLine{690   \textcolor{keyword}{typename} map\_type::const\_iterator it = map\_ref.begin();}
+\DoxyCodeLine{691   }
+\DoxyCodeLine{692   \textcolor{keyword}{const} uword N = uword(map\_ref.size());}
+\DoxyCodeLine{693   }
+\DoxyCodeLine{694   locs.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(2,N);}
+\DoxyCodeLine{695   vals.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(N);}
+\DoxyCodeLine{696   }
+\DoxyCodeLine{697   eT* vals\_mem = vals.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{698   }
+\DoxyCodeLine{699   \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{700     \{}
+\DoxyCodeLine{701     \textcolor{keyword}{const} std::pair<uword, eT>\& entry = (*it);}
+\DoxyCodeLine{702     }
+\DoxyCodeLine{703     \textcolor{keyword}{const} uword index = entry.first;}
+\DoxyCodeLine{704     \textcolor{keyword}{const} eT    val   = entry.second;}
+\DoxyCodeLine{705     }
+\DoxyCodeLine{706     \textcolor{keyword}{const} uword row = index \% n\_rows;}
+\DoxyCodeLine{707     \textcolor{keyword}{const} uword col = index / n\_rows;}
+\DoxyCodeLine{708     }
+\DoxyCodeLine{709     uword* locs\_colptr = locs.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(i);}
+\DoxyCodeLine{710     }
+\DoxyCodeLine{711     locs\_colptr[0] = row;}
+\DoxyCodeLine{712     locs\_colptr[1] = col;}
+\DoxyCodeLine{713     }
+\DoxyCodeLine{714     vals\_mem[i] = val;}
+\DoxyCodeLine{715     }
+\DoxyCodeLine{716     ++it;}
+\DoxyCodeLine{717     \}}
+\DoxyCodeLine{718   \}}
+\DoxyCodeLine{719 }
+\DoxyCodeLine{720 }
+\DoxyCodeLine{721 }
+\DoxyCodeLine{722 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{723 \textcolor{keyword}{inline}}
+\DoxyCodeLine{724 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{725 \mbox{\hyperlink{classMapMat}{MapMat<eT>::init\_cold}}()}
+\DoxyCodeLine{726   \{}
+\DoxyCodeLine{727   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{728   }
+\DoxyCodeLine{729   \textcolor{comment}{// ensure that n\_elem can hold the result of (n\_rows * n\_cols)}}
+\DoxyCodeLine{730   }
+\DoxyCodeLine{731 \textcolor{preprocessor}{  \#if defined(ARMA\_64BIT\_WORD)}}
+\DoxyCodeLine{732     \textcolor{keyword}{const} \textcolor{keywordtype}{char}* error\_message = \textcolor{stringliteral}{"{}MapMat(): requested size is too large"{}};}
+\DoxyCodeLine{733 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{734     \textcolor{keyword}{const} \textcolor{keywordtype}{char}* error\_message = \textcolor{stringliteral}{"{}MapMat(): requested size is too large; suggest to enable ARMA\_64BIT\_WORD"{}};}
+\DoxyCodeLine{735 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{736   }
+\DoxyCodeLine{737   arma\_debug\_check}
+\DoxyCodeLine{738     (}
+\DoxyCodeLine{739       (}
+\DoxyCodeLine{740       ( (n\_rows > ARMA\_MAX\_UHWORD) || (n\_cols > ARMA\_MAX\_UHWORD) )}
+\DoxyCodeLine{741         ? ( (\textcolor{keywordtype}{double}(n\_rows) * \textcolor{keywordtype}{double}(n\_cols)) > \textcolor{keywordtype}{double}(ARMA\_MAX\_UWORD) )}
+\DoxyCodeLine{742         : \textcolor{keyword}{false}}
+\DoxyCodeLine{743       ),}
+\DoxyCodeLine{744     error\_message}
+\DoxyCodeLine{745     );}
+\DoxyCodeLine{746   }
+\DoxyCodeLine{747   map\_ptr = \textcolor{keyword}{new} (std::nothrow) map\_type;}
+\DoxyCodeLine{748   }
+\DoxyCodeLine{749   arma\_check\_bad\_alloc( (map\_ptr == \textcolor{keyword}{nullptr}), \textcolor{stringliteral}{"{}MapMat(): out of memory"{}} );}
+\DoxyCodeLine{750   \}}
+\DoxyCodeLine{751 }
+\DoxyCodeLine{752 }
+\DoxyCodeLine{753 }
+\DoxyCodeLine{754 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{755 \textcolor{keyword}{inline}}
+\DoxyCodeLine{756 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{757 \mbox{\hyperlink{classMapMat}{MapMat<eT>::init\_warm}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols)}
+\DoxyCodeLine{758   \{}
+\DoxyCodeLine{759   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{760   }
+\DoxyCodeLine{761   \textcolor{keywordflow}{if}( (n\_rows == in\_n\_rows) \&\& (n\_cols == in\_n\_cols))  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{762   }
+\DoxyCodeLine{763   \textcolor{comment}{// ensure that n\_elem can hold the result of (n\_rows * n\_cols)}}
+\DoxyCodeLine{764   }
+\DoxyCodeLine{765 \textcolor{preprocessor}{  \#if defined(ARMA\_64BIT\_WORD)}}
+\DoxyCodeLine{766     \textcolor{keyword}{const} \textcolor{keywordtype}{char}* error\_message = \textcolor{stringliteral}{"{}MapMat(): requested size is too large"{}};}
+\DoxyCodeLine{767 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{768     \textcolor{keyword}{const} \textcolor{keywordtype}{char}* error\_message = \textcolor{stringliteral}{"{}MapMat(): requested size is too large; suggest to enable ARMA\_64BIT\_WORD"{}};}
+\DoxyCodeLine{769 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{770   }
+\DoxyCodeLine{771   arma\_debug\_check}
+\DoxyCodeLine{772     (}
+\DoxyCodeLine{773       (}
+\DoxyCodeLine{774       ( (in\_n\_rows > ARMA\_MAX\_UHWORD) || (in\_n\_cols > ARMA\_MAX\_UHWORD) )}
+\DoxyCodeLine{775         ? ( (\textcolor{keywordtype}{double}(in\_n\_rows) * \textcolor{keywordtype}{double}(in\_n\_cols)) > \textcolor{keywordtype}{double}(ARMA\_MAX\_UWORD) )}
+\DoxyCodeLine{776         : \textcolor{keyword}{false}}
+\DoxyCodeLine{777       ),}
+\DoxyCodeLine{778     error\_message}
+\DoxyCodeLine{779     );}
+\DoxyCodeLine{780   }
+\DoxyCodeLine{781   \textcolor{keyword}{const} uword new\_n\_elem = in\_n\_rows * in\_n\_cols;}
+\DoxyCodeLine{782   }
+\DoxyCodeLine{783   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_rows) = in\_n\_rows;}
+\DoxyCodeLine{784   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_cols) = in\_n\_cols;}
+\DoxyCodeLine{785   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_elem) = new\_n\_elem;}
+\DoxyCodeLine{786   }
+\DoxyCodeLine{787   \textcolor{keywordflow}{if}(new\_n\_elem == 0)  \{ (*map\_ptr).clear(); \}}
+\DoxyCodeLine{788   \}}
+\DoxyCodeLine{789 }
+\DoxyCodeLine{790 }
+\DoxyCodeLine{791 }
+\DoxyCodeLine{792 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{793 arma\_inline}
+\DoxyCodeLine{794 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{795 \mbox{\hyperlink{classMapMat}{MapMat<eT>::set\_val}}(\textcolor{keyword}{const} uword index, \textcolor{keyword}{const} eT\& in\_val)}
+\DoxyCodeLine{796   \{}
+\DoxyCodeLine{797   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{798   }
+\DoxyCodeLine{799   \textcolor{keywordflow}{if}(in\_val != eT(0))}
+\DoxyCodeLine{800     \{}
+\DoxyCodeLine{801     map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{802     }
+\DoxyCodeLine{803     \textcolor{keywordflow}{if}( (map\_ref.empty() == \textcolor{keyword}{false}) \&\& (index > uword(map\_ref.crbegin()-\/>first)) )}
+\DoxyCodeLine{804       \{}
+\DoxyCodeLine{805       map\_ref.emplace\_hint(map\_ref.cend(), index, in\_val);}
+\DoxyCodeLine{806       \}}
+\DoxyCodeLine{807     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{808       \{}
+\DoxyCodeLine{809       map\_ref.operator[](index) = in\_val;}
+\DoxyCodeLine{810       \}}
+\DoxyCodeLine{811     \}}
+\DoxyCodeLine{812   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{813     \{}
+\DoxyCodeLine{814     (*this).erase\_val(index);}
+\DoxyCodeLine{815     \}}
+\DoxyCodeLine{816   \}}
+\DoxyCodeLine{817 }
+\DoxyCodeLine{818 }
+\DoxyCodeLine{819 }
+\DoxyCodeLine{820 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{821 \textcolor{keyword}{inline}}
+\DoxyCodeLine{822 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{823 \mbox{\hyperlink{classMapMat}{MapMat<eT>::erase\_val}}(\textcolor{keyword}{const} uword index)}
+\DoxyCodeLine{824   \{}
+\DoxyCodeLine{825   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{826   }
+\DoxyCodeLine{827   map\_type\& map\_ref = (*map\_ptr);}
+\DoxyCodeLine{828   }
+\DoxyCodeLine{829   \textcolor{keyword}{typename} map\_type::iterator it     = map\_ref.find(index);}
+\DoxyCodeLine{830   \textcolor{keyword}{typename} map\_type::iterator it\_end = map\_ref.end();}
+\DoxyCodeLine{831   }
+\DoxyCodeLine{832   \textcolor{keywordflow}{if}(it != it\_end)  \{ map\_ref.erase(it); \}}
+\DoxyCodeLine{833   \}}
+\DoxyCodeLine{834 }
+\DoxyCodeLine{835 }
+\DoxyCodeLine{836 }
+\DoxyCodeLine{837 }
+\DoxyCodeLine{838 }
+\DoxyCodeLine{839 }
+\DoxyCodeLine{840 \textcolor{comment}{// MapMat\_val}}
+\DoxyCodeLine{841 }
+\DoxyCodeLine{842 }
+\DoxyCodeLine{843 }
+\DoxyCodeLine{844 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{845 arma\_inline}
+\DoxyCodeLine{846 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::MapMat\_val}}(\mbox{\hyperlink{classMapMat}{MapMat<eT>}}\& in\_parent, \textcolor{keyword}{const} uword in\_index)}
+\DoxyCodeLine{847   : parent(in\_parent)}
+\DoxyCodeLine{848   , index (in\_index )}
+\DoxyCodeLine{849   \{}
+\DoxyCodeLine{850   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{851   \}}
+\DoxyCodeLine{852 }
+\DoxyCodeLine{853 }
+\DoxyCodeLine{854 }
+\DoxyCodeLine{855 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{856 arma\_inline}
+\DoxyCodeLine{857 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator}} eT()\textcolor{keyword}{ const}}
+\DoxyCodeLine{858 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{859   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{860   }
+\DoxyCodeLine{861   \textcolor{keyword}{const} \mbox{\hyperlink{classMapMat}{MapMat<eT>}}\& const\_parent = parent;}
+\DoxyCodeLine{862   }
+\DoxyCodeLine{863   \textcolor{keywordflow}{return} const\_parent.operator[](index);}
+\DoxyCodeLine{864   \}}
+\DoxyCodeLine{865 }
+\DoxyCodeLine{866 }
+\DoxyCodeLine{867 }
+\DoxyCodeLine{868 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{869 arma\_inline}
+\DoxyCodeLine{870 \textcolor{keyword}{typename} get\_pod\_type<eT>::result}
+\DoxyCodeLine{871 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::real}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{872 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{873   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{874   }
+\DoxyCodeLine{875   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{876   }
+\DoxyCodeLine{877   \textcolor{keyword}{const} \mbox{\hyperlink{classMapMat}{MapMat<eT>}}\& const\_parent = parent;}
+\DoxyCodeLine{878   }
+\DoxyCodeLine{879   \textcolor{keywordflow}{return} T( \mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}( const\_parent.operator[](index) ) );}
+\DoxyCodeLine{880   \}}
+\DoxyCodeLine{881 }
+\DoxyCodeLine{882 }
+\DoxyCodeLine{883 }
+\DoxyCodeLine{884 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{885 arma\_inline}
+\DoxyCodeLine{886 \textcolor{keyword}{typename} get\_pod\_type<eT>::result}
+\DoxyCodeLine{887 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::imag}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{888 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{889   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{890   }
+\DoxyCodeLine{891   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{892   }
+\DoxyCodeLine{893   \textcolor{keyword}{const} \mbox{\hyperlink{classMapMat}{MapMat<eT>}}\& const\_parent = parent;}
+\DoxyCodeLine{894   }
+\DoxyCodeLine{895   \textcolor{keywordflow}{return} T( \mbox{\hyperlink{classaccess_a7776f261d1bb262ab5437a8457cfb40c}{access::tmp\_imag}}( const\_parent.operator[](index) ) );}
+\DoxyCodeLine{896   \}}
+\DoxyCodeLine{897 }
+\DoxyCodeLine{898 }
+\DoxyCodeLine{899 }
+\DoxyCodeLine{900 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{901 arma\_inline}
+\DoxyCodeLine{902 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{903 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>}}\& x)}
+\DoxyCodeLine{904   \{}
+\DoxyCodeLine{905   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{906   }
+\DoxyCodeLine{907   \textcolor{keyword}{const} eT in\_val = eT(x);}
+\DoxyCodeLine{908   }
+\DoxyCodeLine{909   parent.set\_val(index, in\_val);}
+\DoxyCodeLine{910   \}}
+\DoxyCodeLine{911 }
+\DoxyCodeLine{912 }
+\DoxyCodeLine{913 }
+\DoxyCodeLine{914 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{915 arma\_inline}
+\DoxyCodeLine{916 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{917 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{918   \{}
+\DoxyCodeLine{919   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{920   }
+\DoxyCodeLine{921   parent.set\_val(index, in\_val);}
+\DoxyCodeLine{922   \}}
+\DoxyCodeLine{923 }
+\DoxyCodeLine{924 }
+\DoxyCodeLine{925 }
+\DoxyCodeLine{926 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{927 arma\_inline}
+\DoxyCodeLine{928 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{929 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator+=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{930   \{}
+\DoxyCodeLine{931   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{932   }
+\DoxyCodeLine{933   \textcolor{keyword}{typename} MapMat<eT>::map\_type\& map\_ref = *(parent.map\_ptr);}
+\DoxyCodeLine{934   }
+\DoxyCodeLine{935   \textcolor{keywordflow}{if}(in\_val != eT(0))}
+\DoxyCodeLine{936     \{}
+\DoxyCodeLine{937     eT\& val = map\_ref.operator[](index);  \textcolor{comment}{// creates the element if it doesn't exist}}
+\DoxyCodeLine{938     }
+\DoxyCodeLine{939     val += in\_val;}
+\DoxyCodeLine{940     }
+\DoxyCodeLine{941     \textcolor{keywordflow}{if}(val == eT(0))  \{ map\_ref.erase(index); \}}
+\DoxyCodeLine{942     \}}
+\DoxyCodeLine{943   \}}
+\DoxyCodeLine{944 }
+\DoxyCodeLine{945 }
+\DoxyCodeLine{946 }
+\DoxyCodeLine{947 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{948 arma\_inline}
+\DoxyCodeLine{949 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{950 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator-\/=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{951   \{}
+\DoxyCodeLine{952   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{953   }
+\DoxyCodeLine{954   \textcolor{keyword}{typename} MapMat<eT>::map\_type\& map\_ref = *(parent.map\_ptr);}
+\DoxyCodeLine{955   }
+\DoxyCodeLine{956   \textcolor{keywordflow}{if}(in\_val != eT(0))}
+\DoxyCodeLine{957     \{}
+\DoxyCodeLine{958     eT\& val = map\_ref.operator[](index);  \textcolor{comment}{// creates the element if it doesn't exist}}
+\DoxyCodeLine{959     }
+\DoxyCodeLine{960     val -\/= in\_val;}
+\DoxyCodeLine{961     }
+\DoxyCodeLine{962     \textcolor{keywordflow}{if}(val == eT(0))  \{ map\_ref.erase(index); \}}
+\DoxyCodeLine{963     \}}
+\DoxyCodeLine{964   \}}
+\DoxyCodeLine{965 }
+\DoxyCodeLine{966 }
+\DoxyCodeLine{967 }
+\DoxyCodeLine{968 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{969 arma\_inline}
+\DoxyCodeLine{970 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{971 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator*=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{972   \{}
+\DoxyCodeLine{973   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{974   }
+\DoxyCodeLine{975   \textcolor{keyword}{typename} MapMat<eT>::map\_type\& map\_ref = *(parent.map\_ptr);}
+\DoxyCodeLine{976   }
+\DoxyCodeLine{977   \textcolor{keyword}{typename} \mbox{\hyperlink{classMapMat}{MapMat<eT>::map\_type::iterator}} it     = map\_ref.find(index);}
+\DoxyCodeLine{978   \textcolor{keyword}{typename} \mbox{\hyperlink{classMapMat}{MapMat<eT>::map\_type::iterator}} it\_end = map\_ref.end();}
+\DoxyCodeLine{979   }
+\DoxyCodeLine{980   \textcolor{keywordflow}{if}(it != it\_end)}
+\DoxyCodeLine{981     \{}
+\DoxyCodeLine{982     \textcolor{keywordflow}{if}(in\_val != eT(0))}
+\DoxyCodeLine{983       \{}
+\DoxyCodeLine{984       eT\& val = (*it).second;}
+\DoxyCodeLine{985       }
+\DoxyCodeLine{986       val *= in\_val;}
+\DoxyCodeLine{987       }
+\DoxyCodeLine{988       \textcolor{keywordflow}{if}(val == eT(0))  \{ map\_ref.erase(it); \}}
+\DoxyCodeLine{989       \}}
+\DoxyCodeLine{990     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{991       \{}
+\DoxyCodeLine{992       map\_ref.erase(it);}
+\DoxyCodeLine{993       \}}
+\DoxyCodeLine{994     \}}
+\DoxyCodeLine{995   \}}
+\DoxyCodeLine{996 }
+\DoxyCodeLine{997 }
+\DoxyCodeLine{998 }
+\DoxyCodeLine{999 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1000 arma\_inline}
+\DoxyCodeLine{1001 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1002 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator/=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1003   \{}
+\DoxyCodeLine{1004   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1005   }
+\DoxyCodeLine{1006   \textcolor{keyword}{typename} MapMat<eT>::map\_type\& map\_ref = *(parent.map\_ptr);}
+\DoxyCodeLine{1007   }
+\DoxyCodeLine{1008   \textcolor{keyword}{typename} \mbox{\hyperlink{classMapMat}{MapMat<eT>::map\_type::iterator}} it     = map\_ref.find(index);}
+\DoxyCodeLine{1009   \textcolor{keyword}{typename} \mbox{\hyperlink{classMapMat}{MapMat<eT>::map\_type::iterator}} it\_end = map\_ref.end();}
+\DoxyCodeLine{1010   }
+\DoxyCodeLine{1011   \textcolor{keywordflow}{if}(it != it\_end)}
+\DoxyCodeLine{1012     \{}
+\DoxyCodeLine{1013     eT\& val = (*it).second;}
+\DoxyCodeLine{1014     }
+\DoxyCodeLine{1015     val /= in\_val;}
+\DoxyCodeLine{1016     }
+\DoxyCodeLine{1017     \textcolor{keywordflow}{if}(val == eT(0))  \{ map\_ref.erase(it); \}}
+\DoxyCodeLine{1018     \}}
+\DoxyCodeLine{1019   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1020     \{}
+\DoxyCodeLine{1021     \textcolor{comment}{// silly operation, but included for completness}}
+\DoxyCodeLine{1022     }
+\DoxyCodeLine{1023     \textcolor{keyword}{const} eT val = eT(0) / in\_val;}
+\DoxyCodeLine{1024     }
+\DoxyCodeLine{1025     \textcolor{keywordflow}{if}(val != eT(0))  \{ parent.set\_val(index, val); \}}
+\DoxyCodeLine{1026     \}}
+\DoxyCodeLine{1027   \}}
+\DoxyCodeLine{1028 }
+\DoxyCodeLine{1029 }
+\DoxyCodeLine{1030 }
+\DoxyCodeLine{1031 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1032 arma\_inline}
+\DoxyCodeLine{1033 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1034 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator++}}()}
+\DoxyCodeLine{1035   \{}
+\DoxyCodeLine{1036   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1037   }
+\DoxyCodeLine{1038   \textcolor{keyword}{typename} MapMat<eT>::map\_type\& map\_ref = *(parent.map\_ptr);}
+\DoxyCodeLine{1039   }
+\DoxyCodeLine{1040   eT\& val = map\_ref.operator[](index);  \textcolor{comment}{// creates the element if it doesn't exist}}
+\DoxyCodeLine{1041   }
+\DoxyCodeLine{1042   val += eT(1);  \textcolor{comment}{// can't use ++,  as eT can be std::complex}}
+\DoxyCodeLine{1043   }
+\DoxyCodeLine{1044   \textcolor{keywordflow}{if}(val == eT(0))  \{ map\_ref.erase(index); \}}
+\DoxyCodeLine{1045   \}}
+\DoxyCodeLine{1046 }
+\DoxyCodeLine{1047 }
+\DoxyCodeLine{1048 }
+\DoxyCodeLine{1049 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1050 arma\_inline}
+\DoxyCodeLine{1051 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1052 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator++}}(\textcolor{keywordtype}{int})}
+\DoxyCodeLine{1053   \{}
+\DoxyCodeLine{1054   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1055   }
+\DoxyCodeLine{1056   (*this).operator++();}
+\DoxyCodeLine{1057   \}}
+\DoxyCodeLine{1058 }
+\DoxyCodeLine{1059 }
+\DoxyCodeLine{1060 }
+\DoxyCodeLine{1061 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1062 arma\_inline}
+\DoxyCodeLine{1063 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1064 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator-\/-\/}}()}
+\DoxyCodeLine{1065   \{}
+\DoxyCodeLine{1066   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1067   }
+\DoxyCodeLine{1068   \textcolor{keyword}{typename} MapMat<eT>::map\_type\& map\_ref = *(parent.map\_ptr);}
+\DoxyCodeLine{1069   }
+\DoxyCodeLine{1070   eT\& val = map\_ref.operator[](index);  \textcolor{comment}{// creates the element if it doesn't exist}}
+\DoxyCodeLine{1071   }
+\DoxyCodeLine{1072   val -\/= eT(1);  \textcolor{comment}{// can't use -\/-\/,  as eT can be std::complex}}
+\DoxyCodeLine{1073   }
+\DoxyCodeLine{1074   \textcolor{keywordflow}{if}(val == eT(0))  \{ map\_ref.erase(index); \}}
+\DoxyCodeLine{1075   \}}
+\DoxyCodeLine{1076 }
+\DoxyCodeLine{1077 }
+\DoxyCodeLine{1078 }
+\DoxyCodeLine{1079 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1080 arma\_inline}
+\DoxyCodeLine{1081 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1082 \mbox{\hyperlink{classMapMat__val}{MapMat\_val<eT>::operator-\/-\/}}(\textcolor{keywordtype}{int})}
+\DoxyCodeLine{1083   \{}
+\DoxyCodeLine{1084   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1085   }
+\DoxyCodeLine{1086   (*this).operator-\/-\/();}
+\DoxyCodeLine{1087   \}}
+\DoxyCodeLine{1088 }
+\DoxyCodeLine{1089 }
+\DoxyCodeLine{1090 }
+\DoxyCodeLine{1091 }
+\DoxyCodeLine{1092 }
+\DoxyCodeLine{1093 \textcolor{comment}{// SpMat\_MapMat\_val}}
+\DoxyCodeLine{1094 }
+\DoxyCodeLine{1095 }
+\DoxyCodeLine{1096 }
+\DoxyCodeLine{1097 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1098 arma\_inline}
+\DoxyCodeLine{1099 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::SpMat\_MapMat\_val}}(\mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& in\_s\_parent, \mbox{\hyperlink{classMapMat}{MapMat<eT>}}\& in\_m\_parent, \textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col)}
+\DoxyCodeLine{1100   : s\_parent(in\_s\_parent)}
+\DoxyCodeLine{1101   , m\_parent(in\_m\_parent)}
+\DoxyCodeLine{1102   , row     (in\_row     )}
+\DoxyCodeLine{1103   , col     (in\_col     )}
+\DoxyCodeLine{1104   \{}
+\DoxyCodeLine{1105   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1106   \}}
+\DoxyCodeLine{1107 }
+\DoxyCodeLine{1108 }
+\DoxyCodeLine{1109 }
+\DoxyCodeLine{1110 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1111 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1112 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator}} eT()\textcolor{keyword}{ const}}
+\DoxyCodeLine{1113 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1114   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1115   }
+\DoxyCodeLine{1116   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& const\_s\_parent = s\_parent;  \textcolor{comment}{// declare as const for clarity of intent}}
+\DoxyCodeLine{1117   }
+\DoxyCodeLine{1118   \textcolor{keywordflow}{return} const\_s\_parent.get\_value(row,col);}
+\DoxyCodeLine{1119   \}}
+\DoxyCodeLine{1120 }
+\DoxyCodeLine{1121 }
+\DoxyCodeLine{1122 }
+\DoxyCodeLine{1123 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1124 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1125 \textcolor{keyword}{typename} get\_pod\_type<eT>::result}
+\DoxyCodeLine{1126 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::real}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{1127 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1128   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1129   }
+\DoxyCodeLine{1130   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{1131   }
+\DoxyCodeLine{1132   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& const\_s\_parent = s\_parent;  \textcolor{comment}{// declare as const for clarity of intent}}
+\DoxyCodeLine{1133   }
+\DoxyCodeLine{1134   \textcolor{keywordflow}{return} T( \mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}( const\_s\_parent.get\_value(row,col) ) );}
+\DoxyCodeLine{1135   \}}
+\DoxyCodeLine{1136 }
+\DoxyCodeLine{1137 }
+\DoxyCodeLine{1138 }
+\DoxyCodeLine{1139 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1140 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1141 \textcolor{keyword}{typename} get\_pod\_type<eT>::result}
+\DoxyCodeLine{1142 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::imag}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{1143 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1144   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1145   }
+\DoxyCodeLine{1146   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{1147   }
+\DoxyCodeLine{1148   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& const\_s\_parent = s\_parent;  \textcolor{comment}{// declare as const for clarity of intent}}
+\DoxyCodeLine{1149   }
+\DoxyCodeLine{1150   \textcolor{keywordflow}{return} T( \mbox{\hyperlink{classaccess_a7776f261d1bb262ab5437a8457cfb40c}{access::tmp\_imag}}( const\_s\_parent.get\_value(row,col) ) );}
+\DoxyCodeLine{1151   \}}
+\DoxyCodeLine{1152 }
+\DoxyCodeLine{1153 }
+\DoxyCodeLine{1154 }
+\DoxyCodeLine{1155 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1156 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1157 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1158 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}\& x)}
+\DoxyCodeLine{1159   \{}
+\DoxyCodeLine{1160   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1161   }
+\DoxyCodeLine{1162   \textcolor{keyword}{const} eT in\_val = eT(x);}
+\DoxyCodeLine{1163   }
+\DoxyCodeLine{1164   \textcolor{keywordflow}{return} (*this).operator=(in\_val);}
+\DoxyCodeLine{1165   \}}
+\DoxyCodeLine{1166 }
+\DoxyCodeLine{1167 }
+\DoxyCodeLine{1168 }
+\DoxyCodeLine{1169 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1170 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1171 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1172 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1173   \{}
+\DoxyCodeLine{1174   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1175   }
+\DoxyCodeLine{1176 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1177     \{}
+\DoxyCodeLine{1178 \textcolor{preprocessor}{    \#pragma omp critical (arma\_SpMat\_cache)}}
+\DoxyCodeLine{1179       \{}
+\DoxyCodeLine{1180       (*this).set(in\_val);}
+\DoxyCodeLine{1181       \}}
+\DoxyCodeLine{1182     \}}
+\DoxyCodeLine{1183 \textcolor{preprocessor}{  \#elif (!defined(ARMA\_DONT\_USE\_STD\_MUTEX))}}
+\DoxyCodeLine{1184     \{}
+\DoxyCodeLine{1185     s\_parent.cache\_mutex.lock();}
+\DoxyCodeLine{1186     }
+\DoxyCodeLine{1187     (*this).set(in\_val);}
+\DoxyCodeLine{1188     }
+\DoxyCodeLine{1189     s\_parent.cache\_mutex.unlock();}
+\DoxyCodeLine{1190     \}}
+\DoxyCodeLine{1191 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1192     \{}
+\DoxyCodeLine{1193     (*this).set(in\_val);}
+\DoxyCodeLine{1194     \}}
+\DoxyCodeLine{1195 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1196   }
+\DoxyCodeLine{1197   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1198   \}}
+\DoxyCodeLine{1199 }
+\DoxyCodeLine{1200 }
+\DoxyCodeLine{1201 }
+\DoxyCodeLine{1202 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1203 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1204 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1205 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator+=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1206   \{}
+\DoxyCodeLine{1207   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1208   }
+\DoxyCodeLine{1209   \textcolor{keywordflow}{if}(in\_val == eT(0))  \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{1210   }
+\DoxyCodeLine{1211 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1212     \{}
+\DoxyCodeLine{1213 \textcolor{preprocessor}{    \#pragma omp critical (arma\_SpMat\_cache)}}
+\DoxyCodeLine{1214       \{}
+\DoxyCodeLine{1215       (*this).add(in\_val);}
+\DoxyCodeLine{1216       \}}
+\DoxyCodeLine{1217     \}}
+\DoxyCodeLine{1218 \textcolor{preprocessor}{  \#elif (!defined(ARMA\_DONT\_USE\_STD\_MUTEX))}}
+\DoxyCodeLine{1219     \{}
+\DoxyCodeLine{1220     s\_parent.cache\_mutex.lock();}
+\DoxyCodeLine{1221     }
+\DoxyCodeLine{1222     (*this).add(in\_val);}
+\DoxyCodeLine{1223     }
+\DoxyCodeLine{1224     s\_parent.cache\_mutex.unlock();}
+\DoxyCodeLine{1225     \}}
+\DoxyCodeLine{1226 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1227     \{}
+\DoxyCodeLine{1228     (*this).add(in\_val);}
+\DoxyCodeLine{1229     \}}
+\DoxyCodeLine{1230 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1231   }
+\DoxyCodeLine{1232   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1233   \}}
+\DoxyCodeLine{1234 }
+\DoxyCodeLine{1235 }
+\DoxyCodeLine{1236 }
+\DoxyCodeLine{1237 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1238 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1239 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1240 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator-\/=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1241   \{}
+\DoxyCodeLine{1242   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1243   }
+\DoxyCodeLine{1244   \textcolor{keywordflow}{if}(in\_val == eT(0))  \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{1245   }
+\DoxyCodeLine{1246 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1247     \{}
+\DoxyCodeLine{1248 \textcolor{preprocessor}{    \#pragma omp critical (arma\_SpMat\_cache)}}
+\DoxyCodeLine{1249       \{}
+\DoxyCodeLine{1250       (*this).sub(in\_val);}
+\DoxyCodeLine{1251       \}}
+\DoxyCodeLine{1252     \}}
+\DoxyCodeLine{1253 \textcolor{preprocessor}{  \#elif (!defined(ARMA\_DONT\_USE\_STD\_MUTEX))}}
+\DoxyCodeLine{1254     \{}
+\DoxyCodeLine{1255     s\_parent.cache\_mutex.lock();}
+\DoxyCodeLine{1256     }
+\DoxyCodeLine{1257     (*this).sub(in\_val);}
+\DoxyCodeLine{1258     }
+\DoxyCodeLine{1259     s\_parent.cache\_mutex.unlock();}
+\DoxyCodeLine{1260     \}}
+\DoxyCodeLine{1261 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1262     \{}
+\DoxyCodeLine{1263     (*this).sub(in\_val);}
+\DoxyCodeLine{1264     \}}
+\DoxyCodeLine{1265 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1266   }
+\DoxyCodeLine{1267   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1268   \}}
+\DoxyCodeLine{1269 }
+\DoxyCodeLine{1270 }
+\DoxyCodeLine{1271 }
+\DoxyCodeLine{1272 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1273 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1274 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1275 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator*=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1276   \{}
+\DoxyCodeLine{1277   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1278   }
+\DoxyCodeLine{1279 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1280     \{}
+\DoxyCodeLine{1281 \textcolor{preprocessor}{    \#pragma omp critical (arma\_SpMat\_cache)}}
+\DoxyCodeLine{1282       \{}
+\DoxyCodeLine{1283       (*this).mul(in\_val);}
+\DoxyCodeLine{1284       \}}
+\DoxyCodeLine{1285     \}}
+\DoxyCodeLine{1286 \textcolor{preprocessor}{  \#elif (!defined(ARMA\_DONT\_USE\_STD\_MUTEX))}}
+\DoxyCodeLine{1287     \{}
+\DoxyCodeLine{1288     s\_parent.cache\_mutex.lock();}
+\DoxyCodeLine{1289     }
+\DoxyCodeLine{1290     (*this).mul(in\_val);}
+\DoxyCodeLine{1291     }
+\DoxyCodeLine{1292     s\_parent.cache\_mutex.unlock();}
+\DoxyCodeLine{1293     \}}
+\DoxyCodeLine{1294 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1295     \{}
+\DoxyCodeLine{1296     (*this).mul(in\_val);}
+\DoxyCodeLine{1297     \}}
+\DoxyCodeLine{1298 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1299   }
+\DoxyCodeLine{1300   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1301   \}}
+\DoxyCodeLine{1302 }
+\DoxyCodeLine{1303 }
+\DoxyCodeLine{1304 }
+\DoxyCodeLine{1305 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1306 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1307 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1308 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator/=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1309   \{}
+\DoxyCodeLine{1310   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1311   }
+\DoxyCodeLine{1312 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1313     \{}
+\DoxyCodeLine{1314 \textcolor{preprocessor}{    \#pragma omp critical (arma\_SpMat\_cache)}}
+\DoxyCodeLine{1315       \{}
+\DoxyCodeLine{1316       (*this).div(in\_val);}
+\DoxyCodeLine{1317       \}}
+\DoxyCodeLine{1318     \}}
+\DoxyCodeLine{1319 \textcolor{preprocessor}{  \#elif (!defined(ARMA\_DONT\_USE\_STD\_MUTEX))}}
+\DoxyCodeLine{1320     \{}
+\DoxyCodeLine{1321     s\_parent.cache\_mutex.lock();}
+\DoxyCodeLine{1322     }
+\DoxyCodeLine{1323     (*this).div(in\_val);}
+\DoxyCodeLine{1324     }
+\DoxyCodeLine{1325     s\_parent.cache\_mutex.unlock();}
+\DoxyCodeLine{1326     \}}
+\DoxyCodeLine{1327 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1328     \{}
+\DoxyCodeLine{1329     (*this).div(in\_val);}
+\DoxyCodeLine{1330     \}}
+\DoxyCodeLine{1331 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1332   }
+\DoxyCodeLine{1333   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1334   \}}
+\DoxyCodeLine{1335 }
+\DoxyCodeLine{1336 }
+\DoxyCodeLine{1337 }
+\DoxyCodeLine{1338 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1339 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1340 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1341 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator++}}()}
+\DoxyCodeLine{1342   \{}
+\DoxyCodeLine{1343   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1344   }
+\DoxyCodeLine{1345   \textcolor{keywordflow}{return} (*this).operator+=( eT(1) );}
+\DoxyCodeLine{1346   \}}
+\DoxyCodeLine{1347 }
+\DoxyCodeLine{1348 }
+\DoxyCodeLine{1349 }
+\DoxyCodeLine{1350 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1351 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1352 arma\_warn\_unused}
+\DoxyCodeLine{1353 eT}
+\DoxyCodeLine{1354 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator++}}(\textcolor{keywordtype}{int})}
+\DoxyCodeLine{1355   \{}
+\DoxyCodeLine{1356   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1357   }
+\DoxyCodeLine{1358   \textcolor{keyword}{const} eT old\_val = eT(*\textcolor{keyword}{this});}
+\DoxyCodeLine{1359   }
+\DoxyCodeLine{1360   (*this).operator+=( eT(1) );}
+\DoxyCodeLine{1361   }
+\DoxyCodeLine{1362   \textcolor{keywordflow}{return} old\_val;}
+\DoxyCodeLine{1363   \}}
+\DoxyCodeLine{1364 }
+\DoxyCodeLine{1365 }
+\DoxyCodeLine{1366 }
+\DoxyCodeLine{1367 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1368 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1369 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1370 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator-\/-\/}}()}
+\DoxyCodeLine{1371   \{}
+\DoxyCodeLine{1372   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1373   }
+\DoxyCodeLine{1374   \textcolor{keywordflow}{return} (*this).operator-\/=( eT(1) );}
+\DoxyCodeLine{1375   \}}
+\DoxyCodeLine{1376 }
+\DoxyCodeLine{1377 }
+\DoxyCodeLine{1378 }
+\DoxyCodeLine{1379 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1380 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1381 arma\_warn\_unused}
+\DoxyCodeLine{1382 eT}
+\DoxyCodeLine{1383 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator-\/-\/}}(\textcolor{keywordtype}{int})}
+\DoxyCodeLine{1384   \{}
+\DoxyCodeLine{1385   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1386   }
+\DoxyCodeLine{1387   \textcolor{keyword}{const} eT old\_val = eT(*\textcolor{keyword}{this});}
+\DoxyCodeLine{1388   }
+\DoxyCodeLine{1389   (*this).operator-\/=( eT(1) );}
+\DoxyCodeLine{1390   }
+\DoxyCodeLine{1391   \textcolor{keywordflow}{return} old\_val;}
+\DoxyCodeLine{1392   \}}
+\DoxyCodeLine{1393 }
+\DoxyCodeLine{1394 }
+\DoxyCodeLine{1395 }
+\DoxyCodeLine{1396 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1397 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1398 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1399 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::set}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1400   \{}
+\DoxyCodeLine{1401   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1402   }
+\DoxyCodeLine{1403   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} done = (s\_parent.sync\_state == 0) ? s\_parent.try\_set\_value\_csc(row, col, in\_val) : \textcolor{keyword}{false};}
+\DoxyCodeLine{1404   }
+\DoxyCodeLine{1405   \textcolor{keywordflow}{if}(done == \textcolor{keyword}{false})}
+\DoxyCodeLine{1406     \{}
+\DoxyCodeLine{1407     s\_parent.sync\_cache\_simple();}
+\DoxyCodeLine{1408     }
+\DoxyCodeLine{1409     \textcolor{keyword}{const} uword index = (m\_parent.n\_rows * col) + row;}
+\DoxyCodeLine{1410     }
+\DoxyCodeLine{1411     m\_parent.set\_val(index, in\_val);}
+\DoxyCodeLine{1412     }
+\DoxyCodeLine{1413     s\_parent.sync\_state = 1;}
+\DoxyCodeLine{1414     }
+\DoxyCodeLine{1415     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(s\_parent.n\_nonzero) = m\_parent.get\_n\_nonzero();}
+\DoxyCodeLine{1416     \}}
+\DoxyCodeLine{1417   \}}
+\DoxyCodeLine{1418 }
+\DoxyCodeLine{1419 }
+\DoxyCodeLine{1420 }
+\DoxyCodeLine{1421 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1422 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1423 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1424 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::add}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1425   \{}
+\DoxyCodeLine{1426   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1427   }
+\DoxyCodeLine{1428   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} done = (s\_parent.sync\_state == 0) ? s\_parent.try\_add\_value\_csc(row, col, in\_val) : \textcolor{keyword}{false};}
+\DoxyCodeLine{1429     }
+\DoxyCodeLine{1430   \textcolor{keywordflow}{if}(done == \textcolor{keyword}{false})}
+\DoxyCodeLine{1431     \{}
+\DoxyCodeLine{1432     s\_parent.sync\_cache\_simple();}
+\DoxyCodeLine{1433     }
+\DoxyCodeLine{1434     \textcolor{keyword}{const} uword index = (m\_parent.n\_rows * col) + row;}
+\DoxyCodeLine{1435     }
+\DoxyCodeLine{1436     \textcolor{keyword}{typename} MapMat<eT>::map\_type\& map\_ref = *(m\_parent.map\_ptr);}
+\DoxyCodeLine{1437     }
+\DoxyCodeLine{1438     eT\& val = map\_ref.operator[](index);  \textcolor{comment}{// creates the element if it doesn't exist}}
+\DoxyCodeLine{1439     }
+\DoxyCodeLine{1440     val += in\_val;}
+\DoxyCodeLine{1441     }
+\DoxyCodeLine{1442     \textcolor{keywordflow}{if}(val == eT(0))  \{ map\_ref.erase(index); \}}
+\DoxyCodeLine{1443     }
+\DoxyCodeLine{1444     s\_parent.sync\_state = 1;}
+\DoxyCodeLine{1445     }
+\DoxyCodeLine{1446     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(s\_parent.n\_nonzero) = m\_parent.get\_n\_nonzero();}
+\DoxyCodeLine{1447     \}}
+\DoxyCodeLine{1448   \}}
+\DoxyCodeLine{1449 }
+\DoxyCodeLine{1450 }
+\DoxyCodeLine{1451 }
+\DoxyCodeLine{1452 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1453 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1454 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1455 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::sub}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1456   \{}
+\DoxyCodeLine{1457   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1458   }
+\DoxyCodeLine{1459   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} done = (s\_parent.sync\_state == 0) ? s\_parent.try\_sub\_value\_csc(row, col, in\_val) : \textcolor{keyword}{false};}
+\DoxyCodeLine{1460   }
+\DoxyCodeLine{1461   \textcolor{keywordflow}{if}(done == \textcolor{keyword}{false})}
+\DoxyCodeLine{1462     \{}
+\DoxyCodeLine{1463     s\_parent.sync\_cache\_simple();}
+\DoxyCodeLine{1464     }
+\DoxyCodeLine{1465     \textcolor{keyword}{const} uword index = (m\_parent.n\_rows * col) + row;}
+\DoxyCodeLine{1466     }
+\DoxyCodeLine{1467     \textcolor{keyword}{typename} MapMat<eT>::map\_type\& map\_ref = *(m\_parent.map\_ptr);}
+\DoxyCodeLine{1468     }
+\DoxyCodeLine{1469     eT\& val = map\_ref.operator[](index);  \textcolor{comment}{// creates the element if it doesn't exist}}
+\DoxyCodeLine{1470     }
+\DoxyCodeLine{1471     val -\/= in\_val;}
+\DoxyCodeLine{1472     }
+\DoxyCodeLine{1473     \textcolor{keywordflow}{if}(val == eT(0))  \{ map\_ref.erase(index); \}}
+\DoxyCodeLine{1474     }
+\DoxyCodeLine{1475     s\_parent.sync\_state = 1;}
+\DoxyCodeLine{1476     }
+\DoxyCodeLine{1477     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(s\_parent.n\_nonzero) = m\_parent.get\_n\_nonzero();}
+\DoxyCodeLine{1478     \}}
+\DoxyCodeLine{1479   \}}
+\DoxyCodeLine{1480 }
+\DoxyCodeLine{1481 }
+\DoxyCodeLine{1482 }
+\DoxyCodeLine{1483 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1484 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1485 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1486 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::mul}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1487   \{}
+\DoxyCodeLine{1488   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1489   }
+\DoxyCodeLine{1490   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} done = (s\_parent.sync\_state == 0) ? s\_parent.try\_mul\_value\_csc(row, col, in\_val) : \textcolor{keyword}{false};}
+\DoxyCodeLine{1491   }
+\DoxyCodeLine{1492   \textcolor{keywordflow}{if}(done == \textcolor{keyword}{false})}
+\DoxyCodeLine{1493     \{}
+\DoxyCodeLine{1494     s\_parent.sync\_cache\_simple();}
+\DoxyCodeLine{1495     }
+\DoxyCodeLine{1496     \textcolor{keyword}{const} uword index = (m\_parent.n\_rows * col) + row;}
+\DoxyCodeLine{1497     }
+\DoxyCodeLine{1498     \textcolor{keyword}{typename} MapMat<eT>::map\_type\& map\_ref = *(m\_parent.map\_ptr);}
+\DoxyCodeLine{1499     }
+\DoxyCodeLine{1500     \textcolor{keyword}{typename} \mbox{\hyperlink{classMapMat}{MapMat<eT>::map\_type::iterator}} it     = map\_ref.find(index);}
+\DoxyCodeLine{1501     \textcolor{keyword}{typename} \mbox{\hyperlink{classMapMat}{MapMat<eT>::map\_type::iterator}} it\_end = map\_ref.end();}
+\DoxyCodeLine{1502     }
+\DoxyCodeLine{1503     \textcolor{keywordflow}{if}(it != it\_end)}
+\DoxyCodeLine{1504       \{}
+\DoxyCodeLine{1505       \textcolor{keywordflow}{if}(in\_val != eT(0))}
+\DoxyCodeLine{1506         \{}
+\DoxyCodeLine{1507         eT\& val = (*it).second;}
+\DoxyCodeLine{1508         }
+\DoxyCodeLine{1509         val *= in\_val;}
+\DoxyCodeLine{1510         }
+\DoxyCodeLine{1511         \textcolor{keywordflow}{if}(val == eT(0))  \{ map\_ref.erase(it); \}}
+\DoxyCodeLine{1512         \}}
+\DoxyCodeLine{1513       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1514         \{}
+\DoxyCodeLine{1515         map\_ref.erase(it);}
+\DoxyCodeLine{1516         \}}
+\DoxyCodeLine{1517       }
+\DoxyCodeLine{1518       s\_parent.sync\_state = 1;}
+\DoxyCodeLine{1519       }
+\DoxyCodeLine{1520       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(s\_parent.n\_nonzero) = m\_parent.get\_n\_nonzero();}
+\DoxyCodeLine{1521       \}}
+\DoxyCodeLine{1522     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1523       \{}
+\DoxyCodeLine{1524       \textcolor{comment}{// element not found, ie. it's zero; zero multiplied by anything is zero, except for nan and inf}}
+\DoxyCodeLine{1525       \textcolor{keywordflow}{if}(arma\_isfinite(in\_val) == \textcolor{keyword}{false})}
+\DoxyCodeLine{1526         \{}
+\DoxyCodeLine{1527         \textcolor{keyword}{const} eT result = eT(0) * in\_val;}
+\DoxyCodeLine{1528         }
+\DoxyCodeLine{1529         \textcolor{keywordflow}{if}(result != eT(0))  \textcolor{comment}{// paranoia, in case compiling with -\/ffast-\/math}}
+\DoxyCodeLine{1530           \{}
+\DoxyCodeLine{1531           m\_parent.set\_val(index, result);}
+\DoxyCodeLine{1532           }
+\DoxyCodeLine{1533           s\_parent.sync\_state = 1;}
+\DoxyCodeLine{1534           }
+\DoxyCodeLine{1535           \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(s\_parent.n\_nonzero) = m\_parent.get\_n\_nonzero();}
+\DoxyCodeLine{1536           \}}
+\DoxyCodeLine{1537         \}}
+\DoxyCodeLine{1538       \}}
+\DoxyCodeLine{1539     \}}
+\DoxyCodeLine{1540   \}}
+\DoxyCodeLine{1541 }
+\DoxyCodeLine{1542 }
+\DoxyCodeLine{1543 }
+\DoxyCodeLine{1544 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1545 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1546 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1547 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::div}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1548   \{}
+\DoxyCodeLine{1549   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1550   }
+\DoxyCodeLine{1551   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} done = (s\_parent.sync\_state == 0) ? s\_parent.try\_div\_value\_csc(row, col, in\_val) : \textcolor{keyword}{false};}
+\DoxyCodeLine{1552   }
+\DoxyCodeLine{1553   \textcolor{keywordflow}{if}(done == \textcolor{keyword}{false})}
+\DoxyCodeLine{1554     \{}
+\DoxyCodeLine{1555     s\_parent.sync\_cache\_simple();}
+\DoxyCodeLine{1556     }
+\DoxyCodeLine{1557     \textcolor{keyword}{const} uword index = (m\_parent.n\_rows * col) + row;}
+\DoxyCodeLine{1558     }
+\DoxyCodeLine{1559     \textcolor{keyword}{typename} MapMat<eT>::map\_type\& map\_ref = *(m\_parent.map\_ptr);}
+\DoxyCodeLine{1560     }
+\DoxyCodeLine{1561     \textcolor{keyword}{typename} \mbox{\hyperlink{classMapMat}{MapMat<eT>::map\_type::iterator}} it     = map\_ref.find(index);}
+\DoxyCodeLine{1562     \textcolor{keyword}{typename} \mbox{\hyperlink{classMapMat}{MapMat<eT>::map\_type::iterator}} it\_end = map\_ref.end();}
+\DoxyCodeLine{1563     }
+\DoxyCodeLine{1564     \textcolor{keywordflow}{if}(it != it\_end)}
+\DoxyCodeLine{1565       \{}
+\DoxyCodeLine{1566       eT\& val = (*it).second;}
+\DoxyCodeLine{1567       }
+\DoxyCodeLine{1568       val /= in\_val;}
+\DoxyCodeLine{1569       }
+\DoxyCodeLine{1570       \textcolor{keywordflow}{if}(val == eT(0))  \{ map\_ref.erase(it); \}}
+\DoxyCodeLine{1571       }
+\DoxyCodeLine{1572       s\_parent.sync\_state = 1;}
+\DoxyCodeLine{1573       }
+\DoxyCodeLine{1574       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(s\_parent.n\_nonzero) = m\_parent.get\_n\_nonzero();}
+\DoxyCodeLine{1575       \}}
+\DoxyCodeLine{1576     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1577       \{}
+\DoxyCodeLine{1578       \textcolor{comment}{// element not found, ie. it's zero; zero divided by anything is zero, except for zero and nan}}
+\DoxyCodeLine{1579       \textcolor{keywordflow}{if}( (in\_val == eT(0)) || (arma\_isnan(in\_val)) )}
+\DoxyCodeLine{1580         \{}
+\DoxyCodeLine{1581         \textcolor{keyword}{const} eT result = eT(0) / in\_val;}
+\DoxyCodeLine{1582         }
+\DoxyCodeLine{1583         \textcolor{keywordflow}{if}(result != eT(0))  \textcolor{comment}{// paranoia, in case compiling with -\/ffast-\/math}}
+\DoxyCodeLine{1584           \{}
+\DoxyCodeLine{1585           m\_parent.set\_val(index, result);}
+\DoxyCodeLine{1586           }
+\DoxyCodeLine{1587           s\_parent.sync\_state = 1;}
+\DoxyCodeLine{1588           }
+\DoxyCodeLine{1589           \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(s\_parent.n\_nonzero) = m\_parent.get\_n\_nonzero();}
+\DoxyCodeLine{1590           \}}
+\DoxyCodeLine{1591         \}}
+\DoxyCodeLine{1592       \}}
+\DoxyCodeLine{1593     \}}
+\DoxyCodeLine{1594   \}}
+\DoxyCodeLine{1595 }
+\DoxyCodeLine{1596 }
+\DoxyCodeLine{1597 }
+\DoxyCodeLine{1598 }
+\DoxyCodeLine{1599 \textcolor{comment}{// SpSubview\_MapMat\_val}}
+\DoxyCodeLine{1600 }
+\DoxyCodeLine{1601 }
+\DoxyCodeLine{1602 }
+\DoxyCodeLine{1603 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1604 arma\_inline}
+\DoxyCodeLine{1605 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::SpSubview\_MapMat\_val}}(\mbox{\hyperlink{classSpSubview}{SpSubview<eT>}}\& in\_sv\_parent, \mbox{\hyperlink{classMapMat}{MapMat<eT>}}\& in\_m\_parent, \textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col)}
+\DoxyCodeLine{1606   : \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val}}<eT>(\mbox{\hyperlink{classaccess}{access}}::rw(in\_sv\_parent.m), in\_m\_parent, in\_row, in\_col)}
+\DoxyCodeLine{1607   , sv\_parent(in\_sv\_parent)}
+\DoxyCodeLine{1608   \{}
+\DoxyCodeLine{1609   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1610   \}}
+\DoxyCodeLine{1611 }
+\DoxyCodeLine{1612 }
+\DoxyCodeLine{1613 }
+\DoxyCodeLine{1614 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1615 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1616 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1617 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>}}\& x)}
+\DoxyCodeLine{1618   \{}
+\DoxyCodeLine{1619   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1620   }
+\DoxyCodeLine{1621   \textcolor{keyword}{const} eT in\_val = eT(x);}
+\DoxyCodeLine{1622   }
+\DoxyCodeLine{1623   \textcolor{keywordflow}{return} (*this).operator=(in\_val);}
+\DoxyCodeLine{1624   \}}
+\DoxyCodeLine{1625 }
+\DoxyCodeLine{1626 }
+\DoxyCodeLine{1627 }
+\DoxyCodeLine{1628 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1629 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1630 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1631 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::operator=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1632   \{}
+\DoxyCodeLine{1633   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1634   }
+\DoxyCodeLine{1635   \textcolor{keyword}{const} uword old\_n\_nonzero = sv\_parent.m.n\_nonzero;}
+\DoxyCodeLine{1636   }
+\DoxyCodeLine{1637   \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator=}}(in\_val);}
+\DoxyCodeLine{1638   }
+\DoxyCodeLine{1639   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero > old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)++; \}}
+\DoxyCodeLine{1640   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero < old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)-\/-\/; \}}
+\DoxyCodeLine{1641   }
+\DoxyCodeLine{1642   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1643   \}}
+\DoxyCodeLine{1644 }
+\DoxyCodeLine{1645 }
+\DoxyCodeLine{1646 }
+\DoxyCodeLine{1647 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1648 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1649 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1650 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::operator+=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1651   \{}
+\DoxyCodeLine{1652   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1653   }
+\DoxyCodeLine{1654   \textcolor{keyword}{const} uword old\_n\_nonzero = sv\_parent.m.n\_nonzero;}
+\DoxyCodeLine{1655   }
+\DoxyCodeLine{1656   \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator+=}}(in\_val);}
+\DoxyCodeLine{1657   }
+\DoxyCodeLine{1658   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero > old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)++; \}}
+\DoxyCodeLine{1659   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero < old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)-\/-\/; \}}
+\DoxyCodeLine{1660   }
+\DoxyCodeLine{1661   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1662   \}}
+\DoxyCodeLine{1663 }
+\DoxyCodeLine{1664 }
+\DoxyCodeLine{1665 }
+\DoxyCodeLine{1666 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1667 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1668 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1669 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::operator-\/=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1670   \{}
+\DoxyCodeLine{1671   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1672   }
+\DoxyCodeLine{1673   \textcolor{keyword}{const} uword old\_n\_nonzero = sv\_parent.m.n\_nonzero;}
+\DoxyCodeLine{1674   }
+\DoxyCodeLine{1675   \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator-\/=}}(in\_val);}
+\DoxyCodeLine{1676   }
+\DoxyCodeLine{1677   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero > old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)++; \}}
+\DoxyCodeLine{1678   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero < old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)-\/-\/; \}}
+\DoxyCodeLine{1679   }
+\DoxyCodeLine{1680   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1681   \}}
+\DoxyCodeLine{1682 }
+\DoxyCodeLine{1683 }
+\DoxyCodeLine{1684 }
+\DoxyCodeLine{1685 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1686 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1687 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1688 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::operator*=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1689   \{}
+\DoxyCodeLine{1690   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1691   }
+\DoxyCodeLine{1692   \textcolor{keyword}{const} uword old\_n\_nonzero = sv\_parent.m.n\_nonzero;}
+\DoxyCodeLine{1693   }
+\DoxyCodeLine{1694   \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator*=}}(in\_val);}
+\DoxyCodeLine{1695   }
+\DoxyCodeLine{1696   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero > old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)++; \}}
+\DoxyCodeLine{1697   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero < old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)-\/-\/; \}}
+\DoxyCodeLine{1698   }
+\DoxyCodeLine{1699   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1700   \}}
+\DoxyCodeLine{1701 }
+\DoxyCodeLine{1702 }
+\DoxyCodeLine{1703 }
+\DoxyCodeLine{1704 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1705 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1706 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1707 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::operator/=}}(\textcolor{keyword}{const} eT in\_val)}
+\DoxyCodeLine{1708   \{}
+\DoxyCodeLine{1709   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1710   }
+\DoxyCodeLine{1711   \textcolor{keyword}{const} uword old\_n\_nonzero = sv\_parent.m.n\_nonzero;}
+\DoxyCodeLine{1712   }
+\DoxyCodeLine{1713   \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator/=}}(in\_val);}
+\DoxyCodeLine{1714   }
+\DoxyCodeLine{1715   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero > old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)++; \}}
+\DoxyCodeLine{1716   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero < old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)-\/-\/; \}}
+\DoxyCodeLine{1717   }
+\DoxyCodeLine{1718   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1719   \}}
+\DoxyCodeLine{1720 }
+\DoxyCodeLine{1721 }
+\DoxyCodeLine{1722 }
+\DoxyCodeLine{1723 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1724 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1725 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1726 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::operator++}}()}
+\DoxyCodeLine{1727   \{}
+\DoxyCodeLine{1728   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1729   }
+\DoxyCodeLine{1730   \textcolor{keyword}{const} uword old\_n\_nonzero = sv\_parent.m.n\_nonzero;}
+\DoxyCodeLine{1731   }
+\DoxyCodeLine{1732   \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator++}}();}
+\DoxyCodeLine{1733   }
+\DoxyCodeLine{1734   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero > old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)++; \}}
+\DoxyCodeLine{1735   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero < old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)-\/-\/; \}}
+\DoxyCodeLine{1736   }
+\DoxyCodeLine{1737   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1738   \}}
+\DoxyCodeLine{1739 }
+\DoxyCodeLine{1740 }
+\DoxyCodeLine{1741 }
+\DoxyCodeLine{1742 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1743 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1744 arma\_warn\_unused}
+\DoxyCodeLine{1745 eT}
+\DoxyCodeLine{1746 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::operator++}}(\textcolor{keywordtype}{int})}
+\DoxyCodeLine{1747   \{}
+\DoxyCodeLine{1748   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1749   }
+\DoxyCodeLine{1750   \textcolor{keyword}{const} uword old\_n\_nonzero = sv\_parent.m.n\_nonzero;}
+\DoxyCodeLine{1751   }
+\DoxyCodeLine{1752   \textcolor{keyword}{const} eT old\_val = \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator++}}(\textcolor{keywordtype}{int}(0));}
+\DoxyCodeLine{1753   }
+\DoxyCodeLine{1754   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero > old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)++; \}}
+\DoxyCodeLine{1755   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero < old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)-\/-\/; \}}
+\DoxyCodeLine{1756   }
+\DoxyCodeLine{1757   \textcolor{keywordflow}{return} old\_val;}
+\DoxyCodeLine{1758   \}}
+\DoxyCodeLine{1759 }
+\DoxyCodeLine{1760 }
+\DoxyCodeLine{1761 }
+\DoxyCodeLine{1762 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1763 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1764 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>}}\&}
+\DoxyCodeLine{1765 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::operator-\/-\/}}()}
+\DoxyCodeLine{1766   \{}
+\DoxyCodeLine{1767   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1768   }
+\DoxyCodeLine{1769   \textcolor{keyword}{const} uword old\_n\_nonzero = sv\_parent.m.n\_nonzero;}
+\DoxyCodeLine{1770   }
+\DoxyCodeLine{1771   \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator-\/-\/}}();}
+\DoxyCodeLine{1772   }
+\DoxyCodeLine{1773   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero > old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)++; \}}
+\DoxyCodeLine{1774   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero < old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)-\/-\/; \}}
+\DoxyCodeLine{1775   }
+\DoxyCodeLine{1776   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1777   \}}
+\DoxyCodeLine{1778 }
+\DoxyCodeLine{1779 }
+\DoxyCodeLine{1780 }
+\DoxyCodeLine{1781 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1782 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1783 arma\_warn\_unused}
+\DoxyCodeLine{1784 eT}
+\DoxyCodeLine{1785 \mbox{\hyperlink{classSpSubview__MapMat__val}{SpSubview\_MapMat\_val<eT>::operator-\/-\/}}(\textcolor{keywordtype}{int})}
+\DoxyCodeLine{1786   \{}
+\DoxyCodeLine{1787   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1788   }
+\DoxyCodeLine{1789   \textcolor{keyword}{const} uword old\_n\_nonzero = sv\_parent.m.n\_nonzero;}
+\DoxyCodeLine{1790   }
+\DoxyCodeLine{1791   \textcolor{keyword}{const} eT old\_val = \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>::operator-\/-\/}}(\textcolor{keywordtype}{int}(0));}
+\DoxyCodeLine{1792   }
+\DoxyCodeLine{1793   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero > old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)++; \}}
+\DoxyCodeLine{1794   \textcolor{keywordflow}{if}(sv\_parent.m.n\_nonzero < old\_n\_nonzero)  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(sv\_parent.n\_nonzero)-\/-\/; \}}
+\DoxyCodeLine{1795   }
+\DoxyCodeLine{1796   \textcolor{keywordflow}{return} old\_val;}
+\DoxyCodeLine{1797   \}}
+\DoxyCodeLine{1798 }
+\DoxyCodeLine{1799 }
+\DoxyCodeLine{1800 }
+
+\end{DoxyCode}

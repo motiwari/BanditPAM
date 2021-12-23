@@ -1,0 +1,66 @@
+\hypertarget{op__var__bones_8hpp_source}{}\doxysection{op\+\_\+var\+\_\+bones.\+hpp}
+\label{op__var__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_var\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_var\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classop__var}{op\_var}}}
+\DoxyCodeLine{24   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__xvec}{traits\_op\_xvec}}}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   \textcolor{keyword}{public}:}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{29   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__op__var_ga3b43d88759105540d5591ddecc6b633a}{apply}}(\mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_var>}}\& in);}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{comment}{//}}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{35   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} get\_pod\_type<eT>::result var\_vec(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}\& X, \textcolor{keyword}{const} uword norm\_type = 0);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{38   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} get\_pod\_type<eT>::result var\_vec(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__row}{subview\_row<eT>}}\& X, \textcolor{keyword}{const} uword norm\_type = 0);}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{41   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::pod\_type var\_vec(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X, \textcolor{keyword}{const} uword norm\_type = 0);}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{comment}{//}}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{47   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT \mbox{\hyperlink{group__op__var_gac39045459fe8d8a8c1657b4e3a2c9e8a}{direct\_var}}(\textcolor{keyword}{const} eT* \textcolor{keyword}{const} X, \textcolor{keyword}{const} uword N, \textcolor{keyword}{const} uword norm\_type = 0);}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{50   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT \mbox{\hyperlink{group__op__var_gabf08427e0721b1176eb8ce41db0b79fb}{direct\_var\_robust}}(\textcolor{keyword}{const} eT* \textcolor{keyword}{const} X, \textcolor{keyword}{const} uword N, \textcolor{keyword}{const} uword norm\_type = 0);}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   }
+\DoxyCodeLine{53   \textcolor{comment}{//}}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{56   \textcolor{keyword}{inline} \textcolor{keyword}{static}  T \mbox{\hyperlink{group__op__var_gac39045459fe8d8a8c1657b4e3a2c9e8a}{direct\_var}}(\textcolor{keyword}{const} std::complex<T>* \textcolor{keyword}{const} X, \textcolor{keyword}{const} uword N, \textcolor{keyword}{const} uword norm\_type = 0);}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{59   \textcolor{keyword}{inline} \textcolor{keyword}{static}  T \mbox{\hyperlink{group__op__var_gabf08427e0721b1176eb8ce41db0b79fb}{direct\_var\_robust}}(\textcolor{keyword}{const} std::complex<T>* \textcolor{keyword}{const} X, \textcolor{keyword}{const} uword N, \textcolor{keyword}{const} uword norm\_type = 0);}
+\DoxyCodeLine{60   \};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+
+\end{DoxyCode}

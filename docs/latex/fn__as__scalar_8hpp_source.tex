@@ -1,0 +1,417 @@
+\hypertarget{fn__as__scalar_8hpp_source}{}\doxysection{fn\+\_\+as\+\_\+scalar.\+hpp}
+\label{fn__as__scalar_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_as\_scalar.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_as\_scalar.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<uword N>}
+\DoxyCodeLine{23 \textcolor{keyword}{struct }\mbox{\hyperlink{structas__scalar__redirect}{as\_scalar\_redirect}}}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{26   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::elem\_type apply(\textcolor{keyword}{const} T1\& X);}
+\DoxyCodeLine{27   \};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{32 \textcolor{keyword}{struct }\mbox{\hyperlink{structas__scalar__redirect}{as\_scalar\_redirect}}<2>}
+\DoxyCodeLine{33   \{}
+\DoxyCodeLine{34   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{35   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::elem\_type apply(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}\& X);}
+\DoxyCodeLine{36   \};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{40 \textcolor{keyword}{struct }\mbox{\hyperlink{structas__scalar__redirect}{as\_scalar\_redirect}}<3>}
+\DoxyCodeLine{41   \{}
+\DoxyCodeLine{42   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{43   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::elem\_type apply(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue}}< \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_times>}}, T3, \mbox{\hyperlink{classglue__times}{glue\_times}}>\& X);}
+\DoxyCodeLine{44   \};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{template}<uword N>}
+\DoxyCodeLine{49 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{50 \textcolor{keyword}{inline}}
+\DoxyCodeLine{51 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{52 \mbox{\hyperlink{structas__scalar__redirect}{as\_scalar\_redirect<N>::apply}}(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{53   \{}
+\DoxyCodeLine{54   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X);}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   arma\_debug\_check( (P.get\_n\_elem() != 1), \textcolor{stringliteral}{"{}as\_scalar(): expression must evaluate to exactly one element"{}} );}
+\DoxyCodeLine{59   }
+\DoxyCodeLine{60   \textcolor{keywordflow}{return} (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}}) ? P.at(0,0) : P[0];}
+\DoxyCodeLine{61   \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{66 \textcolor{keyword}{inline}}
+\DoxyCodeLine{67 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{68 \mbox{\hyperlink{structas__scalar__redirect}{as\_scalar\_redirect<2>::apply}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_times>}}\& X)}
+\DoxyCodeLine{69   \{}
+\DoxyCodeLine{70   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{comment}{// T1 must result in a matrix with one row}}
+\DoxyCodeLine{75   \textcolor{comment}{// T2 must result in a matrix with one column}}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} has\_all\_mat = (\mbox{\hyperlink{structis__Mat}{is\_Mat<T1>::value}} || \mbox{\hyperlink{structis__Mat__trans}{is\_Mat\_trans<T1>::value}}) \&\& (\mbox{\hyperlink{structis__Mat}{is\_Mat<T2>::value}} || \mbox{\hyperlink{structis__Mat__trans}{is\_Mat\_trans<T2>::value}});}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} || \mbox{\hyperlink{classProxy}{Proxy<T2>::use\_at}});}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_partial\_unwrap = (has\_all\_mat || use\_at);}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \textcolor{keywordflow}{if}(do\_partial\_unwrap)}
+\DoxyCodeLine{84     \{}
+\DoxyCodeLine{85     \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>}} tmp1(X.A);}
+\DoxyCodeLine{86     \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>}} tmp2(X.B);}
+\DoxyCodeLine{87     }
+\DoxyCodeLine{88     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::stored\_type}} TA;}
+\DoxyCodeLine{89     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::stored\_type}} TB;}
+\DoxyCodeLine{90     }
+\DoxyCodeLine{91     \textcolor{keyword}{const} TA\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{92     \textcolor{keyword}{const} TB\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{93     }
+\DoxyCodeLine{94     \textcolor{keyword}{const} uword A\_n\_rows = (tmp1.do\_trans == \textcolor{keyword}{false}) ? (TA::is\_row ? 1 : \mbox{\hyperlink{structA}{A}}.n\_rows) : (TA::is\_col ? 1 : \mbox{\hyperlink{structA}{A}}.n\_cols);}
+\DoxyCodeLine{95     \textcolor{keyword}{const} uword A\_n\_cols = (tmp1.do\_trans == \textcolor{keyword}{false}) ? (TA::is\_col ? 1 : \mbox{\hyperlink{structA}{A}}.n\_cols) : (TA::is\_row ? 1 : \mbox{\hyperlink{structA}{A}}.n\_rows);}
+\DoxyCodeLine{96     }
+\DoxyCodeLine{97     \textcolor{keyword}{const} uword B\_n\_rows = (tmp2.do\_trans == \textcolor{keyword}{false}) ? (TB::is\_row ? 1 : \mbox{\hyperlink{structB}{B}}.n\_rows) : (TB::is\_col ? 1 : \mbox{\hyperlink{structB}{B}}.n\_cols);}
+\DoxyCodeLine{98     \textcolor{keyword}{const} uword B\_n\_cols = (tmp2.do\_trans == \textcolor{keyword}{false}) ? (TB::is\_col ? 1 : \mbox{\hyperlink{structB}{B}}.n\_cols) : (TB::is\_row ? 1 : \mbox{\hyperlink{structB}{B}}.n\_rows);}
+\DoxyCodeLine{99     }
+\DoxyCodeLine{100     arma\_debug\_check( (A\_n\_rows != 1) || (B\_n\_cols != 1) || (A\_n\_cols != B\_n\_rows), \textcolor{stringliteral}{"{}as\_scalar(): incompatible dimensions"{}} );}
+\DoxyCodeLine{101     }
+\DoxyCodeLine{102     \textcolor{keyword}{const} eT val = \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{op\_dot::direct\_dot}}(\mbox{\hyperlink{structA}{A}}.n\_elem, \mbox{\hyperlink{structA}{A}}.memptr(), \mbox{\hyperlink{structB}{B}}.memptr());}
+\DoxyCodeLine{103     }
+\DoxyCodeLine{104     \textcolor{keywordflow}{return} (tmp1.do\_times || tmp2.do\_times) ? (val * tmp1.get\_val() * tmp2.get\_val()) : val;}
+\DoxyCodeLine{105     \}}
+\DoxyCodeLine{106   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{107     \{}
+\DoxyCodeLine{108     \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} PA(X.A);}
+\DoxyCodeLine{109     \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}} PB(X.B);}
+\DoxyCodeLine{110     }
+\DoxyCodeLine{111     arma\_debug\_check}
+\DoxyCodeLine{112       (}
+\DoxyCodeLine{113       (PA.get\_n\_rows() != 1) || (PB.get\_n\_cols() != 1) || (PA.get\_n\_cols() != PB.get\_n\_rows()),}
+\DoxyCodeLine{114       \textcolor{stringliteral}{"{}as\_scalar(): incompatible dimensions"{}}}
+\DoxyCodeLine{115       );}
+\DoxyCodeLine{116     }
+\DoxyCodeLine{117     \textcolor{keywordflow}{return} op\_dot::apply\_proxy(PA,PB);}
+\DoxyCodeLine{118     \}}
+\DoxyCodeLine{119   \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{124 \textcolor{keyword}{inline}}
+\DoxyCodeLine{125 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{126 \mbox{\hyperlink{structas__scalar__redirect}{as\_scalar\_redirect<3>::apply}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue}}< \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_times>}}, T3, \mbox{\hyperlink{classglue__times}{glue\_times}} >\& X)}
+\DoxyCodeLine{127   \{}
+\DoxyCodeLine{128   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   \textcolor{comment}{// T1 * T2 must result in a matrix with one row}}
+\DoxyCodeLine{133   \textcolor{comment}{// T3 must result in a matrix with one column}}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} strip\_inv    <T2           >::stored\_type T2\_stripped\_1;}
+\DoxyCodeLine{136   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} strip\_diagmat<T2\_stripped\_1>::stored\_type T2\_stripped\_2;}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__inv}{strip\_inv    <T2>}}            strip1(X.A.B);}
+\DoxyCodeLine{139   \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T2\_stripped\_1>}} strip2(strip1.M);}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} tmp2\_do\_inv     = strip1.do\_inv;}
+\DoxyCodeLine{142   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} tmp2\_do\_diagmat = strip2.do\_diagmat;}
+\DoxyCodeLine{143   }
+\DoxyCodeLine{144   \textcolor{keywordflow}{if}(tmp2\_do\_diagmat == \textcolor{keyword}{false})}
+\DoxyCodeLine{145     \{}
+\DoxyCodeLine{146     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(X);}
+\DoxyCodeLine{147     }
+\DoxyCodeLine{148     arma\_debug\_check( (tmp.n\_elem != 1), \textcolor{stringliteral}{"{}as\_scalar(): expression must evaluate to exactly one element"{}} );}
+\DoxyCodeLine{149     }
+\DoxyCodeLine{150     \textcolor{keywordflow}{return} tmp[0];}
+\DoxyCodeLine{151     \}}
+\DoxyCodeLine{152   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{153     \{}
+\DoxyCodeLine{154     \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>}}            tmp1(X.A.A);}
+\DoxyCodeLine{155     \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2\_stripped\_2>}} tmp2(strip2.M);}
+\DoxyCodeLine{156     \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>}}            tmp3(X.B);}
+\DoxyCodeLine{157     }
+\DoxyCodeLine{158     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{159     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{160     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& C = tmp3.M;}
+\DoxyCodeLine{161     }
+\DoxyCodeLine{162     \textcolor{keyword}{const} uword A\_n\_rows = (tmp1.do\_trans == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structA}{A}}.n\_rows : \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{163     \textcolor{keyword}{const} uword A\_n\_cols = (tmp1.do\_trans == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structA}{A}}.n\_cols : \mbox{\hyperlink{structA}{A}}.n\_rows;}
+\DoxyCodeLine{164     }
+\DoxyCodeLine{165     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} B\_is\_vec = \mbox{\hyperlink{structB}{B}}.is\_vec();}
+\DoxyCodeLine{166     }
+\DoxyCodeLine{167     \textcolor{keyword}{const} uword B\_n\_rows = (B\_is\_vec) ? \mbox{\hyperlink{structB}{B}}.n\_elem : ( (tmp2.do\_trans == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structB}{B}}.n\_rows : \mbox{\hyperlink{structB}{B}}.n\_cols );}
+\DoxyCodeLine{168     \textcolor{keyword}{const} uword B\_n\_cols = (B\_is\_vec) ? \mbox{\hyperlink{structB}{B}}.n\_elem : ( (tmp2.do\_trans == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structB}{B}}.n\_cols : \mbox{\hyperlink{structB}{B}}.n\_rows );}
+\DoxyCodeLine{169     }
+\DoxyCodeLine{170     \textcolor{keyword}{const} uword C\_n\_rows = (tmp3.do\_trans == \textcolor{keyword}{false}) ? C.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} : C.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{171     \textcolor{keyword}{const} uword C\_n\_cols = (tmp3.do\_trans == \textcolor{keyword}{false}) ? C.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}} : C.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{172     }
+\DoxyCodeLine{173     \textcolor{keyword}{const} eT val = tmp1.get\_val() * tmp2.get\_val() * tmp3.get\_val();}
+\DoxyCodeLine{174     }
+\DoxyCodeLine{175     arma\_debug\_check}
+\DoxyCodeLine{176       (}
+\DoxyCodeLine{177       (A\_n\_rows != 1)        ||}
+\DoxyCodeLine{178       (C\_n\_cols != 1)        ||}
+\DoxyCodeLine{179       (A\_n\_cols != B\_n\_rows) ||}
+\DoxyCodeLine{180       (B\_n\_cols != C\_n\_rows)}
+\DoxyCodeLine{181       ,}
+\DoxyCodeLine{182       \textcolor{stringliteral}{"{}as\_scalar(): incompatible dimensions"{}}}
+\DoxyCodeLine{183       );}
+\DoxyCodeLine{184     }
+\DoxyCodeLine{185     }
+\DoxyCodeLine{186     \textcolor{keywordflow}{if}(B\_is\_vec)}
+\DoxyCodeLine{187       \{}
+\DoxyCodeLine{188       \textcolor{keywordflow}{if}(tmp2\_do\_inv)}
+\DoxyCodeLine{189         \{}
+\DoxyCodeLine{190         \textcolor{keywordflow}{return} val * op\_dotext::direct\_rowvec\_invdiagvec\_colvec(\mbox{\hyperlink{structA}{A}}.mem, \mbox{\hyperlink{structB}{B}}, C.\mbox{\hyperlink{classMat_a14a6badc8098d810e5decb22272a07b0}{mem}});}
+\DoxyCodeLine{191         \}}
+\DoxyCodeLine{192       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{193         \{}
+\DoxyCodeLine{194         \textcolor{keywordflow}{return} val * \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{op\_dot::direct\_dot}}(\mbox{\hyperlink{structA}{A}}.n\_elem, \mbox{\hyperlink{structA}{A}}.mem, \mbox{\hyperlink{structB}{B}}.mem, C.\mbox{\hyperlink{classMat_a14a6badc8098d810e5decb22272a07b0}{mem}});}
+\DoxyCodeLine{195         \}}
+\DoxyCodeLine{196       \}}
+\DoxyCodeLine{197     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{198       \{}
+\DoxyCodeLine{199       \textcolor{keywordflow}{if}(tmp2\_do\_inv)}
+\DoxyCodeLine{200         \{}
+\DoxyCodeLine{201         \textcolor{keywordflow}{return} val * op\_dotext::direct\_rowvec\_invdiagmat\_colvec(\mbox{\hyperlink{structA}{A}}.mem, \mbox{\hyperlink{structB}{B}}, C.\mbox{\hyperlink{classMat_a14a6badc8098d810e5decb22272a07b0}{mem}});}
+\DoxyCodeLine{202         \}}
+\DoxyCodeLine{203       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{204         \{}
+\DoxyCodeLine{205         \textcolor{keywordflow}{return} val * op\_dotext::direct\_rowvec\_diagmat\_colvec(\mbox{\hyperlink{structA}{A}}.mem, \mbox{\hyperlink{structB}{B}}, C.\mbox{\hyperlink{classMat_a14a6badc8098d810e5decb22272a07b0}{mem}});}
+\DoxyCodeLine{206         \}}
+\DoxyCodeLine{207       \}}
+\DoxyCodeLine{208     \}}
+\DoxyCodeLine{209   \}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{214 \textcolor{keyword}{inline}}
+\DoxyCodeLine{215 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{216 as\_scalar\_diag(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{217   \{}
+\DoxyCodeLine{218   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{219   }
+\DoxyCodeLine{220   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}}   tmp(X.get\_ref());}
+\DoxyCodeLine{223   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = tmp.M;}
+\DoxyCodeLine{224   }
+\DoxyCodeLine{225   arma\_debug\_check( (\mbox{\hyperlink{structA}{A}}.n\_elem != 1), \textcolor{stringliteral}{"{}as\_scalar(): expression must evaluate to exactly one element"{}} );}
+\DoxyCodeLine{226   }
+\DoxyCodeLine{227   \textcolor{keywordflow}{return} \mbox{\hyperlink{structA}{A}}.mem[0];}
+\DoxyCodeLine{228   \}}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{233 \textcolor{keyword}{inline}}
+\DoxyCodeLine{234 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{235 as\_scalar\_diag(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue}}< \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_times\_diag>}}, T3, \mbox{\hyperlink{classglue__times}{glue\_times}} >\& X)}
+\DoxyCodeLine{236   \{}
+\DoxyCodeLine{237   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{238   }
+\DoxyCodeLine{239   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{240   }
+\DoxyCodeLine{241   \textcolor{comment}{// T1 * T2 must result in a matrix with one row}}
+\DoxyCodeLine{242   \textcolor{comment}{// T3 must result in a matrix with one column}}
+\DoxyCodeLine{243   }
+\DoxyCodeLine{244   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} strip\_diagmat<T2>::stored\_type T2\_stripped;}
+\DoxyCodeLine{245   }
+\DoxyCodeLine{246   \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T2>}} strip(X.A.B);}
+\DoxyCodeLine{247   }
+\DoxyCodeLine{248   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>}}          tmp1(X.A.A);}
+\DoxyCodeLine{249   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2\_stripped>}} tmp2(strip.M);}
+\DoxyCodeLine{250   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>}}          tmp3(X.B);}
+\DoxyCodeLine{251   }
+\DoxyCodeLine{252   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{253   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{254   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& C = tmp3.M;}
+\DoxyCodeLine{255   }
+\DoxyCodeLine{256   }
+\DoxyCodeLine{257   \textcolor{keyword}{const} uword A\_n\_rows = (tmp1.do\_trans == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structA}{A}}.n\_rows : \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{258   \textcolor{keyword}{const} uword A\_n\_cols = (tmp1.do\_trans == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structA}{A}}.n\_cols : \mbox{\hyperlink{structA}{A}}.n\_rows;}
+\DoxyCodeLine{259   }
+\DoxyCodeLine{260   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} B\_is\_vec = \mbox{\hyperlink{structB}{B}}.is\_vec();}
+\DoxyCodeLine{261   }
+\DoxyCodeLine{262   \textcolor{keyword}{const} uword B\_n\_rows = (B\_is\_vec) ? \mbox{\hyperlink{structB}{B}}.n\_elem : ( (tmp2.do\_trans == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structB}{B}}.n\_rows : \mbox{\hyperlink{structB}{B}}.n\_cols );}
+\DoxyCodeLine{263   \textcolor{keyword}{const} uword B\_n\_cols = (B\_is\_vec) ? \mbox{\hyperlink{structB}{B}}.n\_elem : ( (tmp2.do\_trans == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structB}{B}}.n\_cols : \mbox{\hyperlink{structB}{B}}.n\_rows );}
+\DoxyCodeLine{264   }
+\DoxyCodeLine{265   \textcolor{keyword}{const} uword C\_n\_rows = (tmp3.do\_trans == \textcolor{keyword}{false}) ? C.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} : C.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{266   \textcolor{keyword}{const} uword C\_n\_cols = (tmp3.do\_trans == \textcolor{keyword}{false}) ? C.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}} : C.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{267   }
+\DoxyCodeLine{268   \textcolor{keyword}{const} eT val = tmp1.get\_val() * tmp2.get\_val() * tmp3.get\_val();}
+\DoxyCodeLine{269   }
+\DoxyCodeLine{270   arma\_debug\_check}
+\DoxyCodeLine{271     (}
+\DoxyCodeLine{272     (A\_n\_rows != 1)        ||}
+\DoxyCodeLine{273     (C\_n\_cols != 1)        ||}
+\DoxyCodeLine{274     (A\_n\_cols != B\_n\_rows) ||}
+\DoxyCodeLine{275     (B\_n\_cols != C\_n\_rows)}
+\DoxyCodeLine{276     ,}
+\DoxyCodeLine{277     \textcolor{stringliteral}{"{}as\_scalar(): incompatible dimensions"{}}}
+\DoxyCodeLine{278     );}
+\DoxyCodeLine{279   }
+\DoxyCodeLine{280   }
+\DoxyCodeLine{281   \textcolor{keywordflow}{if}(B\_is\_vec)}
+\DoxyCodeLine{282     \{}
+\DoxyCodeLine{283     \textcolor{keywordflow}{return} val * \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{op\_dot::direct\_dot}}(\mbox{\hyperlink{structA}{A}}.n\_elem, \mbox{\hyperlink{structA}{A}}.mem, \mbox{\hyperlink{structB}{B}}.mem, C.\mbox{\hyperlink{classMat_a14a6badc8098d810e5decb22272a07b0}{mem}});}
+\DoxyCodeLine{284     \}}
+\DoxyCodeLine{285   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{286     \{}
+\DoxyCodeLine{287     \textcolor{keywordflow}{return} val * op\_dotext::direct\_rowvec\_diagmat\_colvec(\mbox{\hyperlink{structA}{A}}.mem, \mbox{\hyperlink{structB}{B}}, C.\mbox{\hyperlink{classMat_a14a6badc8098d810e5decb22272a07b0}{mem}});}
+\DoxyCodeLine{288     \}}
+\DoxyCodeLine{289   \}}
+\DoxyCodeLine{290 }
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{294 arma\_warn\_unused}
+\DoxyCodeLine{295 arma\_inline}
+\DoxyCodeLine{296 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{297 as\_scalar(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_times>}}\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{298   \{}
+\DoxyCodeLine{299   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{300   arma\_ignore(junk);}
+\DoxyCodeLine{301   }
+\DoxyCodeLine{302   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__glue__times__diag}{is\_glue\_times\_diag<T1>::value}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{303     \{}
+\DoxyCodeLine{304     \textcolor{keyword}{constexpr} uword N\_mat = 1 + \mbox{\hyperlink{structdepth__lhs}{depth\_lhs< glue\_times, Glue<T1,T2,glue\_times>}} >::num;}
+\DoxyCodeLine{305     }
+\DoxyCodeLine{306     arma\_extra\_debug\_print(\mbox{\hyperlink{classarma__str_1_1format}{arma\_str::format}}(\textcolor{stringliteral}{"{}N\_mat = \%u"{}}) \% N\_mat);}
+\DoxyCodeLine{307     }
+\DoxyCodeLine{308     \textcolor{keywordflow}{return} \mbox{\hyperlink{structas__scalar__redirect}{as\_scalar\_redirect<N\_mat>::apply}}(X);}
+\DoxyCodeLine{309     \}}
+\DoxyCodeLine{310   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{311     \{}
+\DoxyCodeLine{312     \textcolor{keywordflow}{return} as\_scalar\_diag(X);}
+\DoxyCodeLine{313     \}}
+\DoxyCodeLine{314   \}}
+\DoxyCodeLine{315 }
+\DoxyCodeLine{316 }
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{319 arma\_warn\_unused}
+\DoxyCodeLine{320 \textcolor{keyword}{inline}}
+\DoxyCodeLine{321 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{322 as\_scalar(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{323   \{}
+\DoxyCodeLine{324   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{325   }
+\DoxyCodeLine{326   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{327   }
+\DoxyCodeLine{328   arma\_debug\_check( (P.get\_n\_elem() != 1), \textcolor{stringliteral}{"{}as\_scalar(): expression must evaluate to exactly one element"{}} );}
+\DoxyCodeLine{329   }
+\DoxyCodeLine{330   \textcolor{keywordflow}{return} (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}}) ? P.at(0,0) : P[0];}
+\DoxyCodeLine{331   \}}
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333 }
+\DoxyCodeLine{334 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{335 arma\_warn\_unused}
+\DoxyCodeLine{336 \textcolor{keyword}{inline}}
+\DoxyCodeLine{337 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{338 as\_scalar(\textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<T1, gen\_randu>}}\& X)}
+\DoxyCodeLine{339   \{}
+\DoxyCodeLine{340   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{341   }
+\DoxyCodeLine{342   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{343   }
+\DoxyCodeLine{344   arma\_debug\_check( ((X.n\_rows != 1) || (X.n\_cols != 1)), \textcolor{stringliteral}{"{}as\_scalar(): expression must evaluate to exactly one element"{}} );}
+\DoxyCodeLine{345   }
+\DoxyCodeLine{346   \textcolor{keywordflow}{return} eT(\mbox{\hyperlink{structarma__rng_1_1randu}{arma\_rng::randu<eT>}}());}
+\DoxyCodeLine{347   \}}
+\DoxyCodeLine{348 }
+\DoxyCodeLine{349 }
+\DoxyCodeLine{350 }
+\DoxyCodeLine{351 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{352 arma\_warn\_unused}
+\DoxyCodeLine{353 \textcolor{keyword}{inline}}
+\DoxyCodeLine{354 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{355 as\_scalar(\textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<T1, gen\_randn>}}\& X)}
+\DoxyCodeLine{356   \{}
+\DoxyCodeLine{357   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{358   }
+\DoxyCodeLine{359   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{360   }
+\DoxyCodeLine{361   arma\_debug\_check( ((X.n\_rows != 1) || (X.n\_cols != 1)), \textcolor{stringliteral}{"{}as\_scalar(): expression must evaluate to exactly one element"{}} );}
+\DoxyCodeLine{362   }
+\DoxyCodeLine{363   \textcolor{keywordflow}{return} eT(\mbox{\hyperlink{structarma__rng_1_1randn}{arma\_rng::randn<eT>}}());}
+\DoxyCodeLine{364   \}}
+\DoxyCodeLine{365 }
+\DoxyCodeLine{366 }
+\DoxyCodeLine{367 }
+\DoxyCodeLine{368 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{369 arma\_warn\_unused}
+\DoxyCodeLine{370 \textcolor{keyword}{inline}}
+\DoxyCodeLine{371 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{372 as\_scalar(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{373   \{}
+\DoxyCodeLine{374   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{375   }
+\DoxyCodeLine{376   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{377   }
+\DoxyCodeLine{378   arma\_debug\_check( (P.get\_n\_elem() != 1), \textcolor{stringliteral}{"{}as\_scalar(): expression must evaluate to exactly one element"{}} );}
+\DoxyCodeLine{379   }
+\DoxyCodeLine{380   \textcolor{keywordflow}{return} (\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}}) ? P.at(0,0,0) : P[0];}
+\DoxyCodeLine{381   \}}
+\DoxyCodeLine{382 }
+\DoxyCodeLine{383 }
+\DoxyCodeLine{384 }
+\DoxyCodeLine{385 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{386 arma\_warn\_unused}
+\DoxyCodeLine{387 arma\_inline}
+\DoxyCodeLine{388 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__scalar__only}{arma\_scalar\_only<T>::result}}}
+\DoxyCodeLine{389 as\_scalar(\textcolor{keyword}{const} T\& x)}
+\DoxyCodeLine{390   \{}
+\DoxyCodeLine{391   \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{392   \}}
+\DoxyCodeLine{393 }
+\DoxyCodeLine{394 }
+\DoxyCodeLine{395 }
+\DoxyCodeLine{396 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{397 arma\_warn\_unused}
+\DoxyCodeLine{398 \textcolor{keyword}{inline}}
+\DoxyCodeLine{399 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{400 as\_scalar(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type, T1>}}\& X)}
+\DoxyCodeLine{401   \{}
+\DoxyCodeLine{402   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{403   }
+\DoxyCodeLine{404   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__spmat}{unwrap\_spmat<T1>}}  tmp(X.get\_ref());}
+\DoxyCodeLine{405   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \mbox{\hyperlink{structA}{A}}    = tmp.M;}
+\DoxyCodeLine{406   }
+\DoxyCodeLine{407   arma\_debug\_check( (\mbox{\hyperlink{structA}{A}}.n\_elem != 1), \textcolor{stringliteral}{"{}as\_scalar(): expression must evaluate to exactly one element"{}} );}
+\DoxyCodeLine{408   }
+\DoxyCodeLine{409   \textcolor{keywordflow}{return} \mbox{\hyperlink{structA}{A}}.at(0,0);}
+\DoxyCodeLine{410   \}}
+\DoxyCodeLine{411 }
+\DoxyCodeLine{412 }
+\DoxyCodeLine{413 }
+
+\end{DoxyCode}

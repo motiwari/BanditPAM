@@ -1,0 +1,318 @@
+\hypertarget{Gen__meat_8hpp_source}{}\doxysection{Gen\+\_\+meat.\+hpp}
+\label{Gen__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/Gen\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/Gen\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{23 arma\_inline}
+\DoxyCodeLine{24 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::Gen}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols)}
+\DoxyCodeLine{25   : n\_rows(in\_n\_rows)}
+\DoxyCodeLine{26   , n\_cols(in\_n\_cols)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   \}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{34 arma\_inline}
+\DoxyCodeLine{35 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::\string~Gen}}()}
+\DoxyCodeLine{36   \{}
+\DoxyCodeLine{37   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{38   \}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{43 arma\_inline}
+\DoxyCodeLine{44 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{45 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::operator[]}}(\textcolor{keyword}{const} uword ii)\textcolor{keyword}{ const}}
+\DoxyCodeLine{46 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{47   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_eye>::yes}})}
+\DoxyCodeLine{50     \{}
+\DoxyCodeLine{51     \textcolor{keywordflow}{return} ((ii \% n\_rows) == (ii / n\_rows)) ? eT(1) : eT(0);}
+\DoxyCodeLine{52     \}}
+\DoxyCodeLine{53   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{54     \{}
+\DoxyCodeLine{55     \textcolor{keywordflow}{return} (*this).generate();}
+\DoxyCodeLine{56     \}}
+\DoxyCodeLine{57   \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{62 arma\_inline}
+\DoxyCodeLine{63 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{64 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::at}}(\textcolor{keyword}{const} uword row, \textcolor{keyword}{const} uword col)\textcolor{keyword}{ const}}
+\DoxyCodeLine{65 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{66   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{67   }
+\DoxyCodeLine{68   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_eye>::yes}})}
+\DoxyCodeLine{69     \{}
+\DoxyCodeLine{70     \textcolor{keywordflow}{return} (row == col) ? eT(1) : eT(0);}
+\DoxyCodeLine{71     \}}
+\DoxyCodeLine{72   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{73     \{}
+\DoxyCodeLine{74     \textcolor{keywordflow}{return} (*this).generate();}
+\DoxyCodeLine{75     \}}
+\DoxyCodeLine{76   \}}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{81 arma\_inline}
+\DoxyCodeLine{82 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{83 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::at\_alt}}(\textcolor{keyword}{const} uword ii)\textcolor{keyword}{ const}}
+\DoxyCodeLine{84 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{85   \textcolor{keywordflow}{return} operator[](ii);}
+\DoxyCodeLine{86   \}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{91 \textcolor{keyword}{inline}}
+\DoxyCodeLine{92 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{93 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::apply}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out)\textcolor{keyword}{ const}}
+\DoxyCodeLine{94 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{95   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{comment}{// NOTE: we're assuming that the matrix has already been set to the correct size;}}
+\DoxyCodeLine{98   \textcolor{comment}{// this is done by either the Mat contructor or operator=()}}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100        \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_eye  >::yes}}) \{ out.eye();   \}}
+\DoxyCodeLine{101   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_ones >::yes}}) \{ out.ones();  \}}
+\DoxyCodeLine{102   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_zeros>::yes}}) \{ out.zeros(); \}}
+\DoxyCodeLine{103   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_randu>::yes}}) \{ out.randu(); \}}
+\DoxyCodeLine{104   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_randn>::yes}}) \{ out.randn(); \}}
+\DoxyCodeLine{105   \}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{110 \textcolor{keyword}{inline}}
+\DoxyCodeLine{111 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{112 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::apply\_inplace\_plus}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out)\textcolor{keyword}{ const}}
+\DoxyCodeLine{113 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{114   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   arma\_debug\_assert\_same\_size(out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, out.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}, n\_rows, n\_cols, \textcolor{stringliteral}{"{}addition"{}});}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   }
+\DoxyCodeLine{121   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_eye>::yes}})}
+\DoxyCodeLine{122     \{}
+\DoxyCodeLine{123     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(n\_rows, n\_cols);}
+\DoxyCodeLine{124     }
+\DoxyCodeLine{125     \textcolor{keywordflow}{for}(uword iq=0; iq < N; ++iq)}
+\DoxyCodeLine{126       \{}
+\DoxyCodeLine{127       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(iq,iq) += eT(1);}
+\DoxyCodeLine{128       \}}
+\DoxyCodeLine{129     \}}
+\DoxyCodeLine{130   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{131     \{}
+\DoxyCodeLine{132           eT*   out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{133     \textcolor{keyword}{const} uword n\_elem  = out.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{134     }
+\DoxyCodeLine{135     uword iq,jq;}
+\DoxyCodeLine{136     \textcolor{keywordflow}{for}(iq=0, jq=1; jq < n\_elem; iq+=2, jq+=2)}
+\DoxyCodeLine{137       \{}
+\DoxyCodeLine{138       \textcolor{keyword}{const} eT tmp\_i = (*this).generate();}
+\DoxyCodeLine{139       \textcolor{keyword}{const} eT tmp\_j = (*this).generate();}
+\DoxyCodeLine{140       }
+\DoxyCodeLine{141       out\_mem[iq] += tmp\_i;}
+\DoxyCodeLine{142       out\_mem[jq] += tmp\_j;}
+\DoxyCodeLine{143       \}}
+\DoxyCodeLine{144     }
+\DoxyCodeLine{145     \textcolor{keywordflow}{if}(iq < n\_elem)}
+\DoxyCodeLine{146       \{}
+\DoxyCodeLine{147       out\_mem[iq] += (*this).generate();}
+\DoxyCodeLine{148       \}}
+\DoxyCodeLine{149     \}}
+\DoxyCodeLine{150   \}}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{156 \textcolor{keyword}{inline}}
+\DoxyCodeLine{157 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{158 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::apply\_inplace\_minus}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out)\textcolor{keyword}{ const}}
+\DoxyCodeLine{159 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{160   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162   arma\_debug\_assert\_same\_size(out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, out.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}, n\_rows, n\_cols, \textcolor{stringliteral}{"{}subtraction"{}});}
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{165   }
+\DoxyCodeLine{166   }
+\DoxyCodeLine{167   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_eye>::yes}})}
+\DoxyCodeLine{168     \{}
+\DoxyCodeLine{169     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(n\_rows, n\_cols);}
+\DoxyCodeLine{170     }
+\DoxyCodeLine{171     \textcolor{keywordflow}{for}(uword iq=0; iq < N; ++iq)}
+\DoxyCodeLine{172       \{}
+\DoxyCodeLine{173       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(iq,iq) -\/= eT(1);}
+\DoxyCodeLine{174       \}}
+\DoxyCodeLine{175     \}}
+\DoxyCodeLine{176   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{177     \{}
+\DoxyCodeLine{178           eT*   out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{179     \textcolor{keyword}{const} uword n\_elem  = out.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{180     }
+\DoxyCodeLine{181     uword iq,jq;}
+\DoxyCodeLine{182     \textcolor{keywordflow}{for}(iq=0, jq=1; jq < n\_elem; iq+=2, jq+=2)}
+\DoxyCodeLine{183       \{}
+\DoxyCodeLine{184       \textcolor{keyword}{const} eT tmp\_i = (*this).generate();}
+\DoxyCodeLine{185       \textcolor{keyword}{const} eT tmp\_j = (*this).generate();}
+\DoxyCodeLine{186       }
+\DoxyCodeLine{187       out\_mem[iq] -\/= tmp\_i;}
+\DoxyCodeLine{188       out\_mem[jq] -\/= tmp\_j;}
+\DoxyCodeLine{189       \}}
+\DoxyCodeLine{190     }
+\DoxyCodeLine{191     \textcolor{keywordflow}{if}(iq < n\_elem)}
+\DoxyCodeLine{192       \{}
+\DoxyCodeLine{193       out\_mem[iq] -\/= (*this).generate();}
+\DoxyCodeLine{194       \}}
+\DoxyCodeLine{195     \}}
+\DoxyCodeLine{196   \}}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{202 \textcolor{keyword}{inline}}
+\DoxyCodeLine{203 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{204 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::apply\_inplace\_schur}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out)\textcolor{keyword}{ const}}
+\DoxyCodeLine{205 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{206   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{207   }
+\DoxyCodeLine{208   arma\_debug\_assert\_same\_size(out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, out.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}, n\_rows, n\_cols, \textcolor{stringliteral}{"{}element-\/wise multiplication"{}});}
+\DoxyCodeLine{209   }
+\DoxyCodeLine{210   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   }
+\DoxyCodeLine{213   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_eye>::yes}})}
+\DoxyCodeLine{214     \{}
+\DoxyCodeLine{215     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(n\_rows, n\_cols);}
+\DoxyCodeLine{216     }
+\DoxyCodeLine{217     \textcolor{keywordflow}{for}(uword iq=0; iq < N; ++iq)}
+\DoxyCodeLine{218       \{}
+\DoxyCodeLine{219       \textcolor{keywordflow}{for}(uword row=0;    row < iq;     ++row) \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row,iq) = eT(0); \}}
+\DoxyCodeLine{220       \textcolor{keywordflow}{for}(uword row=iq+1; row < n\_rows; ++row) \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row,iq) = eT(0); \}}
+\DoxyCodeLine{221       \}}
+\DoxyCodeLine{222     \}}
+\DoxyCodeLine{223   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{224     \{}
+\DoxyCodeLine{225           eT*   out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{226     \textcolor{keyword}{const} uword n\_elem  = out.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{227     }
+\DoxyCodeLine{228     uword iq,jq;}
+\DoxyCodeLine{229     \textcolor{keywordflow}{for}(iq=0, jq=1; jq < n\_elem; iq+=2, jq+=2)}
+\DoxyCodeLine{230       \{}
+\DoxyCodeLine{231       \textcolor{keyword}{const} eT tmp\_i = (*this).generate();}
+\DoxyCodeLine{232       \textcolor{keyword}{const} eT tmp\_j = (*this).generate();}
+\DoxyCodeLine{233       }
+\DoxyCodeLine{234       out\_mem[iq] *= tmp\_i;}
+\DoxyCodeLine{235       out\_mem[jq] *= tmp\_j;}
+\DoxyCodeLine{236       \}}
+\DoxyCodeLine{237     }
+\DoxyCodeLine{238     \textcolor{keywordflow}{if}(iq < n\_elem)}
+\DoxyCodeLine{239       \{}
+\DoxyCodeLine{240       out\_mem[iq] *= (*this).generate();}
+\DoxyCodeLine{241       \}}
+\DoxyCodeLine{242     \}}
+\DoxyCodeLine{243   \}}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 }
+\DoxyCodeLine{248 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{249 \textcolor{keyword}{inline}}
+\DoxyCodeLine{250 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{251 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::apply\_inplace\_div}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out)\textcolor{keyword}{ const}}
+\DoxyCodeLine{252 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{253   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{254   }
+\DoxyCodeLine{255   arma\_debug\_assert\_same\_size(out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, out.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}, n\_rows, n\_cols, \textcolor{stringliteral}{"{}element-\/wise division"{}});}
+\DoxyCodeLine{256   }
+\DoxyCodeLine{257   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{258   }
+\DoxyCodeLine{259   }
+\DoxyCodeLine{260   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_eye>::yes}})}
+\DoxyCodeLine{261     \{}
+\DoxyCodeLine{262     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(n\_rows, n\_cols);}
+\DoxyCodeLine{263     }
+\DoxyCodeLine{264     \textcolor{keywordflow}{for}(uword iq=0; iq < N; ++iq)}
+\DoxyCodeLine{265       \{}
+\DoxyCodeLine{266       \textcolor{keyword}{const} eT zero = eT(0);}
+\DoxyCodeLine{267       }
+\DoxyCodeLine{268       \textcolor{keywordflow}{for}(uword row=0;    row < iq;     ++row) \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row,iq) /= zero; \}}
+\DoxyCodeLine{269       \textcolor{keywordflow}{for}(uword row=iq+1; row < n\_rows; ++row) \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row,iq) /= zero; \}}
+\DoxyCodeLine{270       \}}
+\DoxyCodeLine{271     \}}
+\DoxyCodeLine{272   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{273     \{}
+\DoxyCodeLine{274           eT*   out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{275     \textcolor{keyword}{const} uword n\_elem  = out.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{276     }
+\DoxyCodeLine{277     uword iq,jq;}
+\DoxyCodeLine{278     \textcolor{keywordflow}{for}(iq=0, jq=1; jq < n\_elem; iq+=2, jq+=2)}
+\DoxyCodeLine{279       \{}
+\DoxyCodeLine{280       \textcolor{keyword}{const} eT tmp\_i = (*this).generate();}
+\DoxyCodeLine{281       \textcolor{keyword}{const} eT tmp\_j = (*this).generate();}
+\DoxyCodeLine{282       }
+\DoxyCodeLine{283       out\_mem[iq] /= tmp\_i;}
+\DoxyCodeLine{284       out\_mem[jq] /= tmp\_j;}
+\DoxyCodeLine{285       \}}
+\DoxyCodeLine{286     }
+\DoxyCodeLine{287     \textcolor{keywordflow}{if}(iq < n\_elem)}
+\DoxyCodeLine{288       \{}
+\DoxyCodeLine{289       out\_mem[iq] /= (*this).generate();}
+\DoxyCodeLine{290       \}}
+\DoxyCodeLine{291     \}}
+\DoxyCodeLine{292   \}}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295 }
+\DoxyCodeLine{296 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{297 \textcolor{keyword}{inline}}
+\DoxyCodeLine{298 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{299 \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>::apply}}(\mbox{\hyperlink{classsubview}{subview<typename T1::elem\_type>}}\& out)\textcolor{keyword}{ const}}
+\DoxyCodeLine{300 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{301   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{302   }
+\DoxyCodeLine{303   \textcolor{comment}{// NOTE: we're assuming that the submatrix has the same dimensions as the Gen object}}
+\DoxyCodeLine{304   \textcolor{comment}{// this is checked by subview::operator=()}}
+\DoxyCodeLine{305   }
+\DoxyCodeLine{306        \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_eye  >::yes}}) \{ out.eye();   \}}
+\DoxyCodeLine{307   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_ones >::yes}}) \{ out.ones();  \}}
+\DoxyCodeLine{308   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_zeros>::yes}}) \{ out.zeros(); \}}
+\DoxyCodeLine{309   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_randu>::yes}}) \{ out.randu(); \}}
+\DoxyCodeLine{310   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_randn>::yes}}) \{ out.randn(); \}}
+\DoxyCodeLine{311   \}}
+\DoxyCodeLine{312 }
+\DoxyCodeLine{313 }
+\DoxyCodeLine{314 }
+
+\end{DoxyCode}

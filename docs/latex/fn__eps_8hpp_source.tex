@@ -1,0 +1,107 @@
+\hypertarget{fn__eps_8hpp_source}{}\doxysection{fn\+\_\+eps.\+hpp}
+\label{fn__eps_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_eps.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_eps.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{24 arma\_warn\_unused}
+\DoxyCodeLine{25 \textcolor{keyword}{inline}}
+\DoxyCodeLine{26 \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_eps>}}}
+\DoxyCodeLine{27 eps(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{28   \{}
+\DoxyCodeLine{29   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{30   arma\_ignore(junk);}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_eps>}}(X.get\_ref());}
+\DoxyCodeLine{33   \}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{38 arma\_warn\_unused}
+\DoxyCodeLine{39 \textcolor{keyword}{inline}}
+\DoxyCodeLine{40 \mbox{\hyperlink{classMat}{Mat< typename T1::pod\_type >}}}
+\DoxyCodeLine{41 eps(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>, T1>\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{42   \{}
+\DoxyCodeLine{43   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{44   arma\_ignore(junk);}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{47   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}}   tmp(X.get\_ref());}
+\DoxyCodeLine{50   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = tmp.M;}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \mbox{\hyperlink{classMat}{Mat<T>}} out(\mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54          T* out\_mem = out.memptr();}
+\DoxyCodeLine{55   \textcolor{keyword}{const} eT*   A\_mem =   \mbox{\hyperlink{structA}{A}}.memptr();}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   \textcolor{keyword}{const} uword n\_elem = \mbox{\hyperlink{structA}{A}}.n\_elem;}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{60     \{}
+\DoxyCodeLine{61     out\_mem[i] = eop\_aux::direct\_eps( A\_mem[i] );}
+\DoxyCodeLine{62     \}}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{65   \}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{70 arma\_warn\_unused}
+\DoxyCodeLine{71 arma\_inline}
+\DoxyCodeLine{72 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__integral__only}{arma\_integral\_only<eT>::result}}}
+\DoxyCodeLine{73 eps(\textcolor{keyword}{const} eT\& x)}
+\DoxyCodeLine{74   \{}
+\DoxyCodeLine{75   arma\_ignore(x);}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keywordflow}{return} eT(0);}
+\DoxyCodeLine{78   \}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{83 arma\_warn\_unused}
+\DoxyCodeLine{84 arma\_inline}
+\DoxyCodeLine{85 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__only}{arma\_real\_only<eT>::result}}}
+\DoxyCodeLine{86 eps(\textcolor{keyword}{const} eT\& x)}
+\DoxyCodeLine{87   \{}
+\DoxyCodeLine{88   \textcolor{keywordflow}{return} eop\_aux::direct\_eps(x);}
+\DoxyCodeLine{89   \}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{94 arma\_warn\_unused}
+\DoxyCodeLine{95 arma\_inline}
+\DoxyCodeLine{96 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__only}{arma\_real\_only<T>::result}}}
+\DoxyCodeLine{97 eps(\textcolor{keyword}{const} std::complex<T>\& x)}
+\DoxyCodeLine{98   \{}
+\DoxyCodeLine{99   \textcolor{keywordflow}{return} eop\_aux::direct\_eps(x);}
+\DoxyCodeLine{100   \}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+
+\end{DoxyCode}

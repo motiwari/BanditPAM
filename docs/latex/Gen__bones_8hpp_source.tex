@@ -1,0 +1,62 @@
+\hypertarget{Gen__bones_8hpp_source}{}\doxysection{Gen\+\_\+bones.\+hpp}
+\label{Gen__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/Gen\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/Gen\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classGen}{Gen}}}
+\DoxyCodeLine{24   : \textcolor{keyword}{public} \mbox{\hyperlink{structBase}{Base}}< typename T1::elem\_type, Gen<T1, gen\_type> >}
+\DoxyCodeLine{25   , \textcolor{keyword}{public} \mbox{\hyperlink{structGenSpecialiser}{GenSpecialiser}}<typename T1::elem\_type, is\_same\_type<gen\_type, gen\_zeros>::yes, is\_same\_type<gen\_type, gen\_ones>::yes, is\_same\_type<gen\_type, gen\_randu>::yes, is\_same\_type<gen\_type, gen\_randn>::yes>}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   \textcolor{keyword}{public}:}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type                   elem\_type;}
+\DoxyCodeLine{30   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at    = (\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_eye>::value}});}
+\DoxyCodeLine{33   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_simple = (\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_ones>::value}}) || (\mbox{\hyperlink{structis__same__type}{is\_same\_type<gen\_type, gen\_zeros>::value}}); }
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_row  = T1::is\_row;}
+\DoxyCodeLine{36   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_col  = T1::is\_col;}
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_xvec = T1::is\_xvec;}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   arma\_aligned \textcolor{keyword}{const} uword n\_rows;}
+\DoxyCodeLine{40   arma\_aligned \textcolor{keyword}{const} uword n\_cols;}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   arma\_inline  \mbox{\hyperlink{classGen}{Gen}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols);}
+\DoxyCodeLine{43   arma\_inline \mbox{\hyperlink{classGen}{\string~Gen}}();}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword ii)                   \textcolor{keyword}{const};}
+\DoxyCodeLine{46   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword row, \textcolor{keyword}{const} uword col) \textcolor{keyword}{const};}
+\DoxyCodeLine{47   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword ii)                   \textcolor{keyword}{const};}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} apply              (\mbox{\hyperlink{classMat}{Mat<elem\_type>}}\& out) \textcolor{keyword}{const};}
+\DoxyCodeLine{50   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} apply\_inplace\_plus (\mbox{\hyperlink{classMat}{Mat<elem\_type>}}\& out) \textcolor{keyword}{const};}
+\DoxyCodeLine{51   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} apply\_inplace\_minus(\mbox{\hyperlink{classMat}{Mat<elem\_type>}}\& out) \textcolor{keyword}{const};}
+\DoxyCodeLine{52   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} apply\_inplace\_schur(\mbox{\hyperlink{classMat}{Mat<elem\_type>}}\& out) \textcolor{keyword}{const};}
+\DoxyCodeLine{53   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} apply\_inplace\_div  (\mbox{\hyperlink{classMat}{Mat<elem\_type>}}\& out) \textcolor{keyword}{const};}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classsubview}{subview<elem\_type>}}\& out) \textcolor{keyword}{const};}
+\DoxyCodeLine{56   \};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+
+\end{DoxyCode}

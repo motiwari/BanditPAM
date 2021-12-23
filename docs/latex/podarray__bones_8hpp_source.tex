@@ -1,0 +1,91 @@
+\hypertarget{podarray__bones_8hpp_source}{}\doxysection{podarray\+\_\+bones.\+hpp}
+\label{podarray__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/podarray\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/podarray\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{struct }\mbox{\hyperlink{structpodarray__prealloc__n__elem}{podarray\_prealloc\_n\_elem}}}
+\DoxyCodeLine{23   \{}
+\DoxyCodeLine{24   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword val = 16;}
+\DoxyCodeLine{25   \};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{30 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{31 \textcolor{keyword}{class }\mbox{\hyperlink{classpodarray}{podarray}}}
+\DoxyCodeLine{32   \{}
+\DoxyCodeLine{33   \textcolor{keyword}{public}:}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   arma\_aligned \textcolor{keyword}{const} uword \mbox{\hyperlink{classpodarray_af419483181c4e0302ba079f42ef02f68}{n\_elem}}; }
+\DoxyCodeLine{36   arma\_aligned       eT*   \mbox{\hyperlink{classpodarray_a3235dffb0bca72b5aa2f6f7d2c696601}{mem}};    }
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{protected}:}
+\DoxyCodeLine{41   arma\_align\_mem eT \mbox{\hyperlink{classpodarray_afc03c61b218bda5a9dde18f766497f3d}{mem\_local}}[ podarray\_prealloc\_n\_elem::val ];}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keyword}{public}:}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keyword}{inline} \mbox{\hyperlink{classpodarray}{\string~podarray}}();}
+\DoxyCodeLine{47   \textcolor{keyword}{inline}  \mbox{\hyperlink{classpodarray}{podarray}}();}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keyword}{inline}                 \mbox{\hyperlink{classpodarray}{podarray}} (\textcolor{keyword}{const} \mbox{\hyperlink{classpodarray}{podarray}}\& x);}
+\DoxyCodeLine{50   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classpodarray}{podarray}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classpodarray}{podarray}}\& x);}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   arma\_inline \textcolor{keyword}{explicit} \mbox{\hyperlink{classpodarray}{podarray}}(\textcolor{keyword}{const} uword new\_N);}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   arma\_inline \textcolor{keyword}{explicit} \mbox{\hyperlink{classpodarray}{podarray}}(\textcolor{keyword}{const} eT* X, \textcolor{keyword}{const} uword new\_N);}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{comment}{// template<typename T1>}}
+\DoxyCodeLine{57   \textcolor{comment}{// inline explicit podarray(const Proxy<T1>\& P);}}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   arma\_inline eT\& operator[] (\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{60   arma\_inline eT  operator[] (\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{61   }
+\DoxyCodeLine{62   arma\_inline eT\& operator() (\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{63   arma\_inline eT  operator() (\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{64   }
+\DoxyCodeLine{65   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} set\_min\_size(\textcolor{keyword}{const} uword min\_n\_elem);}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} set\_size(\textcolor{keyword}{const} uword new\_n\_elem);}
+\DoxyCodeLine{68   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} reset();}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} fill(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} zeros();}
+\DoxyCodeLine{74   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} zeros(\textcolor{keyword}{const} uword new\_n\_elem);}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   arma\_inline       eT* memptr();}
+\DoxyCodeLine{77   arma\_inline \textcolor{keyword}{const} eT* memptr() \textcolor{keyword}{const};}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} copy\_row(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword row);}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keyword}{protected}:}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init\_cold(\textcolor{keyword}{const} uword new\_n\_elem);}
+\DoxyCodeLine{85   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init\_warm(\textcolor{keyword}{const} uword new\_n\_elem);}
+\DoxyCodeLine{86   \};}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+
+\end{DoxyCode}

@@ -1,0 +1,271 @@
+\hypertarget{fn__randi_8hpp_source}{}\doxysection{fn\+\_\+randi.\+hpp}
+\label{fn__randi_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_randi.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_randi.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} obj\_type>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 obj\_type}
+\DoxyCodeLine{26 randi(\textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols, \textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param = \mbox{\hyperlink{classdistr__param}{distr\_param}}(), \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__Mat__Col__Row__only}{arma\_Mat\_Col\_Row\_only<obj\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   arma\_ignore(junk);}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} obj\_type::elem\_type eT;}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Col}{is\_Col<obj\_type>::value}})}
+\DoxyCodeLine{34     \{}
+\DoxyCodeLine{35     arma\_debug\_check( (n\_cols != 1), \textcolor{stringliteral}{"{}randi(): incompatible size"{}} );}
+\DoxyCodeLine{36     \}}
+\DoxyCodeLine{37   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{38   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Row}{is\_Row<obj\_type>::value}})}
+\DoxyCodeLine{39     \{}
+\DoxyCodeLine{40     arma\_debug\_check( (n\_rows != 1), \textcolor{stringliteral}{"{}randi(): incompatible size"{}} );}
+\DoxyCodeLine{41     \}}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   obj\_type out(n\_rows, n\_cols, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keywordtype}{int} a;}
+\DoxyCodeLine{46   \textcolor{keywordtype}{int} b;}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{keywordflow}{if}(param.state == 0)}
+\DoxyCodeLine{49     \{}
+\DoxyCodeLine{50     a = 0;}
+\DoxyCodeLine{51     b = \mbox{\hyperlink{structarma__rng_1_1randi}{arma\_rng::randi<eT>::max\_val}}();}
+\DoxyCodeLine{52     \}}
+\DoxyCodeLine{53   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{54   \textcolor{keywordflow}{if}(param.state == 1)}
+\DoxyCodeLine{55     \{}
+\DoxyCodeLine{56     a = param.a\_int;}
+\DoxyCodeLine{57     b = param.b\_int;}
+\DoxyCodeLine{58     \}}
+\DoxyCodeLine{59   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{60     \{}
+\DoxyCodeLine{61     a = int(param.a\_double);}
+\DoxyCodeLine{62     b = int(param.b\_double);}
+\DoxyCodeLine{63     \}}
+\DoxyCodeLine{64   }
+\DoxyCodeLine{65   arma\_debug\_check( (a > b), \textcolor{stringliteral}{"{}randi(): incorrect distribution parameters: a must be less than b"{}} );}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \mbox{\hyperlink{structarma__rng_1_1randi}{arma\_rng::randi<eT>::fill}}(out.memptr(), out.n\_elem, a, b);}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{70   \}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{template}<\textcolor{keyword}{typename} obj\_type>}
+\DoxyCodeLine{75 arma\_warn\_unused}
+\DoxyCodeLine{76 \textcolor{keyword}{inline}}
+\DoxyCodeLine{77 obj\_type}
+\DoxyCodeLine{78 randi(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param = \mbox{\hyperlink{classdistr__param}{distr\_param}}(), \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__Mat__Col__Row__only}{arma\_Mat\_Col\_Row\_only<obj\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{79   \{}
+\DoxyCodeLine{80   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{81   arma\_ignore(junk);}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \textcolor{keywordflow}{return} randi<obj\_type>(s.n\_rows, s.n\_cols, param);}
+\DoxyCodeLine{84   \}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{keyword}{template}<\textcolor{keyword}{typename} obj\_type>}
+\DoxyCodeLine{89 arma\_warn\_unused}
+\DoxyCodeLine{90 \textcolor{keyword}{inline}}
+\DoxyCodeLine{91 obj\_type}
+\DoxyCodeLine{92 randi(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param = \mbox{\hyperlink{classdistr__param}{distr\_param}}(), \textcolor{keyword}{const} \mbox{\hyperlink{classarma__empty__class}{arma\_empty\_class}} junk1 = \mbox{\hyperlink{classarma__empty__class}{arma\_empty\_class}}(), \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__Mat__Col__Row__only}{arma\_Mat\_Col\_Row\_only<obj\_type>::result}}* junk2 = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{93   \{}
+\DoxyCodeLine{94   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{95   arma\_ignore(junk1);}
+\DoxyCodeLine{96   arma\_ignore(junk2);}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Row}{is\_Row<obj\_type>::value}})}
+\DoxyCodeLine{99     \{}
+\DoxyCodeLine{100     \textcolor{keywordflow}{return} randi<obj\_type>(1, n\_elem, param);}
+\DoxyCodeLine{101     \}}
+\DoxyCodeLine{102   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{103     \{}
+\DoxyCodeLine{104     \textcolor{keywordflow}{return} randi<obj\_type>(n\_elem, 1, param);}
+\DoxyCodeLine{105     \}}
+\DoxyCodeLine{106   \}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 arma\_warn\_unused}
+\DoxyCodeLine{111 \textcolor{keyword}{inline}}
+\DoxyCodeLine{112 \mbox{\hyperlink{classMat}{imat}}}
+\DoxyCodeLine{113 randi(\textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols, \textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param = \mbox{\hyperlink{classdistr__param}{distr\_param}}())}
+\DoxyCodeLine{114   \{}
+\DoxyCodeLine{115   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{116   }
+\DoxyCodeLine{117   \textcolor{keywordflow}{return} randi<imat>(n\_rows, n\_cols, param);}
+\DoxyCodeLine{118   \}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 arma\_warn\_unused}
+\DoxyCodeLine{123 \textcolor{keyword}{inline}}
+\DoxyCodeLine{124 \mbox{\hyperlink{classMat}{imat}}}
+\DoxyCodeLine{125 randi(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param = \mbox{\hyperlink{classdistr__param}{distr\_param}}())}
+\DoxyCodeLine{126   \{}
+\DoxyCodeLine{127   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{128   }
+\DoxyCodeLine{129   \textcolor{keywordflow}{return} randi<imat>(s.n\_rows, s.n\_cols, param);}
+\DoxyCodeLine{130   \}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 arma\_warn\_unused}
+\DoxyCodeLine{135 \textcolor{keyword}{inline}}
+\DoxyCodeLine{136 \mbox{\hyperlink{classCol}{ivec}}}
+\DoxyCodeLine{137 randi(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param = \mbox{\hyperlink{classdistr__param}{distr\_param}}())}
+\DoxyCodeLine{138   \{}
+\DoxyCodeLine{139   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keywordflow}{return} randi<ivec>(n\_elem, uword(1), param);}
+\DoxyCodeLine{142   \}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 arma\_warn\_unused}
+\DoxyCodeLine{147 \textcolor{keyword}{inline}}
+\DoxyCodeLine{148 sword}
+\DoxyCodeLine{149 randi(\textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param)}
+\DoxyCodeLine{150   \{}
+\DoxyCodeLine{151   \textcolor{keywordflow}{return} as\_scalar( randi<ivec>(uword(1), uword(1), param) );}
+\DoxyCodeLine{152   \}}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{157 arma\_warn\_unused}
+\DoxyCodeLine{158 \textcolor{keyword}{inline}}
+\DoxyCodeLine{159 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__scalar__only}{arma\_scalar\_only<eT>::result}}}
+\DoxyCodeLine{160 randi(\textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param)}
+\DoxyCodeLine{161   \{}
+\DoxyCodeLine{162   \textcolor{keywordflow}{return} eT( as\_scalar( randi< \mbox{\hyperlink{classCol}{Col<eT>}} >(uword(1), uword(1), param) ) );}
+\DoxyCodeLine{163   \}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167 arma\_warn\_unused}
+\DoxyCodeLine{168 \textcolor{keyword}{inline}}
+\DoxyCodeLine{169 sword}
+\DoxyCodeLine{170 randi()}
+\DoxyCodeLine{171   \{}
+\DoxyCodeLine{172   \textcolor{keywordflow}{return} sword( \mbox{\hyperlink{structarma__rng_1_1randi}{arma\_rng::randi<sword>}}() );}
+\DoxyCodeLine{173   \}}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{178 arma\_warn\_unused}
+\DoxyCodeLine{179 \textcolor{keyword}{inline}}
+\DoxyCodeLine{180 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__scalar__only}{arma\_scalar\_only<eT>::result}}}
+\DoxyCodeLine{181 randi()}
+\DoxyCodeLine{182   \{}
+\DoxyCodeLine{183   \textcolor{keywordflow}{return} eT( \mbox{\hyperlink{structarma__rng_1_1randi}{arma\_rng::randi<eT>}}() );}
+\DoxyCodeLine{184   \}}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 \textcolor{keyword}{template}<\textcolor{keyword}{typename} cube\_type>}
+\DoxyCodeLine{189 arma\_warn\_unused}
+\DoxyCodeLine{190 \textcolor{keyword}{inline}}
+\DoxyCodeLine{191 cube\_type}
+\DoxyCodeLine{192 randi(\textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols, \textcolor{keyword}{const} uword n\_slices, \textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param = \mbox{\hyperlink{classdistr__param}{distr\_param}}(), \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__Cube__only}{arma\_Cube\_only<cube\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{193   \{}
+\DoxyCodeLine{194   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{195   arma\_ignore(junk);}
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} cube\_type::elem\_type eT;}
+\DoxyCodeLine{198   }
+\DoxyCodeLine{199   cube\_type out(n\_rows, n\_cols, n\_slices, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{200   }
+\DoxyCodeLine{201   \textcolor{keywordtype}{int} a;}
+\DoxyCodeLine{202   \textcolor{keywordtype}{int} b;}
+\DoxyCodeLine{203   }
+\DoxyCodeLine{204   \textcolor{keywordflow}{if}(param.state == 0)}
+\DoxyCodeLine{205     \{}
+\DoxyCodeLine{206     a = 0;}
+\DoxyCodeLine{207     b = \mbox{\hyperlink{structarma__rng_1_1randi}{arma\_rng::randi<eT>::max\_val}}();}
+\DoxyCodeLine{208     \}}
+\DoxyCodeLine{209   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{210   \textcolor{keywordflow}{if}(param.state == 1)}
+\DoxyCodeLine{211     \{}
+\DoxyCodeLine{212     a = param.a\_int;}
+\DoxyCodeLine{213     b = param.b\_int;}
+\DoxyCodeLine{214     \}}
+\DoxyCodeLine{215   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{216     \{}
+\DoxyCodeLine{217     a = int(param.a\_double);}
+\DoxyCodeLine{218     b = int(param.b\_double);}
+\DoxyCodeLine{219     \}}
+\DoxyCodeLine{220   }
+\DoxyCodeLine{221   arma\_debug\_check( (a > b), \textcolor{stringliteral}{"{}randi(): incorrect distribution parameters: a must be less than b"{}} );}
+\DoxyCodeLine{222   }
+\DoxyCodeLine{223   \mbox{\hyperlink{structarma__rng_1_1randi}{arma\_rng::randi<eT>::fill}}(out.memptr(), out.n\_elem, a, b);}
+\DoxyCodeLine{224   }
+\DoxyCodeLine{225   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{226   \}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230 \textcolor{keyword}{template}<\textcolor{keyword}{typename} cube\_type>}
+\DoxyCodeLine{231 arma\_warn\_unused}
+\DoxyCodeLine{232 \textcolor{keyword}{inline}}
+\DoxyCodeLine{233 cube\_type}
+\DoxyCodeLine{234 randi(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param = \mbox{\hyperlink{classdistr__param}{distr\_param}}(), \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__Cube__only}{arma\_Cube\_only<cube\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{235   \{}
+\DoxyCodeLine{236   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{237   arma\_ignore(junk);}
+\DoxyCodeLine{238   }
+\DoxyCodeLine{239   \textcolor{keywordflow}{return} randi<cube\_type>(s.n\_rows, s.n\_cols, s.n\_slices, param);}
+\DoxyCodeLine{240   \}}
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 arma\_warn\_unused}
+\DoxyCodeLine{245 \textcolor{keyword}{inline}}
+\DoxyCodeLine{246 \mbox{\hyperlink{classCube}{icube}}}
+\DoxyCodeLine{247 randi(\textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols, \textcolor{keyword}{const} uword n\_slices, \textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param = \mbox{\hyperlink{classdistr__param}{distr\_param}}())}
+\DoxyCodeLine{248   \{}
+\DoxyCodeLine{249   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{250   }
+\DoxyCodeLine{251   \textcolor{keywordflow}{return} randi<icube>(n\_rows, n\_cols, n\_slices, param);}
+\DoxyCodeLine{252   \}}
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256 arma\_warn\_unused}
+\DoxyCodeLine{257 \textcolor{keyword}{inline}}
+\DoxyCodeLine{258 \mbox{\hyperlink{classCube}{icube}}}
+\DoxyCodeLine{259 randi(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{classdistr__param}{distr\_param}}\& param = \mbox{\hyperlink{classdistr__param}{distr\_param}}())}
+\DoxyCodeLine{260   \{}
+\DoxyCodeLine{261   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{262   }
+\DoxyCodeLine{263   \textcolor{keywordflow}{return} randi<icube>(s.n\_rows, s.n\_cols, s.n\_slices, param);}
+\DoxyCodeLine{264   \}}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267 }
+
+\end{DoxyCode}

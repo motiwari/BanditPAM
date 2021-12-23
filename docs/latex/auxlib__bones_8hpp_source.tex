@@ -1,0 +1,455 @@
+\hypertarget{auxlib__bones_8hpp_source}{}\doxysection{auxlib\+\_\+bones.\+hpp}
+\label{auxlib__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/auxlib\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/auxlib\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classauxlib}{auxlib}}}
+\DoxyCodeLine{23   \{}
+\DoxyCodeLine{24   \textcolor{keyword}{public}:}
+\DoxyCodeLine{25   }
+\DoxyCodeLine{26   \textcolor{comment}{//}}
+\DoxyCodeLine{27   \textcolor{comment}{// inv}}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{30   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} inv(\mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{33   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} inv(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{36   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} inv\_tr(\mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword layout);}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{39   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} inv\_sympd(\mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{40   }
+\DoxyCodeLine{41   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{42   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} inv\_sympd(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{45   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} inv\_sympd\_rcond(\mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT rcond\_threshold);}
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{48   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} inv\_sympd\_rcond(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T rcond\_threshold);}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   \textcolor{comment}{//}}
+\DoxyCodeLine{52   \textcolor{comment}{// det and log\_det}}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{55   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gadbec9e2bf7e46544c38212f619228391}{det}}(eT\& out\_val, \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{58   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga74d8fc5c3a1eb344df9c1053f90e1005}{log\_det}}(eT\& out\_val, \textcolor{keyword}{typename} get\_pod\_type<eT>::result\& out\_sign, \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{59   }
+\DoxyCodeLine{60   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{61   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} log\_det\_sympd(\textcolor{keyword}{typename} get\_pod\_type<eT>::result\& out\_val, \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{comment}{//}}
+\DoxyCodeLine{65   \textcolor{comment}{// lu}}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{68   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga414bdef119dfc44395d8a5e54426b080}{lu}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& L, \mbox{\hyperlink{classMat}{Mat<eT>}}\& U, \mbox{\hyperlink{classpodarray}{podarray<blas\_int>}}\& ipiv, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{71   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga414bdef119dfc44395d8a5e54426b080}{lu}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& L, \mbox{\hyperlink{classMat}{Mat<eT>}}\& U, \mbox{\hyperlink{classMat}{Mat<eT>}}\& P, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{74   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga414bdef119dfc44395d8a5e54426b080}{lu}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& L, \mbox{\hyperlink{classMat}{Mat<eT>}}\& U, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{comment}{//}}
+\DoxyCodeLine{78   \textcolor{comment}{// eig\_gen}}
+\DoxyCodeLine{79   }
+\DoxyCodeLine{80   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{81   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga329f7be399a3f9e90086d5e263691345}{eig\_gen}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vecs, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} vecs\_on, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& expr);}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{84   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga329f7be399a3f9e90086d5e263691345}{eig\_gen}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vecs, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} vecs\_on, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>, T1 >\& expr);}
+\DoxyCodeLine{85   }
+\DoxyCodeLine{86   }
+\DoxyCodeLine{87   \textcolor{comment}{//}}
+\DoxyCodeLine{88   \textcolor{comment}{// eig\_gen\_balance}}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{91   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga12c3ce0efe508ad84db233210514a98b}{eig\_gen\_balance}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vecs, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} vecs\_on, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& expr);}
+\DoxyCodeLine{92   }
+\DoxyCodeLine{93   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{94   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga12c3ce0efe508ad84db233210514a98b}{eig\_gen\_balance}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vecs, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} vecs\_on, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>, T1 >\& expr);}
+\DoxyCodeLine{95   }
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{comment}{//}}
+\DoxyCodeLine{98   \textcolor{comment}{// eig\_gen\_twosided}}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{101   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gae5bd0855889e8d1b1296de4e47b7414b}{eig\_gen\_twosided}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& lvecs, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& rvecs, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& expr);}
+\DoxyCodeLine{102   }
+\DoxyCodeLine{103   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{104   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gae5bd0855889e8d1b1296de4e47b7414b}{eig\_gen\_twosided}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& lvecs, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& rvecs, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>, T1 >\& expr);}
+\DoxyCodeLine{105   }
+\DoxyCodeLine{106   }
+\DoxyCodeLine{107   \textcolor{comment}{//}}
+\DoxyCodeLine{108   \textcolor{comment}{// eig\_gen\_twosided\_balance}}
+\DoxyCodeLine{109   }
+\DoxyCodeLine{110   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{111   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gaded3d1a9ddab4aab2da0a0d8bd7cadff}{eig\_gen\_twosided\_balance}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& lvecs, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& rvecs, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& expr);}
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{114   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gaded3d1a9ddab4aab2da0a0d8bd7cadff}{eig\_gen\_twosided\_balance}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& lvecs, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& rvecs, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>, T1 >\& expr);}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   }
+\DoxyCodeLine{117   \textcolor{comment}{//}}
+\DoxyCodeLine{118   \textcolor{comment}{// eig\_pair}}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{121   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga3f0adca5448bb1f9f444d468067d67a8}{eig\_pair}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vecs, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} vecs\_on, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& A\_expr, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T2>}}\& B\_expr);}
+\DoxyCodeLine{122   }
+\DoxyCodeLine{123   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{124   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga3f0adca5448bb1f9f444d468067d67a8}{eig\_pair}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vecs, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} vecs\_on, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>, T1 >\& A\_expr, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>, T2 >\& B\_expr);}
+\DoxyCodeLine{125   }
+\DoxyCodeLine{126   }
+\DoxyCodeLine{127   \textcolor{comment}{//}}
+\DoxyCodeLine{128   \textcolor{comment}{// eig\_pair\_twosided}}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{131   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga01e77782db942d53c334d0a8cca7242c}{eig\_pair\_twosided}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& lvecs, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& rvecs, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& A\_expr, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T2>}}\& B\_expr);}
+\DoxyCodeLine{132   }
+\DoxyCodeLine{133   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{134   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga01e77782db942d53c334d0a8cca7242c}{eig\_pair\_twosided}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& vals, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& lvecs, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& rvecs, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>, T1 >\& A\_expr, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>, T2 >\& B\_expr);}
+\DoxyCodeLine{135   }
+\DoxyCodeLine{136   }
+\DoxyCodeLine{137   \textcolor{comment}{//}}
+\DoxyCodeLine{138   \textcolor{comment}{// eig\_sym}}
+\DoxyCodeLine{139   }
+\DoxyCodeLine{140   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1> }
+\DoxyCodeLine{141   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga69420c7838466b350898295a4ef72cfc}{eig\_sym}}(\mbox{\hyperlink{classCol}{Col<eT>}}\& eigval, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{142   }
+\DoxyCodeLine{143   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T, \textcolor{keyword}{typename} T1> }
+\DoxyCodeLine{144   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga69420c7838466b350898295a4ef72cfc}{eig\_sym}}(\mbox{\hyperlink{classCol}{Col<T>}}\& eigval, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<std::complex<T>,T1>\& X);}
+\DoxyCodeLine{145   }
+\DoxyCodeLine{146   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{147   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga69420c7838466b350898295a4ef72cfc}{eig\_sym}}(\mbox{\hyperlink{classCol}{Col<eT>}}\& eigval, \mbox{\hyperlink{classMat}{Mat<eT>}}\& eigvec, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{148   }
+\DoxyCodeLine{149   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{150   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga69420c7838466b350898295a4ef72cfc}{eig\_sym}}(\mbox{\hyperlink{classCol}{Col<T>}}\& eigval, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& eigvec, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& X);}
+\DoxyCodeLine{151   }
+\DoxyCodeLine{152   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{153   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gaa1d75898809ba17eaff0143e6ca8ae88}{eig\_sym\_dc}}(\mbox{\hyperlink{classCol}{Col<eT>}}\& eigval, \mbox{\hyperlink{classMat}{Mat<eT>}}\& eigvec, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{154   }
+\DoxyCodeLine{155   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{156   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gaa1d75898809ba17eaff0143e6ca8ae88}{eig\_sym\_dc}}(\mbox{\hyperlink{classCol}{Col<T>}}\& eigval, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& eigvec, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& X);}
+\DoxyCodeLine{157   }
+\DoxyCodeLine{158   }
+\DoxyCodeLine{159   \textcolor{comment}{//}}
+\DoxyCodeLine{160   \textcolor{comment}{// chol}}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{163   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} chol\_simple(\mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{164   }
+\DoxyCodeLine{165   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{166   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} chol(\mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword layout);}
+\DoxyCodeLine{167   }
+\DoxyCodeLine{168   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{169   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} chol\_band(\mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword KD, \textcolor{keyword}{const} uword layout);}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T>}
+\DoxyCodeLine{172   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} chol\_band(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& X, \textcolor{keyword}{const} uword KD, \textcolor{keyword}{const} uword layout);}
+\DoxyCodeLine{173   }
+\DoxyCodeLine{174   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{175   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} chol\_band\_common(\mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword KD, \textcolor{keyword}{const} uword layout);}
+\DoxyCodeLine{176   }
+\DoxyCodeLine{177   }
+\DoxyCodeLine{178   \textcolor{comment}{//}}
+\DoxyCodeLine{179   \textcolor{comment}{// hessenberg decomposition}}
+\DoxyCodeLine{180   }
+\DoxyCodeLine{181   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{182   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} hess(\mbox{\hyperlink{classMat}{Mat<eT>}}\& H, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X, \mbox{\hyperlink{classCol}{Col<eT>}}\& tao);}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   }
+\DoxyCodeLine{185   \textcolor{comment}{//}}
+\DoxyCodeLine{186   \textcolor{comment}{// qr}}
+\DoxyCodeLine{187   }
+\DoxyCodeLine{188   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{189   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} qr(\mbox{\hyperlink{classMat}{Mat<eT>}}\& Q, \mbox{\hyperlink{classMat}{Mat<eT>}}\& R, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{190   }
+\DoxyCodeLine{191   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{192   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} qr\_econ(\mbox{\hyperlink{classMat}{Mat<eT>}}\& Q, \mbox{\hyperlink{classMat}{Mat<eT>}}\& R, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{193   }
+\DoxyCodeLine{194   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{195   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} qr\_pivot(\mbox{\hyperlink{classMat}{Mat<eT>}}\& Q, \mbox{\hyperlink{classMat}{Mat<eT>}}\& R, \mbox{\hyperlink{classMat}{Mat<uword>}}\& P, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{198   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} qr\_pivot(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& Q, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& R, \mbox{\hyperlink{classMat}{Mat<uword>}}\& P, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<std::complex<T>,T1>\& X);}
+\DoxyCodeLine{199   }
+\DoxyCodeLine{200   }
+\DoxyCodeLine{201   \textcolor{comment}{//}}
+\DoxyCodeLine{202   \textcolor{comment}{// svd}}
+\DoxyCodeLine{203   }
+\DoxyCodeLine{204   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{205   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd(\mbox{\hyperlink{classCol}{Col<eT>}}\& S, \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{208   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd(\mbox{\hyperlink{classCol}{Col<T>}}\& S, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{209   }
+\DoxyCodeLine{210   }
+\DoxyCodeLine{211   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{212   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd(\mbox{\hyperlink{classMat}{Mat<eT>}}\& U, \mbox{\hyperlink{classCol}{Col<eT>}}\& S, \mbox{\hyperlink{classMat}{Mat<eT>}}\& V, \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{213   }
+\DoxyCodeLine{214   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{215   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& U, \mbox{\hyperlink{classCol}{Col<T>}}\& S, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& V, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{216   }
+\DoxyCodeLine{217   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{218   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd\_econ(\mbox{\hyperlink{classMat}{Mat<eT>}}\& U, \mbox{\hyperlink{classCol}{Col<eT>}}\& S, \mbox{\hyperlink{classMat}{Mat<eT>}}\& V, \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \textcolor{keywordtype}{char} mode);}
+\DoxyCodeLine{219   }
+\DoxyCodeLine{220   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{221   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd\_econ(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& U, \mbox{\hyperlink{classCol}{Col<T>}}\& S, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& V, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \textcolor{keywordtype}{char} mode);}
+\DoxyCodeLine{222   }
+\DoxyCodeLine{223   }
+\DoxyCodeLine{224   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{225   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd\_dc(\mbox{\hyperlink{classCol}{Col<eT>}}\& S, \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{226   }
+\DoxyCodeLine{227   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{228   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd\_dc(\mbox{\hyperlink{classCol}{Col<T>}}\& S, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{229   }
+\DoxyCodeLine{230   }
+\DoxyCodeLine{231   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{232   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd\_dc(\mbox{\hyperlink{classMat}{Mat<eT>}}\& U, \mbox{\hyperlink{classCol}{Col<eT>}}\& S, \mbox{\hyperlink{classMat}{Mat<eT>}}\& V, \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{233   }
+\DoxyCodeLine{234   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{235   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd\_dc(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& U, \mbox{\hyperlink{classCol}{Col<T>}}\& S, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& V, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{236   }
+\DoxyCodeLine{237   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{238   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd\_dc\_econ(\mbox{\hyperlink{classMat}{Mat<eT>}}\& U, \mbox{\hyperlink{classCol}{Col<eT>}}\& S, \mbox{\hyperlink{classMat}{Mat<eT>}}\& V, \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{239   }
+\DoxyCodeLine{240   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{241   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} svd\_dc\_econ(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& U, \mbox{\hyperlink{classCol}{Col<T>}}\& S, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& V, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{242   }
+\DoxyCodeLine{243   }
+\DoxyCodeLine{244   \textcolor{comment}{//}}
+\DoxyCodeLine{245   \textcolor{comment}{// solve}}
+\DoxyCodeLine{246   }
+\DoxyCodeLine{247   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{248   arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gaa6f6fa63e5763cf3877cdb3d8f4188b0}{solve\_square\_tiny}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr);}
+\DoxyCodeLine{249   }
+\DoxyCodeLine{250   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{251   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga530089e89e43155f3bf6e709bbe775dd}{solve\_square\_fast}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr);}
+\DoxyCodeLine{252   }
+\DoxyCodeLine{253   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{254   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga16be749fd9b7ac92dd2f437f9e45fdf9}{solve\_square\_rcond}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{255   }
+\DoxyCodeLine{256   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{257   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gab1d24ba6a7f6a7aad1b5bcf4d75bd1bf}{solve\_square\_refine}}(\mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} equilibrate, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{258   }
+\DoxyCodeLine{259   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{260   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gab1d24ba6a7f6a7aad1b5bcf4d75bd1bf}{solve\_square\_refine}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<std::complex<typename T1::pod\_type>,T1>\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} equilibrate, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{261   }
+\DoxyCodeLine{262   \textcolor{comment}{//}}
+\DoxyCodeLine{263   }
+\DoxyCodeLine{264   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{265   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} solve\_sympd\_fast(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr);}
+\DoxyCodeLine{266   }
+\DoxyCodeLine{267   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{268   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} solve\_sympd\_fast\_common(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr);}
+\DoxyCodeLine{269   }
+\DoxyCodeLine{270   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{271   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga62ce89610f71efecc71e6512e32b810a}{solve\_sympd\_rcond}}(\mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{272   }
+\DoxyCodeLine{273   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{274   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga62ce89610f71efecc71e6512e32b810a}{solve\_sympd\_rcond}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>,T1>\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{275   }
+\DoxyCodeLine{276   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{277   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gab44e1fb14a3c2bb6aaedbc3782ce6839}{solve\_sympd\_refine}}(\mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} equilibrate, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{278   }
+\DoxyCodeLine{279   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{280   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gab44e1fb14a3c2bb6aaedbc3782ce6839}{solve\_sympd\_refine}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<std::complex<typename T1::pod\_type>,T1>\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} equilibrate, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{281   }
+\DoxyCodeLine{282   \textcolor{comment}{//}}
+\DoxyCodeLine{283   }
+\DoxyCodeLine{284   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{285   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga05e7ac9cd99f556f2fb38f5edfece9e0}{solve\_rect\_fast}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr);}
+\DoxyCodeLine{286   }
+\DoxyCodeLine{287   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{288   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga676eba94edde2d8118168a4a99eec8f3}{solve\_rect\_rcond}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{289   }
+\DoxyCodeLine{290   \textcolor{comment}{//}}
+\DoxyCodeLine{291   }
+\DoxyCodeLine{292   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{293   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} solve\_approx\_svd(\mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& B\_expr);}
+\DoxyCodeLine{294   }
+\DoxyCodeLine{295   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{296   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} solve\_approx\_svd(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& out, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<std::complex<typename T1::pod\_type>,T1>\& B\_expr);}
+\DoxyCodeLine{297   }
+\DoxyCodeLine{298   \textcolor{comment}{//}}
+\DoxyCodeLine{299   }
+\DoxyCodeLine{300   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{301   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} solve\_trimat\_fast(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr, \textcolor{keyword}{const} uword layout);}
+\DoxyCodeLine{302   }
+\DoxyCodeLine{303   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{304   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} solve\_trimat\_rcond(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr, \textcolor{keyword}{const} uword layout, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{305   }
+\DoxyCodeLine{306   \textcolor{comment}{//}}
+\DoxyCodeLine{307   }
+\DoxyCodeLine{308   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{309   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gab6113ebff3bb4633d77d574813c981e6}{solve\_band\_fast}}(\mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword KL, \textcolor{keyword}{const} uword KU, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& B\_expr);}
+\DoxyCodeLine{310   }
+\DoxyCodeLine{311   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{312   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gab6113ebff3bb4633d77d574813c981e6}{solve\_band\_fast}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& out, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword KL, \textcolor{keyword}{const} uword KU, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>,T1>\& B\_expr);}
+\DoxyCodeLine{313   }
+\DoxyCodeLine{314   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{315   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga285eb5be770a4d4ec1159070d1e9487b}{solve\_band\_fast\_common}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword KL, \textcolor{keyword}{const} uword KU, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr);}
+\DoxyCodeLine{316   }
+\DoxyCodeLine{317   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{318   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga9c2bcb80543054b93973eb61857a3a35}{solve\_band\_rcond}}(\mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword KL, \textcolor{keyword}{const} uword KU, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{319   }
+\DoxyCodeLine{320   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{321   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga9c2bcb80543054b93973eb61857a3a35}{solve\_band\_rcond}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword KL, \textcolor{keyword}{const} uword KU, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>,T1>\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{322   }
+\DoxyCodeLine{323   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{324   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga53fcaccc31c1a35dafb39fe03bfda705}{solve\_band\_rcond\_common}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword KL, \textcolor{keyword}{const} uword KU, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{325   }
+\DoxyCodeLine{326   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{327   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga00042cee38300d1df5196cbb8247ab34}{solve\_band\_refine}}(\mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword KL, \textcolor{keyword}{const} uword KU, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} equilibrate, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{328   }
+\DoxyCodeLine{329   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{330   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga00042cee38300d1df5196cbb8247ab34}{solve\_band\_refine}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& out, \textcolor{keyword}{typename} T1::pod\_type\& out\_rcond, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword KL, \textcolor{keyword}{const} uword KU, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<std::complex<typename T1::pod\_type>,T1>\& B\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} equilibrate, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} allow\_ugly);}
+\DoxyCodeLine{331   }
+\DoxyCodeLine{332   \textcolor{comment}{//}}
+\DoxyCodeLine{333   }
+\DoxyCodeLine{334   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{335   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga463326aa06a967b1dab4c17bc0a350b5}{solve\_tridiag\_fast}}(\mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& B\_expr);}
+\DoxyCodeLine{336   }
+\DoxyCodeLine{337   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{338   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_ga463326aa06a967b1dab4c17bc0a350b5}{solve\_tridiag\_fast}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& out, \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<typename T1::pod\_type>,T1>\& B\_expr);}
+\DoxyCodeLine{339   }
+\DoxyCodeLine{340   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{341   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__auxlib_gaf2c6a0acba990cccadd740118f7855c9}{solve\_tridiag\_fast\_common}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& B\_expr);}
+\DoxyCodeLine{342   }
+\DoxyCodeLine{343   }
+\DoxyCodeLine{344   \textcolor{comment}{//}}
+\DoxyCodeLine{345   \textcolor{comment}{// Schur decomposition}}
+\DoxyCodeLine{346   }
+\DoxyCodeLine{347   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{348   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} schur(\mbox{\hyperlink{classMat}{Mat<eT>}}\& U, \mbox{\hyperlink{classMat}{Mat<eT>}}\& S, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} calc\_U = \textcolor{keyword}{true});}
+\DoxyCodeLine{349   }
+\DoxyCodeLine{350   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{351   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} schur(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& U, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& S, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<std::complex<T>,T1>\& X, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} calc\_U = \textcolor{keyword}{true});}
+\DoxyCodeLine{352   }
+\DoxyCodeLine{353   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T>}
+\DoxyCodeLine{354   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} schur(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& U, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& S, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} calc\_U = \textcolor{keyword}{true});}
+\DoxyCodeLine{355   }
+\DoxyCodeLine{356   \textcolor{comment}{//}}
+\DoxyCodeLine{357   \textcolor{comment}{// solve the Sylvester equation AX + XB = C}}
+\DoxyCodeLine{358   }
+\DoxyCodeLine{359   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{360   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} syl(\mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& C);}
+\DoxyCodeLine{361   }
+\DoxyCodeLine{362   }
+\DoxyCodeLine{363   \textcolor{comment}{//}}
+\DoxyCodeLine{364   \textcolor{comment}{// QZ decomposition}}
+\DoxyCodeLine{365   }
+\DoxyCodeLine{366   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{367   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} qz(\mbox{\hyperlink{classMat}{Mat<T>}}\& \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{classMat}{Mat<T>}}\& \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{classMat}{Mat<T>}}\& vsl, \mbox{\hyperlink{classMat}{Mat<T>}}\& vsr, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<T,T1>}}\& X\_expr, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<T,T2>}}\& Y\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{char} mode);}
+\DoxyCodeLine{368   }
+\DoxyCodeLine{369   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{370   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__fn__qz_ga9fdbb773120c25ab2d602c7e0fad6239}{qz}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& vsl, \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& vsr, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<T>, T1 >\& X\_expr, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}< std::complex<T>, T2 >\& Y\_expr, \textcolor{keyword}{const} \textcolor{keywordtype}{char} mode);}
+\DoxyCodeLine{371   }
+\DoxyCodeLine{372   }
+\DoxyCodeLine{373   \textcolor{comment}{// }}
+\DoxyCodeLine{374   \textcolor{comment}{// rcond}}
+\DoxyCodeLine{375   }
+\DoxyCodeLine{376   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{377   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT rcond(\mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{378   }
+\DoxyCodeLine{379   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T>}
+\DoxyCodeLine{380   \textcolor{keyword}{inline} \textcolor{keyword}{static}  T rcond(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{381   }
+\DoxyCodeLine{382   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{383   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT rcond\_sympd(\mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keywordtype}{bool}\& calc\_ok);}
+\DoxyCodeLine{384   }
+\DoxyCodeLine{385   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{386   \textcolor{keyword}{inline} \textcolor{keyword}{static}  T rcond\_sympd(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keywordtype}{bool}\& calc\_ok);}
+\DoxyCodeLine{387   }
+\DoxyCodeLine{388   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{389   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT rcond\_trimat(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword layout);}
+\DoxyCodeLine{390   }
+\DoxyCodeLine{391   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T>}
+\DoxyCodeLine{392   \textcolor{keyword}{inline} \textcolor{keyword}{static}  T rcond\_trimat(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword layout);}
+\DoxyCodeLine{393   }
+\DoxyCodeLine{394   }
+\DoxyCodeLine{395   \textcolor{comment}{//}}
+\DoxyCodeLine{396   \textcolor{comment}{// lu\_rcond (rcond from pre-\/computed LU decomposition)}}
+\DoxyCodeLine{397   }
+\DoxyCodeLine{398   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{399   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT lu\_rcond(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT norm\_val);}
+\DoxyCodeLine{400   }
+\DoxyCodeLine{401   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T>}
+\DoxyCodeLine{402   \textcolor{keyword}{inline} \textcolor{keyword}{static}  T lu\_rcond(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T norm\_val);}
+\DoxyCodeLine{403   }
+\DoxyCodeLine{404   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{405   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT lu\_rcond\_sympd(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT norm\_val);}
+\DoxyCodeLine{406   }
+\DoxyCodeLine{407   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T>}
+\DoxyCodeLine{408   \textcolor{keyword}{inline} \textcolor{keyword}{static}  T lu\_rcond\_sympd(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T norm\_val);}
+\DoxyCodeLine{409   }
+\DoxyCodeLine{410   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{411   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT lu\_rcond\_band(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& AB, \textcolor{keyword}{const} uword KL, \textcolor{keyword}{const} uword KU, \textcolor{keyword}{const} \mbox{\hyperlink{classpodarray}{podarray<blas\_int>}}\& ipiv, \textcolor{keyword}{const} eT norm\_val);}
+\DoxyCodeLine{412   }
+\DoxyCodeLine{413   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T>}
+\DoxyCodeLine{414   \textcolor{keyword}{inline} \textcolor{keyword}{static}  T lu\_rcond\_band(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& AB, \textcolor{keyword}{const} uword KL, \textcolor{keyword}{const} uword KU, \textcolor{keyword}{const} \mbox{\hyperlink{classpodarray}{podarray<blas\_int>}}\& ipiv, \textcolor{keyword}{const} T norm\_val);}
+\DoxyCodeLine{415   }
+\DoxyCodeLine{416   }
+\DoxyCodeLine{417   \textcolor{comment}{//}}
+\DoxyCodeLine{418   \textcolor{comment}{// misc}}
+\DoxyCodeLine{419   }
+\DoxyCodeLine{420   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{421   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} crippled\_lapack(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\&);}
+\DoxyCodeLine{422   }
+\DoxyCodeLine{423   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{424   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::pod\_type epsilon\_lapack(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\&);}
+\DoxyCodeLine{425   }
+\DoxyCodeLine{426   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{427   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} rudimentary\_sym\_check(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{428   }
+\DoxyCodeLine{429   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{430   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} rudimentary\_sym\_check(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& X);}
+\DoxyCodeLine{431   \};}
+\DoxyCodeLine{432 }
+\DoxyCodeLine{433 }
+\DoxyCodeLine{434 }
+\DoxyCodeLine{435 \textcolor{keyword}{namespace }qz\_helper}
+\DoxyCodeLine{436   \{}
+\DoxyCodeLine{437   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{inline} blas\_int select\_lhp(\textcolor{keyword}{const} T* x\_ptr, \textcolor{keyword}{const} T* y\_ptr, \textcolor{keyword}{const} T* z\_ptr);}
+\DoxyCodeLine{438   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{inline} blas\_int select\_rhp(\textcolor{keyword}{const} T* x\_ptr, \textcolor{keyword}{const} T* y\_ptr, \textcolor{keyword}{const} T* z\_ptr);}
+\DoxyCodeLine{439   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{inline} blas\_int select\_iuc(\textcolor{keyword}{const} T* x\_ptr, \textcolor{keyword}{const} T* y\_ptr, \textcolor{keyword}{const} T* z\_ptr);}
+\DoxyCodeLine{440   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{inline} blas\_int select\_ouc(\textcolor{keyword}{const} T* x\_ptr, \textcolor{keyword}{const} T* y\_ptr, \textcolor{keyword}{const} T* z\_ptr);}
+\DoxyCodeLine{441   }
+\DoxyCodeLine{442   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{inline} blas\_int cx\_select\_lhp(\textcolor{keyword}{const} std::complex<T>* x\_ptr, \textcolor{keyword}{const} std::complex<T>* y\_ptr);}
+\DoxyCodeLine{443   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{inline} blas\_int cx\_select\_rhp(\textcolor{keyword}{const} std::complex<T>* x\_ptr, \textcolor{keyword}{const} std::complex<T>* y\_ptr);}
+\DoxyCodeLine{444   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{inline} blas\_int cx\_select\_iuc(\textcolor{keyword}{const} std::complex<T>* x\_ptr, \textcolor{keyword}{const} std::complex<T>* y\_ptr);}
+\DoxyCodeLine{445   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{inline} blas\_int cx\_select\_ouc(\textcolor{keyword}{const} std::complex<T>* x\_ptr, \textcolor{keyword}{const} std::complex<T>* y\_ptr);}
+\DoxyCodeLine{446   }
+\DoxyCodeLine{447   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{inline} void\_ptr ptr\_cast(blas\_int (*\mbox{\hyperlink{classfunction}{function}})(\textcolor{keyword}{const} T*, \textcolor{keyword}{const} T*, \textcolor{keyword}{const} T*));}
+\DoxyCodeLine{448   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{inline} void\_ptr ptr\_cast(blas\_int (*\mbox{\hyperlink{classfunction}{function}})(\textcolor{keyword}{const} std::complex<T>*, \textcolor{keyword}{const} std::complex<T>*));}
+\DoxyCodeLine{449   \}}
+\DoxyCodeLine{450 }
+\DoxyCodeLine{451 }
+\DoxyCodeLine{452 }
+
+\end{DoxyCode}

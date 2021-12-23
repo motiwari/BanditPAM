@@ -1,0 +1,113 @@
+\hypertarget{op__min__bones_8hpp_source}{}\doxysection{op\+\_\+min\+\_\+bones.\+hpp}
+\label{op__min__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_min\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_min\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classop__min}{op\_min}}}
+\DoxyCodeLine{22   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__xvec}{traits\_op\_xvec}}}
+\DoxyCodeLine{23   \{}
+\DoxyCodeLine{24   \textcolor{keyword}{public}:}
+\DoxyCodeLine{25   }
+\DoxyCodeLine{26   \textcolor{comment}{// }}
+\DoxyCodeLine{27   \textcolor{comment}{// dense matrices}}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{30   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_min>}}\& in);}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{33   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_noalias(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword dim, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<eT>::result* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{36   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_noalias(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword dim, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<eT>::result}}* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{comment}{// }}
+\DoxyCodeLine{40   \textcolor{comment}{// cubes}}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{43   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1,op\_min>}}\& in);}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{46   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_noalias(\mbox{\hyperlink{classCube}{Cube<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& X, \textcolor{keyword}{const} uword dim, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<eT>::result* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{49   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_noalias(\mbox{\hyperlink{classCube}{Cube<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& X, \textcolor{keyword}{const} uword dim, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<eT>::result}}* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \textcolor{comment}{//}}
+\DoxyCodeLine{53   \textcolor{comment}{// for non-\/complex numbers}}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{56   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT direct\_min(\textcolor{keyword}{const} eT* \textcolor{keyword}{const} X, \textcolor{keyword}{const} uword N);}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{59   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT direct\_min(\textcolor{keyword}{const} eT* \textcolor{keyword}{const} X, \textcolor{keyword}{const} uword N, uword\& index\_of\_min\_val);}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{61   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{62   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT direct\_min(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword row);}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{65   \textcolor{keyword}{inline} \textcolor{keyword}{static} eT min(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X);}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{68   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result min(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X);}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{71   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result min(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& X);}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{74   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result min\_with\_index(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, uword\& index\_of\_min\_val);}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{77   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result min\_with\_index(\textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P, uword\& index\_of\_min\_val);}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   }
+\DoxyCodeLine{80   \textcolor{comment}{//}}
+\DoxyCodeLine{81   \textcolor{comment}{// for complex numbers}}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{84   \textcolor{keyword}{inline} \textcolor{keyword}{static} std::complex<T> direct\_min(\textcolor{keyword}{const} std::complex<T>* \textcolor{keyword}{const} X, \textcolor{keyword}{const} uword n\_elem);}
+\DoxyCodeLine{85   }
+\DoxyCodeLine{86   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{87   \textcolor{keyword}{inline} \textcolor{keyword}{static} std::complex<T> direct\_min(\textcolor{keyword}{const} std::complex<T>* \textcolor{keyword}{const} X, \textcolor{keyword}{const} uword n\_elem, uword\& index\_of\_min\_val);}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{90   \textcolor{keyword}{inline} \textcolor{keyword}{static} std::complex<T> direct\_min(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& X, \textcolor{keyword}{const} uword row);}
+\DoxyCodeLine{91   }
+\DoxyCodeLine{92   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{93   \textcolor{keyword}{inline} \textcolor{keyword}{static} std::complex<T> min(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview}}< std::complex<T> >\& X);}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{96   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}} min(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X);}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{99   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}} min(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& X);}
+\DoxyCodeLine{100   }
+\DoxyCodeLine{101   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{102   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}} min\_with\_index(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, uword\& index\_of\_min\_val);}
+\DoxyCodeLine{103   }
+\DoxyCodeLine{104   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{105   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}} min\_with\_index(\textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P, uword\& index\_of\_min\_val);}
+\DoxyCodeLine{106   \};}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+
+\end{DoxyCode}

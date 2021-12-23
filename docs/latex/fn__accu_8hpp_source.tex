@@ -1,0 +1,974 @@
+\hypertarget{fn__accu_8hpp_source}{}\doxysection{fn\+\_\+accu.\+hpp}
+\label{fn__accu_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_accu.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_accu.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 arma\_hot}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{26 accu\_proxy\_linear(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   eT val = eT(0);}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keyword}{const} uword n\_elem = P.get\_n\_elem();}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keywordflow}{if}( arma\_config::openmp \&\& \mbox{\hyperlink{classProxy}{Proxy<T1>::use\_mp}} \&\& \mbox{\hyperlink{structmp__gate}{mp\_gate<eT>::eval}}(n\_elem) )}
+\DoxyCodeLine{39     \{}
+\DoxyCodeLine{40 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{41       \{}
+\DoxyCodeLine{42       \textcolor{comment}{// NOTE: using parallelisation with manual reduction workaround to take into account complex numbers;}}
+\DoxyCodeLine{43       \textcolor{comment}{// NOTE: OpenMP versions lower than 4.0 do not support user-\/defined reduction}}
+\DoxyCodeLine{44       }
+\DoxyCodeLine{45       \textcolor{keyword}{const} \textcolor{keywordtype}{int}   n\_threads\_max = mp\_thread\_limit::get();}
+\DoxyCodeLine{46       \textcolor{keyword}{const} uword n\_threads\_use = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(uword(podarray\_prealloc\_n\_elem::val), uword(n\_threads\_max));}
+\DoxyCodeLine{47       \textcolor{keyword}{const} uword chunk\_size    = n\_elem / n\_threads\_use;}
+\DoxyCodeLine{48       }
+\DoxyCodeLine{49       \mbox{\hyperlink{classpodarray}{podarray<eT>}} partial\_accs(n\_threads\_use);}
+\DoxyCodeLine{50       }
+\DoxyCodeLine{51 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static) num\_threads(int(n\_threads\_use))}}
+\DoxyCodeLine{52       \textcolor{keywordflow}{for}(uword thread\_id=0; thread\_id < n\_threads\_use; ++thread\_id)}
+\DoxyCodeLine{53         \{}
+\DoxyCodeLine{54         \textcolor{keyword}{const} uword start = (thread\_id+0) * chunk\_size;}
+\DoxyCodeLine{55         \textcolor{keyword}{const} uword endp1 = (thread\_id+1) * chunk\_size;}
+\DoxyCodeLine{56         }
+\DoxyCodeLine{57         eT acc = eT(0);}
+\DoxyCodeLine{58         \textcolor{keywordflow}{for}(uword i=start; i < endp1; ++i)  \{ acc += Pea[i]; \}}
+\DoxyCodeLine{59         }
+\DoxyCodeLine{60         partial\_accs[thread\_id] = acc;}
+\DoxyCodeLine{61         \}}
+\DoxyCodeLine{62       }
+\DoxyCodeLine{63       \textcolor{keywordflow}{for}(uword thread\_id=0; thread\_id < n\_threads\_use; ++thread\_id)  \{ val += partial\_accs[thread\_id]; \}}
+\DoxyCodeLine{64       }
+\DoxyCodeLine{65       \textcolor{keywordflow}{for}(uword i=(n\_threads\_use*chunk\_size); i < n\_elem; ++i)  \{ val += Pea[i]; \}}
+\DoxyCodeLine{66       \}}
+\DoxyCodeLine{67 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{68     \}}
+\DoxyCodeLine{69   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{70     \{}
+\DoxyCodeLine{71 \textcolor{preprocessor}{    \#if defined(\_\_FINITE\_MATH\_ONLY\_\_) \&\& (\_\_FINITE\_MATH\_ONLY\_\_ > 0)}}
+\DoxyCodeLine{72       \{}
+\DoxyCodeLine{73       \textcolor{keywordflow}{if}(P.is\_aligned())}
+\DoxyCodeLine{74         \{}
+\DoxyCodeLine{75         \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::aligned\_ea\_type}} Pea\_aligned = P.get\_aligned\_ea();}
+\DoxyCodeLine{76         }
+\DoxyCodeLine{77         \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)  \{ val += Pea\_aligned.at\_alt(i); \}}
+\DoxyCodeLine{78         \}}
+\DoxyCodeLine{79       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{80         \{}
+\DoxyCodeLine{81         \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)  \{ val += Pea[i]; \}}
+\DoxyCodeLine{82         \}}
+\DoxyCodeLine{83       \}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{85       \{}
+\DoxyCodeLine{86       eT val1 = eT(0);}
+\DoxyCodeLine{87       eT val2 = eT(0);}
+\DoxyCodeLine{88       }
+\DoxyCodeLine{89       uword i,j;}
+\DoxyCodeLine{90       \textcolor{keywordflow}{for}(i=0, j=1; j < n\_elem; i+=2, j+=2)  \{ val1 += Pea[i]; val2 += Pea[j]; \}}
+\DoxyCodeLine{91       }
+\DoxyCodeLine{92       \textcolor{keywordflow}{if}(i < n\_elem)  \{ val1 += Pea[i]; \}}
+\DoxyCodeLine{93       }
+\DoxyCodeLine{94       val = val1 + val2;}
+\DoxyCodeLine{95       \}}
+\DoxyCodeLine{96 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{97     \}}
+\DoxyCodeLine{98   }
+\DoxyCodeLine{99   \textcolor{keywordflow}{return} val;}
+\DoxyCodeLine{100   \}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{105 arma\_hot}
+\DoxyCodeLine{106 \textcolor{keyword}{inline}}
+\DoxyCodeLine{107 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{108 accu\_proxy\_at\_mp(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P)}
+\DoxyCodeLine{109   \{}
+\DoxyCodeLine{110   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{113   }
+\DoxyCodeLine{114   eT val = eT(0);}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{117     \{}
+\DoxyCodeLine{118     \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{119     \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{120     }
+\DoxyCodeLine{121     \textcolor{keywordflow}{if}(n\_cols == 1)}
+\DoxyCodeLine{122       \{}
+\DoxyCodeLine{123       \textcolor{keyword}{const} \textcolor{keywordtype}{int}   n\_threads\_max = mp\_thread\_limit::get();}
+\DoxyCodeLine{124       \textcolor{keyword}{const} uword n\_threads\_use = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(uword(podarray\_prealloc\_n\_elem::val), uword(n\_threads\_max));}
+\DoxyCodeLine{125       \textcolor{keyword}{const} uword chunk\_size    = n\_rows / n\_threads\_use;}
+\DoxyCodeLine{126       }
+\DoxyCodeLine{127       \mbox{\hyperlink{classpodarray}{podarray<eT>}} partial\_accs(n\_threads\_use);}
+\DoxyCodeLine{128       }
+\DoxyCodeLine{129 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static) num\_threads(int(n\_threads\_use))}}
+\DoxyCodeLine{130       \textcolor{keywordflow}{for}(uword thread\_id=0; thread\_id < n\_threads\_use; ++thread\_id)}
+\DoxyCodeLine{131         \{}
+\DoxyCodeLine{132         \textcolor{keyword}{const} uword start = (thread\_id+0) * chunk\_size;}
+\DoxyCodeLine{133         \textcolor{keyword}{const} uword endp1 = (thread\_id+1) * chunk\_size;}
+\DoxyCodeLine{134         }
+\DoxyCodeLine{135         eT acc = eT(0);}
+\DoxyCodeLine{136         \textcolor{keywordflow}{for}(uword i=start; i < endp1; ++i)  \{ acc += P.at(i,0); \}}
+\DoxyCodeLine{137         }
+\DoxyCodeLine{138         partial\_accs[thread\_id] = acc;}
+\DoxyCodeLine{139         \}}
+\DoxyCodeLine{140       }
+\DoxyCodeLine{141       \textcolor{keywordflow}{for}(uword thread\_id=0; thread\_id < n\_threads\_use; ++thread\_id)  \{ val += partial\_accs[thread\_id]; \}}
+\DoxyCodeLine{142       }
+\DoxyCodeLine{143       \textcolor{keywordflow}{for}(uword i=(n\_threads\_use*chunk\_size); i < n\_rows; ++i)  \{ val += P.at(i,0); \}}
+\DoxyCodeLine{144       \}}
+\DoxyCodeLine{145     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{146     \textcolor{keywordflow}{if}(n\_rows == 1)}
+\DoxyCodeLine{147       \{}
+\DoxyCodeLine{148       \textcolor{keyword}{const} \textcolor{keywordtype}{int}   n\_threads\_max = mp\_thread\_limit::get();}
+\DoxyCodeLine{149       \textcolor{keyword}{const} uword n\_threads\_use = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(uword(podarray\_prealloc\_n\_elem::val), uword(n\_threads\_max));}
+\DoxyCodeLine{150       \textcolor{keyword}{const} uword chunk\_size    = n\_cols / n\_threads\_use;}
+\DoxyCodeLine{151       }
+\DoxyCodeLine{152       \mbox{\hyperlink{classpodarray}{podarray<eT>}} partial\_accs(n\_threads\_use);}
+\DoxyCodeLine{153       }
+\DoxyCodeLine{154 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static) num\_threads(int(n\_threads\_use))}}
+\DoxyCodeLine{155       \textcolor{keywordflow}{for}(uword thread\_id=0; thread\_id < n\_threads\_use; ++thread\_id)}
+\DoxyCodeLine{156         \{}
+\DoxyCodeLine{157         \textcolor{keyword}{const} uword start = (thread\_id+0) * chunk\_size;}
+\DoxyCodeLine{158         \textcolor{keyword}{const} uword endp1 = (thread\_id+1) * chunk\_size;}
+\DoxyCodeLine{159         }
+\DoxyCodeLine{160         eT acc = eT(0);}
+\DoxyCodeLine{161         \textcolor{keywordflow}{for}(uword i=start; i < endp1; ++i)  \{ acc += P.at(0,i); \}}
+\DoxyCodeLine{162         }
+\DoxyCodeLine{163         partial\_accs[thread\_id] = acc;}
+\DoxyCodeLine{164         \}}
+\DoxyCodeLine{165       }
+\DoxyCodeLine{166       \textcolor{keywordflow}{for}(uword thread\_id=0; thread\_id < n\_threads\_use; ++thread\_id)  \{ val += partial\_accs[thread\_id]; \}}
+\DoxyCodeLine{167       }
+\DoxyCodeLine{168       \textcolor{keywordflow}{for}(uword i=(n\_threads\_use*chunk\_size); i < n\_cols; ++i)  \{ val += P.at(0,i); \}}
+\DoxyCodeLine{169       \}}
+\DoxyCodeLine{170     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{171       \{}
+\DoxyCodeLine{172       \mbox{\hyperlink{classpodarray}{podarray<eT>}} col\_accs(n\_cols);}
+\DoxyCodeLine{173       }
+\DoxyCodeLine{174       \textcolor{keyword}{const} \textcolor{keywordtype}{int} n\_threads = mp\_thread\_limit::get();}
+\DoxyCodeLine{175       }
+\DoxyCodeLine{176 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static) num\_threads(n\_threads)}}
+\DoxyCodeLine{177       \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{178         \{}
+\DoxyCodeLine{179         eT val1 = eT(0);}
+\DoxyCodeLine{180         eT val2 = eT(0);}
+\DoxyCodeLine{181         }
+\DoxyCodeLine{182         uword i,j;}
+\DoxyCodeLine{183         \textcolor{keywordflow}{for}(i=0, j=1; j < n\_rows; i+=2, j+=2)  \{ val1 += P.at(i,col); val2 += P.at(j,col); \}}
+\DoxyCodeLine{184         }
+\DoxyCodeLine{185         \textcolor{keywordflow}{if}(i < n\_rows)  \{ val1 += P.at(i,col); \}}
+\DoxyCodeLine{186         }
+\DoxyCodeLine{187         col\_accs[col] = val1 + val2;}
+\DoxyCodeLine{188         \}}
+\DoxyCodeLine{189       }
+\DoxyCodeLine{190       val = arrayops::accumulate(col\_accs.memptr(), n\_cols);}
+\DoxyCodeLine{191       \}}
+\DoxyCodeLine{192     \}}
+\DoxyCodeLine{193 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{194     \{}
+\DoxyCodeLine{195     arma\_ignore(P);}
+\DoxyCodeLine{196     \}}
+\DoxyCodeLine{197 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{198   }
+\DoxyCodeLine{199   \textcolor{keywordflow}{return} val;}
+\DoxyCodeLine{200   \}}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{205 arma\_hot}
+\DoxyCodeLine{206 \textcolor{keyword}{inline}}
+\DoxyCodeLine{207 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{208 accu\_proxy\_at(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P)}
+\DoxyCodeLine{209   \{}
+\DoxyCodeLine{210   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{213   }
+\DoxyCodeLine{214   \textcolor{keywordflow}{if}(arma\_config::openmp \&\& \mbox{\hyperlink{classProxy}{Proxy<T1>::use\_mp}} \&\& \mbox{\hyperlink{structmp__gate}{mp\_gate<eT>::eval}}(P.get\_n\_elem()))}
+\DoxyCodeLine{215     \{}
+\DoxyCodeLine{216     \textcolor{keywordflow}{return} accu\_proxy\_at\_mp(P);}
+\DoxyCodeLine{217     \}}
+\DoxyCodeLine{218   }
+\DoxyCodeLine{219   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{220   \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222   eT val = eT(0);}
+\DoxyCodeLine{223   }
+\DoxyCodeLine{224   \textcolor{keywordflow}{if}(n\_rows != 1)}
+\DoxyCodeLine{225     \{}
+\DoxyCodeLine{226     eT val1 = eT(0);}
+\DoxyCodeLine{227     eT val2 = eT(0);}
+\DoxyCodeLine{228     }
+\DoxyCodeLine{229     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{230       \{}
+\DoxyCodeLine{231       uword i,j;}
+\DoxyCodeLine{232       \textcolor{keywordflow}{for}(i=0, j=1; j < n\_rows; i+=2, j+=2)  \{ val1 += P.at(i,col); val2 += P.at(j,col); \}}
+\DoxyCodeLine{233       }
+\DoxyCodeLine{234       \textcolor{keywordflow}{if}(i < n\_rows)  \{ val1 += P.at(i,col); \}}
+\DoxyCodeLine{235       \}}
+\DoxyCodeLine{236     }
+\DoxyCodeLine{237     val = val1 + val2;}
+\DoxyCodeLine{238     \}}
+\DoxyCodeLine{239   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{240     \{}
+\DoxyCodeLine{241     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)  \{ val += P.at(0,col); \}}
+\DoxyCodeLine{242     \}}
+\DoxyCodeLine{243   }
+\DoxyCodeLine{244   \textcolor{keywordflow}{return} val;}
+\DoxyCodeLine{245   \}}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 }
+\DoxyCodeLine{248 }
+\DoxyCodeLine{250 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{251 arma\_warn\_unused}
+\DoxyCodeLine{252 arma\_hot}
+\DoxyCodeLine{253 \textcolor{keyword}{inline}}
+\DoxyCodeLine{254 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{typename} T1::elem\_type >::result}
+\DoxyCodeLine{255 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{256   \{}
+\DoxyCodeLine{257   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{258   }
+\DoxyCodeLine{259   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X);}
+\DoxyCodeLine{260   }
+\DoxyCodeLine{261   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Mat}{is\_Mat}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value || \mbox{\hyperlink{structis__subview__col}{is\_subview\_col}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value)}
+\DoxyCodeLine{262     \{}
+\DoxyCodeLine{263     \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<typename Proxy<T1>::stored\_type}}> tmp(P.Q);}
+\DoxyCodeLine{264     }
+\DoxyCodeLine{265     \textcolor{keywordflow}{return} arrayops::accumulate(tmp.M.memptr(), tmp.M.n\_elem);}
+\DoxyCodeLine{266     \}}
+\DoxyCodeLine{267   }
+\DoxyCodeLine{268   \textcolor{keywordflow}{return} (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}}) ? accu\_proxy\_at(P) : accu\_proxy\_linear(P);}
+\DoxyCodeLine{269   \}}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271 }
+\DoxyCodeLine{272 }
+\DoxyCodeLine{274 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{275 arma\_warn\_unused}
+\DoxyCodeLine{276 \textcolor{keyword}{inline}}
+\DoxyCodeLine{277 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{278 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlue}{eGlue<T1,T2,eglue\_schur>}}\& expr)}
+\DoxyCodeLine{279   \{}
+\DoxyCodeLine{280   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{281   }
+\DoxyCodeLine{282   \textcolor{keyword}{typedef} \mbox{\hyperlink{classeGlue}{eGlue<T1,T2,eglue\_schur>}} expr\_type;}
+\DoxyCodeLine{283   }
+\DoxyCodeLine{284   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} expr\_type::proxy1\_type::stored\_type P1\_stored\_type;}
+\DoxyCodeLine{285   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} expr\_type::proxy2\_type::stored\_type P2\_stored\_type;}
+\DoxyCodeLine{286   }
+\DoxyCodeLine{287   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} have\_direct\_mem\_1 = (\mbox{\hyperlink{structis__Mat}{is\_Mat<P1\_stored\_type>::value}}) || (\mbox{\hyperlink{structis__subview__col}{is\_subview\_col<P1\_stored\_type>::value}});}
+\DoxyCodeLine{288   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} have\_direct\_mem\_2 = (\mbox{\hyperlink{structis__Mat}{is\_Mat<P2\_stored\_type>::value}}) || (\mbox{\hyperlink{structis__subview__col}{is\_subview\_col<P2\_stored\_type>::value}});}
+\DoxyCodeLine{289   }
+\DoxyCodeLine{290   \textcolor{keywordflow}{if}(have\_direct\_mem\_1 \&\& have\_direct\_mem\_2)}
+\DoxyCodeLine{291     \{}
+\DoxyCodeLine{292     \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<P1\_stored\_type>}} tmp1(expr.P1.Q);}
+\DoxyCodeLine{293     \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<P2\_stored\_type>}} tmp2(expr.P2.Q);}
+\DoxyCodeLine{294     }
+\DoxyCodeLine{295     \textcolor{keywordflow}{return} \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{op\_dot::direct\_dot}}(tmp1.M.n\_elem, tmp1.M.memptr(), tmp2.M.memptr());}
+\DoxyCodeLine{296     \}}
+\DoxyCodeLine{297   }
+\DoxyCodeLine{298   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<expr\_type>}} P(expr);}
+\DoxyCodeLine{299   }
+\DoxyCodeLine{300   \textcolor{keywordflow}{return} (\mbox{\hyperlink{classProxy}{Proxy<expr\_type>::use\_at}}) ? accu\_proxy\_at(P) : accu\_proxy\_linear(P);}
+\DoxyCodeLine{301   \}}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304 }
+\DoxyCodeLine{306 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{307 arma\_warn\_unused}
+\DoxyCodeLine{308 \textcolor{keyword}{inline}}
+\DoxyCodeLine{309 uword}
+\DoxyCodeLine{310 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword,T1,op\_rel\_noteq>}}\& X)}
+\DoxyCodeLine{311   \{}
+\DoxyCodeLine{312   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{313   }
+\DoxyCodeLine{314   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{315   }
+\DoxyCodeLine{316   \textcolor{keyword}{const} eT val = X.aux;}
+\DoxyCodeLine{317   }
+\DoxyCodeLine{318   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.m);}
+\DoxyCodeLine{319   }
+\DoxyCodeLine{320   uword n\_nonzero = 0;}
+\DoxyCodeLine{321   }
+\DoxyCodeLine{322   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{323     \{}
+\DoxyCodeLine{324     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} ea\_type;}
+\DoxyCodeLine{325     }
+\DoxyCodeLine{326           ea\_type \mbox{\hyperlink{structA}{A}}      = P.get\_ea();}
+\DoxyCodeLine{327     \textcolor{keyword}{const} uword   n\_elem = P.get\_n\_elem();}
+\DoxyCodeLine{328     }
+\DoxyCodeLine{329     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{330       \{}
+\DoxyCodeLine{331       n\_nonzero += (\mbox{\hyperlink{structA}{A}}[i] != val) ? uword(1) : uword(0);}
+\DoxyCodeLine{332       \}}
+\DoxyCodeLine{333     \}}
+\DoxyCodeLine{334   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{335     \{}
+\DoxyCodeLine{336     \textcolor{keyword}{const} uword P\_n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{337     \textcolor{keyword}{const} uword P\_n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{338     }
+\DoxyCodeLine{339     \textcolor{keywordflow}{if}(P\_n\_rows == 1)}
+\DoxyCodeLine{340       \{}
+\DoxyCodeLine{341       \textcolor{keywordflow}{for}(uword col=0; col < P\_n\_cols; ++col)}
+\DoxyCodeLine{342         \{}
+\DoxyCodeLine{343         n\_nonzero += (P.at(0,col) != val) ? uword(1) : uword(0);}
+\DoxyCodeLine{344         \}}
+\DoxyCodeLine{345       \}}
+\DoxyCodeLine{346     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{347       \{}
+\DoxyCodeLine{348       \textcolor{keywordflow}{for}(uword col=0; col < P\_n\_cols; ++col)}
+\DoxyCodeLine{349       \textcolor{keywordflow}{for}(uword row=0; row < P\_n\_rows; ++row)}
+\DoxyCodeLine{350         \{}
+\DoxyCodeLine{351         n\_nonzero += (P.at(row,col) != val) ? uword(1) : uword(0);}
+\DoxyCodeLine{352         \}}
+\DoxyCodeLine{353       \}}
+\DoxyCodeLine{354     \}}
+\DoxyCodeLine{355   }
+\DoxyCodeLine{356   \textcolor{keywordflow}{return} n\_nonzero;}
+\DoxyCodeLine{357   \}}
+\DoxyCodeLine{358 }
+\DoxyCodeLine{359 }
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{362 arma\_warn\_unused}
+\DoxyCodeLine{363 \textcolor{keyword}{inline}}
+\DoxyCodeLine{364 uword}
+\DoxyCodeLine{365 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword,T1,op\_rel\_eq>}}\& X)}
+\DoxyCodeLine{366   \{}
+\DoxyCodeLine{367   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{368   }
+\DoxyCodeLine{369   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{370   }
+\DoxyCodeLine{371   \textcolor{keyword}{const} eT val = X.aux;}
+\DoxyCodeLine{372   }
+\DoxyCodeLine{373   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.m);}
+\DoxyCodeLine{374   }
+\DoxyCodeLine{375   uword n\_nonzero = 0;}
+\DoxyCodeLine{376   }
+\DoxyCodeLine{377   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{378     \{}
+\DoxyCodeLine{379     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} ea\_type;}
+\DoxyCodeLine{380     }
+\DoxyCodeLine{381           ea\_type \mbox{\hyperlink{structA}{A}}      = P.get\_ea();}
+\DoxyCodeLine{382     \textcolor{keyword}{const} uword   n\_elem = P.get\_n\_elem();}
+\DoxyCodeLine{383     }
+\DoxyCodeLine{384     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{385       \{}
+\DoxyCodeLine{386       n\_nonzero += (\mbox{\hyperlink{structA}{A}}[i] == val) ? uword(1) : uword(0);}
+\DoxyCodeLine{387       \}}
+\DoxyCodeLine{388     \}}
+\DoxyCodeLine{389   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{390     \{}
+\DoxyCodeLine{391     \textcolor{keyword}{const} uword P\_n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{392     \textcolor{keyword}{const} uword P\_n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{393     }
+\DoxyCodeLine{394     \textcolor{keywordflow}{if}(P\_n\_rows == 1)}
+\DoxyCodeLine{395       \{}
+\DoxyCodeLine{396       \textcolor{keywordflow}{for}(uword col=0; col < P\_n\_cols; ++col)}
+\DoxyCodeLine{397         \{}
+\DoxyCodeLine{398         n\_nonzero += (P.at(0,col) == val) ? uword(1) : uword(0);}
+\DoxyCodeLine{399         \}}
+\DoxyCodeLine{400       \}}
+\DoxyCodeLine{401     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{402       \{}
+\DoxyCodeLine{403       \textcolor{keywordflow}{for}(uword col=0; col < P\_n\_cols; ++col)}
+\DoxyCodeLine{404       \textcolor{keywordflow}{for}(uword row=0; row < P\_n\_rows; ++row)}
+\DoxyCodeLine{405         \{}
+\DoxyCodeLine{406         n\_nonzero += (P.at(row,col) == val) ? uword(1) : uword(0);}
+\DoxyCodeLine{407         \}}
+\DoxyCodeLine{408       \}}
+\DoxyCodeLine{409     \}}
+\DoxyCodeLine{410   }
+\DoxyCodeLine{411   \textcolor{keywordflow}{return} n\_nonzero;}
+\DoxyCodeLine{412   \}}
+\DoxyCodeLine{413 }
+\DoxyCodeLine{414 }
+\DoxyCodeLine{415 }
+\DoxyCodeLine{416 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{417 arma\_warn\_unused}
+\DoxyCodeLine{418 \textcolor{keyword}{inline}}
+\DoxyCodeLine{419 uword}
+\DoxyCodeLine{420 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword,T1,T2,glue\_rel\_noteq>}}\& X)}
+\DoxyCodeLine{421   \{}
+\DoxyCodeLine{422   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{423   }
+\DoxyCodeLine{424   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} PA(X.A);}
+\DoxyCodeLine{425   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}} PB(X.B);}
+\DoxyCodeLine{426   }
+\DoxyCodeLine{427   arma\_debug\_assert\_same\_size(PA, PB, \textcolor{stringliteral}{"{}operator!="{}});}
+\DoxyCodeLine{428   }
+\DoxyCodeLine{429   uword n\_nonzero = 0;}
+\DoxyCodeLine{430   }
+\DoxyCodeLine{431   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{classProxy}{Proxy<T2>::use\_at}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{432     \{}
+\DoxyCodeLine{433     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} PA\_ea\_type;}
+\DoxyCodeLine{434     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T2>::ea\_type}} PB\_ea\_type;}
+\DoxyCodeLine{435     }
+\DoxyCodeLine{436           PA\_ea\_type \mbox{\hyperlink{structA}{A}}      = PA.get\_ea();}
+\DoxyCodeLine{437           PB\_ea\_type \mbox{\hyperlink{structB}{B}}      = PB.get\_ea();}
+\DoxyCodeLine{438     \textcolor{keyword}{const} uword      n\_elem = PA.get\_n\_elem();}
+\DoxyCodeLine{439     }
+\DoxyCodeLine{440     \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{441       \{}
+\DoxyCodeLine{442       n\_nonzero += (\mbox{\hyperlink{structA}{A}}[i] != \mbox{\hyperlink{structB}{B}}[i]) ? uword(1) : uword(0);}
+\DoxyCodeLine{443       \}}
+\DoxyCodeLine{444     \}}
+\DoxyCodeLine{445   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{446     \{}
+\DoxyCodeLine{447     \textcolor{keyword}{const} uword PA\_n\_cols = PA.get\_n\_cols();}
+\DoxyCodeLine{448     \textcolor{keyword}{const} uword PA\_n\_rows = PA.get\_n\_rows();}
+\DoxyCodeLine{449     }
+\DoxyCodeLine{450     \textcolor{keywordflow}{if}(PA\_n\_rows == 1)}
+\DoxyCodeLine{451       \{}
+\DoxyCodeLine{452       \textcolor{keywordflow}{for}(uword col=0; col < PA\_n\_cols; ++col)}
+\DoxyCodeLine{453         \{}
+\DoxyCodeLine{454         n\_nonzero += (PA.at(0,col) != PB.at(0,col)) ? uword(1) : uword(0);}
+\DoxyCodeLine{455         \}}
+\DoxyCodeLine{456       \}}
+\DoxyCodeLine{457     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{458       \{}
+\DoxyCodeLine{459       \textcolor{keywordflow}{for}(uword col=0; col < PA\_n\_cols; ++col)}
+\DoxyCodeLine{460       \textcolor{keywordflow}{for}(uword row=0; row < PA\_n\_rows; ++row)}
+\DoxyCodeLine{461         \{}
+\DoxyCodeLine{462         n\_nonzero += (PA.at(row,col) != PB.at(row,col)) ? uword(1) : uword(0);}
+\DoxyCodeLine{463         \}}
+\DoxyCodeLine{464       \}}
+\DoxyCodeLine{465     \}}
+\DoxyCodeLine{466   }
+\DoxyCodeLine{467   \textcolor{keywordflow}{return} n\_nonzero;}
+\DoxyCodeLine{468   \}}
+\DoxyCodeLine{469 }
+\DoxyCodeLine{470 }
+\DoxyCodeLine{471 }
+\DoxyCodeLine{472 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{473 arma\_warn\_unused}
+\DoxyCodeLine{474 \textcolor{keyword}{inline}}
+\DoxyCodeLine{475 uword}
+\DoxyCodeLine{476 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword,T1,T2,glue\_rel\_eq>}}\& X)}
+\DoxyCodeLine{477   \{}
+\DoxyCodeLine{478   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{479   }
+\DoxyCodeLine{480   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} PA(X.A);}
+\DoxyCodeLine{481   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}} PB(X.B);}
+\DoxyCodeLine{482   }
+\DoxyCodeLine{483   arma\_debug\_assert\_same\_size(PA, PB, \textcolor{stringliteral}{"{}operator=="{}});}
+\DoxyCodeLine{484   }
+\DoxyCodeLine{485   uword n\_nonzero = 0;}
+\DoxyCodeLine{486   }
+\DoxyCodeLine{487   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{classProxy}{Proxy<T2>::use\_at}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{488     \{}
+\DoxyCodeLine{489     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} PA\_ea\_type;}
+\DoxyCodeLine{490     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T2>::ea\_type}} PB\_ea\_type;}
+\DoxyCodeLine{491     }
+\DoxyCodeLine{492           PA\_ea\_type \mbox{\hyperlink{structA}{A}}      = PA.get\_ea();}
+\DoxyCodeLine{493           PB\_ea\_type \mbox{\hyperlink{structB}{B}}      = PB.get\_ea();}
+\DoxyCodeLine{494     \textcolor{keyword}{const} uword      n\_elem = PA.get\_n\_elem();}
+\DoxyCodeLine{495     }
+\DoxyCodeLine{496     \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{497       \{}
+\DoxyCodeLine{498       n\_nonzero += (\mbox{\hyperlink{structA}{A}}[i] == \mbox{\hyperlink{structB}{B}}[i]) ? uword(1) : uword(0);}
+\DoxyCodeLine{499       \}}
+\DoxyCodeLine{500     \}}
+\DoxyCodeLine{501   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{502     \{}
+\DoxyCodeLine{503     \textcolor{keyword}{const} uword PA\_n\_cols = PA.get\_n\_cols();}
+\DoxyCodeLine{504     \textcolor{keyword}{const} uword PA\_n\_rows = PA.get\_n\_rows();}
+\DoxyCodeLine{505     }
+\DoxyCodeLine{506     \textcolor{keywordflow}{if}(PA\_n\_rows == 1)}
+\DoxyCodeLine{507       \{}
+\DoxyCodeLine{508       \textcolor{keywordflow}{for}(uword col=0; col < PA\_n\_cols; ++col)}
+\DoxyCodeLine{509         \{}
+\DoxyCodeLine{510         n\_nonzero += (PA.at(0,col) == PB.at(0,col)) ? uword(1) : uword(0);}
+\DoxyCodeLine{511         \}}
+\DoxyCodeLine{512       \}}
+\DoxyCodeLine{513     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{514       \{}
+\DoxyCodeLine{515       \textcolor{keywordflow}{for}(uword col=0; col < PA\_n\_cols; ++col)}
+\DoxyCodeLine{516       \textcolor{keywordflow}{for}(uword row=0; row < PA\_n\_rows; ++row)}
+\DoxyCodeLine{517         \{}
+\DoxyCodeLine{518         n\_nonzero += (PA.at(row,col) == PB.at(row,col)) ? uword(1) : uword(0);}
+\DoxyCodeLine{519         \}}
+\DoxyCodeLine{520       \}}
+\DoxyCodeLine{521     \}}
+\DoxyCodeLine{522   }
+\DoxyCodeLine{523   \textcolor{keywordflow}{return} n\_nonzero;}
+\DoxyCodeLine{524   \}}
+\DoxyCodeLine{525 }
+\DoxyCodeLine{526 }
+\DoxyCodeLine{527 }
+\DoxyCodeLine{529 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{530 arma\_warn\_unused}
+\DoxyCodeLine{531 arma\_hot}
+\DoxyCodeLine{532 \textcolor{keyword}{inline}}
+\DoxyCodeLine{533 eT}
+\DoxyCodeLine{534 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X)}
+\DoxyCodeLine{535   \{}
+\DoxyCodeLine{536   arma\_extra\_debug\_sigprint();  }
+\DoxyCodeLine{537   }
+\DoxyCodeLine{538   \textcolor{keyword}{const} uword X\_n\_rows = X.n\_rows;}
+\DoxyCodeLine{539   \textcolor{keyword}{const} uword X\_n\_cols = X.n\_cols;}
+\DoxyCodeLine{540   }
+\DoxyCodeLine{541   eT val = eT(0);}
+\DoxyCodeLine{542   }
+\DoxyCodeLine{543   \textcolor{keywordflow}{if}(X\_n\_rows == 1)}
+\DoxyCodeLine{544     \{}
+\DoxyCodeLine{545     \textcolor{keyword}{typedef} \mbox{\hyperlink{classsubview__row}{subview\_row<eT>}} sv\_type;}
+\DoxyCodeLine{546     }
+\DoxyCodeLine{547     \textcolor{keyword}{const} sv\_type\& sv = \textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const }sv\_type\&\textcolor{keyword}{>}(X);  \textcolor{comment}{// subview\_row<eT> is a child class of subview<eT> and has no extra data}}
+\DoxyCodeLine{548     }
+\DoxyCodeLine{549     \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<sv\_type>}} P(sv);}
+\DoxyCodeLine{550     }
+\DoxyCodeLine{551     val = accu\_proxy\_linear(P);}
+\DoxyCodeLine{552     \}}
+\DoxyCodeLine{553   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{554   \textcolor{keywordflow}{if}(X\_n\_cols == 1)}
+\DoxyCodeLine{555     \{}
+\DoxyCodeLine{556     val = arrayops::accumulate( X.colptr(0), X\_n\_rows );}
+\DoxyCodeLine{557     \}}
+\DoxyCodeLine{558   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{559     \{}
+\DoxyCodeLine{560     \textcolor{keywordflow}{for}(uword col=0; col < X\_n\_cols; ++col)}
+\DoxyCodeLine{561       \{}
+\DoxyCodeLine{562       val += arrayops::accumulate( X.colptr(col), X\_n\_rows );}
+\DoxyCodeLine{563       \}}
+\DoxyCodeLine{564     \}}
+\DoxyCodeLine{565   }
+\DoxyCodeLine{566   \textcolor{keywordflow}{return} val;}
+\DoxyCodeLine{567   \}}
+\DoxyCodeLine{568 }
+\DoxyCodeLine{569 }
+\DoxyCodeLine{570 }
+\DoxyCodeLine{571 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{572 arma\_warn\_unused}
+\DoxyCodeLine{573 arma\_hot}
+\DoxyCodeLine{574 \textcolor{keyword}{inline}}
+\DoxyCodeLine{575 eT}
+\DoxyCodeLine{576 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}\& X)}
+\DoxyCodeLine{577   \{}
+\DoxyCodeLine{578   arma\_extra\_debug\_sigprint();  }
+\DoxyCodeLine{579   }
+\DoxyCodeLine{580   \textcolor{keywordflow}{return} arrayops::accumulate( X.colptr(0), X.n\_rows );}
+\DoxyCodeLine{581   \}}
+\DoxyCodeLine{582 }
+\DoxyCodeLine{583 }
+\DoxyCodeLine{584 }
+\DoxyCodeLine{585 \textcolor{comment}{//}}
+\DoxyCodeLine{586 }
+\DoxyCodeLine{587 }
+\DoxyCodeLine{588 }
+\DoxyCodeLine{589 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{590 arma\_hot}
+\DoxyCodeLine{591 \textcolor{keyword}{inline}}
+\DoxyCodeLine{592 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{593 accu\_cube\_proxy\_linear(\textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P)}
+\DoxyCodeLine{594   \{}
+\DoxyCodeLine{595   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{596   }
+\DoxyCodeLine{597   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{598   }
+\DoxyCodeLine{599   eT val = eT(0);}
+\DoxyCodeLine{600     }
+\DoxyCodeLine{601   \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{602   }
+\DoxyCodeLine{603   \textcolor{keyword}{const} uword n\_elem = P.get\_n\_elem();}
+\DoxyCodeLine{604   }
+\DoxyCodeLine{605   \textcolor{keywordflow}{if}( arma\_config::openmp \&\& \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_mp}} \&\& \mbox{\hyperlink{structmp__gate}{mp\_gate<eT>::eval}}(n\_elem) )}
+\DoxyCodeLine{606     \{}
+\DoxyCodeLine{607 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{608       \{}
+\DoxyCodeLine{609       \textcolor{comment}{// NOTE: using parallelisation with manual reduction workaround to take into account complex numbers;}}
+\DoxyCodeLine{610       \textcolor{comment}{// NOTE: OpenMP versions lower than 4.0 do not support user-\/defined reduction}}
+\DoxyCodeLine{611       }
+\DoxyCodeLine{612       \textcolor{keyword}{const} \textcolor{keywordtype}{int}   n\_threads\_max = mp\_thread\_limit::get();}
+\DoxyCodeLine{613       \textcolor{keyword}{const} uword n\_threads\_use = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(uword(podarray\_prealloc\_n\_elem::val), uword(n\_threads\_max));}
+\DoxyCodeLine{614       \textcolor{keyword}{const} uword chunk\_size    = n\_elem / n\_threads\_use;}
+\DoxyCodeLine{615       }
+\DoxyCodeLine{616       \mbox{\hyperlink{classpodarray}{podarray<eT>}} partial\_accs(n\_threads\_use);}
+\DoxyCodeLine{617       }
+\DoxyCodeLine{618 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static) num\_threads(int(n\_threads\_use))}}
+\DoxyCodeLine{619       \textcolor{keywordflow}{for}(uword thread\_id=0; thread\_id < n\_threads\_use; ++thread\_id)}
+\DoxyCodeLine{620         \{}
+\DoxyCodeLine{621         \textcolor{keyword}{const} uword start = (thread\_id+0) * chunk\_size;}
+\DoxyCodeLine{622         \textcolor{keyword}{const} uword endp1 = (thread\_id+1) * chunk\_size;}
+\DoxyCodeLine{623         }
+\DoxyCodeLine{624         eT acc = eT(0);}
+\DoxyCodeLine{625         \textcolor{keywordflow}{for}(uword i=start; i < endp1; ++i)  \{ acc += Pea[i]; \}}
+\DoxyCodeLine{626         }
+\DoxyCodeLine{627         partial\_accs[thread\_id] = acc;}
+\DoxyCodeLine{628         \}}
+\DoxyCodeLine{629       }
+\DoxyCodeLine{630       \textcolor{keywordflow}{for}(uword thread\_id=0; thread\_id < n\_threads\_use; ++thread\_id)  \{ val += partial\_accs[thread\_id]; \}}
+\DoxyCodeLine{631       }
+\DoxyCodeLine{632       \textcolor{keywordflow}{for}(uword i=(n\_threads\_use*chunk\_size); i < n\_elem; ++i)  \{ val += Pea[i]; \}}
+\DoxyCodeLine{633       \}}
+\DoxyCodeLine{634 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{635     \}}
+\DoxyCodeLine{636   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{637     \{}
+\DoxyCodeLine{638 \textcolor{preprocessor}{    \#if defined(\_\_FINITE\_MATH\_ONLY\_\_) \&\& (\_\_FINITE\_MATH\_ONLY\_\_ > 0)}}
+\DoxyCodeLine{639       \{}
+\DoxyCodeLine{640       \textcolor{keywordflow}{if}(P.is\_aligned())}
+\DoxyCodeLine{641         \{}
+\DoxyCodeLine{642         \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::aligned\_ea\_type}} Pea\_aligned = P.get\_aligned\_ea();}
+\DoxyCodeLine{643         }
+\DoxyCodeLine{644         \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)  \{ val += Pea\_aligned.at\_alt(i); \}}
+\DoxyCodeLine{645         \}}
+\DoxyCodeLine{646       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{647         \{}
+\DoxyCodeLine{648         \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)  \{ val += Pea[i]; \}}
+\DoxyCodeLine{649         \}}
+\DoxyCodeLine{650       \}}
+\DoxyCodeLine{651 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{652       \{}
+\DoxyCodeLine{653       eT val1 = eT(0);}
+\DoxyCodeLine{654       eT val2 = eT(0);}
+\DoxyCodeLine{655       }
+\DoxyCodeLine{656       uword i,j;}
+\DoxyCodeLine{657       \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)  \{ val1 += Pea[i]; val2 += Pea[j]; \}}
+\DoxyCodeLine{658       }
+\DoxyCodeLine{659       \textcolor{keywordflow}{if}(i < n\_elem) \{ val1 += Pea[i]; \}}
+\DoxyCodeLine{660       }
+\DoxyCodeLine{661       val = val1 + val2;}
+\DoxyCodeLine{662       \}}
+\DoxyCodeLine{663 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{664     \}}
+\DoxyCodeLine{665   }
+\DoxyCodeLine{666   \textcolor{keywordflow}{return} val;}
+\DoxyCodeLine{667   \}}
+\DoxyCodeLine{668 }
+\DoxyCodeLine{669 }
+\DoxyCodeLine{670 }
+\DoxyCodeLine{671 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{672 arma\_hot}
+\DoxyCodeLine{673 \textcolor{keyword}{inline}}
+\DoxyCodeLine{674 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{675 accu\_cube\_proxy\_at\_mp(\textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P)}
+\DoxyCodeLine{676   \{}
+\DoxyCodeLine{677   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{678   }
+\DoxyCodeLine{679   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{680   }
+\DoxyCodeLine{681   eT val = eT(0);}
+\DoxyCodeLine{682   }
+\DoxyCodeLine{683 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{684     \{}
+\DoxyCodeLine{685     \textcolor{keyword}{const} uword n\_rows   = P.get\_n\_rows();}
+\DoxyCodeLine{686     \textcolor{keyword}{const} uword n\_cols   = P.get\_n\_cols();}
+\DoxyCodeLine{687     \textcolor{keyword}{const} uword n\_slices = P.get\_n\_slices();}
+\DoxyCodeLine{688     }
+\DoxyCodeLine{689     \mbox{\hyperlink{classpodarray}{podarray<eT>}} slice\_accs(n\_slices);}
+\DoxyCodeLine{690     }
+\DoxyCodeLine{691     \textcolor{keyword}{const} \textcolor{keywordtype}{int} n\_threads = mp\_thread\_limit::get();}
+\DoxyCodeLine{692     }
+\DoxyCodeLine{693 \textcolor{preprocessor}{    \#pragma omp parallel for schedule(static) num\_threads(n\_threads)}}
+\DoxyCodeLine{694     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}} = 0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{695       \{}
+\DoxyCodeLine{696       eT val1 = eT(0);}
+\DoxyCodeLine{697       eT val2 = eT(0);}
+\DoxyCodeLine{698       }
+\DoxyCodeLine{699       \textcolor{keywordflow}{for}(uword col = 0; col < n\_cols; ++col)}
+\DoxyCodeLine{700         \{}
+\DoxyCodeLine{701         uword i,j;}
+\DoxyCodeLine{702         \textcolor{keywordflow}{for}(i=0, j=1; j<n\_rows; i+=2, j+=2)  \{ val1 += P.at(i,col,\mbox{\hyperlink{classslice}{slice}});  val2 += P.at(j,col,\mbox{\hyperlink{classslice}{slice}}); \}}
+\DoxyCodeLine{703         }
+\DoxyCodeLine{704         \textcolor{keywordflow}{if}(i < n\_rows)  \{ val1 += P.at(i,col,\mbox{\hyperlink{classslice}{slice}}); \}}
+\DoxyCodeLine{705         \}}
+\DoxyCodeLine{706       }
+\DoxyCodeLine{707       slice\_accs[\mbox{\hyperlink{classslice}{slice}}] = val1 + val2;}
+\DoxyCodeLine{708       \}}
+\DoxyCodeLine{709     }
+\DoxyCodeLine{710     val = arrayops::accumulate(slice\_accs.memptr(), slice\_accs.n\_elem);}
+\DoxyCodeLine{711     \}}
+\DoxyCodeLine{712 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{713     \{}
+\DoxyCodeLine{714     arma\_ignore(P);}
+\DoxyCodeLine{715     \}}
+\DoxyCodeLine{716 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{717   }
+\DoxyCodeLine{718   \textcolor{keywordflow}{return} val;}
+\DoxyCodeLine{719   \}}
+\DoxyCodeLine{720 }
+\DoxyCodeLine{721 }
+\DoxyCodeLine{722 }
+\DoxyCodeLine{723 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{724 arma\_hot}
+\DoxyCodeLine{725 \textcolor{keyword}{inline}}
+\DoxyCodeLine{726 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{727 accu\_cube\_proxy\_at(\textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P)}
+\DoxyCodeLine{728   \{}
+\DoxyCodeLine{729   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{730   }
+\DoxyCodeLine{731   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{732   }
+\DoxyCodeLine{733   \textcolor{keywordflow}{if}(arma\_config::openmp \&\& \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_mp}} \&\& \mbox{\hyperlink{structmp__gate}{mp\_gate<eT>::eval}}(P.get\_n\_elem()))}
+\DoxyCodeLine{734     \{}
+\DoxyCodeLine{735     \textcolor{keywordflow}{return} accu\_cube\_proxy\_at\_mp(P);}
+\DoxyCodeLine{736     \}}
+\DoxyCodeLine{737   }
+\DoxyCodeLine{738   \textcolor{keyword}{const} uword n\_rows   = P.get\_n\_rows();}
+\DoxyCodeLine{739   \textcolor{keyword}{const} uword n\_cols   = P.get\_n\_cols();}
+\DoxyCodeLine{740   \textcolor{keyword}{const} uword n\_slices = P.get\_n\_slices();}
+\DoxyCodeLine{741   }
+\DoxyCodeLine{742   eT val1 = eT(0);}
+\DoxyCodeLine{743   eT val2 = eT(0);}
+\DoxyCodeLine{744   }
+\DoxyCodeLine{745   \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}} = 0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{746   \textcolor{keywordflow}{for}(uword col   = 0; col   < n\_cols;   ++col  )}
+\DoxyCodeLine{747     \{}
+\DoxyCodeLine{748     uword i,j;}
+\DoxyCodeLine{749     \textcolor{keywordflow}{for}(i=0, j=1; j<n\_rows; i+=2, j+=2)  \{ val1 += P.at(i,col,\mbox{\hyperlink{classslice}{slice}}); val2 += P.at(j,col,\mbox{\hyperlink{classslice}{slice}}); \}}
+\DoxyCodeLine{750     }
+\DoxyCodeLine{751     \textcolor{keywordflow}{if}(i < n\_rows)  \{ val1 += P.at(i,col,\mbox{\hyperlink{classslice}{slice}}); \}}
+\DoxyCodeLine{752     \}}
+\DoxyCodeLine{753   }
+\DoxyCodeLine{754   \textcolor{keywordflow}{return} (val1 + val2);}
+\DoxyCodeLine{755   \}}
+\DoxyCodeLine{756 }
+\DoxyCodeLine{757 }
+\DoxyCodeLine{758 }
+\DoxyCodeLine{760 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{761 arma\_warn\_unused}
+\DoxyCodeLine{762 arma\_hot}
+\DoxyCodeLine{763 \textcolor{keyword}{inline}}
+\DoxyCodeLine{764 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{765 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{766   \{}
+\DoxyCodeLine{767   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{768   }
+\DoxyCodeLine{769   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{770   }
+\DoxyCodeLine{771   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Cube}{is\_Cube}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::stored\_type}}>::value)}
+\DoxyCodeLine{772     \{}
+\DoxyCodeLine{773     \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<typename ProxyCube<T1>::stored\_type}}> tmp(P.Q);}
+\DoxyCodeLine{774     }
+\DoxyCodeLine{775     \textcolor{keywordflow}{return} arrayops::accumulate(tmp.M.memptr(), tmp.M.n\_elem);}
+\DoxyCodeLine{776     \}}
+\DoxyCodeLine{777   }
+\DoxyCodeLine{778   \textcolor{keywordflow}{return} (\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}}) ? accu\_cube\_proxy\_at(P) : accu\_cube\_proxy\_linear(P);}
+\DoxyCodeLine{779   \}}
+\DoxyCodeLine{780 }
+\DoxyCodeLine{781 }
+\DoxyCodeLine{782 }
+\DoxyCodeLine{784 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{785 arma\_warn\_unused}
+\DoxyCodeLine{786 \textcolor{keyword}{inline}}
+\DoxyCodeLine{787 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{788 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_schur>}}\& expr)}
+\DoxyCodeLine{789   \{}
+\DoxyCodeLine{790   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{791   }
+\DoxyCodeLine{792   \textcolor{keyword}{typedef} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_schur>}} expr\_type;}
+\DoxyCodeLine{793   }
+\DoxyCodeLine{794   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::stored\_type}} P1\_stored\_type;}
+\DoxyCodeLine{795   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::stored\_type}} P2\_stored\_type;}
+\DoxyCodeLine{796   }
+\DoxyCodeLine{797   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Cube}{is\_Cube<P1\_stored\_type>::value}} \&\& \mbox{\hyperlink{structis__Cube}{is\_Cube<P2\_stored\_type>::value}})}
+\DoxyCodeLine{798     \{}
+\DoxyCodeLine{799     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<P1\_stored\_type>}} tmp1(expr.P1.Q);}
+\DoxyCodeLine{800     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<P2\_stored\_type>}} tmp2(expr.P2.Q);}
+\DoxyCodeLine{801     }
+\DoxyCodeLine{802     \textcolor{keywordflow}{return} \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{op\_dot::direct\_dot}}(tmp1.M.n\_elem, tmp1.M.memptr(), tmp2.M.memptr());}
+\DoxyCodeLine{803     \}}
+\DoxyCodeLine{804   }
+\DoxyCodeLine{805   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<expr\_type>}} P(expr);}
+\DoxyCodeLine{806   }
+\DoxyCodeLine{807   \textcolor{keywordflow}{return} (\mbox{\hyperlink{classProxyCube}{ProxyCube<expr\_type>::use\_at}}) ? accu\_cube\_proxy\_at(P) : accu\_cube\_proxy\_linear(P);}
+\DoxyCodeLine{808   \}}
+\DoxyCodeLine{809 }
+\DoxyCodeLine{810 }
+\DoxyCodeLine{811 }
+\DoxyCodeLine{812 \textcolor{comment}{//}}
+\DoxyCodeLine{813 }
+\DoxyCodeLine{814 }
+\DoxyCodeLine{815 }
+\DoxyCodeLine{816 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{817 arma\_warn\_unused}
+\DoxyCodeLine{818 \textcolor{keyword}{inline}}
+\DoxyCodeLine{819 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__scalar__only}{arma\_scalar\_only<T>::result}}}
+\DoxyCodeLine{820 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} T\& x)}
+\DoxyCodeLine{821   \{}
+\DoxyCodeLine{822   \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{823   \}}
+\DoxyCodeLine{824 }
+\DoxyCodeLine{825 }
+\DoxyCodeLine{826 }
+\DoxyCodeLine{828 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{829 arma\_warn\_unused}
+\DoxyCodeLine{830 \textcolor{keyword}{inline}}
+\DoxyCodeLine{831 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{832 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& expr)}
+\DoxyCodeLine{833   \{}
+\DoxyCodeLine{834   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{835   }
+\DoxyCodeLine{836   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{837   }
+\DoxyCodeLine{838   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P(expr.get\_ref());}
+\DoxyCodeLine{839   }
+\DoxyCodeLine{840   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classSpProxy}{SpProxy<T1>::use\_iterator}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{841     \{}
+\DoxyCodeLine{842     \textcolor{comment}{// direct counting}}
+\DoxyCodeLine{843     \textcolor{keywordflow}{return} arrayops::accumulate(P.get\_values(), P.get\_n\_nonzero());}
+\DoxyCodeLine{844     \}}
+\DoxyCodeLine{845   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{846     \{}
+\DoxyCodeLine{847     \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::const\_iterator\_type}} it = P.begin();}
+\DoxyCodeLine{848     }
+\DoxyCodeLine{849     \textcolor{keyword}{const} uword P\_n\_nz = P.get\_n\_nonzero();}
+\DoxyCodeLine{850     }
+\DoxyCodeLine{851     eT val = eT(0);}
+\DoxyCodeLine{852     }
+\DoxyCodeLine{853     \textcolor{keywordflow}{for}(uword i=0; i < P\_n\_nz; ++i)  \{ val += (*it); ++it; \}}
+\DoxyCodeLine{854     }
+\DoxyCodeLine{855     \textcolor{keywordflow}{return} val;}
+\DoxyCodeLine{856     \}}
+\DoxyCodeLine{857   \}}
+\DoxyCodeLine{858 }
+\DoxyCodeLine{859 }
+\DoxyCodeLine{860 }
+\DoxyCodeLine{862 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{863 arma\_warn\_unused}
+\DoxyCodeLine{864 \textcolor{keyword}{inline}}
+\DoxyCodeLine{865 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{866 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpGlue}{SpGlue<T1,T2,spglue\_plus>}}\& expr)}
+\DoxyCodeLine{867   \{}
+\DoxyCodeLine{868   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{869   }
+\DoxyCodeLine{870   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__spmat}{unwrap\_spmat<T1>}} UA(expr.\mbox{\hyperlink{classSpGlue_a9ed0576165e8a3f183d911e489019d2a}{A}});}
+\DoxyCodeLine{871   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__spmat}{unwrap\_spmat<T2>}} UB(expr.\mbox{\hyperlink{classSpGlue_a714444ca62a6511c4b59d53539e45556}{B}});}
+\DoxyCodeLine{872   }
+\DoxyCodeLine{873   arma\_debug\_assert\_same\_size(UA.M.n\_rows, UA.M.n\_cols, UB.M.n\_rows, UB.M.n\_cols, \textcolor{stringliteral}{"{}addition"{}});}
+\DoxyCodeLine{874   }
+\DoxyCodeLine{875   \textcolor{keywordflow}{return} (\mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(UA.M) + \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(UB.M));}
+\DoxyCodeLine{876   \}}
+\DoxyCodeLine{877 }
+\DoxyCodeLine{878 }
+\DoxyCodeLine{879 }
+\DoxyCodeLine{881 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{882 arma\_warn\_unused}
+\DoxyCodeLine{883 \textcolor{keyword}{inline}}
+\DoxyCodeLine{884 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{885 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpGlue}{SpGlue<T1,T2,spglue\_minus>}}\& expr)}
+\DoxyCodeLine{886   \{}
+\DoxyCodeLine{887   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{888   }
+\DoxyCodeLine{889   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__spmat}{unwrap\_spmat<T1>}} UA(expr.\mbox{\hyperlink{classSpGlue_a9ed0576165e8a3f183d911e489019d2a}{A}});}
+\DoxyCodeLine{890   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__spmat}{unwrap\_spmat<T2>}} UB(expr.\mbox{\hyperlink{classSpGlue_a714444ca62a6511c4b59d53539e45556}{B}});}
+\DoxyCodeLine{891   }
+\DoxyCodeLine{892   arma\_debug\_assert\_same\_size(UA.M.n\_rows, UA.M.n\_cols, UB.M.n\_rows, UB.M.n\_cols, \textcolor{stringliteral}{"{}subtraction"{}});}
+\DoxyCodeLine{893   }
+\DoxyCodeLine{894   \textcolor{keywordflow}{return} (\mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(UA.M) -\/ \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(UB.M));}
+\DoxyCodeLine{895   \}}
+\DoxyCodeLine{896 }
+\DoxyCodeLine{897 }
+\DoxyCodeLine{898 }
+\DoxyCodeLine{900 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{901 arma\_warn\_unused}
+\DoxyCodeLine{902 \textcolor{keyword}{inline}}
+\DoxyCodeLine{903 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{904 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpGlue}{SpGlue<T1,T2,spglue\_schur>}}\& expr)}
+\DoxyCodeLine{905   \{}
+\DoxyCodeLine{906   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{907   }
+\DoxyCodeLine{908   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{909   }
+\DoxyCodeLine{910   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} px(expr.\mbox{\hyperlink{classSpGlue_a9ed0576165e8a3f183d911e489019d2a}{A}});}
+\DoxyCodeLine{911   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>}} py(expr.\mbox{\hyperlink{classSpGlue_a714444ca62a6511c4b59d53539e45556}{B}});}
+\DoxyCodeLine{912   }
+\DoxyCodeLine{913   \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::const\_iterator\_type}} x\_it     = px.begin();}
+\DoxyCodeLine{914   \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::const\_iterator\_type}} x\_it\_end = px.end();}
+\DoxyCodeLine{915   }
+\DoxyCodeLine{916   \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>::const\_iterator\_type}} y\_it     = py.begin();}
+\DoxyCodeLine{917   \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>::const\_iterator\_type}} y\_it\_end = py.end();}
+\DoxyCodeLine{918   }
+\DoxyCodeLine{919   eT acc = eT(0);}
+\DoxyCodeLine{920   }
+\DoxyCodeLine{921   \textcolor{keywordflow}{while}( (x\_it != x\_it\_end) || (y\_it != y\_it\_end) )}
+\DoxyCodeLine{922     \{}
+\DoxyCodeLine{923     \textcolor{keywordflow}{if}(x\_it == y\_it)}
+\DoxyCodeLine{924       \{}
+\DoxyCodeLine{925       acc += ((*x\_it) * (*y\_it));}
+\DoxyCodeLine{926       }
+\DoxyCodeLine{927       ++x\_it;}
+\DoxyCodeLine{928       ++y\_it;}
+\DoxyCodeLine{929       \}}
+\DoxyCodeLine{930     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{931       \{}
+\DoxyCodeLine{932       \textcolor{keyword}{const} uword x\_it\_col = x\_it.col();}
+\DoxyCodeLine{933       \textcolor{keyword}{const} uword x\_it\_row = x\_it.row();}
+\DoxyCodeLine{934       }
+\DoxyCodeLine{935       \textcolor{keyword}{const} uword y\_it\_col = y\_it.col();}
+\DoxyCodeLine{936       \textcolor{keyword}{const} uword y\_it\_row = y\_it.row();}
+\DoxyCodeLine{937       }
+\DoxyCodeLine{938       \textcolor{keywordflow}{if}((x\_it\_col < y\_it\_col) || ((x\_it\_col == y\_it\_col) \&\& (x\_it\_row < y\_it\_row))) \textcolor{comment}{// if y is closer to the end}}
+\DoxyCodeLine{939         \{}
+\DoxyCodeLine{940         ++x\_it;}
+\DoxyCodeLine{941         \}}
+\DoxyCodeLine{942       \textcolor{keywordflow}{else} \textcolor{comment}{// x is closer to the end}}
+\DoxyCodeLine{943         \{}
+\DoxyCodeLine{944         ++y\_it;}
+\DoxyCodeLine{945         \}}
+\DoxyCodeLine{946       \}}
+\DoxyCodeLine{947     \}}
+\DoxyCodeLine{948   }
+\DoxyCodeLine{949   \textcolor{keywordflow}{return} acc;}
+\DoxyCodeLine{950   \}}
+\DoxyCodeLine{951 }
+\DoxyCodeLine{952 }
+\DoxyCodeLine{953 }
+\DoxyCodeLine{954 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} spop\_type>}
+\DoxyCodeLine{955 arma\_warn\_unused}
+\DoxyCodeLine{956 \textcolor{keyword}{inline}}
+\DoxyCodeLine{957 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{958 \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_type>}}\& expr)}
+\DoxyCodeLine{959   \{}
+\DoxyCodeLine{960   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{961   }
+\DoxyCodeLine{962   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{963   }
+\DoxyCodeLine{964   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_vectorise = \(\backslash\)}
+\DoxyCodeLine{965        (\mbox{\hyperlink{structis__same__type}{is\_same\_type<spop\_type, spop\_vectorise\_row>::yes}})}
+\DoxyCodeLine{966     || (\mbox{\hyperlink{structis__same__type}{is\_same\_type<spop\_type, spop\_vectorise\_col>::yes}})}
+\DoxyCodeLine{967     || (\mbox{\hyperlink{structis__same__type}{is\_same\_type<spop\_type, spop\_vectorise\_all>::yes}});}
+\DoxyCodeLine{968   }
+\DoxyCodeLine{969   \textcolor{keywordflow}{if}(is\_vectorise)}
+\DoxyCodeLine{970     \{}
+\DoxyCodeLine{971     \textcolor{keywordflow}{return} \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(expr.\mbox{\hyperlink{classSpOp_a74d35217c0badfe9b2196c4d5ab36100}{m}});}
+\DoxyCodeLine{972     \}}
+\DoxyCodeLine{973   }
+\DoxyCodeLine{974   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp = expr;}
+\DoxyCodeLine{975   }
+\DoxyCodeLine{976   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(tmp);}
+\DoxyCodeLine{977   \}}
+\DoxyCodeLine{978 }
+\DoxyCodeLine{979 }
+\DoxyCodeLine{980 }
+
+\end{DoxyCode}

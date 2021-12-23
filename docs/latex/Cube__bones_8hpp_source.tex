@@ -1,0 +1,523 @@
+\hypertarget{Cube__bones_8hpp_source}{}\doxysection{Cube\+\_\+bones.\+hpp}
+\label{Cube__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/Cube\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/Cube\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{struct }\mbox{\hyperlink{structCube__prealloc}{Cube\_prealloc}}}
+\DoxyCodeLine{23   \{}
+\DoxyCodeLine{24   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword mat\_ptrs\_size = 4;}
+\DoxyCodeLine{25   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword mem\_n\_elem    = 64;}
+\DoxyCodeLine{26   \};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{33 \textcolor{keyword}{class }\mbox{\hyperlink{classCube}{Cube}} : \textcolor{keyword}{public} \mbox{\hyperlink{structBaseCube}{BaseCube}}< eT, Cube<eT> >}
+\DoxyCodeLine{34   \{}
+\DoxyCodeLine{35   \textcolor{keyword}{public}:}
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37   \textcolor{keyword}{typedef} eT                                \mbox{\hyperlink{classCube_ac02ff6492d871925ca596309f9e02eae}{elem\_type}}; }
+\DoxyCodeLine{38   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result  \mbox{\hyperlink{classCube_ad4c29f3f1d69b71fcdb141af81ab93bf}{pod\_type}}; }
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keyword}{const} uword  \mbox{\hyperlink{classCube_af2375467da364bb326010c46050fab2a}{n\_rows}};       }
+\DoxyCodeLine{41   \textcolor{keyword}{const} uword  \mbox{\hyperlink{classCube_a59704a57c131771a28faa0ffc71004a9}{n\_cols}};       }
+\DoxyCodeLine{42   \textcolor{keyword}{const} uword  \mbox{\hyperlink{classCube_ab4e17dc42f253294ffe8030bcbad8f9d}{n\_elem\_slice}}; }
+\DoxyCodeLine{43   \textcolor{keyword}{const} uword  \mbox{\hyperlink{classCube_a9b6ae66090ee092173190a85c0c3e5dd}{n\_slices}};     }
+\DoxyCodeLine{44   \textcolor{keyword}{const} uword  \mbox{\hyperlink{classCube_a4903e94049fa6d9f0d62dbcbf376da96}{n\_elem}};       }
+\DoxyCodeLine{45   \textcolor{keyword}{const} uword  \mbox{\hyperlink{classCube_a782fc17d52242211dbf6dc9f6e22d624}{n\_alloc}};      }
+\DoxyCodeLine{46   \textcolor{keyword}{const} uword  mem\_state;}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{comment}{// mem\_state = 0: normal cube which manages its own memory}}
+\DoxyCodeLine{49   \textcolor{comment}{// mem\_state = 1: use auxiliary memory until a size change}}
+\DoxyCodeLine{50   \textcolor{comment}{// mem\_state = 2: use auxiliary memory and don't allow the number of elements to be changed}}
+\DoxyCodeLine{51   \textcolor{comment}{// mem\_state = 3: fixed size (eg. via template based size specification)}}
+\DoxyCodeLine{52   }
+\DoxyCodeLine{53   arma\_aligned \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{classCube_a5d762740f29569b8493d2d6372dc908d}{mem}};  }
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{protected}:}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}** \textcolor{keyword}{const} mat\_ptrs;}
+\DoxyCodeLine{59   }
+\DoxyCodeLine{60   arma\_align\_mem \mbox{\hyperlink{classMat}{Mat<eT>}}* mat\_ptrs\_local[ Cube\_prealloc::mat\_ptrs\_size ];}
+\DoxyCodeLine{61   arma\_align\_mem eT            mem\_local[ Cube\_prealloc::mem\_n\_elem    ];  \textcolor{comment}{// local storage, for small cubes}}
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{keyword}{public}:}
+\DoxyCodeLine{65   }
+\DoxyCodeLine{66   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{\string~Cube}}();}
+\DoxyCodeLine{67   \textcolor{keyword}{inline}  \mbox{\hyperlink{classCube}{Cube}}();}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices);}
+\DoxyCodeLine{70   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} do\_zeros> \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices, \textcolor{keyword}{const} \mbox{\hyperlink{structarma__initmode__indicator}{arma\_initmode\_indicator<do\_zeros>}}\&);}
+\DoxyCodeLine{73   \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} do\_zeros> \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s,                                               \textcolor{keyword}{const} \mbox{\hyperlink{structarma__initmode__indicator}{arma\_initmode\_indicator<do\_zeros>}}\&);}
+\DoxyCodeLine{74   }
+\DoxyCodeLine{75   \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices, \textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\& f);}
+\DoxyCodeLine{76   \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s,                                               \textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\& f);}
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78   \textcolor{keyword}{inline}            \mbox{\hyperlink{classCube}{Cube}}(\mbox{\hyperlink{classCube}{Cube}}\&\& m);}
+\DoxyCodeLine{79   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator=(\mbox{\hyperlink{classCube}{Cube}}\&\& m);}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}(      eT* aux\_mem, \textcolor{keyword}{const} uword aux\_n\_rows, \textcolor{keyword}{const} uword aux\_n\_cols, \textcolor{keyword}{const} uword aux\_n\_slices, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} copy\_aux\_mem = \textcolor{keyword}{true}, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} strict = \textcolor{keyword}{false}, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} prealloc\_mat = \textcolor{keyword}{false});}
+\DoxyCodeLine{82   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} eT* aux\_mem, \textcolor{keyword}{const} uword aux\_n\_rows, \textcolor{keyword}{const} uword aux\_n\_cols, \textcolor{keyword}{const} uword aux\_n\_slices);}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{85   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{86   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{87   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga68bfc53a8400f75a2276fa16d025809a}{operator*=}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{88   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90   \textcolor{keyword}{inline}             \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& m);}
+\DoxyCodeLine{91   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& m);}
+\DoxyCodeLine{92   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& m);}
+\DoxyCodeLine{93   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& m);}
+\DoxyCodeLine{94   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaaf994a875088840033a77a1937dc78ba}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& m);}
+\DoxyCodeLine{95   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& m);}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{98   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<pod\_type,T2>}}\& \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \textcolor{keyword}{inline}             \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{101   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{102   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{103   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{104   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaaf994a875088840033a77a1937dc78ba}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{105   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline}             \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__slices}{subview\_cube\_slices<eT,T1>}}\& X);}
+\DoxyCodeLine{108   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__slices}{subview\_cube\_slices<eT,T1>}}\& X);}
+\DoxyCodeLine{109   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__slices}{subview\_cube\_slices<eT,T1>}}\& X);}
+\DoxyCodeLine{110   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__slices}{subview\_cube\_slices<eT,T1>}}\& X);}
+\DoxyCodeLine{111   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaaf994a875088840033a77a1937dc78ba}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__slices}{subview\_cube\_slices<eT,T1>}}\& X);}
+\DoxyCodeLine{112   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__slices}{subview\_cube\_slices<eT,T1>}}\& X);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114   arma\_inline       \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_gaf2f935925ad6fadd8e972d284d16c683}{row}}(\textcolor{keyword}{const} uword in\_row);}
+\DoxyCodeLine{115   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_gaf2f935925ad6fadd8e972d284d16c683}{row}}(\textcolor{keyword}{const} uword in\_row) \textcolor{keyword}{const};}
+\DoxyCodeLine{116   }
+\DoxyCodeLine{117   arma\_inline       \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_ga195fdde6d916d74f8e558f32841263f9}{col}}(\textcolor{keyword}{const} uword in\_col);}
+\DoxyCodeLine{118   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_ga195fdde6d916d74f8e558f32841263f9}{col}}(\textcolor{keyword}{const} uword in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   \textcolor{keyword}{inline}       \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{group__Cube_gaa096114dbf2eefcaed52f92da5064697}{slice}}(\textcolor{keyword}{const} uword in\_slice);}
+\DoxyCodeLine{121   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{group__Cube_gaa096114dbf2eefcaed52f92da5064697}{slice}}(\textcolor{keyword}{const} uword in\_slice) \textcolor{keyword}{const};}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123   arma\_inline       \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_ga26ca0741a04c96c82c330b428abdf7d7}{rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2);}
+\DoxyCodeLine{124   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_ga26ca0741a04c96c82c330b428abdf7d7}{rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2) \textcolor{keyword}{const};}
+\DoxyCodeLine{125   }
+\DoxyCodeLine{126   arma\_inline       \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_ga38c0c2d8dc4fba0015b7a2d59aa2ea56}{cols}}(\textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_col2);}
+\DoxyCodeLine{127   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_ga38c0c2d8dc4fba0015b7a2d59aa2ea56}{cols}}(\textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_col2) \textcolor{keyword}{const};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129   arma\_inline       \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_gab8b0a6a1df400f361d4b7877b23f08cb}{slices}}(\textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} uword in\_slice2);}
+\DoxyCodeLine{130   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_gab8b0a6a1df400f361d4b7877b23f08cb}{slices}}(\textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} uword in\_slice2) \textcolor{keyword}{const};}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   arma\_inline       \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_gaeaee971a4703218c607d46a5189c269c}{subcube}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} uword in\_row2, \textcolor{keyword}{const} uword in\_col2, \textcolor{keyword}{const} uword in\_slice2);}
+\DoxyCodeLine{133   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_gaeaee971a4703218c607d46a5189c269c}{subcube}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} uword in\_row2, \textcolor{keyword}{const} uword in\_col2, \textcolor{keyword}{const} uword in\_slice2) \textcolor{keyword}{const};}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_gaeaee971a4703218c607d46a5189c269c}{subcube}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{136   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_gaeaee971a4703218c607d46a5189c269c}{subcube}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_gaeaee971a4703218c607d46a5189c269c}{subcube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& slice\_span);}
+\DoxyCodeLine{139   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} \mbox{\hyperlink{group__Cube_gaeaee971a4703218c607d46a5189c269c}{subcube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& slice\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& slice\_span);}
+\DoxyCodeLine{142   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& slice\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{143   }
+\DoxyCodeLine{144   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} operator()(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{145   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} operator()(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{146   }
+\DoxyCodeLine{147   arma\_inline       \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} tube(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1);}
+\DoxyCodeLine{148   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} tube(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1) \textcolor{keyword}{const};}
+\DoxyCodeLine{149   }
+\DoxyCodeLine{150   arma\_inline       \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} tube(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_row2, \textcolor{keyword}{const} uword in\_col2);}
+\DoxyCodeLine{151   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} tube(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_row2, \textcolor{keyword}{const} uword in\_col2) \textcolor{keyword}{const};}
+\DoxyCodeLine{152   }
+\DoxyCodeLine{153   arma\_inline       \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} tube(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{154   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} tube(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{155   }
+\DoxyCodeLine{156   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} tube(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span);}
+\DoxyCodeLine{157   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} tube(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{158   }
+\DoxyCodeLine{159   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} head\_slices(\textcolor{keyword}{const} uword N);}
+\DoxyCodeLine{160   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} head\_slices(\textcolor{keyword}{const} uword N) \textcolor{keyword}{const};}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} tail\_slices(\textcolor{keyword}{const} uword N);}
+\DoxyCodeLine{163   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}} tail\_slices(\textcolor{keyword}{const} uword N) \textcolor{keyword}{const};}
+\DoxyCodeLine{164   }
+\DoxyCodeLine{165   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline       \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}} elem(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& a);}
+\DoxyCodeLine{166   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}} elem(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& a) \textcolor{keyword}{const};}
+\DoxyCodeLine{167   }
+\DoxyCodeLine{168   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline       \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& a);}
+\DoxyCodeLine{169   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& a) \textcolor{keyword}{const};}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   }
+\DoxyCodeLine{172   arma\_inline       \mbox{\hyperlink{classsubview__cube__each1}{subview\_cube\_each1<eT>}} each\_slice();}
+\DoxyCodeLine{173   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__each1}{subview\_cube\_each1<eT>}} each\_slice() \textcolor{keyword}{const};}
+\DoxyCodeLine{174   }
+\DoxyCodeLine{175   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__cube__each2}{subview\_cube\_each2<eT, T1>}} each\_slice(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword, T1>}}\& indices);}
+\DoxyCodeLine{176   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__each2}{subview\_cube\_each2<eT, T1>}} each\_slice(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword, T1>}}\& indices) \textcolor{keyword}{const};}
+\DoxyCodeLine{177   }
+\DoxyCodeLine{178   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& each\_slice(\textcolor{keyword}{const} std::function< \textcolor{keywordtype}{void}(      \mbox{\hyperlink{classMat}{Mat<eT>}}\&) >\& F);}
+\DoxyCodeLine{179   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& each\_slice(\textcolor{keyword}{const} std::function< \textcolor{keywordtype}{void}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\&) >\& F) \textcolor{keyword}{const};}
+\DoxyCodeLine{180   }
+\DoxyCodeLine{181   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& each\_slice(\textcolor{keyword}{const} std::function< \textcolor{keywordtype}{void}(      \mbox{\hyperlink{classMat}{Mat<eT>}}\&) >\& F, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_mp);}
+\DoxyCodeLine{182   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& each\_slice(\textcolor{keyword}{const} std::function< \textcolor{keywordtype}{void}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\&) >\& F, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_mp) \textcolor{keyword}{const};}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   }
+\DoxyCodeLine{185   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline       \mbox{\hyperlink{classsubview__cube__slices}{subview\_cube\_slices<eT,T1>}} \mbox{\hyperlink{group__Cube_gab8b0a6a1df400f361d4b7877b23f08cb}{slices}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& indices);}
+\DoxyCodeLine{186   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__slices}{subview\_cube\_slices<eT,T1>}} \mbox{\hyperlink{group__Cube_gab8b0a6a1df400f361d4b7877b23f08cb}{slices}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& indices) \textcolor{keyword}{const};}
+\DoxyCodeLine{187   }
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga9445d79d79ffd60050595f2cc887506d}{shed\_row}}(\textcolor{keyword}{const} uword row\_num);}
+\DoxyCodeLine{190   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga02e8719bea3ba893d40f6da5e28f2b61}{shed\_col}}(\textcolor{keyword}{const} uword col\_num);}
+\DoxyCodeLine{191   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga5b6a612fc14b303ada4a471dd535ccc8}{shed\_slice}}(\textcolor{keyword}{const} uword slice\_num);}
+\DoxyCodeLine{192   }
+\DoxyCodeLine{193   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_gaab067419b81aa25e6b54344b8897011f}{shed\_rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2);}
+\DoxyCodeLine{194   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga90653026bf5a1a6355d9673afef8dabc}{shed\_cols}}(\textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_col2);}
+\DoxyCodeLine{195   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga0aa0b0a8dde177365a95264389920315}{shed\_slices}}(\textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} uword in\_slice2);}
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga0aa0b0a8dde177365a95264389920315}{shed\_slices}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword, T1>}}\& indices);}
+\DoxyCodeLine{198   }
+\DoxyCodeLine{199   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} insert\_rows(\textcolor{keyword}{const} uword row\_num, \textcolor{keyword}{const} uword N, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} set\_to\_zero = \textcolor{keyword}{true});}
+\DoxyCodeLine{200   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} insert\_cols(\textcolor{keyword}{const} uword row\_num, \textcolor{keyword}{const} uword N, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} set\_to\_zero = \textcolor{keyword}{true});}
+\DoxyCodeLine{201   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_gaf078433be12abde746651319f32d0549}{insert\_slices}}(\textcolor{keyword}{const} uword slice\_num, \textcolor{keyword}{const} uword N, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} set\_to\_zero = \textcolor{keyword}{true});}
+\DoxyCodeLine{202   }
+\DoxyCodeLine{203   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} insert\_rows(\textcolor{keyword}{const} uword row\_num, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{204   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} insert\_cols(\textcolor{keyword}{const} uword col\_num, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{205   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_gaf078433be12abde746651319f32d0549}{insert\_slices}}(\textcolor{keyword}{const} uword slice\_num, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   }
+\DoxyCodeLine{208   \textcolor{keyword}{template}<\textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}\& X);}
+\DoxyCodeLine{209   \textcolor{keyword}{template}<\textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}\& X);}
+\DoxyCodeLine{210   \textcolor{keyword}{template}<\textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}\& X);}
+\DoxyCodeLine{211   \textcolor{keyword}{template}<\textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}\& X);}
+\DoxyCodeLine{212   \textcolor{keyword}{template}<\textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaaf994a875088840033a77a1937dc78ba}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}\& X);}
+\DoxyCodeLine{213   \textcolor{keyword}{template}<\textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}\& X);}
+\DoxyCodeLine{214   }
+\DoxyCodeLine{215   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_type>}}\& X);}
+\DoxyCodeLine{216   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_type>}}\& X);}
+\DoxyCodeLine{217   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_type>}}\& X);}
+\DoxyCodeLine{218   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_type>}}\& X);}
+\DoxyCodeLine{219   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaaf994a875088840033a77a1937dc78ba}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_type>}}\& X);}
+\DoxyCodeLine{220   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_type>}}\& X);}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{223   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{224   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{225   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{226   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaaf994a875088840033a77a1937dc78ba}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{227   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{228   }
+\DoxyCodeLine{229   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{230   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{231   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{232   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{233   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaaf994a875088840033a77a1937dc78ba}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{234   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{235   }
+\DoxyCodeLine{236   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{237   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{238   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{239   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{240   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaaf994a875088840033a77a1937dc78ba}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{241   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{242   }
+\DoxyCodeLine{243   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{244   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{245   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{246   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{247   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaaf994a875088840033a77a1937dc78ba}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{248   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{249   }
+\DoxyCodeLine{250   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classCube}{Cube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{251   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator= (\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{252   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga21c0b7cb162541d9074531eb650b76a2}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{253   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga6afe6a3c2809120a157b80fa55474e7a}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{254   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaaf994a875088840033a77a1937dc78ba}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{255   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga1b7ec9130fd0669c78de0a23cad28f8a}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{256   }
+\DoxyCodeLine{257   }
+\DoxyCodeLine{258   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Cube_gab0840546216806241de33485f460713b}{at\_alt}}     (\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{259   }
+\DoxyCodeLine{260   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Cube_ga6b20c4387eb1b011cf7ab1335b837694}{operator[] }}(\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{261   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Cube_ga6b20c4387eb1b011cf7ab1335b837694}{operator[] }}(\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{262   }
+\DoxyCodeLine{263   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Cube_ga5cac3c7cf293f31f8e4cefa15fabb54b}{at}}(\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{264   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Cube_ga5cac3c7cf293f31f8e4cefa15fabb54b}{at}}(\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{265   }
+\DoxyCodeLine{266   arma\_inline arma\_warn\_unused       eT\& operator() (\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{267   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& operator() (\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{268   }
+\DoxyCodeLine{269   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Cube_ga5cac3c7cf293f31f8e4cefa15fabb54b}{at}}         (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col, \textcolor{keyword}{const} uword in\_slice);}
+\DoxyCodeLine{270   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Cube_ga5cac3c7cf293f31f8e4cefa15fabb54b}{at}}         (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col, \textcolor{keyword}{const} uword in\_slice) \textcolor{keyword}{const};}
+\DoxyCodeLine{271   }
+\DoxyCodeLine{272   arma\_inline arma\_warn\_unused       eT\& operator() (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col, \textcolor{keyword}{const} uword in\_slice);}
+\DoxyCodeLine{273   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& operator() (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col, \textcolor{keyword}{const} uword in\_slice) \textcolor{keyword}{const};}
+\DoxyCodeLine{274   }
+\DoxyCodeLine{275   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga63f49cd73b0a28cd718820aabcbfc55b}{operator++}}();}
+\DoxyCodeLine{276   arma\_inline \textcolor{keywordtype}{void}        \mbox{\hyperlink{group__Cube_ga63f49cd73b0a28cd718820aabcbfc55b}{operator++}}(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{277   }
+\DoxyCodeLine{278   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_ga8adaf465f35b98b70c02fc3c6407ed28}{operator-\/-\/}}();}
+\DoxyCodeLine{279   arma\_inline \textcolor{keywordtype}{void}        \mbox{\hyperlink{group__Cube_ga8adaf465f35b98b70c02fc3c6407ed28}{operator-\/-\/}}(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{280   }
+\DoxyCodeLine{281        \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga66fb4cd5b9dcb5173054bb4b42825c67}{is\_finite}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{282   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_gaecc2db3371bc45d670ca59e6be7d6abc}{is\_empty}}()  \textcolor{keyword}{const};}
+\DoxyCodeLine{283   }
+\DoxyCodeLine{284   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} has\_inf() \textcolor{keyword}{const};}
+\DoxyCodeLine{285   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} has\_nan() \textcolor{keyword}{const};}
+\DoxyCodeLine{286   }
+\DoxyCodeLine{287   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga99586c04a398aef191e58925968d7860}{in\_range}}(\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{288   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga99586c04a398aef191e58925968d7860}{in\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& x) \textcolor{keyword}{const};}
+\DoxyCodeLine{289   }
+\DoxyCodeLine{290   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga99586c04a398aef191e58925968d7860}{in\_range}}(\textcolor{keyword}{const} uword   in\_row, \textcolor{keyword}{const} uword   in\_col, \textcolor{keyword}{const} uword   in\_slice) \textcolor{keyword}{const};}
+\DoxyCodeLine{291        \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga99586c04a398aef191e58925968d7860}{in\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& slice\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{292   }
+\DoxyCodeLine{293        \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga99586c04a398aef191e58925968d7860}{in\_range}}(\textcolor{keyword}{const} uword   in\_row, \textcolor{keyword}{const} uword   in\_col, \textcolor{keyword}{const} uword   in\_slice, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{294   }
+\DoxyCodeLine{295   arma\_inline arma\_warn\_unused       eT* \mbox{\hyperlink{group__Cube_ga5b00237224a8e3bfb05728de7c962f85}{memptr}}();}
+\DoxyCodeLine{296   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT* \mbox{\hyperlink{group__Cube_ga5b00237224a8e3bfb05728de7c962f85}{memptr}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{297   }
+\DoxyCodeLine{298   arma\_inline arma\_warn\_unused       eT* \mbox{\hyperlink{group__Cube_gaa880766c421f4a9f006662c7fd96850e}{slice\_memptr}}(\textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}});}
+\DoxyCodeLine{299   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT* \mbox{\hyperlink{group__Cube_gaa880766c421f4a9f006662c7fd96850e}{slice\_memptr}}(\textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{300   }
+\DoxyCodeLine{301   arma\_inline arma\_warn\_unused       eT* \mbox{\hyperlink{group__Cube_gafb2f22b1dae85884162f6777689e4cba}{slice\_colptr}}(\textcolor{keyword}{const} uword in\_slice, \textcolor{keyword}{const} uword in\_col);}
+\DoxyCodeLine{302   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT* \mbox{\hyperlink{group__Cube_gafb2f22b1dae85884162f6777689e4cba}{slice\_colptr}}(\textcolor{keyword}{const} uword in\_slice, \textcolor{keyword}{const} uword in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{303   }
+\DoxyCodeLine{304   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices);}
+\DoxyCodeLine{305   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{306   }
+\DoxyCodeLine{307   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga4d20bc944c320f3895b95c8c97c1625f}{reshape}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices);}
+\DoxyCodeLine{308   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga4d20bc944c320f3895b95c8c97c1625f}{reshape}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{309                   }
+\DoxyCodeLine{310   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga756b1ab4a4bc911356c934431396edad}{resize}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices);}
+\DoxyCodeLine{311   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga756b1ab4a4bc911356c934431396edad}{resize}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{312   }
+\DoxyCodeLine{313   }
+\DoxyCodeLine{314   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga3b9f8d3c2940e18c0def9bc88e5c58e4}{copy\_size}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\& m);}
+\DoxyCodeLine{315   }
+\DoxyCodeLine{316   \textcolor{keyword}{template}<\textcolor{keyword}{typename} functor> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\&  for\_each(functor F);}
+\DoxyCodeLine{317   \textcolor{keyword}{template}<\textcolor{keyword}{typename} functor> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\&  for\_each(functor F) \textcolor{keyword}{const};}
+\DoxyCodeLine{318   }
+\DoxyCodeLine{319   \textcolor{keyword}{template}<\textcolor{keyword}{typename} functor> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& transform(functor F);}
+\DoxyCodeLine{320   \textcolor{keyword}{template}<\textcolor{keyword}{typename} functor> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\&     imbue(functor F);}
+\DoxyCodeLine{321   }
+\DoxyCodeLine{322   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& replace(\textcolor{keyword}{const} eT old\_val, \textcolor{keyword}{const} eT new\_val);}
+\DoxyCodeLine{323   }
+\DoxyCodeLine{324   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& clean(\textcolor{keyword}{const} \mbox{\hyperlink{classCube_ad4c29f3f1d69b71fcdb141af81ab93bf}{pod\_type}} threshold);}
+\DoxyCodeLine{325   }
+\DoxyCodeLine{326   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& clamp(\textcolor{keyword}{const} eT min\_val, \textcolor{keyword}{const} eT max\_val);}
+\DoxyCodeLine{327   }
+\DoxyCodeLine{328   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{group__Cube_gaba21b828e6e645d32be852c7189a21ad}{fill}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{329   }
+\DoxyCodeLine{330   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& zeros();}
+\DoxyCodeLine{331   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& zeros(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices);}
+\DoxyCodeLine{332   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& zeros(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{333   }
+\DoxyCodeLine{334   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& ones();}
+\DoxyCodeLine{335   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& ones(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices);}
+\DoxyCodeLine{336   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& ones(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{337   }
+\DoxyCodeLine{338   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& randu();}
+\DoxyCodeLine{339   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& randu(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices);}
+\DoxyCodeLine{340   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& randu(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{341   }
+\DoxyCodeLine{342   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& randn();}
+\DoxyCodeLine{343   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& randn(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices);}
+\DoxyCodeLine{344   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube}}\& randn(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{345   }
+\DoxyCodeLine{346   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}      reset();}
+\DoxyCodeLine{347   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} soft\_reset();}
+\DoxyCodeLine{348   }
+\DoxyCodeLine{349   }
+\DoxyCodeLine{350   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} set\_real(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<pod\_type,T1>}}\& X);}
+\DoxyCodeLine{351   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} set\_imag(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<pod\_type,T1>}}\& X);}
+\DoxyCodeLine{352   }
+\DoxyCodeLine{353   }
+\DoxyCodeLine{354   \textcolor{keyword}{inline} arma\_warn\_unused eT min() \textcolor{keyword}{const};}
+\DoxyCodeLine{355   \textcolor{keyword}{inline} arma\_warn\_unused eT max() \textcolor{keyword}{const};}
+\DoxyCodeLine{356   }
+\DoxyCodeLine{357   \textcolor{keyword}{inline} eT min(uword\& index\_of\_min\_val) \textcolor{keyword}{const};}
+\DoxyCodeLine{358   \textcolor{keyword}{inline} eT max(uword\& index\_of\_max\_val) \textcolor{keyword}{const};}
+\DoxyCodeLine{359   }
+\DoxyCodeLine{360   \textcolor{keyword}{inline} eT min(uword\& row\_of\_min\_val, uword\& col\_of\_min\_val, uword\& slice\_of\_min\_val) \textcolor{keyword}{const};}
+\DoxyCodeLine{361   \textcolor{keyword}{inline} eT max(uword\& row\_of\_max\_val, uword\& col\_of\_max\_val, uword\& slice\_of\_max\_val) \textcolor{keyword}{const};}
+\DoxyCodeLine{362   }
+\DoxyCodeLine{363   }
+\DoxyCodeLine{364   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga40a0fb134b57ca3cf46a125737363c26}{save}}(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{365   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga40a0fb134b57ca3cf46a125737363c26}{save}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__name}{hdf5\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eaaac409c9c25281935ad4f193584bd303}{hdf5\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{366   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga40a0fb134b57ca3cf46a125737363c26}{save}}(      std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{367   }
+\DoxyCodeLine{368   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga12aef27ddc9114a6f4d039d70f450f89}{load}}(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{369   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga12aef27ddc9114a6f4d039d70f450f89}{load}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__name}{hdf5\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eaaac409c9c25281935ad4f193584bd303}{hdf5\_binary}});}
+\DoxyCodeLine{370   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Cube_ga12aef27ddc9114a6f4d039d70f450f89}{load}}(      std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{371   }
+\DoxyCodeLine{372   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} quiet\_save(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{373   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} quiet\_save(\textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__name}{hdf5\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eaaac409c9c25281935ad4f193584bd303}{hdf5\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{374   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} quiet\_save(      std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{375   }
+\DoxyCodeLine{376   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} quiet\_load(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{377   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} quiet\_load(\textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__name}{hdf5\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eaaac409c9c25281935ad4f193584bd303}{hdf5\_binary}});}
+\DoxyCodeLine{378   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} quiet\_load(      std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{379   }
+\DoxyCodeLine{380   }
+\DoxyCodeLine{381   \textcolor{comment}{// iterators}}
+\DoxyCodeLine{382   }
+\DoxyCodeLine{383   \textcolor{keyword}{typedef}       eT*       \mbox{\hyperlink{classiterator}{iterator}};}
+\DoxyCodeLine{384   \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT* const\_iterator;}
+\DoxyCodeLine{385   }
+\DoxyCodeLine{386   \textcolor{keyword}{typedef}       eT*       slice\_iterator;}
+\DoxyCodeLine{387   \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT* const\_slice\_iterator;}
+\DoxyCodeLine{388   }
+\DoxyCodeLine{389   \textcolor{keyword}{inline}       \mbox{\hyperlink{classiterator}{iterator}}  begin();}
+\DoxyCodeLine{390   \textcolor{keyword}{inline} const\_iterator  begin() \textcolor{keyword}{const};}
+\DoxyCodeLine{391   \textcolor{keyword}{inline} const\_iterator cbegin() \textcolor{keyword}{const};}
+\DoxyCodeLine{392   }
+\DoxyCodeLine{393   \textcolor{keyword}{inline}       \mbox{\hyperlink{classiterator}{iterator}}  end();}
+\DoxyCodeLine{394   \textcolor{keyword}{inline} const\_iterator  end() \textcolor{keyword}{const};}
+\DoxyCodeLine{395   \textcolor{keyword}{inline} const\_iterator cend() \textcolor{keyword}{const};}
+\DoxyCodeLine{396   }
+\DoxyCodeLine{397   \textcolor{keyword}{inline}       slice\_iterator begin\_slice(\textcolor{keyword}{const} uword slice\_num);}
+\DoxyCodeLine{398   \textcolor{keyword}{inline} const\_slice\_iterator begin\_slice(\textcolor{keyword}{const} uword slice\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{399   }
+\DoxyCodeLine{400   \textcolor{keyword}{inline}       slice\_iterator end\_slice(\textcolor{keyword}{const} uword slice\_num);}
+\DoxyCodeLine{401   \textcolor{keyword}{inline} const\_slice\_iterator end\_slice(\textcolor{keyword}{const} uword slice\_num)   \textcolor{keyword}{const};}
+\DoxyCodeLine{402   }
+\DoxyCodeLine{403   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  \mbox{\hyperlink{group__Cube_ga711b4f9e03c78ea34b759a8c5a4f8226}{clear}}();}
+\DoxyCodeLine{404   \textcolor{keyword}{inline} \textcolor{keywordtype}{bool}  \mbox{\hyperlink{group__Cube_gabb666042ee9bd6db0eab147fb5bb07ad}{empty}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{405   \textcolor{keyword}{inline} uword \mbox{\hyperlink{group__Cube_ga4e468b46f8377a5a0e1788eea6e76ddb}{size}}()  \textcolor{keyword}{const};}
+\DoxyCodeLine{406   }
+\DoxyCodeLine{407   \textcolor{keyword}{inline}       eT\& front();}
+\DoxyCodeLine{408   \textcolor{keyword}{inline} \textcolor{keyword}{const} eT\& front() \textcolor{keyword}{const};}
+\DoxyCodeLine{409   }
+\DoxyCodeLine{410   \textcolor{keyword}{inline}       eT\& back();}
+\DoxyCodeLine{411   \textcolor{keyword}{inline} \textcolor{keyword}{const} eT\& back() \textcolor{keyword}{const};}
+\DoxyCodeLine{412   }
+\DoxyCodeLine{413   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} swap(\mbox{\hyperlink{classCube}{Cube}}\& \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{414   }
+\DoxyCodeLine{415   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga70006d5a49f67d35d4ae10cb6c5a681f}{steal\_mem}}(\mbox{\hyperlink{classCube}{Cube}}\& X);  }
+\DoxyCodeLine{416   }
+\DoxyCodeLine{417   \textcolor{keyword}{template}<uword fixed\_n\_rows, uword fixed\_n\_cols, uword fixed\_n\_slices> \textcolor{keyword}{class }\mbox{\hyperlink{classCube_1_1fixed}{fixed}};}
+\DoxyCodeLine{418   }
+\DoxyCodeLine{419   }
+\DoxyCodeLine{420   \textcolor{keyword}{protected}:}
+\DoxyCodeLine{421   }
+\DoxyCodeLine{422   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init\_cold();}
+\DoxyCodeLine{423   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init\_warm(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword in\_slices);}
+\DoxyCodeLine{424   }
+\DoxyCodeLine{425   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{426   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<pod\_type,T2>}}\& \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{427   }
+\DoxyCodeLine{428   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} delete\_mat();}
+\DoxyCodeLine{429   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} create\_mat();}
+\DoxyCodeLine{430   }
+\DoxyCodeLine{431   \textcolor{keyword}{friend} \textcolor{keyword}{class }glue\_join;}
+\DoxyCodeLine{432   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classop__reshape}{op\_reshape}};}
+\DoxyCodeLine{433   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classop__resize}{op\_resize}};}
+\DoxyCodeLine{434   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classsubview__cube}{subview\_cube}}<eT>;}
+\DoxyCodeLine{435   }
+\DoxyCodeLine{436   }
+\DoxyCodeLine{437   \textcolor{keyword}{public}:}
+\DoxyCodeLine{438   }
+\DoxyCodeLine{439 \textcolor{preprocessor}{  \#ifdef ARMA\_EXTRA\_CUBE\_PROTO}}
+\DoxyCodeLine{440 \textcolor{preprocessor}{    \#include ARMA\_INCFILE\_WRAP(ARMA\_EXTRA\_CUBE\_PROTO)}}
+\DoxyCodeLine{441 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{442   \};}
+\DoxyCodeLine{443 }
+\DoxyCodeLine{444 }
+\DoxyCodeLine{445 }
+\DoxyCodeLine{446 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{447 \textcolor{keyword}{template}<uword fixed\_n\_rows, uword fixed\_n\_cols, uword fixed\_n\_slices>}
+\DoxyCodeLine{448 \textcolor{keyword}{class }\mbox{\hyperlink{classCube}{Cube}}<eT>::\mbox{\hyperlink{classCube_1_1fixed}{fixed}} : \textcolor{keyword}{public} \mbox{\hyperlink{classCube}{Cube}}<eT>}
+\DoxyCodeLine{449   \{}
+\DoxyCodeLine{450   \textcolor{keyword}{private}:}
+\DoxyCodeLine{451   }
+\DoxyCodeLine{452   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword fixed\_n\_elem       = fixed\_n\_rows * fixed\_n\_cols * fixed\_n\_slices;}
+\DoxyCodeLine{453   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword fixed\_n\_elem\_slice = fixed\_n\_rows * fixed\_n\_cols;}
+\DoxyCodeLine{454   }
+\DoxyCodeLine{455   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_extra = (fixed\_n\_elem > Cube\_prealloc::mem\_n\_elem);}
+\DoxyCodeLine{456   }
+\DoxyCodeLine{457   arma\_aligned   \mbox{\hyperlink{classMat}{Mat<eT>}}* mat\_ptrs\_local\_extra[ (fixed\_n\_slices > Cube\_prealloc::mat\_ptrs\_size) ? fixed\_n\_slices : 1 ];}
+\DoxyCodeLine{458   arma\_align\_mem eT       mem\_local\_extra     [ use\_extra                                       ? fixed\_n\_elem   : 1 ];}
+\DoxyCodeLine{459   }
+\DoxyCodeLine{460   arma\_inline \textcolor{keywordtype}{void} mem\_setup();}
+\DoxyCodeLine{461   }
+\DoxyCodeLine{462   }
+\DoxyCodeLine{463   \textcolor{keyword}{public}:}
+\DoxyCodeLine{464   }
+\DoxyCodeLine{465   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube_1_1fixed}{fixed}}();}
+\DoxyCodeLine{466   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube_1_1fixed}{fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCube_1_1fixed}{fixed<fixed\_n\_rows, fixed\_n\_cols, fixed\_n\_slices>}}\& X);}
+\DoxyCodeLine{467   }
+\DoxyCodeLine{468   \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type>       \textcolor{keyword}{inline} \mbox{\hyperlink{classCube_1_1fixed}{fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\& f);}
+\DoxyCodeLine{469   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>              \textcolor{keyword}{inline} \mbox{\hyperlink{classCube_1_1fixed}{fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{470   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \mbox{\hyperlink{classCube_1_1fixed}{fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<pod\_type,T2>}}\& \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{471   }
+\DoxyCodeLine{472   \textcolor{keyword}{using} \mbox{\hyperlink{classCube}{Cube<eT>::operator}}=;}
+\DoxyCodeLine{473   \textcolor{keyword}{using} \mbox{\hyperlink{classCube}{Cube<eT>::operator}}();}
+\DoxyCodeLine{474   }
+\DoxyCodeLine{475   \textcolor{keyword}{inline} \mbox{\hyperlink{classCube}{Cube}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classCube_1_1fixed}{fixed<fixed\_n\_rows, fixed\_n\_cols, fixed\_n\_slices>}}\& X);}
+\DoxyCodeLine{476   }
+\DoxyCodeLine{477   }
+\DoxyCodeLine{478   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Cube_ga6b20c4387eb1b011cf7ab1335b837694}{operator[] }}(\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{479   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Cube_ga6b20c4387eb1b011cf7ab1335b837694}{operator[] }}(\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{480   }
+\DoxyCodeLine{481   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Cube_ga5cac3c7cf293f31f8e4cefa15fabb54b}{at}}         (\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{482   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Cube_ga5cac3c7cf293f31f8e4cefa15fabb54b}{at}}         (\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{483   }
+\DoxyCodeLine{484   arma\_inline arma\_warn\_unused       eT\& operator() (\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{485   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& operator() (\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{486   }
+\DoxyCodeLine{487   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Cube_ga5cac3c7cf293f31f8e4cefa15fabb54b}{at}}         (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col, \textcolor{keyword}{const} uword in\_slice);}
+\DoxyCodeLine{488   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Cube_ga5cac3c7cf293f31f8e4cefa15fabb54b}{at}}         (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col, \textcolor{keyword}{const} uword in\_slice) \textcolor{keyword}{const};}
+\DoxyCodeLine{489   }
+\DoxyCodeLine{490   arma\_inline arma\_warn\_unused       eT\& operator() (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col, \textcolor{keyword}{const} uword in\_slice);}
+\DoxyCodeLine{491   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& operator() (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col, \textcolor{keyword}{const} uword in\_slice) \textcolor{keyword}{const};}
+\DoxyCodeLine{492   \};}
+\DoxyCodeLine{493 }
+\DoxyCodeLine{494 }
+\DoxyCodeLine{495 }
+\DoxyCodeLine{496 \textcolor{keyword}{class }\mbox{\hyperlink{classCube__aux}{Cube\_aux}}}
+\DoxyCodeLine{497   \{}
+\DoxyCodeLine{498   \textcolor{keyword}{public}:}
+\DoxyCodeLine{499   }
+\DoxyCodeLine{500   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_gab817654b89cd4091fd61376a74654ecb}{prefix\_pp}}(\mbox{\hyperlink{classCube}{Cube<eT>}}\& x);}
+\DoxyCodeLine{501   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>  arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_gab817654b89cd4091fd61376a74654ecb}{prefix\_pp}}(\mbox{\hyperlink{classCube}{Cube}}< std::complex<T> >\& x);}
+\DoxyCodeLine{502   }
+\DoxyCodeLine{503   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga902de64c8363b4e38fe1fd221589ad85}{postfix\_pp}}(\mbox{\hyperlink{classCube}{Cube<eT>}}\& x);}
+\DoxyCodeLine{504   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>  arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga902de64c8363b4e38fe1fd221589ad85}{postfix\_pp}}(\mbox{\hyperlink{classCube}{Cube}}< std::complex<T> >\& x);}
+\DoxyCodeLine{505   }
+\DoxyCodeLine{506   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga6b025c5e0deb99b2bf5b5f1b1d479735}{prefix\_mm}}(\mbox{\hyperlink{classCube}{Cube<eT>}}\& x);}
+\DoxyCodeLine{507   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>  arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_ga6b025c5e0deb99b2bf5b5f1b1d479735}{prefix\_mm}}(\mbox{\hyperlink{classCube}{Cube}}< std::complex<T> >\& x);}
+\DoxyCodeLine{508   }
+\DoxyCodeLine{509   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_gacbad6f993f5fb786102f69528e18f4c2}{postfix\_mm}}(\mbox{\hyperlink{classCube}{Cube<eT>}}\& x);}
+\DoxyCodeLine{510   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>  arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Cube_gacbad6f993f5fb786102f69528e18f4c2}{postfix\_mm}}(\mbox{\hyperlink{classCube}{Cube}}< std::complex<T> >\& x);}
+\DoxyCodeLine{511   }
+\DoxyCodeLine{512   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} set\_real(\mbox{\hyperlink{classCube}{Cube<eT>}}\&                out, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{513   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} set\_imag(\mbox{\hyperlink{classCube}{Cube<eT>}}\&                out, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{514   }
+\DoxyCodeLine{515   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T,  \textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} set\_real(\mbox{\hyperlink{classCube}{Cube}}< std::complex<T> >\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube< T,T1>}}\& X);}
+\DoxyCodeLine{516   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T,  \textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} set\_imag(\mbox{\hyperlink{classCube}{Cube}}< std::complex<T> >\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube< T,T1>}}\& X);}
+\DoxyCodeLine{517   \};}
+\DoxyCodeLine{518 }
+\DoxyCodeLine{519 }
+\DoxyCodeLine{520 }
+
+\end{DoxyCode}

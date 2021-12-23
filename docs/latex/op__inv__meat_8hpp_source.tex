@@ -1,0 +1,337 @@
+\hypertarget{op__inv__meat_8hpp_source}{}\doxysection{op\+\_\+inv\+\_\+meat.\+hpp}
+\label{op__inv__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_inv\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_inv\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 op\_inv::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_inv>}}\& X)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_inv::apply\_direct(out, X.m, \textcolor{stringliteral}{"{}inv()"{}});}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{32     \{}
+\DoxyCodeLine{33     out.soft\_reset();}
+\DoxyCodeLine{34     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}inv(): matrix is singular"{}});}
+\DoxyCodeLine{35     \}}
+\DoxyCodeLine{36   \}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{41 \textcolor{keyword}{inline}}
+\DoxyCodeLine{42 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{43 op\_inv::apply\_direct(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& expr, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* caller\_sig)}
+\DoxyCodeLine{44   \{}
+\DoxyCodeLine{45   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T1>::do\_diagmat}})}
+\DoxyCodeLine{50     \{}
+\DoxyCodeLine{51     \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T1>}} strip(expr.get\_ref());}
+\DoxyCodeLine{52     }
+\DoxyCodeLine{53     \textcolor{keywordflow}{return} op\_inv::apply\_diagmat(out, strip.M, caller\_sig);}
+\DoxyCodeLine{54     \}}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structstrip__trimat}{strip\_trimat<T1>::do\_trimat}})}
+\DoxyCodeLine{57     \{}
+\DoxyCodeLine{58     \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__trimat}{strip\_trimat<T1>}} strip(expr.get\_ref());}
+\DoxyCodeLine{59     }
+\DoxyCodeLine{60     out = strip.M;}
+\DoxyCodeLine{61     }
+\DoxyCodeLine{62     arma\_debug\_check( (out.\mbox{\hyperlink{group__Mat_ga1f860b22491beb19251642270d04d8f1}{is\_square}}() == \textcolor{keyword}{false}), caller\_sig, \textcolor{stringliteral}{"{}: given matrix must be square sized"{}} );}
+\DoxyCodeLine{63     }
+\DoxyCodeLine{64     \textcolor{keywordflow}{return} auxlib::inv\_tr(out, (strip.do\_triu ? uword(0) : uword(1)));}
+\DoxyCodeLine{65     \}}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   out = expr.get\_ref();}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   arma\_debug\_check( (out.\mbox{\hyperlink{group__Mat_ga1f860b22491beb19251642270d04d8f1}{is\_square}}() == \textcolor{keyword}{false}), caller\_sig, \textcolor{stringliteral}{"{}: given matrix must be square sized"{}} );}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \textcolor{keywordflow}{if}((out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} <= 4) \&\& \mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})}
+\DoxyCodeLine{72     \{}
+\DoxyCodeLine{73     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{74     }
+\DoxyCodeLine{75     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_inv::apply\_tiny\_noalias(tmp, out);}
+\DoxyCodeLine{76     }
+\DoxyCodeLine{77     \textcolor{keywordflow}{if}(status)  \{ arrayops::copy(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), tmp.memptr(), tmp.n\_elem); \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{78     }
+\DoxyCodeLine{79     \textcolor{comment}{// fallthrough if optimisation failed}}
+\DoxyCodeLine{80     \}}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keywordflow}{if}(out.is\_diagmat())  \{ \textcolor{keywordflow}{return} op\_inv::apply\_diagmat(out, out, caller\_sig); \}}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_triu =                     trimat\_helper::is\_triu(out);}
+\DoxyCodeLine{85   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_tril = (is\_triu) ? \textcolor{keyword}{false} : trimat\_helper::is\_tril(out);}
+\DoxyCodeLine{86   }
+\DoxyCodeLine{87   \textcolor{keywordflow}{if}(is\_triu || is\_tril)  \{ \textcolor{keywordflow}{return} auxlib::inv\_tr(out, ((is\_triu) ? uword(0) : uword(1))); \}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{preprocessor}{  \#if defined(ARMA\_OPTIMISE\_SYMPD)}}
+\DoxyCodeLine{90     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} try\_sympd = sympd\_helper::guess\_sympd\_anysize(out);}
+\DoxyCodeLine{91 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{92     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} try\_sympd = \textcolor{keyword}{false};}
+\DoxyCodeLine{93 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   \textcolor{keywordflow}{if}(try\_sympd)}
+\DoxyCodeLine{96     \{}
+\DoxyCodeLine{97     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_inv: attempting sympd optimisation"{}});}
+\DoxyCodeLine{98     }
+\DoxyCodeLine{99     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp = out;}
+\DoxyCodeLine{100     }
+\DoxyCodeLine{101     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = auxlib::inv\_sympd(tmp);}
+\DoxyCodeLine{102     }
+\DoxyCodeLine{103     \textcolor{keywordflow}{if}(status)  \{ out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp); \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{104     }
+\DoxyCodeLine{105     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_inv: sympd optimisation failed"{}});}
+\DoxyCodeLine{106     }
+\DoxyCodeLine{107     \textcolor{comment}{// fallthrough if optimisation failed}}
+\DoxyCodeLine{108     \}}
+\DoxyCodeLine{109   }
+\DoxyCodeLine{110   \textcolor{keywordflow}{return} auxlib::inv(out);}
+\DoxyCodeLine{111   \}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{116 \textcolor{keyword}{inline}}
+\DoxyCodeLine{117 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{118 op\_inv::apply\_diagmat(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* caller\_sig)}
+\DoxyCodeLine{119   \{}
+\DoxyCodeLine{120   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{121   }
+\DoxyCodeLine{122   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{123   }
+\DoxyCodeLine{124   \textcolor{keyword}{const} \mbox{\hyperlink{classdiagmat__proxy}{diagmat\_proxy<T1>}} \mbox{\hyperlink{structA}{A}}(X);}
+\DoxyCodeLine{125   }
+\DoxyCodeLine{126   arma\_debug\_check( (\mbox{\hyperlink{structA}{A}}.n\_rows != \mbox{\hyperlink{structA}{A}}.n\_cols), caller\_sig, \textcolor{stringliteral}{"{}: given matrix must be square sized"{}} );}
+\DoxyCodeLine{127   }
+\DoxyCodeLine{128   \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(\mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols);}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keywordtype}{bool} status = \textcolor{keyword}{true};}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structA}{A}}.is\_alias(out) == \textcolor{keyword}{false})}
+\DoxyCodeLine{133     \{}
+\DoxyCodeLine{134     out.zeros(N,N);}
+\DoxyCodeLine{135     }
+\DoxyCodeLine{136     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{137       \{}
+\DoxyCodeLine{138       \textcolor{keyword}{const} eT val = \mbox{\hyperlink{structA}{A}}[i];}
+\DoxyCodeLine{139       }
+\DoxyCodeLine{140       status = (val == eT(0)) ? \textcolor{keyword}{false} : status;}
+\DoxyCodeLine{141       }
+\DoxyCodeLine{142       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = eT(1) / val;}
+\DoxyCodeLine{143       \}}
+\DoxyCodeLine{144     \}}
+\DoxyCodeLine{145   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{146     \{}
+\DoxyCodeLine{147     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(N, N, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{148     }
+\DoxyCodeLine{149     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{150       \{}
+\DoxyCodeLine{151       \textcolor{keyword}{const} eT val = \mbox{\hyperlink{structA}{A}}[i];}
+\DoxyCodeLine{152       }
+\DoxyCodeLine{153       status = (val == eT(0)) ? \textcolor{keyword}{false} : status;}
+\DoxyCodeLine{154       }
+\DoxyCodeLine{155       tmp.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = eT(1) / val;}
+\DoxyCodeLine{156       \}}
+\DoxyCodeLine{157     }
+\DoxyCodeLine{158     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{159     \}}
+\DoxyCodeLine{160   }
+\DoxyCodeLine{161   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{162   \}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{167 arma\_cold}
+\DoxyCodeLine{168 \textcolor{keyword}{inline}}
+\DoxyCodeLine{169 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{170 op\_inv::apply\_tiny\_noalias(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)}
+\DoxyCodeLine{171   \{}
+\DoxyCodeLine{172   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{173   }
+\DoxyCodeLine{174   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{175   }
+\DoxyCodeLine{176   \textcolor{comment}{// NOTE: assuming matrix X is square sized}}
+\DoxyCodeLine{177   }
+\DoxyCodeLine{178   \textcolor{keyword}{const} uword N = X.n\_rows;}
+\DoxyCodeLine{179   }
+\DoxyCodeLine{180   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(N,N);}
+\DoxyCodeLine{181   }
+\DoxyCodeLine{182   \textcolor{keyword}{constexpr} T det\_min =        std::numeric\_limits<T>::epsilon();}
+\DoxyCodeLine{183   \textcolor{keyword}{constexpr} T det\_max = T(1) / std::numeric\_limits<T>::epsilon();}
+\DoxyCodeLine{184   }
+\DoxyCodeLine{185   \textcolor{keyword}{const} eT* Xm   =   X.memptr();}
+\DoxyCodeLine{186         eT* outm = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{187   }
+\DoxyCodeLine{188   \textcolor{keywordflow}{if}(N == 0)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{189   }
+\DoxyCodeLine{190   \textcolor{keywordflow}{if}(N == 1)  \{ outm[0] = eT(1) / Xm[0]; \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \};}
+\DoxyCodeLine{191   }
+\DoxyCodeLine{192   \textcolor{keywordflow}{if}(N == 2)}
+\DoxyCodeLine{193     \{}
+\DoxyCodeLine{194     \textcolor{keyword}{const} eT a = Xm[pos<0,0>::n2];}
+\DoxyCodeLine{195     \textcolor{keyword}{const} eT b = Xm[pos<0,1>::n2];}
+\DoxyCodeLine{196     \textcolor{keyword}{const} eT c = Xm[pos<1,0>::n2];}
+\DoxyCodeLine{197     \textcolor{keyword}{const} eT d = Xm[pos<1,1>::n2];}
+\DoxyCodeLine{198     }
+\DoxyCodeLine{199     \textcolor{keyword}{const} eT     det\_val = (a*d -\/ b*c);}
+\DoxyCodeLine{200     \textcolor{keyword}{const}  T abs\_det\_val = std::abs(det\_val);}
+\DoxyCodeLine{201     }
+\DoxyCodeLine{202     \textcolor{keywordflow}{if}((abs\_det\_val < det\_min) || (abs\_det\_val > det\_max))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{203     }
+\DoxyCodeLine{204     outm[pos<0,0>::n2] =  d / det\_val;}
+\DoxyCodeLine{205     outm[pos<0,1>::n2] = -\/b / det\_val;}
+\DoxyCodeLine{206     outm[pos<1,0>::n2] = -\/c / det\_val;}
+\DoxyCodeLine{207     outm[pos<1,1>::n2] =  a / det\_val;}
+\DoxyCodeLine{208     }
+\DoxyCodeLine{209     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{210     \}}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   \textcolor{keywordflow}{if}(N == 3)}
+\DoxyCodeLine{213     \{}
+\DoxyCodeLine{214     \textcolor{keyword}{const} eT     det\_val = op\_det::apply\_tiny(X);}
+\DoxyCodeLine{215     \textcolor{keyword}{const}  T abs\_det\_val = std::abs(det\_val);}
+\DoxyCodeLine{216     }
+\DoxyCodeLine{217     \textcolor{keywordflow}{if}((abs\_det\_val < det\_min) || (abs\_det\_val > det\_max))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{218     }
+\DoxyCodeLine{219     outm[pos<0,0>::n3] =  (Xm[pos<2,2>::n3]*Xm[pos<1,1>::n3] -\/ Xm[pos<2,1>::n3]*Xm[pos<1,2>::n3]) / det\_val;}
+\DoxyCodeLine{220     outm[pos<1,0>::n3] = -\/(Xm[pos<2,2>::n3]*Xm[pos<1,0>::n3] -\/ Xm[pos<2,0>::n3]*Xm[pos<1,2>::n3]) / det\_val;}
+\DoxyCodeLine{221     outm[pos<2,0>::n3] =  (Xm[pos<2,1>::n3]*Xm[pos<1,0>::n3] -\/ Xm[pos<2,0>::n3]*Xm[pos<1,1>::n3]) / det\_val;}
+\DoxyCodeLine{222     }
+\DoxyCodeLine{223     outm[pos<0,1>::n3] = -\/(Xm[pos<2,2>::n3]*Xm[pos<0,1>::n3] -\/ Xm[pos<2,1>::n3]*Xm[pos<0,2>::n3]) / det\_val;}
+\DoxyCodeLine{224     outm[pos<1,1>::n3] =  (Xm[pos<2,2>::n3]*Xm[pos<0,0>::n3] -\/ Xm[pos<2,0>::n3]*Xm[pos<0,2>::n3]) / det\_val;}
+\DoxyCodeLine{225     outm[pos<2,1>::n3] = -\/(Xm[pos<2,1>::n3]*Xm[pos<0,0>::n3] -\/ Xm[pos<2,0>::n3]*Xm[pos<0,1>::n3]) / det\_val;}
+\DoxyCodeLine{226     }
+\DoxyCodeLine{227     outm[pos<0,2>::n3] =  (Xm[pos<1,2>::n3]*Xm[pos<0,1>::n3] -\/ Xm[pos<1,1>::n3]*Xm[pos<0,2>::n3]) / det\_val;}
+\DoxyCodeLine{228     outm[pos<1,2>::n3] = -\/(Xm[pos<1,2>::n3]*Xm[pos<0,0>::n3] -\/ Xm[pos<1,0>::n3]*Xm[pos<0,2>::n3]) / det\_val;}
+\DoxyCodeLine{229     outm[pos<2,2>::n3] =  (Xm[pos<1,1>::n3]*Xm[pos<0,0>::n3] -\/ Xm[pos<1,0>::n3]*Xm[pos<0,1>::n3]) / det\_val;}
+\DoxyCodeLine{230     }
+\DoxyCodeLine{231     \textcolor{keyword}{const} eT check\_val = Xm[pos<0,0>::n3]*outm[pos<0,0>::n3] + Xm[pos<0,1>::n3]*outm[pos<1,0>::n3] + Xm[pos<0,2>::n3]*outm[pos<2,0>::n3];}
+\DoxyCodeLine{232     }
+\DoxyCodeLine{233     \textcolor{keyword}{const}  T max\_diff  = (\mbox{\hyperlink{structis__float}{is\_float<T>::value}}) ? T(1e-\/4) : T(1e-\/10);  \textcolor{comment}{// empirically determined; may need tuning}}
+\DoxyCodeLine{234     }
+\DoxyCodeLine{235     \textcolor{keywordflow}{if}(std::abs(T(1) -\/ check\_val) >= max\_diff)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{236     }
+\DoxyCodeLine{237     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{238     \}}
+\DoxyCodeLine{239   }
+\DoxyCodeLine{240   \textcolor{keywordflow}{if}(N == 4)}
+\DoxyCodeLine{241     \{}
+\DoxyCodeLine{242     \textcolor{keyword}{const} eT     det\_val = op\_det::apply\_tiny(X);}
+\DoxyCodeLine{243     \textcolor{keyword}{const}  T abs\_det\_val = std::abs(det\_val);}
+\DoxyCodeLine{244     }
+\DoxyCodeLine{245     \textcolor{keywordflow}{if}((abs\_det\_val < det\_min) || (abs\_det\_val > det\_max))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{246     }
+\DoxyCodeLine{247     outm[pos<0,0>::n4] = ( Xm[pos<1,2>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,1>::n4] -\/ Xm[pos<1,3>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,1>::n4] + Xm[pos<1,3>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,2>::n4] -\/ Xm[pos<1,1>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,2>::n4] -\/ Xm[pos<1,2>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,3>::n4] + Xm[pos<1,1>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,3>::n4] ) / det\_val;}
+\DoxyCodeLine{248     outm[pos<1,0>::n4] = ( Xm[pos<1,3>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<1,2>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<1,3>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,2>::n4] + Xm[pos<1,0>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,2>::n4] + Xm[pos<1,2>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,3>::n4] -\/ Xm[pos<1,0>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,3>::n4] ) / det\_val;}
+\DoxyCodeLine{249     outm[pos<2,0>::n4] = ( Xm[pos<1,1>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<1,3>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,0>::n4] + Xm[pos<1,3>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,1>::n4] -\/ Xm[pos<1,0>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,1>::n4] -\/ Xm[pos<1,1>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,3>::n4] + Xm[pos<1,0>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,3>::n4] ) / det\_val;}
+\DoxyCodeLine{250     outm[pos<3,0>::n4] = ( Xm[pos<1,2>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<1,1>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<1,2>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,1>::n4] + Xm[pos<1,0>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,1>::n4] + Xm[pos<1,1>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,2>::n4] -\/ Xm[pos<1,0>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,2>::n4] ) / det\_val;}
+\DoxyCodeLine{251     }
+\DoxyCodeLine{252     outm[pos<0,1>::n4] = ( Xm[pos<0,3>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,1>::n4] -\/ Xm[pos<0,2>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,1>::n4] -\/ Xm[pos<0,3>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,2>::n4] + Xm[pos<0,1>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,2>::n4] + Xm[pos<0,2>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,3>::n4] -\/ Xm[pos<0,1>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,3>::n4] ) / det\_val;}
+\DoxyCodeLine{253     outm[pos<1,1>::n4] = ( Xm[pos<0,2>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<0,3>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,0>::n4] + Xm[pos<0,3>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,2>::n4] -\/ Xm[pos<0,0>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,2>::n4] -\/ Xm[pos<0,2>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,3>::n4] + Xm[pos<0,0>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,3>::n4] ) / det\_val;}
+\DoxyCodeLine{254     outm[pos<2,1>::n4] = ( Xm[pos<0,3>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<0,1>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<0,3>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,1>::n4] + Xm[pos<0,0>::n4]*Xm[pos<2,3>::n4]*Xm[pos<3,1>::n4] + Xm[pos<0,1>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,3>::n4] -\/ Xm[pos<0,0>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,3>::n4] ) / det\_val;}
+\DoxyCodeLine{255     outm[pos<3,1>::n4] = ( Xm[pos<0,1>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<0,2>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,0>::n4] + Xm[pos<0,2>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,1>::n4] -\/ Xm[pos<0,0>::n4]*Xm[pos<2,2>::n4]*Xm[pos<3,1>::n4] -\/ Xm[pos<0,1>::n4]*Xm[pos<2,0>::n4]*Xm[pos<3,2>::n4] + Xm[pos<0,0>::n4]*Xm[pos<2,1>::n4]*Xm[pos<3,2>::n4] ) / det\_val;}
+\DoxyCodeLine{256     }
+\DoxyCodeLine{257     outm[pos<0,2>::n4] = ( Xm[pos<0,2>::n4]*Xm[pos<1,3>::n4]*Xm[pos<3,1>::n4] -\/ Xm[pos<0,3>::n4]*Xm[pos<1,2>::n4]*Xm[pos<3,1>::n4] + Xm[pos<0,3>::n4]*Xm[pos<1,1>::n4]*Xm[pos<3,2>::n4] -\/ Xm[pos<0,1>::n4]*Xm[pos<1,3>::n4]*Xm[pos<3,2>::n4] -\/ Xm[pos<0,2>::n4]*Xm[pos<1,1>::n4]*Xm[pos<3,3>::n4] + Xm[pos<0,1>::n4]*Xm[pos<1,2>::n4]*Xm[pos<3,3>::n4] ) / det\_val;}
+\DoxyCodeLine{258     outm[pos<1,2>::n4] = ( Xm[pos<0,3>::n4]*Xm[pos<1,2>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<0,2>::n4]*Xm[pos<1,3>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<0,3>::n4]*Xm[pos<1,0>::n4]*Xm[pos<3,2>::n4] + Xm[pos<0,0>::n4]*Xm[pos<1,3>::n4]*Xm[pos<3,2>::n4] + Xm[pos<0,2>::n4]*Xm[pos<1,0>::n4]*Xm[pos<3,3>::n4] -\/ Xm[pos<0,0>::n4]*Xm[pos<1,2>::n4]*Xm[pos<3,3>::n4] ) / det\_val;}
+\DoxyCodeLine{259     outm[pos<2,2>::n4] = ( Xm[pos<0,1>::n4]*Xm[pos<1,3>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<0,3>::n4]*Xm[pos<1,1>::n4]*Xm[pos<3,0>::n4] + Xm[pos<0,3>::n4]*Xm[pos<1,0>::n4]*Xm[pos<3,1>::n4] -\/ Xm[pos<0,0>::n4]*Xm[pos<1,3>::n4]*Xm[pos<3,1>::n4] -\/ Xm[pos<0,1>::n4]*Xm[pos<1,0>::n4]*Xm[pos<3,3>::n4] + Xm[pos<0,0>::n4]*Xm[pos<1,1>::n4]*Xm[pos<3,3>::n4] ) / det\_val;}
+\DoxyCodeLine{260     outm[pos<3,2>::n4] = ( Xm[pos<0,2>::n4]*Xm[pos<1,1>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<0,1>::n4]*Xm[pos<1,2>::n4]*Xm[pos<3,0>::n4] -\/ Xm[pos<0,2>::n4]*Xm[pos<1,0>::n4]*Xm[pos<3,1>::n4] + Xm[pos<0,0>::n4]*Xm[pos<1,2>::n4]*Xm[pos<3,1>::n4] + Xm[pos<0,1>::n4]*Xm[pos<1,0>::n4]*Xm[pos<3,2>::n4] -\/ Xm[pos<0,0>::n4]*Xm[pos<1,1>::n4]*Xm[pos<3,2>::n4] ) / det\_val;}
+\DoxyCodeLine{261     }
+\DoxyCodeLine{262     outm[pos<0,3>::n4] = ( Xm[pos<0,3>::n4]*Xm[pos<1,2>::n4]*Xm[pos<2,1>::n4] -\/ Xm[pos<0,2>::n4]*Xm[pos<1,3>::n4]*Xm[pos<2,1>::n4] -\/ Xm[pos<0,3>::n4]*Xm[pos<1,1>::n4]*Xm[pos<2,2>::n4] + Xm[pos<0,1>::n4]*Xm[pos<1,3>::n4]*Xm[pos<2,2>::n4] + Xm[pos<0,2>::n4]*Xm[pos<1,1>::n4]*Xm[pos<2,3>::n4] -\/ Xm[pos<0,1>::n4]*Xm[pos<1,2>::n4]*Xm[pos<2,3>::n4] ) / det\_val;}
+\DoxyCodeLine{263     outm[pos<1,3>::n4] = ( Xm[pos<0,2>::n4]*Xm[pos<1,3>::n4]*Xm[pos<2,0>::n4] -\/ Xm[pos<0,3>::n4]*Xm[pos<1,2>::n4]*Xm[pos<2,0>::n4] + Xm[pos<0,3>::n4]*Xm[pos<1,0>::n4]*Xm[pos<2,2>::n4] -\/ Xm[pos<0,0>::n4]*Xm[pos<1,3>::n4]*Xm[pos<2,2>::n4] -\/ Xm[pos<0,2>::n4]*Xm[pos<1,0>::n4]*Xm[pos<2,3>::n4] + Xm[pos<0,0>::n4]*Xm[pos<1,2>::n4]*Xm[pos<2,3>::n4] ) / det\_val;}
+\DoxyCodeLine{264     outm[pos<2,3>::n4] = ( Xm[pos<0,3>::n4]*Xm[pos<1,1>::n4]*Xm[pos<2,0>::n4] -\/ Xm[pos<0,1>::n4]*Xm[pos<1,3>::n4]*Xm[pos<2,0>::n4] -\/ Xm[pos<0,3>::n4]*Xm[pos<1,0>::n4]*Xm[pos<2,1>::n4] + Xm[pos<0,0>::n4]*Xm[pos<1,3>::n4]*Xm[pos<2,1>::n4] + Xm[pos<0,1>::n4]*Xm[pos<1,0>::n4]*Xm[pos<2,3>::n4] -\/ Xm[pos<0,0>::n4]*Xm[pos<1,1>::n4]*Xm[pos<2,3>::n4] ) / det\_val;}
+\DoxyCodeLine{265     outm[pos<3,3>::n4] = ( Xm[pos<0,1>::n4]*Xm[pos<1,2>::n4]*Xm[pos<2,0>::n4] -\/ Xm[pos<0,2>::n4]*Xm[pos<1,1>::n4]*Xm[pos<2,0>::n4] + Xm[pos<0,2>::n4]*Xm[pos<1,0>::n4]*Xm[pos<2,1>::n4] -\/ Xm[pos<0,0>::n4]*Xm[pos<1,2>::n4]*Xm[pos<2,1>::n4] -\/ Xm[pos<0,1>::n4]*Xm[pos<1,0>::n4]*Xm[pos<2,2>::n4] + Xm[pos<0,0>::n4]*Xm[pos<1,1>::n4]*Xm[pos<2,2>::n4] ) / det\_val;}
+\DoxyCodeLine{266     }
+\DoxyCodeLine{267     \textcolor{keyword}{const} eT check\_val = Xm[pos<0,0>::n4]*outm[pos<0,0>::n4] + Xm[pos<0,1>::n4]*outm[pos<1,0>::n4] + Xm[pos<0,2>::n4]*outm[pos<2,0>::n4] + Xm[pos<0,3>::n4]*outm[pos<3,0>::n4];}
+\DoxyCodeLine{268     }
+\DoxyCodeLine{269     \textcolor{keyword}{const}  T max\_diff  = (\mbox{\hyperlink{structis__float}{is\_float<T>::value}}) ? T(1e-\/4) : T(1e-\/10);  \textcolor{comment}{// empirically determined; may need tuning}}
+\DoxyCodeLine{270     }
+\DoxyCodeLine{271     \textcolor{keywordflow}{if}(std::abs(T(1) -\/ check\_val) >= max\_diff)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{272     }
+\DoxyCodeLine{273     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{274     \}}
+\DoxyCodeLine{275   }
+\DoxyCodeLine{276   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{277   \}}
+\DoxyCodeLine{278 }
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280 }
+\DoxyCodeLine{281 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{282 \textcolor{keyword}{inline}}
+\DoxyCodeLine{283 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{284 op\_inv\_sympd::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_inv\_sympd>}}\& X)}
+\DoxyCodeLine{285   \{}
+\DoxyCodeLine{286   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{287   }
+\DoxyCodeLine{288   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_inv\_sympd::apply\_direct(out, X.m);}
+\DoxyCodeLine{289   }
+\DoxyCodeLine{290   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{291     \{}
+\DoxyCodeLine{292     out.soft\_reset();}
+\DoxyCodeLine{293     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}inv\_sympd(): matrix is singular or not positive definite"{}});}
+\DoxyCodeLine{294     \}}
+\DoxyCodeLine{295   \}}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{300 \textcolor{keyword}{inline}}
+\DoxyCodeLine{301 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{302 op\_inv\_sympd::apply\_direct(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& expr)}
+\DoxyCodeLine{303   \{}
+\DoxyCodeLine{304   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{305   }
+\DoxyCodeLine{306   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{307   }
+\DoxyCodeLine{308   out = expr.get\_ref();}
+\DoxyCodeLine{309   }
+\DoxyCodeLine{310   arma\_debug\_check( (out.\mbox{\hyperlink{group__Mat_ga1f860b22491beb19251642270d04d8f1}{is\_square}}() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}inv\_sympd(): given matrix must be square sized"{}} );}
+\DoxyCodeLine{311   }
+\DoxyCodeLine{312   \textcolor{keywordflow}{if}((arma\_config::debug) \&\& (auxlib::rudimentary\_sym\_check(out) == \textcolor{keyword}{false}))}
+\DoxyCodeLine{313     \{}
+\DoxyCodeLine{314     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}} )  \{ arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}inv\_sympd(): given matrix is not symmetric"{}}); \}}
+\DoxyCodeLine{315     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::yes}})  \{ arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}inv\_sympd(): given matrix is not hermitian"{}}); \}}
+\DoxyCodeLine{316     \}}
+\DoxyCodeLine{317   }
+\DoxyCodeLine{318   \textcolor{keywordflow}{if}((out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} <= 4) \&\& \mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})}
+\DoxyCodeLine{319     \{}
+\DoxyCodeLine{320     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{321     }
+\DoxyCodeLine{322     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_inv::apply\_tiny\_noalias(tmp, out);}
+\DoxyCodeLine{323     }
+\DoxyCodeLine{324     \textcolor{keywordflow}{if}(status)  \{ arrayops::copy(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), tmp.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), tmp.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}}); \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{325     }
+\DoxyCodeLine{326     \textcolor{comment}{// fallthrough if optimisation failed}}
+\DoxyCodeLine{327     \}}
+\DoxyCodeLine{328   }
+\DoxyCodeLine{329   \textcolor{keywordflow}{return} auxlib::inv\_sympd(out);}
+\DoxyCodeLine{330   \}}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333 }
+
+\end{DoxyCode}

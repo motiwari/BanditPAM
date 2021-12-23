@@ -791,7 +791,11 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 USE_MDFILE_AS_MAINPAGE = ../README.md
-INPUT                  = ../README.md ../src ../headers
+INPUT                  = ../README.md \
+                         ../src/algorithms \
+                         ../src/python_bindings \
+                         ../headers/algorithms \
+                         ../headers/python_bindings
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses

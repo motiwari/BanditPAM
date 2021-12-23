@@ -1,0 +1,175 @@
+\hypertarget{fn__hess_8hpp_source}{}\doxysection{fn\+\_\+hess.\+hpp}
+\label{fn__hess_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_hess.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_hess.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{22 \textcolor{keyword}{inline}}
+\DoxyCodeLine{23 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{24 hess}
+\DoxyCodeLine{25   (}
+\DoxyCodeLine{26          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    H,}
+\DoxyCodeLine{27   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{28   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{29   )}
+\DoxyCodeLine{30   \{}
+\DoxyCodeLine{31   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{32   arma\_ignore(junk);}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \mbox{\hyperlink{classCol}{Col<eT>}} tao;}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = auxlib::hess(H, X.get\_ref(), tao);}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keywordflow}{if}(H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} > 2)}
+\DoxyCodeLine{41     \{}
+\DoxyCodeLine{42     \textcolor{keywordflow}{for}(uword i=0; i < H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/2; ++i)}
+\DoxyCodeLine{43       \{}
+\DoxyCodeLine{44       H(\mbox{\hyperlink{classspan}{span}}(i+2, H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/1), i).zeros();}
+\DoxyCodeLine{45       \}}
+\DoxyCodeLine{46     \}}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{49     \{}
+\DoxyCodeLine{50     H.soft\_reset();}
+\DoxyCodeLine{51     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}hess(): decomposition failed"{}});}
+\DoxyCodeLine{52     \}}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{55   \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{60 arma\_warn\_unused}
+\DoxyCodeLine{61 \textcolor{keyword}{inline}}
+\DoxyCodeLine{62 \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}}
+\DoxyCodeLine{63 hess}
+\DoxyCodeLine{64   (}
+\DoxyCodeLine{65   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{66   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{67   )}
+\DoxyCodeLine{68   \{}
+\DoxyCodeLine{69   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{70   arma\_ignore(junk);}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \mbox{\hyperlink{classMat}{Mat<eT>}} H;}
+\DoxyCodeLine{75   \mbox{\hyperlink{classCol}{Col<eT>}} tao;}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = auxlib::hess(H, X.get\_ref(), tao);}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keywordflow}{if}(H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} > 2)}
+\DoxyCodeLine{80     \{}
+\DoxyCodeLine{81     \textcolor{keywordflow}{for}(uword i=0; i < H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/2; ++i)}
+\DoxyCodeLine{82       \{}
+\DoxyCodeLine{83       H(\mbox{\hyperlink{classspan}{span}}(i+2, H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/1), i).zeros();}
+\DoxyCodeLine{84       \}}
+\DoxyCodeLine{85     \}}
+\DoxyCodeLine{86   }
+\DoxyCodeLine{87   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{88     \{}
+\DoxyCodeLine{89     H.soft\_reset();}
+\DoxyCodeLine{90     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}hess(): decomposition failed"{}});}
+\DoxyCodeLine{91     \}}
+\DoxyCodeLine{92   }
+\DoxyCodeLine{93   \textcolor{keywordflow}{return} H;}
+\DoxyCodeLine{94   \}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> }
+\DoxyCodeLine{99 \textcolor{keyword}{inline}}
+\DoxyCodeLine{100 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{101 hess}
+\DoxyCodeLine{102   (}
+\DoxyCodeLine{103          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    U,}
+\DoxyCodeLine{104          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    H,}
+\DoxyCodeLine{105   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{106   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{107   )}
+\DoxyCodeLine{108   \{}
+\DoxyCodeLine{109   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{110   arma\_ignore(junk);}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   arma\_debug\_check( void\_ptr(\&U) == void\_ptr(\&H), \textcolor{stringliteral}{"{}hess(): 'U' is an alias of 'H'"{}} );}
+\DoxyCodeLine{113   }
+\DoxyCodeLine{114   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   \mbox{\hyperlink{classCol}{Col<eT>}} tao;}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = auxlib::hess(H, X.get\_ref(), tao);}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   \textcolor{keywordflow}{if}(H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} == 0)}
+\DoxyCodeLine{121     \{}
+\DoxyCodeLine{122     U.reset();}
+\DoxyCodeLine{123     \}}
+\DoxyCodeLine{124   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{125   \textcolor{keywordflow}{if}(H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} == 1)}
+\DoxyCodeLine{126     \{}
+\DoxyCodeLine{127     U.ones(1, 1);}
+\DoxyCodeLine{128     \}}
+\DoxyCodeLine{129   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{130   \textcolor{keywordflow}{if}(H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} == 2)}
+\DoxyCodeLine{131     \{}
+\DoxyCodeLine{132     U.eye(2, 2);}
+\DoxyCodeLine{133     \}}
+\DoxyCodeLine{134   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{135     \{}
+\DoxyCodeLine{136     U.eye(size(H));}
+\DoxyCodeLine{137     }
+\DoxyCodeLine{138     \mbox{\hyperlink{classCol}{Col<eT>}} v;}
+\DoxyCodeLine{139     }
+\DoxyCodeLine{140     \textcolor{keywordflow}{for}(uword i=0; i < H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/2; ++i)}
+\DoxyCodeLine{141       \{}
+\DoxyCodeLine{142       \textcolor{comment}{// TODO: generate v in a more efficient manner; }}
+\DoxyCodeLine{143       \textcolor{comment}{// TODO: the .ones() operation is an overkill, as most of v is overwritten afterwards}}
+\DoxyCodeLine{144       }
+\DoxyCodeLine{145       v.ones(H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/i-\/1);}
+\DoxyCodeLine{146       }
+\DoxyCodeLine{147       v(\mbox{\hyperlink{classspan}{span}}(1, H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/i-\/2)) = H(\mbox{\hyperlink{classspan}{span}}(i+2, H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/1), i);}
+\DoxyCodeLine{148       }
+\DoxyCodeLine{149       U(span::all, \mbox{\hyperlink{classspan}{span}}(i+1, H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/1)) -\/= tao(i) * (U(span::all, \mbox{\hyperlink{classspan}{span}}(i+1, H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/1)) * v * v.t());}
+\DoxyCodeLine{150       \}}
+\DoxyCodeLine{151     }
+\DoxyCodeLine{152     U(span::all, H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/1) = U(span::all, H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/1) * (eT(1) -\/ tao(H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/2));}
+\DoxyCodeLine{153     }
+\DoxyCodeLine{154     \textcolor{keywordflow}{for}(uword i=0; i < H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/2; ++i)}
+\DoxyCodeLine{155       \{}
+\DoxyCodeLine{156       H(\mbox{\hyperlink{classspan}{span}}(i+2, H.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}-\/1), i).zeros();}
+\DoxyCodeLine{157       \}}
+\DoxyCodeLine{158     \}}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{161     \{}
+\DoxyCodeLine{162     U.soft\_reset();}
+\DoxyCodeLine{163     H.soft\_reset();}
+\DoxyCodeLine{164     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}hess(): decomposition failed"{}});}
+\DoxyCodeLine{165     \}}
+\DoxyCodeLine{166   }
+\DoxyCodeLine{167   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{168   \}}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 }
+
+\end{DoxyCode}

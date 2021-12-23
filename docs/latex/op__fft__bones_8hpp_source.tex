@@ -1,0 +1,66 @@
+\hypertarget{op__fft__bones_8hpp_source}{}\doxysection{op\+\_\+fft\+\_\+bones.\+hpp}
+\label{op__fft__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_fft\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_fft\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classop__fft__real}{op\_fft\_real}}}
+\DoxyCodeLine{24   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__passthru}{traits\_op\_passthru}}}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   \textcolor{keyword}{public}:}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{29   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply( \mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::pod\_type> >\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp}}<std::complex<typename T1::pod\_type>,T1,\mbox{\hyperlink{classop__fft__real}{op\_fft\_real}}>\& in );}
+\DoxyCodeLine{30   \};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{class }\mbox{\hyperlink{classop__fft__cx}{op\_fft\_cx}}}
+\DoxyCodeLine{35   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__passthru}{traits\_op\_passthru}}}
+\DoxyCodeLine{36   \{}
+\DoxyCodeLine{37   \textcolor{keyword}{public}:}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{40   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply( \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_fft\_cx>}}\& in );}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keywordtype}{bool} inverse>}
+\DoxyCodeLine{43   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_noalias(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} uword a, \textcolor{keyword}{const} uword b);}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} copy\_vec       (\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::elem\_type}}* dest, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} uword N);}
+\DoxyCodeLine{46   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} copy\_vec\_proxy (\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::elem\_type}}* dest, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} uword N);}
+\DoxyCodeLine{47   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} copy\_vec\_unwrap(\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::elem\_type}}* dest, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} uword N);}
+\DoxyCodeLine{48   \};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{class }\mbox{\hyperlink{classop__ifft__cx}{op\_ifft\_cx}}}
+\DoxyCodeLine{53   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__passthru}{traits\_op\_passthru}}}
+\DoxyCodeLine{54   \{}
+\DoxyCodeLine{55   \textcolor{keyword}{public}:}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{58   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply( \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_ifft\_cx>}}\& in );}
+\DoxyCodeLine{59   \};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+
+\end{DoxyCode}

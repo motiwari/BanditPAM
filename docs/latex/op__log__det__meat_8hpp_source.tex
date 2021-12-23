@@ -1,0 +1,182 @@
+\hypertarget{op__log__det__meat_8hpp_source}{}\doxysection{op\+\_\+log\+\_\+det\+\_\+meat.\+hpp}
+\label{op__log__det__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_log\_det\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_log\_det\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{25 op\_log\_det::apply\_direct(\textcolor{keyword}{typename} T1::elem\_type\& out\_val, \textcolor{keyword}{typename} T1::pod\_type\& out\_sign, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& expr)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T1>::do\_diagmat}})}
+\DoxyCodeLine{32     \{}
+\DoxyCodeLine{33     \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T1>}} strip(expr.get\_ref());}
+\DoxyCodeLine{34     }
+\DoxyCodeLine{35     \textcolor{keywordflow}{return} op\_log\_det::apply\_diagmat(out\_val, out\_sign, strip.M);}
+\DoxyCodeLine{36     \}}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structstrip__trimat}{strip\_trimat<T1>::do\_trimat}})}
+\DoxyCodeLine{39     \{}
+\DoxyCodeLine{40     \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__trimat}{strip\_trimat<T1>}} strip(expr.get\_ref());}
+\DoxyCodeLine{41     }
+\DoxyCodeLine{42     \textcolor{keywordflow}{return} op\_log\_det::apply\_trimat(out\_val, out\_sign, strip.M);}
+\DoxyCodeLine{43     \}}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \mbox{\hyperlink{classMat}{Mat<eT>}} \mbox{\hyperlink{structA}{A}}(expr.get\_ref());}
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   arma\_debug\_check( (\mbox{\hyperlink{structA}{A}}.is\_square() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}log\_det(): given matrix must be square sized"{}} );}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structA}{A}}.is\_diagmat())  \{ \textcolor{keywordflow}{return} op\_log\_det::apply\_diagmat(out\_val, out\_sign, \mbox{\hyperlink{structA}{A}}); \}}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_triu =                   trimat\_helper::is\_triu(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{52   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_tril = is\_triu ? false : trimat\_helper::is\_tril(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keywordflow}{if}(is\_triu || is\_tril)  \{ \textcolor{keywordflow}{return} op\_log\_det::apply\_trimat(out\_val, out\_sign, \mbox{\hyperlink{structA}{A}}); \}}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__auxlib_ga74d8fc5c3a1eb344df9c1053f90e1005}{auxlib::log\_det}}(out\_val, out\_sign, \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{57   \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{62 \textcolor{keyword}{inline}}
+\DoxyCodeLine{63 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{64 op\_log\_det::apply\_diagmat(\textcolor{keyword}{typename} T1::elem\_type\& out\_val, \textcolor{keyword}{typename} T1::pod\_type\& out\_sign, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& expr)}
+\DoxyCodeLine{65   \{}
+\DoxyCodeLine{66   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{67   }
+\DoxyCodeLine{68   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{69   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \textcolor{keyword}{const} \mbox{\hyperlink{classdiagmat__proxy}{diagmat\_proxy<T1>}} \mbox{\hyperlink{structA}{A}}(expr.get\_ref());}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   arma\_debug\_check( (\mbox{\hyperlink{structA}{A}}.n\_rows != \mbox{\hyperlink{structA}{A}}.n\_cols), \textcolor{stringliteral}{"{}log\_det(): given matrix must be square sized"{}} );}
+\DoxyCodeLine{74   }
+\DoxyCodeLine{75   \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(\mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols);}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keywordflow}{if}(N == 0)}
+\DoxyCodeLine{78     \{}
+\DoxyCodeLine{79     out\_val  = eT(0);}
+\DoxyCodeLine{80     out\_sign =  T(1);}
+\DoxyCodeLine{81     }
+\DoxyCodeLine{82     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{83     \}}
+\DoxyCodeLine{84   }
+\DoxyCodeLine{85   eT x = \mbox{\hyperlink{structA}{A}}[0];}
+\DoxyCodeLine{86   }
+\DoxyCodeLine{87   T  sign = (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ?         ( (\mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}(x) < T(0)) ?   T(-\/1) : T(1) ) : T(1);}
+\DoxyCodeLine{88   eT val  = (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ? std::log( (\mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}(x) < T(0)) ? x*T(-\/1) : x    ) : std::log(x);}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90   \textcolor{keywordflow}{for}(uword i=1; i<N; ++i)}
+\DoxyCodeLine{91     \{}
+\DoxyCodeLine{92     x = \mbox{\hyperlink{structA}{A}}[i];}
+\DoxyCodeLine{93     }
+\DoxyCodeLine{94     sign *= (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ?         ( (\mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}(x) < T(0)) ?   T(-\/1) : T(1) ) : T(1);}
+\DoxyCodeLine{95     val  += (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ? std::log( (\mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}(x) < T(0)) ? x*T(-\/1) : x    ) : std::log(x);}
+\DoxyCodeLine{96     \}}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   out\_val  = val;}
+\DoxyCodeLine{99   out\_sign = sign;}
+\DoxyCodeLine{100   }
+\DoxyCodeLine{101   \textcolor{keywordflow}{return} (arma\_isnan(out\_val) == \textcolor{keyword}{false});}
+\DoxyCodeLine{102   \}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{107 \textcolor{keyword}{inline}}
+\DoxyCodeLine{108 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{109 op\_log\_det::apply\_trimat(\textcolor{keyword}{typename} T1::elem\_type\& out\_val, \textcolor{keyword}{typename} T1::pod\_type\& out\_sign, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& expr)}
+\DoxyCodeLine{110   \{}
+\DoxyCodeLine{111   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{114   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(expr.get\_ref());}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keyword}{const} uword N = P.get\_n\_rows();}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   arma\_debug\_check( (N != P.get\_n\_cols()), \textcolor{stringliteral}{"{}log\_det(): given matrix must be square sized"{}} );}
+\DoxyCodeLine{121   }
+\DoxyCodeLine{122   \textcolor{keywordflow}{if}(N == 0)}
+\DoxyCodeLine{123     \{}
+\DoxyCodeLine{124     out\_val  = eT(0);}
+\DoxyCodeLine{125     out\_sign =  T(1);}
+\DoxyCodeLine{126     }
+\DoxyCodeLine{127     \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{128     \}}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   eT x = P.at(0,0);}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   T  sign = (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ?         ( (\mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}(x) < T(0)) ?   T(-\/1) : T(1) ) : T(1);}
+\DoxyCodeLine{133   eT val  = (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ? std::log( (\mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}(x) < T(0)) ? x*T(-\/1) : x    ) : std::log(x);}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   \textcolor{keywordflow}{for}(uword i=1; i<N; ++i)}
+\DoxyCodeLine{136     \{}
+\DoxyCodeLine{137     x = P.at(i,i);}
+\DoxyCodeLine{138     }
+\DoxyCodeLine{139     sign *= (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ?         ( (\mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}(x) < T(0)) ?   T(-\/1) : T(1) ) : T(1);}
+\DoxyCodeLine{140     val  += (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ? std::log( (\mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}(x) < T(0)) ? x*T(-\/1) : x    ) : std::log(x);}
+\DoxyCodeLine{141     \}}
+\DoxyCodeLine{142   }
+\DoxyCodeLine{143   out\_val  = val;}
+\DoxyCodeLine{144   out\_sign = sign;}
+\DoxyCodeLine{145   }
+\DoxyCodeLine{146   \textcolor{keywordflow}{return} (arma\_isnan(out\_val) == \textcolor{keyword}{false});}
+\DoxyCodeLine{147   \}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 \textcolor{comment}{//}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{156 \textcolor{keyword}{inline}}
+\DoxyCodeLine{157 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{158 op\_log\_det\_sympd::apply\_direct(\textcolor{keyword}{typename} T1::pod\_type\& out\_val, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& expr)}
+\DoxyCodeLine{159   \{}
+\DoxyCodeLine{160   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164   \mbox{\hyperlink{classMat}{Mat<eT>}} \mbox{\hyperlink{structA}{A}}(expr.get\_ref());}
+\DoxyCodeLine{165   }
+\DoxyCodeLine{166   arma\_debug\_check( (\mbox{\hyperlink{structA}{A}}.is\_square() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}log\_det\_sympd(): given matrix must be square sized"{}} );}
+\DoxyCodeLine{167   }
+\DoxyCodeLine{168   \textcolor{keywordflow}{if}((arma\_config::debug) \&\& (auxlib::rudimentary\_sym\_check(\mbox{\hyperlink{structA}{A}}) == \textcolor{keyword}{false}))}
+\DoxyCodeLine{169     \{}
+\DoxyCodeLine{170     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}} )  \{ arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}log\_det\_sympd(): given matrix is not symmetric"{}}); \}}
+\DoxyCodeLine{171     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::yes}})  \{ arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}log\_det\_sympd(): given matrix is not hermitian"{}}); \}}
+\DoxyCodeLine{172     \}}
+\DoxyCodeLine{173   }
+\DoxyCodeLine{174   \textcolor{keywordflow}{return} auxlib::log\_det\_sympd(out\_val, \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{175   \}}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 }
+
+\end{DoxyCode}

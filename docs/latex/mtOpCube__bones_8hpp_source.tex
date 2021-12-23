@@ -1,0 +1,61 @@
+\hypertarget{mtOpCube__bones_8hpp_source}{}\doxysection{mt\+Op\+Cube\+\_\+bones.\+hpp}
+\label{mtOpCube__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/mtOpCube\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/mtOpCube\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{struct }\mbox{\hyperlink{structmtOpCube__dual__aux__indicator}{mtOpCube\_dual\_aux\_indicator}} \{\};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type>}
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classmtOpCube}{mtOpCube}} : \textcolor{keyword}{public} \mbox{\hyperlink{structBaseCube}{BaseCube}}< out\_eT, mtOpCube<out\_eT, T1, op\_type> >}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   \textcolor{keyword}{public}:}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{typedef}          out\_eT                       elem\_type;}
+\DoxyCodeLine{31   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<out\_eT>::result pod\_type;}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type                in\_eT;}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classmtOpCube}{mtOpCube}}(\textcolor{keyword}{const} T1\& in\_m);}
+\DoxyCodeLine{36   \textcolor{keyword}{inline}          \mbox{\hyperlink{classmtOpCube}{mtOpCube}}(\textcolor{keyword}{const} T1\& in\_m, \textcolor{keyword}{const} in\_eT in\_aux);}
+\DoxyCodeLine{37   \textcolor{keyword}{inline}          \mbox{\hyperlink{classmtOpCube}{mtOpCube}}(\textcolor{keyword}{const} T1\& in\_m, \textcolor{keyword}{const} uword in\_aux\_uword\_a, \textcolor{keyword}{const} uword in\_aux\_uword\_b, \textcolor{keyword}{const} uword in\_aux\_uword\_c);}
+\DoxyCodeLine{38   \textcolor{keyword}{inline}          \mbox{\hyperlink{classmtOpCube}{mtOpCube}}(\textcolor{keyword}{const} T1\& in\_m, \textcolor{keyword}{const} in\_eT in\_aux,         \textcolor{keyword}{const} uword in\_aux\_uword\_a, \textcolor{keyword}{const} uword in\_aux\_uword\_b, \textcolor{keyword}{const} uword in\_aux\_uword\_c);}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keyword}{inline}          \mbox{\hyperlink{classmtOpCube}{mtOpCube}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char} junk, \textcolor{keyword}{const} T1\& in\_m, \textcolor{keyword}{const} out\_eT in\_aux);}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{inline}          \mbox{\hyperlink{classmtOpCube}{mtOpCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{structmtOpCube__dual__aux__indicator}{mtOpCube\_dual\_aux\_indicator}}\&, \textcolor{keyword}{const} T1\& in\_m, \textcolor{keyword}{const} in\_eT in\_aux\_a, \textcolor{keyword}{const} out\_eT in\_aux\_b);}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keyword}{inline}         \mbox{\hyperlink{classmtOpCube}{\string~mtOpCube}}();}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   arma\_aligned \textcolor{keyword}{const} T1\&    \mbox{\hyperlink{classmtOpCube_a138bd6382aa304713adf55d2357b220d}{m}};            }
+\DoxyCodeLine{48   arma\_aligned       in\_eT  \mbox{\hyperlink{classmtOpCube_ac3099786a3343847511b53c97b61024f}{aux}};          }
+\DoxyCodeLine{49   arma\_aligned       out\_eT \mbox{\hyperlink{classmtOpCube_a94c46a125bf397e4856e628ee96abdac}{aux\_out\_eT}};   }
+\DoxyCodeLine{50   arma\_aligned       uword  \mbox{\hyperlink{classmtOpCube_a708fbc4848b0f9020dd9fbd663e0a1e5}{aux\_uword\_a}};  }
+\DoxyCodeLine{51   arma\_aligned       uword  \mbox{\hyperlink{classmtOpCube_a6608f0d9a7494f4e3ac3188aae6558a3}{aux\_uword\_b}};  }
+\DoxyCodeLine{52   arma\_aligned       uword  \mbox{\hyperlink{classmtOpCube_a4790c752a969638ad62eacad9d86ca06}{aux\_uword\_c}};  }
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+
+\end{DoxyCode}

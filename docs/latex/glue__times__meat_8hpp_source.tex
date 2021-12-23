@@ -1,0 +1,992 @@
+\hypertarget{glue__times__meat_8hpp_source}{}\doxysection{glue\+\_\+times\+\_\+meat.\+hpp}
+\label{glue__times__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_times\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_times\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} do\_inv\_detect>}
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{24 arma\_hot}
+\DoxyCodeLine{25 \textcolor{keyword}{inline}}
+\DoxyCodeLine{26 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{27 \mbox{\hyperlink{structglue__times__redirect2__helper}{glue\_times\_redirect2\_helper<do\_inv\_detect>::apply}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}\& X)}
+\DoxyCodeLine{28   \{}
+\DoxyCodeLine{29   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>}} tmp1(X.A);}
+\DoxyCodeLine{34   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>}} tmp2(X.B);}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::stored\_type}}\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{37   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::stored\_type}}\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha = \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}};}
+\DoxyCodeLine{40   \textcolor{keyword}{const} eT       alpha = use\_alpha ? (tmp1.get\_val() * tmp2.get\_val()) : eT(0);}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} alias = tmp1.is\_alias(out) || tmp2.is\_alias(out);}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keywordflow}{if}(alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{45     \{}
+\DoxyCodeLine{46     glue\_times::apply}
+\DoxyCodeLine{47       <}
+\DoxyCodeLine{48       eT,}
+\DoxyCodeLine{49       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}},}
+\DoxyCodeLine{50       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}},}
+\DoxyCodeLine{51       (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}})}
+\DoxyCodeLine{52       >}
+\DoxyCodeLine{53       (out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, alpha);}
+\DoxyCodeLine{54     \}}
+\DoxyCodeLine{55   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{56     \{}
+\DoxyCodeLine{57     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{58     }
+\DoxyCodeLine{59     glue\_times::apply}
+\DoxyCodeLine{60       <}
+\DoxyCodeLine{61       eT,}
+\DoxyCodeLine{62       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}},}
+\DoxyCodeLine{63       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}},}
+\DoxyCodeLine{64       (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}})}
+\DoxyCodeLine{65       >}
+\DoxyCodeLine{66       (tmp, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, alpha);}
+\DoxyCodeLine{67     }
+\DoxyCodeLine{68     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{69     \}}
+\DoxyCodeLine{70   \}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{75 arma\_hot}
+\DoxyCodeLine{76 \textcolor{keyword}{inline}}
+\DoxyCodeLine{77 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{78 \mbox{\hyperlink{structglue__times__redirect2__helper}{glue\_times\_redirect2\_helper<true>::apply}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}\& X)}
+\DoxyCodeLine{79   \{}
+\DoxyCodeLine{80   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structstrip__inv}{strip\_inv<T1>::do\_inv}})}
+\DoxyCodeLine{85     \{}
+\DoxyCodeLine{86     \textcolor{comment}{// replace inv(A)*B with solve(A,B)}}
+\DoxyCodeLine{87     }
+\DoxyCodeLine{88     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}glue\_times\_redirect<2>::apply(): detected inv(A)*B"{}});}
+\DoxyCodeLine{89     }
+\DoxyCodeLine{90     \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__inv}{strip\_inv<T1>}} A\_strip(X.A);}
+\DoxyCodeLine{91     }
+\DoxyCodeLine{92     \mbox{\hyperlink{classMat}{Mat<eT>}} \mbox{\hyperlink{structA}{A}} = A\_strip.M;}
+\DoxyCodeLine{93     }
+\DoxyCodeLine{94     arma\_debug\_check( (\mbox{\hyperlink{structA}{A}}.is\_square() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}inv(): given matrix must be square sized"{}} );}
+\DoxyCodeLine{95     }
+\DoxyCodeLine{96     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structstrip__inv}{strip\_inv<T1>::do\_inv\_sympd}})}
+\DoxyCodeLine{97       \{}
+\DoxyCodeLine{98       \textcolor{comment}{// if(auxlib::rudimentary\_sym\_check(A) == false)}}
+\DoxyCodeLine{99       \textcolor{comment}{//   \{}}
+\DoxyCodeLine{100       \textcolor{comment}{//   if(is\_cx<eT>::no )  \{ arma\_debug\_warn\_level(1, "{}inv\_sympd(): given matrix is not symmetric"{}); \}}}
+\DoxyCodeLine{101       \textcolor{comment}{//   if(is\_cx<eT>::yes)  \{ arma\_debug\_warn\_level(1, "{}inv\_sympd(): given matrix is not hermitian"{}); \}}}
+\DoxyCodeLine{102       \textcolor{comment}{//   }}
+\DoxyCodeLine{103       \textcolor{comment}{//   out.soft\_reset();}}
+\DoxyCodeLine{104       \textcolor{comment}{//   arma\_stop\_runtime\_error("{}matrix multiplication: problem with matrix inverse; suggest to use solve() instead"{});}}
+\DoxyCodeLine{105       \textcolor{comment}{//   }}
+\DoxyCodeLine{106       \textcolor{comment}{//   return;}}
+\DoxyCodeLine{107       \textcolor{comment}{//   \}}}
+\DoxyCodeLine{108       }
+\DoxyCodeLine{109       \textcolor{keywordflow}{if}( (arma\_config::debug) \&\& (auxlib::rudimentary\_sym\_check(\mbox{\hyperlink{structA}{A}}) == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{110         \{}
+\DoxyCodeLine{111         \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}} )  \{ arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}inv\_sympd(): given matrix is not symmetric"{}}); \}}
+\DoxyCodeLine{112         \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::yes}})  \{ arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}inv\_sympd(): given matrix is not hermitian"{}}); \}}
+\DoxyCodeLine{113         \}}
+\DoxyCodeLine{114       \}}
+\DoxyCodeLine{115     }
+\DoxyCodeLine{116     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__check}{unwrap\_check<T2>}} B\_tmp(X.B, out);}
+\DoxyCodeLine{117     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}} = B\_tmp.M;}
+\DoxyCodeLine{118     }
+\DoxyCodeLine{119     arma\_debug\_assert\_mul\_size(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{120     }
+\DoxyCodeLine{121     \textcolor{comment}{// TODO: detect sympd via sympd\_helper::guess\_sympd(A) ?}}
+\DoxyCodeLine{122     }
+\DoxyCodeLine{123 \textcolor{preprocessor}{    \#if defined(ARMA\_OPTIMISE\_SYMPD)}}
+\DoxyCodeLine{124       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = (\mbox{\hyperlink{structstrip__inv}{strip\_inv<T1>::do\_inv\_sympd}}) ? auxlib::solve\_sympd\_fast(out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}) : \mbox{\hyperlink{group__auxlib_ga530089e89e43155f3bf6e709bbe775dd}{auxlib::solve\_square\_fast}}(out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{125 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{126       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__auxlib_ga530089e89e43155f3bf6e709bbe775dd}{auxlib::solve\_square\_fast}}(out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{127 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{128     }
+\DoxyCodeLine{129     \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{130       \{}
+\DoxyCodeLine{131       out.soft\_reset();}
+\DoxyCodeLine{132       arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}matrix multiplication: problem with matrix inverse; suggest to use solve() instead"{}});}
+\DoxyCodeLine{133       \}}
+\DoxyCodeLine{134     }
+\DoxyCodeLine{135     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{136     \}}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138 \textcolor{preprocessor}{  \#if defined(ARMA\_OPTIMISE\_SYMPD)}}
+\DoxyCodeLine{139     \{}
+\DoxyCodeLine{140     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structstrip__inv}{strip\_inv<T2>::do\_inv\_sympd}})}
+\DoxyCodeLine{141       \{}
+\DoxyCodeLine{142       \textcolor{comment}{// replace A*inv\_sympd(B) with trans( solve(trans(B),trans(A)) )}}
+\DoxyCodeLine{143       \textcolor{comment}{// transpose of B is avoided as B is explicitly marked as symmetric}}
+\DoxyCodeLine{144       }
+\DoxyCodeLine{145       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}glue\_times\_redirect<2>::apply(): detected A*inv\_sympd(B)"{}});}
+\DoxyCodeLine{146       }
+\DoxyCodeLine{147       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} At = trans(X.A);}
+\DoxyCodeLine{148       }
+\DoxyCodeLine{149       \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__inv}{strip\_inv<T2>}} B\_strip(X.B);}
+\DoxyCodeLine{150       }
+\DoxyCodeLine{151       \mbox{\hyperlink{classMat}{Mat<eT>}} \mbox{\hyperlink{structB}{B}} = B\_strip.M;}
+\DoxyCodeLine{152       }
+\DoxyCodeLine{153       arma\_debug\_check( (\mbox{\hyperlink{structB}{B}}.is\_square() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}inv\_sympd(): given matrix must be square sized"{}} );}
+\DoxyCodeLine{154       }
+\DoxyCodeLine{155       \textcolor{comment}{// if(auxlib::rudimentary\_sym\_check(B) == false)}}
+\DoxyCodeLine{156       \textcolor{comment}{//   \{}}
+\DoxyCodeLine{157       \textcolor{comment}{//   if(is\_cx<eT>::no )  \{ arma\_debug\_warn\_level(1, "{}inv\_sympd(): given matrix is not symmetric"{}); \}}}
+\DoxyCodeLine{158       \textcolor{comment}{//   if(is\_cx<eT>::yes)  \{ arma\_debug\_warn\_level(1, "{}inv\_sympd(): given matrix is not hermitian"{}); \}}}
+\DoxyCodeLine{159       \textcolor{comment}{//   }}
+\DoxyCodeLine{160       \textcolor{comment}{//   out.soft\_reset();}}
+\DoxyCodeLine{161       \textcolor{comment}{//   arma\_stop\_runtime\_error("{}matrix multiplication: problem with matrix inverse; suggest to use solve() instead"{});}}
+\DoxyCodeLine{162       \textcolor{comment}{//   }}
+\DoxyCodeLine{163       \textcolor{comment}{//   return;}}
+\DoxyCodeLine{164       \textcolor{comment}{//   \}}}
+\DoxyCodeLine{165       }
+\DoxyCodeLine{166       \textcolor{keywordflow}{if}( (arma\_config::debug) \&\& (auxlib::rudimentary\_sym\_check(\mbox{\hyperlink{structB}{B}}) == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{167         \{}
+\DoxyCodeLine{168         \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}} )  \{ arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}inv\_sympd(): given matrix is not symmetric"{}}); \}}
+\DoxyCodeLine{169         \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::yes}})  \{ arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}inv\_sympd(): given matrix is not hermitian"{}}); \}}
+\DoxyCodeLine{170         \}}
+\DoxyCodeLine{171       }
+\DoxyCodeLine{172       arma\_debug\_assert\_mul\_size(At.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}, At.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, \mbox{\hyperlink{structB}{B}}.n\_rows, \mbox{\hyperlink{structB}{B}}.n\_cols, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{173       }
+\DoxyCodeLine{174       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = auxlib::solve\_sympd\_fast(out, \mbox{\hyperlink{structB}{B}}, At);}
+\DoxyCodeLine{175       }
+\DoxyCodeLine{176       \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{177         \{}
+\DoxyCodeLine{178         out.soft\_reset();}
+\DoxyCodeLine{179         arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}matrix multiplication: problem with matrix inverse; suggest to use solve() instead"{}});}
+\DoxyCodeLine{180         \}}
+\DoxyCodeLine{181       }
+\DoxyCodeLine{182       out = trans(out);}
+\DoxyCodeLine{183       }
+\DoxyCodeLine{184       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{185       \}}
+\DoxyCodeLine{186     \}}
+\DoxyCodeLine{187 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   \mbox{\hyperlink{structglue__times__redirect2__helper}{glue\_times\_redirect2\_helper<false>::apply}}(out, X);}
+\DoxyCodeLine{190   \}}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} do\_inv\_detect>}
+\DoxyCodeLine{195 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{196 arma\_hot}
+\DoxyCodeLine{197 \textcolor{keyword}{inline}}
+\DoxyCodeLine{198 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{199 \mbox{\hyperlink{structglue__times__redirect3__helper}{glue\_times\_redirect3\_helper<do\_inv\_detect>::apply}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue}}< \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}, T3, \mbox{\hyperlink{classglue__times}{glue\_times}}>\& X)}
+\DoxyCodeLine{200   \{}
+\DoxyCodeLine{201   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{202   }
+\DoxyCodeLine{203   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{204   }
+\DoxyCodeLine{205   \textcolor{comment}{// we have exactly 3 objects}}
+\DoxyCodeLine{206   \textcolor{comment}{// hence we can safely expand X as X.A.A, X.A.B and X.B}}
+\DoxyCodeLine{207   }
+\DoxyCodeLine{208   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>}} tmp1(X.A.A);}
+\DoxyCodeLine{209   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>}} tmp2(X.A.B);}
+\DoxyCodeLine{210   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>}} tmp3(X.B  );}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::stored\_type}}\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{213   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::stored\_type}}\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{214   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::stored\_type}}\& C = tmp3.M;}
+\DoxyCodeLine{215   }
+\DoxyCodeLine{216   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha = \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_times}};}
+\DoxyCodeLine{217   \textcolor{keyword}{const} eT       alpha = use\_alpha ? (tmp1.get\_val() * tmp2.get\_val() * tmp3.get\_val()) : eT(0);}
+\DoxyCodeLine{218   }
+\DoxyCodeLine{219   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} alias = tmp1.is\_alias(out) || tmp2.is\_alias(out) || tmp3.is\_alias(out);}
+\DoxyCodeLine{220   }
+\DoxyCodeLine{221   \textcolor{keywordflow}{if}(alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{222     \{}
+\DoxyCodeLine{223     glue\_times::apply}
+\DoxyCodeLine{224       <}
+\DoxyCodeLine{225       eT,}
+\DoxyCodeLine{226       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}},}
+\DoxyCodeLine{227       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}},}
+\DoxyCodeLine{228       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_trans}},}
+\DoxyCodeLine{229       (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_times}})}
+\DoxyCodeLine{230       >}
+\DoxyCodeLine{231       (out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, C, alpha);}
+\DoxyCodeLine{232     \}}
+\DoxyCodeLine{233   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{234     \{}
+\DoxyCodeLine{235     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{236     }
+\DoxyCodeLine{237     glue\_times::apply}
+\DoxyCodeLine{238       <}
+\DoxyCodeLine{239       eT,}
+\DoxyCodeLine{240       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}},}
+\DoxyCodeLine{241       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}},}
+\DoxyCodeLine{242       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_trans}},}
+\DoxyCodeLine{243       (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_times}})}
+\DoxyCodeLine{244       >}
+\DoxyCodeLine{245       (tmp, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, C, alpha);}
+\DoxyCodeLine{246     }
+\DoxyCodeLine{247     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{248     \}}
+\DoxyCodeLine{249   \}}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{254 arma\_hot}
+\DoxyCodeLine{255 \textcolor{keyword}{inline}}
+\DoxyCodeLine{256 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{257 \mbox{\hyperlink{structglue__times__redirect3__helper}{glue\_times\_redirect3\_helper<true>::apply}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue}}< \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}, T3, \mbox{\hyperlink{classglue__times}{glue\_times}}>\& X)}
+\DoxyCodeLine{258   \{}
+\DoxyCodeLine{259   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{260   }
+\DoxyCodeLine{261   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{262   }
+\DoxyCodeLine{263   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structstrip__inv}{strip\_inv<T1>::do\_inv}})}
+\DoxyCodeLine{264     \{}
+\DoxyCodeLine{265     \textcolor{comment}{// replace inv(A)*B*C with solve(A,B*C);}}
+\DoxyCodeLine{266     }
+\DoxyCodeLine{267     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}glue\_times\_redirect<3>::apply(): detected inv(A)*B*C"{}});}
+\DoxyCodeLine{268     }
+\DoxyCodeLine{269     \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__inv}{strip\_inv<T1>}} A\_strip(X.A.A);}
+\DoxyCodeLine{270     }
+\DoxyCodeLine{271     \mbox{\hyperlink{classMat}{Mat<eT>}} \mbox{\hyperlink{structA}{A}} = A\_strip.M;}
+\DoxyCodeLine{272     }
+\DoxyCodeLine{273     arma\_debug\_check( (\mbox{\hyperlink{structA}{A}}.is\_square() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}inv(): given matrix must be square sized"{}} );}
+\DoxyCodeLine{274     }
+\DoxyCodeLine{275     \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>}} tmp2(X.A.B);}
+\DoxyCodeLine{276     \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>}} tmp3(X.B  );}
+\DoxyCodeLine{277     }
+\DoxyCodeLine{278     \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::stored\_type}}\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{279     \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::stored\_type}}\& C = tmp3.M;}
+\DoxyCodeLine{280     }
+\DoxyCodeLine{281     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha = \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_times}};}
+\DoxyCodeLine{282     \textcolor{keyword}{const} eT       alpha = use\_alpha ? (tmp2.get\_val() * tmp3.get\_val()) : eT(0);}
+\DoxyCodeLine{283     }
+\DoxyCodeLine{284     \mbox{\hyperlink{classMat}{Mat<eT>}} BC;}
+\DoxyCodeLine{285     }
+\DoxyCodeLine{286     glue\_times::apply}
+\DoxyCodeLine{287       <}
+\DoxyCodeLine{288       eT,}
+\DoxyCodeLine{289       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}},}
+\DoxyCodeLine{290       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_trans}},}
+\DoxyCodeLine{291       (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_times}})}
+\DoxyCodeLine{292       >}
+\DoxyCodeLine{293       (BC, \mbox{\hyperlink{structB}{B}}, C, alpha);}
+\DoxyCodeLine{294     }
+\DoxyCodeLine{295     arma\_debug\_assert\_mul\_size(\mbox{\hyperlink{structA}{A}}, BC, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{296     }
+\DoxyCodeLine{297     \textcolor{comment}{// TODO: detect sympd via sympd\_helper::guess\_sympd(A) ?}}
+\DoxyCodeLine{298     }
+\DoxyCodeLine{299 \textcolor{preprocessor}{    \#if defined(ARMA\_OPTIMISE\_SYMPD)}}
+\DoxyCodeLine{300       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = (\mbox{\hyperlink{structstrip__inv}{strip\_inv<T1>::do\_inv\_sympd}}) ? auxlib::solve\_sympd\_fast(out, \mbox{\hyperlink{structA}{A}}, BC) : \mbox{\hyperlink{group__auxlib_ga530089e89e43155f3bf6e709bbe775dd}{auxlib::solve\_square\_fast}}(out, \mbox{\hyperlink{structA}{A}}, BC);}
+\DoxyCodeLine{301 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{302       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__auxlib_ga530089e89e43155f3bf6e709bbe775dd}{auxlib::solve\_square\_fast}}(out, \mbox{\hyperlink{structA}{A}}, BC);}
+\DoxyCodeLine{303 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{304     }
+\DoxyCodeLine{305     \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{306       \{}
+\DoxyCodeLine{307       out.soft\_reset();}
+\DoxyCodeLine{308       arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}matrix multiplication: problem with matrix inverse; suggest to use solve() instead"{}});}
+\DoxyCodeLine{309       \}}
+\DoxyCodeLine{310     }
+\DoxyCodeLine{311     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{312     \}}
+\DoxyCodeLine{313   }
+\DoxyCodeLine{314   }
+\DoxyCodeLine{315   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structstrip__inv}{strip\_inv<T2>::do\_inv}})}
+\DoxyCodeLine{316     \{}
+\DoxyCodeLine{317     \textcolor{comment}{// replace A*inv(B)*C with A*solve(B,C)}}
+\DoxyCodeLine{318     }
+\DoxyCodeLine{319     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}glue\_times\_redirect<3>::apply(): detected A*inv(B)*C"{}});}
+\DoxyCodeLine{320     }
+\DoxyCodeLine{321     \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__inv}{strip\_inv<T2>}} B\_strip(X.A.B);}
+\DoxyCodeLine{322     }
+\DoxyCodeLine{323     \mbox{\hyperlink{classMat}{Mat<eT>}} \mbox{\hyperlink{structB}{B}} = B\_strip.M;}
+\DoxyCodeLine{324     }
+\DoxyCodeLine{325     arma\_debug\_check( (\mbox{\hyperlink{structB}{B}}.is\_square() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}inv(): given matrix must be square sized"{}} );}
+\DoxyCodeLine{326     }
+\DoxyCodeLine{327     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T3>}} C\_tmp(X.B);}
+\DoxyCodeLine{328     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& C = C\_tmp.M;}
+\DoxyCodeLine{329     }
+\DoxyCodeLine{330     arma\_debug\_assert\_mul\_size(\mbox{\hyperlink{structB}{B}}, C, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{331     }
+\DoxyCodeLine{332     \mbox{\hyperlink{classMat}{Mat<eT>}} solve\_result;}
+\DoxyCodeLine{333     }
+\DoxyCodeLine{334 \textcolor{preprocessor}{    \#if defined(ARMA\_OPTIMISE\_SYMPD)}}
+\DoxyCodeLine{335       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = (\mbox{\hyperlink{structstrip__inv}{strip\_inv<T2>::do\_inv\_sympd}}) ? auxlib::solve\_sympd\_fast(solve\_result, \mbox{\hyperlink{structB}{B}}, C) : \mbox{\hyperlink{group__auxlib_ga530089e89e43155f3bf6e709bbe775dd}{auxlib::solve\_square\_fast}}(solve\_result, \mbox{\hyperlink{structB}{B}}, C);}
+\DoxyCodeLine{336 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{337       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__auxlib_ga530089e89e43155f3bf6e709bbe775dd}{auxlib::solve\_square\_fast}}(solve\_result, \mbox{\hyperlink{structB}{B}}, C);}
+\DoxyCodeLine{338 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{339     }
+\DoxyCodeLine{340     \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{341       \{}
+\DoxyCodeLine{342       out.soft\_reset();}
+\DoxyCodeLine{343       arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}matrix multiplication: problem with matrix inverse; suggest to use solve() instead"{}});}
+\DoxyCodeLine{344       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{345       \}}
+\DoxyCodeLine{346     }
+\DoxyCodeLine{347     \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T1>}} tmp1(X.A.A, out);}
+\DoxyCodeLine{348     }
+\DoxyCodeLine{349     \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T1>::stored\_type}}\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{350     }
+\DoxyCodeLine{351     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha = \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T1>::do\_times}};}
+\DoxyCodeLine{352     \textcolor{keyword}{const} eT       alpha = use\_alpha ? tmp1.get\_val() : eT(0);}
+\DoxyCodeLine{353     }
+\DoxyCodeLine{354     glue\_times::apply}
+\DoxyCodeLine{355       <}
+\DoxyCodeLine{356       eT,}
+\DoxyCodeLine{357       \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T1>::do\_trans}},}
+\DoxyCodeLine{358       \textcolor{keyword}{false},}
+\DoxyCodeLine{359       \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T1>::do\_times}}}
+\DoxyCodeLine{360       >}
+\DoxyCodeLine{361       (out, \mbox{\hyperlink{structA}{A}}, solve\_result, alpha);}
+\DoxyCodeLine{362     }
+\DoxyCodeLine{363     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{364     \}}
+\DoxyCodeLine{365   }
+\DoxyCodeLine{366   }
+\DoxyCodeLine{367   \mbox{\hyperlink{structglue__times__redirect3__helper}{glue\_times\_redirect3\_helper<false>::apply}}(out, X);}
+\DoxyCodeLine{368   \}}
+\DoxyCodeLine{369 }
+\DoxyCodeLine{370 }
+\DoxyCodeLine{371 }
+\DoxyCodeLine{372 \textcolor{keyword}{template}<uword N>}
+\DoxyCodeLine{373 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{374 arma\_hot}
+\DoxyCodeLine{375 \textcolor{keyword}{inline}}
+\DoxyCodeLine{376 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{377 \mbox{\hyperlink{structglue__times__redirect}{glue\_times\_redirect<N>::apply}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}\& X)}
+\DoxyCodeLine{378   \{}
+\DoxyCodeLine{379   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{380   }
+\DoxyCodeLine{381   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{382   }
+\DoxyCodeLine{383   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>}} tmp1(X.A);}
+\DoxyCodeLine{384   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>}} tmp2(X.B);}
+\DoxyCodeLine{385   }
+\DoxyCodeLine{386   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::stored\_type}}\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{387   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::stored\_type}}\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{388   }
+\DoxyCodeLine{389   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha = \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}};}
+\DoxyCodeLine{390   \textcolor{keyword}{const} eT       alpha = use\_alpha ? (tmp1.get\_val() * tmp2.get\_val()) : eT(0);}
+\DoxyCodeLine{391   }
+\DoxyCodeLine{392   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} alias = tmp1.is\_alias(out) || tmp2.is\_alias(out);}
+\DoxyCodeLine{393   }
+\DoxyCodeLine{394   \textcolor{keywordflow}{if}(alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{395     \{}
+\DoxyCodeLine{396     glue\_times::apply}
+\DoxyCodeLine{397       <}
+\DoxyCodeLine{398       eT,}
+\DoxyCodeLine{399       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}},}
+\DoxyCodeLine{400       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}},}
+\DoxyCodeLine{401       (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}})}
+\DoxyCodeLine{402       >}
+\DoxyCodeLine{403       (out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, alpha);}
+\DoxyCodeLine{404     \}}
+\DoxyCodeLine{405   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{406     \{}
+\DoxyCodeLine{407     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{408     }
+\DoxyCodeLine{409     glue\_times::apply}
+\DoxyCodeLine{410       <}
+\DoxyCodeLine{411       eT,}
+\DoxyCodeLine{412       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}},}
+\DoxyCodeLine{413       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}},}
+\DoxyCodeLine{414       (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}})}
+\DoxyCodeLine{415       >}
+\DoxyCodeLine{416       (tmp, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, alpha);}
+\DoxyCodeLine{417     }
+\DoxyCodeLine{418     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{419     \}}
+\DoxyCodeLine{420   \}}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422 }
+\DoxyCodeLine{423 }
+\DoxyCodeLine{424 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{425 arma\_hot}
+\DoxyCodeLine{426 \textcolor{keyword}{inline}}
+\DoxyCodeLine{427 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{428 \mbox{\hyperlink{structglue__times__redirect}{glue\_times\_redirect<2>::apply}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}\& X)}
+\DoxyCodeLine{429   \{}
+\DoxyCodeLine{430   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{431   }
+\DoxyCodeLine{432   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{433   }
+\DoxyCodeLine{434   \mbox{\hyperlink{structglue__times__redirect2__helper}{glue\_times\_redirect2\_helper< is\_supported\_blas\_type<eT>::value}} >::apply(out, X);}
+\DoxyCodeLine{435   \}}
+\DoxyCodeLine{436 }
+\DoxyCodeLine{437 }
+\DoxyCodeLine{438 }
+\DoxyCodeLine{439 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{440 arma\_hot}
+\DoxyCodeLine{441 \textcolor{keyword}{inline}}
+\DoxyCodeLine{442 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{443 \mbox{\hyperlink{structglue__times__redirect}{glue\_times\_redirect<3>::apply}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue}}< \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}, T3, \mbox{\hyperlink{classglue__times}{glue\_times}}>\& X)}
+\DoxyCodeLine{444   \{}
+\DoxyCodeLine{445   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{446   }
+\DoxyCodeLine{447   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{448   }
+\DoxyCodeLine{449   \mbox{\hyperlink{structglue__times__redirect3__helper}{glue\_times\_redirect3\_helper< is\_supported\_blas\_type<eT>::value}} >::apply(out, X);}
+\DoxyCodeLine{450   \}}
+\DoxyCodeLine{451 }
+\DoxyCodeLine{452 }
+\DoxyCodeLine{453 }
+\DoxyCodeLine{454 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{455 arma\_hot}
+\DoxyCodeLine{456 \textcolor{keyword}{inline}}
+\DoxyCodeLine{457 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{458 \mbox{\hyperlink{structglue__times__redirect}{glue\_times\_redirect<4>::apply}}(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue}}< \mbox{\hyperlink{classGlue}{Glue}}< \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}, T3, \mbox{\hyperlink{classglue__times}{glue\_times}}>, T4, \mbox{\hyperlink{classglue__times}{glue\_times}}>\& X)}
+\DoxyCodeLine{459   \{}
+\DoxyCodeLine{460   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{461   }
+\DoxyCodeLine{462   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{463   }
+\DoxyCodeLine{464   \textcolor{comment}{// there is exactly 4 objects}}
+\DoxyCodeLine{465   \textcolor{comment}{// hence we can safely expand X as X.A.A.A, X.A.A.B, X.A.B and X.B}}
+\DoxyCodeLine{466   }
+\DoxyCodeLine{467   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>}} tmp1(X.A.A.A);}
+\DoxyCodeLine{468   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>}} tmp2(X.A.A.B);}
+\DoxyCodeLine{469   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>}} tmp3(X.A.B  );}
+\DoxyCodeLine{470   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T4>}} tmp4(X.B    );}
+\DoxyCodeLine{471   }
+\DoxyCodeLine{472   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::stored\_type}}\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{473   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::stored\_type}}\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{474   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::stored\_type}}\& C = tmp3.M;}
+\DoxyCodeLine{475   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T4>::stored\_type}}\& D = tmp4.M;}
+\DoxyCodeLine{476   }
+\DoxyCodeLine{477   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha = \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T4>::do\_times}};}
+\DoxyCodeLine{478   \textcolor{keyword}{const} eT       alpha = use\_alpha ? (tmp1.get\_val() * tmp2.get\_val() * tmp3.get\_val() * tmp4.get\_val()) : eT(0);}
+\DoxyCodeLine{479   }
+\DoxyCodeLine{480   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} alias = tmp1.is\_alias(out) || tmp2.is\_alias(out) || tmp3.is\_alias(out) || tmp4.is\_alias(out);}
+\DoxyCodeLine{481   }
+\DoxyCodeLine{482   \textcolor{keywordflow}{if}(alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{483     \{}
+\DoxyCodeLine{484     glue\_times::apply}
+\DoxyCodeLine{485       <}
+\DoxyCodeLine{486       eT,}
+\DoxyCodeLine{487       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}},}
+\DoxyCodeLine{488       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}},}
+\DoxyCodeLine{489       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_trans}},}
+\DoxyCodeLine{490       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T4>::do\_trans}},}
+\DoxyCodeLine{491       (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T4>::do\_times}})}
+\DoxyCodeLine{492       >}
+\DoxyCodeLine{493       (out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, C, D, alpha);}
+\DoxyCodeLine{494     \}}
+\DoxyCodeLine{495   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{496     \{}
+\DoxyCodeLine{497     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{498     }
+\DoxyCodeLine{499     glue\_times::apply}
+\DoxyCodeLine{500       <}
+\DoxyCodeLine{501       eT,}
+\DoxyCodeLine{502       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}},}
+\DoxyCodeLine{503       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}},}
+\DoxyCodeLine{504       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_trans}},}
+\DoxyCodeLine{505       \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T4>::do\_trans}},}
+\DoxyCodeLine{506       (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T3>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T4>::do\_times}})}
+\DoxyCodeLine{507       >}
+\DoxyCodeLine{508       (tmp, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, C, D, alpha);}
+\DoxyCodeLine{509     }
+\DoxyCodeLine{510     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{511     \}}
+\DoxyCodeLine{512   \}}
+\DoxyCodeLine{513 }
+\DoxyCodeLine{514 }
+\DoxyCodeLine{515 }
+\DoxyCodeLine{516 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{517 arma\_hot}
+\DoxyCodeLine{518 \textcolor{keyword}{inline}}
+\DoxyCodeLine{519 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{520 glue\_times::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}\& X)}
+\DoxyCodeLine{521   \{}
+\DoxyCodeLine{522   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{523   }
+\DoxyCodeLine{524   \textcolor{keyword}{constexpr} uword N\_mat = 1 + \mbox{\hyperlink{structdepth__lhs}{depth\_lhs< glue\_times, Glue<T1,T2,glue\_times>}} >::num;}
+\DoxyCodeLine{525   }
+\DoxyCodeLine{526   arma\_extra\_debug\_print(\mbox{\hyperlink{classarma__str_1_1format}{arma\_str::format}}(\textcolor{stringliteral}{"{}N\_mat = \%u"{}}) \% N\_mat);}
+\DoxyCodeLine{527   }
+\DoxyCodeLine{528   \mbox{\hyperlink{structglue__times__redirect}{glue\_times\_redirect<N\_mat>::apply}}(out, X);}
+\DoxyCodeLine{529   \}}
+\DoxyCodeLine{530 }
+\DoxyCodeLine{531 }
+\DoxyCodeLine{532 }
+\DoxyCodeLine{533 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{534 arma\_hot}
+\DoxyCodeLine{535 \textcolor{keyword}{inline}}
+\DoxyCodeLine{536 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{537 glue\_times::apply\_inplace(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{538   \{}
+\DoxyCodeLine{539   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{540   }
+\DoxyCodeLine{541   out = out * X;}
+\DoxyCodeLine{542   \}}
+\DoxyCodeLine{543 }
+\DoxyCodeLine{544 }
+\DoxyCodeLine{545 }
+\DoxyCodeLine{546 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{547 arma\_hot}
+\DoxyCodeLine{548 \textcolor{keyword}{inline}}
+\DoxyCodeLine{549 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{550 glue\_times::apply\_inplace\_plus(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_times>}}\& X, \textcolor{keyword}{const} sword sign)}
+\DoxyCodeLine{551   \{}
+\DoxyCodeLine{552   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{553   }
+\DoxyCodeLine{554   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type            eT;}
+\DoxyCodeLine{555   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result  T;}
+\DoxyCodeLine{556   }
+\DoxyCodeLine{557   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structis__outer__product}{is\_outer\_product<T1>::value}}) || (\mbox{\hyperlink{structhas__op__inv}{has\_op\_inv<T1>::value}}) || (\mbox{\hyperlink{structhas__op__inv}{has\_op\_inv<T2>::value}}) || (\mbox{\hyperlink{structhas__op__inv__sympd}{has\_op\_inv\_sympd<T1>::value}}) || (\mbox{\hyperlink{structhas__op__inv__sympd}{has\_op\_inv\_sympd<T2>::value}}) )}
+\DoxyCodeLine{558     \{}
+\DoxyCodeLine{559     \textcolor{comment}{// partial workaround for corner cases}}
+\DoxyCodeLine{560     }
+\DoxyCodeLine{561     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(X);}
+\DoxyCodeLine{562     }
+\DoxyCodeLine{563     \textcolor{keywordflow}{if}(sign > sword(0))  \{ out += tmp; \}  \textcolor{keywordflow}{else}  \{ out -\/= tmp; \}}
+\DoxyCodeLine{564     }
+\DoxyCodeLine{565     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{566     \}}
+\DoxyCodeLine{567   }
+\DoxyCodeLine{568   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T1>}} tmp1(X.A, out);}
+\DoxyCodeLine{569   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T2>}} tmp2(X.B, out);}
+\DoxyCodeLine{570   }
+\DoxyCodeLine{571   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T1>::stored\_type}} TA;}
+\DoxyCodeLine{572   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T2>::stored\_type}} TB;}
+\DoxyCodeLine{573   }
+\DoxyCodeLine{574   \textcolor{keyword}{const} TA\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{575   \textcolor{keyword}{const} TB\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{576   }
+\DoxyCodeLine{577   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_A = \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T1>::do\_trans}};}
+\DoxyCodeLine{578   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_B = \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T2>::do\_trans}};}
+\DoxyCodeLine{579   }
+\DoxyCodeLine{580   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha = \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap__check}{partial\_unwrap\_check<T2>::do\_times}} || (sign < sword(0));}
+\DoxyCodeLine{581   }
+\DoxyCodeLine{582   \textcolor{keyword}{const} eT       alpha = use\_alpha ? ( tmp1.get\_val() * tmp2.get\_val() * ( (sign > sword(0)) ? eT(1) : eT(-\/1) ) ) : eT(0);}
+\DoxyCodeLine{583   }
+\DoxyCodeLine{584   arma\_debug\_assert\_mul\_size(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, do\_trans\_A, do\_trans\_B, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{585   }
+\DoxyCodeLine{586   \textcolor{keyword}{const} uword result\_n\_rows = (do\_trans\_A == \textcolor{keyword}{false}) ? (TA::is\_row ? 1 : \mbox{\hyperlink{structA}{A}}.n\_rows) : (TA::is\_col ? 1 : \mbox{\hyperlink{structA}{A}}.n\_cols);}
+\DoxyCodeLine{587   \textcolor{keyword}{const} uword result\_n\_cols = (do\_trans\_B == \textcolor{keyword}{false}) ? (TB::is\_col ? 1 : \mbox{\hyperlink{structB}{B}}.n\_cols) : (TB::is\_row ? 1 : \mbox{\hyperlink{structB}{B}}.n\_rows);}
+\DoxyCodeLine{588   }
+\DoxyCodeLine{589   arma\_debug\_assert\_same\_size(out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, out.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}, result\_n\_rows, result\_n\_cols, ( (sign > sword(0)) ? \textcolor{stringliteral}{"{}addition"{}} : \textcolor{stringliteral}{"{}subtraction"{}} ) );}
+\DoxyCodeLine{590   }
+\DoxyCodeLine{591   \textcolor{keywordflow}{if}(out.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}} == 0)}
+\DoxyCodeLine{592     \{}
+\DoxyCodeLine{593     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{594     \}}
+\DoxyCodeLine{595   }
+\DoxyCodeLine{596   }
+\DoxyCodeLine{597   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{false}) \&\& (do\_trans\_B == \textcolor{keyword}{false}) \&\& (use\_alpha == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{598     \{}
+\DoxyCodeLine{599          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_rows == 1) || (TA::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<true,         false, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{600     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(  (\mbox{\hyperlink{structB}{B}}.n\_cols == 1) || (TB::is\_col)                     )  \{ \mbox{\hyperlink{classgemv}{gemv<false,        false, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{601     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<false, false, false, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha, eT(1)); \}}
+\DoxyCodeLine{602     \}}
+\DoxyCodeLine{603   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{604   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{false}) \&\& (do\_trans\_B == \textcolor{keyword}{false}) \&\& (use\_alpha == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{605     \{}
+\DoxyCodeLine{606          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_rows == 1) || (TA::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<true,         true, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{607     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(  (\mbox{\hyperlink{structB}{B}}.n\_cols == 1) || (TB::is\_col)                     )  \{ \mbox{\hyperlink{classgemv}{gemv<false,        true, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{608     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<false, false, true, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha, eT(1)); \}}
+\DoxyCodeLine{609     \}}
+\DoxyCodeLine{610   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{611   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (do\_trans\_B == \textcolor{keyword}{false}) \&\& (use\_alpha == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{612     \{}
+\DoxyCodeLine{613          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_cols == 1) || (TA::is\_col)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})  )  \{ \mbox{\hyperlink{classgemv}{gemv<true,        false, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{614     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(  (\mbox{\hyperlink{structB}{B}}.n\_cols == 1) || (TB::is\_col)                      )  \{ \mbox{\hyperlink{classgemv}{gemv<true,        false, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{615     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})  )  \{ \mbox{\hyperlink{classsyrk}{syrk<true,        false, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}},             alpha, eT(1)); \}}
+\DoxyCodeLine{616     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::yes}}) )  \{ \mbox{\hyperlink{classherk}{herk<true,        false, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}},              T(0),  T(1)); \}}
+\DoxyCodeLine{617     \textcolor{keywordflow}{else}                                                              \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<true, false, false, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha, eT(1)); \}}
+\DoxyCodeLine{618     \}}
+\DoxyCodeLine{619   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{620   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (do\_trans\_B == \textcolor{keyword}{false}) \&\& (use\_alpha == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{621     \{}
+\DoxyCodeLine{622          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_cols == 1) || (TA::is\_col)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<true,        true, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{623     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(  (\mbox{\hyperlink{structB}{B}}.n\_cols == 1) || (TB::is\_col)                     )  \{ \mbox{\hyperlink{classgemv}{gemv<true,        true, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{624     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classsyrk}{syrk<true,        true, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}},             alpha, eT(1)); \}}
+\DoxyCodeLine{625     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<true, false, true, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha, eT(1)); \}}
+\DoxyCodeLine{626     \}}
+\DoxyCodeLine{627   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{628   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{false}) \&\& (do\_trans\_B == \textcolor{keyword}{true}) \&\& (use\_alpha == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{629     \{}
+\DoxyCodeLine{630          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_rows == 1) || (TA::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})  )  \{ \mbox{\hyperlink{classgemv}{gemv<false,       false, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{631     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structB}{B}}.n\_rows == 1) || (TB::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})  )  \{ \mbox{\hyperlink{classgemv}{gemv<false,       false, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{632     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})  )  \{ \mbox{\hyperlink{classsyrk}{syrk<false,       false, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}},             alpha, eT(1)); \}}
+\DoxyCodeLine{633     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::yes}}) )  \{ \mbox{\hyperlink{classherk}{herk<false,       false, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}},              T(0),  T(1)); \}}
+\DoxyCodeLine{634     \textcolor{keywordflow}{else}                                                              \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<false, true, false, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha, eT(1)); \}}
+\DoxyCodeLine{635     \}}
+\DoxyCodeLine{636   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{637   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{false}) \&\& (do\_trans\_B == \textcolor{keyword}{true}) \&\& (use\_alpha == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{638     \{}
+\DoxyCodeLine{639          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_rows == 1) || (TA::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<false,       true, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{640     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structB}{B}}.n\_rows == 1) || (TB::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<false,       true, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{641     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classsyrk}{syrk<false,       true, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}},             alpha, eT(1)); \}}
+\DoxyCodeLine{642     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<false, true, true, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha, eT(1)); \}}
+\DoxyCodeLine{643     \}}
+\DoxyCodeLine{644   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{645   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (do\_trans\_B == \textcolor{keyword}{true}) \&\& (use\_alpha == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{646     \{}
+\DoxyCodeLine{647          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_cols == 1) || (TA::is\_col)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<false,      false, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{648     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structB}{B}}.n\_rows == 1) || (TB::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<true,       false, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{649     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<true, true, false, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha, eT(1)); \}}
+\DoxyCodeLine{650     \}}
+\DoxyCodeLine{651   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{652   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (do\_trans\_B == \textcolor{keyword}{true}) \&\& (use\_alpha == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{653     \{}
+\DoxyCodeLine{654          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_cols == 1) || (TA::is\_col)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<false,      true, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{655     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structB}{B}}.n\_rows == 1) || (TB::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<true,       true, true>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha, eT(1)); \}}
+\DoxyCodeLine{656     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<true, true, true, true>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha, eT(1)); \}}
+\DoxyCodeLine{657     \}}
+\DoxyCodeLine{658   \}}
+\DoxyCodeLine{659 }
+\DoxyCodeLine{660 }
+\DoxyCodeLine{661 }
+\DoxyCodeLine{662 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, const \textcolor{keywordtype}{bool} do\_trans\_A, const \textcolor{keywordtype}{bool} do\_trans\_B, \textcolor{keyword}{typename} TA, \textcolor{keyword}{typename} TB>}
+\DoxyCodeLine{663 arma\_inline}
+\DoxyCodeLine{664 uword}
+\DoxyCodeLine{665 glue\_times::mul\_storage\_cost(\textcolor{keyword}{const} TA\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} TB\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{666   \{}
+\DoxyCodeLine{667   \textcolor{keyword}{const} uword final\_A\_n\_rows = (do\_trans\_A == \textcolor{keyword}{false}) ? ( TA::is\_row ? 1 : \mbox{\hyperlink{structA}{A}}.n\_rows ) : ( TA::is\_col ? 1 : \mbox{\hyperlink{structA}{A}}.n\_cols );}
+\DoxyCodeLine{668   \textcolor{keyword}{const} uword final\_B\_n\_cols = (do\_trans\_B == \textcolor{keyword}{false}) ? ( TB::is\_col ? 1 : \mbox{\hyperlink{structB}{B}}.n\_cols ) : ( TB::is\_row ? 1 : \mbox{\hyperlink{structB}{B}}.n\_rows );}
+\DoxyCodeLine{669   }
+\DoxyCodeLine{670   \textcolor{keywordflow}{return} final\_A\_n\_rows * final\_B\_n\_cols;}
+\DoxyCodeLine{671   \}}
+\DoxyCodeLine{672 }
+\DoxyCodeLine{673 }
+\DoxyCodeLine{674 }
+\DoxyCodeLine{675 \textcolor{keyword}{template}}
+\DoxyCodeLine{676   <}
+\DoxyCodeLine{677   \textcolor{keyword}{typename}   eT,}
+\DoxyCodeLine{678   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_A,}
+\DoxyCodeLine{679   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_B,}
+\DoxyCodeLine{680   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha,}
+\DoxyCodeLine{681   \textcolor{keyword}{typename}   TA,}
+\DoxyCodeLine{682   \textcolor{keyword}{typename}   TB}
+\DoxyCodeLine{683   >}
+\DoxyCodeLine{684 arma\_hot}
+\DoxyCodeLine{685 \textcolor{keyword}{inline}}
+\DoxyCodeLine{686 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{687 glue\_times::apply}
+\DoxyCodeLine{688   (}
+\DoxyCodeLine{689         \mbox{\hyperlink{classMat}{Mat<eT>}}\& out,}
+\DoxyCodeLine{690   \textcolor{keyword}{const} TA\&      \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{691   \textcolor{keyword}{const} TB\&      \mbox{\hyperlink{structB}{B}},}
+\DoxyCodeLine{692   \textcolor{keyword}{const} eT       alpha}
+\DoxyCodeLine{693   )}
+\DoxyCodeLine{694   \{}
+\DoxyCodeLine{695   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{696   }
+\DoxyCodeLine{697   \textcolor{comment}{//arma\_debug\_assert\_mul\_size(A, B, do\_trans\_A, do\_trans\_B, "{}matrix multiplication"{});}}
+\DoxyCodeLine{698   arma\_debug\_assert\_trans\_mul\_size<do\_trans\_A, do\_trans\_B>(\mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols, \mbox{\hyperlink{structB}{B}}.n\_rows, \mbox{\hyperlink{structB}{B}}.n\_cols, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{699   }
+\DoxyCodeLine{700   \textcolor{keyword}{const} uword final\_n\_rows = (do\_trans\_A == \textcolor{keyword}{false}) ? (TA::is\_row ? 1 : \mbox{\hyperlink{structA}{A}}.n\_rows) : (TA::is\_col ? 1 : \mbox{\hyperlink{structA}{A}}.n\_cols);}
+\DoxyCodeLine{701   \textcolor{keyword}{const} uword final\_n\_cols = (do\_trans\_B == \textcolor{keyword}{false}) ? (TB::is\_col ? 1 : \mbox{\hyperlink{structB}{B}}.n\_cols) : (TB::is\_row ? 1 : \mbox{\hyperlink{structB}{B}}.n\_rows);}
+\DoxyCodeLine{702   }
+\DoxyCodeLine{703   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(final\_n\_rows, final\_n\_cols);}
+\DoxyCodeLine{704   }
+\DoxyCodeLine{705   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structA}{A}}.n\_elem == 0) || (\mbox{\hyperlink{structB}{B}}.n\_elem == 0) )}
+\DoxyCodeLine{706     \{}
+\DoxyCodeLine{707     out.zeros();}
+\DoxyCodeLine{708     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{709     \}}
+\DoxyCodeLine{710   }
+\DoxyCodeLine{711   }
+\DoxyCodeLine{712   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{false}) \&\& (do\_trans\_B == \textcolor{keyword}{false}) \&\& (use\_alpha == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{713     \{}
+\DoxyCodeLine{714          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_rows == 1) || (TA::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<true,         false, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr()); \}}
+\DoxyCodeLine{715     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(  (\mbox{\hyperlink{structB}{B}}.n\_cols == 1) || (TB::is\_col)                     )  \{ \mbox{\hyperlink{classgemv}{gemv<false,        false, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr()); \}}
+\DoxyCodeLine{716     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<false, false, false, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}         ); \}}
+\DoxyCodeLine{717     \}}
+\DoxyCodeLine{718   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{719   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{false}) \&\& (do\_trans\_B == \textcolor{keyword}{false}) \&\& (use\_alpha == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{720     \{}
+\DoxyCodeLine{721          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_rows == 1) || (TA::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<true,         true, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha); \}}
+\DoxyCodeLine{722     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(  (\mbox{\hyperlink{structB}{B}}.n\_cols == 1) || (TB::is\_col)                     )  \{ \mbox{\hyperlink{classgemv}{gemv<false,        true, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha); \}}
+\DoxyCodeLine{723     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<false, false, true, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha); \}}
+\DoxyCodeLine{724     \}}
+\DoxyCodeLine{725   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{726   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (do\_trans\_B == \textcolor{keyword}{false}) \&\& (use\_alpha == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{727     \{}
+\DoxyCodeLine{728          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_cols == 1) || (TA::is\_col)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})  )  \{ \mbox{\hyperlink{classgemv}{gemv<true,        false, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr()); \}}
+\DoxyCodeLine{729     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(  (\mbox{\hyperlink{structB}{B}}.n\_cols == 1) || (TB::is\_col)                      )  \{ \mbox{\hyperlink{classgemv}{gemv<true,        false, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr()); \}}
+\DoxyCodeLine{730     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})  )  \{ \mbox{\hyperlink{classsyrk}{syrk<true,        false, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}            ); \}}
+\DoxyCodeLine{731     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::yes}}) )  \{ \mbox{\hyperlink{classherk}{herk<true,        false, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}            ); \}}
+\DoxyCodeLine{732     \textcolor{keywordflow}{else}                                                              \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<true, false, false, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}         ); \}}
+\DoxyCodeLine{733     \}}
+\DoxyCodeLine{734   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{735   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (do\_trans\_B == \textcolor{keyword}{false}) \&\& (use\_alpha == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{736     \{}
+\DoxyCodeLine{737          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_cols == 1) || (TA::is\_col)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<true,        true, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha); \}}
+\DoxyCodeLine{738     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(  (\mbox{\hyperlink{structB}{B}}.n\_cols == 1) || (TB::is\_col)                     )  \{ \mbox{\hyperlink{classgemv}{gemv<true,        true, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha); \}}
+\DoxyCodeLine{739     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classsyrk}{syrk<true,        true, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}},             alpha); \}}
+\DoxyCodeLine{740     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<true, false, true, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha); \}}
+\DoxyCodeLine{741     \}}
+\DoxyCodeLine{742   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{743   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{false}) \&\& (do\_trans\_B == \textcolor{keyword}{true}) \&\& (use\_alpha == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{744     \{}
+\DoxyCodeLine{745          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_rows == 1) || (TA::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})  )  \{ \mbox{\hyperlink{classgemv}{gemv<false,       false, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr()); \}}
+\DoxyCodeLine{746     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structB}{B}}.n\_rows == 1) || (TB::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})  )  \{ \mbox{\hyperlink{classgemv}{gemv<false,       false, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr()); \}}
+\DoxyCodeLine{747     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})  )  \{ \mbox{\hyperlink{classsyrk}{syrk<false,       false, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}            ); \}}
+\DoxyCodeLine{748     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::yes}}) )  \{ \mbox{\hyperlink{classherk}{herk<false,       false, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}            ); \}}
+\DoxyCodeLine{749     \textcolor{keywordflow}{else}                                                              \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<false, true, false, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}         ); \}}
+\DoxyCodeLine{750     \}}
+\DoxyCodeLine{751   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{752   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{false}) \&\& (do\_trans\_B == \textcolor{keyword}{true}) \&\& (use\_alpha == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{753     \{}
+\DoxyCodeLine{754          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_rows == 1) || (TA::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ) \{ \mbox{\hyperlink{classgemv}{gemv<false,       true, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha); \}}
+\DoxyCodeLine{755     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structB}{B}}.n\_rows == 1) || (TB::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ) \{ \mbox{\hyperlink{classgemv}{gemv<false,       true, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha); \}}
+\DoxyCodeLine{756     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (void\_ptr(\&\mbox{\hyperlink{structA}{A}}) == void\_ptr(\&\mbox{\hyperlink{structB}{B}}))    \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) ) \{ \mbox{\hyperlink{classsyrk}{syrk<false,       true, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}},             alpha); \}}
+\DoxyCodeLine{757     \textcolor{keywordflow}{else}                                                            \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<false, true, true, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha); \}}
+\DoxyCodeLine{758     \}}
+\DoxyCodeLine{759   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{760   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (do\_trans\_B == \textcolor{keyword}{true}) \&\& (use\_alpha == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{761     \{}
+\DoxyCodeLine{762          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_cols == 1) || (TA::is\_col)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<false,      false, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr()); \}}
+\DoxyCodeLine{763     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structB}{B}}.n\_rows == 1) || (TB::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<true,       false, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr()); \}}
+\DoxyCodeLine{764     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<true, true, false, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}         ); \}}
+\DoxyCodeLine{765     \}}
+\DoxyCodeLine{766   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{767   \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (do\_trans\_B == \textcolor{keyword}{true}) \&\& (use\_alpha == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{768     \{}
+\DoxyCodeLine{769          \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structA}{A}}.n\_cols == 1) || (TA::is\_col)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<false,      true, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structB}{B}}, \mbox{\hyperlink{structA}{A}}.memptr(), alpha); \}}
+\DoxyCodeLine{770     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( ((\mbox{\hyperlink{structB}{B}}.n\_rows == 1) || (TB::is\_row)) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )  \{ \mbox{\hyperlink{classgemv}{gemv<true,       true, false>::apply}}(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}.memptr(), alpha); \}}
+\DoxyCodeLine{771     \textcolor{keywordflow}{else}                                                             \{ \mbox{\hyperlink{classgemm_a3b724124ae4233a25bcc4619742a44e8}{gemm<true, true, true, false>::apply}}(out,          \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}},          alpha); \}}
+\DoxyCodeLine{772     \}}
+\DoxyCodeLine{773   \}}
+\DoxyCodeLine{774 }
+\DoxyCodeLine{775 }
+\DoxyCodeLine{776 }
+\DoxyCodeLine{777 \textcolor{keyword}{template}}
+\DoxyCodeLine{778   <}
+\DoxyCodeLine{779   \textcolor{keyword}{typename}   eT,}
+\DoxyCodeLine{780   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_A,}
+\DoxyCodeLine{781   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_B,}
+\DoxyCodeLine{782   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_C,}
+\DoxyCodeLine{783   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha,}
+\DoxyCodeLine{784   \textcolor{keyword}{typename}   TA,}
+\DoxyCodeLine{785   \textcolor{keyword}{typename}   TB,}
+\DoxyCodeLine{786   \textcolor{keyword}{typename}   TC}
+\DoxyCodeLine{787   >}
+\DoxyCodeLine{788 arma\_hot}
+\DoxyCodeLine{789 \textcolor{keyword}{inline}}
+\DoxyCodeLine{790 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{791 glue\_times::apply}
+\DoxyCodeLine{792   (}
+\DoxyCodeLine{793         \mbox{\hyperlink{classMat}{Mat<eT>}}\& out,}
+\DoxyCodeLine{794   \textcolor{keyword}{const} TA\&      \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{795   \textcolor{keyword}{const} TB\&      \mbox{\hyperlink{structB}{B}},}
+\DoxyCodeLine{796   \textcolor{keyword}{const} TC\&      C,}
+\DoxyCodeLine{797   \textcolor{keyword}{const} eT       alpha}
+\DoxyCodeLine{798   )}
+\DoxyCodeLine{799   \{}
+\DoxyCodeLine{800   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{801   }
+\DoxyCodeLine{802   \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{803   }
+\DoxyCodeLine{804   \textcolor{keyword}{const} uword storage\_cost\_AB = glue\_times::mul\_storage\_cost<eT, do\_trans\_A, do\_trans\_B>(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{805   \textcolor{keyword}{const} uword storage\_cost\_BC = glue\_times::mul\_storage\_cost<eT, do\_trans\_B, do\_trans\_C>(\mbox{\hyperlink{structB}{B}}, C);}
+\DoxyCodeLine{806   }
+\DoxyCodeLine{807   \textcolor{keywordflow}{if}(storage\_cost\_AB <= storage\_cost\_BC)}
+\DoxyCodeLine{808     \{}
+\DoxyCodeLine{809     \textcolor{comment}{// out = (A*B)*C}}
+\DoxyCodeLine{810     }
+\DoxyCodeLine{811     glue\_times::apply<eT, do\_trans\_A, do\_trans\_B, use\_alpha>(tmp, \mbox{\hyperlink{structA}{A}},   \mbox{\hyperlink{structB}{B}}, alpha);}
+\DoxyCodeLine{812     glue\_times::apply<eT, false,      do\_trans\_C, false    >(out, tmp, C, eT(0));}
+\DoxyCodeLine{813     \}}
+\DoxyCodeLine{814   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{815     \{}
+\DoxyCodeLine{816     \textcolor{comment}{// out = A*(B*C)}}
+\DoxyCodeLine{817     }
+\DoxyCodeLine{818     glue\_times::apply<eT, do\_trans\_B, do\_trans\_C, use\_alpha>(tmp, \mbox{\hyperlink{structB}{B}}, C,   alpha);}
+\DoxyCodeLine{819     glue\_times::apply<eT, do\_trans\_A, false,      false    >(out, \mbox{\hyperlink{structA}{A}}, tmp, eT(0));}
+\DoxyCodeLine{820     \}}
+\DoxyCodeLine{821   \}}
+\DoxyCodeLine{822 }
+\DoxyCodeLine{823 }
+\DoxyCodeLine{824 }
+\DoxyCodeLine{825 \textcolor{keyword}{template}}
+\DoxyCodeLine{826   <}
+\DoxyCodeLine{827   \textcolor{keyword}{typename}   eT,}
+\DoxyCodeLine{828   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_A,}
+\DoxyCodeLine{829   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_B,}
+\DoxyCodeLine{830   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_C,}
+\DoxyCodeLine{831   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_D,}
+\DoxyCodeLine{832   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha,}
+\DoxyCodeLine{833   \textcolor{keyword}{typename}   TA,}
+\DoxyCodeLine{834   \textcolor{keyword}{typename}   TB,}
+\DoxyCodeLine{835   \textcolor{keyword}{typename}   TC,}
+\DoxyCodeLine{836   \textcolor{keyword}{typename}   TD}
+\DoxyCodeLine{837   >}
+\DoxyCodeLine{838 arma\_hot}
+\DoxyCodeLine{839 \textcolor{keyword}{inline}}
+\DoxyCodeLine{840 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{841 glue\_times::apply}
+\DoxyCodeLine{842   (}
+\DoxyCodeLine{843         \mbox{\hyperlink{classMat}{Mat<eT>}}\& out,}
+\DoxyCodeLine{844   \textcolor{keyword}{const} TA\&      \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{845   \textcolor{keyword}{const} TB\&      \mbox{\hyperlink{structB}{B}},}
+\DoxyCodeLine{846   \textcolor{keyword}{const} TC\&      C,}
+\DoxyCodeLine{847   \textcolor{keyword}{const} TD\&      D,}
+\DoxyCodeLine{848   \textcolor{keyword}{const} eT       alpha}
+\DoxyCodeLine{849   )}
+\DoxyCodeLine{850   \{}
+\DoxyCodeLine{851   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{852   }
+\DoxyCodeLine{853   \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{854   }
+\DoxyCodeLine{855   \textcolor{keyword}{const} uword storage\_cost\_AC = glue\_times::mul\_storage\_cost<eT, do\_trans\_A, do\_trans\_C>(\mbox{\hyperlink{structA}{A}}, C);}
+\DoxyCodeLine{856   \textcolor{keyword}{const} uword storage\_cost\_BD = glue\_times::mul\_storage\_cost<eT, do\_trans\_B, do\_trans\_D>(\mbox{\hyperlink{structB}{B}}, D);}
+\DoxyCodeLine{857   }
+\DoxyCodeLine{858   \textcolor{keywordflow}{if}(storage\_cost\_AC <= storage\_cost\_BD)}
+\DoxyCodeLine{859     \{}
+\DoxyCodeLine{860     \textcolor{comment}{// out = (A*B*C)*D}}
+\DoxyCodeLine{861     }
+\DoxyCodeLine{862     glue\_times::apply<eT, do\_trans\_A, do\_trans\_B, do\_trans\_C, use\_alpha>(tmp, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, C, alpha);}
+\DoxyCodeLine{863     }
+\DoxyCodeLine{864     glue\_times::apply<eT, false, do\_trans\_D, false>(out, tmp, D, eT(0));}
+\DoxyCodeLine{865     \}}
+\DoxyCodeLine{866   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{867     \{}
+\DoxyCodeLine{868     \textcolor{comment}{// out = A*(B*C*D)}}
+\DoxyCodeLine{869     }
+\DoxyCodeLine{870     glue\_times::apply<eT, do\_trans\_B, do\_trans\_C, do\_trans\_D, use\_alpha>(tmp, \mbox{\hyperlink{structB}{B}}, C, D, alpha);}
+\DoxyCodeLine{871     }
+\DoxyCodeLine{872     glue\_times::apply<eT, do\_trans\_A, false, false>(out, \mbox{\hyperlink{structA}{A}}, tmp, eT(0));}
+\DoxyCodeLine{873     \}}
+\DoxyCodeLine{874   \}}
+\DoxyCodeLine{875 }
+\DoxyCodeLine{876 }
+\DoxyCodeLine{877 }
+\DoxyCodeLine{878 \textcolor{comment}{//}}
+\DoxyCodeLine{879 \textcolor{comment}{// glue\_times\_diag}}
+\DoxyCodeLine{880 }
+\DoxyCodeLine{881 }
+\DoxyCodeLine{882 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{883 arma\_hot}
+\DoxyCodeLine{884 \textcolor{keyword}{inline}}
+\DoxyCodeLine{885 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{886 glue\_times\_diag::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_times\_diag>}}\& X)}
+\DoxyCodeLine{887   \{}
+\DoxyCodeLine{888   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{889   }
+\DoxyCodeLine{890   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{891   }
+\DoxyCodeLine{892   \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T1>}} S1(X.A);}
+\DoxyCodeLine{893   \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T2>}} S2(X.B);}
+\DoxyCodeLine{894   }
+\DoxyCodeLine{895   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} strip\_diagmat<T1>::stored\_type T1\_stripped;}
+\DoxyCodeLine{896   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} strip\_diagmat<T2>::stored\_type T2\_stripped;}
+\DoxyCodeLine{897   }
+\DoxyCodeLine{898   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T1>::do\_diagmat}} == \textcolor{keyword}{true}) \&\& (\mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T2>::do\_diagmat}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{899     \{}
+\DoxyCodeLine{900     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}glue\_times\_diag::apply(): diagmat(A) * B"{}});}
+\DoxyCodeLine{901     }
+\DoxyCodeLine{902     \textcolor{keyword}{const} \mbox{\hyperlink{classdiagmat__proxy__check}{diagmat\_proxy\_check<T1\_stripped>}} \mbox{\hyperlink{structA}{A}}(S1.M, out);}
+\DoxyCodeLine{903     }
+\DoxyCodeLine{904     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__check}{unwrap\_check<T2>}} tmp(X.B, out);}
+\DoxyCodeLine{905     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}}     = tmp.M;}
+\DoxyCodeLine{906     }
+\DoxyCodeLine{907     \textcolor{keyword}{const} uword A\_n\_rows = \mbox{\hyperlink{structA}{A}}.n\_rows;}
+\DoxyCodeLine{908     \textcolor{keyword}{const} uword A\_n\_cols = \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{909     \textcolor{keyword}{const} uword A\_length = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(A\_n\_rows, A\_n\_cols);}
+\DoxyCodeLine{910     }
+\DoxyCodeLine{911     \textcolor{keyword}{const} uword B\_n\_rows = \mbox{\hyperlink{structB}{B}}.n\_rows;}
+\DoxyCodeLine{912     \textcolor{keyword}{const} uword B\_n\_cols = \mbox{\hyperlink{structB}{B}}.n\_cols;}
+\DoxyCodeLine{913     }
+\DoxyCodeLine{914     arma\_debug\_assert\_mul\_size(A\_n\_rows, A\_n\_cols, B\_n\_rows, B\_n\_cols, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{915     }
+\DoxyCodeLine{916     out.zeros(A\_n\_rows, B\_n\_cols);}
+\DoxyCodeLine{917     }
+\DoxyCodeLine{918     \textcolor{keywordflow}{for}(uword col=0; col < B\_n\_cols; ++col)}
+\DoxyCodeLine{919       \{}
+\DoxyCodeLine{920             eT* out\_coldata = out.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(col);}
+\DoxyCodeLine{921       \textcolor{keyword}{const} eT*   B\_coldata =   \mbox{\hyperlink{structB}{B}}.colptr(col);}
+\DoxyCodeLine{922       }
+\DoxyCodeLine{923       \textcolor{keywordflow}{for}(uword i=0; i < A\_length; ++i)}
+\DoxyCodeLine{924         \{}
+\DoxyCodeLine{925         out\_coldata[i] = \mbox{\hyperlink{structA}{A}}[i] * B\_coldata[i];}
+\DoxyCodeLine{926         \}}
+\DoxyCodeLine{927       \}}
+\DoxyCodeLine{928     \}}
+\DoxyCodeLine{929   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{930   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T1>::do\_diagmat}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T2>::do\_diagmat}} == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{931     \{}
+\DoxyCodeLine{932     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}glue\_times\_diag::apply(): A * diagmat(B)"{}});}
+\DoxyCodeLine{933     }
+\DoxyCodeLine{934     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__check}{unwrap\_check<T1>}} tmp(X.A, out);}
+\DoxyCodeLine{935     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}     = tmp.M;}
+\DoxyCodeLine{936     }
+\DoxyCodeLine{937     \textcolor{keyword}{const} \mbox{\hyperlink{classdiagmat__proxy__check}{diagmat\_proxy\_check<T2\_stripped>}} \mbox{\hyperlink{structB}{B}}(S2.M, out);}
+\DoxyCodeLine{938     }
+\DoxyCodeLine{939     \textcolor{keyword}{const} uword A\_n\_rows = \mbox{\hyperlink{structA}{A}}.n\_rows;}
+\DoxyCodeLine{940     \textcolor{keyword}{const} uword A\_n\_cols = \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{941     }
+\DoxyCodeLine{942     \textcolor{keyword}{const} uword B\_n\_rows = \mbox{\hyperlink{structB}{B}}.n\_rows;}
+\DoxyCodeLine{943     \textcolor{keyword}{const} uword B\_n\_cols = \mbox{\hyperlink{structB}{B}}.n\_cols;}
+\DoxyCodeLine{944     \textcolor{keyword}{const} uword B\_length = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(B\_n\_rows, B\_n\_cols);}
+\DoxyCodeLine{945     }
+\DoxyCodeLine{946     arma\_debug\_assert\_mul\_size(A\_n\_rows, A\_n\_cols, B\_n\_rows, B\_n\_cols, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{947     }
+\DoxyCodeLine{948     out.zeros(A\_n\_rows, B\_n\_cols);}
+\DoxyCodeLine{949     }
+\DoxyCodeLine{950     \textcolor{keywordflow}{for}(uword col=0; col < B\_length; ++col)}
+\DoxyCodeLine{951       \{}
+\DoxyCodeLine{952       \textcolor{keyword}{const} eT  val = \mbox{\hyperlink{structB}{B}}[col];}
+\DoxyCodeLine{953       }
+\DoxyCodeLine{954             eT* out\_coldata = out.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(col);}
+\DoxyCodeLine{955       \textcolor{keyword}{const} eT*   A\_coldata =   \mbox{\hyperlink{structA}{A}}.colptr(col);}
+\DoxyCodeLine{956       }
+\DoxyCodeLine{957       \textcolor{keywordflow}{for}(uword i=0; i < A\_n\_rows; ++i)}
+\DoxyCodeLine{958         \{}
+\DoxyCodeLine{959         out\_coldata[i] = A\_coldata[i] * val;}
+\DoxyCodeLine{960         \}}
+\DoxyCodeLine{961       \}}
+\DoxyCodeLine{962     \}}
+\DoxyCodeLine{963   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{964   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T1>::do\_diagmat}} == \textcolor{keyword}{true}) \&\& (\mbox{\hyperlink{structstrip__diagmat}{strip\_diagmat<T2>::do\_diagmat}} == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{965     \{}
+\DoxyCodeLine{966     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}glue\_times\_diag::apply(): diagmat(A) * diagmat(B)"{}});}
+\DoxyCodeLine{967     }
+\DoxyCodeLine{968     \textcolor{keyword}{const} \mbox{\hyperlink{classdiagmat__proxy__check}{diagmat\_proxy\_check<T1\_stripped>}} \mbox{\hyperlink{structA}{A}}(S1.M, out);}
+\DoxyCodeLine{969     \textcolor{keyword}{const} \mbox{\hyperlink{classdiagmat__proxy__check}{diagmat\_proxy\_check<T2\_stripped>}} \mbox{\hyperlink{structB}{B}}(S2.M, out);}
+\DoxyCodeLine{970     }
+\DoxyCodeLine{971     arma\_debug\_assert\_mul\_size(\mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols, \mbox{\hyperlink{structB}{B}}.n\_rows, \mbox{\hyperlink{structB}{B}}.n\_cols, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{972     }
+\DoxyCodeLine{973     out.zeros(\mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structB}{B}}.n\_cols);}
+\DoxyCodeLine{974     }
+\DoxyCodeLine{975     \textcolor{keyword}{const} uword A\_length = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(\mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols);}
+\DoxyCodeLine{976     \textcolor{keyword}{const} uword B\_length = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(\mbox{\hyperlink{structB}{B}}.n\_rows, \mbox{\hyperlink{structB}{B}}.n\_cols);}
+\DoxyCodeLine{977     }
+\DoxyCodeLine{978     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(A\_length, B\_length);}
+\DoxyCodeLine{979     }
+\DoxyCodeLine{980     \textcolor{keywordflow}{for}(uword i=0; i < N; ++i)}
+\DoxyCodeLine{981       \{}
+\DoxyCodeLine{982       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = \mbox{\hyperlink{structA}{A}}[i] * \mbox{\hyperlink{structB}{B}}[i];}
+\DoxyCodeLine{983       \}}
+\DoxyCodeLine{984     \}}
+\DoxyCodeLine{985   \}}
+\DoxyCodeLine{986 }
+\DoxyCodeLine{987 }
+\DoxyCodeLine{988 }
+
+\end{DoxyCode}

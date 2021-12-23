@@ -1,0 +1,233 @@
+\hypertarget{op__shuffle__meat_8hpp_source}{}\doxysection{op\+\_\+shuffle\+\_\+meat.\+hpp}
+\label{op__shuffle__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_shuffle\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_shuffle\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{26 op\_shuffle::apply\_direct(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keywordflow}{if}(X.is\_empty()) \{ out.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(X); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{const} uword N = (dim == 0) ? X.n\_rows : X.n\_cols;}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{comment}{// see op\_sort\_index\_bones.hpp for the definition of arma\_sort\_index\_packet}}
+\DoxyCodeLine{36   \textcolor{comment}{// and the associated comparison functor}}
+\DoxyCodeLine{37   std::vector< \mbox{\hyperlink{structarma__sort__index__packet}{arma\_sort\_index\_packet<int>}} > packet\_vec(N);}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{40     \{}
+\DoxyCodeLine{41     packet\_vec[i].val   = int(\mbox{\hyperlink{structarma__rng_1_1randi}{arma\_rng::randi<int>}}());}
+\DoxyCodeLine{42     packet\_vec[i].index = i;}
+\DoxyCodeLine{43     \}}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \mbox{\hyperlink{structarma__sort__index__helper__ascend}{arma\_sort\_index\_helper\_ascend<int>}} comparator;}
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   std::sort( packet\_vec.begin(), packet\_vec.end(), comparator );}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_alias = (\&out == \&X);}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   \textcolor{keywordflow}{if}(X.is\_vec() == \textcolor{keyword}{false})}
+\DoxyCodeLine{52     \{}
+\DoxyCodeLine{53     \textcolor{keywordflow}{if}(is\_alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{54       \{}
+\DoxyCodeLine{55       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_shuffle::apply(): matrix"{}});}
+\DoxyCodeLine{56       }
+\DoxyCodeLine{57       out.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(X);}
+\DoxyCodeLine{58       }
+\DoxyCodeLine{59       \textcolor{keywordflow}{if}(dim == 0)}
+\DoxyCodeLine{60         \{}
+\DoxyCodeLine{61         \textcolor{keywordflow}{for}(uword i=0; i<N; ++i) \{ out.\mbox{\hyperlink{group__Mat_ga2f654dd9a790e8fd6b07b026adbc0bd7}{row}}(i) = X.row(packet\_vec[i].index); \}}
+\DoxyCodeLine{62         \}}
+\DoxyCodeLine{63       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{64         \{}
+\DoxyCodeLine{65         \textcolor{keywordflow}{for}(uword i=0; i<N; ++i) \{ out.\mbox{\hyperlink{group__Mat_gab68ba7bbceb5544bbd0f6f00dfe6b328}{col}}(i) = X.col(packet\_vec[i].index); \}}
+\DoxyCodeLine{66         \}}
+\DoxyCodeLine{67       \}}
+\DoxyCodeLine{68     \textcolor{keywordflow}{else}  \textcolor{comment}{// in-\/place shuffle}}
+\DoxyCodeLine{69       \{}
+\DoxyCodeLine{70       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_shuffle::apply(): in-\/place matrix"{}});}
+\DoxyCodeLine{71       }
+\DoxyCodeLine{72       \textcolor{comment}{// reuse the val member variable of packet\_vec}}
+\DoxyCodeLine{73       \textcolor{comment}{// to indicate whether a particular row or column}}
+\DoxyCodeLine{74       \textcolor{comment}{// has already been shuffled}}
+\DoxyCodeLine{75       }
+\DoxyCodeLine{76       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{77         \{}
+\DoxyCodeLine{78         packet\_vec[i].val = 0;}
+\DoxyCodeLine{79         \}}
+\DoxyCodeLine{80         }
+\DoxyCodeLine{81       \textcolor{keywordflow}{if}(dim == 0)}
+\DoxyCodeLine{82         \{}
+\DoxyCodeLine{83         \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{84           \{}
+\DoxyCodeLine{85           \textcolor{keywordflow}{if}(packet\_vec[i].val == 0)}
+\DoxyCodeLine{86             \{}
+\DoxyCodeLine{87             \textcolor{keyword}{const} uword j = packet\_vec[i].index;}
+\DoxyCodeLine{88             }
+\DoxyCodeLine{89             out.swap\_rows(i, j);}
+\DoxyCodeLine{90             }
+\DoxyCodeLine{91             packet\_vec[j].val = 1;}
+\DoxyCodeLine{92             \}}
+\DoxyCodeLine{93           \}}
+\DoxyCodeLine{94         \}}
+\DoxyCodeLine{95       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{96         \{}
+\DoxyCodeLine{97         \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{98           \{}
+\DoxyCodeLine{99           \textcolor{keywordflow}{if}(packet\_vec[i].val == 0)}
+\DoxyCodeLine{100             \{}
+\DoxyCodeLine{101             \textcolor{keyword}{const} uword j = packet\_vec[i].index;}
+\DoxyCodeLine{102             }
+\DoxyCodeLine{103             out.swap\_cols(i, j);}
+\DoxyCodeLine{104             }
+\DoxyCodeLine{105             packet\_vec[j].val = 1;}
+\DoxyCodeLine{106             \}}
+\DoxyCodeLine{107           \}}
+\DoxyCodeLine{108         \}}
+\DoxyCodeLine{109       \}}
+\DoxyCodeLine{110     \}}
+\DoxyCodeLine{111   \textcolor{keywordflow}{else}  \textcolor{comment}{// we're dealing with a vector}}
+\DoxyCodeLine{112     \{}
+\DoxyCodeLine{113     \textcolor{keywordflow}{if}(is\_alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{114       \{}
+\DoxyCodeLine{115       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_shuffle::apply(): vector"{}});}
+\DoxyCodeLine{116       }
+\DoxyCodeLine{117       out.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(X);}
+\DoxyCodeLine{118       }
+\DoxyCodeLine{119       \textcolor{keywordflow}{if}(dim == 0)}
+\DoxyCodeLine{120         \{}
+\DoxyCodeLine{121         \textcolor{keywordflow}{if}(X.n\_rows > 1)  \textcolor{comment}{// i.e. column vector}}
+\DoxyCodeLine{122           \{}
+\DoxyCodeLine{123           \textcolor{keywordflow}{for}(uword i=0; i<N; ++i) \{ out[i] = X[ packet\_vec[i].index ]; \}}
+\DoxyCodeLine{124           \}}
+\DoxyCodeLine{125         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{126           \{}
+\DoxyCodeLine{127           out = X;}
+\DoxyCodeLine{128           \}}
+\DoxyCodeLine{129         \}}
+\DoxyCodeLine{130       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{131         \{}
+\DoxyCodeLine{132         \textcolor{keywordflow}{if}(X.n\_cols > 1)  \textcolor{comment}{// i.e. row vector}}
+\DoxyCodeLine{133           \{}
+\DoxyCodeLine{134           \textcolor{keywordflow}{for}(uword i=0; i<N; ++i) \{ out[i] = X[ packet\_vec[i].index ]; \}}
+\DoxyCodeLine{135           \}}
+\DoxyCodeLine{136         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{137           \{}
+\DoxyCodeLine{138           out = X;}
+\DoxyCodeLine{139           \}}
+\DoxyCodeLine{140         \}}
+\DoxyCodeLine{141       \}}
+\DoxyCodeLine{142     \textcolor{keywordflow}{else}  \textcolor{comment}{// in-\/place shuffle}}
+\DoxyCodeLine{143       \{}
+\DoxyCodeLine{144       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_shuffle::apply(): in-\/place vector"{}});}
+\DoxyCodeLine{145       }
+\DoxyCodeLine{146       \textcolor{comment}{// reuse the val member variable of packet\_vec}}
+\DoxyCodeLine{147       \textcolor{comment}{// to indicate whether a particular row or column}}
+\DoxyCodeLine{148       \textcolor{comment}{// has already been shuffled}}
+\DoxyCodeLine{149       }
+\DoxyCodeLine{150       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{151         \{}
+\DoxyCodeLine{152         packet\_vec[i].val = 0;}
+\DoxyCodeLine{153         \}}
+\DoxyCodeLine{154         }
+\DoxyCodeLine{155       \textcolor{keywordflow}{if}(dim == 0)}
+\DoxyCodeLine{156         \{}
+\DoxyCodeLine{157         \textcolor{keywordflow}{if}(X.n\_rows > 1)  \textcolor{comment}{// i.e. column vector}}
+\DoxyCodeLine{158           \{}
+\DoxyCodeLine{159           \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{160             \{}
+\DoxyCodeLine{161             \textcolor{keywordflow}{if}(packet\_vec[i].val == 0)}
+\DoxyCodeLine{162               \{}
+\DoxyCodeLine{163               \textcolor{keyword}{const} uword j = packet\_vec[i].index;}
+\DoxyCodeLine{164               }
+\DoxyCodeLine{165               std::swap(out[i], out[j]);}
+\DoxyCodeLine{166               }
+\DoxyCodeLine{167               packet\_vec[j].val = 1;}
+\DoxyCodeLine{168               \}}
+\DoxyCodeLine{169             \}}
+\DoxyCodeLine{170           \}}
+\DoxyCodeLine{171         \}}
+\DoxyCodeLine{172       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{173         \{}
+\DoxyCodeLine{174         \textcolor{keywordflow}{if}(X.n\_cols > 1)  \textcolor{comment}{// i.e. row vector}}
+\DoxyCodeLine{175           \{}
+\DoxyCodeLine{176           \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{177             \{}
+\DoxyCodeLine{178             \textcolor{keywordflow}{if}(packet\_vec[i].val == 0)}
+\DoxyCodeLine{179               \{}
+\DoxyCodeLine{180               \textcolor{keyword}{const} uword j = packet\_vec[i].index;}
+\DoxyCodeLine{181               }
+\DoxyCodeLine{182               std::swap(out[i], out[j]);}
+\DoxyCodeLine{183               }
+\DoxyCodeLine{184               packet\_vec[j].val = 1;}
+\DoxyCodeLine{185               \}}
+\DoxyCodeLine{186             \}}
+\DoxyCodeLine{187           \}}
+\DoxyCodeLine{188         \}}
+\DoxyCodeLine{189       \}}
+\DoxyCodeLine{190     \}}
+\DoxyCodeLine{191   }
+\DoxyCodeLine{192   \}}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{197 \textcolor{keyword}{inline}}
+\DoxyCodeLine{198 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{199 op\_shuffle::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_shuffle>}}\& in)}
+\DoxyCodeLine{200   \{}
+\DoxyCodeLine{201   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{202   }
+\DoxyCodeLine{203   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}} U(in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}});}
+\DoxyCodeLine{204   }
+\DoxyCodeLine{205   \textcolor{keyword}{const} uword dim = in.\mbox{\hyperlink{classOp_a197cb9330fe0d72c976d6223514c4bd6}{aux\_uword\_a}};}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   arma\_debug\_check( (dim > 1), \textcolor{stringliteral}{"{}shuffle(): parameter 'dim' must be 0 or 1"{}} );}
+\DoxyCodeLine{208   }
+\DoxyCodeLine{209   op\_shuffle::apply\_direct(out, U.M, dim);}
+\DoxyCodeLine{210   \}}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{215 \textcolor{keyword}{inline}}
+\DoxyCodeLine{216 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{217 op\_shuffle\_vec::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_shuffle\_vec>}}\& in)}
+\DoxyCodeLine{218   \{}
+\DoxyCodeLine{219   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{220   }
+\DoxyCodeLine{221   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}} U(in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}});}
+\DoxyCodeLine{222   }
+\DoxyCodeLine{223   \textcolor{keyword}{const} uword dim = (T1::is\_xvec) ? uword(U.M.is\_rowvec() ? 1 : 0) : uword((T1::is\_row) ? 1 : 0);}
+\DoxyCodeLine{224   }
+\DoxyCodeLine{225   op\_shuffle::apply\_direct(out, U.M, dim);}
+\DoxyCodeLine{226   \}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 }
+
+\end{DoxyCode}

@@ -1,0 +1,716 @@
+\hypertarget{op__mean__meat_8hpp_source}{}\doxysection{op\+\_\+mean\+\_\+meat.\+hpp}
+\label{op__mean__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_mean\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_mean\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 op\_mean::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_mean>}}\& in)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keyword}{const} uword dim = in.\mbox{\hyperlink{classOp_a197cb9330fe0d72c976d6223514c4bd6}{aux\_uword\_a}};}
+\DoxyCodeLine{32   arma\_debug\_check( (dim > 1), \textcolor{stringliteral}{"{}mean(): parameter 'dim' must be 0 or 1"{}} );}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}});}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keywordflow}{if}(P.is\_alias(out) == \textcolor{keyword}{false})}
+\DoxyCodeLine{37     \{}
+\DoxyCodeLine{38     op\_mean::apply\_noalias(out, P, dim);}
+\DoxyCodeLine{39     \}}
+\DoxyCodeLine{40   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{41     \{}
+\DoxyCodeLine{42     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{43     }
+\DoxyCodeLine{44     op\_mean::apply\_noalias(tmp, P, dim);}
+\DoxyCodeLine{45     }
+\DoxyCodeLine{46     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{47     \}}
+\DoxyCodeLine{48   \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{53 \textcolor{keyword}{inline}}
+\DoxyCodeLine{54 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{55 op\_mean::apply\_noalias(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{56   \{}
+\DoxyCodeLine{57   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Mat}{is\_Mat}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value)}
+\DoxyCodeLine{60     \{}
+\DoxyCodeLine{61     op\_mean::apply\_noalias\_unwrap(out, P, dim);}
+\DoxyCodeLine{62     \}}
+\DoxyCodeLine{63   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{64     \{}
+\DoxyCodeLine{65     op\_mean::apply\_noalias\_proxy(out, P, dim);}
+\DoxyCodeLine{66     \}}
+\DoxyCodeLine{67   \}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{72 \textcolor{keyword}{inline}}
+\DoxyCodeLine{73 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{74 op\_mean::apply\_noalias\_unwrap(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{75   \{}
+\DoxyCodeLine{76   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type            eT;}
+\DoxyCodeLine{79   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result  T;}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}} P\_stored\_type;}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<P\_stored\_type>}} tmp(P.Q);}
+\DoxyCodeLine{84   }
+\DoxyCodeLine{85   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structunwrap}{unwrap<P\_stored\_type>::stored\_type}}\& X = tmp.M;}
+\DoxyCodeLine{86   }
+\DoxyCodeLine{87   \textcolor{keyword}{const} uword X\_n\_rows = X.n\_rows;}
+\DoxyCodeLine{88   \textcolor{keyword}{const} uword X\_n\_cols = X.n\_cols;}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90   \textcolor{keywordflow}{if}(dim == 0)}
+\DoxyCodeLine{91     \{}
+\DoxyCodeLine{92     out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}((X\_n\_rows > 0) ? 1 : 0, X\_n\_cols);}
+\DoxyCodeLine{93     }
+\DoxyCodeLine{94     \textcolor{keywordflow}{if}(X\_n\_rows == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{95     }
+\DoxyCodeLine{96     eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{97     }
+\DoxyCodeLine{98     \textcolor{keywordflow}{for}(uword col=0; col < X\_n\_cols; ++col)}
+\DoxyCodeLine{99       \{}
+\DoxyCodeLine{100       out\_mem[col] = op\_mean::direct\_mean( X.colptr(col), X\_n\_rows );}
+\DoxyCodeLine{101       \}}
+\DoxyCodeLine{102     \}}
+\DoxyCodeLine{103   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{104   \textcolor{keywordflow}{if}(dim == 1)}
+\DoxyCodeLine{105     \{}
+\DoxyCodeLine{106     out.zeros(X\_n\_rows, (X\_n\_cols > 0) ? 1 : 0);}
+\DoxyCodeLine{107     }
+\DoxyCodeLine{108     \textcolor{keywordflow}{if}(X\_n\_cols == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{109     }
+\DoxyCodeLine{110     eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{111     }
+\DoxyCodeLine{112     \textcolor{keywordflow}{for}(uword col=0; col < X\_n\_cols; ++col)}
+\DoxyCodeLine{113       \{}
+\DoxyCodeLine{114       \textcolor{keyword}{const} eT* col\_mem = X.colptr(col);}
+\DoxyCodeLine{115       }
+\DoxyCodeLine{116       \textcolor{keywordflow}{for}(uword row=0; row < X\_n\_rows; ++row)}
+\DoxyCodeLine{117         \{}
+\DoxyCodeLine{118         out\_mem[row] += col\_mem[row];}
+\DoxyCodeLine{119         \}}
+\DoxyCodeLine{120       \}}
+\DoxyCodeLine{121     }
+\DoxyCodeLine{122     out /= T(X\_n\_cols);}
+\DoxyCodeLine{123     }
+\DoxyCodeLine{124     \textcolor{keywordflow}{for}(uword row=0; row < X\_n\_rows; ++row)}
+\DoxyCodeLine{125       \{}
+\DoxyCodeLine{126       \textcolor{keywordflow}{if}(arma\_isfinite(out\_mem[row]) == \textcolor{keyword}{false})}
+\DoxyCodeLine{127         \{}
+\DoxyCodeLine{128         out\_mem[row] = op\_mean::direct\_mean\_robust( X, row );}
+\DoxyCodeLine{129         \}}
+\DoxyCodeLine{130       \}}
+\DoxyCodeLine{131     \}}
+\DoxyCodeLine{132   \}}
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{137 arma\_hot}
+\DoxyCodeLine{138 \textcolor{keyword}{inline}}
+\DoxyCodeLine{139 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{140 op\_mean::apply\_noalias\_proxy(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{141   \{}
+\DoxyCodeLine{142   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{143   }
+\DoxyCodeLine{144   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type            eT;}
+\DoxyCodeLine{145   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result  T;}
+\DoxyCodeLine{146   }
+\DoxyCodeLine{147   \textcolor{keyword}{const} uword P\_n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{148   \textcolor{keyword}{const} uword P\_n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{149   }
+\DoxyCodeLine{150   \textcolor{keywordflow}{if}(dim == 0)}
+\DoxyCodeLine{151     \{}
+\DoxyCodeLine{152     out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}((P\_n\_rows > 0) ? 1 : 0, P\_n\_cols);}
+\DoxyCodeLine{153     }
+\DoxyCodeLine{154     \textcolor{keywordflow}{if}(P\_n\_rows == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{155     }
+\DoxyCodeLine{156     eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{157     }
+\DoxyCodeLine{158     \textcolor{keywordflow}{for}(uword col=0; col < P\_n\_cols; ++col)}
+\DoxyCodeLine{159       \{}
+\DoxyCodeLine{160       eT val1 = eT(0);}
+\DoxyCodeLine{161       eT val2 = eT(0);}
+\DoxyCodeLine{162       }
+\DoxyCodeLine{163       uword i,j;}
+\DoxyCodeLine{164       \textcolor{keywordflow}{for}(i=0, j=1; j < P\_n\_rows; i+=2, j+=2)}
+\DoxyCodeLine{165         \{}
+\DoxyCodeLine{166         val1 += P.at(i,col);}
+\DoxyCodeLine{167         val2 += P.at(j,col);}
+\DoxyCodeLine{168         \}}
+\DoxyCodeLine{169       }
+\DoxyCodeLine{170       \textcolor{keywordflow}{if}(i < P\_n\_rows)}
+\DoxyCodeLine{171         \{}
+\DoxyCodeLine{172         val1 += P.at(i,col);}
+\DoxyCodeLine{173         \}}
+\DoxyCodeLine{174       }
+\DoxyCodeLine{175       out\_mem[col] = (val1 + val2) / T(P\_n\_rows);}
+\DoxyCodeLine{176       \}}
+\DoxyCodeLine{177     \}}
+\DoxyCodeLine{178   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{179   \textcolor{keywordflow}{if}(dim == 1)}
+\DoxyCodeLine{180     \{}
+\DoxyCodeLine{181     out.zeros(P\_n\_rows, (P\_n\_cols > 0) ? 1 : 0);}
+\DoxyCodeLine{182     }
+\DoxyCodeLine{183     \textcolor{keywordflow}{if}(P\_n\_cols == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{184     }
+\DoxyCodeLine{185     eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{186     }
+\DoxyCodeLine{187     \textcolor{keywordflow}{for}(uword col=0; col < P\_n\_cols; ++col)}
+\DoxyCodeLine{188     \textcolor{keywordflow}{for}(uword row=0; row < P\_n\_rows; ++row)}
+\DoxyCodeLine{189       \{}
+\DoxyCodeLine{190       out\_mem[row] += P.at(row,col);}
+\DoxyCodeLine{191       \}}
+\DoxyCodeLine{192     }
+\DoxyCodeLine{193     out /= T(P\_n\_cols);}
+\DoxyCodeLine{194     \}}
+\DoxyCodeLine{195   }
+\DoxyCodeLine{196   \textcolor{keywordflow}{if}(out.\mbox{\hyperlink{group__Mat_gad78d4808815d1521085b8eeee1c2aab4}{is\_finite}}() == \textcolor{keyword}{false})}
+\DoxyCodeLine{197     \{}
+\DoxyCodeLine{198     \textcolor{comment}{// TODO: replace with dedicated handling to avoid unwrapping}}
+\DoxyCodeLine{199     op\_mean::apply\_noalias\_unwrap(out, P, dim);}
+\DoxyCodeLine{200     \}}
+\DoxyCodeLine{201   \}}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205 \textcolor{comment}{//}}
+\DoxyCodeLine{206 \textcolor{comment}{// cubes}}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{211 \textcolor{keyword}{inline}}
+\DoxyCodeLine{212 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{213 op\_mean::apply(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1,op\_mean>}}\& in)}
+\DoxyCodeLine{214   \{}
+\DoxyCodeLine{215   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{216   }
+\DoxyCodeLine{217   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{218   }
+\DoxyCodeLine{219   \textcolor{keyword}{const} uword dim = in.\mbox{\hyperlink{classOpCube_a13c280aa2895e181d6e5f1f0a3b2ad02}{aux\_uword\_a}};}
+\DoxyCodeLine{220   arma\_debug\_check( (dim > 2), \textcolor{stringliteral}{"{}mean(): parameter 'dim' must be 0 or 1 or 2"{}} );}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} P(in.\mbox{\hyperlink{classOpCube_ab2037da2bd74604392dc38d382669e2a}{m}});}
+\DoxyCodeLine{223   }
+\DoxyCodeLine{224   \textcolor{keywordflow}{if}(P.is\_alias(out) == \textcolor{keyword}{false})}
+\DoxyCodeLine{225     \{}
+\DoxyCodeLine{226     op\_mean::apply\_noalias(out, P, dim);}
+\DoxyCodeLine{227     \}}
+\DoxyCodeLine{228   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{229     \{}
+\DoxyCodeLine{230     \mbox{\hyperlink{classCube}{Cube<eT>}} tmp;}
+\DoxyCodeLine{231     }
+\DoxyCodeLine{232     op\_mean::apply\_noalias(tmp, P, dim);}
+\DoxyCodeLine{233     }
+\DoxyCodeLine{234     out.\mbox{\hyperlink{group__Cube_ga70006d5a49f67d35d4ae10cb6c5a681f}{steal\_mem}}(tmp);}
+\DoxyCodeLine{235     \}}
+\DoxyCodeLine{236   \}}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 }
+\DoxyCodeLine{240 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{241 \textcolor{keyword}{inline}}
+\DoxyCodeLine{242 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{243 op\_mean::apply\_noalias(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{244   \{}
+\DoxyCodeLine{245   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{246   }
+\DoxyCodeLine{247   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Cube}{is\_Cube}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::stored\_type}}>::value)}
+\DoxyCodeLine{248     \{}
+\DoxyCodeLine{249     op\_mean::apply\_noalias\_unwrap(out, P, dim);}
+\DoxyCodeLine{250     \}}
+\DoxyCodeLine{251   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{252     \{}
+\DoxyCodeLine{253     op\_mean::apply\_noalias\_proxy(out, P, dim);}
+\DoxyCodeLine{254     \}}
+\DoxyCodeLine{255   \}}
+\DoxyCodeLine{256 }
+\DoxyCodeLine{257 }
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{260 \textcolor{keyword}{inline}}
+\DoxyCodeLine{261 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{262 op\_mean::apply\_noalias\_unwrap(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{263   \{}
+\DoxyCodeLine{264   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{265   }
+\DoxyCodeLine{266   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type            eT;}
+\DoxyCodeLine{267   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result  T;}
+\DoxyCodeLine{268   }
+\DoxyCodeLine{269   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::stored\_type}} P\_stored\_type;}
+\DoxyCodeLine{270   }
+\DoxyCodeLine{271   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<P\_stored\_type>}} U(P.Q);}
+\DoxyCodeLine{272   }
+\DoxyCodeLine{273   \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& X = U.M;}
+\DoxyCodeLine{274   }
+\DoxyCodeLine{275   \textcolor{keyword}{const} uword X\_n\_rows   = X.n\_rows;}
+\DoxyCodeLine{276   \textcolor{keyword}{const} uword X\_n\_cols   = X.n\_cols;}
+\DoxyCodeLine{277   \textcolor{keyword}{const} uword X\_n\_slices = X.n\_slices;}
+\DoxyCodeLine{278   }
+\DoxyCodeLine{279   \textcolor{keywordflow}{if}(dim == 0)}
+\DoxyCodeLine{280     \{}
+\DoxyCodeLine{281     out.\mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}((X\_n\_rows > 0) ? 1 : 0, X\_n\_cols, X\_n\_slices);}
+\DoxyCodeLine{282     }
+\DoxyCodeLine{283     \textcolor{keywordflow}{if}(X\_n\_rows == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{284     }
+\DoxyCodeLine{285     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < X\_n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{286       \{}
+\DoxyCodeLine{287       eT* out\_mem = out.\mbox{\hyperlink{group__Cube_gaa880766c421f4a9f006662c7fd96850e}{slice\_memptr}}(\mbox{\hyperlink{classslice}{slice}});}
+\DoxyCodeLine{288       }
+\DoxyCodeLine{289       \textcolor{keywordflow}{for}(uword col=0; col < X\_n\_cols; ++col)}
+\DoxyCodeLine{290         \{}
+\DoxyCodeLine{291         out\_mem[col] = op\_mean::direct\_mean( X.slice\_colptr(\mbox{\hyperlink{classslice}{slice}},col), X\_n\_rows );}
+\DoxyCodeLine{292         \}}
+\DoxyCodeLine{293       \}}
+\DoxyCodeLine{294     \}}
+\DoxyCodeLine{295   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{296   \textcolor{keywordflow}{if}(dim == 1)}
+\DoxyCodeLine{297     \{}
+\DoxyCodeLine{298     out.zeros(X\_n\_rows, (X\_n\_cols > 0) ? 1 : 0, X\_n\_slices);}
+\DoxyCodeLine{299     }
+\DoxyCodeLine{300     \textcolor{keywordflow}{if}(X\_n\_cols == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{301     }
+\DoxyCodeLine{302     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < X\_n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{303       \{}
+\DoxyCodeLine{304       eT* out\_mem = out.\mbox{\hyperlink{group__Cube_gaa880766c421f4a9f006662c7fd96850e}{slice\_memptr}}(\mbox{\hyperlink{classslice}{slice}});}
+\DoxyCodeLine{305       }
+\DoxyCodeLine{306       \textcolor{keywordflow}{for}(uword col=0; col < X\_n\_cols; ++col)}
+\DoxyCodeLine{307         \{}
+\DoxyCodeLine{308         \textcolor{keyword}{const} eT* col\_mem = X.slice\_colptr(\mbox{\hyperlink{classslice}{slice}},col);}
+\DoxyCodeLine{309         }
+\DoxyCodeLine{310         \textcolor{keywordflow}{for}(uword row=0; row < X\_n\_rows; ++row)}
+\DoxyCodeLine{311           \{}
+\DoxyCodeLine{312           out\_mem[row] += col\_mem[row];}
+\DoxyCodeLine{313           \}}
+\DoxyCodeLine{314         \}}
+\DoxyCodeLine{315       }
+\DoxyCodeLine{316       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(\textcolor{charliteral}{'j'}, X.slice\_memptr(\mbox{\hyperlink{classslice}{slice}}), X\_n\_rows, X\_n\_cols);}
+\DoxyCodeLine{317       }
+\DoxyCodeLine{318       \textcolor{keywordflow}{for}(uword row=0; row < X\_n\_rows; ++row)}
+\DoxyCodeLine{319         \{}
+\DoxyCodeLine{320         out\_mem[row] /= T(X\_n\_cols);}
+\DoxyCodeLine{321         }
+\DoxyCodeLine{322         \textcolor{keywordflow}{if}(arma\_isfinite(out\_mem[row]) == \textcolor{keyword}{false})}
+\DoxyCodeLine{323           \{}
+\DoxyCodeLine{324           out\_mem[row] = op\_mean::direct\_mean\_robust( tmp, row );}
+\DoxyCodeLine{325           \}}
+\DoxyCodeLine{326         \}}
+\DoxyCodeLine{327       \}}
+\DoxyCodeLine{328     \}}
+\DoxyCodeLine{329   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{330   \textcolor{keywordflow}{if}(dim == 2)}
+\DoxyCodeLine{331     \{}
+\DoxyCodeLine{332     out.zeros(X\_n\_rows, X\_n\_cols, (X\_n\_slices > 0) ? 1 : 0);}
+\DoxyCodeLine{333     }
+\DoxyCodeLine{334     \textcolor{keywordflow}{if}(X\_n\_slices == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{335     }
+\DoxyCodeLine{336     eT* out\_mem = out.\mbox{\hyperlink{group__Cube_ga5b00237224a8e3bfb05728de7c962f85}{memptr}}();}
+\DoxyCodeLine{337     }
+\DoxyCodeLine{338     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < X\_n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{339       \{}
+\DoxyCodeLine{340       arrayops::inplace\_plus(out\_mem, X.slice\_memptr(\mbox{\hyperlink{classslice}{slice}}), X.n\_elem\_slice );}
+\DoxyCodeLine{341       \}}
+\DoxyCodeLine{342     }
+\DoxyCodeLine{343     out /= T(X\_n\_slices);}
+\DoxyCodeLine{344     }
+\DoxyCodeLine{345     \mbox{\hyperlink{classpodarray}{podarray<eT>}} tmp(X\_n\_slices);}
+\DoxyCodeLine{346       }
+\DoxyCodeLine{347     \textcolor{keywordflow}{for}(uword col=0; col < X\_n\_cols; ++col)}
+\DoxyCodeLine{348     \textcolor{keywordflow}{for}(uword row=0; row < X\_n\_rows; ++row)}
+\DoxyCodeLine{349       \{}
+\DoxyCodeLine{350       \textcolor{keywordflow}{if}(arma\_isfinite(out.\mbox{\hyperlink{group__Cube_ga5cac3c7cf293f31f8e4cefa15fabb54b}{at}}(row,col,0)) == \textcolor{keyword}{false})}
+\DoxyCodeLine{351         \{}
+\DoxyCodeLine{352         \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < X\_n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{353           \{}
+\DoxyCodeLine{354           tmp[\mbox{\hyperlink{classslice}{slice}}] = X.at(row,col,\mbox{\hyperlink{classslice}{slice}});}
+\DoxyCodeLine{355           \}}
+\DoxyCodeLine{356         }
+\DoxyCodeLine{357         out.\mbox{\hyperlink{group__Cube_ga5cac3c7cf293f31f8e4cefa15fabb54b}{at}}(row,col,0) = op\_mean::direct\_mean\_robust(tmp.memptr(), X\_n\_slices);}
+\DoxyCodeLine{358         \}}
+\DoxyCodeLine{359       \}}
+\DoxyCodeLine{360     \}}
+\DoxyCodeLine{361   \}}
+\DoxyCodeLine{362 }
+\DoxyCodeLine{363 }
+\DoxyCodeLine{364 }
+\DoxyCodeLine{365 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{366 arma\_hot}
+\DoxyCodeLine{367 \textcolor{keyword}{inline}}
+\DoxyCodeLine{368 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{369 op\_mean::apply\_noalias\_proxy(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{370   \{}
+\DoxyCodeLine{371   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{372   }
+\DoxyCodeLine{373   op\_mean::apply\_noalias\_unwrap(out, P, dim);}
+\DoxyCodeLine{374   }
+\DoxyCodeLine{375   \textcolor{comment}{// TODO: implement specialised handling}}
+\DoxyCodeLine{376   \}}
+\DoxyCodeLine{377 }
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379 }
+\DoxyCodeLine{380 }
+\DoxyCodeLine{381 \textcolor{comment}{//}}
+\DoxyCodeLine{382 }
+\DoxyCodeLine{383 }
+\DoxyCodeLine{384 }
+\DoxyCodeLine{385 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{386 \textcolor{keyword}{inline}}
+\DoxyCodeLine{387 eT}
+\DoxyCodeLine{388 op\_mean::direct\_mean(\textcolor{keyword}{const} eT* \textcolor{keyword}{const} X, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{389   \{}
+\DoxyCodeLine{390   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{391   }
+\DoxyCodeLine{392   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{393   }
+\DoxyCodeLine{394   \textcolor{keyword}{const} eT result = arrayops::accumulate(X, n\_elem) / T(n\_elem);}
+\DoxyCodeLine{395   }
+\DoxyCodeLine{396   \textcolor{keywordflow}{return} arma\_isfinite(result) ? result : op\_mean::direct\_mean\_robust(X, n\_elem);}
+\DoxyCodeLine{397   \}}
+\DoxyCodeLine{398 }
+\DoxyCodeLine{399 }
+\DoxyCodeLine{400 }
+\DoxyCodeLine{401 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{402 \textcolor{keyword}{inline}}
+\DoxyCodeLine{403 eT}
+\DoxyCodeLine{404 op\_mean::direct\_mean\_robust(\textcolor{keyword}{const} eT* \textcolor{keyword}{const} X, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{405   \{}
+\DoxyCodeLine{406   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{407   }
+\DoxyCodeLine{408   \textcolor{comment}{// use an adapted form of the mean finding algorithm from the running\_stat class}}
+\DoxyCodeLine{409   }
+\DoxyCodeLine{410   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{411   }
+\DoxyCodeLine{412   uword i,j;}
+\DoxyCodeLine{413   }
+\DoxyCodeLine{414   eT r\_mean = eT(0);}
+\DoxyCodeLine{415   }
+\DoxyCodeLine{416   \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{417     \{}
+\DoxyCodeLine{418     \textcolor{keyword}{const} eT Xi = X[i];}
+\DoxyCodeLine{419     \textcolor{keyword}{const} eT Xj = X[j];}
+\DoxyCodeLine{420     }
+\DoxyCodeLine{421     r\_mean = r\_mean + (Xi -\/ r\_mean)/T(j);    \textcolor{comment}{// we need i+1, and j is equivalent to i+1 here}}
+\DoxyCodeLine{422     r\_mean = r\_mean + (Xj -\/ r\_mean)/T(j+1);}
+\DoxyCodeLine{423     \}}
+\DoxyCodeLine{424   }
+\DoxyCodeLine{425   }
+\DoxyCodeLine{426   \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{427     \{}
+\DoxyCodeLine{428     \textcolor{keyword}{const} eT Xi = X[i];}
+\DoxyCodeLine{429     }
+\DoxyCodeLine{430     r\_mean = r\_mean + (Xi -\/ r\_mean)/T(i+1);}
+\DoxyCodeLine{431     \}}
+\DoxyCodeLine{432   }
+\DoxyCodeLine{433   \textcolor{keywordflow}{return} r\_mean;}
+\DoxyCodeLine{434   \}}
+\DoxyCodeLine{435 }
+\DoxyCodeLine{436 }
+\DoxyCodeLine{437 }
+\DoxyCodeLine{438 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{439 \textcolor{keyword}{inline}}
+\DoxyCodeLine{440 eT}
+\DoxyCodeLine{441 op\_mean::direct\_mean(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword row)}
+\DoxyCodeLine{442   \{}
+\DoxyCodeLine{443   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{444   }
+\DoxyCodeLine{445   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{446   }
+\DoxyCodeLine{447   \textcolor{keyword}{const} uword X\_n\_cols = X.n\_cols;}
+\DoxyCodeLine{448   }
+\DoxyCodeLine{449   eT val = eT(0);}
+\DoxyCodeLine{450   }
+\DoxyCodeLine{451   uword i,j;}
+\DoxyCodeLine{452   \textcolor{keywordflow}{for}(i=0, j=1; j < X\_n\_cols; i+=2, j+=2)}
+\DoxyCodeLine{453     \{}
+\DoxyCodeLine{454     val += X.at(row,i);}
+\DoxyCodeLine{455     val += X.at(row,j);}
+\DoxyCodeLine{456     \}}
+\DoxyCodeLine{457   }
+\DoxyCodeLine{458   \textcolor{keywordflow}{if}(i < X\_n\_cols)}
+\DoxyCodeLine{459     \{}
+\DoxyCodeLine{460     val += X.at(row,i);}
+\DoxyCodeLine{461     \}}
+\DoxyCodeLine{462   }
+\DoxyCodeLine{463   \textcolor{keyword}{const} eT result = val / T(X\_n\_cols);}
+\DoxyCodeLine{464   }
+\DoxyCodeLine{465   \textcolor{keywordflow}{return} arma\_isfinite(result) ? result : op\_mean::direct\_mean\_robust(X, row);}
+\DoxyCodeLine{466   \}}
+\DoxyCodeLine{467 }
+\DoxyCodeLine{468 }
+\DoxyCodeLine{469 }
+\DoxyCodeLine{470 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{471 \textcolor{keyword}{inline}}
+\DoxyCodeLine{472 eT}
+\DoxyCodeLine{473 op\_mean::direct\_mean\_robust(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword row)}
+\DoxyCodeLine{474   \{}
+\DoxyCodeLine{475   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{476   }
+\DoxyCodeLine{477   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{478   }
+\DoxyCodeLine{479   \textcolor{keyword}{const} uword X\_n\_cols = X.n\_cols;}
+\DoxyCodeLine{480   }
+\DoxyCodeLine{481   eT r\_mean = eT(0);}
+\DoxyCodeLine{482   }
+\DoxyCodeLine{483   \textcolor{keywordflow}{for}(uword col=0; col < X\_n\_cols; ++col)}
+\DoxyCodeLine{484     \{}
+\DoxyCodeLine{485     r\_mean = r\_mean + (X.at(row,col) -\/ r\_mean)/T(col+1);}
+\DoxyCodeLine{486     \}}
+\DoxyCodeLine{487   }
+\DoxyCodeLine{488   \textcolor{keywordflow}{return} r\_mean;}
+\DoxyCodeLine{489   \}}
+\DoxyCodeLine{490 }
+\DoxyCodeLine{491 }
+\DoxyCodeLine{492 }
+\DoxyCodeLine{493 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{494 \textcolor{keyword}{inline}}
+\DoxyCodeLine{495 eT}
+\DoxyCodeLine{496 op\_mean::mean\_all(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X)}
+\DoxyCodeLine{497   \{}
+\DoxyCodeLine{498   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{499   }
+\DoxyCodeLine{500   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{501   }
+\DoxyCodeLine{502   \textcolor{keyword}{const} uword X\_n\_rows = X.n\_rows;}
+\DoxyCodeLine{503   \textcolor{keyword}{const} uword X\_n\_cols = X.n\_cols;}
+\DoxyCodeLine{504   \textcolor{keyword}{const} uword X\_n\_elem = X.n\_elem;}
+\DoxyCodeLine{505   }
+\DoxyCodeLine{506   \textcolor{keywordflow}{if}(X\_n\_elem == 0)}
+\DoxyCodeLine{507     \{}
+\DoxyCodeLine{508     arma\_debug\_check(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}mean(): object has no elements"{}});}
+\DoxyCodeLine{509     }
+\DoxyCodeLine{510     \textcolor{keywordflow}{return} \mbox{\hyperlink{classDatum}{Datum<eT>::nan}};}
+\DoxyCodeLine{511     \}}
+\DoxyCodeLine{512   }
+\DoxyCodeLine{513   eT val = eT(0);}
+\DoxyCodeLine{514   }
+\DoxyCodeLine{515   \textcolor{keywordflow}{if}(X\_n\_rows == 1)}
+\DoxyCodeLine{516     \{}
+\DoxyCodeLine{517     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = X.m;}
+\DoxyCodeLine{518     }
+\DoxyCodeLine{519     \textcolor{keyword}{const} uword start\_row = X.aux\_row1;}
+\DoxyCodeLine{520     \textcolor{keyword}{const} uword start\_col = X.aux\_col1;}
+\DoxyCodeLine{521     }
+\DoxyCodeLine{522     \textcolor{keyword}{const} uword end\_col\_p1 = start\_col + X\_n\_cols;}
+\DoxyCodeLine{523     }
+\DoxyCodeLine{524     uword i,j;}
+\DoxyCodeLine{525     \textcolor{keywordflow}{for}(i=start\_col, j=start\_col+1; j < end\_col\_p1; i+=2, j+=2)}
+\DoxyCodeLine{526       \{}
+\DoxyCodeLine{527       val += \mbox{\hyperlink{structA}{A}}.at(start\_row, i);}
+\DoxyCodeLine{528       val += \mbox{\hyperlink{structA}{A}}.at(start\_row, j);}
+\DoxyCodeLine{529       \}}
+\DoxyCodeLine{530     }
+\DoxyCodeLine{531     \textcolor{keywordflow}{if}(i < end\_col\_p1)}
+\DoxyCodeLine{532       \{}
+\DoxyCodeLine{533       val += \mbox{\hyperlink{structA}{A}}.at(start\_row, i);}
+\DoxyCodeLine{534       \}}
+\DoxyCodeLine{535     \}}
+\DoxyCodeLine{536   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{537     \{}
+\DoxyCodeLine{538     \textcolor{keywordflow}{for}(uword col=0; col < X\_n\_cols; ++col)}
+\DoxyCodeLine{539       \{}
+\DoxyCodeLine{540       val += arrayops::accumulate(X.colptr(col), X\_n\_rows);}
+\DoxyCodeLine{541       \}}
+\DoxyCodeLine{542     \}}
+\DoxyCodeLine{543   }
+\DoxyCodeLine{544   \textcolor{keyword}{const} eT result = val / T(X\_n\_elem);}
+\DoxyCodeLine{545   }
+\DoxyCodeLine{546   \textcolor{keywordflow}{return} arma\_isfinite(result) ? result : op\_mean::mean\_all\_robust(X);}
+\DoxyCodeLine{547   \}}
+\DoxyCodeLine{548 }
+\DoxyCodeLine{549 }
+\DoxyCodeLine{550 }
+\DoxyCodeLine{551 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{552 \textcolor{keyword}{inline} }
+\DoxyCodeLine{553 eT}
+\DoxyCodeLine{554 op\_mean::mean\_all\_robust(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X)}
+\DoxyCodeLine{555   \{}
+\DoxyCodeLine{556   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{557   }
+\DoxyCodeLine{558   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{559   }
+\DoxyCodeLine{560   \textcolor{keyword}{const} uword X\_n\_rows = X.n\_rows;}
+\DoxyCodeLine{561   \textcolor{keyword}{const} uword X\_n\_cols = X.n\_cols;}
+\DoxyCodeLine{562   }
+\DoxyCodeLine{563   \textcolor{keyword}{const} uword start\_row = X.aux\_row1;}
+\DoxyCodeLine{564   \textcolor{keyword}{const} uword start\_col = X.aux\_col1;}
+\DoxyCodeLine{565   }
+\DoxyCodeLine{566   \textcolor{keyword}{const} uword end\_row\_p1 = start\_row + X\_n\_rows;}
+\DoxyCodeLine{567   \textcolor{keyword}{const} uword end\_col\_p1 = start\_col + X\_n\_cols;}
+\DoxyCodeLine{568   }
+\DoxyCodeLine{569   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = X.m;}
+\DoxyCodeLine{570   }
+\DoxyCodeLine{571   }
+\DoxyCodeLine{572   eT r\_mean = eT(0);}
+\DoxyCodeLine{573   }
+\DoxyCodeLine{574   \textcolor{keywordflow}{if}(X\_n\_rows == 1)}
+\DoxyCodeLine{575     \{}
+\DoxyCodeLine{576     uword i=0;}
+\DoxyCodeLine{577     }
+\DoxyCodeLine{578     \textcolor{keywordflow}{for}(uword col = start\_col; col < end\_col\_p1; ++col, ++i)}
+\DoxyCodeLine{579       \{}
+\DoxyCodeLine{580       r\_mean = r\_mean + (\mbox{\hyperlink{structA}{A}}.at(start\_row,col) -\/ r\_mean)/T(i+1);}
+\DoxyCodeLine{581       \}}
+\DoxyCodeLine{582     \}}
+\DoxyCodeLine{583   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{584     \{}
+\DoxyCodeLine{585     uword i=0;}
+\DoxyCodeLine{586     }
+\DoxyCodeLine{587     \textcolor{keywordflow}{for}(uword col = start\_col; col < end\_col\_p1; ++col)}
+\DoxyCodeLine{588     \textcolor{keywordflow}{for}(uword row = start\_row; row < end\_row\_p1; ++row, ++i)}
+\DoxyCodeLine{589       \{}
+\DoxyCodeLine{590       r\_mean = r\_mean + (\mbox{\hyperlink{structA}{A}}.at(row,col) -\/ r\_mean)/T(i+1);}
+\DoxyCodeLine{591       \}}
+\DoxyCodeLine{592     \}}
+\DoxyCodeLine{593   }
+\DoxyCodeLine{594   \textcolor{keywordflow}{return} r\_mean;}
+\DoxyCodeLine{595   \}}
+\DoxyCodeLine{596 }
+\DoxyCodeLine{597 }
+\DoxyCodeLine{598 }
+\DoxyCodeLine{599 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{600 \textcolor{keyword}{inline} }
+\DoxyCodeLine{601 eT}
+\DoxyCodeLine{602 op\_mean::mean\_all(\textcolor{keyword}{const} \mbox{\hyperlink{classdiagview}{diagview<eT>}}\& X)}
+\DoxyCodeLine{603   \{}
+\DoxyCodeLine{604   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{605   }
+\DoxyCodeLine{606   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{607   }
+\DoxyCodeLine{608   \textcolor{keyword}{const} uword X\_n\_elem = X.n\_elem;}
+\DoxyCodeLine{609   }
+\DoxyCodeLine{610   \textcolor{keywordflow}{if}(X\_n\_elem == 0)}
+\DoxyCodeLine{611     \{}
+\DoxyCodeLine{612     arma\_debug\_check(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}mean(): object has no elements"{}});}
+\DoxyCodeLine{613     }
+\DoxyCodeLine{614     \textcolor{keywordflow}{return} \mbox{\hyperlink{classDatum}{Datum<eT>::nan}};}
+\DoxyCodeLine{615     \}}
+\DoxyCodeLine{616   }
+\DoxyCodeLine{617   eT val = eT(0);}
+\DoxyCodeLine{618   }
+\DoxyCodeLine{619   \textcolor{keywordflow}{for}(uword i=0; i<X\_n\_elem; ++i)}
+\DoxyCodeLine{620     \{}
+\DoxyCodeLine{621     val += X[i];}
+\DoxyCodeLine{622     \}}
+\DoxyCodeLine{623   }
+\DoxyCodeLine{624   \textcolor{keyword}{const} eT result = val / T(X\_n\_elem);}
+\DoxyCodeLine{625   }
+\DoxyCodeLine{626   \textcolor{keywordflow}{return} arma\_isfinite(result) ? result : op\_mean::mean\_all\_robust(X);}
+\DoxyCodeLine{627   \}}
+\DoxyCodeLine{628 }
+\DoxyCodeLine{629 }
+\DoxyCodeLine{630 }
+\DoxyCodeLine{631 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{632 \textcolor{keyword}{inline} }
+\DoxyCodeLine{633 eT}
+\DoxyCodeLine{634 op\_mean::mean\_all\_robust(\textcolor{keyword}{const} \mbox{\hyperlink{classdiagview}{diagview<eT>}}\& X)}
+\DoxyCodeLine{635   \{}
+\DoxyCodeLine{636   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{637   }
+\DoxyCodeLine{638   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{639   }
+\DoxyCodeLine{640   \textcolor{keyword}{const} uword X\_n\_elem = X.n\_elem;}
+\DoxyCodeLine{641   }
+\DoxyCodeLine{642   eT r\_mean = eT(0);}
+\DoxyCodeLine{643   }
+\DoxyCodeLine{644   \textcolor{keywordflow}{for}(uword i=0; i<X\_n\_elem; ++i)}
+\DoxyCodeLine{645     \{}
+\DoxyCodeLine{646     r\_mean = r\_mean + (X[i] -\/ r\_mean)/T(i+1);}
+\DoxyCodeLine{647     \}}
+\DoxyCodeLine{648   }
+\DoxyCodeLine{649   \textcolor{keywordflow}{return} r\_mean;}
+\DoxyCodeLine{650   \}}
+\DoxyCodeLine{651 }
+\DoxyCodeLine{652 }
+\DoxyCodeLine{653 }
+\DoxyCodeLine{654 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{655 \textcolor{keyword}{inline}}
+\DoxyCodeLine{656 \textcolor{keyword}{typename} T1::elem\_type }
+\DoxyCodeLine{657 op\_mean::mean\_all(\textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_vectorise\_col>}}\& X)}
+\DoxyCodeLine{658   \{}
+\DoxyCodeLine{659   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{660   }
+\DoxyCodeLine{661   \textcolor{keywordflow}{return} op\_mean::mean\_all(X.m);}
+\DoxyCodeLine{662   \}}
+\DoxyCodeLine{663 }
+\DoxyCodeLine{664 }
+\DoxyCodeLine{665 }
+\DoxyCodeLine{666 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{667 \textcolor{keyword}{inline}}
+\DoxyCodeLine{668 \textcolor{keyword}{typename} T1::elem\_type }
+\DoxyCodeLine{669 op\_mean::mean\_all(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X)}
+\DoxyCodeLine{670   \{}
+\DoxyCodeLine{671   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{672   }
+\DoxyCodeLine{673   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{674   }
+\DoxyCodeLine{675   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp(X.get\_ref());}
+\DoxyCodeLine{676   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\&     \mbox{\hyperlink{structA}{A}} = tmp.M;}
+\DoxyCodeLine{677   }
+\DoxyCodeLine{678   \textcolor{keyword}{const} uword A\_n\_elem = \mbox{\hyperlink{structA}{A}}.n\_elem;}
+\DoxyCodeLine{679   }
+\DoxyCodeLine{680   \textcolor{keywordflow}{if}(A\_n\_elem == 0)}
+\DoxyCodeLine{681     \{}
+\DoxyCodeLine{682     arma\_debug\_check(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}mean(): object has no elements"{}});}
+\DoxyCodeLine{683     }
+\DoxyCodeLine{684     \textcolor{keywordflow}{return} \mbox{\hyperlink{classDatum}{Datum<eT>::nan}};}
+\DoxyCodeLine{685     \}}
+\DoxyCodeLine{686   }
+\DoxyCodeLine{687   \textcolor{keywordflow}{return} op\_mean::direct\_mean(\mbox{\hyperlink{structA}{A}}.memptr(), A\_n\_elem);}
+\DoxyCodeLine{688   \}}
+\DoxyCodeLine{689 }
+\DoxyCodeLine{690 }
+\DoxyCodeLine{691 }
+\DoxyCodeLine{692 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{693 arma\_inline}
+\DoxyCodeLine{694 eT}
+\DoxyCodeLine{695 op\_mean::robust\_mean(\textcolor{keyword}{const} eT \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{696   \{}
+\DoxyCodeLine{697   \textcolor{keywordflow}{return} \mbox{\hyperlink{structA}{A}} + (\mbox{\hyperlink{structB}{B}} -\/ \mbox{\hyperlink{structA}{A}})/eT(2);}
+\DoxyCodeLine{698   \}}
+\DoxyCodeLine{699 }
+\DoxyCodeLine{700 }
+\DoxyCodeLine{701 }
+\DoxyCodeLine{702 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{703 arma\_inline}
+\DoxyCodeLine{704 std::complex<T>}
+\DoxyCodeLine{705 op\_mean::robust\_mean(\textcolor{keyword}{const} std::complex<T>\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} std::complex<T>\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{706   \{}
+\DoxyCodeLine{707   \textcolor{keywordflow}{return} \mbox{\hyperlink{structA}{A}} + (\mbox{\hyperlink{structB}{B}} -\/ \mbox{\hyperlink{structA}{A}})/T(2);}
+\DoxyCodeLine{708   \}}
+\DoxyCodeLine{709 }
+\DoxyCodeLine{710 }
+\DoxyCodeLine{711 }
+\DoxyCodeLine{713 }
+
+\end{DoxyCode}

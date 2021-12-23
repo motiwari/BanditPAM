@@ -1,0 +1,80 @@
+\hypertarget{op__vectorise__bones_8hpp_source}{}\doxysection{op\+\_\+vectorise\+\_\+bones.\+hpp}
+\label{op__vectorise__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_vectorise\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_vectorise\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classop__vectorise__col}{op\_vectorise\_col}}}
+\DoxyCodeLine{24   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__col}{traits\_op\_col}}}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   \textcolor{keyword}{public}:}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_vectorise\_col>}}\& in);}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_direct(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} T1\& expr);}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_subview(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& sv);}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_proxy(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P);}
+\DoxyCodeLine{35   \};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{class }\mbox{\hyperlink{classop__vectorise__row}{op\_vectorise\_row}}}
+\DoxyCodeLine{40   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__row}{traits\_op\_row}}}
+\DoxyCodeLine{41   \{}
+\DoxyCodeLine{42   \textcolor{keyword}{public}:}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_vectorise\_row>}}\& in);}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_direct(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} T1\& expr);}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_proxy(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P);}
+\DoxyCodeLine{49   \};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{keyword}{class }\mbox{\hyperlink{classop__vectorise__all}{op\_vectorise\_all}}}
+\DoxyCodeLine{54   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__xvec}{traits\_op\_xvec}}}
+\DoxyCodeLine{55   \{}
+\DoxyCodeLine{56   \textcolor{keyword}{public}:}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_vectorise\_all>}}\& in);}
+\DoxyCodeLine{59   \};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{class }\mbox{\hyperlink{classop__vectorise__cube__col}{op\_vectorise\_cube\_col}}}
+\DoxyCodeLine{64   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__col}{traits\_op\_col}}}
+\DoxyCodeLine{65   \{}
+\DoxyCodeLine{66   \textcolor{keyword}{public}:}
+\DoxyCodeLine{67   }
+\DoxyCodeLine{68   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp<T1, op\_vectorise\_cube\_col>}}\& in);}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_subview(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& sv);}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_proxy(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P);}
+\DoxyCodeLine{73   \};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+
+\end{DoxyCode}

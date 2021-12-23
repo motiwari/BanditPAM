@@ -1,0 +1,426 @@
+\hypertarget{fft__engine_8hpp_source}{}\doxysection{fft\+\_\+engine.\+hpp}
+\label{fft__engine_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fft\_engine.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fft\_engine.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// }}
+\DoxyCodeLine{15 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{16 \textcolor{comment}{// }}
+\DoxyCodeLine{17 \textcolor{comment}{// This file includes portions of Kiss FFT software,}}
+\DoxyCodeLine{18 \textcolor{comment}{// licensed under the following conditions.}}
+\DoxyCodeLine{19 \textcolor{comment}{// }}
+\DoxyCodeLine{20 \textcolor{comment}{// Copyright (c) 2003-\/2010 Mark Borgerding}}
+\DoxyCodeLine{21 \textcolor{comment}{// }}
+\DoxyCodeLine{22 \textcolor{comment}{// All rights reserved.}}
+\DoxyCodeLine{23 \textcolor{comment}{// }}
+\DoxyCodeLine{24 \textcolor{comment}{// Redistribution and use in source and binary forms, with or without modification,}}
+\DoxyCodeLine{25 \textcolor{comment}{// are permitted provided that the following conditions are met:}}
+\DoxyCodeLine{26 \textcolor{comment}{// }}
+\DoxyCodeLine{27 \textcolor{comment}{// * Redistributions of source code must retain the above copyright notice,}}
+\DoxyCodeLine{28 \textcolor{comment}{//   this list of conditions and the following disclaimer.}}
+\DoxyCodeLine{29 \textcolor{comment}{// }}
+\DoxyCodeLine{30 \textcolor{comment}{// * Redistributions in binary form must reproduce the above copyright notice,}}
+\DoxyCodeLine{31 \textcolor{comment}{//   this list of conditions and the following disclaimer in the documentation}}
+\DoxyCodeLine{32 \textcolor{comment}{//   and/or other materials provided with the distribution.}}
+\DoxyCodeLine{33 \textcolor{comment}{// }}
+\DoxyCodeLine{34 \textcolor{comment}{// * Neither the author nor the names of any contributors may be used to}}
+\DoxyCodeLine{35 \textcolor{comment}{//   endorse or promote products derived from this software without specific}}
+\DoxyCodeLine{36 \textcolor{comment}{//   prior written permission.}}
+\DoxyCodeLine{37 \textcolor{comment}{// }}
+\DoxyCodeLine{38 \textcolor{comment}{// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "{}AS IS"{}}}
+\DoxyCodeLine{39 \textcolor{comment}{// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,}}
+\DoxyCodeLine{40 \textcolor{comment}{// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR}}
+\DoxyCodeLine{41 \textcolor{comment}{// PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR}}
+\DoxyCodeLine{42 \textcolor{comment}{// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,}}
+\DoxyCodeLine{43 \textcolor{comment}{// EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,}}
+\DoxyCodeLine{44 \textcolor{comment}{// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;}}
+\DoxyCodeLine{45 \textcolor{comment}{// OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,}}
+\DoxyCodeLine{46 \textcolor{comment}{// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE}}
+\DoxyCodeLine{47 \textcolor{comment}{// OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,}}
+\DoxyCodeLine{48 \textcolor{comment}{// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.}}
+\DoxyCodeLine{49 \textcolor{comment}{// }}
+\DoxyCodeLine{50 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{template}<\textcolor{keyword}{typename} cx\_type, uword fixed\_N, \textcolor{keywordtype}{bool}> \textcolor{keyword}{struct }\mbox{\hyperlink{structfft__store}{fft\_store}} \{\};}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{template}<\textcolor{keyword}{typename} cx\_type, uword fixed\_N>}
+\DoxyCodeLine{60 \textcolor{keyword}{struct }\mbox{\hyperlink{structfft__store}{fft\_store}}<cx\_type, fixed\_N, true>}
+\DoxyCodeLine{61   \{}
+\DoxyCodeLine{62   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword N = fixed\_N;}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   arma\_aligned cx\_type coeffs\_array[fixed\_N];}
+\DoxyCodeLine{65   }
+\DoxyCodeLine{66   \textcolor{keyword}{inline} \mbox{\hyperlink{structfft__store}{fft\_store}}()      \{\}}
+\DoxyCodeLine{67   \textcolor{keyword}{inline} \mbox{\hyperlink{structfft__store}{fft\_store}}(uword) \{\}}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   arma\_inline       cx\_type* coeffs\_ptr()       \{ \textcolor{keywordflow}{return} \&coeffs\_array[0]; \}}
+\DoxyCodeLine{70   arma\_inline \textcolor{keyword}{const} cx\_type* coeffs\_ptr()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \&coeffs\_array[0]; \}}
+\DoxyCodeLine{71   \};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{keyword}{template}<\textcolor{keyword}{typename} cx\_type, uword fixed\_N>}
+\DoxyCodeLine{76 \textcolor{keyword}{struct }\mbox{\hyperlink{structfft__store}{fft\_store}}<cx\_type, fixed\_N, false>}
+\DoxyCodeLine{77   \{}
+\DoxyCodeLine{78   \textcolor{keyword}{const} uword N;}
+\DoxyCodeLine{79   }
+\DoxyCodeLine{80   \mbox{\hyperlink{classpodarray}{podarray<cx\_type>}} coeffs\_array;}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keyword}{inline} \mbox{\hyperlink{structfft__store}{fft\_store}}()           : N(0)    \{\}}
+\DoxyCodeLine{83   \textcolor{keyword}{inline} \mbox{\hyperlink{structfft__store}{fft\_store}}(uword in\_N) : N(in\_N) \{ coeffs\_array.set\_size(N); \}}
+\DoxyCodeLine{84   }
+\DoxyCodeLine{85   arma\_inline       cx\_type* coeffs\_ptr()       \{ \textcolor{keywordflow}{return} coeffs\_array.memptr(); \}}
+\DoxyCodeLine{86   arma\_inline \textcolor{keyword}{const} cx\_type* coeffs\_ptr()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} coeffs\_array.memptr(); \}}
+\DoxyCodeLine{87   \};}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \textcolor{keyword}{template}<\textcolor{keyword}{typename} cx\_type, \textcolor{keywordtype}{bool} inverse, uword fixed\_N = 0>}
+\DoxyCodeLine{92 \textcolor{keyword}{class }\mbox{\hyperlink{classfft__engine}{fft\_engine}} : \textcolor{keyword}{public} \mbox{\hyperlink{structfft__store}{fft\_store}}<cx\_type, fixed\_N, (fixed\_N > 0)>}
+\DoxyCodeLine{93   \{}
+\DoxyCodeLine{94   \textcolor{keyword}{public}:}
+\DoxyCodeLine{95   }
+\DoxyCodeLine{96   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<cx\_type>::result T;}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   \textcolor{keyword}{using} \mbox{\hyperlink{structfft__store}{fft\_store}}<cx\_type, fixed\_N, (fixed\_N > 0)>::N;}
+\DoxyCodeLine{99   \textcolor{keyword}{using} \mbox{\hyperlink{structfft__store}{fft\_store}}<cx\_type, fixed\_N, (fixed\_N > 0)>::coeffs\_ptr;}
+\DoxyCodeLine{100   }
+\DoxyCodeLine{101   \mbox{\hyperlink{classpodarray}{podarray<uword>}}   residue;}
+\DoxyCodeLine{102   \mbox{\hyperlink{classpodarray}{podarray<uword>}}   radix;}
+\DoxyCodeLine{103   }
+\DoxyCodeLine{104   \mbox{\hyperlink{classpodarray}{podarray<cx\_type>}} tmp\_array;}
+\DoxyCodeLine{105   }
+\DoxyCodeLine{106   }
+\DoxyCodeLine{107   \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} fill>}
+\DoxyCodeLine{108   \textcolor{keyword}{inline}}
+\DoxyCodeLine{109   uword}
+\DoxyCodeLine{110   calc\_radix()}
+\DoxyCodeLine{111     \{}
+\DoxyCodeLine{112     uword i = 0;}
+\DoxyCodeLine{113     }
+\DoxyCodeLine{114     \textcolor{keywordflow}{for}(uword n = N, r=4; n >= 2; ++i)}
+\DoxyCodeLine{115       \{}
+\DoxyCodeLine{116       \textcolor{keywordflow}{while}( (n \% r) > 0 )}
+\DoxyCodeLine{117         \{}
+\DoxyCodeLine{118         \textcolor{keywordflow}{switch}(r)}
+\DoxyCodeLine{119           \{}
+\DoxyCodeLine{120           \textcolor{keywordflow}{case} 2:  r  = 3; \textcolor{keywordflow}{break};}
+\DoxyCodeLine{121           \textcolor{keywordflow}{case} 4:  r  = 2; \textcolor{keywordflow}{break};}
+\DoxyCodeLine{122           \textcolor{keywordflow}{default}: r += 2; \textcolor{keywordflow}{break};}
+\DoxyCodeLine{123           \}}
+\DoxyCodeLine{124         }
+\DoxyCodeLine{125         \textcolor{keywordflow}{if}(r*r > n) \{ r = n; \}}
+\DoxyCodeLine{126         \}}
+\DoxyCodeLine{127       }
+\DoxyCodeLine{128       n /= r;}
+\DoxyCodeLine{129       }
+\DoxyCodeLine{130       \textcolor{keywordflow}{if}(fill)}
+\DoxyCodeLine{131         \{}
+\DoxyCodeLine{132         residue[i] = n;}
+\DoxyCodeLine{133           radix[i] = r;}
+\DoxyCodeLine{134         \}}
+\DoxyCodeLine{135       \}}
+\DoxyCodeLine{136     }
+\DoxyCodeLine{137     \textcolor{keywordflow}{return} i;}
+\DoxyCodeLine{138     \}}
+\DoxyCodeLine{139   }
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   }
+\DoxyCodeLine{142   \textcolor{keyword}{inline}}
+\DoxyCodeLine{143   \mbox{\hyperlink{classfft__engine}{fft\_engine}}(\textcolor{keyword}{const} uword in\_N)}
+\DoxyCodeLine{144     : \mbox{\hyperlink{structfft__store}{fft\_store}}< cx\_type, fixed\_N, (fixed\_N > 0) >(in\_N)}
+\DoxyCodeLine{145     \{}
+\DoxyCodeLine{146     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{147     }
+\DoxyCodeLine{148     \textcolor{keyword}{const} uword \mbox{\hyperlink{group__python__builtins_gaeff368081ac50b8fe2cc0230d96e3acb}{len}} = calc\_radix<false>();}
+\DoxyCodeLine{149     }
+\DoxyCodeLine{150     residue.set\_size(\mbox{\hyperlink{group__python__builtins_gaeff368081ac50b8fe2cc0230d96e3acb}{len}});}
+\DoxyCodeLine{151       radix.set\_size(\mbox{\hyperlink{group__python__builtins_gaeff368081ac50b8fe2cc0230d96e3acb}{len}});}
+\DoxyCodeLine{152     }
+\DoxyCodeLine{153     calc\_radix<true>();}
+\DoxyCodeLine{154     }
+\DoxyCodeLine{155     }
+\DoxyCodeLine{156     \textcolor{comment}{// calculate the constant coefficients}}
+\DoxyCodeLine{157     }
+\DoxyCodeLine{158     cx\_type* coeffs = coeffs\_ptr();}
+\DoxyCodeLine{159     }
+\DoxyCodeLine{160     \textcolor{keyword}{const} T k = T( (inverse) ? +2 : -\/2 ) * std::acos( T(-\/1) ) / T(N);}
+\DoxyCodeLine{161     }
+\DoxyCodeLine{162     \textcolor{keywordflow}{for}(uword i=0; i < N; ++i)  \{ coeffs[i] = std::exp( cx\_type(T(0), i*k) ); \}}
+\DoxyCodeLine{163     \}}
+\DoxyCodeLine{164   }
+\DoxyCodeLine{165   }
+\DoxyCodeLine{166   }
+\DoxyCodeLine{167   arma\_hot}
+\DoxyCodeLine{168   \textcolor{keyword}{inline}}
+\DoxyCodeLine{169   \textcolor{keywordtype}{void}}
+\DoxyCodeLine{170   butterfly\_2(cx\_type* Y, \textcolor{keyword}{const} uword stride, \textcolor{keyword}{const} uword m)}
+\DoxyCodeLine{171     \{}
+\DoxyCodeLine{172     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{173     }
+\DoxyCodeLine{174     \textcolor{keyword}{const} cx\_type* coeffs = coeffs\_ptr();}
+\DoxyCodeLine{175     }
+\DoxyCodeLine{176     \textcolor{keywordflow}{for}(uword i=0; i < m; ++i)}
+\DoxyCodeLine{177       \{}
+\DoxyCodeLine{178       \textcolor{keyword}{const} cx\_type t = Y[i+m] * coeffs[i*stride];}
+\DoxyCodeLine{179       }
+\DoxyCodeLine{180       Y[i+m] =  Y[i] -\/ t;}
+\DoxyCodeLine{181       Y[i  ] += t;}
+\DoxyCodeLine{182       \}}
+\DoxyCodeLine{183     \}}
+\DoxyCodeLine{184   }
+\DoxyCodeLine{185   }
+\DoxyCodeLine{186   }
+\DoxyCodeLine{187   arma\_hot}
+\DoxyCodeLine{188   \textcolor{keyword}{inline}}
+\DoxyCodeLine{189   \textcolor{keywordtype}{void}}
+\DoxyCodeLine{190   butterfly\_3(cx\_type* Y, \textcolor{keyword}{const} uword stride, \textcolor{keyword}{const} uword m)}
+\DoxyCodeLine{191     \{}
+\DoxyCodeLine{192     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{193     }
+\DoxyCodeLine{194     arma\_aligned cx\_type tmp[5];}
+\DoxyCodeLine{195     }
+\DoxyCodeLine{196     cx\_type* coeffs1 = coeffs\_ptr();}
+\DoxyCodeLine{197     cx\_type* coeffs2 = coeffs1;}
+\DoxyCodeLine{198     }
+\DoxyCodeLine{199     \textcolor{keyword}{const} T coeff\_sm\_imag = coeffs1[stride*m].imag();}
+\DoxyCodeLine{200     }
+\DoxyCodeLine{201     \textcolor{keyword}{const} uword n = m*2;}
+\DoxyCodeLine{202     }
+\DoxyCodeLine{203     \textcolor{comment}{// TODO: rearrange the indices within tmp[] into a more sane order}}
+\DoxyCodeLine{204     }
+\DoxyCodeLine{205     \textcolor{keywordflow}{for}(uword i = m; i > 0; -\/-\/i)}
+\DoxyCodeLine{206       \{}
+\DoxyCodeLine{207       tmp[1] = Y[m] * (*coeffs1);}
+\DoxyCodeLine{208       tmp[2] = Y[n] * (*coeffs2);}
+\DoxyCodeLine{209       }
+\DoxyCodeLine{210       tmp[0]  = tmp[1] -\/ tmp[2];}
+\DoxyCodeLine{211       tmp[0] *= coeff\_sm\_imag;}
+\DoxyCodeLine{212       }
+\DoxyCodeLine{213       tmp[3] = tmp[1] + tmp[2];}
+\DoxyCodeLine{214       }
+\DoxyCodeLine{215       Y[m] = cx\_type( (Y[0].real() -\/ (T(0.5)*tmp[3].real())), (Y[0].imag() -\/ (T(0.5)*tmp[3].imag())) );}
+\DoxyCodeLine{216       }
+\DoxyCodeLine{217       Y[0] += tmp[3];}
+\DoxyCodeLine{218       }
+\DoxyCodeLine{219       }
+\DoxyCodeLine{220       Y[n] = cx\_type( (Y[m].real() + tmp[0].imag()), (Y[m].imag() -\/ tmp[0].real()) );}
+\DoxyCodeLine{221       }
+\DoxyCodeLine{222       Y[m] += cx\_type( -\/tmp[0].imag(), tmp[0].real() );}
+\DoxyCodeLine{223       }
+\DoxyCodeLine{224       Y++;}
+\DoxyCodeLine{225       }
+\DoxyCodeLine{226       coeffs1 += stride;}
+\DoxyCodeLine{227       coeffs2 += stride*2;}
+\DoxyCodeLine{228       \}}
+\DoxyCodeLine{229     \}}
+\DoxyCodeLine{230   }
+\DoxyCodeLine{231   }
+\DoxyCodeLine{232   }
+\DoxyCodeLine{233   arma\_hot}
+\DoxyCodeLine{234   \textcolor{keyword}{inline}}
+\DoxyCodeLine{235   \textcolor{keywordtype}{void}}
+\DoxyCodeLine{236   butterfly\_4(cx\_type* Y, \textcolor{keyword}{const} uword stride, \textcolor{keyword}{const} uword m)}
+\DoxyCodeLine{237     \{}
+\DoxyCodeLine{238     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{239     }
+\DoxyCodeLine{240     arma\_aligned cx\_type tmp[7];}
+\DoxyCodeLine{241     }
+\DoxyCodeLine{242     \textcolor{keyword}{const} cx\_type* coeffs = coeffs\_ptr();}
+\DoxyCodeLine{243     }
+\DoxyCodeLine{244     \textcolor{keyword}{const} uword m2 = m*2;}
+\DoxyCodeLine{245     \textcolor{keyword}{const} uword m3 = m*3;}
+\DoxyCodeLine{246     }
+\DoxyCodeLine{247     \textcolor{comment}{// TODO: rearrange the indices within tmp[] into a more sane order}}
+\DoxyCodeLine{248     }
+\DoxyCodeLine{249     \textcolor{keywordflow}{for}(uword i=0; i < m; ++i)}
+\DoxyCodeLine{250       \{}
+\DoxyCodeLine{251       tmp[0] = Y[i + m ] * coeffs[i*stride  ];}
+\DoxyCodeLine{252       tmp[2] = Y[i + m3] * coeffs[i*stride*3];}
+\DoxyCodeLine{253       tmp[3] = tmp[0] + tmp[2];}
+\DoxyCodeLine{254       }
+\DoxyCodeLine{255       \textcolor{comment}{//tmp[4] = tmp[0] -\/ tmp[2];}}
+\DoxyCodeLine{256       \textcolor{comment}{//tmp[4] = (inverse) ? cx\_type( -\/(tmp[4].imag()), tmp[4].real() ) : cx\_type( tmp[4].imag(), -\/tmp[4].real() );}}
+\DoxyCodeLine{257       }
+\DoxyCodeLine{258       tmp[4] = (inverse)}
+\DoxyCodeLine{259                  ? cx\_type( (tmp[2].imag() -\/ tmp[0].imag()), (tmp[0].real() -\/ tmp[2].real()) )}
+\DoxyCodeLine{260                  : cx\_type( (tmp[0].imag() -\/ tmp[2].imag()), (tmp[2].real() -\/ tmp[0].real()) );}
+\DoxyCodeLine{261       }
+\DoxyCodeLine{262       tmp[1] = Y[i + m2] * coeffs[i*stride*2];}
+\DoxyCodeLine{263       tmp[5] = Y[i] -\/ tmp[1];}
+\DoxyCodeLine{264       }
+\DoxyCodeLine{265       }
+\DoxyCodeLine{266       Y[i     ] += tmp[1];}
+\DoxyCodeLine{267       Y[i + m2]  = Y[i] -\/ tmp[3];}
+\DoxyCodeLine{268       Y[i     ] += tmp[3];}
+\DoxyCodeLine{269       Y[i + m ]  = tmp[5] + tmp[4];}
+\DoxyCodeLine{270       Y[i + m3]  = tmp[5] -\/ tmp[4];}
+\DoxyCodeLine{271       \}}
+\DoxyCodeLine{272     \}}
+\DoxyCodeLine{273   }
+\DoxyCodeLine{274   }
+\DoxyCodeLine{275   }
+\DoxyCodeLine{276   \textcolor{keyword}{inline}}
+\DoxyCodeLine{277   arma\_hot}
+\DoxyCodeLine{278   \textcolor{keywordtype}{void}}
+\DoxyCodeLine{279   butterfly\_5(cx\_type* Y, \textcolor{keyword}{const} uword stride, \textcolor{keyword}{const} uword m)}
+\DoxyCodeLine{280     \{}
+\DoxyCodeLine{281     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{282     }
+\DoxyCodeLine{283     arma\_aligned cx\_type tmp[13];}
+\DoxyCodeLine{284     }
+\DoxyCodeLine{285     \textcolor{keyword}{const} cx\_type* coeffs = coeffs\_ptr();}
+\DoxyCodeLine{286     }
+\DoxyCodeLine{287     \textcolor{keyword}{const} T a\_real = coeffs[stride*1*m].real();}
+\DoxyCodeLine{288     \textcolor{keyword}{const} T a\_imag = coeffs[stride*1*m].imag();}
+\DoxyCodeLine{289     }
+\DoxyCodeLine{290     \textcolor{keyword}{const} T b\_real = coeffs[stride*2*m].real();}
+\DoxyCodeLine{291     \textcolor{keyword}{const} T b\_imag = coeffs[stride*2*m].imag();}
+\DoxyCodeLine{292     }
+\DoxyCodeLine{293     cx\_type* Y0 = Y;}
+\DoxyCodeLine{294     cx\_type* Y1 = Y + 1*m;}
+\DoxyCodeLine{295     cx\_type* Y2 = Y + 2*m;}
+\DoxyCodeLine{296     cx\_type* Y3 = Y + 3*m;}
+\DoxyCodeLine{297     cx\_type* Y4 = Y + 4*m;}
+\DoxyCodeLine{298     }
+\DoxyCodeLine{299     \textcolor{keywordflow}{for}(uword i=0; i < m; ++i)}
+\DoxyCodeLine{300       \{}
+\DoxyCodeLine{301       tmp[0] = (*Y0);}
+\DoxyCodeLine{302       }
+\DoxyCodeLine{303       tmp[1] = (*Y1) * coeffs[stride*1*i];}
+\DoxyCodeLine{304       tmp[2] = (*Y2) * coeffs[stride*2*i];}
+\DoxyCodeLine{305       tmp[3] = (*Y3) * coeffs[stride*3*i];}
+\DoxyCodeLine{306       tmp[4] = (*Y4) * coeffs[stride*4*i];}
+\DoxyCodeLine{307       }
+\DoxyCodeLine{308       tmp[7]  = tmp[1] + tmp[4];}
+\DoxyCodeLine{309       tmp[8]  = tmp[2] + tmp[3];}
+\DoxyCodeLine{310       tmp[9]  = tmp[2] -\/ tmp[3];}
+\DoxyCodeLine{311       tmp[10] = tmp[1] -\/ tmp[4];}
+\DoxyCodeLine{312       }
+\DoxyCodeLine{313       (*Y0) += tmp[7];}
+\DoxyCodeLine{314       (*Y0) += tmp[8];}
+\DoxyCodeLine{315       }
+\DoxyCodeLine{316       tmp[5] = tmp[0] + cx\_type( ( (tmp[7].real() * a\_real) + (tmp[8].real() * b\_real) ), ( (tmp[7].imag() * a\_real) + (tmp[8].imag() * b\_real) ) );}
+\DoxyCodeLine{317       }
+\DoxyCodeLine{318       tmp[6] =  cx\_type( ( (tmp[10].imag() * a\_imag) + (tmp[9].imag() * b\_imag) ), ( -\/(tmp[10].real() * a\_imag) -\/ (tmp[9].real() * b\_imag) ) );}
+\DoxyCodeLine{319       }
+\DoxyCodeLine{320       (*Y1) = tmp[5] -\/ tmp[6];}
+\DoxyCodeLine{321       (*Y4) = tmp[5] + tmp[6];}
+\DoxyCodeLine{322       }
+\DoxyCodeLine{323       tmp[11] = tmp[0] +  cx\_type( ( (tmp[7].real() * b\_real) + (tmp[8].real() * a\_real) ), ( (tmp[7].imag() * b\_real) + (tmp[8].imag() * a\_real) ) );}
+\DoxyCodeLine{324       }
+\DoxyCodeLine{325       tmp[12] = cx\_type( ( -\/(tmp[10].imag() * b\_imag) + (tmp[9].imag() * a\_imag) ), (  (tmp[10].real() * b\_imag) -\/ (tmp[9].real() * a\_imag) ) );}
+\DoxyCodeLine{326       }
+\DoxyCodeLine{327       (*Y2) = tmp[11] + tmp[12];}
+\DoxyCodeLine{328       (*Y3) = tmp[11] -\/ tmp[12];}
+\DoxyCodeLine{329       }
+\DoxyCodeLine{330       Y0++;}
+\DoxyCodeLine{331       Y1++;}
+\DoxyCodeLine{332       Y2++;}
+\DoxyCodeLine{333       Y3++;}
+\DoxyCodeLine{334       Y4++;}
+\DoxyCodeLine{335       \}}
+\DoxyCodeLine{336     \}}
+\DoxyCodeLine{337   }
+\DoxyCodeLine{338   }
+\DoxyCodeLine{339   }
+\DoxyCodeLine{340   arma\_hot}
+\DoxyCodeLine{341   \textcolor{keyword}{inline}}
+\DoxyCodeLine{342   \textcolor{keywordtype}{void}}
+\DoxyCodeLine{343   butterfly\_N(cx\_type* Y, \textcolor{keyword}{const} uword stride, \textcolor{keyword}{const} uword m, \textcolor{keyword}{const} uword r)}
+\DoxyCodeLine{344     \{}
+\DoxyCodeLine{345     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{346     }
+\DoxyCodeLine{347     \textcolor{keyword}{const} cx\_type* coeffs = coeffs\_ptr();}
+\DoxyCodeLine{348     }
+\DoxyCodeLine{349     tmp\_array.set\_min\_size(r);}
+\DoxyCodeLine{350     cx\_type* tmp = tmp\_array.memptr();}
+\DoxyCodeLine{351     }
+\DoxyCodeLine{352     \textcolor{keywordflow}{for}(uword u=0; u < m; ++u)}
+\DoxyCodeLine{353       \{}
+\DoxyCodeLine{354       uword k = u;}
+\DoxyCodeLine{355       }
+\DoxyCodeLine{356       \textcolor{keywordflow}{for}(uword v=0; v < r; ++v)}
+\DoxyCodeLine{357         \{}
+\DoxyCodeLine{358         tmp[v] = Y[k];}
+\DoxyCodeLine{359         k += m;}
+\DoxyCodeLine{360         \}}
+\DoxyCodeLine{361       }
+\DoxyCodeLine{362       k = u;}
+\DoxyCodeLine{363       }
+\DoxyCodeLine{364       \textcolor{keywordflow}{for}(uword v=0; v < r; ++v)}
+\DoxyCodeLine{365         \{}
+\DoxyCodeLine{366         Y[k] = tmp[0];}
+\DoxyCodeLine{367         }
+\DoxyCodeLine{368         uword j = 0;}
+\DoxyCodeLine{369         }
+\DoxyCodeLine{370         \textcolor{keywordflow}{for}(uword w=1; w < r; ++w)}
+\DoxyCodeLine{371           \{}
+\DoxyCodeLine{372           j += stride * k;}
+\DoxyCodeLine{373           }
+\DoxyCodeLine{374           \textcolor{keywordflow}{if}(j >= N) \{ j -\/= N; \}}
+\DoxyCodeLine{375           }
+\DoxyCodeLine{376           Y[k] += tmp[w] * coeffs[j];}
+\DoxyCodeLine{377           \}}
+\DoxyCodeLine{378         }
+\DoxyCodeLine{379         k += m;}
+\DoxyCodeLine{380         \}}
+\DoxyCodeLine{381       \}}
+\DoxyCodeLine{382     \}}
+\DoxyCodeLine{383   }
+\DoxyCodeLine{384   }
+\DoxyCodeLine{385   }
+\DoxyCodeLine{386   \textcolor{keyword}{inline}}
+\DoxyCodeLine{387   \textcolor{keywordtype}{void}}
+\DoxyCodeLine{388   run(cx\_type* Y, \textcolor{keyword}{const} cx\_type* X, \textcolor{keyword}{const} uword stage = 0, \textcolor{keyword}{const} uword stride = 1)}
+\DoxyCodeLine{389     \{}
+\DoxyCodeLine{390     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{391     }
+\DoxyCodeLine{392     \textcolor{keyword}{const} uword m = residue[stage];}
+\DoxyCodeLine{393     \textcolor{keyword}{const} uword r =   radix[stage];}
+\DoxyCodeLine{394     }
+\DoxyCodeLine{395     \textcolor{keyword}{const} cx\_type *Y\_end = Y + r*m;}
+\DoxyCodeLine{396     }
+\DoxyCodeLine{397     \textcolor{keywordflow}{if}(m == 1)}
+\DoxyCodeLine{398       \{}
+\DoxyCodeLine{399       \textcolor{keywordflow}{for}(cx\_type* Yi = Y; Yi != Y\_end; Yi++, X += stride)  \{  (*Yi) = (*X);  \}}
+\DoxyCodeLine{400       \}}
+\DoxyCodeLine{401     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{402       \{}
+\DoxyCodeLine{403       \textcolor{keyword}{const} uword next\_stage  = stage + 1;}
+\DoxyCodeLine{404       \textcolor{keyword}{const} uword next\_stride = stride * r;}
+\DoxyCodeLine{405       }
+\DoxyCodeLine{406       \textcolor{keywordflow}{for}(cx\_type* Yi = Y; Yi != Y\_end; Yi += m, X += stride)  \{ run(Yi, X, next\_stage, next\_stride); \}}
+\DoxyCodeLine{407       \}}
+\DoxyCodeLine{408     }
+\DoxyCodeLine{409     \textcolor{keywordflow}{switch}(r)}
+\DoxyCodeLine{410       \{}
+\DoxyCodeLine{411       \textcolor{keywordflow}{case} 2:  butterfly\_2(Y, stride, m   );  \textcolor{keywordflow}{break};}
+\DoxyCodeLine{412       \textcolor{keywordflow}{case} 3:  butterfly\_3(Y, stride, m   );  \textcolor{keywordflow}{break};}
+\DoxyCodeLine{413       \textcolor{keywordflow}{case} 4:  butterfly\_4(Y, stride, m   );  \textcolor{keywordflow}{break};}
+\DoxyCodeLine{414       \textcolor{keywordflow}{case} 5:  butterfly\_5(Y, stride, m   );  \textcolor{keywordflow}{break};}
+\DoxyCodeLine{415       \textcolor{keywordflow}{default}: butterfly\_N(Y, stride, m, r);  \textcolor{keywordflow}{break};}
+\DoxyCodeLine{416       \}}
+\DoxyCodeLine{417     \}}
+\DoxyCodeLine{418 }
+\DoxyCodeLine{419 }
+\DoxyCodeLine{420   \};}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422 }
+
+\end{DoxyCode}

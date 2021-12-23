@@ -1,0 +1,53 @@
+\hypertarget{op__norm__bones_8hpp_source}{}\doxysection{op\+\_\+norm\+\_\+bones.\+hpp}
+\label{op__norm__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_norm\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_norm\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classop__norm}{op\_norm}}}
+\DoxyCodeLine{22   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__default}{traits\_op\_default}}}
+\DoxyCodeLine{23   \{}
+\DoxyCodeLine{24   \textcolor{keyword}{public}:}
+\DoxyCodeLine{25   }
+\DoxyCodeLine{26   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::pod\_type vec\_norm\_1(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} \textcolor{keyword}{typename}  arma\_not\_cx<typename T1::elem\_type>::result* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{27   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::pod\_type vec\_norm\_1(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{28   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} eT                    vec\_norm\_1\_direct\_std(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{29   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} eT                    vec\_norm\_1\_direct\_mem(\textcolor{keyword}{const} uword N, \textcolor{keyword}{const} eT* \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::pod\_type vec\_norm\_2(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} \textcolor{keyword}{typename}  arma\_not\_cx<typename T1::elem\_type>::result* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{32   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::pod\_type vec\_norm\_2(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{33   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} eT                    vec\_norm\_2\_direct\_std(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{34   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} eT                    vec\_norm\_2\_direct\_mem(\textcolor{keyword}{const} uword N, \textcolor{keyword}{const} eT* \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{35   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} eT                    vec\_norm\_2\_direct\_robust(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::pod\_type vec\_norm\_k(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} \textcolor{keywordtype}{int} k);}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::pod\_type vec\_norm\_max(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P);}
+\DoxyCodeLine{40   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::pod\_type vec\_norm\_min(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P);}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} get\_pod\_type<eT>::result mat\_norm\_1(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{43   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} get\_pod\_type<eT>::result mat\_norm\_2(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} get\_pod\_type<eT>::result mat\_norm\_inf(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X);}
+\DoxyCodeLine{46   \};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 }
+
+\end{DoxyCode}

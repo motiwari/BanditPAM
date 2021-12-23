@@ -1,0 +1,491 @@
+\hypertarget{newarp__SymEigsSolver__meat_8hpp_source}{}\doxysection{newarp\+\_\+\+Sym\+Eigs\+Solver\+\_\+meat.\+hpp}
+\label{newarp__SymEigsSolver__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_SymEigsSolver\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_SymEigsSolver\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }newarp}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{22 \textcolor{keyword}{inline}}
+\DoxyCodeLine{23 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{24 SymEigsSolver<eT, SelectionRule, OpType>::factorise\_from(uword from\_k, uword to\_m, \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}\& fk)}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   \textcolor{keywordflow}{if}(to\_m <= from\_k) \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   fac\_f = fk;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \mbox{\hyperlink{classCol}{Col<eT>}} w(dim\_n, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{33   \textcolor{comment}{// Norm of f}}
+\DoxyCodeLine{34   eT beta = norm(fac\_f);}
+\DoxyCodeLine{35   \textcolor{comment}{// Used to test beta\string~=0}}
+\DoxyCodeLine{36   \textcolor{keyword}{const} eT beta\_thresh = eps * eop\_aux::sqrt(dim\_n);}
+\DoxyCodeLine{37   \textcolor{comment}{// Keep the upperleft k x k submatrix of H and set other elements to 0}}
+\DoxyCodeLine{38   fac\_H.tail\_cols(ncv -\/ from\_k).zeros();}
+\DoxyCodeLine{39   fac\_H.submat(\mbox{\hyperlink{classspan}{span}}(from\_k, ncv -\/ 1), \mbox{\hyperlink{classspan}{span}}(0, from\_k -\/ 1)).zeros();}
+\DoxyCodeLine{40   \textcolor{keywordflow}{for}(uword i = from\_k; i <= to\_m -\/ 1; i++)}
+\DoxyCodeLine{41     \{}
+\DoxyCodeLine{42     \textcolor{keywordtype}{bool} restart = \textcolor{keyword}{false};}
+\DoxyCodeLine{43     \textcolor{comment}{// If beta = 0, then the next V is not full rank}}
+\DoxyCodeLine{44     \textcolor{comment}{// We need to generate a new residual vector that is orthogonal}}
+\DoxyCodeLine{45     \textcolor{comment}{// to the current V, which we call a restart}}
+\DoxyCodeLine{46     \textcolor{keywordflow}{if}(beta < near0)}
+\DoxyCodeLine{47       \{}
+\DoxyCodeLine{48       \textcolor{comment}{// Generate new random vector for fac\_f}}
+\DoxyCodeLine{49       blas\_int idist = 2;}
+\DoxyCodeLine{50       blas\_int iseed[4] = \{1, 3, 5, 7\};}
+\DoxyCodeLine{51       iseed[0] = (i + 100) \% 4095;}
+\DoxyCodeLine{52       blas\_int n = dim\_n;}
+\DoxyCodeLine{53       lapack::larnv(\&idist, \&iseed[0], \&n, fac\_f.memptr());}
+\DoxyCodeLine{54       \textcolor{comment}{// f <-\/ f -\/ V * V' * f, so that f is orthogonal to V}}
+\DoxyCodeLine{55       \mbox{\hyperlink{classMat}{Mat<eT>}} Vs(fac\_V.memptr(), dim\_n, i, \textcolor{keyword}{false}); \textcolor{comment}{// First i columns}}
+\DoxyCodeLine{56       \mbox{\hyperlink{classCol}{Col<eT>}} Vf = Vs.t() * fac\_f;}
+\DoxyCodeLine{57       fac\_f -\/= Vs * Vf;}
+\DoxyCodeLine{58       \textcolor{comment}{// beta <-\/ ||f||}}
+\DoxyCodeLine{59       beta = norm(fac\_f);}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61       restart = \textcolor{keyword}{true};}
+\DoxyCodeLine{62       \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64     \textcolor{comment}{// v <-\/ f / ||f||}}
+\DoxyCodeLine{65     \mbox{\hyperlink{classCol}{Col<eT>}} v(fac\_V.colptr(i), dim\_n, \textcolor{keyword}{false}); \textcolor{comment}{// The (i+1)-\/th column}}
+\DoxyCodeLine{66     v = fac\_f / beta;}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \textcolor{comment}{// Note that H[i+1, i] equals to the unrestarted beta}}
+\DoxyCodeLine{69     fac\_H(i, i -\/ 1) = restart ? eT(0) : beta;}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \textcolor{comment}{// w <-\/ A * v, v = fac\_V.col(i)}}
+\DoxyCodeLine{72     op.perform\_op(v.memptr(), w.memptr());}
+\DoxyCodeLine{73     nmatop++;}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     fac\_H(i -\/ 1, i) = fac\_H(i, i -\/ 1); \textcolor{comment}{// Due to symmetry}}
+\DoxyCodeLine{76     eT Hii = dot(v, w);}
+\DoxyCodeLine{77     fac\_H(i, i) = Hii;}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79     \textcolor{comment}{// f <-\/ w -\/ V * V' * w = w -\/ H[i+1, i] * V\{i\} -\/ H[i+1, i+1] * V\{i+1\}}}
+\DoxyCodeLine{80     \textcolor{comment}{// If restarting, we know that H[i+1, i] = 0}}
+\DoxyCodeLine{81     \textcolor{keywordflow}{if}(restart)}
+\DoxyCodeLine{82       \{}
+\DoxyCodeLine{83       fac\_f = w -\/ Hii * v;}
+\DoxyCodeLine{84       \}}
+\DoxyCodeLine{85     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{86       \{}
+\DoxyCodeLine{87       fac\_f = w -\/ fac\_H(i, i -\/ 1) * fac\_V.col(i -\/ 1) -\/ Hii * v;}
+\DoxyCodeLine{88       \}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90     beta = norm(fac\_f);}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92     \textcolor{comment}{// f/||f|| is going to be the next column of V, so we need to test}}
+\DoxyCodeLine{93     \textcolor{comment}{// whether V' * (f/||f||) \string~= 0}}
+\DoxyCodeLine{94     \mbox{\hyperlink{classMat}{Mat<eT>}} Vs(fac\_V.memptr(), dim\_n, i + 1, \textcolor{keyword}{false}); \textcolor{comment}{// First i+1 columns}}
+\DoxyCodeLine{95     \mbox{\hyperlink{classCol}{Col<eT>}} Vf = Vs.t() * fac\_f;}
+\DoxyCodeLine{96     eT ortho\_err = abs(Vf).max();}
+\DoxyCodeLine{97     \textcolor{comment}{// If not, iteratively correct the residual}}
+\DoxyCodeLine{98     uword count = 0;}
+\DoxyCodeLine{99     \textcolor{keywordflow}{while}(count < 5 \&\& ortho\_err > eps * beta)}
+\DoxyCodeLine{100       \{}
+\DoxyCodeLine{101       \textcolor{comment}{// There is an edge case: when beta=||f|| is close to zero, f mostly consists}}
+\DoxyCodeLine{102       \textcolor{comment}{// of rounding errors, so the test [ortho\_err < eps * beta] is very}}
+\DoxyCodeLine{103       \textcolor{comment}{// likely to fail. In particular, if beta=0, then the test is ensured to fail.}}
+\DoxyCodeLine{104       \textcolor{comment}{// Hence when this happens, we force f to be zero, and then restart in the}}
+\DoxyCodeLine{105       \textcolor{comment}{// next iteration.}}
+\DoxyCodeLine{106       \textcolor{keywordflow}{if}(beta < beta\_thresh)}
+\DoxyCodeLine{107         \{}
+\DoxyCodeLine{108         fac\_f.zeros();}
+\DoxyCodeLine{109         beta = eT(0);}
+\DoxyCodeLine{110         \textcolor{keywordflow}{break};}
+\DoxyCodeLine{111         \}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113       \textcolor{comment}{// f <-\/ f -\/ V * Vf}}
+\DoxyCodeLine{114       fac\_f -\/= Vs * Vf;}
+\DoxyCodeLine{115       \textcolor{comment}{// h <-\/ h + Vf}}
+\DoxyCodeLine{116       fac\_H(i -\/ 1, i) += Vf[i -\/ 1];}
+\DoxyCodeLine{117       fac\_H(i, i -\/ 1) = fac\_H(i -\/ 1, i);}
+\DoxyCodeLine{118       fac\_H(i, i) += Vf[i];}
+\DoxyCodeLine{119       \textcolor{comment}{// beta <-\/ ||f||}}
+\DoxyCodeLine{120       beta = norm(fac\_f);}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122       Vf = Vs.t() * fac\_f;}
+\DoxyCodeLine{123       ortho\_err = abs(Vf).max();}
+\DoxyCodeLine{124       count++;}
+\DoxyCodeLine{125       \}}
+\DoxyCodeLine{126     \}}
+\DoxyCodeLine{127   \}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{132 \textcolor{keyword}{inline}}
+\DoxyCodeLine{133 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{134 SymEigsSolver<eT, SelectionRule, OpType>::restart(uword k)}
+\DoxyCodeLine{135   \{}
+\DoxyCodeLine{136   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   \textcolor{keywordflow}{if}(k >= ncv) \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140   TridiagQR<eT> decomp;}
+\DoxyCodeLine{141   \mbox{\hyperlink{classMat}{Mat<eT>}} Q(ncv, ncv, fill::eye);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143   \textcolor{keywordflow}{for}(uword i = k; i < ncv; i++)}
+\DoxyCodeLine{144     \{}
+\DoxyCodeLine{145     \textcolor{comment}{// QR decomposition of H-\/mu*I, mu is the shift}}
+\DoxyCodeLine{146     fac\_H.diag() -\/= ritz\_val(i);}
+\DoxyCodeLine{147     decomp.compute(fac\_H);}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149     \textcolor{comment}{// Q -\/> Q * Qi}}
+\DoxyCodeLine{150     decomp.apply\_YQ(Q);}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152     \textcolor{comment}{// H -\/> Q'HQ}}
+\DoxyCodeLine{153     \textcolor{comment}{// Since QR = H -\/ mu * I, we have H = QR + mu * I}}
+\DoxyCodeLine{154     \textcolor{comment}{// and therefore Q'HQ = RQ + mu * I}}
+\DoxyCodeLine{155     fac\_H = decomp.matrix\_RQ();}
+\DoxyCodeLine{156     fac\_H.diag() += ritz\_val(i);}
+\DoxyCodeLine{157     \}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159   \textcolor{comment}{// V -\/> VQ, only need to update the first k+1 columns}}
+\DoxyCodeLine{160   \textcolor{comment}{// Q has some elements being zero}}
+\DoxyCodeLine{161   \textcolor{comment}{// The first (ncv -\/ k + i) elements of the i-\/th column of Q are non-\/zero}}
+\DoxyCodeLine{162   \mbox{\hyperlink{classMat}{Mat<eT>}} Vs(dim\_n, k + 1, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{163   uword nnz;}
+\DoxyCodeLine{164   \textcolor{keywordflow}{for}(uword i = 0; i < k; i++)}
+\DoxyCodeLine{165     \{}
+\DoxyCodeLine{166     nnz = ncv -\/ k + i + 1;}
+\DoxyCodeLine{167     \mbox{\hyperlink{classMat}{Mat<eT>}} V(fac\_V.memptr(), dim\_n, nnz, \textcolor{keyword}{false});}
+\DoxyCodeLine{168     \mbox{\hyperlink{classCol}{Col<eT>}} q(Q.colptr(i), nnz, \textcolor{keyword}{false});}
+\DoxyCodeLine{169     \textcolor{comment}{// OLD CODE:}}
+\DoxyCodeLine{170     \textcolor{comment}{// Vs.col(i) = V * q;}}
+\DoxyCodeLine{171     \textcolor{comment}{// NEW CODE:}}
+\DoxyCodeLine{172     \mbox{\hyperlink{classCol}{Col<eT>}} v(Vs.colptr(i), dim\_n, \textcolor{keyword}{false}, \textcolor{keyword}{true});}
+\DoxyCodeLine{173     v = V * q;}
+\DoxyCodeLine{174     \}}
+\DoxyCodeLine{175   }
+\DoxyCodeLine{176   Vs.col(k) = fac\_V * Q.col(k);}
+\DoxyCodeLine{177   fac\_V.head\_cols(k + 1) = Vs;}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179   \mbox{\hyperlink{classCol}{Col<eT>}} fk = fac\_f * Q(ncv -\/ 1, k -\/ 1) + fac\_V.\mbox{\hyperlink{group__Mat_gab68ba7bbceb5544bbd0f6f00dfe6b328}{col}}(k) * fac\_H(k, k -\/ 1);}
+\DoxyCodeLine{180   factorise\_from(k, ncv, fk);}
+\DoxyCodeLine{181   retrieve\_ritzpair();}
+\DoxyCodeLine{182   \}}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{187 \textcolor{keyword}{inline}}
+\DoxyCodeLine{188 uword}
+\DoxyCodeLine{189 SymEigsSolver<eT, SelectionRule, OpType>::num\_converged(eT tol)}
+\DoxyCodeLine{190   \{}
+\DoxyCodeLine{191   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{192   }
+\DoxyCodeLine{193   \textcolor{comment}{// thresh = tol * max(approx0, abs(theta)), theta for ritz value}}
+\DoxyCodeLine{194   \textcolor{keyword}{const} eT f\_norm = norm(fac\_f);}
+\DoxyCodeLine{195   \textcolor{keywordflow}{for}(uword i = 0; i < nev; i++)}
+\DoxyCodeLine{196     \{}
+\DoxyCodeLine{197     eT thresh = tol * (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})(eps23, std::abs(ritz\_val(i)));}
+\DoxyCodeLine{198     eT resid = std::abs(ritz\_est(i)) * f\_norm;}
+\DoxyCodeLine{199     ritz\_conv[i] = (resid < thresh);}
+\DoxyCodeLine{200     \}}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202   \textcolor{keywordflow}{return} std::count(ritz\_conv.begin(), ritz\_conv.end(), \textcolor{keyword}{true});}
+\DoxyCodeLine{203   \}}
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{208 \textcolor{keyword}{inline}}
+\DoxyCodeLine{209 uword}
+\DoxyCodeLine{210 SymEigsSolver<eT, SelectionRule, OpType>::nev\_adjusted(uword nconv)}
+\DoxyCodeLine{211   \{}
+\DoxyCodeLine{212   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{213   }
+\DoxyCodeLine{214   uword nev\_new = nev;}
+\DoxyCodeLine{215   \textcolor{keywordflow}{for}(uword i = nev; i < ncv; i++)}
+\DoxyCodeLine{216     \{}
+\DoxyCodeLine{217     \textcolor{keywordflow}{if}(std::abs(ritz\_est(i)) < near0) \{ nev\_new++; \}}
+\DoxyCodeLine{218     \}}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220   \textcolor{comment}{// Adjust nev\_new, according to dsaup2.f line 677\string~684 in ARPACK}}
+\DoxyCodeLine{221   nev\_new += (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(nconv, (ncv -\/ nev\_new) / 2);}
+\DoxyCodeLine{222   \textcolor{keywordflow}{if}(nev\_new >= ncv) \{ nev\_new = ncv -\/ 1; \}}
+\DoxyCodeLine{223   \textcolor{keywordflow}{if}(nev\_new == 1 \&\& ncv >= 6)}
+\DoxyCodeLine{224     \{}
+\DoxyCodeLine{225     nev\_new = ncv / 2;}
+\DoxyCodeLine{226     \}}
+\DoxyCodeLine{227   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{228   \textcolor{keywordflow}{if}(nev\_new == 1 \&\& ncv > 2)}
+\DoxyCodeLine{229     \{}
+\DoxyCodeLine{230     nev\_new = 2;}
+\DoxyCodeLine{231     \}}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233   \textcolor{keywordflow}{return} nev\_new;}
+\DoxyCodeLine{234   \}}
+\DoxyCodeLine{235 }
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{239 \textcolor{keyword}{inline}}
+\DoxyCodeLine{240 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{241 SymEigsSolver<eT, SelectionRule, OpType>::retrieve\_ritzpair()}
+\DoxyCodeLine{242   \{}
+\DoxyCodeLine{243   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{244   }
+\DoxyCodeLine{245   TridiagEigen<eT> decomp(fac\_H);}
+\DoxyCodeLine{246   \mbox{\hyperlink{classCol}{Col<eT>}} evals = decomp.eigenvalues();}
+\DoxyCodeLine{247   \mbox{\hyperlink{classMat}{Mat<eT>}} evecs = decomp.eigenvectors();}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249   SortEigenvalue<eT, SelectionRule> sorting(evals.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), evals.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}});}
+\DoxyCodeLine{250   std::vector<uword> ind = sorting.index();}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252   \textcolor{comment}{// For BOTH\_ENDS, the eigenvalues are sorted according}}
+\DoxyCodeLine{253   \textcolor{comment}{// to the LARGEST\_ALGE rule, so we need to move those smallest}}
+\DoxyCodeLine{254   \textcolor{comment}{// values to the left}}
+\DoxyCodeLine{255   \textcolor{comment}{// The order would be}}
+\DoxyCodeLine{256   \textcolor{comment}{// Largest => Smallest => 2nd largest => 2nd smallest => ...}}
+\DoxyCodeLine{257   \textcolor{comment}{// We keep this order since the first k values will always be}}
+\DoxyCodeLine{258   \textcolor{comment}{// the wanted collection, no matter k is nev\_updated (used in restart())}}
+\DoxyCodeLine{259   \textcolor{comment}{// or is nev (used in sort\_ritzpair())}}
+\DoxyCodeLine{260   \textcolor{keywordflow}{if}(SelectionRule == \mbox{\hyperlink{structnewarp_1_1EigsSelect_ab0260df9bdbb849be305fa8461b6bcf8a48737e79794c829e61a3945432ae7f0f}{EigsSelect::BOTH\_ENDS}})}
+\DoxyCodeLine{261     \{}
+\DoxyCodeLine{262     std::vector<uword> ind\_copy(ind);}
+\DoxyCodeLine{263     \textcolor{keywordflow}{for}(uword i = 0; i < ncv; i++)}
+\DoxyCodeLine{264       \{}
+\DoxyCodeLine{265       \textcolor{comment}{// If i is even, pick values from the left (large values)}}
+\DoxyCodeLine{266       \textcolor{comment}{// If i is odd, pick values from the right (small values)}}
+\DoxyCodeLine{267       \textcolor{keywordflow}{if}(i \% 2 == 0) \{ ind[i] = ind\_copy[i / 2]; \} \textcolor{keywordflow}{else} \{ ind[i] = ind\_copy[ncv -\/ 1 -\/ i / 2]; \}}
+\DoxyCodeLine{268       \}}
+\DoxyCodeLine{269     \}}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271   \textcolor{comment}{// Copy the ritz values and vectors to ritz\_val and ritz\_vec, respectively}}
+\DoxyCodeLine{272   \textcolor{keywordflow}{for}(uword i = 0; i < ncv; i++)}
+\DoxyCodeLine{273     \{}
+\DoxyCodeLine{274     ritz\_val(i) = evals(ind[i]);}
+\DoxyCodeLine{275     ritz\_est(i) = evecs(ncv -\/ 1, ind[i]);}
+\DoxyCodeLine{276     \}}
+\DoxyCodeLine{277   \textcolor{keywordflow}{for}(uword i = 0; i < nev; i++)}
+\DoxyCodeLine{278     \{}
+\DoxyCodeLine{279     ritz\_vec.col(i) = evecs.\mbox{\hyperlink{group__Mat_gab68ba7bbceb5544bbd0f6f00dfe6b328}{col}}(ind[i]);}
+\DoxyCodeLine{280     \}}
+\DoxyCodeLine{281   \}}
+\DoxyCodeLine{282 }
+\DoxyCodeLine{283 }
+\DoxyCodeLine{284 }
+\DoxyCodeLine{285 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{286 \textcolor{keyword}{inline}}
+\DoxyCodeLine{287 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{288 SymEigsSolver<eT, SelectionRule, OpType>::sort\_ritzpair()}
+\DoxyCodeLine{289   \{}
+\DoxyCodeLine{290   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{291   }
+\DoxyCodeLine{292   \textcolor{comment}{// SortEigenvalue<eT, EigsSelect::LARGEST\_MAGN> sorting(ritz\_val.memptr(), nev);}}
+\DoxyCodeLine{293   }
+\DoxyCodeLine{294   \textcolor{comment}{// Sort Ritz values in ascending algebraic, to be consistent with ARPACK}}
+\DoxyCodeLine{295   SortEigenvalue<eT, EigsSelect::SMALLEST\_ALGE> sorting(ritz\_val.memptr(), nev);}
+\DoxyCodeLine{296   }
+\DoxyCodeLine{297   std::vector<uword> ind = sorting.index();}
+\DoxyCodeLine{298   }
+\DoxyCodeLine{299   \mbox{\hyperlink{classCol}{Col<eT>}}           new\_ritz\_val(ncv,      \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}()  );}
+\DoxyCodeLine{300   \mbox{\hyperlink{classMat}{Mat<eT>}}           new\_ritz\_vec(ncv, nev, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{301   std::vector<bool> new\_ritz\_conv(nev);}
+\DoxyCodeLine{302   }
+\DoxyCodeLine{303   \textcolor{keywordflow}{for}(uword i = 0; i < nev; i++)}
+\DoxyCodeLine{304     \{}
+\DoxyCodeLine{305     new\_ritz\_val(i) = ritz\_val(ind[i]);}
+\DoxyCodeLine{306     new\_ritz\_vec.col(i) = ritz\_vec.col(ind[i]);}
+\DoxyCodeLine{307     new\_ritz\_conv[i] = ritz\_conv[ind[i]];}
+\DoxyCodeLine{308     \}}
+\DoxyCodeLine{309   }
+\DoxyCodeLine{310   ritz\_val.swap(new\_ritz\_val);}
+\DoxyCodeLine{311   ritz\_vec.swap(new\_ritz\_vec);}
+\DoxyCodeLine{312   ritz\_conv.swap(new\_ritz\_conv);}
+\DoxyCodeLine{313   \}}
+\DoxyCodeLine{314 }
+\DoxyCodeLine{315 }
+\DoxyCodeLine{316 }
+\DoxyCodeLine{317 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{318 \textcolor{keyword}{inline}}
+\DoxyCodeLine{319 \mbox{\hyperlink{classnewarp_1_1SymEigsSolver_a578693d73354e102b2bc8347e078a8db}{SymEigsSolver<eT, SelectionRule, OpType>::SymEigsSolver}}(\textcolor{keyword}{const} OpType\& \mbox{\hyperlink{structop__}{op\_}}, uword nev\_, uword ncv\_)}
+\DoxyCodeLine{320   : op(\mbox{\hyperlink{structop__}{op\_}})}
+\DoxyCodeLine{321   , nev(nev\_)}
+\DoxyCodeLine{322   , dim\_n(op.n\_rows)}
+\DoxyCodeLine{323   , ncv(ncv\_ > dim\_n ? dim\_n : ncv\_)}
+\DoxyCodeLine{324   , nmatop(0)}
+\DoxyCodeLine{325   , niter(0)}
+\DoxyCodeLine{326   , eps(std::numeric\_limits<eT>::epsilon())}
+\DoxyCodeLine{327   , eps23(std::pow(eps, eT(2.0) / 3))}
+\DoxyCodeLine{328   , near0(std::numeric\_limits<eT>::\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{min}}() * eT(10))}
+\DoxyCodeLine{329   \{}
+\DoxyCodeLine{330   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{331   }
+\DoxyCodeLine{332   arma\_debug\_check( (nev\_ < 1 || nev\_ > dim\_n -\/ 1), \textcolor{stringliteral}{"{}newarp::SymEigsSolver: nev must satisfy 1 <= nev <= n -\/ 1, n is the size of matrix"{}} );}
+\DoxyCodeLine{333   arma\_debug\_check( (ncv\_ <= nev\_ || ncv\_ > dim\_n), \textcolor{stringliteral}{"{}newarp::SymEigsSolver: ncv must satisfy nev < ncv <= n, n is the size of matrix"{}} );}
+\DoxyCodeLine{334   \}}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337 }
+\DoxyCodeLine{338 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{339 \textcolor{keyword}{inline}}
+\DoxyCodeLine{340 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{341 \mbox{\hyperlink{classnewarp_1_1SymEigsSolver_a59b4ba524962eb040fc283742484e66e}{SymEigsSolver<eT, SelectionRule, OpType>::init}}(eT* init\_resid)}
+\DoxyCodeLine{342   \{}
+\DoxyCodeLine{343   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{344   }
+\DoxyCodeLine{345   \textcolor{comment}{// Reset all matrices/vectors to zero}}
+\DoxyCodeLine{346   fac\_V.zeros(dim\_n, ncv);}
+\DoxyCodeLine{347   fac\_H.zeros(ncv, ncv);}
+\DoxyCodeLine{348   fac\_f.zeros(dim\_n);}
+\DoxyCodeLine{349   ritz\_val.zeros(ncv);}
+\DoxyCodeLine{350   ritz\_vec.zeros(ncv, nev);}
+\DoxyCodeLine{351   ritz\_est.zeros(ncv);}
+\DoxyCodeLine{352   ritz\_conv.assign(nev, \textcolor{keyword}{false});}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354   nmatop = 0;}
+\DoxyCodeLine{355   niter = 0;}
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357   \mbox{\hyperlink{classCol}{Col<eT>}} r(init\_resid, dim\_n, \textcolor{keyword}{false});}
+\DoxyCodeLine{358   \textcolor{comment}{// The first column of fac\_V}}
+\DoxyCodeLine{359   \mbox{\hyperlink{classCol}{Col<eT>}} v(fac\_V.colptr(0), dim\_n, \textcolor{keyword}{false});}
+\DoxyCodeLine{360   eT rnorm = norm(r);}
+\DoxyCodeLine{361   \mbox{\hyperlink{group__debug_ga458beb676810b1e43df9f0668359e76f}{arma\_check}}( (rnorm < near0), \textcolor{stringliteral}{"{}newarp::SymEigsSolver::init(): initial residual vector cannot be zero"{}} );}
+\DoxyCodeLine{362   v = r / rnorm;}
+\DoxyCodeLine{363 }
+\DoxyCodeLine{364   \mbox{\hyperlink{classCol}{Col<eT>}} w(dim\_n, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{365   op.perform\_op(v.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), w.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}());}
+\DoxyCodeLine{366   nmatop++;}
+\DoxyCodeLine{367 }
+\DoxyCodeLine{368   fac\_H(0, 0) = dot(v, w);}
+\DoxyCodeLine{369   fac\_f = w -\/ v * fac\_H(0, 0);}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{371   \textcolor{comment}{// In some cases f is zero in exact arithmetics, but due to rounding errors}}
+\DoxyCodeLine{372   \textcolor{comment}{// it may contain tiny fluctuations. When this happens, we force f to be zero}}
+\DoxyCodeLine{373   \textcolor{keywordflow}{if}(abs(fac\_f).\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}() < eps)  \{ fac\_f.zeros(); \}}
+\DoxyCodeLine{374   \}}
+\DoxyCodeLine{375 }
+\DoxyCodeLine{376 }
+\DoxyCodeLine{377 }
+\DoxyCodeLine{378 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{379 \textcolor{keyword}{inline}}
+\DoxyCodeLine{380 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{381 \mbox{\hyperlink{classnewarp_1_1SymEigsSolver_a59b4ba524962eb040fc283742484e66e}{SymEigsSolver<eT, SelectionRule, OpType>::init}}()}
+\DoxyCodeLine{382   \{}
+\DoxyCodeLine{383   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{384   }
+\DoxyCodeLine{385   \mbox{\hyperlink{classpodarray}{podarray<eT>}} init\_resid(dim\_n);}
+\DoxyCodeLine{386   blas\_int idist = 2;                \textcolor{comment}{// Uniform(-\/1, 1)}}
+\DoxyCodeLine{387   blas\_int iseed[4] = \{1, 3, 5, 7\};  \textcolor{comment}{// Fixed random seed}}
+\DoxyCodeLine{388   blas\_int n = dim\_n;}
+\DoxyCodeLine{389   lapack::larnv(\&idist, \&iseed[0], \&n, init\_resid.memptr());}
+\DoxyCodeLine{390   init(init\_resid.memptr());}
+\DoxyCodeLine{391   \}}
+\DoxyCodeLine{392 }
+\DoxyCodeLine{393 }
+\DoxyCodeLine{394 }
+\DoxyCodeLine{395 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{396 \textcolor{keyword}{inline}}
+\DoxyCodeLine{397 uword}
+\DoxyCodeLine{398 \mbox{\hyperlink{classnewarp_1_1SymEigsSolver_ab4816cb795d9643cf92a8288b8fea6bb}{SymEigsSolver<eT, SelectionRule, OpType>::compute}}(uword maxit, eT tol)}
+\DoxyCodeLine{399   \{}
+\DoxyCodeLine{400   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{401   }
+\DoxyCodeLine{402   \textcolor{comment}{// The m-\/step Arnoldi factorisation}}
+\DoxyCodeLine{403   factorise\_from(1, ncv, fac\_f);}
+\DoxyCodeLine{404   retrieve\_ritzpair();}
+\DoxyCodeLine{405   \textcolor{comment}{// Restarting}}
+\DoxyCodeLine{406   uword i, nconv = 0, nev\_adj;}
+\DoxyCodeLine{407   \textcolor{keywordflow}{for}(i = 0; i < maxit; i++)}
+\DoxyCodeLine{408     \{}
+\DoxyCodeLine{409     nconv = num\_converged(tol);}
+\DoxyCodeLine{410     \textcolor{keywordflow}{if}(nconv >= nev) \{ \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{411 }
+\DoxyCodeLine{412     nev\_adj = nev\_adjusted(nconv);}
+\DoxyCodeLine{413     restart(nev\_adj);}
+\DoxyCodeLine{414     \}}
+\DoxyCodeLine{415   \textcolor{comment}{// Sorting results}}
+\DoxyCodeLine{416   sort\_ritzpair();}
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418   niter = i + 1;}
+\DoxyCodeLine{419 }
+\DoxyCodeLine{420   \textcolor{keywordflow}{return} (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(nev, nconv);}
+\DoxyCodeLine{421   \}}
+\DoxyCodeLine{422 }
+\DoxyCodeLine{423 }
+\DoxyCodeLine{424 }
+\DoxyCodeLine{425 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{426 \textcolor{keyword}{inline}}
+\DoxyCodeLine{427 \mbox{\hyperlink{classCol}{Col<eT>}}}
+\DoxyCodeLine{428 \mbox{\hyperlink{classnewarp_1_1SymEigsSolver_ad725c94b71dfb8132b93bdaba429a73e}{SymEigsSolver<eT, SelectionRule, OpType>::eigenvalues}}()}
+\DoxyCodeLine{429   \{}
+\DoxyCodeLine{430   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{431   }
+\DoxyCodeLine{432   uword nconv = std::count(ritz\_conv.begin(), ritz\_conv.end(), \textcolor{keyword}{true});}
+\DoxyCodeLine{433   \mbox{\hyperlink{classCol}{Col<eT>}} res(nconv, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{434   }
+\DoxyCodeLine{435   \textcolor{keywordflow}{if}(nconv > 0)}
+\DoxyCodeLine{436     \{}
+\DoxyCodeLine{437     uword j = 0;}
+\DoxyCodeLine{438     \textcolor{keywordflow}{for}(uword i = 0; i < nev; i++)}
+\DoxyCodeLine{439       \{}
+\DoxyCodeLine{440       \textcolor{keywordflow}{if}(ritz\_conv[i])}
+\DoxyCodeLine{441         \{}
+\DoxyCodeLine{442         res(j) = ritz\_val(i);}
+\DoxyCodeLine{443         j++;}
+\DoxyCodeLine{444         \}}
+\DoxyCodeLine{445       \}}
+\DoxyCodeLine{446     \}}
+\DoxyCodeLine{447   }
+\DoxyCodeLine{448   \textcolor{keywordflow}{return} res;}
+\DoxyCodeLine{449   \}}
+\DoxyCodeLine{450 }
+\DoxyCodeLine{451 }
+\DoxyCodeLine{452 }
+\DoxyCodeLine{453 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keywordtype}{int} SelectionRule, \textcolor{keyword}{typename} OpType>}
+\DoxyCodeLine{454 \textcolor{keyword}{inline}}
+\DoxyCodeLine{455 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{456 \mbox{\hyperlink{classnewarp_1_1SymEigsSolver_a3d90b41b8ef96c137fb7462d30387bc8}{SymEigsSolver<eT, SelectionRule, OpType>::eigenvectors}}(uword nvec)}
+\DoxyCodeLine{457   \{}
+\DoxyCodeLine{458   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{459   }
+\DoxyCodeLine{460   uword nconv = std::count(ritz\_conv.begin(), ritz\_conv.end(), \textcolor{keyword}{true});}
+\DoxyCodeLine{461   nvec = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(nvec, nconv);}
+\DoxyCodeLine{462   \mbox{\hyperlink{classMat}{Mat<eT>}} res(dim\_n, nvec);}
+\DoxyCodeLine{463   }
+\DoxyCodeLine{464   \textcolor{keywordflow}{if}(nvec > 0)}
+\DoxyCodeLine{465     \{}
+\DoxyCodeLine{466     \mbox{\hyperlink{classMat}{Mat<eT>}} ritz\_vec\_conv(ncv, nvec, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{467     }
+\DoxyCodeLine{468     uword j = 0;}
+\DoxyCodeLine{469     \textcolor{keywordflow}{for}(uword i = 0; i < nev \&\& j < nvec; i++)}
+\DoxyCodeLine{470       \{}
+\DoxyCodeLine{471       \textcolor{keywordflow}{if}(ritz\_conv[i])}
+\DoxyCodeLine{472         \{}
+\DoxyCodeLine{473         ritz\_vec\_conv.\mbox{\hyperlink{group__Mat_gab68ba7bbceb5544bbd0f6f00dfe6b328}{col}}(j) = ritz\_vec.col(i);}
+\DoxyCodeLine{474         j++;}
+\DoxyCodeLine{475         \}}
+\DoxyCodeLine{476       \}}
+\DoxyCodeLine{477     }
+\DoxyCodeLine{478     res = fac\_V * ritz\_vec\_conv;}
+\DoxyCodeLine{479     \}}
+\DoxyCodeLine{480   }
+\DoxyCodeLine{481   \textcolor{keywordflow}{return} res;}
+\DoxyCodeLine{482   \}}
+\DoxyCodeLine{483 }
+\DoxyCodeLine{484 }
+\DoxyCodeLine{485 \}  \textcolor{comment}{// namespace newarp}}
+
+\end{DoxyCode}

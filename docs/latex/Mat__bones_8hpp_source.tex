@@ -1,0 +1,918 @@
+\hypertarget{Mat__bones_8hpp_source}{}\doxysection{Mat\+\_\+bones.\+hpp}
+\label{Mat__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/Mat\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/Mat\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classMat}{Mat}} : \textcolor{keyword}{public} \mbox{\hyperlink{structBase}{Base}}< eT, Mat<eT> >}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   \textcolor{keyword}{public}:}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{typedef} eT                                \mbox{\hyperlink{classMat_a3b7c1109cca98fb4bf493b8be33c4299}{elem\_type}};  }
+\DoxyCodeLine{30   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result  \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{pod\_type}};  }
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{const} uword  \mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};    }
+\DoxyCodeLine{33   \textcolor{keyword}{const} uword  \mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};    }
+\DoxyCodeLine{34   \textcolor{keyword}{const} uword  \mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};    }
+\DoxyCodeLine{35   \textcolor{keyword}{const} uword  \mbox{\hyperlink{classMat_aef1075553126783435cca62655268b0c}{n\_alloc}};   }
+\DoxyCodeLine{36   \textcolor{keyword}{const} uhword \mbox{\hyperlink{classMat_add4e1864259e5b47d34e3bfd4b4566b2}{vec\_state}}; }
+\DoxyCodeLine{37   \textcolor{keyword}{const} uhword mem\_state;}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{comment}{// mem\_state = 0: normal matrix which manages its own memory}}
+\DoxyCodeLine{40   \textcolor{comment}{// mem\_state = 1: use auxiliary memory until a size change}}
+\DoxyCodeLine{41   \textcolor{comment}{// mem\_state = 2: use auxiliary memory and don't allow the number of elements to be changed}}
+\DoxyCodeLine{42   \textcolor{comment}{// mem\_state = 3: fixed size (eg. via template based size specification)}}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   arma\_aligned \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{classMat_a14a6badc8098d810e5decb22272a07b0}{mem}};  }
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   \textcolor{keyword}{protected}:}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   arma\_align\_mem eT mem\_local[ arma\_config::mat\_prealloc ];  \textcolor{comment}{// local storage, for small vectors and matrices}}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \textcolor{keyword}{public}:}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_col  = \textcolor{keyword}{false};}
+\DoxyCodeLine{55   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_row  = \textcolor{keyword}{false};}
+\DoxyCodeLine{56   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_xvec = \textcolor{keyword}{false};}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{\string~Mat}}();}
+\DoxyCodeLine{59   \textcolor{keyword}{inline}  \mbox{\hyperlink{classMat}{Mat}}();}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{61   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols);}
+\DoxyCodeLine{62   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} do\_zeros> \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} \mbox{\hyperlink{structarma__initmode__indicator}{arma\_initmode\_indicator<do\_zeros>}}\&);}
+\DoxyCodeLine{65   \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} do\_zeros> \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s,                         \textcolor{keyword}{const} \mbox{\hyperlink{structarma__initmode__indicator}{arma\_initmode\_indicator<do\_zeros>}}\&);}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\& f);}
+\DoxyCodeLine{68   \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s,                         \textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\& f);}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   \textcolor{keyword}{inline} arma\_cold            \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}*        text);}
+\DoxyCodeLine{71   \textcolor{keyword}{inline} arma\_cold \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}*        text);}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{keyword}{inline} arma\_cold            \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} std::string\& text);}
+\DoxyCodeLine{74   \textcolor{keyword}{inline} arma\_cold \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\textcolor{keyword}{const} std::string\& text);}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   \textcolor{keyword}{inline}            \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} std::vector<eT>\& x);}
+\DoxyCodeLine{77   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\textcolor{keyword}{const} std::vector<eT>\& x);}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keyword}{inline}            \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} std::initializer\_list<eT>\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{80   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\textcolor{keyword}{const} std::initializer\_list<eT>\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keyword}{inline}            \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} std::initializer\_list< std::initializer\_list<eT> >\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{83   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\textcolor{keyword}{const} std::initializer\_list< std::initializer\_list<eT> >\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{84   }
+\DoxyCodeLine{85   \textcolor{keyword}{inline}            \mbox{\hyperlink{classMat}{Mat}}(\mbox{\hyperlink{classMat}{Mat}}\&\& m);}
+\DoxyCodeLine{86   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\mbox{\hyperlink{classMat}{Mat}}\&\& m);}
+\DoxyCodeLine{87   }
+\DoxyCodeLine{88   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(      eT* aux\_mem, \textcolor{keyword}{const} uword aux\_n\_rows, \textcolor{keyword}{const} uword aux\_n\_cols, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} copy\_aux\_mem = \textcolor{keyword}{true}, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} strict = \textcolor{keyword}{false});}
+\DoxyCodeLine{89   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} eT* aux\_mem, \textcolor{keyword}{const} uword aux\_n\_rows, \textcolor{keyword}{const} uword aux\_n\_cols);}
+\DoxyCodeLine{90   }
+\DoxyCodeLine{91   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{92   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{93   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{94   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{95   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& m);}
+\DoxyCodeLine{98   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& m);}
+\DoxyCodeLine{99   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& m);}
+\DoxyCodeLine{100   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& m);}
+\DoxyCodeLine{101   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& m);}
+\DoxyCodeLine{102   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& m);}
+\DoxyCodeLine{103   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& m);}
+\DoxyCodeLine{104   }
+\DoxyCodeLine{105   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{106   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{107   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{108   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{109   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{110   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{111   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X);}
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{114   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<pod\_type,T2>}}\& \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   \textcolor{keyword}{inline} \textcolor{keyword}{explicit}          \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_colmem);  \textcolor{comment}{// only to be used by the quasi\_unwrap class}}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X);}
+\DoxyCodeLine{119   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X);}
+\DoxyCodeLine{120   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X);}
+\DoxyCodeLine{121   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X);}
+\DoxyCodeLine{122   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X);}
+\DoxyCodeLine{123   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X);}
+\DoxyCodeLine{124   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}}\& X);}
+\DoxyCodeLine{125   }
+\DoxyCodeLine{126   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__row__strans}{subview\_row\_strans<eT>}}\& X);  \textcolor{comment}{// subview\_row\_strans can only be generated by the Proxy class}}
+\DoxyCodeLine{127   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__row__htrans}{subview\_row\_htrans<eT>}}\& X);  \textcolor{comment}{// subview\_row\_htrans can only be generated by the Proxy class}}
+\DoxyCodeLine{128   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const}        \mbox{\hyperlink{classxvec__htrans}{xvec\_htrans<eT>}}\& X);  \textcolor{comment}{//        xvec\_htrans can only be generated by the Proxy class}}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} do\_conj>}
+\DoxyCodeLine{131   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classxtrans__mat}{xtrans\_mat<eT,do\_conj>}}\& X);  \textcolor{comment}{//        xtrans\_mat can only be generated by the Proxy class}}
+\DoxyCodeLine{132   }
+\DoxyCodeLine{133   \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{134   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{135   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{136   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{137   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{138   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{139   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X);}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classdiagview}{diagview<eT>}}\& X);}
+\DoxyCodeLine{142   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classdiagview}{diagview<eT>}}\& X);}
+\DoxyCodeLine{143   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classdiagview}{diagview<eT>}}\& X);}
+\DoxyCodeLine{144   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classdiagview}{diagview<eT>}}\& X);}
+\DoxyCodeLine{145   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classdiagview}{diagview<eT>}}\& X);}
+\DoxyCodeLine{146   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classdiagview}{diagview<eT>}}\& X);}
+\DoxyCodeLine{147   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classdiagview}{diagview<eT>}}\& X);}
+\DoxyCodeLine{148   }
+\DoxyCodeLine{149   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}}\& X);}
+\DoxyCodeLine{150   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}}\& X);}
+\DoxyCodeLine{151   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}}\& X);}
+\DoxyCodeLine{152   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}}\& X);}
+\DoxyCodeLine{153   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}}\& X);}
+\DoxyCodeLine{154   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}}\& X);}
+\DoxyCodeLine{155   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}}\& X);}
+\DoxyCodeLine{156   }
+\DoxyCodeLine{157   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}}\& X);}
+\DoxyCodeLine{158   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}}\& X);}
+\DoxyCodeLine{159   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}}\& X);}
+\DoxyCodeLine{160   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}}\& X);}
+\DoxyCodeLine{161   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}}\& X);}
+\DoxyCodeLine{162   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}}\& X);}
+\DoxyCodeLine{163   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}}\& X);}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165   \textcolor{comment}{// Operators on sparse matrices (and subviews)}}
+\DoxyCodeLine{166   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{explicit}    \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT, T1>}}\& m);}
+\DoxyCodeLine{167   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT, T1>}}\& m);}
+\DoxyCodeLine{168   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT, T1>}}\& m);}
+\DoxyCodeLine{169   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT, T1>}}\& m);}
+\DoxyCodeLine{170   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT, T1>}}\& m);}
+\DoxyCodeLine{171   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT, T1>}}\& m);}
+\DoxyCodeLine{172   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT, T1>}}\& m);}
+\DoxyCodeLine{173   }
+\DoxyCodeLine{174   \textcolor{keyword}{inline} \textcolor{keyword}{explicit}    \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpSubview}{SpSubview<eT>}}\& X);}
+\DoxyCodeLine{175   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpSubview}{SpSubview<eT>}}\& X);}
+\DoxyCodeLine{176   }
+\DoxyCodeLine{177   \textcolor{keyword}{inline} \textcolor{keyword}{explicit}    \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& X);}
+\DoxyCodeLine{178   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& X);}
+\DoxyCodeLine{179   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& X);}
+\DoxyCodeLine{180   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& X);}
+\DoxyCodeLine{181   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& X);}
+\DoxyCodeLine{182   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& X);}
+\DoxyCodeLine{183   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& X);}
+\DoxyCodeLine{184   }
+\DoxyCodeLine{185   }
+\DoxyCodeLine{186   arma\_cold \textcolor{keyword}{inline} \mbox{\hyperlink{classmat__injector}{mat\_injector<Mat>}} operator<<(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{187   arma\_cold \textcolor{keyword}{inline} \mbox{\hyperlink{classmat__injector}{mat\_injector<Mat>}} operator<<(\textcolor{keyword}{const} \mbox{\hyperlink{structinjector__end__of__row}{injector\_end\_of\_row<>}}\& x);}
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   }
+\DoxyCodeLine{190   arma\_inline       \mbox{\hyperlink{classsubview__row}{subview\_row<eT>}} \mbox{\hyperlink{group__Mat_ga2f654dd9a790e8fd6b07b026adbc0bd7}{row}}(\textcolor{keyword}{const} uword row\_num);}
+\DoxyCodeLine{191   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__row}{subview\_row<eT>}} \mbox{\hyperlink{group__Mat_ga2f654dd9a790e8fd6b07b026adbc0bd7}{row}}(\textcolor{keyword}{const} uword row\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{192   }
+\DoxyCodeLine{193   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview__row}{subview\_row<eT>}} operator()(\textcolor{keyword}{const} uword row\_num, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span);}
+\DoxyCodeLine{194   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__row}{subview\_row<eT>}} operator()(\textcolor{keyword}{const} uword row\_num, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{195   }
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197   arma\_inline       \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}} \mbox{\hyperlink{group__Mat_gab68ba7bbceb5544bbd0f6f00dfe6b328}{col}}(\textcolor{keyword}{const} uword col\_num);}
+\DoxyCodeLine{198   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}} \mbox{\hyperlink{group__Mat_gab68ba7bbceb5544bbd0f6f00dfe6b328}{col}}(\textcolor{keyword}{const} uword col\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{199   }
+\DoxyCodeLine{200   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} uword col\_num);}
+\DoxyCodeLine{201   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} uword col\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{202   }
+\DoxyCodeLine{203   \textcolor{keyword}{inline}            \mbox{\hyperlink{classCol}{Col<eT>}}  \mbox{\hyperlink{group__Mat_gacd64685ca55fd7f11d0067163a911d11}{unsafe\_col}}(\textcolor{keyword}{const} uword col\_num);}
+\DoxyCodeLine{204   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}  \mbox{\hyperlink{group__Mat_gacd64685ca55fd7f11d0067163a911d11}{unsafe\_col}}(\textcolor{keyword}{const} uword col\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{205   }
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   arma\_inline       \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga06a89eae0134e0678459dc1e2748ba9e}{rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2);}
+\DoxyCodeLine{208   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga06a89eae0134e0678459dc1e2748ba9e}{rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2) \textcolor{keyword}{const};}
+\DoxyCodeLine{209   }
+\DoxyCodeLine{210   arma\_inline       \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga37d3669348116f17e41410adb1b39eab}{cols}}(\textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_col2);}
+\DoxyCodeLine{211   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga37d3669348116f17e41410adb1b39eab}{cols}}(\textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_col2) \textcolor{keyword}{const};}
+\DoxyCodeLine{212   }
+\DoxyCodeLine{213   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga06a89eae0134e0678459dc1e2748ba9e}{rows}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span);}
+\DoxyCodeLine{214   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga06a89eae0134e0678459dc1e2748ba9e}{rows}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{215   }
+\DoxyCodeLine{216   arma\_inline       \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga37d3669348116f17e41410adb1b39eab}{cols}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span);}
+\DoxyCodeLine{217   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga37d3669348116f17e41410adb1b39eab}{cols}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{218   }
+\DoxyCodeLine{219   }
+\DoxyCodeLine{220   arma\_inline       \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga891186c8a4e820a98065c996ab7be696}{submat}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_row2, \textcolor{keyword}{const} uword in\_col2);}
+\DoxyCodeLine{221   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga891186c8a4e820a98065c996ab7be696}{submat}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_row2, \textcolor{keyword}{const} uword in\_col2) \textcolor{keyword}{const};}
+\DoxyCodeLine{222   }
+\DoxyCodeLine{223   arma\_inline       \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga891186c8a4e820a98065c996ab7be696}{submat}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{224   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga891186c8a4e820a98065c996ab7be696}{submat}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{225   }
+\DoxyCodeLine{226   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga891186c8a4e820a98065c996ab7be696}{submat}}    (\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span);}
+\DoxyCodeLine{227   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} \mbox{\hyperlink{group__Mat_ga891186c8a4e820a98065c996ab7be696}{submat}}    (\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{228   }
+\DoxyCodeLine{229   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview}{subview<eT>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span);}
+\DoxyCodeLine{230   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{231   }
+\DoxyCodeLine{232   \textcolor{keyword}{inline}            \mbox{\hyperlink{classsubview}{subview<eT>}} operator()(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{233   \textcolor{keyword}{inline}      \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} operator()(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{234   }
+\DoxyCodeLine{235   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview}{subview<eT>}} head\_rows(\textcolor{keyword}{const} uword N);}
+\DoxyCodeLine{236   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} head\_rows(\textcolor{keyword}{const} uword N) \textcolor{keyword}{const};}
+\DoxyCodeLine{237   }
+\DoxyCodeLine{238   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview}{subview<eT>}} tail\_rows(\textcolor{keyword}{const} uword N);}
+\DoxyCodeLine{239   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} tail\_rows(\textcolor{keyword}{const} uword N) \textcolor{keyword}{const};}
+\DoxyCodeLine{240   }
+\DoxyCodeLine{241   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview}{subview<eT>}} head\_cols(\textcolor{keyword}{const} uword N);}
+\DoxyCodeLine{242   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} head\_cols(\textcolor{keyword}{const} uword N) \textcolor{keyword}{const};}
+\DoxyCodeLine{243   }
+\DoxyCodeLine{244   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview}{subview<eT>}} tail\_cols(\textcolor{keyword}{const} uword N);}
+\DoxyCodeLine{245   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview}{subview<eT>}} tail\_cols(\textcolor{keyword}{const} uword N) \textcolor{keyword}{const};}
+\DoxyCodeLine{246   }
+\DoxyCodeLine{247   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline       \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}} elem(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& a);}
+\DoxyCodeLine{248   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}} elem(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& a) \textcolor{keyword}{const};}
+\DoxyCodeLine{249   }
+\DoxyCodeLine{250   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline       \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& a);}
+\DoxyCodeLine{251   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem1}{subview\_elem1<eT,T1>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& a) \textcolor{keyword}{const};}
+\DoxyCodeLine{252   }
+\DoxyCodeLine{253   }
+\DoxyCodeLine{254   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> arma\_inline       \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}} elem(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& ri, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T2>}}\& ci);}
+\DoxyCodeLine{255   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}} elem(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& ri, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T2>}}\& ci) \textcolor{keyword}{const};}
+\DoxyCodeLine{256   }
+\DoxyCodeLine{257   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> arma\_inline       \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}} \mbox{\hyperlink{group__Mat_ga891186c8a4e820a98065c996ab7be696}{submat}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& ri, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T2>}}\& ci);}
+\DoxyCodeLine{258   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}} \mbox{\hyperlink{group__Mat_ga891186c8a4e820a98065c996ab7be696}{submat}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& ri, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T2>}}\& ci) \textcolor{keyword}{const};}
+\DoxyCodeLine{259   }
+\DoxyCodeLine{260   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> arma\_inline       \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& ri, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T2>}}\& ci);}
+\DoxyCodeLine{261   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T2>}} operator()(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& ri, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T2>}}\& ci) \textcolor{keyword}{const};}
+\DoxyCodeLine{262   }
+\DoxyCodeLine{263   }
+\DoxyCodeLine{264   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline       \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T1>}} \mbox{\hyperlink{group__Mat_ga06a89eae0134e0678459dc1e2748ba9e}{rows}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& ri);}
+\DoxyCodeLine{265   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T1,T1>}} \mbox{\hyperlink{group__Mat_ga06a89eae0134e0678459dc1e2748ba9e}{rows}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& ri) \textcolor{keyword}{const};}
+\DoxyCodeLine{266   }
+\DoxyCodeLine{267   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T2> arma\_inline       \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T2,T2>}} \mbox{\hyperlink{group__Mat_ga37d3669348116f17e41410adb1b39eab}{cols}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T2>}}\& ci);}
+\DoxyCodeLine{268   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T2> arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__elem2}{subview\_elem2<eT,T2,T2>}} \mbox{\hyperlink{group__Mat_ga37d3669348116f17e41410adb1b39eab}{cols}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T2>}}\& ci) \textcolor{keyword}{const};}
+\DoxyCodeLine{269   }
+\DoxyCodeLine{270   }
+\DoxyCodeLine{271   arma\_inline       \mbox{\hyperlink{classsubview__each1}{subview\_each1< Mat<eT>}}, 0 > each\_col();}
+\DoxyCodeLine{272   arma\_inline       \mbox{\hyperlink{classsubview__each1}{subview\_each1< Mat<eT>}}, 1 > each\_row();}
+\DoxyCodeLine{273   }
+\DoxyCodeLine{274   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__each1}{subview\_each1< Mat<eT>}}, 0 > each\_col() \textcolor{keyword}{const};}
+\DoxyCodeLine{275   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__each1}{subview\_each1< Mat<eT>}}, 1 > each\_row() \textcolor{keyword}{const};}
+\DoxyCodeLine{276   }
+\DoxyCodeLine{277   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__each2}{subview\_each2< Mat<eT>}}, 0, T1 > each\_col(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword, T1>}}\& indices);}
+\DoxyCodeLine{278   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__each2}{subview\_each2< Mat<eT>}}, 1, T1 > each\_row(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword, T1>}}\& indices);}
+\DoxyCodeLine{279   }
+\DoxyCodeLine{280   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__each2}{subview\_each2< Mat<eT>}}, 0, T1 > each\_col(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword, T1>}}\& indices) \textcolor{keyword}{const};}
+\DoxyCodeLine{281   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__each2}{subview\_each2< Mat<eT>}}, 1, T1 > each\_row(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword, T1>}}\& indices) \textcolor{keyword}{const};}
+\DoxyCodeLine{282   }
+\DoxyCodeLine{283   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& each\_col(\textcolor{keyword}{const} std::function< \textcolor{keywordtype}{void}(      \mbox{\hyperlink{classCol}{Col<eT>}}\&) >\& F);}
+\DoxyCodeLine{284   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& each\_col(\textcolor{keyword}{const} std::function< \textcolor{keywordtype}{void}(\textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}\&) >\& F) \textcolor{keyword}{const};}
+\DoxyCodeLine{285   }
+\DoxyCodeLine{286   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& each\_row(\textcolor{keyword}{const} std::function< \textcolor{keywordtype}{void}(      \mbox{\hyperlink{classRow}{Row<eT>}}\&) >\& F);}
+\DoxyCodeLine{287   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& each\_row(\textcolor{keyword}{const} std::function< \textcolor{keywordtype}{void}(\textcolor{keyword}{const} \mbox{\hyperlink{classRow}{Row<eT>}}\&) >\& F) \textcolor{keyword}{const};}
+\DoxyCodeLine{288   }
+\DoxyCodeLine{289   }
+\DoxyCodeLine{290   arma\_inline       \mbox{\hyperlink{classdiagview}{diagview<eT>}} \mbox{\hyperlink{group__Mat_ga8ab6c07980e1d4c1d90eb3eb7850a2a4}{diag}}(\textcolor{keyword}{const} sword in\_id = 0);}
+\DoxyCodeLine{291   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classdiagview}{diagview<eT>}} \mbox{\hyperlink{group__Mat_ga8ab6c07980e1d4c1d90eb3eb7850a2a4}{diag}}(\textcolor{keyword}{const} sword in\_id = 0) \textcolor{keyword}{const};}
+\DoxyCodeLine{292   }
+\DoxyCodeLine{293   }
+\DoxyCodeLine{294   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} swap\_rows(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2);}
+\DoxyCodeLine{295   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} swap\_cols(\textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_col2);}
+\DoxyCodeLine{296   }
+\DoxyCodeLine{297   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gaab0b0dc9b53a6735c678ba15237f1af8}{shed\_row}}(\textcolor{keyword}{const} uword row\_num);}
+\DoxyCodeLine{298   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gad9b7f64020d4fc1c8c2c332b3a6cb701}{shed\_col}}(\textcolor{keyword}{const} uword col\_num);}
+\DoxyCodeLine{299   }
+\DoxyCodeLine{300   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gae18e4671dd983be00b17c691ff18a4f1}{shed\_rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2);}
+\DoxyCodeLine{301   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga618ff9cb52b629c84305aed5fd59ceec}{shed\_cols}}(\textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_col2);}
+\DoxyCodeLine{302   }
+\DoxyCodeLine{303   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gae18e4671dd983be00b17c691ff18a4f1}{shed\_rows}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword, T1>}}\& indices);}
+\DoxyCodeLine{304   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga618ff9cb52b629c84305aed5fd59ceec}{shed\_cols}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword, T1>}}\& indices);}
+\DoxyCodeLine{305   }
+\DoxyCodeLine{306   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gaa1a1e4d8245aa664bf447192b58ba703}{insert\_rows}}(\textcolor{keyword}{const} uword row\_num, \textcolor{keyword}{const} uword N, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} set\_to\_zero = \textcolor{keyword}{true});}
+\DoxyCodeLine{307   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gae1f01f87a28b07dd3ecc6a7e90e026d1}{insert\_cols}}(\textcolor{keyword}{const} uword col\_num, \textcolor{keyword}{const} uword N, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} set\_to\_zero = \textcolor{keyword}{true});}
+\DoxyCodeLine{308   }
+\DoxyCodeLine{309   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gaa1a1e4d8245aa664bf447192b58ba703}{insert\_rows}}(\textcolor{keyword}{const} uword row\_num, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{310   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gae1f01f87a28b07dd3ecc6a7e90e026d1}{insert\_cols}}(\textcolor{keyword}{const} uword col\_num, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{311   }
+\DoxyCodeLine{312   }
+\DoxyCodeLine{313   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>}}\& X);}
+\DoxyCodeLine{314   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>}}\& X);}
+\DoxyCodeLine{315   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>}}\& X);}
+\DoxyCodeLine{316   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>}}\& X);}
+\DoxyCodeLine{317   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>}}\& X);}
+\DoxyCodeLine{318   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>}}\& X);}
+\DoxyCodeLine{319   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} gen\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<T1, gen\_type>}}\& X);}
+\DoxyCodeLine{320   }
+\DoxyCodeLine{321   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_type>}}\& X);}
+\DoxyCodeLine{322   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_type>}}\& X);}
+\DoxyCodeLine{323   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_type>}}\& X);}
+\DoxyCodeLine{324   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_type>}}\& X);}
+\DoxyCodeLine{325   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_type>}}\& X);}
+\DoxyCodeLine{326   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_type>}}\& X);}
+\DoxyCodeLine{327   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_type>}}\& X);}
+\DoxyCodeLine{328   }
+\DoxyCodeLine{329   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{330   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{331   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{332   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{333   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{334   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{335   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& X);}
+\DoxyCodeLine{336   }
+\DoxyCodeLine{337   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{338   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{339   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{340   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{341   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{342   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{343   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<eT, T1, op\_type>}}\& X);}
+\DoxyCodeLine{344 }
+\DoxyCodeLine{345   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{346   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{347   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{348   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{349   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{350   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{351   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{352   }
+\DoxyCodeLine{353   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{354   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{355   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{356   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{357   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{358   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{359   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1, op\_type>}}\& X);}
+\DoxyCodeLine{360   }
+\DoxyCodeLine{361   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{362   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{363   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{364   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{365   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{366   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{367   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{368   }
+\DoxyCodeLine{369   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>                     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_times>}}\& X);}
+\DoxyCodeLine{370   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>                     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_times>}}\& X);}
+\DoxyCodeLine{371   }
+\DoxyCodeLine{372   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{373   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{374   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{375   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{376   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{377   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{378   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{379   }
+\DoxyCodeLine{380   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline}             \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{381   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{382   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga9c773f40a0bdb01d69b6881e2d0a2bd3}{operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{383   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga2c87107ca31e1ea88e86efec9f9c5064}{operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{384   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga728a12aa781d342088fe88b4a2544c7f}{operator*=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{385   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8a438acf6cceef18af87d0b12bcf9a30}{operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{386   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga952664df1c1b9c74a6db23b93e613c74}{operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<eT, T1, T2, glue\_type>}}\& X);}
+\DoxyCodeLine{387   }
+\DoxyCodeLine{388   }
+\DoxyCodeLine{389   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Mat_gae92c18f94a67c7f5a5387600c24fc375}{at\_alt}}     (\textcolor{keyword}{const} uword ii) \textcolor{keyword}{const};}
+\DoxyCodeLine{390   }
+\DoxyCodeLine{391   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Mat_ga7d9c27e738bfcfc208e4f285f8cd6cc6}{operator[] }}(\textcolor{keyword}{const} uword ii);}
+\DoxyCodeLine{392   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Mat_ga7d9c27e738bfcfc208e4f285f8cd6cc6}{operator[] }}(\textcolor{keyword}{const} uword ii) \textcolor{keyword}{const};}
+\DoxyCodeLine{393   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}         (\textcolor{keyword}{const} uword ii);}
+\DoxyCodeLine{394   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}         (\textcolor{keyword}{const} uword ii) \textcolor{keyword}{const};}
+\DoxyCodeLine{395   arma\_inline arma\_warn\_unused       eT\& operator() (\textcolor{keyword}{const} uword ii);}
+\DoxyCodeLine{396   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& operator() (\textcolor{keyword}{const} uword ii) \textcolor{keyword}{const};}
+\DoxyCodeLine{397   }
+\DoxyCodeLine{398   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}         (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col);}
+\DoxyCodeLine{399   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}         (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{400   arma\_inline arma\_warn\_unused       eT\& operator() (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col);}
+\DoxyCodeLine{401   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& operator() (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{402   }
+\DoxyCodeLine{403   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_gaac0f36b3cedf7f6be113582b6edc0fd0}{operator++}}();}
+\DoxyCodeLine{404   arma\_inline \textcolor{keywordtype}{void}       \mbox{\hyperlink{group__Mat_gaac0f36b3cedf7f6be113582b6edc0fd0}{operator++}}(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{405   }
+\DoxyCodeLine{406   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga632e79fa65d54ad7381fde813910d987}{operator-\/-\/}}();}
+\DoxyCodeLine{407   arma\_inline \textcolor{keywordtype}{void}       \mbox{\hyperlink{group__Mat_ga632e79fa65d54ad7381fde813910d987}{operator-\/-\/}}(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{408   }
+\DoxyCodeLine{409   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga3008049216e02308ff665862f451a7ff}{is\_empty}}()  \textcolor{keyword}{const};}
+\DoxyCodeLine{410   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga87639faacb2a4bfd8cbc80d23b993edf}{is\_vec}}()    \textcolor{keyword}{const};}
+\DoxyCodeLine{411   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga160f24d462b05f506c23de7d0c9bc75d}{is\_rowvec}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{412   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_gac5dbd6739d78ec6394a50af5edb1f6db}{is\_colvec}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{413   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga1f860b22491beb19251642270d04d8f1}{is\_square}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{414        \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_gad78d4808815d1521085b8eeee1c2aab4}{is\_finite}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{415   }
+\DoxyCodeLine{416   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} has\_inf() \textcolor{keyword}{const};}
+\DoxyCodeLine{417   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} has\_nan() \textcolor{keyword}{const};}
+\DoxyCodeLine{418   }
+\DoxyCodeLine{419   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} is\_sorted(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* direction = \textcolor{stringliteral}{"{}ascend"{}})       \textcolor{keyword}{const};}
+\DoxyCodeLine{420   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} is\_sorted(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* direction, \textcolor{keyword}{const} uword dim) \textcolor{keyword}{const};}
+\DoxyCodeLine{421   }
+\DoxyCodeLine{422   \textcolor{keyword}{template}<\textcolor{keyword}{typename} comparator>}
+\DoxyCodeLine{423   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} is\_sorted\_helper(\textcolor{keyword}{const} comparator\& comp, \textcolor{keyword}{const} uword dim) \textcolor{keyword}{const};}
+\DoxyCodeLine{424   }
+\DoxyCodeLine{425   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga534db9e8a1619c57efb85f22214f888a}{in\_range}}(\textcolor{keyword}{const} uword ii) \textcolor{keyword}{const};}
+\DoxyCodeLine{426   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga534db9e8a1619c57efb85f22214f888a}{in\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& x ) \textcolor{keyword}{const};}
+\DoxyCodeLine{427   }
+\DoxyCodeLine{428   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga534db9e8a1619c57efb85f22214f888a}{in\_range}}(\textcolor{keyword}{const} uword   in\_row, \textcolor{keyword}{const} uword   in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{429   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga534db9e8a1619c57efb85f22214f888a}{in\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} uword   in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{430   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga534db9e8a1619c57efb85f22214f888a}{in\_range}}(\textcolor{keyword}{const} uword   in\_row, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{431   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga534db9e8a1619c57efb85f22214f888a}{in\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{432   }
+\DoxyCodeLine{433   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga534db9e8a1619c57efb85f22214f888a}{in\_range}}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{434   }
+\DoxyCodeLine{435   arma\_inline arma\_warn\_unused       eT* \mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(\textcolor{keyword}{const} uword in\_col);}
+\DoxyCodeLine{436   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT* \mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(\textcolor{keyword}{const} uword in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{437   }
+\DoxyCodeLine{438   arma\_inline arma\_warn\_unused       eT* \mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{439   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT* \mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{440   }
+\DoxyCodeLine{441   }
+\DoxyCodeLine{442   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2, \textcolor{keyword}{typename} expr>}
+\DoxyCodeLine{443   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT2,expr>}}\& X);}
+\DoxyCodeLine{444   }
+\DoxyCodeLine{445   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(\textcolor{keyword}{const} uword in\_elem);}
+\DoxyCodeLine{446   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols);}
+\DoxyCodeLine{447   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{448   }
+\DoxyCodeLine{449   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}   \mbox{\hyperlink{group__Mat_ga4866141f47fddb97ea1ba0e4531f9046}{resize}}(\textcolor{keyword}{const} uword in\_elem);}
+\DoxyCodeLine{450   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}   \mbox{\hyperlink{group__Mat_ga4866141f47fddb97ea1ba0e4531f9046}{resize}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols);}
+\DoxyCodeLine{451   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}   \mbox{\hyperlink{group__Mat_ga4866141f47fddb97ea1ba0e4531f9046}{resize}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{452   }
+\DoxyCodeLine{453   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  \mbox{\hyperlink{group__Mat_gad550ac3aa306d982440d881775ea34aa}{reshape}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols);}
+\DoxyCodeLine{454   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  \mbox{\hyperlink{group__Mat_gad550ac3aa306d982440d881775ea34aa}{reshape}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{455   }
+\DoxyCodeLine{456   arma\_deprecated \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gad550ac3aa306d982440d881775ea34aa}{reshape}}(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols, \textcolor{keyword}{const} uword dim);  }
+\DoxyCodeLine{457   }
+\DoxyCodeLine{458   }
+\DoxyCodeLine{459   \textcolor{keyword}{template}<\textcolor{keyword}{typename} functor> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\&  for\_each(functor F);}
+\DoxyCodeLine{460   \textcolor{keyword}{template}<\textcolor{keyword}{typename} functor> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\&  for\_each(functor F) \textcolor{keyword}{const};}
+\DoxyCodeLine{461   }
+\DoxyCodeLine{462   \textcolor{keyword}{template}<\textcolor{keyword}{typename} functor> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& transform(functor F);}
+\DoxyCodeLine{463   \textcolor{keyword}{template}<\textcolor{keyword}{typename} functor> \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\&     imbue(functor F);}
+\DoxyCodeLine{464   }
+\DoxyCodeLine{465   }
+\DoxyCodeLine{466   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& replace(\textcolor{keyword}{const} eT old\_val, \textcolor{keyword}{const} eT new\_val);}
+\DoxyCodeLine{467   }
+\DoxyCodeLine{468   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& clean(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{pod\_type}} threshold);}
+\DoxyCodeLine{469   }
+\DoxyCodeLine{470   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& clamp(\textcolor{keyword}{const} eT min\_val, \textcolor{keyword}{const} eT max\_val);}
+\DoxyCodeLine{471   }
+\DoxyCodeLine{472   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_gab60eae61ede0f0df33fb2a67cf62b696}{fill}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{473   }
+\DoxyCodeLine{474   \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type>}
+\DoxyCodeLine{475   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_gab60eae61ede0f0df33fb2a67cf62b696}{fill}}(\textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\& f);}
+\DoxyCodeLine{476   }
+\DoxyCodeLine{477   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& zeros();}
+\DoxyCodeLine{478   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& zeros(\textcolor{keyword}{const} uword in\_elem);}
+\DoxyCodeLine{479   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& zeros(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols);}
+\DoxyCodeLine{480   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& zeros(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{481   }
+\DoxyCodeLine{482   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& ones();}
+\DoxyCodeLine{483   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& ones(\textcolor{keyword}{const} uword in\_elem);}
+\DoxyCodeLine{484   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& ones(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols);}
+\DoxyCodeLine{485   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& ones(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{486   }
+\DoxyCodeLine{487   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& randu();}
+\DoxyCodeLine{488   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& randu(\textcolor{keyword}{const} uword in\_elem);}
+\DoxyCodeLine{489   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& randu(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols);}
+\DoxyCodeLine{490   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& randu(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{491   }
+\DoxyCodeLine{492   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& randn();}
+\DoxyCodeLine{493   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& randn(\textcolor{keyword}{const} uword in\_elem);}
+\DoxyCodeLine{494   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& randn(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols);}
+\DoxyCodeLine{495   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& randn(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{496   }
+\DoxyCodeLine{497   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& eye();}
+\DoxyCodeLine{498   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& eye(\textcolor{keyword}{const} uword in\_rows, \textcolor{keyword}{const} uword in\_cols);}
+\DoxyCodeLine{499   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat}}\& eye(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{500   }
+\DoxyCodeLine{501   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{void}      reset();}
+\DoxyCodeLine{502   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{void} soft\_reset();}
+\DoxyCodeLine{503   }
+\DoxyCodeLine{504   }
+\DoxyCodeLine{505   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} set\_real(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<pod\_type,T1>}}\& X);}
+\DoxyCodeLine{506   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} set\_imag(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<pod\_type,T1>}}\& X);}
+\DoxyCodeLine{507   }
+\DoxyCodeLine{508   }
+\DoxyCodeLine{509   \textcolor{keyword}{inline} arma\_warn\_unused eT min() \textcolor{keyword}{const};}
+\DoxyCodeLine{510   \textcolor{keyword}{inline} arma\_warn\_unused eT max() \textcolor{keyword}{const};}
+\DoxyCodeLine{511   }
+\DoxyCodeLine{512   \textcolor{keyword}{inline} eT min(uword\& index\_of\_min\_val) \textcolor{keyword}{const};}
+\DoxyCodeLine{513   \textcolor{keyword}{inline} eT max(uword\& index\_of\_max\_val) \textcolor{keyword}{const};}
+\DoxyCodeLine{514   }
+\DoxyCodeLine{515   \textcolor{keyword}{inline} eT min(uword\& row\_of\_min\_val, uword\& col\_of\_min\_val) \textcolor{keyword}{const};}
+\DoxyCodeLine{516   \textcolor{keyword}{inline} eT max(uword\& row\_of\_max\_val, uword\& col\_of\_max\_val) \textcolor{keyword}{const};}
+\DoxyCodeLine{517   }
+\DoxyCodeLine{518   }
+\DoxyCodeLine{519   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga7bf8c3361baf1f70efe912a8b32f711a}{save}}(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{520   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga7bf8c3361baf1f70efe912a8b32f711a}{save}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__name}{hdf5\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eaaac409c9c25281935ad4f193584bd303}{hdf5\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{521   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga7bf8c3361baf1f70efe912a8b32f711a}{save}}(\textcolor{keyword}{const}  \mbox{\hyperlink{structcsv__name}{csv\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} =   \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4d2490e1c12932d1332e7ce8af72736}{csv\_ascii}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{522   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga7bf8c3361baf1f70efe912a8b32f711a}{save}}(      std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{523   }
+\DoxyCodeLine{524   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_gac0ca236821b17de61adafa03307bebe9}{load}}(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{525   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_gac0ca236821b17de61adafa03307bebe9}{load}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__name}{hdf5\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eaaac409c9c25281935ad4f193584bd303}{hdf5\_binary}});}
+\DoxyCodeLine{526   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_gac0ca236821b17de61adafa03307bebe9}{load}}(\textcolor{keyword}{const}  \mbox{\hyperlink{structcsv__name}{csv\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} =   \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4d2490e1c12932d1332e7ce8af72736}{csv\_ascii}});}
+\DoxyCodeLine{527   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_gac0ca236821b17de61adafa03307bebe9}{load}}(      std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{528   }
+\DoxyCodeLine{529   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga5d1895dc15c52de15fdb4ab3cd08b6bc}{quiet\_save}}(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{530   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga5d1895dc15c52de15fdb4ab3cd08b6bc}{quiet\_save}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__name}{hdf5\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eaaac409c9c25281935ad4f193584bd303}{hdf5\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{531   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga5d1895dc15c52de15fdb4ab3cd08b6bc}{quiet\_save}}(\textcolor{keyword}{const}  \mbox{\hyperlink{structcsv__name}{csv\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} =   \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4d2490e1c12932d1332e7ce8af72736}{csv\_ascii}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{532   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga5d1895dc15c52de15fdb4ab3cd08b6bc}{quiet\_save}}(      std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{533   }
+\DoxyCodeLine{534   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_gaba090c88a9685592f5254ded16e758ff}{quiet\_load}}(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{535   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_gaba090c88a9685592f5254ded16e758ff}{quiet\_load}}(\textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__name}{hdf5\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eaaac409c9c25281935ad4f193584bd303}{hdf5\_binary}});}
+\DoxyCodeLine{536   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_gaba090c88a9685592f5254ded16e758ff}{quiet\_load}}(\textcolor{keyword}{const}  \mbox{\hyperlink{structcsv__name}{csv\_name}}\&    spec, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} =   \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4d2490e1c12932d1332e7ce8af72736}{csv\_ascii}});}
+\DoxyCodeLine{537   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_gaba090c88a9685592f5254ded16e758ff}{quiet\_load}}(      std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{538   }
+\DoxyCodeLine{539   }
+\DoxyCodeLine{540   \textcolor{comment}{// for container-\/like functionality}}
+\DoxyCodeLine{541   }
+\DoxyCodeLine{542   \textcolor{keyword}{typedef} eT    value\_type;}
+\DoxyCodeLine{543   \textcolor{keyword}{typedef} uword size\_type;}
+\DoxyCodeLine{544   }
+\DoxyCodeLine{545   \textcolor{keyword}{typedef}       eT*       \mbox{\hyperlink{classiterator}{iterator}};}
+\DoxyCodeLine{546   \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT* const\_iterator;}
+\DoxyCodeLine{547   }
+\DoxyCodeLine{548   \textcolor{keyword}{typedef}       eT*       col\_iterator;}
+\DoxyCodeLine{549   \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT* const\_col\_iterator;}
+\DoxyCodeLine{550   }
+\DoxyCodeLine{551   \textcolor{keyword}{class }\mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}};}
+\DoxyCodeLine{552   }
+\DoxyCodeLine{553   \textcolor{keyword}{class }\mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}}
+\DoxyCodeLine{554     \{}
+\DoxyCodeLine{555     \textcolor{keyword}{public}:}
+\DoxyCodeLine{556     }
+\DoxyCodeLine{557     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}();}
+\DoxyCodeLine{558     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}\& X);}
+\DoxyCodeLine{559     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& in\_M, \textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col);}
+\DoxyCodeLine{560     }
+\DoxyCodeLine{561     \textcolor{keyword}{inline} arma\_warn\_unused eT\& operator* ();}
+\DoxyCodeLine{562     }
+\DoxyCodeLine{563     \textcolor{keyword}{inline}                  \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}\& operator++();}
+\DoxyCodeLine{564     \textcolor{keyword}{inline} arma\_warn\_unused \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}  operator++(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{565     }
+\DoxyCodeLine{566     \textcolor{keyword}{inline}                  \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}\& operator-\/-\/();}
+\DoxyCodeLine{567     \textcolor{keyword}{inline} arma\_warn\_unused \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}  operator-\/-\/(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{568     }
+\DoxyCodeLine{569     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const}       \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{570     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const}       \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{571     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{572     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{573     }
+\DoxyCodeLine{574     \textcolor{keyword}{typedef} std::bidirectional\_iterator\_tag iterator\_category;}
+\DoxyCodeLine{575     \textcolor{keyword}{typedef} eT                              value\_type;}
+\DoxyCodeLine{576     \textcolor{keyword}{typedef} std::ptrdiff\_t                  difference\_type;  \textcolor{comment}{// TODO: not certain on this one}}
+\DoxyCodeLine{577     \textcolor{keyword}{typedef} eT*                             pointer;}
+\DoxyCodeLine{578     \textcolor{keyword}{typedef} eT\&                             reference;}
+\DoxyCodeLine{579     }
+\DoxyCodeLine{580     arma\_aligned \mbox{\hyperlink{classMat}{Mat<eT>}}* M;}
+\DoxyCodeLine{581     arma\_aligned uword    current\_row;}
+\DoxyCodeLine{582     arma\_aligned uword    current\_col;}
+\DoxyCodeLine{583     \};}
+\DoxyCodeLine{584   }
+\DoxyCodeLine{585   }
+\DoxyCodeLine{586   \textcolor{keyword}{class }\mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}}
+\DoxyCodeLine{587     \{}
+\DoxyCodeLine{588     \textcolor{keyword}{public}:}
+\DoxyCodeLine{589     }
+\DoxyCodeLine{590     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}();}
+\DoxyCodeLine{591     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}(\textcolor{keyword}{const}       \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}\& X);}
+\DoxyCodeLine{592     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}\& X);}
+\DoxyCodeLine{593     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& in\_M, \textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col);}
+\DoxyCodeLine{594     }
+\DoxyCodeLine{595     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keyword}{const} eT\& operator*() \textcolor{keyword}{const};}
+\DoxyCodeLine{596     }
+\DoxyCodeLine{597     \textcolor{keyword}{inline}                  \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}\& operator++();}
+\DoxyCodeLine{598     \textcolor{keyword}{inline} arma\_warn\_unused \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}  operator++(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{599     }
+\DoxyCodeLine{600     \textcolor{keyword}{inline}                  \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}\& operator-\/-\/();}
+\DoxyCodeLine{601     \textcolor{keyword}{inline} arma\_warn\_unused \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}  operator-\/-\/(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{602     }
+\DoxyCodeLine{603     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const}       \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{604     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const}       \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{605     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{606     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{607     }
+\DoxyCodeLine{608     \textcolor{keyword}{typedef} std::bidirectional\_iterator\_tag iterator\_category;}
+\DoxyCodeLine{609     \textcolor{keyword}{typedef} eT                              value\_type;}
+\DoxyCodeLine{610     \textcolor{keyword}{typedef} std::ptrdiff\_t                  difference\_type;  \textcolor{comment}{// TODO: not certain on this one}}
+\DoxyCodeLine{611     \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT*                       pointer;}
+\DoxyCodeLine{612     \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT\&                       reference;}
+\DoxyCodeLine{613     }
+\DoxyCodeLine{614     arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}* M;}
+\DoxyCodeLine{615     arma\_aligned       uword    current\_row;}
+\DoxyCodeLine{616     arma\_aligned       uword    current\_col;}
+\DoxyCodeLine{617     \};}
+\DoxyCodeLine{618   }
+\DoxyCodeLine{619   }
+\DoxyCodeLine{620   \textcolor{keyword}{class }\mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}};}
+\DoxyCodeLine{621 }
+\DoxyCodeLine{622   \textcolor{keyword}{class }\mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}}
+\DoxyCodeLine{623     \{}
+\DoxyCodeLine{624     \textcolor{keyword}{public}:}
+\DoxyCodeLine{625     }
+\DoxyCodeLine{626     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}();}
+\DoxyCodeLine{627     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}\& in\_it);}
+\DoxyCodeLine{628     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& in\_M, \textcolor{keyword}{const} uword row = 0, \textcolor{keyword}{const} uword col = 0);}
+\DoxyCodeLine{629     }
+\DoxyCodeLine{630     \textcolor{keyword}{inline} arma\_warn\_unused eT\& operator*();}
+\DoxyCodeLine{631     }
+\DoxyCodeLine{632     \textcolor{keyword}{inline}                  \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}\& operator++();}
+\DoxyCodeLine{633     \textcolor{keyword}{inline} arma\_warn\_unused \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}  operator++(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{634     }
+\DoxyCodeLine{635     \textcolor{keyword}{inline}                  \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}\& operator-\/-\/();}
+\DoxyCodeLine{636     \textcolor{keyword}{inline} arma\_warn\_unused \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}  operator-\/-\/(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{637     }
+\DoxyCodeLine{638     \textcolor{keyword}{inline} arma\_warn\_unused uword row() \textcolor{keyword}{const};}
+\DoxyCodeLine{639     \textcolor{keyword}{inline} arma\_warn\_unused uword col() \textcolor{keyword}{const};}
+\DoxyCodeLine{640     }
+\DoxyCodeLine{641     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const}       \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{642     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const}       \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{643     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{644     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{645     }
+\DoxyCodeLine{646     \textcolor{keyword}{typedef} std::bidirectional\_iterator\_tag iterator\_category;}
+\DoxyCodeLine{647     \textcolor{keyword}{typedef} eT                              value\_type;}
+\DoxyCodeLine{648     \textcolor{keyword}{typedef} std::ptrdiff\_t                  difference\_type;  \textcolor{comment}{// TODO: not certain on this one}}
+\DoxyCodeLine{649     \textcolor{keyword}{typedef} eT*                             pointer;}
+\DoxyCodeLine{650     \textcolor{keyword}{typedef} eT\&                             reference;}
+\DoxyCodeLine{651     }
+\DoxyCodeLine{652     arma\_aligned \mbox{\hyperlink{classMat}{Mat<eT>}}* M;}
+\DoxyCodeLine{653     arma\_aligned eT*      current\_ptr;}
+\DoxyCodeLine{654     arma\_aligned uword    current\_col;}
+\DoxyCodeLine{655     arma\_aligned uword    current\_row;}
+\DoxyCodeLine{656     \};}
+\DoxyCodeLine{657   }
+\DoxyCodeLine{658   }
+\DoxyCodeLine{659   \textcolor{keyword}{class }\mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}}
+\DoxyCodeLine{660     \{}
+\DoxyCodeLine{661     \textcolor{keyword}{public}:}
+\DoxyCodeLine{662     }
+\DoxyCodeLine{663     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}();}
+\DoxyCodeLine{664     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}(\textcolor{keyword}{const}       \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}\& in\_it);}
+\DoxyCodeLine{665     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}\& in\_it);}
+\DoxyCodeLine{666     \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& in\_M, \textcolor{keyword}{const} uword row = 0, \textcolor{keyword}{const} uword col = 0);}
+\DoxyCodeLine{667     }
+\DoxyCodeLine{668     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keyword}{const} eT\& operator*() \textcolor{keyword}{const};}
+\DoxyCodeLine{669     }
+\DoxyCodeLine{670     \textcolor{keyword}{inline}                  \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}\& operator++();}
+\DoxyCodeLine{671     \textcolor{keyword}{inline} arma\_warn\_unused \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}  operator++(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{672     }
+\DoxyCodeLine{673     \textcolor{keyword}{inline}                  \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}\& operator-\/-\/();}
+\DoxyCodeLine{674     \textcolor{keyword}{inline} arma\_warn\_unused \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}  operator-\/-\/(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{675     }
+\DoxyCodeLine{676     \textcolor{keyword}{inline} arma\_warn\_unused uword row() \textcolor{keyword}{const};}
+\DoxyCodeLine{677     \textcolor{keyword}{inline} arma\_warn\_unused uword col() \textcolor{keyword}{const};}
+\DoxyCodeLine{678     }
+\DoxyCodeLine{679     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{680     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{681     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const}       \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{682     \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const}       \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{683     }
+\DoxyCodeLine{684     \textcolor{comment}{// So that we satisfy the STL iterator types.}}
+\DoxyCodeLine{685     \textcolor{keyword}{typedef} std::bidirectional\_iterator\_tag iterator\_category;}
+\DoxyCodeLine{686     \textcolor{keyword}{typedef} eT                              value\_type;}
+\DoxyCodeLine{687     \textcolor{keyword}{typedef} std::ptrdiff\_t                  difference\_type;  \textcolor{comment}{// TODO: not certain on this one}}
+\DoxyCodeLine{688     \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT*                       pointer;}
+\DoxyCodeLine{689     \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT\&                       reference;}
+\DoxyCodeLine{690     }
+\DoxyCodeLine{691     arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}* M;}
+\DoxyCodeLine{692     arma\_aligned \textcolor{keyword}{const} eT*      current\_ptr;}
+\DoxyCodeLine{693     arma\_aligned       uword    current\_col;}
+\DoxyCodeLine{694     arma\_aligned       uword    current\_row;}
+\DoxyCodeLine{695     \};}
+\DoxyCodeLine{696   }
+\DoxyCodeLine{697   }
+\DoxyCodeLine{698   \textcolor{keyword}{inline}       \mbox{\hyperlink{classiterator}{iterator}}  begin();}
+\DoxyCodeLine{699   \textcolor{keyword}{inline} const\_iterator  begin() \textcolor{keyword}{const};}
+\DoxyCodeLine{700   \textcolor{keyword}{inline} const\_iterator cbegin() \textcolor{keyword}{const};}
+\DoxyCodeLine{701   }
+\DoxyCodeLine{702   \textcolor{keyword}{inline}       \mbox{\hyperlink{classiterator}{iterator}}  end();}
+\DoxyCodeLine{703   \textcolor{keyword}{inline} const\_iterator  end() \textcolor{keyword}{const};}
+\DoxyCodeLine{704   \textcolor{keyword}{inline} const\_iterator cend() \textcolor{keyword}{const};}
+\DoxyCodeLine{705   }
+\DoxyCodeLine{706   \textcolor{keyword}{inline}       col\_iterator begin\_col(\textcolor{keyword}{const} uword col\_num);}
+\DoxyCodeLine{707   \textcolor{keyword}{inline} const\_col\_iterator begin\_col(\textcolor{keyword}{const} uword col\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{708   }
+\DoxyCodeLine{709   \textcolor{keyword}{inline}       col\_iterator end\_col  (\textcolor{keyword}{const} uword col\_num);}
+\DoxyCodeLine{710   \textcolor{keyword}{inline} const\_col\_iterator end\_col  (\textcolor{keyword}{const} uword col\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{711   }
+\DoxyCodeLine{712   \textcolor{keyword}{inline}       \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}} begin\_row(\textcolor{keyword}{const} uword row\_num);}
+\DoxyCodeLine{713   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}} begin\_row(\textcolor{keyword}{const} uword row\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{714   }
+\DoxyCodeLine{715   \textcolor{keyword}{inline}       \mbox{\hyperlink{classMat_1_1row__iterator}{row\_iterator}} end\_row  (\textcolor{keyword}{const} uword row\_num);}
+\DoxyCodeLine{716   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__iterator}{const\_row\_iterator}} end\_row  (\textcolor{keyword}{const} uword row\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{717   }
+\DoxyCodeLine{718   \textcolor{keyword}{inline}       \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}} begin\_row\_col();}
+\DoxyCodeLine{719   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}} begin\_row\_col() \textcolor{keyword}{const};}
+\DoxyCodeLine{720   }
+\DoxyCodeLine{721   \textcolor{keyword}{inline}       \mbox{\hyperlink{classMat_1_1row__col__iterator}{row\_col\_iterator}} end\_row\_col();}
+\DoxyCodeLine{722   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1const__row__col__iterator}{const\_row\_col\_iterator}} end\_row\_col() \textcolor{keyword}{const};}
+\DoxyCodeLine{723   }
+\DoxyCodeLine{724   }
+\DoxyCodeLine{725   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  \mbox{\hyperlink{group__Mat_ga3dbb05713ff59d9e4dc6e9381f84ff03}{clear}}();}
+\DoxyCodeLine{726   \textcolor{keyword}{inline} \textcolor{keywordtype}{bool}  \mbox{\hyperlink{group__Mat_ga3820fa21fab5c814ac50b0f101a9185b}{empty}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{727   \textcolor{keyword}{inline} uword \mbox{\hyperlink{group__Mat_ga9f5815d492e65a9777b3dc0783f5b674}{size}}()  \textcolor{keyword}{const};}
+\DoxyCodeLine{728   }
+\DoxyCodeLine{729   \textcolor{keyword}{inline}       eT\& front();}
+\DoxyCodeLine{730   \textcolor{keyword}{inline} \textcolor{keyword}{const} eT\& front() \textcolor{keyword}{const};}
+\DoxyCodeLine{731   }
+\DoxyCodeLine{732   \textcolor{keyword}{inline}       eT\& back();}
+\DoxyCodeLine{733   \textcolor{keyword}{inline} \textcolor{keyword}{const} eT\& back() \textcolor{keyword}{const};}
+\DoxyCodeLine{734   }
+\DoxyCodeLine{735   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga64938fe9d1da07193cb321c70a0b62c1}{swap}}(\mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{736   }
+\DoxyCodeLine{737   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(\mbox{\hyperlink{classMat}{Mat}}\& X);  }
+\DoxyCodeLine{738   }
+\DoxyCodeLine{739   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} steal\_mem\_col(\mbox{\hyperlink{classMat}{Mat}}\& X, \textcolor{keyword}{const} uword max\_n\_rows);}
+\DoxyCodeLine{740   }
+\DoxyCodeLine{741   }
+\DoxyCodeLine{742   \textcolor{keyword}{template}<uword fixed\_n\_rows, uword fixed\_n\_cols> \textcolor{keyword}{class }\mbox{\hyperlink{classMat_1_1fixed}{fixed}};}
+\DoxyCodeLine{743   }
+\DoxyCodeLine{744   }
+\DoxyCodeLine{745   \textcolor{keyword}{protected}:}
+\DoxyCodeLine{746   }
+\DoxyCodeLine{747   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init\_cold();}
+\DoxyCodeLine{748   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init\_warm(uword in\_rows, uword in\_cols);}
+\DoxyCodeLine{749   }
+\DoxyCodeLine{750   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga1202427ce718a10cd17f68d239700934}{init}}(\textcolor{keyword}{const} std::string\& text);}
+\DoxyCodeLine{751   }
+\DoxyCodeLine{752   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga1202427ce718a10cd17f68d239700934}{init}}(\textcolor{keyword}{const} std::initializer\_list<eT>\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{753   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga1202427ce718a10cd17f68d239700934}{init}}(\textcolor{keyword}{const} std::initializer\_list< std::initializer\_list<eT> >\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{754   }
+\DoxyCodeLine{755   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{756   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga1202427ce718a10cd17f68d239700934}{init}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<pod\_type,T2>}}\& \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{757   }
+\DoxyCodeLine{758   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char} junk, \textcolor{keyword}{const} eT* aux\_mem, \textcolor{keyword}{const} uword aux\_n\_rows, \textcolor{keyword}{const} uword aux\_n\_cols);}
+\DoxyCodeLine{759   }
+\DoxyCodeLine{760   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}\&, \textcolor{keyword}{const} uhword in\_vec\_state);}
+\DoxyCodeLine{761   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}\&, \textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols, \textcolor{keyword}{const} uhword in\_vec\_state);}
+\DoxyCodeLine{762   }
+\DoxyCodeLine{763   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}(\textcolor{keyword}{const} \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}\&, \textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols, \textcolor{keyword}{const} uhword in\_vec\_state, \textcolor{keyword}{const} eT* in\_mem);}
+\DoxyCodeLine{764   }
+\DoxyCodeLine{765   }
+\DoxyCodeLine{766   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classCube}{Cube}}<eT>;}
+\DoxyCodeLine{767   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classsubview__cube}{subview\_cube}}<eT>;}
+\DoxyCodeLine{768   \textcolor{keyword}{friend} \textcolor{keyword}{class }glue\_join;}
+\DoxyCodeLine{769   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classop__strans}{op\_strans}};}
+\DoxyCodeLine{770   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classop__htrans}{op\_htrans}};}
+\DoxyCodeLine{771   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classop__resize}{op\_resize}};}
+\DoxyCodeLine{772   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classop__mean}{op\_mean}};}
+\DoxyCodeLine{773   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classop__max}{op\_max}};}
+\DoxyCodeLine{774   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classop__min}{op\_min}};}
+\DoxyCodeLine{775 }
+\DoxyCodeLine{776   }
+\DoxyCodeLine{777   \textcolor{keyword}{public}:}
+\DoxyCodeLine{778   }
+\DoxyCodeLine{779 \textcolor{preprocessor}{  \#ifdef ARMA\_EXTRA\_MAT\_PROTO}}
+\DoxyCodeLine{780 \textcolor{preprocessor}{    \#include ARMA\_INCFILE\_WRAP(ARMA\_EXTRA\_MAT\_PROTO)}}
+\DoxyCodeLine{781 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{782   \};}
+\DoxyCodeLine{783 }
+\DoxyCodeLine{784 }
+\DoxyCodeLine{785 }
+\DoxyCodeLine{786 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{787 \textcolor{keyword}{template}<uword fixed\_n\_rows, uword fixed\_n\_cols> }
+\DoxyCodeLine{788 \textcolor{keyword}{class }\mbox{\hyperlink{classMat}{Mat}}<eT>::\mbox{\hyperlink{classMat_1_1fixed}{fixed}} : \textcolor{keyword}{public} \mbox{\hyperlink{classMat}{Mat}}<eT>}
+\DoxyCodeLine{789   \{}
+\DoxyCodeLine{790   \textcolor{keyword}{private}:}
+\DoxyCodeLine{791   }
+\DoxyCodeLine{792   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword fixed\_n\_elem = fixed\_n\_rows * fixed\_n\_cols;}
+\DoxyCodeLine{793   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool}  use\_extra    = (fixed\_n\_elem > arma\_config::mat\_prealloc);}
+\DoxyCodeLine{794   }
+\DoxyCodeLine{795   arma\_align\_mem eT mem\_local\_extra[ (use\_extra) ? fixed\_n\_elem : 1 ];}
+\DoxyCodeLine{796   }
+\DoxyCodeLine{797   }
+\DoxyCodeLine{798   \textcolor{keyword}{public}:}
+\DoxyCodeLine{799   }
+\DoxyCodeLine{800   \textcolor{keyword}{typedef} \mbox{\hyperlink{classMat_1_1fixed}{fixed<fixed\_n\_rows, fixed\_n\_cols>}} \mbox{\hyperlink{classMat_1_1fixed}{Mat\_fixed\_type}};}
+\DoxyCodeLine{801   }
+\DoxyCodeLine{802   \textcolor{keyword}{typedef} eT                                \mbox{\hyperlink{classMat_a3b7c1109cca98fb4bf493b8be33c4299}{elem\_type}};}
+\DoxyCodeLine{803   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{pod\_type}};}
+\DoxyCodeLine{804   }
+\DoxyCodeLine{805   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_col  = (fixed\_n\_cols == 1);}
+\DoxyCodeLine{806   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_row  = (fixed\_n\_rows == 1);}
+\DoxyCodeLine{807   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_xvec = \textcolor{keyword}{false};}
+\DoxyCodeLine{808   }
+\DoxyCodeLine{809   \textcolor{keyword}{static} \textcolor{keyword}{const} uword \mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};  \textcolor{comment}{// value provided below the class definition}}
+\DoxyCodeLine{810   \textcolor{keyword}{static} \textcolor{keyword}{const} uword \mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};  \textcolor{comment}{// value provided below the class definition}}
+\DoxyCodeLine{811   \textcolor{keyword}{static} \textcolor{keyword}{const} uword \mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};  \textcolor{comment}{// value provided below the class definition}}
+\DoxyCodeLine{812   }
+\DoxyCodeLine{813   arma\_inline \mbox{\hyperlink{classMat_1_1fixed}{fixed}}();}
+\DoxyCodeLine{814   arma\_inline \mbox{\hyperlink{classMat_1_1fixed}{fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1fixed}{fixed<fixed\_n\_rows, fixed\_n\_cols>}}\& X);}
+\DoxyCodeLine{815   }
+\DoxyCodeLine{816   \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type>       \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1fixed}{fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\& f);}
+\DoxyCodeLine{817   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>              \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1fixed}{fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{818   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1fixed}{fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<pod\_type,T2>}}\& \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{819   }
+\DoxyCodeLine{820   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1fixed}{fixed}}(\textcolor{keyword}{const} eT* aux\_mem);}
+\DoxyCodeLine{821   }
+\DoxyCodeLine{822   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1fixed}{fixed}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}*        text);}
+\DoxyCodeLine{823   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat_1_1fixed}{fixed}}(\textcolor{keyword}{const} std::string\& text);}
+\DoxyCodeLine{824   }
+\DoxyCodeLine{825   \textcolor{keyword}{using} \mbox{\hyperlink{classMat}{Mat<eT>::operator}}=;}
+\DoxyCodeLine{826   \textcolor{keyword}{using} \mbox{\hyperlink{classMat}{Mat<eT>::operator}}();}
+\DoxyCodeLine{827   }
+\DoxyCodeLine{828   \textcolor{keyword}{inline}          \mbox{\hyperlink{classMat_1_1fixed}{fixed}}(\textcolor{keyword}{const} std::initializer\_list<eT>\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{829   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\textcolor{keyword}{const} std::initializer\_list<eT>\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{830   }
+\DoxyCodeLine{831   \textcolor{keyword}{inline}          \mbox{\hyperlink{classMat_1_1fixed}{fixed}}(\textcolor{keyword}{const} std::initializer\_list< std::initializer\_list<eT> >\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{832   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\textcolor{keyword}{const} std::initializer\_list< std::initializer\_list<eT> >\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{833   }
+\DoxyCodeLine{834   arma\_inline \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat_1_1fixed}{fixed<fixed\_n\_rows, fixed\_n\_cols>}}\& X);}
+\DoxyCodeLine{835   }
+\DoxyCodeLine{836 \textcolor{preprocessor}{  \#if defined(ARMA\_GOOD\_COMPILER)}}
+\DoxyCodeLine{837     \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1,              \textcolor{keyword}{typename}   eop\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\textcolor{keyword}{const}   \mbox{\hyperlink{classeOp}{eOp<T1,       eop\_type>}}\& X);}
+\DoxyCodeLine{838     \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type> \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat}}\& \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>}}\& X);}
+\DoxyCodeLine{839 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{840   }
+\DoxyCodeLine{841   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op< Mat\_fixed\_type, op\_htrans >}}  t() \textcolor{keyword}{const};}
+\DoxyCodeLine{842   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op< Mat\_fixed\_type, op\_htrans >}} ht() \textcolor{keyword}{const};}
+\DoxyCodeLine{843   arma\_inline \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op< Mat\_fixed\_type, op\_strans >}} st() \textcolor{keyword}{const};}
+\DoxyCodeLine{844   }
+\DoxyCodeLine{845   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Mat_gae92c18f94a67c7f5a5387600c24fc375}{at\_alt}}     (\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{846   }
+\DoxyCodeLine{847   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Mat_ga7d9c27e738bfcfc208e4f285f8cd6cc6}{operator[] }}(\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{848   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Mat_ga7d9c27e738bfcfc208e4f285f8cd6cc6}{operator[] }}(\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{849   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}         (\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{850   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}         (\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{851   arma\_inline arma\_warn\_unused       eT\& operator() (\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{852   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& operator() (\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{853   }
+\DoxyCodeLine{854   arma\_inline arma\_warn\_unused       eT\& \mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}         (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col);}
+\DoxyCodeLine{855   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& \mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}         (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{856   arma\_inline arma\_warn\_unused       eT\& operator() (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col);}
+\DoxyCodeLine{857   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT\& operator() (\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{858   }
+\DoxyCodeLine{859   arma\_inline arma\_warn\_unused       eT* \mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(\textcolor{keyword}{const} uword in\_col);}
+\DoxyCodeLine{860   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT* \mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(\textcolor{keyword}{const} uword in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{861   }
+\DoxyCodeLine{862   arma\_inline arma\_warn\_unused       eT* \mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{863   arma\_inline arma\_warn\_unused \textcolor{keyword}{const} eT* \mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{864   }
+\DoxyCodeLine{865   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__Mat_ga87639faacb2a4bfd8cbc80d23b993edf}{is\_vec}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{866   }
+\DoxyCodeLine{867   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{group__Mat_gab60eae61ede0f0df33fb2a67cf62b696}{fill}}(\textcolor{keyword}{const} eT val);}
+\DoxyCodeLine{868   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& zeros();}
+\DoxyCodeLine{869   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& ones();}
+\DoxyCodeLine{870   \};}
+\DoxyCodeLine{871 }
+\DoxyCodeLine{872 }
+\DoxyCodeLine{873 }
+\DoxyCodeLine{874 \textcolor{comment}{// these definitions are outside of the class due to bizarre C++ rules;}}
+\DoxyCodeLine{875 \textcolor{comment}{// C++17 has inline variables to address this shortcoming}}
+\DoxyCodeLine{876 }
+\DoxyCodeLine{877 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{878 \textcolor{keyword}{template}<uword fixed\_n\_rows, uword fixed\_n\_cols>}
+\DoxyCodeLine{879 \textcolor{keyword}{const} uword \mbox{\hyperlink{classMat_1_1fixed}{Mat<eT>::fixed}}<fixed\_n\_rows, fixed\_n\_cols>::n\_rows = fixed\_n\_rows;}
+\DoxyCodeLine{880 }
+\DoxyCodeLine{881 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{882 \textcolor{keyword}{template}<uword fixed\_n\_rows, uword fixed\_n\_cols>}
+\DoxyCodeLine{883 \textcolor{keyword}{const} uword \mbox{\hyperlink{classMat_1_1fixed}{Mat<eT>::fixed}}<fixed\_n\_rows, fixed\_n\_cols>::n\_cols = fixed\_n\_cols;}
+\DoxyCodeLine{884 }
+\DoxyCodeLine{885 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{886 \textcolor{keyword}{template}<uword fixed\_n\_rows, uword fixed\_n\_cols>}
+\DoxyCodeLine{887 \textcolor{keyword}{const} uword \mbox{\hyperlink{classMat_1_1fixed}{Mat<eT>::fixed}}<fixed\_n\_rows, fixed\_n\_cols>::n\_elem = fixed\_n\_rows * fixed\_n\_cols;}
+\DoxyCodeLine{888 }
+\DoxyCodeLine{889 }
+\DoxyCodeLine{890 }
+\DoxyCodeLine{891 \textcolor{keyword}{class }\mbox{\hyperlink{classMat__aux}{Mat\_aux}}}
+\DoxyCodeLine{892   \{}
+\DoxyCodeLine{893   \textcolor{keyword}{public}:}
+\DoxyCodeLine{894 }
+\DoxyCodeLine{895   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga6cf30743916b6d309074cefe8249571e}{prefix\_pp}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& x);}
+\DoxyCodeLine{896   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>  \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga6cf30743916b6d309074cefe8249571e}{prefix\_pp}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& x);}
+\DoxyCodeLine{897   }
+\DoxyCodeLine{898   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gafd89a2340a86e783722ccc75aba60ffd}{postfix\_pp}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& x);}
+\DoxyCodeLine{899   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>  \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gafd89a2340a86e783722ccc75aba60ffd}{postfix\_pp}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& x);}
+\DoxyCodeLine{900   }
+\DoxyCodeLine{901   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga1af35408464d0353c7388fba14d7ade7}{prefix\_mm}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& x);}
+\DoxyCodeLine{902   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>  \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_ga1af35408464d0353c7388fba14d7ade7}{prefix\_mm}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& x);}
+\DoxyCodeLine{903   }
+\DoxyCodeLine{904   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gab11b2fb8841d05f5d3181b8dae1b3692}{postfix\_mm}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& x);}
+\DoxyCodeLine{905   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>  \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__Mat_gab11b2fb8841d05f5d3181b8dae1b3692}{postfix\_mm}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& x);}
+\DoxyCodeLine{906   }
+\DoxyCodeLine{907   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} set\_real(\mbox{\hyperlink{classMat}{Mat<eT>}}\&                out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{908   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T,  \textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} set\_real(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base< T,T1>}}\& X);}
+\DoxyCodeLine{909   }
+\DoxyCodeLine{910   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} set\_imag(\mbox{\hyperlink{classMat}{Mat<eT>}}\&                out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X);}
+\DoxyCodeLine{911   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T,  \textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} set\_imag(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base< T,T1>}}\& X);}
+\DoxyCodeLine{912   \};}
+\DoxyCodeLine{913 }
+\DoxyCodeLine{914 }
+\DoxyCodeLine{915 }
+
+\end{DoxyCode}

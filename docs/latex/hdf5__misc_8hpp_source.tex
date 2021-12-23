@@ -1,0 +1,755 @@
+\hypertarget{hdf5__misc_8hpp_source}{}\doxysection{hdf5\+\_\+misc.\+hpp}
+\label{hdf5__misc_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/hdf5\_misc.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/hdf5\_misc.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#if defined(ARMA\_USE\_HDF5)}}
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }hdf5\_misc}
+\DoxyCodeLine{23 \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{29 \textcolor{keyword}{template}< \textcolor{keyword}{typename} eT >}
+\DoxyCodeLine{30 \textcolor{keyword}{inline}}
+\DoxyCodeLine{31 hid\_t}
+\DoxyCodeLine{32 get\_hdf5\_type()}
+\DoxyCodeLine{33   \{}
+\DoxyCodeLine{34   \textcolor{keywordflow}{return} -\/1; \textcolor{comment}{// Return invalid.}}
+\DoxyCodeLine{35   \}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{42 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{43 \textcolor{keyword}{inline}}
+\DoxyCodeLine{44 hid\_t}
+\DoxyCodeLine{45 get\_hdf5\_type< unsigned char >()}
+\DoxyCodeLine{46   \{}
+\DoxyCodeLine{47   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_UCHAR);}
+\DoxyCodeLine{48   \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{51 \textcolor{keyword}{inline}}
+\DoxyCodeLine{52 hid\_t}
+\DoxyCodeLine{53 get\_hdf5\_type< char >()}
+\DoxyCodeLine{54   \{}
+\DoxyCodeLine{55   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_CHAR);}
+\DoxyCodeLine{56   \}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{59 \textcolor{keyword}{inline}}
+\DoxyCodeLine{60 hid\_t}
+\DoxyCodeLine{61 get\_hdf5\_type< short >()}
+\DoxyCodeLine{62   \{}
+\DoxyCodeLine{63   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_SHORT);}
+\DoxyCodeLine{64   \}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{67 \textcolor{keyword}{inline}}
+\DoxyCodeLine{68 hid\_t}
+\DoxyCodeLine{69 get\_hdf5\_type< unsigned short >()}
+\DoxyCodeLine{70   \{}
+\DoxyCodeLine{71   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_USHORT);}
+\DoxyCodeLine{72   \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{75 \textcolor{keyword}{inline}}
+\DoxyCodeLine{76 hid\_t}
+\DoxyCodeLine{77 get\_hdf5\_type< int >()}
+\DoxyCodeLine{78   \{}
+\DoxyCodeLine{79   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_INT);}
+\DoxyCodeLine{80   \}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{83 \textcolor{keyword}{inline}}
+\DoxyCodeLine{84 hid\_t}
+\DoxyCodeLine{85 get\_hdf5\_type< unsigned int >()}
+\DoxyCodeLine{86   \{}
+\DoxyCodeLine{87   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_UINT);}
+\DoxyCodeLine{88   \}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{91 \textcolor{keyword}{inline}}
+\DoxyCodeLine{92 hid\_t}
+\DoxyCodeLine{93 get\_hdf5\_type< long >()}
+\DoxyCodeLine{94   \{}
+\DoxyCodeLine{95   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_LONG);}
+\DoxyCodeLine{96   \}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{99 \textcolor{keyword}{inline}}
+\DoxyCodeLine{100 hid\_t}
+\DoxyCodeLine{101 get\_hdf5\_type< unsigned long >()}
+\DoxyCodeLine{102   \{}
+\DoxyCodeLine{103   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_ULONG);}
+\DoxyCodeLine{104   \}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{107 \textcolor{keyword}{inline}}
+\DoxyCodeLine{108 hid\_t}
+\DoxyCodeLine{109 get\_hdf5\_type< long long >()}
+\DoxyCodeLine{110   \{}
+\DoxyCodeLine{111   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_LLONG);}
+\DoxyCodeLine{112   \}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{115 \textcolor{keyword}{inline}}
+\DoxyCodeLine{116 hid\_t}
+\DoxyCodeLine{117 get\_hdf5\_type< unsigned long long >()}
+\DoxyCodeLine{118   \{}
+\DoxyCodeLine{119   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_ULLONG);}
+\DoxyCodeLine{120   \}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{123 \textcolor{keyword}{inline}}
+\DoxyCodeLine{124 hid\_t}
+\DoxyCodeLine{125 get\_hdf5\_type< float >()}
+\DoxyCodeLine{126   \{}
+\DoxyCodeLine{127   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_FLOAT);}
+\DoxyCodeLine{128   \}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{131 \textcolor{keyword}{inline}}
+\DoxyCodeLine{132 hid\_t}
+\DoxyCodeLine{133 get\_hdf5\_type< double >()}
+\DoxyCodeLine{134   \{}
+\DoxyCodeLine{135   \textcolor{keywordflow}{return} arma\_H5Tcopy(arma\_H5T\_NATIVE\_DOUBLE);}
+\DoxyCodeLine{136   \}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 }
+\DoxyCodeLine{141 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{142 \textcolor{keyword}{struct }hdf5\_complex\_t}
+\DoxyCodeLine{143   \{}
+\DoxyCodeLine{144   eT real;}
+\DoxyCodeLine{145   eT imag;}
+\DoxyCodeLine{146   \};}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{151 \textcolor{keyword}{inline}}
+\DoxyCodeLine{152 hid\_t}
+\DoxyCodeLine{153 get\_hdf5\_type< std::complex<float> >()}
+\DoxyCodeLine{154   \{}
+\DoxyCodeLine{155   hid\_t \mbox{\hyperlink{classtype}{type}} = arma\_H5Tcreate(H5T\_COMPOUND, \textcolor{keyword}{sizeof}(hdf5\_complex\_t<float>));}
+\DoxyCodeLine{156   }
+\DoxyCodeLine{157   arma\_H5Tinsert(\mbox{\hyperlink{classtype}{type}}, \textcolor{stringliteral}{"{}real"{}}, HOFFSET(hdf5\_complex\_t<float>, real), arma\_H5T\_NATIVE\_FLOAT);}
+\DoxyCodeLine{158   arma\_H5Tinsert(\mbox{\hyperlink{classtype}{type}}, \textcolor{stringliteral}{"{}imag"{}}, HOFFSET(hdf5\_complex\_t<float>, imag), arma\_H5T\_NATIVE\_FLOAT);}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   \textcolor{keywordflow}{return} \mbox{\hyperlink{classtype}{type}};}
+\DoxyCodeLine{161   \}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{166 \textcolor{keyword}{inline}}
+\DoxyCodeLine{167 hid\_t}
+\DoxyCodeLine{168 get\_hdf5\_type< std::complex<double> >()}
+\DoxyCodeLine{169   \{}
+\DoxyCodeLine{170   hid\_t \mbox{\hyperlink{classtype}{type}} = arma\_H5Tcreate(H5T\_COMPOUND, \textcolor{keyword}{sizeof}(hdf5\_complex\_t<double>));}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172   arma\_H5Tinsert(\mbox{\hyperlink{classtype}{type}}, \textcolor{stringliteral}{"{}real"{}}, HOFFSET(hdf5\_complex\_t<double>, real), arma\_H5T\_NATIVE\_DOUBLE);}
+\DoxyCodeLine{173   arma\_H5Tinsert(\mbox{\hyperlink{classtype}{type}}, \textcolor{stringliteral}{"{}imag"{}}, HOFFSET(hdf5\_complex\_t<double>, imag), arma\_H5T\_NATIVE\_DOUBLE);}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175   \textcolor{keywordflow}{return} \mbox{\hyperlink{classtype}{type}};}
+\DoxyCodeLine{176   \}}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 \textcolor{comment}{// Compare datatype against all supported types.}}
+\DoxyCodeLine{181 \textcolor{keyword}{inline}}
+\DoxyCodeLine{182 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{183 is\_supported\_arma\_hdf5\_type(hid\_t datatype)}
+\DoxyCodeLine{184   \{}
+\DoxyCodeLine{185   hid\_t  search\_type;}
+\DoxyCodeLine{186   }
+\DoxyCodeLine{187   \textcolor{keywordtype}{bool} is\_equal;}
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   }
+\DoxyCodeLine{190   \textcolor{comment}{// start with most likely used types: double, complex<double>, float, complex<float>}}
+\DoxyCodeLine{191   }
+\DoxyCodeLine{192   search\_type = get\_hdf5\_type<double>();}
+\DoxyCodeLine{193   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{194   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{195   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197   search\_type = get\_hdf5\_type< std::complex<double> >();}
+\DoxyCodeLine{198   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{199   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{200   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{201   }
+\DoxyCodeLine{202   search\_type = get\_hdf5\_type<float>();}
+\DoxyCodeLine{203   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{204   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{205   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   search\_type = get\_hdf5\_type< std::complex<float> >();}
+\DoxyCodeLine{208   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{209   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{210   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   }
+\DoxyCodeLine{213   \textcolor{comment}{// remaining supported types: u8, s8, u16, s16, u32, s32, u64, s64, ulng\_t, slng\_t}}
+\DoxyCodeLine{214   }
+\DoxyCodeLine{215   search\_type = get\_hdf5\_type<u8>();}
+\DoxyCodeLine{216   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{217   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{218   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{219   }
+\DoxyCodeLine{220   search\_type = get\_hdf5\_type<s8>();}
+\DoxyCodeLine{221   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{222   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{223   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{224   }
+\DoxyCodeLine{225   search\_type = get\_hdf5\_type<u16>();}
+\DoxyCodeLine{226   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{227   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{228   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{229   }
+\DoxyCodeLine{230   search\_type = get\_hdf5\_type<s16>();}
+\DoxyCodeLine{231   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{232   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{233   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{234   }
+\DoxyCodeLine{235   search\_type = get\_hdf5\_type<u32>();}
+\DoxyCodeLine{236   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{237   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{238   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{239   }
+\DoxyCodeLine{240   search\_type = get\_hdf5\_type<s32>();}
+\DoxyCodeLine{241   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{242   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{243   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{244   }
+\DoxyCodeLine{245   search\_type = get\_hdf5\_type<u64>();}
+\DoxyCodeLine{246   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{247   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{248   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{249   }
+\DoxyCodeLine{250   search\_type = get\_hdf5\_type<s64>();}
+\DoxyCodeLine{251   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{252   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{253   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{254   }
+\DoxyCodeLine{255   search\_type = get\_hdf5\_type<ulng\_t>();}
+\DoxyCodeLine{256   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{257   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{258   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{259   }
+\DoxyCodeLine{260   search\_type = get\_hdf5\_type<slng\_t>();}
+\DoxyCodeLine{261   is\_equal = ( arma\_H5Tequal(datatype, search\_type) > 0 );}
+\DoxyCodeLine{262   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{263   \textcolor{keywordflow}{if}(is\_equal) \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{264   }
+\DoxyCodeLine{265   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{266   \}}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269 }
+\DoxyCodeLine{271 \textcolor{keyword}{struct }hdf5\_search\_info}
+\DoxyCodeLine{272   \{}
+\DoxyCodeLine{273   \textcolor{keyword}{const}  std::vector<std::string>\& names;}
+\DoxyCodeLine{274   \textcolor{keywordtype}{int}    num\_dims;}
+\DoxyCodeLine{275   \textcolor{keywordtype}{bool}   exact;}
+\DoxyCodeLine{276   hid\_t  best\_match;}
+\DoxyCodeLine{277   \textcolor{keywordtype}{size\_t} best\_match\_position; \textcolor{comment}{// Position of best match in names vector.}}
+\DoxyCodeLine{278   \};}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280 }
+\DoxyCodeLine{281 }
+\DoxyCodeLine{282 \textcolor{keyword}{inline}}
+\DoxyCodeLine{283 herr\_t}
+\DoxyCodeLine{284 hdf5\_search\_callback}
+\DoxyCodeLine{285   (}
+\DoxyCodeLine{286   hid\_t             loc\_id,}
+\DoxyCodeLine{287   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*       \mbox{\hyperlink{structname}{name}},}
+\DoxyCodeLine{288   \textcolor{keyword}{const} H5O\_info\_t* info,}
+\DoxyCodeLine{289   \textcolor{keywordtype}{void}*             operator\_data  \textcolor{comment}{// hdf5\_search\_info}}
+\DoxyCodeLine{290   )}
+\DoxyCodeLine{291   \{}
+\DoxyCodeLine{292   hdf5\_search\_info* search\_info = (hdf5\_search\_info*) operator\_data;}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294   \textcolor{comment}{// We are looking for datasets.}}
+\DoxyCodeLine{295   \textcolor{keywordflow}{if}(info-\/>type == H5O\_TYPE\_DATASET)}
+\DoxyCodeLine{296     \{}
+\DoxyCodeLine{297     \textcolor{comment}{// Check type of dataset to see if we could even load it.}}
+\DoxyCodeLine{298     hid\_t dataset  = arma\_H5Dopen(loc\_id, \mbox{\hyperlink{structname}{name}}, H5P\_DEFAULT);}
+\DoxyCodeLine{299     hid\_t datatype = arma\_H5Dget\_type(dataset);}
+\DoxyCodeLine{300     }
+\DoxyCodeLine{301     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_supported = is\_supported\_arma\_hdf5\_type(datatype);}
+\DoxyCodeLine{302     }
+\DoxyCodeLine{303     arma\_H5Tclose(datatype);}
+\DoxyCodeLine{304     arma\_H5Dclose(dataset);}
+\DoxyCodeLine{305     }
+\DoxyCodeLine{306     \textcolor{keywordflow}{if}(is\_supported == \textcolor{keyword}{false})}
+\DoxyCodeLine{307       \{}
+\DoxyCodeLine{308       \textcolor{comment}{// Forget about it and move on.}}
+\DoxyCodeLine{309       \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{310       \}}
+\DoxyCodeLine{311     }
+\DoxyCodeLine{312     \textcolor{comment}{// Now we have to check against our set of names.}}
+\DoxyCodeLine{313     \textcolor{comment}{// Only check names which could be better.}}
+\DoxyCodeLine{314     \textcolor{keywordflow}{for}(\textcolor{keywordtype}{size\_t} string\_pos = 0; string\_pos < search\_info-\/>best\_match\_position; ++string\_pos)}
+\DoxyCodeLine{315       \{}
+\DoxyCodeLine{316       \textcolor{comment}{// name is the full path (/path/to/dataset); names[string\_pos] may be}}
+\DoxyCodeLine{317       \textcolor{comment}{// "{}dataset"{}, "{}/to/dataset"{}, or "{}/path/to/dataset"{}.}}
+\DoxyCodeLine{318       \textcolor{comment}{// So if we count the number of forward slashes in names[string\_pos],}}
+\DoxyCodeLine{319       \textcolor{comment}{// and then simply take the last substring of name containing that number of slashes,}}
+\DoxyCodeLine{320       \textcolor{comment}{// we can do the comparison.}}
+\DoxyCodeLine{321       }
+\DoxyCodeLine{322       \textcolor{comment}{// Count the number of forward slashes in names[string\_pos].}}
+\DoxyCodeLine{323       uword name\_count = 0;}
+\DoxyCodeLine{324       \textcolor{keywordflow}{for}(uword i = 0; i < search\_info-\/>names[string\_pos].length(); ++i)}
+\DoxyCodeLine{325         \{}
+\DoxyCodeLine{326         \textcolor{keywordflow}{if}((search\_info-\/>names[string\_pos])[i] == \textcolor{charliteral}{'/'}) \{ ++name\_count; \}}
+\DoxyCodeLine{327         \}}
+\DoxyCodeLine{328 }
+\DoxyCodeLine{329       \textcolor{comment}{// Count the number of forward slashes in the full name.}}
+\DoxyCodeLine{330       uword count = 0;}
+\DoxyCodeLine{331       \textcolor{keyword}{const} std::string \mbox{\hyperlink{classstr}{str}} = std::string(\mbox{\hyperlink{structname}{name}});}
+\DoxyCodeLine{332       \textcolor{keywordflow}{for}(uword i = 0; i < \mbox{\hyperlink{classstr}{str}}.length(); ++i)}
+\DoxyCodeLine{333         \{}
+\DoxyCodeLine{334         \textcolor{keywordflow}{if}(\mbox{\hyperlink{classstr}{str}}[i] == \textcolor{charliteral}{'/'}) \{ ++count; \}}
+\DoxyCodeLine{335         \}}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337       \textcolor{comment}{// Is the full string the same?}}
+\DoxyCodeLine{338       \textcolor{keywordflow}{if}(\mbox{\hyperlink{classstr}{str}} == search\_info-\/>names[string\_pos])}
+\DoxyCodeLine{339         \{}
+\DoxyCodeLine{340         \textcolor{comment}{// We found it exactly.}}
+\DoxyCodeLine{341         hid\_t match\_candidate = arma\_H5Dopen(loc\_id, \mbox{\hyperlink{structname}{name}}, H5P\_DEFAULT);}
+\DoxyCodeLine{342 }
+\DoxyCodeLine{343         \textcolor{keywordflow}{if}(match\_candidate < 0)}
+\DoxyCodeLine{344           \{}
+\DoxyCodeLine{345           \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{346           \}}
+\DoxyCodeLine{347 }
+\DoxyCodeLine{348         \textcolor{comment}{// Ensure that the dataset is valid and of the correct dimensionality.}}
+\DoxyCodeLine{349         hid\_t filespace = arma\_H5Dget\_space(match\_candidate);}
+\DoxyCodeLine{350         \textcolor{keywordtype}{int} num\_dims = arma\_H5Sget\_simple\_extent\_ndims(filespace);}
+\DoxyCodeLine{351         }
+\DoxyCodeLine{352         \textcolor{keywordflow}{if}(num\_dims <= search\_info-\/>num\_dims)}
+\DoxyCodeLine{353           \{}
+\DoxyCodeLine{354           \textcolor{comment}{// Valid dataset -\/-\/ we'll keep it.}}
+\DoxyCodeLine{355           \textcolor{comment}{// If we already have an existing match we have to close it.}}
+\DoxyCodeLine{356           \textcolor{keywordflow}{if}(search\_info-\/>best\_match != -\/1)}
+\DoxyCodeLine{357             \{}
+\DoxyCodeLine{358             arma\_H5Dclose(search\_info-\/>best\_match);}
+\DoxyCodeLine{359             \}}
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361           search\_info-\/>best\_match\_position = string\_pos;}
+\DoxyCodeLine{362           search\_info-\/>best\_match          = match\_candidate;}
+\DoxyCodeLine{363           \}}
+\DoxyCodeLine{364         }
+\DoxyCodeLine{365         arma\_H5Sclose(filespace);}
+\DoxyCodeLine{366         \textcolor{comment}{// There is no possibility of anything better, so terminate the search.}}
+\DoxyCodeLine{367         \textcolor{keywordflow}{return} 1;}
+\DoxyCodeLine{368         \}}
+\DoxyCodeLine{369 }
+\DoxyCodeLine{370       \textcolor{comment}{// If we are asking for more slashes than we have, this can't be a match.}}
+\DoxyCodeLine{371       \textcolor{comment}{// Skip to below, where we decide whether or not to keep it anyway based}}
+\DoxyCodeLine{372       \textcolor{comment}{// on the exactness condition of the search.}}
+\DoxyCodeLine{373       \textcolor{keywordflow}{if}(count <= name\_count)}
+\DoxyCodeLine{374         \{}
+\DoxyCodeLine{375         \textcolor{keywordtype}{size\_t} start\_pos = (count == 0) ? 0 : std::string::npos;}
+\DoxyCodeLine{376         \textcolor{keywordflow}{while}(count > 0)}
+\DoxyCodeLine{377           \{}
+\DoxyCodeLine{378           \textcolor{comment}{// Move pointer to previous slash.}}
+\DoxyCodeLine{379           start\_pos = \mbox{\hyperlink{classstr}{str}}.rfind(\textcolor{charliteral}{'/'}, start\_pos);}
+\DoxyCodeLine{380           }
+\DoxyCodeLine{381           \textcolor{comment}{// Break if we've run out of slashes.}}
+\DoxyCodeLine{382           \textcolor{keywordflow}{if}(start\_pos == std::string::npos) \{ \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{383           }
+\DoxyCodeLine{384           -\/-\/count;}
+\DoxyCodeLine{385           \}}
+\DoxyCodeLine{386 }
+\DoxyCodeLine{387         \textcolor{comment}{// Now take the substring (this may end up being the full string).}}
+\DoxyCodeLine{388         \textcolor{keyword}{const} std::string substring = \mbox{\hyperlink{classstr}{str}}.substr(start\_pos);}
+\DoxyCodeLine{389 }
+\DoxyCodeLine{390         \textcolor{comment}{// Are they the same?}}
+\DoxyCodeLine{391         \textcolor{keywordflow}{if}(substring == search\_info-\/>names[string\_pos])}
+\DoxyCodeLine{392           \{}
+\DoxyCodeLine{393           \textcolor{comment}{// We have found the object; it must be better than our existing match.}}
+\DoxyCodeLine{394           hid\_t match\_candidate = arma\_H5Dopen(loc\_id, \mbox{\hyperlink{structname}{name}}, H5P\_DEFAULT);}
+\DoxyCodeLine{395 }
+\DoxyCodeLine{396 }
+\DoxyCodeLine{397           \textcolor{comment}{// arma\_check(match\_candidate < 0, "{}Mat::load(): cannot open an HDF5 dataset"{});}}
+\DoxyCodeLine{398           \textcolor{keywordflow}{if}(match\_candidate < 0)}
+\DoxyCodeLine{399             \{}
+\DoxyCodeLine{400             \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{401             \}}
+\DoxyCodeLine{402           }
+\DoxyCodeLine{403           }
+\DoxyCodeLine{404           \textcolor{comment}{// Ensure that the dataset is valid and of the correct dimensionality.}}
+\DoxyCodeLine{405           hid\_t filespace = arma\_H5Dget\_space(match\_candidate);}
+\DoxyCodeLine{406           \textcolor{keywordtype}{int} num\_dims = arma\_H5Sget\_simple\_extent\_ndims(filespace);}
+\DoxyCodeLine{407           }
+\DoxyCodeLine{408           \textcolor{keywordflow}{if}(num\_dims <= search\_info-\/>num\_dims)}
+\DoxyCodeLine{409             \{}
+\DoxyCodeLine{410             \textcolor{comment}{// Valid dataset -\/-\/ we'll keep it.}}
+\DoxyCodeLine{411             \textcolor{comment}{// If we already have an existing match we have to close it.}}
+\DoxyCodeLine{412             \textcolor{keywordflow}{if}(search\_info-\/>best\_match != -\/1)}
+\DoxyCodeLine{413               \{}
+\DoxyCodeLine{414               arma\_H5Dclose(search\_info-\/>best\_match);}
+\DoxyCodeLine{415               \}}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417             search\_info-\/>best\_match\_position = string\_pos;}
+\DoxyCodeLine{418             search\_info-\/>best\_match          = match\_candidate;}
+\DoxyCodeLine{419             \}}
+\DoxyCodeLine{420           }
+\DoxyCodeLine{421           arma\_H5Sclose(filespace);}
+\DoxyCodeLine{422           \}}
+\DoxyCodeLine{423         \}}
+\DoxyCodeLine{424       }
+\DoxyCodeLine{425       }
+\DoxyCodeLine{426       \textcolor{comment}{// If they are not the same, but we have not found anything and we don't need an exact match, take this.}}
+\DoxyCodeLine{427       \textcolor{keywordflow}{if}((search\_info-\/>exact == \textcolor{keyword}{false}) \&\& (search\_info-\/>best\_match == -\/1))}
+\DoxyCodeLine{428         \{}
+\DoxyCodeLine{429         hid\_t match\_candidate = arma\_H5Dopen(loc\_id, \mbox{\hyperlink{structname}{name}}, H5P\_DEFAULT);}
+\DoxyCodeLine{430         }
+\DoxyCodeLine{431         \textcolor{comment}{// arma\_check(match\_candidate < 0, "{}Mat::load(): cannot open an HDF5 dataset"{});}}
+\DoxyCodeLine{432         \textcolor{keywordflow}{if}(match\_candidate < 0)}
+\DoxyCodeLine{433           \{}
+\DoxyCodeLine{434           \textcolor{keywordflow}{return} -\/1;}
+\DoxyCodeLine{435           \}}
+\DoxyCodeLine{436         }
+\DoxyCodeLine{437         hid\_t filespace = arma\_H5Dget\_space(match\_candidate);}
+\DoxyCodeLine{438         \textcolor{keywordtype}{int} num\_dims = arma\_H5Sget\_simple\_extent\_ndims(filespace);}
+\DoxyCodeLine{439         }
+\DoxyCodeLine{440         \textcolor{keywordflow}{if}(num\_dims <= search\_info-\/>num\_dims)}
+\DoxyCodeLine{441           \{}
+\DoxyCodeLine{442           \textcolor{comment}{// Valid dataset -\/-\/ we'll keep it.}}
+\DoxyCodeLine{443           search\_info-\/>best\_match = arma\_H5Dopen(loc\_id, \mbox{\hyperlink{structname}{name}}, H5P\_DEFAULT);}
+\DoxyCodeLine{444           \}}
+\DoxyCodeLine{445         }
+\DoxyCodeLine{446         arma\_H5Sclose(filespace);}
+\DoxyCodeLine{447         \}}
+\DoxyCodeLine{448       \}}
+\DoxyCodeLine{449     \}}
+\DoxyCodeLine{450   }
+\DoxyCodeLine{451   \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{452   \}}
+\DoxyCodeLine{453 }
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455 }
+\DoxyCodeLine{463 \textcolor{keyword}{inline}}
+\DoxyCodeLine{464 hid\_t}
+\DoxyCodeLine{465 search\_hdf5\_file}
+\DoxyCodeLine{466   (}
+\DoxyCodeLine{467   \textcolor{keyword}{const} std::vector<std::string>\& names,}
+\DoxyCodeLine{468   hid\_t                           hdf5\_file,}
+\DoxyCodeLine{469   \textcolor{keywordtype}{int}                             num\_dims = 2,}
+\DoxyCodeLine{470   \textcolor{keywordtype}{bool}                            exact = \textcolor{keyword}{false}}
+\DoxyCodeLine{471   )}
+\DoxyCodeLine{472   \{}
+\DoxyCodeLine{473   hdf5\_search\_info search\_info = \{ names, num\_dims, exact, -\/1, names.size() \};}
+\DoxyCodeLine{474   }
+\DoxyCodeLine{475   \textcolor{comment}{// We'll use the H5Ovisit to track potential entries.}}
+\DoxyCodeLine{476   herr\_t status = arma\_H5Ovisit(hdf5\_file, H5\_INDEX\_NAME, H5\_ITER\_NATIVE, hdf5\_search\_callback, void\_ptr(\&search\_info));}
+\DoxyCodeLine{477   }
+\DoxyCodeLine{478   \textcolor{comment}{// Return the best match; it will be -\/1 if there was a problem.}}
+\DoxyCodeLine{479   \textcolor{keywordflow}{return} (status < 0) ? -\/1 : search\_info.best\_match;}
+\DoxyCodeLine{480   \}}
+\DoxyCodeLine{481 }
+\DoxyCodeLine{482 }
+\DoxyCodeLine{483 }
+\DoxyCodeLine{487 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{488 \textcolor{keyword}{inline}}
+\DoxyCodeLine{489 hid\_t}
+\DoxyCodeLine{490 load\_and\_convert\_hdf5}
+\DoxyCodeLine{491   (}
+\DoxyCodeLine{492   eT   *dest,}
+\DoxyCodeLine{493   hid\_t dataset,}
+\DoxyCodeLine{494   hid\_t datatype,}
+\DoxyCodeLine{495   uword n\_elem}
+\DoxyCodeLine{496   )}
+\DoxyCodeLine{497   \{}
+\DoxyCodeLine{498   }
+\DoxyCodeLine{499   \textcolor{comment}{// We can't use nice template specializations here}}
+\DoxyCodeLine{500   \textcolor{comment}{// as the determination of the type of 'datatype' must be done at runtime.}}
+\DoxyCodeLine{501   \textcolor{comment}{// So we end up with this ugliness...}}
+\DoxyCodeLine{502   hid\_t search\_type;}
+\DoxyCodeLine{503   }
+\DoxyCodeLine{504   \textcolor{keywordtype}{bool} is\_equal;}
+\DoxyCodeLine{505   }
+\DoxyCodeLine{506   }
+\DoxyCodeLine{507   \textcolor{comment}{// u8}}
+\DoxyCodeLine{508   search\_type = get\_hdf5\_type<u8>();}
+\DoxyCodeLine{509   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{510   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{511   }
+\DoxyCodeLine{512   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{513     \{}
+\DoxyCodeLine{514     \mbox{\hyperlink{classCol}{Col<u8>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{515     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{516     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{517 }
+\DoxyCodeLine{518     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{519     \}}
+\DoxyCodeLine{520   }
+\DoxyCodeLine{521   }
+\DoxyCodeLine{522   \textcolor{comment}{// s8}}
+\DoxyCodeLine{523   search\_type = get\_hdf5\_type<s8>();}
+\DoxyCodeLine{524   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{525   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{526   }
+\DoxyCodeLine{527   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{528     \{}
+\DoxyCodeLine{529     \mbox{\hyperlink{classCol}{Col<s8>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{530     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{531     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{532 }
+\DoxyCodeLine{533     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{534     \}}
+\DoxyCodeLine{535   }
+\DoxyCodeLine{536   }
+\DoxyCodeLine{537   \textcolor{comment}{// u16}}
+\DoxyCodeLine{538   search\_type = get\_hdf5\_type<u16>();}
+\DoxyCodeLine{539   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{540   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{541   }
+\DoxyCodeLine{542   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{543     \{}
+\DoxyCodeLine{544     \mbox{\hyperlink{classCol}{Col<u16>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{545     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{546     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{547 }
+\DoxyCodeLine{548     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{549     \}}
+\DoxyCodeLine{550   }
+\DoxyCodeLine{551   }
+\DoxyCodeLine{552   \textcolor{comment}{// s16}}
+\DoxyCodeLine{553   search\_type = get\_hdf5\_type<s16>();}
+\DoxyCodeLine{554   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{555   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{556   }
+\DoxyCodeLine{557   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{558     \{}
+\DoxyCodeLine{559     \mbox{\hyperlink{classCol}{Col<s16>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{560     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{561     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{562 }
+\DoxyCodeLine{563     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{564     \}}
+\DoxyCodeLine{565   }
+\DoxyCodeLine{566   }
+\DoxyCodeLine{567   \textcolor{comment}{// u32}}
+\DoxyCodeLine{568   search\_type = get\_hdf5\_type<u32>();}
+\DoxyCodeLine{569   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{570   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{571   }
+\DoxyCodeLine{572   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{573     \{}
+\DoxyCodeLine{574     \mbox{\hyperlink{classCol}{Col<u32>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{575     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{576     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{577 }
+\DoxyCodeLine{578     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{579     \}}
+\DoxyCodeLine{580   }
+\DoxyCodeLine{581   }
+\DoxyCodeLine{582   \textcolor{comment}{// s32}}
+\DoxyCodeLine{583   search\_type = get\_hdf5\_type<s32>();}
+\DoxyCodeLine{584   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{585   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{586   }
+\DoxyCodeLine{587   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{588     \{}
+\DoxyCodeLine{589     \mbox{\hyperlink{classCol}{Col<s32>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{590     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{591     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{592 }
+\DoxyCodeLine{593     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{594     \}}
+\DoxyCodeLine{595   }
+\DoxyCodeLine{596   }
+\DoxyCodeLine{597   \textcolor{comment}{// u64}}
+\DoxyCodeLine{598   search\_type = get\_hdf5\_type<u64>();}
+\DoxyCodeLine{599   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{600   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{601   }
+\DoxyCodeLine{602   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{603     \{}
+\DoxyCodeLine{604     \mbox{\hyperlink{classCol}{Col<u64>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{605     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{606     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{607 }
+\DoxyCodeLine{608     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{609     \}}
+\DoxyCodeLine{610   }
+\DoxyCodeLine{611   }
+\DoxyCodeLine{612   \textcolor{comment}{// s64}}
+\DoxyCodeLine{613   search\_type = get\_hdf5\_type<s64>();}
+\DoxyCodeLine{614   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{615   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{616   }
+\DoxyCodeLine{617   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{618     \{}
+\DoxyCodeLine{619     \mbox{\hyperlink{classCol}{Col<s64>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{620     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{621     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{622 }
+\DoxyCodeLine{623     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{624     \}}
+\DoxyCodeLine{625   }
+\DoxyCodeLine{626   }
+\DoxyCodeLine{627   \textcolor{comment}{// ulng\_t}}
+\DoxyCodeLine{628   search\_type = get\_hdf5\_type<ulng\_t>();}
+\DoxyCodeLine{629   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{630   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{631   }
+\DoxyCodeLine{632   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{633     \{}
+\DoxyCodeLine{634     \mbox{\hyperlink{classCol}{Col<ulng\_t>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{635     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{636     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{637 }
+\DoxyCodeLine{638     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{639     \}}
+\DoxyCodeLine{640   }
+\DoxyCodeLine{641   }
+\DoxyCodeLine{642   \textcolor{comment}{// slng\_t}}
+\DoxyCodeLine{643   search\_type = get\_hdf5\_type<slng\_t>();}
+\DoxyCodeLine{644   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{645   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{646   }
+\DoxyCodeLine{647   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{648     \{}
+\DoxyCodeLine{649     \mbox{\hyperlink{classCol}{Col<slng\_t>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{650     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{651     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{652 }
+\DoxyCodeLine{653     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{654     \}}
+\DoxyCodeLine{655   }
+\DoxyCodeLine{656   }
+\DoxyCodeLine{657   \textcolor{comment}{// float}}
+\DoxyCodeLine{658   search\_type = get\_hdf5\_type<float>();}
+\DoxyCodeLine{659   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{660   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{661   }
+\DoxyCodeLine{662   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{663     \{}
+\DoxyCodeLine{664     \mbox{\hyperlink{classCol}{Col<float>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{665     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{666     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{667 }
+\DoxyCodeLine{668     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{669     \}}
+\DoxyCodeLine{670   }
+\DoxyCodeLine{671   }
+\DoxyCodeLine{672   \textcolor{comment}{// double}}
+\DoxyCodeLine{673   search\_type = get\_hdf5\_type<double>();}
+\DoxyCodeLine{674   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{675   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{676   }
+\DoxyCodeLine{677   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{678     \{}
+\DoxyCodeLine{679     \mbox{\hyperlink{classCol}{Col<double>}} v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{680     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{681     arrayops::convert(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{682 }
+\DoxyCodeLine{683     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{684     \}}
+\DoxyCodeLine{685   }
+\DoxyCodeLine{686   }
+\DoxyCodeLine{687   \textcolor{comment}{// complex float}}
+\DoxyCodeLine{688   search\_type = get\_hdf5\_type< std::complex<float> >();}
+\DoxyCodeLine{689   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{690   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{691   }
+\DoxyCodeLine{692   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{693     \{}
+\DoxyCodeLine{694     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})}
+\DoxyCodeLine{695       \{}
+\DoxyCodeLine{696       \textcolor{keywordflow}{return} -\/1; \textcolor{comment}{// can't read complex data into non-\/complex matrix/cube}}
+\DoxyCodeLine{697       \}}
+\DoxyCodeLine{698     }
+\DoxyCodeLine{699     \mbox{\hyperlink{classCol}{Col< std::complex<float>}} > v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{700     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{701     arrayops::convert\_cx(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{702     }
+\DoxyCodeLine{703     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{704     \}}
+\DoxyCodeLine{705   }
+\DoxyCodeLine{706   }
+\DoxyCodeLine{707   \textcolor{comment}{// complex double}}
+\DoxyCodeLine{708   search\_type = get\_hdf5\_type< std::complex<double> >();}
+\DoxyCodeLine{709   is\_equal = (arma\_H5Tequal(datatype, search\_type) > 0);}
+\DoxyCodeLine{710   arma\_H5Tclose(search\_type);}
+\DoxyCodeLine{711   }
+\DoxyCodeLine{712   \textcolor{keywordflow}{if}(is\_equal)}
+\DoxyCodeLine{713     \{}
+\DoxyCodeLine{714     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})}
+\DoxyCodeLine{715       \{}
+\DoxyCodeLine{716       \textcolor{keywordflow}{return} -\/1; \textcolor{comment}{// can't read complex data into non-\/complex matrix/cube}}
+\DoxyCodeLine{717       \}}
+\DoxyCodeLine{718     }
+\DoxyCodeLine{719     \mbox{\hyperlink{classCol}{Col< std::complex<double>}} > v(n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{720     hid\_t status = arma\_H5Dread(dataset, datatype, H5S\_ALL, H5S\_ALL, H5P\_DEFAULT, void\_ptr(v.memptr()));}
+\DoxyCodeLine{721     arrayops::convert\_cx(dest, v.memptr(), n\_elem);}
+\DoxyCodeLine{722     }
+\DoxyCodeLine{723     \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{724     \}}
+\DoxyCodeLine{725   }
+\DoxyCodeLine{726   }
+\DoxyCodeLine{727   \textcolor{keywordflow}{return} -\/1; \textcolor{comment}{// Failure.}}
+\DoxyCodeLine{728   \}}
+\DoxyCodeLine{729 }
+\DoxyCodeLine{730 }
+\DoxyCodeLine{731 }
+\DoxyCodeLine{732 \textcolor{keyword}{struct }hdf5\_suspend\_printing\_errors}
+\DoxyCodeLine{733   \{}
+\DoxyCodeLine{734 \textcolor{preprocessor}{  \#if defined(ARMA\_PRINT\_HDF5\_ERRORS)}}
+\DoxyCodeLine{735     }
+\DoxyCodeLine{736     \textcolor{keyword}{inline}}
+\DoxyCodeLine{737     hdf5\_suspend\_printing\_errors() \{\}}
+\DoxyCodeLine{738     }
+\DoxyCodeLine{739 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{740     }
+\DoxyCodeLine{741     herr\_t (*old\_client\_func)(hid\_t, \textcolor{keywordtype}{void}*);}
+\DoxyCodeLine{742     \textcolor{keywordtype}{void}*    old\_client\_data;}
+\DoxyCodeLine{743     }
+\DoxyCodeLine{744     \textcolor{keyword}{inline}}
+\DoxyCodeLine{745     hdf5\_suspend\_printing\_errors()}
+\DoxyCodeLine{746       \{}
+\DoxyCodeLine{747       \textcolor{comment}{// Save old error handler.}}
+\DoxyCodeLine{748       arma\_H5Eget\_auto(H5E\_DEFAULT, \&old\_client\_func, \&old\_client\_data);}
+\DoxyCodeLine{749       }
+\DoxyCodeLine{750       \textcolor{comment}{// Disable annoying HDF5 error messages.}}
+\DoxyCodeLine{751       arma\_H5Eset\_auto(H5E\_DEFAULT, NULL, NULL);}
+\DoxyCodeLine{752       \}}
+\DoxyCodeLine{753     }
+\DoxyCodeLine{754     \textcolor{keyword}{inline}}
+\DoxyCodeLine{755     \string~hdf5\_suspend\_printing\_errors()}
+\DoxyCodeLine{756       \{}
+\DoxyCodeLine{757       arma\_H5Eset\_auto(H5E\_DEFAULT, old\_client\_func, old\_client\_data);}
+\DoxyCodeLine{758       \}}
+\DoxyCodeLine{759     }
+\DoxyCodeLine{760 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{761   \};}
+\DoxyCodeLine{762 }
+\DoxyCodeLine{763 }
+\DoxyCodeLine{764 }
+\DoxyCodeLine{765 \}       \textcolor{comment}{// namespace hdf5\_misc}}
+\DoxyCodeLine{766 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \#if defined(ARMA\_USE\_HDF5)}}
+\DoxyCodeLine{767 }
+\DoxyCodeLine{768 }
+\DoxyCodeLine{769 }
+
+\end{DoxyCode}

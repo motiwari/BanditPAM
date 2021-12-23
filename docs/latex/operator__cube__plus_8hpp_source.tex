@@ -1,0 +1,207 @@
+\hypertarget{operator__cube__plus_8hpp_source}{}\doxysection{operator\+\_\+cube\+\_\+plus.\+hpp}
+\label{operator__cube__plus_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/operator\_cube\_plus.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/operator\_cube\_plus.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{24 arma\_inline}
+\DoxyCodeLine{25 \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\&}
+\DoxyCodeLine{26 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{27   (}
+\DoxyCodeLine{28   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X}
+\DoxyCodeLine{29   )}
+\DoxyCodeLine{30   \{}
+\DoxyCodeLine{31   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keywordflow}{return} X;}
+\DoxyCodeLine{34   \}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 }
+\DoxyCodeLine{39 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{40 arma\_inline}
+\DoxyCodeLine{41 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_scalar\_plus>}}}
+\DoxyCodeLine{42 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{43   (}
+\DoxyCodeLine{44   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{45   \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type               k}
+\DoxyCodeLine{46   )}
+\DoxyCodeLine{47   \{}
+\DoxyCodeLine{48   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_scalar\_plus>}}(X.get\_ref(), k);}
+\DoxyCodeLine{51   \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 }
+\DoxyCodeLine{56 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{57 arma\_inline}
+\DoxyCodeLine{58 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_scalar\_plus>}}}
+\DoxyCodeLine{59 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{60   (}
+\DoxyCodeLine{61   \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type               k,}
+\DoxyCodeLine{62   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X}
+\DoxyCodeLine{63   )}
+\DoxyCodeLine{64   \{}
+\DoxyCodeLine{65   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_scalar\_plus>}}(X.get\_ref(), k);}
+\DoxyCodeLine{68   \}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 }
+\DoxyCodeLine{73 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{74 arma\_inline}
+\DoxyCodeLine{75 \textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename std::complex<typename T1::pod\_type>}}, T1, \mbox{\hyperlink{classop__cx__scalar__plus}{op\_cx\_scalar\_plus}}>}
+\DoxyCodeLine{76 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{77   (}
+\DoxyCodeLine{78   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::pod\_type, T1>}}\& X,}
+\DoxyCodeLine{79   \textcolor{keyword}{const} std::complex<typename T1::pod\_type>\& k}
+\DoxyCodeLine{80   )}
+\DoxyCodeLine{81   \{}
+\DoxyCodeLine{82   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename std::complex<typename T1::pod\_type>}}, T1, \mbox{\hyperlink{classop__cx__scalar__plus}{op\_cx\_scalar\_plus}}>(\textcolor{charliteral}{'j'}, X.get\_ref(), k);}
+\DoxyCodeLine{85   \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{90 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{91 arma\_inline}
+\DoxyCodeLine{92 \textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename std::complex<typename T1::pod\_type>}}, T1, \mbox{\hyperlink{classop__cx__scalar__plus}{op\_cx\_scalar\_plus}}>}
+\DoxyCodeLine{93 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{94   (}
+\DoxyCodeLine{95   \textcolor{keyword}{const} std::complex<typename T1::pod\_type>\& k,}
+\DoxyCodeLine{96   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::pod\_type, T1>}}\& X}
+\DoxyCodeLine{97   )}
+\DoxyCodeLine{98   \{}
+\DoxyCodeLine{99   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{100   }
+\DoxyCodeLine{101   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename std::complex<typename T1::pod\_type>}}, T1, \mbox{\hyperlink{classop__cx__scalar__plus}{op\_cx\_scalar\_plus}}>(\textcolor{charliteral}{'j'}, X.get\_ref(), k);  \textcolor{comment}{// NOTE: order is swapped}}
+\DoxyCodeLine{102   \}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 }
+\DoxyCodeLine{107 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{108 arma\_inline}
+\DoxyCodeLine{109 \textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_plus>}}}
+\DoxyCodeLine{110 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{111   (}
+\DoxyCodeLine{112   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{113   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T2>}}\& Y}
+\DoxyCodeLine{114   )}
+\DoxyCodeLine{115   \{}
+\DoxyCodeLine{116   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_plus>}}(X.get\_ref(), Y.get\_ref());}
+\DoxyCodeLine{119   \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{124 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{125 \textcolor{keyword}{inline}}
+\DoxyCodeLine{126 \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube<typename promote\_type<typename T1::elem\_type, typename T2::elem\_type>::result}}, T1, T2, \mbox{\hyperlink{classglue__mixed__plus}{glue\_mixed\_plus}}>}
+\DoxyCodeLine{127 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{128   (}
+\DoxyCodeLine{129   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube< typename force\_different\_type<typename T1::elem\_type, typename T2::elem\_type>::T1\_result}}, T1>\& X,}
+\DoxyCodeLine{130   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube< typename force\_different\_type<typename T1::elem\_type, typename T2::elem\_type>::T2\_result}}, T2>\& Y}
+\DoxyCodeLine{131   )}
+\DoxyCodeLine{132   \{}
+\DoxyCodeLine{133   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT1;}
+\DoxyCodeLine{136   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eT2;}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} promote\_type<eT1,eT2>::result out\_eT;}
+\DoxyCodeLine{139   }
+\DoxyCodeLine{140   \mbox{\hyperlink{structpromote__type}{promote\_type<eT1,eT2>::check}}();}
+\DoxyCodeLine{141   }
+\DoxyCodeLine{142   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube<out\_eT, T1, T2, glue\_mixed\_plus>}}( X.get\_ref(), Y.get\_ref() );}
+\DoxyCodeLine{143   \}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{148 arma\_inline}
+\DoxyCodeLine{149 \mbox{\hyperlink{classCube}{Cube<eT>}}}
+\DoxyCodeLine{150 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{151   (}
+\DoxyCodeLine{152   \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__each1}{subview\_cube\_each1<eT>}}\& X,}
+\DoxyCodeLine{153   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T2>}}\&            Y}
+\DoxyCodeLine{154   )}
+\DoxyCodeLine{155   \{}
+\DoxyCodeLine{156   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{157   }
+\DoxyCodeLine{158   \textcolor{keywordflow}{return} subview\_cube\_each1\_aux::operator\_plus(X, Y.get\_ref());}
+\DoxyCodeLine{159   \}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{164 arma\_inline}
+\DoxyCodeLine{165 \mbox{\hyperlink{classCube}{Cube<eT>}}}
+\DoxyCodeLine{166 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{167   (}
+\DoxyCodeLine{168   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\&            X,}
+\DoxyCodeLine{169   \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__each1}{subview\_cube\_each1<eT>}}\& Y}
+\DoxyCodeLine{170   )}
+\DoxyCodeLine{171   \{}
+\DoxyCodeLine{172   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{173   }
+\DoxyCodeLine{174   \textcolor{keywordflow}{return} subview\_cube\_each1\_aux::operator\_plus(Y, X.get\_ref());  \textcolor{comment}{// NOTE: swapped order}}
+\DoxyCodeLine{175   \}}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} TB, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{180 arma\_inline}
+\DoxyCodeLine{181 \mbox{\hyperlink{classCube}{Cube<eT>}}}
+\DoxyCodeLine{182 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{183   (}
+\DoxyCodeLine{184   \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__each2}{subview\_cube\_each2<eT,TB>}}\& X,}
+\DoxyCodeLine{185   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T2>}}\&               Y}
+\DoxyCodeLine{186   )}
+\DoxyCodeLine{187   \{}
+\DoxyCodeLine{188   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{189   }
+\DoxyCodeLine{190   \textcolor{keywordflow}{return} subview\_cube\_each2\_aux::operator\_plus(X, Y.get\_ref());}
+\DoxyCodeLine{191   \}}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} TB>}
+\DoxyCodeLine{196 arma\_inline}
+\DoxyCodeLine{197 \mbox{\hyperlink{classCube}{Cube<eT>}}}
+\DoxyCodeLine{198 \textcolor{keyword}{operator}+}
+\DoxyCodeLine{199   (}
+\DoxyCodeLine{200   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\&               X,}
+\DoxyCodeLine{201   \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__each2}{subview\_cube\_each2<eT,TB>}}\& Y}
+\DoxyCodeLine{202   )}
+\DoxyCodeLine{203   \{}
+\DoxyCodeLine{204   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{205   }
+\DoxyCodeLine{206   \textcolor{keywordflow}{return} subview\_cube\_each2\_aux::operator\_plus(Y, X.get\_ref());  \textcolor{comment}{// NOTE: swapped order}}
+\DoxyCodeLine{207   \}}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 }
+
+\end{DoxyCode}

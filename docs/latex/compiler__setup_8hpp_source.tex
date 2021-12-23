@@ -1,0 +1,457 @@
+\hypertarget{compiler__setup_8hpp_source}{}\doxysection{compiler\+\_\+setup.\+hpp}
+\label{compiler__setup_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/compiler\_setup.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/compiler\_setup.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#undef arma\_hot}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#undef arma\_cold}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#undef arma\_aligned}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#undef arma\_align\_mem}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#undef arma\_warn\_unused}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#undef arma\_deprecated}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#undef arma\_malloc}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#undef arma\_inline}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#undef arma\_noinline}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#undef arma\_ignore}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define arma\_hot}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define arma\_cold}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#define arma\_aligned}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define arma\_align\_mem}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define arma\_warn\_unused}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define arma\_deprecated}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define arma\_malloc}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define arma\_inline            inline}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define arma\_noinline}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define arma\_ignore(variable)  ((void)(variable))}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#undef arma\_fortran\_sans\_prefix\_B}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#undef arma\_fortran\_with\_prefix\_B}}
+\DoxyCodeLine{42  }
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#if defined(ARMA\_BLAS\_UNDERSCORE)}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{  \#define arma\_fortran\_sans\_prefix\_B(function) function\#\#\_}}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_FORTRAN\_HIDDEN\_ARGS)  }}
+\DoxyCodeLine{47 \textcolor{preprocessor}{    \#define arma\_fortran\_with\_prefix\_B(function) wrapper2\_\#\#function\#\#\_}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{    \#define arma\_fortran\_with\_prefix\_B(function) wrapper\_\#\#function\#\#\_}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{  \#define arma\_fortran\_sans\_prefix\_B(function) function}}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_FORTRAN\_HIDDEN\_ARGS)  }}
+\DoxyCodeLine{55 \textcolor{preprocessor}{    \#define arma\_fortran\_with\_prefix\_B(function) wrapper2\_\#\#function}}
+\DoxyCodeLine{56 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{    \#define arma\_fortran\_with\_prefix\_B(function) wrapper\_\#\#function}}
+\DoxyCodeLine{58 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#undef arma\_fortran}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#undef arma\_wrapper}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#if defined(ARMA\_USE\_WRAPPER)}}
+\DoxyCodeLine{65 \textcolor{preprocessor}{  \#define arma\_fortran(function) arma\_fortran\_with\_prefix\_B(function)}}
+\DoxyCodeLine{66 \textcolor{preprocessor}{  \#define arma\_wrapper(function) wrapper\_\#\#function}}
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{68 \textcolor{preprocessor}{  \#define arma\_fortran(function) arma\_fortran\_sans\_prefix\_B(function)}}
+\DoxyCodeLine{69 \textcolor{preprocessor}{  \#define arma\_wrapper(function) function}}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#undef arma\_fortran\_sans\_prefix}}
+\DoxyCodeLine{73 \textcolor{preprocessor}{\#undef arma\_fortran\_with\_prefix}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{preprocessor}{\#define arma\_fortran\_sans\_prefix(function) arma\_fortran\_sans\_prefix\_B(function)}}
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#define arma\_fortran\_with\_prefix(function) arma\_fortran\_with\_prefix\_B(function)}}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 \textcolor{preprocessor}{\#undef  ARMA\_INCFILE\_WRAP}}
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#define ARMA\_INCFILE\_WRAP(x) <x>}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#if !defined(ARMA\_32BIT\_WORD)}}
+\DoxyCodeLine{83 \textcolor{preprocessor}{  \#undef  ARMA\_64BIT\_WORD}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{  \#define ARMA\_64BIT\_WORD}}
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{preprocessor}{\#if defined(ARMA\_64BIT\_WORD) \&\& defined(SIZE\_MAX)}}
+\DoxyCodeLine{88 \textcolor{preprocessor}{  \#if (SIZE\_MAX < 0xFFFFFFFFFFFFFFFFull)}}
+\DoxyCodeLine{89     \textcolor{comment}{// \#pragma message ("{}WARNING: disabled use of 64 bit integers, as std::size\_t is smaller than 64 bits"{})}}
+\DoxyCodeLine{90 \textcolor{preprocessor}{    \#undef ARMA\_64BIT\_WORD}}
+\DoxyCodeLine{91 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{92 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{comment}{// most compilers can't vectorise slightly elaborate loops;}}
+\DoxyCodeLine{96 \textcolor{comment}{// for example clang: http://llvm.org/bugs/show\_bug.cgi?id=16358}}
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#undef  ARMA\_SIMPLE\_LOOPS}}
+\DoxyCodeLine{98 \textcolor{preprocessor}{\#define ARMA\_SIMPLE\_LOOPS}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{preprocessor}{\#undef ARMA\_GOOD\_COMPILER}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \textcolor{comment}{// posix\_memalign() is part of IEEE standard 1003.1}}
+\DoxyCodeLine{103 \textcolor{comment}{// http://pubs.opengroup.org/onlinepubs/009696899/functions/posix\_memalign.html}}
+\DoxyCodeLine{104 \textcolor{comment}{// http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/unistd.h.html}}
+\DoxyCodeLine{105 \textcolor{comment}{// http://sourceforge.net/p/predef/wiki/Standards/}}
+\DoxyCodeLine{106 \textcolor{preprocessor}{\#if ( defined(\_POSIX\_ADVISORY\_INFO) \&\& (\_POSIX\_ADVISORY\_INFO >= 200112L) )}}
+\DoxyCodeLine{107 \textcolor{preprocessor}{  \#undef  ARMA\_HAVE\_POSIX\_MEMALIGN}}
+\DoxyCodeLine{108 \textcolor{preprocessor}{  \#define ARMA\_HAVE\_POSIX\_MEMALIGN}}
+\DoxyCodeLine{109 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 \textcolor{preprocessor}{\#if defined(\_\_APPLE\_\_) || defined(\_\_apple\_build\_version\_\_)}}
+\DoxyCodeLine{113 \textcolor{preprocessor}{  \#undef  ARMA\_BLAS\_SDOT\_BUG}}
+\DoxyCodeLine{114 \textcolor{preprocessor}{  \#define ARMA\_BLAS\_SDOT\_BUG}}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   \textcolor{comment}{// \#undef  ARMA\_HAVE\_POSIX\_MEMALIGN}}
+\DoxyCodeLine{117   \textcolor{comment}{// NOTE: posix\_memalign() is available since macOS 10.6 (late 2009 onwards)}}
+\DoxyCodeLine{118 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{preprocessor}{\#if defined(\_\_MINGW32\_\_) || defined(\_\_CYGWIN\_\_) || defined(\_MSC\_VER)}}
+\DoxyCodeLine{122 \textcolor{preprocessor}{  \#undef ARMA\_HAVE\_POSIX\_MEMALIGN}}
+\DoxyCodeLine{123 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{preprocessor}{\#undef ARMA\_FNSIG}}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \textcolor{preprocessor}{\#if defined (\_\_GNUG\_\_)}}
+\DoxyCodeLine{129 \textcolor{preprocessor}{  \#define ARMA\_FNSIG  \_\_PRETTY\_FUNCTION\_\_}}
+\DoxyCodeLine{130 \textcolor{preprocessor}{\#elif defined (\_MSC\_VER)}}
+\DoxyCodeLine{131 \textcolor{preprocessor}{  \#define ARMA\_FNSIG  \_\_FUNCSIG\_\_ }}
+\DoxyCodeLine{132 \textcolor{preprocessor}{\#elif defined(\_\_INTEL\_COMPILER)}}
+\DoxyCodeLine{133 \textcolor{preprocessor}{  \#define ARMA\_FNSIG  \_\_FUNCTION\_\_}}
+\DoxyCodeLine{134 \textcolor{preprocessor}{\#else }}
+\DoxyCodeLine{135 \textcolor{preprocessor}{  \#define ARMA\_FNSIG  \_\_func\_\_}}
+\DoxyCodeLine{136 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{preprocessor}{\#if !defined(ARMA\_ALLOW\_FAKE\_GCC)}}
+\DoxyCodeLine{140 \textcolor{preprocessor}{  \#if (defined(\_\_GNUG\_\_) || defined(\_\_GNUC\_\_)) \&\& (defined(\_\_INTEL\_COMPILER) || defined(\_\_NVCC\_\_) || defined(\_\_CUDACC\_\_) || defined(\_\_PGI) || defined(\_\_PATHSCALE\_\_) || defined(\_\_ARMCC\_VERSION) || defined(\_\_IBMCPP\_\_))}}
+\DoxyCodeLine{141 \textcolor{preprocessor}{    \#undef  ARMA\_DETECTED\_FAKE\_GCC}}
+\DoxyCodeLine{142 \textcolor{preprocessor}{    \#define ARMA\_DETECTED\_FAKE\_GCC}}
+\DoxyCodeLine{143     }
+\DoxyCodeLine{144 \textcolor{preprocessor}{    \#pragma message ("{}WARNING: this compiler is pretending to be GCC but it may not be fully compatible;"{}})}
+\DoxyCodeLine{145 \textcolor{preprocessor}{    \#pragma message ("{}WARNING: to allow this compiler to use GCC features such as data alignment attributes,"{}})}
+\DoxyCodeLine{146 \textcolor{preprocessor}{    \#pragma message ("{}WARNING: \#define ARMA\_ALLOW\_FAKE\_GCC before \#include <armadillo>"{}})}
+\DoxyCodeLine{147 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{148 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 \textcolor{preprocessor}{\#if defined(\_\_GNUG\_\_) \&\& (!defined(\_\_clang\_\_) \&\& !defined(ARMA\_DETECTED\_FAKE\_GCC))}}
+\DoxyCodeLine{152   }
+\DoxyCodeLine{153   \textcolor{comment}{// \#pragma message ("{}using GCC extensions"{})}}
+\DoxyCodeLine{154   }
+\DoxyCodeLine{155 \textcolor{preprocessor}{  \#undef  ARMA\_GCC\_VERSION}}
+\DoxyCodeLine{156 \textcolor{preprocessor}{  \#define ARMA\_GCC\_VERSION (\_\_GNUC\_\_ * 10000 + \_\_GNUC\_MINOR\_\_ * 100 + \_\_GNUC\_PATCHLEVEL\_\_)}}
+\DoxyCodeLine{157   }
+\DoxyCodeLine{158 \textcolor{preprocessor}{  \#if (ARMA\_GCC\_VERSION < 40800)}}
+\DoxyCodeLine{159 \textcolor{preprocessor}{    \#error "{}*** newer compiler required; need gcc 4.8 or later ***"{}}}
+\DoxyCodeLine{160 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162 \textcolor{preprocessor}{  \#define ARMA\_GOOD\_COMPILER}}
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164 \textcolor{preprocessor}{  \#undef  arma\_hot}}
+\DoxyCodeLine{165 \textcolor{preprocessor}{  \#undef  arma\_cold}}
+\DoxyCodeLine{166 \textcolor{preprocessor}{  \#undef  arma\_aligned}}
+\DoxyCodeLine{167 \textcolor{preprocessor}{  \#undef  arma\_align\_mem}}
+\DoxyCodeLine{168 \textcolor{preprocessor}{  \#undef  arma\_warn\_unused}}
+\DoxyCodeLine{169 \textcolor{preprocessor}{  \#undef  arma\_deprecated}}
+\DoxyCodeLine{170 \textcolor{preprocessor}{  \#undef  arma\_malloc}}
+\DoxyCodeLine{171 \textcolor{preprocessor}{  \#undef  arma\_inline}}
+\DoxyCodeLine{172 \textcolor{preprocessor}{  \#undef  arma\_noinline}}
+\DoxyCodeLine{173   }
+\DoxyCodeLine{174 \textcolor{preprocessor}{  \#define arma\_hot                \_\_attribute\_\_((\_\_hot\_\_))}}
+\DoxyCodeLine{175 \textcolor{preprocessor}{  \#define arma\_cold               \_\_attribute\_\_((\_\_cold\_\_))}}
+\DoxyCodeLine{176 \textcolor{preprocessor}{  \#define arma\_aligned            \_\_attribute\_\_((\_\_aligned\_\_))}}
+\DoxyCodeLine{177 \textcolor{preprocessor}{  \#define arma\_align\_mem          \_\_attribute\_\_((\_\_aligned\_\_(16)))}}
+\DoxyCodeLine{178 \textcolor{preprocessor}{  \#define arma\_warn\_unused        \_\_attribute\_\_((\_\_warn\_unused\_result\_\_))}}
+\DoxyCodeLine{179 \textcolor{preprocessor}{  \#define arma\_deprecated         \_\_attribute\_\_((\_\_deprecated\_\_))}}
+\DoxyCodeLine{180 \textcolor{preprocessor}{  \#define arma\_malloc             \_\_attribute\_\_((\_\_malloc\_\_))}}
+\DoxyCodeLine{181 \textcolor{preprocessor}{  \#define arma\_inline      inline \_\_attribute\_\_((\_\_always\_inline\_\_))}}
+\DoxyCodeLine{182 \textcolor{preprocessor}{  \#define arma\_noinline           \_\_attribute\_\_((\_\_noinline\_\_))}}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184 \textcolor{preprocessor}{  \#undef  ARMA\_HAVE\_ALIGNED\_ATTRIBUTE}}
+\DoxyCodeLine{185 \textcolor{preprocessor}{  \#define ARMA\_HAVE\_ALIGNED\_ATTRIBUTE}}
+\DoxyCodeLine{186   }
+\DoxyCodeLine{187 \textcolor{preprocessor}{  \#undef  ARMA\_HAVE\_GCC\_ASSUME\_ALIGNED}}
+\DoxyCodeLine{188 \textcolor{preprocessor}{  \#define ARMA\_HAVE\_GCC\_ASSUME\_ALIGNED}}
+\DoxyCodeLine{189   }
+\DoxyCodeLine{190   \textcolor{comment}{// gcc's vectoriser can handle elaborate loops}}
+\DoxyCodeLine{191 \textcolor{preprocessor}{  \#undef ARMA\_SIMPLE\_LOOPS}}
+\DoxyCodeLine{192   }
+\DoxyCodeLine{193 \textcolor{preprocessor}{  \#if defined(\_\_OPTIMIZE\_SIZE\_\_)}}
+\DoxyCodeLine{194 \textcolor{preprocessor}{    \#define ARMA\_SIMPLE\_LOOPS}}
+\DoxyCodeLine{195 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 \textcolor{preprocessor}{\#if !defined(ARMA\_ALLOW\_FAKE\_CLANG)}}
+\DoxyCodeLine{201 \textcolor{preprocessor}{  \#if defined(\_\_clang\_\_) \&\& (defined(\_\_INTEL\_COMPILER) || defined(\_\_NVCC\_\_) || defined(\_\_CUDACC\_\_) || defined(\_\_PGI) || defined(\_\_PATHSCALE\_\_) || defined(\_\_ARMCC\_VERSION) || defined(\_\_IBMCPP\_\_))}}
+\DoxyCodeLine{202 \textcolor{preprocessor}{    \#undef  ARMA\_DETECTED\_FAKE\_CLANG}}
+\DoxyCodeLine{203 \textcolor{preprocessor}{    \#define ARMA\_DETECTED\_FAKE\_CLANG}}
+\DoxyCodeLine{204     }
+\DoxyCodeLine{205 \textcolor{preprocessor}{    \#pragma message ("{}WARNING: this compiler is pretending to be Clang but it may not be fully compatible;"{}})}
+\DoxyCodeLine{206 \textcolor{preprocessor}{    \#pragma message ("{}WARNING: to allow this compiler to use Clang features such as data alignment attributes,"{}})}
+\DoxyCodeLine{207 \textcolor{preprocessor}{    \#pragma message ("{}WARNING: \#define ARMA\_ALLOW\_FAKE\_CLANG before \#include <armadillo>"{}})}
+\DoxyCodeLine{208 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{209 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 \textcolor{preprocessor}{\#if defined(\_\_clang\_\_) \&\& !defined(ARMA\_DETECTED\_FAKE\_CLANG)}}
+\DoxyCodeLine{213   }
+\DoxyCodeLine{214   \textcolor{comment}{// \#pragma message ("{}using Clang extensions"{})}}
+\DoxyCodeLine{215   }
+\DoxyCodeLine{216 \textcolor{preprocessor}{  \#define ARMA\_GOOD\_COMPILER}}
+\DoxyCodeLine{217   }
+\DoxyCodeLine{218 \textcolor{preprocessor}{  \#if !defined(\_\_has\_attribute)}}
+\DoxyCodeLine{219 \textcolor{preprocessor}{    \#define \_\_has\_attribute(x) 0}}
+\DoxyCodeLine{220 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222 \textcolor{preprocessor}{  \#if \_\_has\_attribute(\_\_aligned\_\_)}}
+\DoxyCodeLine{223 \textcolor{preprocessor}{    \#undef  arma\_aligned}}
+\DoxyCodeLine{224 \textcolor{preprocessor}{    \#undef  arma\_align\_mem}}
+\DoxyCodeLine{225     }
+\DoxyCodeLine{226 \textcolor{preprocessor}{    \#define arma\_aligned   \_\_attribute\_\_((\_\_aligned\_\_))}}
+\DoxyCodeLine{227 \textcolor{preprocessor}{    \#define arma\_align\_mem \_\_attribute\_\_((\_\_aligned\_\_(16)))}}
+\DoxyCodeLine{228     }
+\DoxyCodeLine{229 \textcolor{preprocessor}{    \#undef  ARMA\_HAVE\_ALIGNED\_ATTRIBUTE}}
+\DoxyCodeLine{230 \textcolor{preprocessor}{    \#define ARMA\_HAVE\_ALIGNED\_ATTRIBUTE}}
+\DoxyCodeLine{231 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{232   }
+\DoxyCodeLine{233 \textcolor{preprocessor}{  \#if \_\_has\_attribute(\_\_warn\_unused\_result\_\_)}}
+\DoxyCodeLine{234 \textcolor{preprocessor}{    \#undef  arma\_warn\_unused}}
+\DoxyCodeLine{235 \textcolor{preprocessor}{    \#define arma\_warn\_unused \_\_attribute\_\_((\_\_warn\_unused\_result\_\_))}}
+\DoxyCodeLine{236 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{237   }
+\DoxyCodeLine{238 \textcolor{preprocessor}{  \#if \_\_has\_attribute(\_\_deprecated\_\_)}}
+\DoxyCodeLine{239 \textcolor{preprocessor}{    \#undef  arma\_deprecated}}
+\DoxyCodeLine{240 \textcolor{preprocessor}{    \#define arma\_deprecated \_\_attribute\_\_((\_\_deprecated\_\_))}}
+\DoxyCodeLine{241 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{242   }
+\DoxyCodeLine{243 \textcolor{preprocessor}{  \#if \_\_has\_attribute(\_\_malloc\_\_)}}
+\DoxyCodeLine{244 \textcolor{preprocessor}{    \#undef  arma\_malloc}}
+\DoxyCodeLine{245 \textcolor{preprocessor}{    \#define arma\_malloc \_\_attribute\_\_((\_\_malloc\_\_))}}
+\DoxyCodeLine{246 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{247   }
+\DoxyCodeLine{248 \textcolor{preprocessor}{  \#if \_\_has\_attribute(\_\_always\_inline\_\_)}}
+\DoxyCodeLine{249 \textcolor{preprocessor}{    \#undef  arma\_inline}}
+\DoxyCodeLine{250 \textcolor{preprocessor}{    \#define arma\_inline inline \_\_attribute\_\_((\_\_always\_inline\_\_))}}
+\DoxyCodeLine{251 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{252   }
+\DoxyCodeLine{253 \textcolor{preprocessor}{  \#if \_\_has\_attribute(\_\_noinline\_\_)}}
+\DoxyCodeLine{254 \textcolor{preprocessor}{    \#undef  arma\_noinline}}
+\DoxyCodeLine{255 \textcolor{preprocessor}{    \#define arma\_noinline \_\_attribute\_\_((\_\_noinline\_\_))}}
+\DoxyCodeLine{256 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{257   }
+\DoxyCodeLine{258 \textcolor{preprocessor}{  \#if \_\_has\_attribute(\_\_hot\_\_)}}
+\DoxyCodeLine{259 \textcolor{preprocessor}{    \#undef  arma\_hot}}
+\DoxyCodeLine{260 \textcolor{preprocessor}{    \#define arma\_hot \_\_attribute\_\_((\_\_hot\_\_))}}
+\DoxyCodeLine{261 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{262   }
+\DoxyCodeLine{263 \textcolor{preprocessor}{  \#if \_\_has\_attribute(\_\_minsize\_\_)}}
+\DoxyCodeLine{264 \textcolor{preprocessor}{    \#undef  arma\_cold}}
+\DoxyCodeLine{265 \textcolor{preprocessor}{    \#define arma\_cold \_\_attribute\_\_((\_\_minsize\_\_))}}
+\DoxyCodeLine{266 \textcolor{preprocessor}{  \#elif \_\_has\_attribute(\_\_cold\_\_)}}
+\DoxyCodeLine{267 \textcolor{preprocessor}{    \#undef  arma\_cold}}
+\DoxyCodeLine{268 \textcolor{preprocessor}{    \#define arma\_cold \_\_attribute\_\_((\_\_cold\_\_))}}
+\DoxyCodeLine{269 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{270   }
+\DoxyCodeLine{271 \textcolor{preprocessor}{  \#if defined(\_\_has\_builtin) \&\& \_\_has\_builtin(\_\_builtin\_assume\_aligned)}}
+\DoxyCodeLine{272 \textcolor{preprocessor}{    \#undef  ARMA\_HAVE\_GCC\_ASSUME\_ALIGNED}}
+\DoxyCodeLine{273 \textcolor{preprocessor}{    \#define ARMA\_HAVE\_GCC\_ASSUME\_ALIGNED}}
+\DoxyCodeLine{274 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{275   }
+\DoxyCodeLine{276 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{278 }
+\DoxyCodeLine{279 \textcolor{preprocessor}{\#if defined(\_\_INTEL\_COMPILER)}}
+\DoxyCodeLine{280   }
+\DoxyCodeLine{281 \textcolor{preprocessor}{  \#if (\_\_INTEL\_COMPILER == 9999)}}
+\DoxyCodeLine{282 \textcolor{preprocessor}{    \#error "{}*** newer compiler required ***"{}}}
+\DoxyCodeLine{283 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{284   }
+\DoxyCodeLine{285 \textcolor{preprocessor}{  \#if (\_\_INTEL\_COMPILER < 1500)}}
+\DoxyCodeLine{286 \textcolor{preprocessor}{    \#error "{}*** newer compiler required ***"{}}}
+\DoxyCodeLine{287 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{288   }
+\DoxyCodeLine{289 \textcolor{preprocessor}{  \#undef  ARMA\_HAVE\_GCC\_ASSUME\_ALIGNED}}
+\DoxyCodeLine{290 \textcolor{preprocessor}{  \#undef  ARMA\_HAVE\_ICC\_ASSUME\_ALIGNED}}
+\DoxyCodeLine{291 \textcolor{preprocessor}{  \#define ARMA\_HAVE\_ICC\_ASSUME\_ALIGNED}}
+\DoxyCodeLine{292   }
+\DoxyCodeLine{293 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295 }
+\DoxyCodeLine{296 \textcolor{preprocessor}{\#if defined(\_MSC\_VER)}}
+\DoxyCodeLine{297   }
+\DoxyCodeLine{298 \textcolor{preprocessor}{  \#if (\_MSC\_VER < 1900)}}
+\DoxyCodeLine{299 \textcolor{preprocessor}{    \#error "{}*** newer compiler required ***"{}}}
+\DoxyCodeLine{300 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{301   }
+\DoxyCodeLine{302 \textcolor{preprocessor}{  \#undef  arma\_deprecated}}
+\DoxyCodeLine{303 \textcolor{preprocessor}{  \#define arma\_deprecated \_\_declspec(deprecated)}}
+\DoxyCodeLine{304   \textcolor{comment}{// \#undef  arma\_inline}}
+\DoxyCodeLine{305   \textcolor{comment}{// \#define arma\_inline inline \_\_forceinline}}
+\DoxyCodeLine{306   }
+\DoxyCodeLine{307 \textcolor{preprocessor}{  \#pragma warning(push)}}
+\DoxyCodeLine{308   }
+\DoxyCodeLine{309 \textcolor{preprocessor}{  \#pragma warning(disable: 4127)  }\textcolor{comment}{// conditional expression is constant}}
+\DoxyCodeLine{310 \textcolor{preprocessor}{  \#pragma warning(disable: 4180)  }\textcolor{comment}{// qualifier has no meaning}}
+\DoxyCodeLine{311 \textcolor{preprocessor}{  \#pragma warning(disable: 4244)  }\textcolor{comment}{// possible loss of data when converting types (see also 4305)}}
+\DoxyCodeLine{312 \textcolor{preprocessor}{  \#pragma warning(disable: 4510)  }\textcolor{comment}{// default constructor could not be generated}}
+\DoxyCodeLine{313 \textcolor{preprocessor}{  \#pragma warning(disable: 4511)  }\textcolor{comment}{// copy constructor can't be generated}}
+\DoxyCodeLine{314 \textcolor{preprocessor}{  \#pragma warning(disable: 4512)  }\textcolor{comment}{// assignment operator can't be generated}}
+\DoxyCodeLine{315 \textcolor{preprocessor}{  \#pragma warning(disable: 4513)  }\textcolor{comment}{// destructor can't be generated}}
+\DoxyCodeLine{316 \textcolor{preprocessor}{  \#pragma warning(disable: 4514)  }\textcolor{comment}{// unreferenced inline function has been removed}}
+\DoxyCodeLine{317 \textcolor{preprocessor}{  \#pragma warning(disable: 4522)  }\textcolor{comment}{// multiple assignment operators specified}}
+\DoxyCodeLine{318 \textcolor{preprocessor}{  \#pragma warning(disable: 4623)  }\textcolor{comment}{// default constructor can't be generated}}
+\DoxyCodeLine{319 \textcolor{preprocessor}{  \#pragma warning(disable: 4624)  }\textcolor{comment}{// destructor can't be generated}}
+\DoxyCodeLine{320 \textcolor{preprocessor}{  \#pragma warning(disable: 4625)  }\textcolor{comment}{// copy constructor can't be generated}}
+\DoxyCodeLine{321 \textcolor{preprocessor}{  \#pragma warning(disable: 4626)  }\textcolor{comment}{// assignment operator can't be generated}}
+\DoxyCodeLine{322 \textcolor{preprocessor}{  \#pragma warning(disable: 4702)  }\textcolor{comment}{// unreachable code}}
+\DoxyCodeLine{323 \textcolor{preprocessor}{  \#pragma warning(disable: 4710)  }\textcolor{comment}{// function not inlined}}
+\DoxyCodeLine{324 \textcolor{preprocessor}{  \#pragma warning(disable: 4711)  }\textcolor{comment}{// call was inlined}}
+\DoxyCodeLine{325 \textcolor{preprocessor}{  \#pragma warning(disable: 4714)  }\textcolor{comment}{// \_\_forceinline can't be inlined}}
+\DoxyCodeLine{326 \textcolor{preprocessor}{  \#pragma warning(disable: 4800)  }\textcolor{comment}{// value forced to bool}}
+\DoxyCodeLine{327 \textcolor{preprocessor}{  \#pragma warning(disable: 4519)  }\textcolor{comment}{// C++11: default template args are only allowed on a class template}}
+\DoxyCodeLine{328   }
+\DoxyCodeLine{329   }
+\DoxyCodeLine{330   \textcolor{comment}{// \#if (\_MANAGED == 1) || (\_M\_CEE == 1)}}
+\DoxyCodeLine{331   \textcolor{comment}{//   }}
+\DoxyCodeLine{332   \textcolor{comment}{//   // don't do any alignment when compiling in "{}managed code"{} mode }}
+\DoxyCodeLine{333   \textcolor{comment}{//   }}
+\DoxyCodeLine{334   \textcolor{comment}{//   \#undef  arma\_aligned}}
+\DoxyCodeLine{335   \textcolor{comment}{//   \#define arma\_aligned}}
+\DoxyCodeLine{336   \textcolor{comment}{//   }}
+\DoxyCodeLine{337   \textcolor{comment}{//   \#undef  arma\_align\_mem}}
+\DoxyCodeLine{338   \textcolor{comment}{//   \#define arma\_align\_mem}}
+\DoxyCodeLine{339   \textcolor{comment}{//  }}
+\DoxyCodeLine{340   \textcolor{comment}{// \#elif (\_MSC\_VER >= 1700)}}
+\DoxyCodeLine{341   \textcolor{comment}{//   }}
+\DoxyCodeLine{342   \textcolor{comment}{//   \#undef  arma\_align\_mem}}
+\DoxyCodeLine{343   \textcolor{comment}{//   \#define arma\_align\_mem \_\_declspec(align(16))}}
+\DoxyCodeLine{344   \textcolor{comment}{//   }}
+\DoxyCodeLine{345   \textcolor{comment}{//   \#define ARMA\_HAVE\_ALIGNED\_ATTRIBUTE}}
+\DoxyCodeLine{346   \textcolor{comment}{//   }}
+\DoxyCodeLine{347   \textcolor{comment}{//   // disable warnings: "{}structure was padded due to \_\_declspec(align(16))"{}}}
+\DoxyCodeLine{348   \textcolor{comment}{//   \#pragma warning(disable: 4324)}}
+\DoxyCodeLine{349   \textcolor{comment}{//   }}
+\DoxyCodeLine{350   \textcolor{comment}{// \#endif}}
+\DoxyCodeLine{351   }
+\DoxyCodeLine{352 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354 }
+\DoxyCodeLine{355 \textcolor{preprocessor}{\#if defined(\_\_SUNPRO\_CC)}}
+\DoxyCodeLine{356   }
+\DoxyCodeLine{357   \textcolor{comment}{// http://www.oracle.com/technetwork/server-\/storage/solarisstudio/training/index-\/jsp-\/141991.html}}
+\DoxyCodeLine{358   \textcolor{comment}{// http://www.oracle.com/technetwork/server-\/storage/solarisstudio/documentation/cplusplus-\/faq-\/355066.html}}
+\DoxyCodeLine{359   }
+\DoxyCodeLine{360 \textcolor{preprocessor}{  \#if (\_\_SUNPRO\_CC < 0x5140)}}
+\DoxyCodeLine{361 \textcolor{preprocessor}{    \#error "{}*** newer compiler required ***"{}}}
+\DoxyCodeLine{362 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{363   }
+\DoxyCodeLine{364 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{365 }
+\DoxyCodeLine{366 }
+\DoxyCodeLine{367 \textcolor{preprocessor}{\#if defined(\_\_CYGWIN\_\_) \&\& !defined(ARMA\_DONT\_PRINT\_CXX11\_WARNING)}}
+\DoxyCodeLine{368 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: Cygwin may have incomplete support for C++11 features."{}})}
+\DoxyCodeLine{369 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{371 }
+\DoxyCodeLine{372 \textcolor{preprocessor}{\#if !defined(ARMA\_DONT\_USE\_OPENMP)}}
+\DoxyCodeLine{373 \textcolor{preprocessor}{  \#if (defined(\_OPENMP) \&\& (\_OPENMP >= 201107))}}
+\DoxyCodeLine{374 \textcolor{preprocessor}{    \#undef  ARMA\_USE\_OPENMP}}
+\DoxyCodeLine{375 \textcolor{preprocessor}{    \#define ARMA\_USE\_OPENMP}}
+\DoxyCodeLine{376 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{377 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379 }
+\DoxyCodeLine{380 \textcolor{preprocessor}{\#if ( defined(ARMA\_USE\_OPENMP) \&\& (!defined(\_OPENMP) || (defined(\_OPENMP) \&\& (\_OPENMP < 201107))) )}}
+\DoxyCodeLine{381   \textcolor{comment}{// OpenMP 3.0 required for parallelisation of loops with unsigned integers}}
+\DoxyCodeLine{382   \textcolor{comment}{// OpenMP 3.1 required for atomic read and atomic write}}
+\DoxyCodeLine{383 \textcolor{preprocessor}{  \#undef  ARMA\_USE\_OPENMP}}
+\DoxyCodeLine{384 \textcolor{preprocessor}{  \#undef  ARMA\_PRINT\_OPENMP\_WARNING}}
+\DoxyCodeLine{385 \textcolor{preprocessor}{  \#define ARMA\_PRINT\_OPENMP\_WARNING}}
+\DoxyCodeLine{386 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{387 }
+\DoxyCodeLine{388 }
+\DoxyCodeLine{389 \textcolor{preprocessor}{\#if defined(ARMA\_PRINT\_OPENMP\_WARNING) \&\& !defined(ARMA\_DONT\_PRINT\_OPENMP\_WARNING)}}
+\DoxyCodeLine{390 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: use of OpenMP disabled; compiler support for OpenMP 3.1+ not detected"{}})}
+\DoxyCodeLine{391   }
+\DoxyCodeLine{392 \textcolor{preprocessor}{  \#if (defined(\_OPENMP) \&\& (\_OPENMP < 201107))}}
+\DoxyCodeLine{393 \textcolor{preprocessor}{    \#pragma message ("{}NOTE: your compiler appears to have an ancient version of OpenMP"{}})}
+\DoxyCodeLine{394 \textcolor{preprocessor}{    \#pragma message ("{}NOTE: consider upgrading to a better compiler"{}})}
+\DoxyCodeLine{395 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{396 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{397 }
+\DoxyCodeLine{398 }
+\DoxyCodeLine{399 \textcolor{preprocessor}{\#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{400 \textcolor{preprocessor}{  \#if (defined(ARMA\_GCC\_VERSION) \&\& (ARMA\_GCC\_VERSION < 50400))}}
+\DoxyCodeLine{401     \textcolor{comment}{// due to https://gcc.gnu.org/bugzilla/show\_bug.cgi?id=57580}}
+\DoxyCodeLine{402     \textcolor{comment}{// TODO: gcc 4.9.4 is also fixed, so use a more fine-\/grained gcc version check?}}
+\DoxyCodeLine{403 \textcolor{preprocessor}{    \#undef ARMA\_USE\_OPENMP}}
+\DoxyCodeLine{404 \textcolor{preprocessor}{    \#if !defined(ARMA\_DONT\_PRINT\_OPENMP\_WARNING)}}
+\DoxyCodeLine{405 \textcolor{preprocessor}{      \#pragma message ("{}WARNING: use of OpenMP disabled due to compiler bug in gcc <= 5.3"{}})}
+\DoxyCodeLine{406 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{407 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{408 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{409 }
+\DoxyCodeLine{410 }
+\DoxyCodeLine{411 \textcolor{preprocessor}{\#if ( defined(\_WIN32) || defined(\_WIN64) || defined(\_MSC\_VER) || defined(\_\_MINGW32\_\_) || defined(\_\_MINGW64\_\_) )}}
+\DoxyCodeLine{412 \textcolor{preprocessor}{  \#undef  ARMA\_PRINT\_EXCEPTIONS}}
+\DoxyCodeLine{413 \textcolor{preprocessor}{  \#define ARMA\_PRINT\_EXCEPTIONS}}
+\DoxyCodeLine{414 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{415 }
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418 \textcolor{comment}{// cleanup}}
+\DoxyCodeLine{419 }
+\DoxyCodeLine{420 \textcolor{preprocessor}{\#undef ARMA\_DETECTED\_FAKE\_GCC}}
+\DoxyCodeLine{421 \textcolor{preprocessor}{\#undef ARMA\_DETECTED\_FAKE\_CLANG}}
+\DoxyCodeLine{422 \textcolor{preprocessor}{\#undef ARMA\_GCC\_VERSION}}
+\DoxyCodeLine{423 \textcolor{preprocessor}{\#undef ARMA\_PRINT\_OPENMP\_WARNING}}
+\DoxyCodeLine{424 }
+\DoxyCodeLine{425 }
+\DoxyCodeLine{426 }
+\DoxyCodeLine{427 \textcolor{preprocessor}{\#if defined(log2)}}
+\DoxyCodeLine{428 \textcolor{preprocessor}{  \#undef log2}}
+\DoxyCodeLine{429 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: detected 'log2' macro and undefined it"{}})}
+\DoxyCodeLine{430 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{431 }
+\DoxyCodeLine{432 }
+\DoxyCodeLine{433 }
+\DoxyCodeLine{434 \textcolor{comment}{// }}
+\DoxyCodeLine{435 \textcolor{comment}{// whoever defined macros with the names "{}min"{} and "{}max"{} should be permanently removed from the gene pool}}
+\DoxyCodeLine{436 }
+\DoxyCodeLine{437 \textcolor{preprocessor}{\#if defined(min) || defined(max)}}
+\DoxyCodeLine{438 \textcolor{preprocessor}{  \#undef min}}
+\DoxyCodeLine{439 \textcolor{preprocessor}{  \#undef max}}
+\DoxyCodeLine{440 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: detected 'min' and/or 'max' macros and undefined them;"{}})}
+\DoxyCodeLine{441 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: you may wish to define NOMINMAX before including any windows header"{}})}
+\DoxyCodeLine{442 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{443 }
+\DoxyCodeLine{444 }
+\DoxyCodeLine{445 }
+\DoxyCodeLine{446 \textcolor{comment}{//}}
+\DoxyCodeLine{447 \textcolor{comment}{// handle more stupid macros}}
+\DoxyCodeLine{448 \textcolor{comment}{// https://sourceware.org/bugzilla/show\_bug.cgi?id=19239}}
+\DoxyCodeLine{449 }
+\DoxyCodeLine{450 \textcolor{preprocessor}{\#undef minor}}
+\DoxyCodeLine{451 \textcolor{preprocessor}{\#undef major}}
+
+\end{DoxyCode}

@@ -1,0 +1,93 @@
+\hypertarget{hdf5__name_8hpp_source}{}\doxysection{hdf5\+\_\+name.\+hpp}
+\label{hdf5__name_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/hdf5\_name.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/hdf5\_name.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }hdf5\_opts}
+\DoxyCodeLine{22   \{}
+\DoxyCodeLine{23   \textcolor{keyword}{typedef} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} flag\_type;}
+\DoxyCodeLine{24   }
+\DoxyCodeLine{25   \textcolor{keyword}{struct }\mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}}}
+\DoxyCodeLine{26     \{}
+\DoxyCodeLine{27     \textcolor{keyword}{const} flag\_type flags;}
+\DoxyCodeLine{28     }
+\DoxyCodeLine{29     \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}}(\textcolor{keyword}{const} flag\_type in\_flags);}
+\DoxyCodeLine{30     }
+\DoxyCodeLine{31     \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}} operator+(\textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}}\& rhs) \textcolor{keyword}{const};}
+\DoxyCodeLine{32     \};}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{inline}}
+\DoxyCodeLine{35   opts::opts(\textcolor{keyword}{const} flag\_type in\_flags)}
+\DoxyCodeLine{36     : flags(in\_flags)}
+\DoxyCodeLine{37     \{\}}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{inline}}
+\DoxyCodeLine{40   \textcolor{keyword}{const} opts}
+\DoxyCodeLine{41   opts::operator+(\textcolor{keyword}{const} opts\& rhs)\textcolor{keyword}{ const}}
+\DoxyCodeLine{42 \textcolor{keyword}{    }\{}
+\DoxyCodeLine{43     \textcolor{keyword}{const} opts result( flags | rhs.flags );}
+\DoxyCodeLine{44     }
+\DoxyCodeLine{45     \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{46     \}}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{comment}{// The values below (eg. 1u << 0) are for internal Armadillo use only.}}
+\DoxyCodeLine{49   \textcolor{comment}{// The values can change without notice.}}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   \textcolor{keyword}{static} \textcolor{keyword}{const} flag\_type flag\_none    = flag\_type(0      );}
+\DoxyCodeLine{52   \textcolor{keyword}{static} \textcolor{keyword}{const} flag\_type flag\_trans   = flag\_type(1u << 0);}
+\DoxyCodeLine{53   \textcolor{keyword}{static} \textcolor{keyword}{const} flag\_type flag\_append  = flag\_type(1u << 1);}
+\DoxyCodeLine{54   \textcolor{keyword}{static} \textcolor{keyword}{const} flag\_type flag\_replace = flag\_type(1u << 2);}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{struct }\mbox{\hyperlink{structhdf5__opts_1_1opts__none}{opts\_none}}    : \textcolor{keyword}{public} \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structhdf5__opts_1_1opts__none}{opts\_none}}()    : \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}}(flag\_none   ) \{\} \};}
+\DoxyCodeLine{57   \textcolor{keyword}{struct }\mbox{\hyperlink{structhdf5__opts_1_1opts__trans}{opts\_trans}}   : \textcolor{keyword}{public} \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structhdf5__opts_1_1opts__trans}{opts\_trans}}()   : \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}}(flag\_trans  ) \{\} \};}
+\DoxyCodeLine{58   \textcolor{keyword}{struct }\mbox{\hyperlink{structhdf5__opts_1_1opts__append}{opts\_append}}  : \textcolor{keyword}{public} \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structhdf5__opts_1_1opts__append}{opts\_append}}()  : \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}}(flag\_append ) \{\} \};}
+\DoxyCodeLine{59   \textcolor{keyword}{struct }\mbox{\hyperlink{structhdf5__opts_1_1opts__replace}{opts\_replace}} : \textcolor{keyword}{public} \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structhdf5__opts_1_1opts__replace}{opts\_replace}}() : \mbox{\hyperlink{structhdf5__opts_1_1opts}{opts}}(flag\_replace) \{\} \};}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{61   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__opts_1_1opts__none}{opts\_none}}    \mbox{\hyperlink{classnone}{none}};}
+\DoxyCodeLine{62   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__opts_1_1opts__trans}{opts\_trans}}   trans;}
+\DoxyCodeLine{63   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__opts_1_1opts__append}{opts\_append}}  append;}
+\DoxyCodeLine{64   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__opts_1_1opts__replace}{opts\_replace}} replace;}
+\DoxyCodeLine{65   \}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{struct }\mbox{\hyperlink{structhdf5__name}{hdf5\_name}}}
+\DoxyCodeLine{69   \{}
+\DoxyCodeLine{70   \textcolor{keyword}{const} std::string     filename;}
+\DoxyCodeLine{71   \textcolor{keyword}{const} std::string     dsname;}
+\DoxyCodeLine{72   \textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__opts_1_1opts}{hdf5\_opts::opts}} opts;}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keyword}{inline}}
+\DoxyCodeLine{75   \mbox{\hyperlink{structhdf5__name}{hdf5\_name}}(\textcolor{keyword}{const} std::string\& in\_filename)}
+\DoxyCodeLine{76     : filename(in\_filename    )}
+\DoxyCodeLine{77     , dsname  (std::string()  )}
+\DoxyCodeLine{78     , opts    (hdf5\_opts::none)}
+\DoxyCodeLine{79     \{\}}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   \textcolor{keyword}{inline}}
+\DoxyCodeLine{82   \mbox{\hyperlink{structhdf5__name}{hdf5\_name}}(\textcolor{keyword}{const} std::string\& in\_filename, \textcolor{keyword}{const} std::string\& in\_dsname, \textcolor{keyword}{const} \mbox{\hyperlink{structhdf5__opts_1_1opts}{hdf5\_opts::opts}}\& in\_opts = hdf5\_opts::none)}
+\DoxyCodeLine{83     : filename(in\_filename)}
+\DoxyCodeLine{84     , dsname  (in\_dsname  )}
+\DoxyCodeLine{85     , opts    (in\_opts    )}
+\DoxyCodeLine{86     \{\}}
+\DoxyCodeLine{87   \};}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+
+\end{DoxyCode}

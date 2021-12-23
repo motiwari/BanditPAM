@@ -1,0 +1,72 @@
+\hypertarget{newarp__UpperHessenbergQR__bones_8hpp_source}{}\doxysection{newarp\+\_\+\+Upper\+Hessenberg\+QR\+\_\+bones.\+hpp}
+\label{newarp__UpperHessenbergQR__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_UpperHessenbergQR\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_UpperHessenbergQR\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }newarp}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR}{UpperHessenbergQR}}}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   \textcolor{keyword}{protected}:}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27   uword   n;}
+\DoxyCodeLine{28   \mbox{\hyperlink{classMat}{Mat<eT>}} mat\_T;}
+\DoxyCodeLine{29   \textcolor{comment}{// Gi = [ cos[i]  sin[i]]}}
+\DoxyCodeLine{30   \textcolor{comment}{//      [-\/sin[i]  cos[i]]}}
+\DoxyCodeLine{31   \textcolor{comment}{// Q = G1 * G2 * ... * G\_\{n-\/1\}}}
+\DoxyCodeLine{32   \mbox{\hyperlink{classCol}{Col<eT>}} rot\_cos;}
+\DoxyCodeLine{33   \mbox{\hyperlink{classCol}{Col<eT>}} rot\_sin;}
+\DoxyCodeLine{34   \textcolor{keywordtype}{bool}    computed;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keyword}{public}:}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{41   \textcolor{keyword}{inline} \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_a88bbc26cfa1b758051ff867c345af725}{UpperHessenbergQR}}();}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{45   \textcolor{keyword}{inline} \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_a88bbc26cfa1b758051ff867c345af725}{UpperHessenbergQR}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& mat\_obj);}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{48   \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_ad5d6e3792e0b6a7185b0438a2dfb4bbb}{compute}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& mat\_obj);}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{52   \textcolor{keyword}{virtual} \mbox{\hyperlink{classMat}{Mat<eT>}} \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_ae81c26c752ec4e6d20703a3cf1116b57}{matrix\_RQ}}();}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{55   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_ae59f56ba96543afa24b759ffa5935ce8}{apply\_YQ}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& Y);}
+\DoxyCodeLine{56   \};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{62 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{63 \textcolor{keyword}{class }\mbox{\hyperlink{classnewarp_1_1TridiagQR}{TridiagQR}} : \textcolor{keyword}{public} \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR}{UpperHessenbergQR}}<eT>}
+\DoxyCodeLine{64   \{}
+\DoxyCodeLine{65   \textcolor{keyword}{public}:}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{69   \textcolor{keyword}{inline} \mbox{\hyperlink{classnewarp_1_1TridiagQR_a34a2289abde6540afc8f7c1588068111}{TridiagQR}}();}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{73   \textcolor{keyword}{inline} \mbox{\hyperlink{classnewarp_1_1TridiagQR_a34a2289abde6540afc8f7c1588068111}{TridiagQR}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& mat\_obj);}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{76   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{classnewarp_1_1TridiagQR_a424d445c3ab83b71d97151bd487ae6fa}{compute}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& mat\_obj);}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{80   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat<eT>}} \mbox{\hyperlink{classnewarp_1_1TridiagQR_acb80319d767602eb77af0b93a6f415e0}{matrix\_RQ}}();}
+\DoxyCodeLine{81   \};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \}  \textcolor{comment}{// namespace newarp}}
+
+\end{DoxyCode}

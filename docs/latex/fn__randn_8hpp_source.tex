@@ -1,0 +1,190 @@
+\hypertarget{fn__randn_8hpp_source}{}\doxysection{fn\+\_\+randn.\+hpp}
+\label{fn__randn_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_randn.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_randn.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 arma\_warn\_unused}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{double}}
+\DoxyCodeLine{25 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}()}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   \textcolor{keywordflow}{return} double(\mbox{\hyperlink{structarma__rng_1_1randn}{arma\_rng::randn<double>}}());}
+\DoxyCodeLine{28   \}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{33 arma\_warn\_unused}
+\DoxyCodeLine{34 \textcolor{keyword}{inline}}
+\DoxyCodeLine{35 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__or__cx__only}{arma\_real\_or\_cx\_only<eT>::result}}}
+\DoxyCodeLine{36 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}()}
+\DoxyCodeLine{37   \{}
+\DoxyCodeLine{38   \textcolor{keywordflow}{return} eT(\mbox{\hyperlink{structarma__rng_1_1randn}{arma\_rng::randn<eT>}}());}
+\DoxyCodeLine{39   \}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{44 arma\_warn\_unused}
+\DoxyCodeLine{45 arma\_inline}
+\DoxyCodeLine{46 \textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<vec, gen\_randn>}}}
+\DoxyCodeLine{47 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}(\textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{48   \{}
+\DoxyCodeLine{49   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGen}{Gen<vec, gen\_randn>}}(n\_elem, 1);}
+\DoxyCodeLine{52   \}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keyword}{template}<\textcolor{keyword}{typename} obj\_type>}
+\DoxyCodeLine{57 arma\_warn\_unused}
+\DoxyCodeLine{58 arma\_inline}
+\DoxyCodeLine{59 \textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<obj\_type, gen\_randn>}}}
+\DoxyCodeLine{60 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} \mbox{\hyperlink{classarma__empty__class}{arma\_empty\_class}} junk1 = \mbox{\hyperlink{classarma__empty__class}{arma\_empty\_class}}(), \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__Mat__Col__Row__only}{arma\_Mat\_Col\_Row\_only<obj\_type>::result}}* junk2 = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{61   \{}
+\DoxyCodeLine{62   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{63   arma\_ignore(junk1);}
+\DoxyCodeLine{64   arma\_ignore(junk2);}
+\DoxyCodeLine{65   }
+\DoxyCodeLine{66   \textcolor{keyword}{const} uword n\_rows = (\mbox{\hyperlink{structis__Row}{is\_Row<obj\_type>::value}}) ? uword(1) : n\_elem;}
+\DoxyCodeLine{67   \textcolor{keyword}{const} uword n\_cols = (\mbox{\hyperlink{structis__Row}{is\_Row<obj\_type>::value}}) ? n\_elem   : uword(1);}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGen}{Gen<obj\_type, gen\_randn>}}(n\_rows, n\_cols);}
+\DoxyCodeLine{70   \}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{75 arma\_warn\_unused}
+\DoxyCodeLine{76 arma\_inline}
+\DoxyCodeLine{77 \textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<mat, gen\_randn>}}}
+\DoxyCodeLine{78 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}(\textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols)}
+\DoxyCodeLine{79   \{}
+\DoxyCodeLine{80   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGen}{Gen<mat, gen\_randn>}}(n\_rows, n\_cols);}
+\DoxyCodeLine{83   \}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 arma\_warn\_unused}
+\DoxyCodeLine{88 arma\_inline}
+\DoxyCodeLine{89 \textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<mat, gen\_randn>}}}
+\DoxyCodeLine{90 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{91   \{}
+\DoxyCodeLine{92   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{93   }
+\DoxyCodeLine{94   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGen}{Gen<mat, gen\_randn>}}(s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{95   \}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{keyword}{template}<\textcolor{keyword}{typename} obj\_type>}
+\DoxyCodeLine{100 arma\_warn\_unused}
+\DoxyCodeLine{101 arma\_inline}
+\DoxyCodeLine{102 \textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<obj\_type, gen\_randn>}}}
+\DoxyCodeLine{103 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}(\textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__Mat__Col__Row__only}{arma\_Mat\_Col\_Row\_only<obj\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{104   \{}
+\DoxyCodeLine{105   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{106   arma\_ignore(junk);}
+\DoxyCodeLine{107   }
+\DoxyCodeLine{108   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Col}{is\_Col<obj\_type>::value}})}
+\DoxyCodeLine{109     \{}
+\DoxyCodeLine{110     arma\_debug\_check( (n\_cols != 1), \textcolor{stringliteral}{"{}randn(): incompatible size"{}} );}
+\DoxyCodeLine{111     \}}
+\DoxyCodeLine{112   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{113   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Row}{is\_Row<obj\_type>::value}})}
+\DoxyCodeLine{114     \{}
+\DoxyCodeLine{115     arma\_debug\_check( (n\_rows != 1), \textcolor{stringliteral}{"{}randn(): incompatible size"{}} );}
+\DoxyCodeLine{116     \}}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGen}{Gen<obj\_type, gen\_randn>}}(n\_rows, n\_cols);}
+\DoxyCodeLine{119   \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{keyword}{template}<\textcolor{keyword}{typename} obj\_type>}
+\DoxyCodeLine{124 arma\_warn\_unused}
+\DoxyCodeLine{125 arma\_inline}
+\DoxyCodeLine{126 \textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen<obj\_type, gen\_randn>}}}
+\DoxyCodeLine{127 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__Mat__Col__Row__only}{arma\_Mat\_Col\_Row\_only<obj\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{128   \{}
+\DoxyCodeLine{129   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{130   arma\_ignore(junk);}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   \textcolor{keywordflow}{return} randn<obj\_type>(s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{133   \}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 arma\_warn\_unused}
+\DoxyCodeLine{138 arma\_inline}
+\DoxyCodeLine{139 \textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<cube::elem\_type, gen\_randn>}}}
+\DoxyCodeLine{140 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}(\textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols, \textcolor{keyword}{const} uword n\_slices)}
+\DoxyCodeLine{141   \{}
+\DoxyCodeLine{142   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{143   }
+\DoxyCodeLine{144   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGenCube}{GenCube<cube::elem\_type, gen\_randn>}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{145   \}}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 arma\_warn\_unused}
+\DoxyCodeLine{150 arma\_inline}
+\DoxyCodeLine{151 \textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<cube::elem\_type, gen\_randn>}}}
+\DoxyCodeLine{152 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s)}
+\DoxyCodeLine{153   \{}
+\DoxyCodeLine{154   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{155   }
+\DoxyCodeLine{156   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGenCube}{GenCube<cube::elem\_type, gen\_randn>}}(s.n\_rows, s.n\_cols, s.n\_slices);}
+\DoxyCodeLine{157   \}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{keyword}{template}<\textcolor{keyword}{typename} cube\_type>}
+\DoxyCodeLine{162 arma\_warn\_unused}
+\DoxyCodeLine{163 arma\_inline}
+\DoxyCodeLine{164 \textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<typename cube\_type::elem\_type, gen\_randn>}}}
+\DoxyCodeLine{165 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}(\textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols, \textcolor{keyword}{const} uword n\_slices, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__Cube__only}{arma\_Cube\_only<cube\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{166   \{}
+\DoxyCodeLine{167   arma\_extra\_debug\_sigprint();  }
+\DoxyCodeLine{168   arma\_ignore(junk);}
+\DoxyCodeLine{169   }
+\DoxyCodeLine{170   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGenCube}{GenCube<typename cube\_type::elem\_type, gen\_randn>}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{171   \}}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 \textcolor{keyword}{template}<\textcolor{keyword}{typename} cube\_type>}
+\DoxyCodeLine{176 arma\_warn\_unused}
+\DoxyCodeLine{177 arma\_inline}
+\DoxyCodeLine{178 \textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<typename cube\_type::elem\_type, gen\_randn>}}}
+\DoxyCodeLine{179 \mbox{\hyperlink{group__fn__randn_gade7627c98ab69c9150ab5c5e43a9c554}{randn}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__Cube__only}{arma\_Cube\_only<cube\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{180   \{}
+\DoxyCodeLine{181   arma\_extra\_debug\_sigprint();  }
+\DoxyCodeLine{182   arma\_ignore(junk);}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGenCube}{GenCube<typename cube\_type::elem\_type, gen\_randn>}}(s.n\_rows, s.n\_cols, s.n\_slices);}
+\DoxyCodeLine{185   \}}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 }
+
+\end{DoxyCode}

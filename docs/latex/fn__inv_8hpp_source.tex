@@ -1,0 +1,105 @@
+\hypertarget{fn__inv_8hpp_source}{}\doxysection{fn\+\_\+inv.\+hpp}
+\label{fn__inv_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_inv.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_inv.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 arma\_inline}
+\DoxyCodeLine{25 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_supported\_blas\_type<typename T1::elem\_type>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_inv>}} >::result}
+\DoxyCodeLine{26 inv}
+\DoxyCodeLine{27   (}
+\DoxyCodeLine{28   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X}
+\DoxyCodeLine{29   )}
+\DoxyCodeLine{30   \{}
+\DoxyCodeLine{31   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_inv>}}(X.get\_ref());}
+\DoxyCodeLine{34   \}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{39 \textcolor{keyword}{inline}}
+\DoxyCodeLine{40 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_supported\_blas\_type<typename T1::elem\_type>::value}}, \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{41 inv}
+\DoxyCodeLine{42   (}
+\DoxyCodeLine{43          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    out,}
+\DoxyCodeLine{44   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X}
+\DoxyCodeLine{45   )}
+\DoxyCodeLine{46   \{}
+\DoxyCodeLine{47   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_inv::apply\_direct(out, X.get\_ref(), \textcolor{stringliteral}{"{}inv()"{}});}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{52     \{}
+\DoxyCodeLine{53     out.soft\_reset();}
+\DoxyCodeLine{54     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}inv(): matrix is singular"{}});}
+\DoxyCodeLine{55     \}}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{58   \}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{63 arma\_warn\_unused}
+\DoxyCodeLine{64 arma\_inline}
+\DoxyCodeLine{65 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_supported\_blas\_type<typename T1::elem\_type>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_inv\_sympd>}} >::result}
+\DoxyCodeLine{66 inv\_sympd}
+\DoxyCodeLine{67   (}
+\DoxyCodeLine{68   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X}
+\DoxyCodeLine{69   )}
+\DoxyCodeLine{70   \{}
+\DoxyCodeLine{71   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_inv\_sympd>}}(X.get\_ref());}
+\DoxyCodeLine{74   \}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{79 \textcolor{keyword}{inline}}
+\DoxyCodeLine{80 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_supported\_blas\_type<typename T1::elem\_type>::value}}, \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{81 inv\_sympd}
+\DoxyCodeLine{82   (}
+\DoxyCodeLine{83          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    out,}
+\DoxyCodeLine{84   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X}
+\DoxyCodeLine{85   )}
+\DoxyCodeLine{86   \{}
+\DoxyCodeLine{87   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_inv\_sympd::apply\_direct(out, X.get\_ref());}
+\DoxyCodeLine{90   }
+\DoxyCodeLine{91   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{92     \{}
+\DoxyCodeLine{93     out.soft\_reset();}
+\DoxyCodeLine{94     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}inv\_sympd(): matrix is singular or not positive definite"{}});}
+\DoxyCodeLine{95     \}}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{98   \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 }
+
+\end{DoxyCode}

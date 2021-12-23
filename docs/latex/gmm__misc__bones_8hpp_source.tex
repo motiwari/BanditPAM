@@ -1,0 +1,120 @@
+\hypertarget{gmm__misc__bones_8hpp_source}{}\doxysection{gmm\+\_\+misc\+\_\+bones.\+hpp}
+\label{gmm__misc__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/gmm\_misc\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/gmm\_misc\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}} \{ \textcolor{keyword}{const} uword id;  \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}(\textcolor{keyword}{const} uword in\_id) : id(in\_id) \{\} \};}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& a, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& b) \{ \textcolor{keywordflow}{return} (a.id == b.id); \}}
+\DoxyCodeLine{24 \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& a, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& b) \{ \textcolor{keywordflow}{return} (a.id != b.id); \}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__dist__eucl}{gmm\_dist\_eucl}} : \textcolor{keyword}{public} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structgmm__dist__eucl}{gmm\_dist\_eucl}}() : \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}(1) \{\} \};}
+\DoxyCodeLine{27 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__dist__maha}{gmm\_dist\_maha}} : \textcolor{keyword}{public} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structgmm__dist__maha}{gmm\_dist\_maha}}() : \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}(2) \{\} \};}
+\DoxyCodeLine{28 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__dist__prob}{gmm\_dist\_prob}} : \textcolor{keyword}{public} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structgmm__dist__prob}{gmm\_dist\_prob}}() : \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}(3) \{\} \};}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__eucl}{gmm\_dist\_eucl}} eucl\_dist;}
+\DoxyCodeLine{31 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__maha}{gmm\_dist\_maha}} maha\_dist;}
+\DoxyCodeLine{32 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__prob}{gmm\_dist\_prob}} prob\_dist;}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}} \{ \textcolor{keyword}{const} uword id; \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}(\textcolor{keyword}{const} uword in\_id) : id(in\_id) \{\} \};}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}\& a, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}\& b) \{ \textcolor{keywordflow}{return} (a.id == b.id); \}}
+\DoxyCodeLine{39 \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}\& a, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}\& b) \{ \textcolor{keywordflow}{return} (a.id != b.id); \}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__seed__keep__existing}{gmm\_seed\_keep\_existing}} : \textcolor{keyword}{public} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structgmm__seed__keep__existing}{gmm\_seed\_keep\_existing}}() : \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}(1) \{\} \};}
+\DoxyCodeLine{42 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__seed__static__subset}{gmm\_seed\_static\_subset}} : \textcolor{keyword}{public} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structgmm__seed__static__subset}{gmm\_seed\_static\_subset}}() : \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}(2) \{\} \};}
+\DoxyCodeLine{43 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__seed__static__spread}{gmm\_seed\_static\_spread}} : \textcolor{keyword}{public} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structgmm__seed__static__spread}{gmm\_seed\_static\_spread}}() : \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}(3) \{\} \};}
+\DoxyCodeLine{44 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__seed__random__subset}{gmm\_seed\_random\_subset}} : \textcolor{keyword}{public} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structgmm__seed__random__subset}{gmm\_seed\_random\_subset}}() : \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}(4) \{\} \};}
+\DoxyCodeLine{45 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__seed__random__spread}{gmm\_seed\_random\_spread}} : \textcolor{keyword}{public} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}} \{ \textcolor{keyword}{inline} \mbox{\hyperlink{structgmm__seed__random__spread}{gmm\_seed\_random\_spread}}() : \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}(5) \{\} \};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__keep__existing}{gmm\_seed\_keep\_existing}} keep\_existing;}
+\DoxyCodeLine{48 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__static__subset}{gmm\_seed\_static\_subset}} static\_subset;}
+\DoxyCodeLine{49 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__static__spread}{gmm\_seed\_static\_spread}} static\_spread;}
+\DoxyCodeLine{50 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__random__subset}{gmm\_seed\_random\_subset}} random\_subset;}
+\DoxyCodeLine{51 \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__random__spread}{gmm\_seed\_random\_spread}} random\_spread;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{namespace }gmm\_priv}
+\DoxyCodeLine{55 \{}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{class }\mbox{\hyperlink{classgmm__priv_1_1gmm__diag}{gmm\_diag}};}
+\DoxyCodeLine{59 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{class }\mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__priv_1_1gmm__empty__arg}{gmm\_empty\_arg}} \{\};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{comment}{// running\_mean\_scalar}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{68 \textcolor{keyword}{class }\mbox{\hyperlink{classgmm__priv_1_1running__mean__scalar}{running\_mean\_scalar}}}
+\DoxyCodeLine{69   \{}
+\DoxyCodeLine{70   \textcolor{keyword}{public}:}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keyword}{inline} \mbox{\hyperlink{classgmm__priv_1_1running__mean__scalar}{running\_mean\_scalar}}();}
+\DoxyCodeLine{73   \textcolor{keyword}{inline} \mbox{\hyperlink{classgmm__priv_1_1running__mean__scalar}{running\_mean\_scalar}}(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1running__mean__scalar}{running\_mean\_scalar}}\& in\_rms);}
+\DoxyCodeLine{74   }
+\DoxyCodeLine{75   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1running__mean__scalar}{running\_mean\_scalar}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1running__mean__scalar}{running\_mean\_scalar}}\& in\_rms);}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   arma\_hot \textcolor{keyword}{inline} \textcolor{keywordtype}{void} operator() (\textcolor{keyword}{const} eT X);}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  reset();}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   \textcolor{keyword}{inline} uword count() \textcolor{keyword}{const};}
+\DoxyCodeLine{82   \textcolor{keyword}{inline} eT    mean()  \textcolor{keyword}{const};}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   }
+\DoxyCodeLine{85   \textcolor{keyword}{private}:}
+\DoxyCodeLine{86   }
+\DoxyCodeLine{87   arma\_aligned uword counter;}
+\DoxyCodeLine{88   arma\_aligned eT    r\_mean;}
+\DoxyCodeLine{89   \};}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{comment}{// distance}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, uword dist\_\textcolor{keywordtype}{id}>}
+\DoxyCodeLine{96 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__priv_1_1distance}{distance}} \{\};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{100 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__priv_1_1distance}{distance}}<eT, uword(1)>}
+\DoxyCodeLine{101   \{}
+\DoxyCodeLine{102   arma\_inline \textcolor{keyword}{static} eT eval(\textcolor{keyword}{const} uword N, \textcolor{keyword}{const} eT* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} eT*);}
+\DoxyCodeLine{103   \};}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{108 \textcolor{keyword}{struct }\mbox{\hyperlink{structgmm__priv_1_1distance}{distance}}<eT, uword(2)>}
+\DoxyCodeLine{109   \{}
+\DoxyCodeLine{110   arma\_inline \textcolor{keyword}{static} eT eval(\textcolor{keyword}{const} uword N, \textcolor{keyword}{const} eT* \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} eT* C);}
+\DoxyCodeLine{111   \};}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 }
+
+\end{DoxyCode}

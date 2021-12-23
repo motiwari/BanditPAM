@@ -1,0 +1,116 @@
+\hypertarget{op__dot__bones_8hpp_source}{}\doxysection{op\+\_\+dot\+\_\+bones.\+hpp}
+\label{op__dot__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_dot\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_dot\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classop__dot}{op\_dot}}}
+\DoxyCodeLine{24   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__default}{traits\_op\_default}}}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   \textcolor{keyword}{public}:}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{29   arma\_inline \textcolor{keyword}{static}}
+\DoxyCodeLine{30   \textcolor{keyword}{typename} arma\_not\_cx<eT>::result}
+\DoxyCodeLine{31   \mbox{\hyperlink{group__op__dot_ga7af686a7089ac5d85b44405385578283}{direct\_dot\_arma}}(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{34   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static}}
+\DoxyCodeLine{35   \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<eT>::result}}}
+\DoxyCodeLine{36   \mbox{\hyperlink{group__op__dot_ga7af686a7089ac5d85b44405385578283}{direct\_dot\_arma}}(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{39   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__only}{arma\_real\_only<eT>::result}}}
+\DoxyCodeLine{40   \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{direct\_dot}}(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{43   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<eT>::result}}}
+\DoxyCodeLine{44   \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{direct\_dot}}(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{47   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__integral__only}{arma\_integral\_only<eT>::result}}}
+\DoxyCodeLine{48   \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{direct\_dot}}(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{52   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} eT \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{direct\_dot}}(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} eT* C);}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{55   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::elem\_type apply(\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y);}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{58   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename}  arma\_not\_cx<typename T1::elem\_type>::result apply\_proxy(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& PA, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}}\& PB);}
+\DoxyCodeLine{59   }
+\DoxyCodeLine{60   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{61   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}} apply\_proxy(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& PA, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}}\& PB);}
+\DoxyCodeLine{62   \};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{class }\mbox{\hyperlink{classop__norm__dot}{op\_norm\_dot}}}
+\DoxyCodeLine{70   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__default}{traits\_op\_default}}}
+\DoxyCodeLine{71   \{}
+\DoxyCodeLine{72   \textcolor{keyword}{public}:}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{75   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::elem\_type apply(\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y);}
+\DoxyCodeLine{76   \};}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{keyword}{class }\mbox{\hyperlink{classop__cdot}{op\_cdot}}}
+\DoxyCodeLine{84   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__default}{traits\_op\_default}}}
+\DoxyCodeLine{85   \{}
+\DoxyCodeLine{86   \textcolor{keyword}{public}:}
+\DoxyCodeLine{87   }
+\DoxyCodeLine{88   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{89   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} eT direct\_cdot\_arma(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{90   }
+\DoxyCodeLine{91   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{92   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} eT direct\_cdot(\textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* \textcolor{keyword}{const} \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{93   }
+\DoxyCodeLine{94   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{95   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::elem\_type apply       (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y);}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{98   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::elem\_type apply\_unwrap(\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y);}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{101   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keyword}{typename} T1::elem\_type apply\_proxy (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y);}
+\DoxyCodeLine{102   \};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{class }\mbox{\hyperlink{classop__dot__mixed}{op\_dot\_mixed}}}
+\DoxyCodeLine{107   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__default}{traits\_op\_default}}}
+\DoxyCodeLine{108   \{}
+\DoxyCodeLine{109   \textcolor{keyword}{public}:}
+\DoxyCodeLine{110   }
+\DoxyCodeLine{111   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{112   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static}}
+\DoxyCodeLine{113   \textcolor{keyword}{typename} promote\_type<typename T1::elem\_type, typename T2::elem\_type>::result}
+\DoxyCodeLine{114   apply(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{115   \};}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 }
+
+\end{DoxyCode}

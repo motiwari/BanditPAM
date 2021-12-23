@@ -1,0 +1,405 @@
+\hypertarget{op__misc__meat_8hpp_source}{}\doxysection{op\+\_\+misc\+\_\+meat.\+hpp}
+\label{op__misc__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_misc\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_misc\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 op\_real::apply( \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_real>}}\& X )}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.m);}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{34   \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{35     }
+\DoxyCodeLine{36   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_rows, n\_cols);}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   T* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{41     \{}
+\DoxyCodeLine{42     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} ea\_type;}
+\DoxyCodeLine{43     }
+\DoxyCodeLine{44     \textcolor{keyword}{const} uword   n\_elem  = P.get\_n\_elem();}
+\DoxyCodeLine{45           ea\_type \mbox{\hyperlink{structA}{A}}       = P.get\_ea();}
+\DoxyCodeLine{46     }
+\DoxyCodeLine{47     \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{48       \{}
+\DoxyCodeLine{49       out\_mem[i] = std::real( \mbox{\hyperlink{structA}{A}}[i] );}
+\DoxyCodeLine{50       \}}
+\DoxyCodeLine{51     \}}
+\DoxyCodeLine{52   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{53     \{}
+\DoxyCodeLine{54     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{55     \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{56       \{}
+\DoxyCodeLine{57       *out\_mem = std::real( P.at(row,col) );}
+\DoxyCodeLine{58       out\_mem++;}
+\DoxyCodeLine{59       \}}
+\DoxyCodeLine{60     \}}
+\DoxyCodeLine{61   \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{66 \textcolor{keyword}{inline}}
+\DoxyCodeLine{67 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{68 op\_real::apply( \mbox{\hyperlink{classCube}{Cube<typename T1::pod\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_real>}}\& X )}
+\DoxyCodeLine{69   \{}
+\DoxyCodeLine{70   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} P(X.m);}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   \textcolor{keyword}{const} uword n\_rows   = P.get\_n\_rows();}
+\DoxyCodeLine{77   \textcolor{keyword}{const} uword n\_cols   = P.get\_n\_cols();}
+\DoxyCodeLine{78   \textcolor{keyword}{const} uword n\_slices = P.get\_n\_slices();}
+\DoxyCodeLine{79     }
+\DoxyCodeLine{80   out.\mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   T* out\_mem = out.\mbox{\hyperlink{group__Cube_ga5b00237224a8e3bfb05728de7c962f85}{memptr}}();}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{85     \{}
+\DoxyCodeLine{86     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} ea\_type;}
+\DoxyCodeLine{87     }
+\DoxyCodeLine{88     \textcolor{keyword}{const} uword   n\_elem  = P.get\_n\_elem();}
+\DoxyCodeLine{89           ea\_type \mbox{\hyperlink{structA}{A}}       = P.get\_ea();}
+\DoxyCodeLine{90     }
+\DoxyCodeLine{91     \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{92       \{}
+\DoxyCodeLine{93       out\_mem[i] = std::real( \mbox{\hyperlink{structA}{A}}[i] );}
+\DoxyCodeLine{94       \}}
+\DoxyCodeLine{95     \}}
+\DoxyCodeLine{96   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{97     \{}
+\DoxyCodeLine{98     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{99     \textcolor{keywordflow}{for}(uword col=0;   col   < n\_cols;   ++col  )}
+\DoxyCodeLine{100     \textcolor{keywordflow}{for}(uword row=0;   row   < n\_rows;   ++row  )}
+\DoxyCodeLine{101       \{}
+\DoxyCodeLine{102       *out\_mem = std::real( P.at(row,col,\mbox{\hyperlink{classslice}{slice}}) );}
+\DoxyCodeLine{103       out\_mem++;}
+\DoxyCodeLine{104       \}}
+\DoxyCodeLine{105     \}}
+\DoxyCodeLine{106   \}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{111 \textcolor{keyword}{inline}}
+\DoxyCodeLine{112 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{113 op\_imag::apply( \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_imag>}}\& X )}
+\DoxyCodeLine{114   \{}
+\DoxyCodeLine{115   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{116   }
+\DoxyCodeLine{117   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{118   }
+\DoxyCodeLine{119   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.m);}
+\DoxyCodeLine{120   }
+\DoxyCodeLine{121   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{122   \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{123     }
+\DoxyCodeLine{124   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_rows, n\_cols);}
+\DoxyCodeLine{125   }
+\DoxyCodeLine{126   T* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{127   }
+\DoxyCodeLine{128   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{129     \{}
+\DoxyCodeLine{130     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} ea\_type;}
+\DoxyCodeLine{131     }
+\DoxyCodeLine{132     \textcolor{keyword}{const} uword   n\_elem  = P.get\_n\_elem();}
+\DoxyCodeLine{133           ea\_type \mbox{\hyperlink{structA}{A}}       = P.get\_ea();}
+\DoxyCodeLine{134     }
+\DoxyCodeLine{135     \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{136       \{}
+\DoxyCodeLine{137       out\_mem[i] = std::imag( \mbox{\hyperlink{structA}{A}}[i] );}
+\DoxyCodeLine{138       \}}
+\DoxyCodeLine{139     \}}
+\DoxyCodeLine{140   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{141     \{}
+\DoxyCodeLine{142     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{143     \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{144       \{}
+\DoxyCodeLine{145       *out\_mem = std::imag( P.at(row,col) );}
+\DoxyCodeLine{146       out\_mem++;}
+\DoxyCodeLine{147       \}}
+\DoxyCodeLine{148     \}}
+\DoxyCodeLine{149   \}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{154 \textcolor{keyword}{inline}}
+\DoxyCodeLine{155 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{156 op\_imag::apply( \mbox{\hyperlink{classCube}{Cube<typename T1::pod\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_imag>}}\& X )}
+\DoxyCodeLine{157   \{}
+\DoxyCodeLine{158   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} P(X.m);}
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164   \textcolor{keyword}{const} uword n\_rows   = P.get\_n\_rows();}
+\DoxyCodeLine{165   \textcolor{keyword}{const} uword n\_cols   = P.get\_n\_cols();}
+\DoxyCodeLine{166   \textcolor{keyword}{const} uword n\_slices = P.get\_n\_slices();}
+\DoxyCodeLine{167     }
+\DoxyCodeLine{168   out.\mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{169   }
+\DoxyCodeLine{170   T* out\_mem = out.\mbox{\hyperlink{group__Cube_ga5b00237224a8e3bfb05728de7c962f85}{memptr}}();}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{173     \{}
+\DoxyCodeLine{174     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} ea\_type;}
+\DoxyCodeLine{175     }
+\DoxyCodeLine{176     \textcolor{keyword}{const} uword   n\_elem  = P.get\_n\_elem();}
+\DoxyCodeLine{177           ea\_type \mbox{\hyperlink{structA}{A}}       = P.get\_ea();}
+\DoxyCodeLine{178     }
+\DoxyCodeLine{179     \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{180       \{}
+\DoxyCodeLine{181       out\_mem[i] = std::imag( \mbox{\hyperlink{structA}{A}}[i] );}
+\DoxyCodeLine{182       \}}
+\DoxyCodeLine{183     \}}
+\DoxyCodeLine{184   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{185     \{}
+\DoxyCodeLine{186     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{187     \textcolor{keywordflow}{for}(uword col=0;   col   < n\_cols;   ++col  )}
+\DoxyCodeLine{188     \textcolor{keywordflow}{for}(uword row=0;   row   < n\_rows;   ++row  )}
+\DoxyCodeLine{189       \{}
+\DoxyCodeLine{190       *out\_mem = std::imag( P.at(row,col,\mbox{\hyperlink{classslice}{slice}}) );}
+\DoxyCodeLine{191       out\_mem++;}
+\DoxyCodeLine{192       \}}
+\DoxyCodeLine{193     \}}
+\DoxyCodeLine{194   \}}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{199 \textcolor{keyword}{inline}}
+\DoxyCodeLine{200 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{201 op\_abs::apply( \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_abs>}}\& X )}
+\DoxyCodeLine{202   \{}
+\DoxyCodeLine{203   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{204   }
+\DoxyCodeLine{205   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.m);}
+\DoxyCodeLine{208   }
+\DoxyCodeLine{209   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{210   \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_rows, n\_cols);}
+\DoxyCodeLine{213   }
+\DoxyCodeLine{214   T* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{215   }
+\DoxyCodeLine{216   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{217     \{}
+\DoxyCodeLine{218     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} ea\_type;}
+\DoxyCodeLine{219     }
+\DoxyCodeLine{220     \textcolor{keyword}{const} uword   n\_elem  = P.get\_n\_elem();}
+\DoxyCodeLine{221           ea\_type \mbox{\hyperlink{structA}{A}}       = P.get\_ea();}
+\DoxyCodeLine{222     }
+\DoxyCodeLine{223 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{224       \{}
+\DoxyCodeLine{225       \textcolor{keyword}{const} \textcolor{keywordtype}{int} n\_threads = mp\_thread\_limit::get();}
+\DoxyCodeLine{226 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static) num\_threads(n\_threads)}}
+\DoxyCodeLine{227       \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{228         \{}
+\DoxyCodeLine{229         out\_mem[i] = std::abs( \mbox{\hyperlink{structA}{A}}[i] );}
+\DoxyCodeLine{230         \}}
+\DoxyCodeLine{231       \}}
+\DoxyCodeLine{232 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{233       \{}
+\DoxyCodeLine{234       \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{235         \{}
+\DoxyCodeLine{236         out\_mem[i] = std::abs( \mbox{\hyperlink{structA}{A}}[i] );}
+\DoxyCodeLine{237         \}}
+\DoxyCodeLine{238       \}}
+\DoxyCodeLine{239 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{240     \}}
+\DoxyCodeLine{241   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{242     \{}
+\DoxyCodeLine{243     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{244     \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{245       \{}
+\DoxyCodeLine{246       *out\_mem = std::abs( P.at(row,col) );}
+\DoxyCodeLine{247       out\_mem++;}
+\DoxyCodeLine{248       \}}
+\DoxyCodeLine{249     \}}
+\DoxyCodeLine{250   \}}
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{255 \textcolor{keyword}{inline}}
+\DoxyCodeLine{256 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{257 op\_abs::apply( \mbox{\hyperlink{classCube}{Cube<typename T1::pod\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_abs>}}\& X )}
+\DoxyCodeLine{258   \{}
+\DoxyCodeLine{259   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{260   }
+\DoxyCodeLine{261   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{262   }
+\DoxyCodeLine{263   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} P(X.m);}
+\DoxyCodeLine{264   }
+\DoxyCodeLine{265   \textcolor{keyword}{const} uword n\_rows   = P.get\_n\_rows();}
+\DoxyCodeLine{266   \textcolor{keyword}{const} uword n\_cols   = P.get\_n\_cols();}
+\DoxyCodeLine{267   \textcolor{keyword}{const} uword n\_slices = P.get\_n\_slices();}
+\DoxyCodeLine{268     }
+\DoxyCodeLine{269   out.\mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{270   }
+\DoxyCodeLine{271   T* out\_mem = out.\mbox{\hyperlink{group__Cube_ga5b00237224a8e3bfb05728de7c962f85}{memptr}}();}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{274     \{}
+\DoxyCodeLine{275     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} ea\_type;}
+\DoxyCodeLine{276     }
+\DoxyCodeLine{277     \textcolor{keyword}{const} uword   n\_elem  = P.get\_n\_elem();}
+\DoxyCodeLine{278           ea\_type \mbox{\hyperlink{structA}{A}}       = P.get\_ea();}
+\DoxyCodeLine{279     }
+\DoxyCodeLine{280 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{281       \{}
+\DoxyCodeLine{282       \textcolor{keyword}{const} \textcolor{keywordtype}{int} n\_threads = mp\_thread\_limit::get();}
+\DoxyCodeLine{283 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static) num\_threads(n\_threads)}}
+\DoxyCodeLine{284       \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{285         \{}
+\DoxyCodeLine{286         out\_mem[i] = std::abs( \mbox{\hyperlink{structA}{A}}[i] );}
+\DoxyCodeLine{287         \}}
+\DoxyCodeLine{288       \}}
+\DoxyCodeLine{289 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{290       \{}
+\DoxyCodeLine{291       \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{292         \{}
+\DoxyCodeLine{293         out\_mem[i] = std::abs( \mbox{\hyperlink{structA}{A}}[i] );}
+\DoxyCodeLine{294         \}}
+\DoxyCodeLine{295       \}}
+\DoxyCodeLine{296 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{297     \}}
+\DoxyCodeLine{298   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{299     \{}
+\DoxyCodeLine{300     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{301     \textcolor{keywordflow}{for}(uword col=0;   col   < n\_cols;   ++col  )}
+\DoxyCodeLine{302     \textcolor{keywordflow}{for}(uword row=0;   row   < n\_rows;   ++row  )}
+\DoxyCodeLine{303       \{}
+\DoxyCodeLine{304       *out\_mem = std::abs( P.at(row,col,\mbox{\hyperlink{classslice}{slice}}) );}
+\DoxyCodeLine{305       out\_mem++;}
+\DoxyCodeLine{306       \}}
+\DoxyCodeLine{307     \}}
+\DoxyCodeLine{308   \}}
+\DoxyCodeLine{309 }
+\DoxyCodeLine{310 }
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{313 \textcolor{keyword}{inline}}
+\DoxyCodeLine{314 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{315 op\_arg::apply( \mbox{\hyperlink{classMat}{Mat<typename T1::pod\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_arg>}}\& X )}
+\DoxyCodeLine{316   \{}
+\DoxyCodeLine{317   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{318   }
+\DoxyCodeLine{319   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{320   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{321   }
+\DoxyCodeLine{322   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.m);}
+\DoxyCodeLine{323   }
+\DoxyCodeLine{324   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{325   \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{326   }
+\DoxyCodeLine{327   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_rows, n\_cols);}
+\DoxyCodeLine{328   }
+\DoxyCodeLine{329   T* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{330   }
+\DoxyCodeLine{331   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{332     \{}
+\DoxyCodeLine{333     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} ea\_type;}
+\DoxyCodeLine{334     }
+\DoxyCodeLine{335     \textcolor{keyword}{const} uword   n\_elem  = P.get\_n\_elem();}
+\DoxyCodeLine{336           ea\_type \mbox{\hyperlink{structA}{A}}       = P.get\_ea();}
+\DoxyCodeLine{337     }
+\DoxyCodeLine{338     \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{339       \{}
+\DoxyCodeLine{340       out\_mem[i] = \mbox{\hyperlink{structarma__arg}{arma\_arg<eT>::eval}}( \mbox{\hyperlink{structA}{A}}[i] );}
+\DoxyCodeLine{341       \}}
+\DoxyCodeLine{342     \}}
+\DoxyCodeLine{343   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{344     \{}
+\DoxyCodeLine{345     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{346     \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{347       \{}
+\DoxyCodeLine{348       *out\_mem = \mbox{\hyperlink{structarma__arg}{arma\_arg<eT>::eval}}( P.at(row,col) );}
+\DoxyCodeLine{349       out\_mem++;}
+\DoxyCodeLine{350       \}}
+\DoxyCodeLine{351     \}}
+\DoxyCodeLine{352   \}}
+\DoxyCodeLine{353 }
+\DoxyCodeLine{354 }
+\DoxyCodeLine{355 }
+\DoxyCodeLine{356 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{357 \textcolor{keyword}{inline}}
+\DoxyCodeLine{358 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{359 op\_arg::apply( \mbox{\hyperlink{classCube}{Cube<typename T1::pod\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_arg>}}\& X )}
+\DoxyCodeLine{360   \{}
+\DoxyCodeLine{361   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{362   }
+\DoxyCodeLine{363   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{364   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{365   }
+\DoxyCodeLine{366   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} P(X.m);}
+\DoxyCodeLine{367   }
+\DoxyCodeLine{368   \textcolor{keyword}{const} uword n\_rows   = P.get\_n\_rows();}
+\DoxyCodeLine{369   \textcolor{keyword}{const} uword n\_cols   = P.get\_n\_cols();}
+\DoxyCodeLine{370   \textcolor{keyword}{const} uword n\_slices = P.get\_n\_slices();}
+\DoxyCodeLine{371   }
+\DoxyCodeLine{372   out.\mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{373   }
+\DoxyCodeLine{374   T* out\_mem = out.\mbox{\hyperlink{group__Cube_ga5b00237224a8e3bfb05728de7c962f85}{memptr}}();}
+\DoxyCodeLine{375 }
+\DoxyCodeLine{376   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{377     \{}
+\DoxyCodeLine{378     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} ea\_type;}
+\DoxyCodeLine{379     }
+\DoxyCodeLine{380     \textcolor{keyword}{const} uword   n\_elem  = P.get\_n\_elem();}
+\DoxyCodeLine{381           ea\_type \mbox{\hyperlink{structA}{A}}       = P.get\_ea();}
+\DoxyCodeLine{382     }
+\DoxyCodeLine{383     \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{384       \{}
+\DoxyCodeLine{385       out\_mem[i] = \mbox{\hyperlink{structarma__arg}{arma\_arg<eT>::eval}}( \mbox{\hyperlink{structA}{A}}[i] );}
+\DoxyCodeLine{386       \}}
+\DoxyCodeLine{387     \}}
+\DoxyCodeLine{388   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{389     \{}
+\DoxyCodeLine{390     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{391     \textcolor{keywordflow}{for}(uword col=0;   col   < n\_cols;   ++col  )}
+\DoxyCodeLine{392     \textcolor{keywordflow}{for}(uword row=0;   row   < n\_rows;   ++row  )}
+\DoxyCodeLine{393       \{}
+\DoxyCodeLine{394       *out\_mem = \mbox{\hyperlink{structarma__arg}{arma\_arg<eT>::eval}}( P.at(row,col,\mbox{\hyperlink{classslice}{slice}}) );}
+\DoxyCodeLine{395       out\_mem++;}
+\DoxyCodeLine{396       \}}
+\DoxyCodeLine{397     \}}
+\DoxyCodeLine{398   \}}
+\DoxyCodeLine{399 }
+\DoxyCodeLine{400 }
+\DoxyCodeLine{401 }
+
+\end{DoxyCode}

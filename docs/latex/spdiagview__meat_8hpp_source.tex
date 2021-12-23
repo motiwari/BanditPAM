@@ -1,0 +1,1070 @@
+\hypertarget{spdiagview__meat_8hpp_source}{}\doxysection{spdiagview\+\_\+meat.\+hpp}
+\label{spdiagview__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/spdiagview\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/spdiagview\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{22 \textcolor{keyword}{inline}}
+\DoxyCodeLine{23 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::\string~spdiagview}}()}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{26   \}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{30 arma\_inline}
+\DoxyCodeLine{31 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::spdiagview}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& in\_m, \textcolor{keyword}{const} uword in\_row\_offset, \textcolor{keyword}{const} uword in\_col\_offset, \textcolor{keyword}{const} uword in\_len)}
+\DoxyCodeLine{32   : m(in\_m)}
+\DoxyCodeLine{33   , row\_offset(in\_row\_offset)}
+\DoxyCodeLine{34   , col\_offset(in\_col\_offset)}
+\DoxyCodeLine{35   , n\_rows(in\_len)}
+\DoxyCodeLine{36   , n\_elem(in\_len)}
+\DoxyCodeLine{37   \{}
+\DoxyCodeLine{38   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{39   \}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{44 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{45 \textcolor{keyword}{inline}}
+\DoxyCodeLine{46 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{47 \mbox{\hyperlink{group__spdiagview_gadc9eef6143b6e4c68633c4c31bfc9350}{spdiagview<eT>::operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& x)}
+\DoxyCodeLine{48   \{}
+\DoxyCodeLine{49   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d = *\textcolor{keyword}{this};}
+\DoxyCodeLine{52   }
+\DoxyCodeLine{53   arma\_debug\_check( (d.n\_elem != x.n\_elem), \textcolor{stringliteral}{"{}spdiagview: diagonals have incompatible lengths"{}} );}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55         \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(d.m);}
+\DoxyCodeLine{56   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& x\_m = x.m;}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keywordflow}{if}( (\&d\_m == \&x\_m) || ((d.row\_offset == 0) \&\& (d.col\_offset == 0)) )}
+\DoxyCodeLine{59     \{}
+\DoxyCodeLine{60     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(x);}
+\DoxyCodeLine{61     }
+\DoxyCodeLine{62     (*this).operator=(tmp);}
+\DoxyCodeLine{63     \}}
+\DoxyCodeLine{64   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{65     \{}
+\DoxyCodeLine{66     \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{67     \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{68     \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{69     }
+\DoxyCodeLine{70     \textcolor{keyword}{const} uword x\_row\_offset = x.row\_offset;}
+\DoxyCodeLine{71     \textcolor{keyword}{const} uword x\_col\_offset = x.col\_offset;}
+\DoxyCodeLine{72     }
+\DoxyCodeLine{73     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{74       \{}
+\DoxyCodeLine{75       d\_m.at(i + d\_row\_offset, i + d\_col\_offset) = x\_m.at(i + x\_row\_offset, i + x\_col\_offset);}
+\DoxyCodeLine{76       \}}
+\DoxyCodeLine{77     \}}
+\DoxyCodeLine{78   \}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{83 \textcolor{keyword}{inline}}
+\DoxyCodeLine{84 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{85 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator+=}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{86   \{}
+\DoxyCodeLine{87   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89   \textcolor{keywordflow}{if}(val == eT(0))  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{90   }
+\DoxyCodeLine{91   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& t\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m);}
+\DoxyCodeLine{92   }
+\DoxyCodeLine{93   \textcolor{keyword}{const} uword t\_n\_elem     = n\_elem;}
+\DoxyCodeLine{94   \textcolor{keyword}{const} uword t\_row\_offset = row\_offset;}
+\DoxyCodeLine{95   \textcolor{keyword}{const} uword t\_col\_offset = col\_offset;}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keywordflow}{for}(uword i=0; i < t\_n\_elem; ++i)}
+\DoxyCodeLine{98     \{}
+\DoxyCodeLine{99     t\_m.at(i + t\_row\_offset, i + t\_col\_offset) += val;}
+\DoxyCodeLine{100     \}}
+\DoxyCodeLine{101   \}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{106 \textcolor{keyword}{inline}}
+\DoxyCodeLine{107 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{108 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator-\/=}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{109   \{}
+\DoxyCodeLine{110   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   \textcolor{keywordflow}{if}(val == eT(0))  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{113   }
+\DoxyCodeLine{114   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& t\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m);}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   \textcolor{keyword}{const} uword t\_n\_elem     = n\_elem;}
+\DoxyCodeLine{117   \textcolor{keyword}{const} uword t\_row\_offset = row\_offset;}
+\DoxyCodeLine{118   \textcolor{keyword}{const} uword t\_col\_offset = col\_offset;}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   \textcolor{keywordflow}{for}(uword i=0; i < t\_n\_elem; ++i)}
+\DoxyCodeLine{121     \{}
+\DoxyCodeLine{122     t\_m.at(i + t\_row\_offset, i + t\_col\_offset) -\/= val;}
+\DoxyCodeLine{123     \}}
+\DoxyCodeLine{124   \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{129 \textcolor{keyword}{inline}}
+\DoxyCodeLine{130 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{131 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator*=}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{132   \{}
+\DoxyCodeLine{133   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   \textcolor{keywordflow}{if}(val == eT(0))  \{ (*this).zeros(); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{136   }
+\DoxyCodeLine{137   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& t\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m);}
+\DoxyCodeLine{138   }
+\DoxyCodeLine{139   \textcolor{keyword}{const} uword t\_n\_elem     = n\_elem;}
+\DoxyCodeLine{140   \textcolor{keyword}{const} uword t\_row\_offset = row\_offset;}
+\DoxyCodeLine{141   \textcolor{keyword}{const} uword t\_col\_offset = col\_offset;}
+\DoxyCodeLine{142   }
+\DoxyCodeLine{143   \textcolor{keywordflow}{for}(uword i=0; i < t\_n\_elem; ++i)}
+\DoxyCodeLine{144     \{}
+\DoxyCodeLine{145     t\_m.at(i + t\_row\_offset, i + t\_col\_offset) *= val;}
+\DoxyCodeLine{146     \}}
+\DoxyCodeLine{147   \}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{152 \textcolor{keyword}{inline}}
+\DoxyCodeLine{153 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{154 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator/=}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{155   \{}
+\DoxyCodeLine{156   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{157   }
+\DoxyCodeLine{158   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& t\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m);}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   \textcolor{keyword}{const} uword t\_n\_elem     = n\_elem;}
+\DoxyCodeLine{161   \textcolor{keyword}{const} uword t\_row\_offset = row\_offset;}
+\DoxyCodeLine{162   \textcolor{keyword}{const} uword t\_col\_offset = col\_offset;}
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164   \textcolor{keywordflow}{for}(uword i=0; i < t\_n\_elem; ++i)}
+\DoxyCodeLine{165     \{}
+\DoxyCodeLine{166     t\_m.at(i + t\_row\_offset, i + t\_col\_offset) /= val;}
+\DoxyCodeLine{167     \}}
+\DoxyCodeLine{168   \}}
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 }
+\DoxyCodeLine{173 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{174 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{175 \textcolor{keyword}{inline}}
+\DoxyCodeLine{176 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{177 \mbox{\hyperlink{group__spdiagview_gadc9eef6143b6e4c68633c4c31bfc9350}{spdiagview<eT>::operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& o)}
+\DoxyCodeLine{178   \{}
+\DoxyCodeLine{179   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{180   }
+\DoxyCodeLine{181   \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d = *\textcolor{keyword}{this};}
+\DoxyCodeLine{182   }
+\DoxyCodeLine{183   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(d.m);}
+\DoxyCodeLine{184   }
+\DoxyCodeLine{185   \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{186   \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{187   \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type}}< T1, \mbox{\hyperlink{classGen}{Gen}}<\mbox{\hyperlink{classCol}{Col<eT>}}, gen\_zeros> >::yes)}
+\DoxyCodeLine{190     \{}
+\DoxyCodeLine{191     \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(o.get\_ref());}
+\DoxyCodeLine{192     }
+\DoxyCodeLine{193     arma\_debug\_check( (d\_n\_elem != P.get\_n\_elem()), \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}} );}
+\DoxyCodeLine{194     }
+\DoxyCodeLine{195     (*this).zeros();}
+\DoxyCodeLine{196     }
+\DoxyCodeLine{197     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{198     \}}
+\DoxyCodeLine{199   }
+\DoxyCodeLine{200   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type}}< T1, \mbox{\hyperlink{classGen}{Gen}}<\mbox{\hyperlink{classCol}{Col<eT>}}, gen\_ones> >::yes)}
+\DoxyCodeLine{201     \{}
+\DoxyCodeLine{202     \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(o.get\_ref());}
+\DoxyCodeLine{203     }
+\DoxyCodeLine{204     arma\_debug\_check( (d\_n\_elem != P.get\_n\_elem()), \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}} );}
+\DoxyCodeLine{205     }
+\DoxyCodeLine{206     (*this).ones();}
+\DoxyCodeLine{207     }
+\DoxyCodeLine{208     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{209     \}}
+\DoxyCodeLine{210   }
+\DoxyCodeLine{211   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} U(o.get\_ref());}
+\DoxyCodeLine{212   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& x     = U.M;}
+\DoxyCodeLine{213   }
+\DoxyCodeLine{214   \textcolor{keyword}{const} eT* x\_mem = x.memptr();}
+\DoxyCodeLine{215   }
+\DoxyCodeLine{216   arma\_debug\_check}
+\DoxyCodeLine{217     (}
+\DoxyCodeLine{218     ( (d\_n\_elem != x.n\_elem) || ((x.n\_rows != 1) \&\& (x.n\_cols != 1)) ),}
+\DoxyCodeLine{219     \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}}}
+\DoxyCodeLine{220     );}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222   \textcolor{keywordflow}{if}( (d\_row\_offset == 0) \&\& (d\_col\_offset == 0) )}
+\DoxyCodeLine{223     \{}
+\DoxyCodeLine{224     \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp1;}
+\DoxyCodeLine{225     }
+\DoxyCodeLine{226     tmp1.eye(d\_m.\mbox{\hyperlink{classSpMat_a84c06dc8c923afc6e779fd6ab79b4c26}{n\_rows}}, d\_m.\mbox{\hyperlink{classSpMat_a4f01c9d35f90eb836c6be489605052dd}{n\_cols}});}
+\DoxyCodeLine{227     }
+\DoxyCodeLine{228     \textcolor{keywordtype}{bool} has\_zero = \textcolor{keyword}{false};}
+\DoxyCodeLine{229     }
+\DoxyCodeLine{230     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{231       \{}
+\DoxyCodeLine{232       \textcolor{keyword}{const} eT val = x\_mem[i];}
+\DoxyCodeLine{233       }
+\DoxyCodeLine{234       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp1.values[i]) = val;}
+\DoxyCodeLine{235       }
+\DoxyCodeLine{236       \textcolor{keywordflow}{if}(val == eT(0))  \{ has\_zero = \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{237       \}}
+\DoxyCodeLine{238     }
+\DoxyCodeLine{239     \textcolor{keywordflow}{if}(has\_zero)  \{ tmp1.\mbox{\hyperlink{group__SpMat_ga54160a8130a535670a0bee00d4363944}{remove\_zeros}}(); \}}
+\DoxyCodeLine{240     }
+\DoxyCodeLine{241     \textcolor{keywordflow}{if}(tmp1.\mbox{\hyperlink{classSpMat_a71a87b0de327d5643983dd21f455b984}{n\_nonzero}} == 0)  \{ (*this).zeros(); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{242     }
+\DoxyCodeLine{243     \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp2;}
+\DoxyCodeLine{244     }
+\DoxyCodeLine{245     spglue\_merge::diagview\_merge(tmp2, d\_m, tmp1);}
+\DoxyCodeLine{246     }
+\DoxyCodeLine{247     d\_m.\mbox{\hyperlink{group__SpMat_ga17a2f694c4d85832d3744cdb08385213}{steal\_mem}}(tmp2);}
+\DoxyCodeLine{248     \}}
+\DoxyCodeLine{249   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{250     \{}
+\DoxyCodeLine{251     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{252       \{}
+\DoxyCodeLine{253       d\_m.at(i + d\_row\_offset, i + d\_col\_offset) = x\_mem[i];}
+\DoxyCodeLine{254       \}}
+\DoxyCodeLine{255     \}}
+\DoxyCodeLine{256   \}}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{261 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{262 \textcolor{keyword}{inline}}
+\DoxyCodeLine{263 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{264 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& o)}
+\DoxyCodeLine{265   \{}
+\DoxyCodeLine{266   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{267   }
+\DoxyCodeLine{268   \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d = *\textcolor{keyword}{this};}
+\DoxyCodeLine{269   }
+\DoxyCodeLine{270   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(d.m);}
+\DoxyCodeLine{271   }
+\DoxyCodeLine{272   \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{273   \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{274   \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{275     }
+\DoxyCodeLine{276   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P( o.get\_ref() );}
+\DoxyCodeLine{277   }
+\DoxyCodeLine{278   arma\_debug\_check}
+\DoxyCodeLine{279     (}
+\DoxyCodeLine{280     ( (d\_n\_elem != P.get\_n\_elem()) || ((P.get\_n\_rows() != 1) \&\& (P.get\_n\_cols() != 1)) ),}
+\DoxyCodeLine{281     \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}}}
+\DoxyCodeLine{282     );}
+\DoxyCodeLine{283   }
+\DoxyCodeLine{284   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structis__Mat}{is\_Mat}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value) || (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}}) )}
+\DoxyCodeLine{285     \{}
+\DoxyCodeLine{286     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<typename Proxy<T1>::stored\_type}}> tmp(P.Q);}
+\DoxyCodeLine{287     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& x = tmp.M;}
+\DoxyCodeLine{288     }
+\DoxyCodeLine{289     \textcolor{keyword}{const} eT* x\_mem = x.memptr();}
+\DoxyCodeLine{290 }
+\DoxyCodeLine{291     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{292       \{}
+\DoxyCodeLine{293       d\_m.at(i + d\_row\_offset, i + d\_col\_offset) += x\_mem[i];}
+\DoxyCodeLine{294       \}}
+\DoxyCodeLine{295     \}}
+\DoxyCodeLine{296   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{297     \{}
+\DoxyCodeLine{298     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{299       }
+\DoxyCodeLine{300     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{301       \{}
+\DoxyCodeLine{302       d\_m.at(i + d\_row\_offset, i + d\_col\_offset) += Pea[i];}
+\DoxyCodeLine{303       \}}
+\DoxyCodeLine{304     \}}
+\DoxyCodeLine{305   \}}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307 }
+\DoxyCodeLine{308 }
+\DoxyCodeLine{309 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{310 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{311 \textcolor{keyword}{inline}}
+\DoxyCodeLine{312 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{313 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& o)}
+\DoxyCodeLine{314   \{}
+\DoxyCodeLine{315   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{316   }
+\DoxyCodeLine{317   \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d = *\textcolor{keyword}{this};}
+\DoxyCodeLine{318   }
+\DoxyCodeLine{319   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(d.m);}
+\DoxyCodeLine{320   }
+\DoxyCodeLine{321   \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{322   \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{323   \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{324     }
+\DoxyCodeLine{325   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P( o.get\_ref() );}
+\DoxyCodeLine{326   }
+\DoxyCodeLine{327   arma\_debug\_check}
+\DoxyCodeLine{328     (}
+\DoxyCodeLine{329     ( (d\_n\_elem != P.get\_n\_elem()) || ((P.get\_n\_rows() != 1) \&\& (P.get\_n\_cols() != 1)) ),}
+\DoxyCodeLine{330     \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}}}
+\DoxyCodeLine{331     );}
+\DoxyCodeLine{332   }
+\DoxyCodeLine{333   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structis__Mat}{is\_Mat}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value) || (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}}) )}
+\DoxyCodeLine{334     \{}
+\DoxyCodeLine{335     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<typename Proxy<T1>::stored\_type}}> tmp(P.Q);}
+\DoxyCodeLine{336     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& x = tmp.M;}
+\DoxyCodeLine{337     }
+\DoxyCodeLine{338     \textcolor{keyword}{const} eT* x\_mem = x.memptr();}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{340     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{341       \{}
+\DoxyCodeLine{342       d\_m.at(i + d\_row\_offset, i + d\_col\_offset) -\/= x\_mem[i];}
+\DoxyCodeLine{343       \}}
+\DoxyCodeLine{344     \}}
+\DoxyCodeLine{345   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{346     \{}
+\DoxyCodeLine{347     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{348       }
+\DoxyCodeLine{349     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{350       \{}
+\DoxyCodeLine{351       d\_m.at(i + d\_row\_offset, i + d\_col\_offset) -\/= Pea[i];}
+\DoxyCodeLine{352       \}}
+\DoxyCodeLine{353     \}}
+\DoxyCodeLine{354   \}}
+\DoxyCodeLine{355 }
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357 }
+\DoxyCodeLine{358 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{359 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{360 \textcolor{keyword}{inline}}
+\DoxyCodeLine{361 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{362 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& o)}
+\DoxyCodeLine{363   \{}
+\DoxyCodeLine{364   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{365   }
+\DoxyCodeLine{366   \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d = *\textcolor{keyword}{this};}
+\DoxyCodeLine{367   }
+\DoxyCodeLine{368   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(d.m);}
+\DoxyCodeLine{369   }
+\DoxyCodeLine{370   \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{371   \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{372   \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{373     }
+\DoxyCodeLine{374   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P( o.get\_ref() );}
+\DoxyCodeLine{375   }
+\DoxyCodeLine{376   arma\_debug\_check}
+\DoxyCodeLine{377     (}
+\DoxyCodeLine{378     ( (d\_n\_elem != P.get\_n\_elem()) || ((P.get\_n\_rows() != 1) \&\& (P.get\_n\_cols() != 1)) ),}
+\DoxyCodeLine{379     \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}}}
+\DoxyCodeLine{380     );}
+\DoxyCodeLine{381   }
+\DoxyCodeLine{382   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structis__Mat}{is\_Mat}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value) || (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}}) )}
+\DoxyCodeLine{383     \{}
+\DoxyCodeLine{384     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<typename Proxy<T1>::stored\_type}}> tmp(P.Q);}
+\DoxyCodeLine{385     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& x = tmp.M;}
+\DoxyCodeLine{386     }
+\DoxyCodeLine{387     \textcolor{keyword}{const} eT* x\_mem = x.memptr();}
+\DoxyCodeLine{388 }
+\DoxyCodeLine{389     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{390       \{}
+\DoxyCodeLine{391       d\_m.at(i + d\_row\_offset, i + d\_col\_offset) *= x\_mem[i];}
+\DoxyCodeLine{392       \}}
+\DoxyCodeLine{393     \}}
+\DoxyCodeLine{394   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{395     \{}
+\DoxyCodeLine{396     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{397       }
+\DoxyCodeLine{398     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{399       \{}
+\DoxyCodeLine{400       d\_m.at(i + d\_row\_offset, i + d\_col\_offset) *= Pea[i];}
+\DoxyCodeLine{401       \}}
+\DoxyCodeLine{402     \}}
+\DoxyCodeLine{403   \}}
+\DoxyCodeLine{404 }
+\DoxyCodeLine{405 }
+\DoxyCodeLine{406 }
+\DoxyCodeLine{407 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{408 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{409 \textcolor{keyword}{inline}}
+\DoxyCodeLine{410 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{411 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& o)}
+\DoxyCodeLine{412   \{}
+\DoxyCodeLine{413   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{414   }
+\DoxyCodeLine{415   \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d = *\textcolor{keyword}{this};}
+\DoxyCodeLine{416   }
+\DoxyCodeLine{417   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(d.m);}
+\DoxyCodeLine{418   }
+\DoxyCodeLine{419   \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{420   \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{421   \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{422     }
+\DoxyCodeLine{423   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P( o.get\_ref() );}
+\DoxyCodeLine{424   }
+\DoxyCodeLine{425   arma\_debug\_check}
+\DoxyCodeLine{426     (}
+\DoxyCodeLine{427     ( (d\_n\_elem != P.get\_n\_elem()) || ((P.get\_n\_rows() != 1) \&\& (P.get\_n\_cols() != 1)) ),}
+\DoxyCodeLine{428     \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}}}
+\DoxyCodeLine{429     );}
+\DoxyCodeLine{430   }
+\DoxyCodeLine{431   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structis__Mat}{is\_Mat}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value) || (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}}) )}
+\DoxyCodeLine{432     \{}
+\DoxyCodeLine{433     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<typename Proxy<T1>::stored\_type}}> tmp(P.Q);}
+\DoxyCodeLine{434     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& x = tmp.M;}
+\DoxyCodeLine{435     }
+\DoxyCodeLine{436     \textcolor{keyword}{const} eT* x\_mem = x.memptr();}
+\DoxyCodeLine{437 }
+\DoxyCodeLine{438     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{439       \{}
+\DoxyCodeLine{440       d\_m.at(i + d\_row\_offset, i + d\_col\_offset) /= x\_mem[i];}
+\DoxyCodeLine{441       \}}
+\DoxyCodeLine{442     \}}
+\DoxyCodeLine{443   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{444     \{}
+\DoxyCodeLine{445     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{446       }
+\DoxyCodeLine{447     \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{448       \{}
+\DoxyCodeLine{449       d\_m.at(i + d\_row\_offset, i + d\_col\_offset) /= Pea[i];}
+\DoxyCodeLine{450       \}}
+\DoxyCodeLine{451     \}}
+\DoxyCodeLine{452   \}}
+\DoxyCodeLine{453 }
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455 }
+\DoxyCodeLine{457 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{458 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{459 \textcolor{keyword}{inline}}
+\DoxyCodeLine{460 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{461 \mbox{\hyperlink{group__spdiagview_gadc9eef6143b6e4c68633c4c31bfc9350}{spdiagview<eT>::operator= }}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& o)}
+\DoxyCodeLine{462   \{}
+\DoxyCodeLine{463   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{464   }
+\DoxyCodeLine{465   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__spmat}{unwrap\_spmat<T1>}} U( o.get\_ref() );}
+\DoxyCodeLine{466   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& x   = U.M;}
+\DoxyCodeLine{467   }
+\DoxyCodeLine{468   arma\_debug\_check}
+\DoxyCodeLine{469     (}
+\DoxyCodeLine{470     ( (n\_elem != x.n\_elem) || ((x.n\_rows != 1) \&\& (x.n\_cols != 1)) ),}
+\DoxyCodeLine{471     \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}}}
+\DoxyCodeLine{472     );}
+\DoxyCodeLine{473   }
+\DoxyCodeLine{474   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(x);}
+\DoxyCodeLine{475   }
+\DoxyCodeLine{476   (*this).operator=(tmp);}
+\DoxyCodeLine{477   \}}
+\DoxyCodeLine{478 }
+\DoxyCodeLine{479 }
+\DoxyCodeLine{480 }
+\DoxyCodeLine{481 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{482 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{483 \textcolor{keyword}{inline}}
+\DoxyCodeLine{484 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{485 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator+=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& o)}
+\DoxyCodeLine{486   \{}
+\DoxyCodeLine{487   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{488   }
+\DoxyCodeLine{489   \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d = *\textcolor{keyword}{this};}
+\DoxyCodeLine{490   }
+\DoxyCodeLine{491   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(d.m);}
+\DoxyCodeLine{492   }
+\DoxyCodeLine{493   \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{494   \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{495   \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{496   }
+\DoxyCodeLine{497   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P( o.get\_ref() );}
+\DoxyCodeLine{498   }
+\DoxyCodeLine{499   arma\_debug\_check}
+\DoxyCodeLine{500     (}
+\DoxyCodeLine{501     ( (d\_n\_elem != P.get\_n\_elem()) || ((P.get\_n\_rows() != 1) \&\& (P.get\_n\_cols() != 1)) ),}
+\DoxyCodeLine{502     \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}}}
+\DoxyCodeLine{503     );}
+\DoxyCodeLine{504   }
+\DoxyCodeLine{505   \textcolor{keywordflow}{if}( \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::use\_iterator}} || P.is\_alias(d\_m) )}
+\DoxyCodeLine{506     \{}
+\DoxyCodeLine{507     \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp(P.Q);}
+\DoxyCodeLine{508     }
+\DoxyCodeLine{509     \textcolor{keywordflow}{if}(tmp.n\_cols == 1)}
+\DoxyCodeLine{510       \{}
+\DoxyCodeLine{511       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) += tmp.at(i,0); \}}
+\DoxyCodeLine{512       \}}
+\DoxyCodeLine{513     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{514     \textcolor{keywordflow}{if}(tmp.n\_rows == 1)}
+\DoxyCodeLine{515       \{}
+\DoxyCodeLine{516       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) += tmp.at(0,i); \}}
+\DoxyCodeLine{517       \}}
+\DoxyCodeLine{518     \}}
+\DoxyCodeLine{519   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{520     \{}
+\DoxyCodeLine{521     \textcolor{keywordflow}{if}(P.get\_n\_cols() == 1)}
+\DoxyCodeLine{522       \{}
+\DoxyCodeLine{523       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) += P.at(i,0); \}}
+\DoxyCodeLine{524       \}}
+\DoxyCodeLine{525     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{526     \textcolor{keywordflow}{if}(P.get\_n\_rows() == 1)}
+\DoxyCodeLine{527       \{}
+\DoxyCodeLine{528       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) += P.at(0,i); \}}
+\DoxyCodeLine{529       \}}
+\DoxyCodeLine{530     \}}
+\DoxyCodeLine{531   \}}
+\DoxyCodeLine{532 }
+\DoxyCodeLine{533 }
+\DoxyCodeLine{534 }
+\DoxyCodeLine{535 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{536 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{537 \textcolor{keyword}{inline}}
+\DoxyCodeLine{538 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{539 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator-\/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& o)}
+\DoxyCodeLine{540   \{}
+\DoxyCodeLine{541   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{542   }
+\DoxyCodeLine{543   \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d = *\textcolor{keyword}{this};}
+\DoxyCodeLine{544   }
+\DoxyCodeLine{545   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(d.m);}
+\DoxyCodeLine{546   }
+\DoxyCodeLine{547   \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{548   \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{549   \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{550   }
+\DoxyCodeLine{551   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P( o.get\_ref() );}
+\DoxyCodeLine{552   }
+\DoxyCodeLine{553   arma\_debug\_check}
+\DoxyCodeLine{554     (}
+\DoxyCodeLine{555     ( (d\_n\_elem != P.get\_n\_elem()) || ((P.get\_n\_rows() != 1) \&\& (P.get\_n\_cols() != 1)) ),}
+\DoxyCodeLine{556     \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}}}
+\DoxyCodeLine{557     );}
+\DoxyCodeLine{558   }
+\DoxyCodeLine{559   \textcolor{keywordflow}{if}( \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::use\_iterator}} || P.is\_alias(d\_m) )}
+\DoxyCodeLine{560     \{}
+\DoxyCodeLine{561     \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp(P.Q);}
+\DoxyCodeLine{562     }
+\DoxyCodeLine{563     \textcolor{keywordflow}{if}(tmp.n\_cols == 1)}
+\DoxyCodeLine{564       \{}
+\DoxyCodeLine{565       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) -\/= tmp.at(i,0); \}}
+\DoxyCodeLine{566       \}}
+\DoxyCodeLine{567     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{568     \textcolor{keywordflow}{if}(tmp.n\_rows == 1)}
+\DoxyCodeLine{569       \{}
+\DoxyCodeLine{570       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) -\/= tmp.at(0,i); \}}
+\DoxyCodeLine{571       \}}
+\DoxyCodeLine{572     \}}
+\DoxyCodeLine{573   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{574     \{}
+\DoxyCodeLine{575     \textcolor{keywordflow}{if}(P.get\_n\_cols() == 1)}
+\DoxyCodeLine{576       \{}
+\DoxyCodeLine{577       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) -\/= P.at(i,0); \}}
+\DoxyCodeLine{578       \}}
+\DoxyCodeLine{579     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{580     \textcolor{keywordflow}{if}(P.get\_n\_rows() == 1)}
+\DoxyCodeLine{581       \{}
+\DoxyCodeLine{582       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) -\/= P.at(0,i); \}}
+\DoxyCodeLine{583       \}}
+\DoxyCodeLine{584     \}}
+\DoxyCodeLine{585   \}}
+\DoxyCodeLine{586 }
+\DoxyCodeLine{587 }
+\DoxyCodeLine{588 }
+\DoxyCodeLine{589 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{590 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{591 \textcolor{keyword}{inline}}
+\DoxyCodeLine{592 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{593 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator\%=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& o)}
+\DoxyCodeLine{594   \{}
+\DoxyCodeLine{595   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{596   }
+\DoxyCodeLine{597   \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d = *\textcolor{keyword}{this};}
+\DoxyCodeLine{598   }
+\DoxyCodeLine{599   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(d.m);}
+\DoxyCodeLine{600   }
+\DoxyCodeLine{601   \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{602   \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{603   \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{604   }
+\DoxyCodeLine{605   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P( o.get\_ref() );}
+\DoxyCodeLine{606   }
+\DoxyCodeLine{607   arma\_debug\_check}
+\DoxyCodeLine{608     (}
+\DoxyCodeLine{609     ( (d\_n\_elem != P.get\_n\_elem()) || ((P.get\_n\_rows() != 1) \&\& (P.get\_n\_cols() != 1)) ),}
+\DoxyCodeLine{610     \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}}}
+\DoxyCodeLine{611     );}
+\DoxyCodeLine{612   }
+\DoxyCodeLine{613   \textcolor{keywordflow}{if}( \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::use\_iterator}} || P.is\_alias(d\_m) )}
+\DoxyCodeLine{614     \{}
+\DoxyCodeLine{615     \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp(P.Q);}
+\DoxyCodeLine{616     }
+\DoxyCodeLine{617     \textcolor{keywordflow}{if}(tmp.n\_cols == 1)}
+\DoxyCodeLine{618       \{}
+\DoxyCodeLine{619       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) *= tmp.at(i,0); \}}
+\DoxyCodeLine{620       \}}
+\DoxyCodeLine{621     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{622     \textcolor{keywordflow}{if}(tmp.n\_rows == 1)}
+\DoxyCodeLine{623       \{}
+\DoxyCodeLine{624       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) *= tmp.at(0,i); \}}
+\DoxyCodeLine{625       \}}
+\DoxyCodeLine{626     \}}
+\DoxyCodeLine{627   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{628     \{}
+\DoxyCodeLine{629     \textcolor{keywordflow}{if}(P.get\_n\_cols() == 1)}
+\DoxyCodeLine{630       \{}
+\DoxyCodeLine{631       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) *= P.at(i,0); \}}
+\DoxyCodeLine{632       \}}
+\DoxyCodeLine{633     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{634     \textcolor{keywordflow}{if}(P.get\_n\_rows() == 1)}
+\DoxyCodeLine{635       \{}
+\DoxyCodeLine{636       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) *= P.at(0,i); \}}
+\DoxyCodeLine{637       \}}
+\DoxyCodeLine{638     \}}
+\DoxyCodeLine{639   \}}
+\DoxyCodeLine{640 }
+\DoxyCodeLine{641 }
+\DoxyCodeLine{642 }
+\DoxyCodeLine{643 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{644 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{645 \textcolor{keyword}{inline}}
+\DoxyCodeLine{646 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{647 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator/=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& o)}
+\DoxyCodeLine{648   \{}
+\DoxyCodeLine{649   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{650   }
+\DoxyCodeLine{651   \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d = *\textcolor{keyword}{this};}
+\DoxyCodeLine{652   }
+\DoxyCodeLine{653   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(d.m);}
+\DoxyCodeLine{654   }
+\DoxyCodeLine{655   \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{656   \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{657   \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{658   }
+\DoxyCodeLine{659   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P( o.get\_ref() );}
+\DoxyCodeLine{660   }
+\DoxyCodeLine{661   arma\_debug\_check}
+\DoxyCodeLine{662     (}
+\DoxyCodeLine{663     ( (d\_n\_elem != P.get\_n\_elem()) || ((P.get\_n\_rows() != 1) \&\& (P.get\_n\_cols() != 1)) ),}
+\DoxyCodeLine{664     \textcolor{stringliteral}{"{}spdiagview: given object has incompatible size"{}}}
+\DoxyCodeLine{665     );}
+\DoxyCodeLine{666   }
+\DoxyCodeLine{667   \textcolor{keywordflow}{if}( \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::use\_iterator}} || P.is\_alias(d\_m) )}
+\DoxyCodeLine{668     \{}
+\DoxyCodeLine{669     \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp(P.Q);}
+\DoxyCodeLine{670     }
+\DoxyCodeLine{671     \textcolor{keywordflow}{if}(tmp.n\_cols == 1)}
+\DoxyCodeLine{672       \{}
+\DoxyCodeLine{673       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) /= tmp.at(i,0); \}}
+\DoxyCodeLine{674       \}}
+\DoxyCodeLine{675     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{676     \textcolor{keywordflow}{if}(tmp.n\_rows == 1)}
+\DoxyCodeLine{677       \{}
+\DoxyCodeLine{678       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) /= tmp.at(0,i); \}}
+\DoxyCodeLine{679       \}}
+\DoxyCodeLine{680     \}}
+\DoxyCodeLine{681   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{682     \{}
+\DoxyCodeLine{683     \textcolor{keywordflow}{if}(P.get\_n\_cols() == 1)}
+\DoxyCodeLine{684       \{}
+\DoxyCodeLine{685       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) /= P.at(i,0); \}}
+\DoxyCodeLine{686       \}}
+\DoxyCodeLine{687     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{688     \textcolor{keywordflow}{if}(P.get\_n\_rows() == 1)}
+\DoxyCodeLine{689       \{}
+\DoxyCodeLine{690       \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)  \{ d\_m.at(i + d\_row\_offset, i + d\_col\_offset) /= P.at(0,i); \}}
+\DoxyCodeLine{691       \}}
+\DoxyCodeLine{692     \}}
+\DoxyCodeLine{693   \}}
+\DoxyCodeLine{694 }
+\DoxyCodeLine{695 }
+\DoxyCodeLine{696 }
+\DoxyCodeLine{697 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{698 \textcolor{keyword}{inline}}
+\DoxyCodeLine{699 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{700 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::extract}}(\mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& d)}
+\DoxyCodeLine{701   \{}
+\DoxyCodeLine{702   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{703   }
+\DoxyCodeLine{704   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& d\_m = d.m;}
+\DoxyCodeLine{705   }
+\DoxyCodeLine{706   \textcolor{keyword}{const} uword d\_n\_elem     = d.n\_elem;}
+\DoxyCodeLine{707   \textcolor{keyword}{const} uword d\_row\_offset = d.row\_offset;}
+\DoxyCodeLine{708   \textcolor{keyword}{const} uword d\_col\_offset = d.col\_offset;}
+\DoxyCodeLine{709   }
+\DoxyCodeLine{710   \mbox{\hyperlink{classCol}{Col<eT>}} cache(d\_n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{711   eT* cache\_mem = cache.memptr();}
+\DoxyCodeLine{712   }
+\DoxyCodeLine{713   uword d\_n\_nonzero = 0;}
+\DoxyCodeLine{714   }
+\DoxyCodeLine{715   \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{716     \{}
+\DoxyCodeLine{717     \textcolor{keyword}{const} eT val = d\_m.at(i + d\_row\_offset, i + d\_col\_offset);}
+\DoxyCodeLine{718     }
+\DoxyCodeLine{719     cache\_mem[i] = val;}
+\DoxyCodeLine{720     }
+\DoxyCodeLine{721     d\_n\_nonzero += (val != eT(0)) ? uword(1) : uword(0);}
+\DoxyCodeLine{722     \}}
+\DoxyCodeLine{723   }
+\DoxyCodeLine{724   out.\mbox{\hyperlink{group__SpMat_gac9162550cc7b009108f58ebf931be224}{reserve}}(d\_n\_elem, 1, d\_n\_nonzero);}
+\DoxyCodeLine{725   }
+\DoxyCodeLine{726   uword count = 0;}
+\DoxyCodeLine{727   \textcolor{keywordflow}{for}(uword i=0; i < d\_n\_elem; ++i)}
+\DoxyCodeLine{728     \{}
+\DoxyCodeLine{729     \textcolor{keyword}{const} eT val = cache\_mem[i];}
+\DoxyCodeLine{730     }
+\DoxyCodeLine{731     \textcolor{keywordflow}{if}(val != eT(0))}
+\DoxyCodeLine{732       \{}
+\DoxyCodeLine{733       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(out.row\_indices[count]) = i;}
+\DoxyCodeLine{734       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(out.values[count])      = val;}
+\DoxyCodeLine{735       ++count;}
+\DoxyCodeLine{736       \}}
+\DoxyCodeLine{737     \}}
+\DoxyCodeLine{738   }
+\DoxyCodeLine{739   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(out.col\_ptrs[0]) = 0;}
+\DoxyCodeLine{740   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(out.col\_ptrs[1]) = d\_n\_nonzero;}
+\DoxyCodeLine{741   \}}
+\DoxyCodeLine{742 }
+\DoxyCodeLine{743 }
+\DoxyCodeLine{744 }
+\DoxyCodeLine{746 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{747 \textcolor{keyword}{inline}}
+\DoxyCodeLine{748 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{749 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::extract}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classspdiagview}{spdiagview<eT>}}\& in)}
+\DoxyCodeLine{750   \{}
+\DoxyCodeLine{751   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{752   }
+\DoxyCodeLine{753   \textcolor{comment}{// NOTE: we're assuming that the 'out' matrix has already been set to the correct size;}}
+\DoxyCodeLine{754   \textcolor{comment}{// size setting is done by either the Mat contructor or Mat::operator=()}}
+\DoxyCodeLine{755   }
+\DoxyCodeLine{756   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& in\_m = in.m;}
+\DoxyCodeLine{757   }
+\DoxyCodeLine{758   \textcolor{keyword}{const} uword in\_n\_elem     = in.n\_elem;}
+\DoxyCodeLine{759   \textcolor{keyword}{const} uword in\_row\_offset = in.row\_offset;}
+\DoxyCodeLine{760   \textcolor{keyword}{const} uword in\_col\_offset = in.col\_offset;}
+\DoxyCodeLine{761   }
+\DoxyCodeLine{762   eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{763   }
+\DoxyCodeLine{764   \textcolor{keywordflow}{for}(uword i=0; i < in\_n\_elem; ++i)}
+\DoxyCodeLine{765     \{}
+\DoxyCodeLine{766     out\_mem[i] = in\_m.at(i + in\_row\_offset, i + in\_col\_offset);}
+\DoxyCodeLine{767     \}}
+\DoxyCodeLine{768   \}}
+\DoxyCodeLine{769 }
+\DoxyCodeLine{770 }
+\DoxyCodeLine{771 }
+\DoxyCodeLine{772 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{773 \textcolor{keyword}{inline}}
+\DoxyCodeLine{774 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}}
+\DoxyCodeLine{775 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator[]}}(\textcolor{keyword}{const} uword i)}
+\DoxyCodeLine{776   \{}
+\DoxyCodeLine{777   \textcolor{keywordflow}{return} (\textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m)).at(i+row\_offset, i+col\_offset);}
+\DoxyCodeLine{778   \}}
+\DoxyCodeLine{779 }
+\DoxyCodeLine{780 }
+\DoxyCodeLine{781 }
+\DoxyCodeLine{782 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{783 \textcolor{keyword}{inline}}
+\DoxyCodeLine{784 eT}
+\DoxyCodeLine{785 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator[]}}(\textcolor{keyword}{const} uword i)\textcolor{keyword}{ const}}
+\DoxyCodeLine{786 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{787   \textcolor{keywordflow}{return} m.at(i+row\_offset, i+col\_offset);}
+\DoxyCodeLine{788   \}}
+\DoxyCodeLine{789 }
+\DoxyCodeLine{790 }
+\DoxyCodeLine{791 }
+\DoxyCodeLine{792 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{793 \textcolor{keyword}{inline}}
+\DoxyCodeLine{794 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}}
+\DoxyCodeLine{795 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::at}}(\textcolor{keyword}{const} uword i)}
+\DoxyCodeLine{796   \{}
+\DoxyCodeLine{797   \textcolor{keywordflow}{return} (\textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m)).at(i+row\_offset, i+col\_offset);}
+\DoxyCodeLine{798   \}}
+\DoxyCodeLine{799 }
+\DoxyCodeLine{800 }
+\DoxyCodeLine{801 }
+\DoxyCodeLine{802 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{803 \textcolor{keyword}{inline}}
+\DoxyCodeLine{804 eT}
+\DoxyCodeLine{805 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::at}}(\textcolor{keyword}{const} uword i)\textcolor{keyword}{ const}}
+\DoxyCodeLine{806 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{807   \textcolor{keywordflow}{return} m.at(i+row\_offset, i+col\_offset);}
+\DoxyCodeLine{808   \}}
+\DoxyCodeLine{809 }
+\DoxyCodeLine{810 }
+\DoxyCodeLine{811 }
+\DoxyCodeLine{812 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{813 \textcolor{keyword}{inline}}
+\DoxyCodeLine{814 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}}
+\DoxyCodeLine{815 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator()}}(\textcolor{keyword}{const} uword i)}
+\DoxyCodeLine{816   \{}
+\DoxyCodeLine{817   arma\_debug\_check\_bounds( (i >= n\_elem), \textcolor{stringliteral}{"{}spdiagview::operator(): out of bounds"{}} );}
+\DoxyCodeLine{818   }
+\DoxyCodeLine{819   \textcolor{keywordflow}{return} (\textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m)).at(i+row\_offset, i+col\_offset);}
+\DoxyCodeLine{820   \}}
+\DoxyCodeLine{821 }
+\DoxyCodeLine{822 }
+\DoxyCodeLine{823 }
+\DoxyCodeLine{824 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{825 \textcolor{keyword}{inline}}
+\DoxyCodeLine{826 eT}
+\DoxyCodeLine{827 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator()}}(\textcolor{keyword}{const} uword i)\textcolor{keyword}{ const}}
+\DoxyCodeLine{828 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{829   arma\_debug\_check\_bounds( (i >= n\_elem), \textcolor{stringliteral}{"{}spdiagview::operator(): out of bounds"{}} );}
+\DoxyCodeLine{830   }
+\DoxyCodeLine{831   \textcolor{keywordflow}{return} m.at(i+row\_offset, i+col\_offset);}
+\DoxyCodeLine{832   \}}
+\DoxyCodeLine{833 }
+\DoxyCodeLine{834 }
+\DoxyCodeLine{835 }
+\DoxyCodeLine{836 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{837 \textcolor{keyword}{inline}}
+\DoxyCodeLine{838 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}}
+\DoxyCodeLine{839 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::at}}(\textcolor{keyword}{const} uword row, \textcolor{keyword}{const} uword)}
+\DoxyCodeLine{840   \{}
+\DoxyCodeLine{841   \textcolor{keywordflow}{return} (\textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m)).at(row+row\_offset, row+col\_offset);}
+\DoxyCodeLine{842   \}}
+\DoxyCodeLine{843 }
+\DoxyCodeLine{844 }
+\DoxyCodeLine{845 }
+\DoxyCodeLine{846 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{847 \textcolor{keyword}{inline}}
+\DoxyCodeLine{848 eT}
+\DoxyCodeLine{849 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::at}}(\textcolor{keyword}{const} uword row, \textcolor{keyword}{const} uword)\textcolor{keyword}{ const}}
+\DoxyCodeLine{850 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{851   \textcolor{keywordflow}{return} m.at(row+row\_offset, row+col\_offset);}
+\DoxyCodeLine{852   \}}
+\DoxyCodeLine{853 }
+\DoxyCodeLine{854 }
+\DoxyCodeLine{855 }
+\DoxyCodeLine{856 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{857 \textcolor{keyword}{inline}}
+\DoxyCodeLine{858 \mbox{\hyperlink{classSpMat__MapMat__val}{SpMat\_MapMat\_val<eT>}}}
+\DoxyCodeLine{859 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator()}}(\textcolor{keyword}{const} uword row, \textcolor{keyword}{const} uword col)}
+\DoxyCodeLine{860   \{}
+\DoxyCodeLine{861   arma\_debug\_check\_bounds( ((row >= n\_elem) || (col > 0)), \textcolor{stringliteral}{"{}spdiagview::operator(): out of bounds"{}} );}
+\DoxyCodeLine{862   }
+\DoxyCodeLine{863   \textcolor{keywordflow}{return} (\textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m)).at(row+row\_offset, row+col\_offset);}
+\DoxyCodeLine{864   \}}
+\DoxyCodeLine{865 }
+\DoxyCodeLine{866 }
+\DoxyCodeLine{867 }
+\DoxyCodeLine{868 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{869 \textcolor{keyword}{inline}}
+\DoxyCodeLine{870 eT}
+\DoxyCodeLine{871 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::operator()}}(\textcolor{keyword}{const} uword row, \textcolor{keyword}{const} uword col)\textcolor{keyword}{ const}}
+\DoxyCodeLine{872 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{873   arma\_debug\_check\_bounds( ((row >= n\_elem) || (col > 0)), \textcolor{stringliteral}{"{}spdiagview::operator(): out of bounds"{}} );}
+\DoxyCodeLine{874   }
+\DoxyCodeLine{875   \textcolor{keywordflow}{return} m.at(row+row\_offset, row+col\_offset);}
+\DoxyCodeLine{876   \}}
+\DoxyCodeLine{877 }
+\DoxyCodeLine{878 }
+\DoxyCodeLine{879 }
+\DoxyCodeLine{880 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{881 \textcolor{keyword}{inline}}
+\DoxyCodeLine{882 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{883 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::replace}}(\textcolor{keyword}{const} eT old\_val, \textcolor{keyword}{const} eT new\_val)}
+\DoxyCodeLine{884   \{}
+\DoxyCodeLine{885   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{886   }
+\DoxyCodeLine{887   \textcolor{keywordflow}{if}(old\_val == eT(0))}
+\DoxyCodeLine{888     \{}
+\DoxyCodeLine{889     arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}spdiagview::replace(): replacement not done, as old\_val = 0"{}});}
+\DoxyCodeLine{890     \}}
+\DoxyCodeLine{891   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{892     \{}
+\DoxyCodeLine{893     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(*\textcolor{keyword}{this});}
+\DoxyCodeLine{894     }
+\DoxyCodeLine{895     tmp.replace(old\_val, new\_val);}
+\DoxyCodeLine{896     }
+\DoxyCodeLine{897     (*this).operator=(tmp);}
+\DoxyCodeLine{898     \}}
+\DoxyCodeLine{899   \}}
+\DoxyCodeLine{900 }
+\DoxyCodeLine{901 }
+\DoxyCodeLine{902 }
+\DoxyCodeLine{903 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{904 \textcolor{keyword}{inline}}
+\DoxyCodeLine{905 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{906 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::clean}}(\textcolor{keyword}{const} \textcolor{keyword}{typename} get\_pod\_type<eT>::result threshold)}
+\DoxyCodeLine{907   \{}
+\DoxyCodeLine{908   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{909   }
+\DoxyCodeLine{910   \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(*\textcolor{keyword}{this});}
+\DoxyCodeLine{911   }
+\DoxyCodeLine{912   tmp.clean(threshold);}
+\DoxyCodeLine{913   }
+\DoxyCodeLine{914   (*this).operator=(tmp);}
+\DoxyCodeLine{915   \}}
+\DoxyCodeLine{916 }
+\DoxyCodeLine{917 }
+\DoxyCodeLine{918 }
+\DoxyCodeLine{919 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{920 \textcolor{keyword}{inline}}
+\DoxyCodeLine{921 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{922 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::clamp}}(\textcolor{keyword}{const} eT min\_val, \textcolor{keyword}{const} eT max\_val)}
+\DoxyCodeLine{923   \{}
+\DoxyCodeLine{924   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{925   }
+\DoxyCodeLine{926   \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp(*\textcolor{keyword}{this});}
+\DoxyCodeLine{927   }
+\DoxyCodeLine{928   tmp.clamp(min\_val, max\_val);}
+\DoxyCodeLine{929   }
+\DoxyCodeLine{930   (*this).operator=(tmp);}
+\DoxyCodeLine{931   \}}
+\DoxyCodeLine{932 }
+\DoxyCodeLine{933 }
+\DoxyCodeLine{934 }
+\DoxyCodeLine{935 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{936 \textcolor{keyword}{inline}}
+\DoxyCodeLine{937 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{938 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::fill}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{939   \{}
+\DoxyCodeLine{940   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{941   }
+\DoxyCodeLine{942   \textcolor{keywordflow}{if}( (row\_offset == 0) \&\& (col\_offset == 0) \&\& (m.sync\_state != 1) )}
+\DoxyCodeLine{943     \{}
+\DoxyCodeLine{944     \textcolor{keywordflow}{if}(val == eT(0))}
+\DoxyCodeLine{945       \{}
+\DoxyCodeLine{946       \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp(\mbox{\hyperlink{structarma__reserve__indicator}{arma\_reserve\_indicator}}(), m.n\_rows, m.n\_cols, m.n\_nonzero);  \textcolor{comment}{// worst case scenario}}
+\DoxyCodeLine{947       }
+\DoxyCodeLine{948       \textcolor{keyword}{typename} \mbox{\hyperlink{classSpMat_1_1const__iterator}{SpMat<eT>::const\_iterator}} it     = m.begin();}
+\DoxyCodeLine{949       \textcolor{keyword}{typename} \mbox{\hyperlink{classSpMat_1_1const__iterator}{SpMat<eT>::const\_iterator}} it\_end = m.end();}
+\DoxyCodeLine{950       }
+\DoxyCodeLine{951       uword count = 0;}
+\DoxyCodeLine{952         }
+\DoxyCodeLine{953       \textcolor{keywordflow}{for}(; it != it\_end; ++it)}
+\DoxyCodeLine{954         \{}
+\DoxyCodeLine{955         \textcolor{keyword}{const} uword row = it.row();}
+\DoxyCodeLine{956         \textcolor{keyword}{const} uword col = it.col();}
+\DoxyCodeLine{957         }
+\DoxyCodeLine{958         \textcolor{keywordflow}{if}(row != col)}
+\DoxyCodeLine{959           \{}
+\DoxyCodeLine{960           \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.values[count])      = (*it);}
+\DoxyCodeLine{961           \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.row\_indices[count]) = row;}
+\DoxyCodeLine{962           \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.col\_ptrs[col + 1])++;}
+\DoxyCodeLine{963           ++count;}
+\DoxyCodeLine{964           \}}
+\DoxyCodeLine{965         \}}
+\DoxyCodeLine{966       }
+\DoxyCodeLine{967       \textcolor{keywordflow}{for}(uword i=0; i < tmp.n\_cols; ++i)}
+\DoxyCodeLine{968         \{}
+\DoxyCodeLine{969         \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.col\_ptrs[i + 1]) += tmp.col\_ptrs[i];}
+\DoxyCodeLine{970         \}}
+\DoxyCodeLine{971       }
+\DoxyCodeLine{972       \textcolor{comment}{// quick resize without reallocating memory and copying data}}
+\DoxyCodeLine{973       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(         tmp.n\_nonzero) = count;}
+\DoxyCodeLine{974       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(     tmp.values[count]) = eT(0);}
+\DoxyCodeLine{975       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.row\_indices[count]) = uword(0);}
+\DoxyCodeLine{976       }
+\DoxyCodeLine{977       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(m).steal\_mem(tmp);}
+\DoxyCodeLine{978       \}}
+\DoxyCodeLine{979     \textcolor{keywordflow}{else}  \textcolor{comment}{// val != eT(0)}}
+\DoxyCodeLine{980       \{}
+\DoxyCodeLine{981       \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp1;}
+\DoxyCodeLine{982       }
+\DoxyCodeLine{983       tmp1.eye(m.n\_rows, m.n\_cols);}
+\DoxyCodeLine{984       }
+\DoxyCodeLine{985       \textcolor{keywordflow}{if}(val != eT(1))  \{ tmp1 *= val; \}}
+\DoxyCodeLine{986       }
+\DoxyCodeLine{987       \mbox{\hyperlink{classSpMat}{SpMat<eT>}} tmp2;}
+\DoxyCodeLine{988       }
+\DoxyCodeLine{989       spglue\_merge::diagview\_merge(tmp2, m, tmp1);}
+\DoxyCodeLine{990       }
+\DoxyCodeLine{991       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(m).steal\_mem(tmp2);}
+\DoxyCodeLine{992       \}}
+\DoxyCodeLine{993     \}}
+\DoxyCodeLine{994   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{995     \{}
+\DoxyCodeLine{996     \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& x = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m);}
+\DoxyCodeLine{997     }
+\DoxyCodeLine{998     \textcolor{keyword}{const} uword local\_n\_elem = n\_elem;}
+\DoxyCodeLine{999     }
+\DoxyCodeLine{1000     \textcolor{keywordflow}{for}(uword i=0; i < local\_n\_elem; ++i)}
+\DoxyCodeLine{1001       \{}
+\DoxyCodeLine{1002       x.at(i+row\_offset, i+col\_offset) = val;}
+\DoxyCodeLine{1003       \}}
+\DoxyCodeLine{1004     \}}
+\DoxyCodeLine{1005   \}}
+\DoxyCodeLine{1006 }
+\DoxyCodeLine{1007 }
+\DoxyCodeLine{1008 }
+\DoxyCodeLine{1009 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1010 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1011 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1012 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::zeros}}()}
+\DoxyCodeLine{1013   \{}
+\DoxyCodeLine{1014   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1015   }
+\DoxyCodeLine{1016   (*this).fill(eT(0));}
+\DoxyCodeLine{1017   \}}
+\DoxyCodeLine{1018 }
+\DoxyCodeLine{1019 }
+\DoxyCodeLine{1020 }
+\DoxyCodeLine{1021 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1022 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1023 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1024 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::ones}}()}
+\DoxyCodeLine{1025   \{}
+\DoxyCodeLine{1026   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1027   }
+\DoxyCodeLine{1028   (*this).fill(eT(1));}
+\DoxyCodeLine{1029   \}}
+\DoxyCodeLine{1030 }
+\DoxyCodeLine{1031 }
+\DoxyCodeLine{1032 }
+\DoxyCodeLine{1033 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1034 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1035 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1036 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::randu}}()}
+\DoxyCodeLine{1037   \{}
+\DoxyCodeLine{1038   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1039   }
+\DoxyCodeLine{1040   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& x = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m);}
+\DoxyCodeLine{1041   }
+\DoxyCodeLine{1042   \textcolor{keyword}{const} uword local\_n\_elem = n\_elem;}
+\DoxyCodeLine{1043   }
+\DoxyCodeLine{1044   \textcolor{keywordflow}{for}(uword i=0; i < local\_n\_elem; ++i)}
+\DoxyCodeLine{1045     \{}
+\DoxyCodeLine{1046     x.at(i+row\_offset, i+col\_offset) = eT(\mbox{\hyperlink{structarma__rng_1_1randu}{arma\_rng::randu<eT>}}());}
+\DoxyCodeLine{1047     \}}
+\DoxyCodeLine{1048   \}}
+\DoxyCodeLine{1049 }
+\DoxyCodeLine{1050 }
+\DoxyCodeLine{1051 }
+\DoxyCodeLine{1052 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1053 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1054 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1055 \mbox{\hyperlink{classspdiagview}{spdiagview<eT>::randn}}()}
+\DoxyCodeLine{1056   \{}
+\DoxyCodeLine{1057   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1058   }
+\DoxyCodeLine{1059   \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& x = \textcolor{keyword}{const\_cast<} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \textcolor{keyword}{>}(m);}
+\DoxyCodeLine{1060   }
+\DoxyCodeLine{1061   \textcolor{keyword}{const} uword local\_n\_elem = n\_elem;}
+\DoxyCodeLine{1062   }
+\DoxyCodeLine{1063   \textcolor{keywordflow}{for}(uword i=0; i < local\_n\_elem; ++i)}
+\DoxyCodeLine{1064     \{}
+\DoxyCodeLine{1065     x.at(i+row\_offset, i+col\_offset) = eT(\mbox{\hyperlink{structarma__rng_1_1randn}{arma\_rng::randn<eT>}}());}
+\DoxyCodeLine{1066     \}}
+\DoxyCodeLine{1067   \}}
+\DoxyCodeLine{1068 }
+\DoxyCodeLine{1069 }
+\DoxyCodeLine{1070 }
+
+\end{DoxyCode}

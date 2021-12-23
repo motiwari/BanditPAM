@@ -1,0 +1,251 @@
+\hypertarget{fn__norm_8hpp_source}{}\doxysection{fn\+\_\+norm.\+hpp}
+\label{fn__norm_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_norm.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_norm.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 arma\_warn\_unused}
+\DoxyCodeLine{25 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{typename} T1::pod\_type >::result}
+\DoxyCodeLine{26 norm}
+\DoxyCodeLine{27   (}
+\DoxyCodeLine{28   \textcolor{keyword}{const} T1\&   X,}
+\DoxyCodeLine{29   \textcolor{keyword}{const} uword k = uword(2),}
+\DoxyCodeLine{30   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__or__cx__only}{arma\_real\_or\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{31   )}
+\DoxyCodeLine{32   \{}
+\DoxyCodeLine{33   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{34   arma\_ignore(junk);}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X);}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keywordflow}{if}(P.get\_n\_elem() == 0)  \{ \textcolor{keywordflow}{return} T(0); \}}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_vec = (T1::is\_xvec) || (T1::is\_row) || (T1::is\_col) || (P.get\_n\_rows() == 1) || (P.get\_n\_cols() == 1);}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keywordflow}{if}(is\_vec)}
+\DoxyCodeLine{45     \{}
+\DoxyCodeLine{46     \textcolor{keywordflow}{if}(k == uword(1))  \{ \textcolor{keywordflow}{return} op\_norm::vec\_norm\_1(P); \}}
+\DoxyCodeLine{47     \textcolor{keywordflow}{if}(k == uword(2))  \{ \textcolor{keywordflow}{return} op\_norm::vec\_norm\_2(P); \}}
+\DoxyCodeLine{48     }
+\DoxyCodeLine{49     arma\_debug\_check( (k == 0), \textcolor{stringliteral}{"{}norm(): k must be greater than zero"{}} );}
+\DoxyCodeLine{50     }
+\DoxyCodeLine{51     \textcolor{keywordflow}{return} op\_norm::vec\_norm\_k(P, \textcolor{keywordtype}{int}(k));}
+\DoxyCodeLine{52     \}}
+\DoxyCodeLine{53   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{54     \{}
+\DoxyCodeLine{55     \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<typename Proxy<T1>::stored\_type}}> U(P.Q);}
+\DoxyCodeLine{56     }
+\DoxyCodeLine{57     \textcolor{keywordflow}{if}(k == uword(1))  \{ \textcolor{keywordflow}{return} op\_norm::mat\_norm\_1(U.M); \}}
+\DoxyCodeLine{58     \textcolor{keywordflow}{if}(k == uword(2))  \{ \textcolor{keywordflow}{return} op\_norm::mat\_norm\_2(U.M); \}}
+\DoxyCodeLine{59       }
+\DoxyCodeLine{60     arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}norm(): unsupported matrix norm type"{}});}
+\DoxyCodeLine{61     \}}
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   \textcolor{keywordflow}{return} T(0);}
+\DoxyCodeLine{64   \}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{69 \textcolor{keyword}{inline}}
+\DoxyCodeLine{70 arma\_warn\_unused}
+\DoxyCodeLine{71 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{typename} T1::pod\_type >::result}
+\DoxyCodeLine{72 norm}
+\DoxyCodeLine{73   (}
+\DoxyCodeLine{74   \textcolor{keyword}{const} T1\&   X,}
+\DoxyCodeLine{75   \textcolor{keyword}{const} \textcolor{keywordtype}{char}* method,}
+\DoxyCodeLine{76   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__or__cx__only}{arma\_real\_or\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{77   )}
+\DoxyCodeLine{78   \{}
+\DoxyCodeLine{79   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{80   arma\_ignore(junk);}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X);}
+\DoxyCodeLine{85   }
+\DoxyCodeLine{86   \textcolor{keywordflow}{if}(P.get\_n\_elem() == 0)  \{ \textcolor{keywordflow}{return} T(0); \}}
+\DoxyCodeLine{87   }
+\DoxyCodeLine{88   \textcolor{keyword}{const} \textcolor{keywordtype}{char} sig    = (method != \textcolor{keyword}{nullptr}) ? method[0] : \textcolor{keywordtype}{char}(0);}
+\DoxyCodeLine{89   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_vec = (T1::is\_xvec) || (T1::is\_row) || (T1::is\_col) || (P.get\_n\_rows() == 1) || (P.get\_n\_cols() == 1);}
+\DoxyCodeLine{90   }
+\DoxyCodeLine{91   \textcolor{keywordflow}{if}(is\_vec)}
+\DoxyCodeLine{92     \{}
+\DoxyCodeLine{93     \textcolor{keywordflow}{if}( (sig == \textcolor{charliteral}{'i'}) || (sig == \textcolor{charliteral}{'I'}) || (sig == \textcolor{charliteral}{'+'}) )  \{ \textcolor{keywordflow}{return} op\_norm::vec\_norm\_max(P); \}}
+\DoxyCodeLine{94     \textcolor{keywordflow}{if}( (sig == \textcolor{charliteral}{'-\/'})                                 )  \{ \textcolor{keywordflow}{return} op\_norm::vec\_norm\_min(P); \}}
+\DoxyCodeLine{95     \textcolor{keywordflow}{if}( (sig == \textcolor{charliteral}{'f'}) || (sig == \textcolor{charliteral}{'F'})                 )  \{ \textcolor{keywordflow}{return} op\_norm::vec\_norm\_2(P);   \}}
+\DoxyCodeLine{96     }
+\DoxyCodeLine{97     arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}norm(): unsupported vector norm type"{}});}
+\DoxyCodeLine{98     \}}
+\DoxyCodeLine{99   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{100     \{}
+\DoxyCodeLine{101     \textcolor{keywordflow}{if}( (sig == \textcolor{charliteral}{'i'}) || (sig == \textcolor{charliteral}{'I'}) || (sig == \textcolor{charliteral}{'+'}) )   \textcolor{comment}{// inf norm}}
+\DoxyCodeLine{102       \{}
+\DoxyCodeLine{103       \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<typename Proxy<T1>::stored\_type}}> U(P.Q);}
+\DoxyCodeLine{104       }
+\DoxyCodeLine{105       \textcolor{keywordflow}{return} op\_norm::mat\_norm\_inf(U.M);}
+\DoxyCodeLine{106       \}}
+\DoxyCodeLine{107     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{108     \textcolor{keywordflow}{if}( (sig == \textcolor{charliteral}{'f'}) || (sig == \textcolor{charliteral}{'F'}) )}
+\DoxyCodeLine{109       \{}
+\DoxyCodeLine{110       \textcolor{keywordflow}{return} op\_norm::vec\_norm\_2(P);}
+\DoxyCodeLine{111       \}}
+\DoxyCodeLine{112     }
+\DoxyCodeLine{113     arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}norm(): unsupported matrix norm type"{}});}
+\DoxyCodeLine{114     \}}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   \textcolor{keywordflow}{return} T(0);}
+\DoxyCodeLine{117   \}}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{comment}{//}}
+\DoxyCodeLine{122 \textcolor{comment}{// norms for sparse matrices}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{126 \textcolor{keyword}{inline}}
+\DoxyCodeLine{127 arma\_warn\_unused}
+\DoxyCodeLine{128 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_sparse\_type<T1>::value}}, \textcolor{keyword}{typename} T1::pod\_type >::result}
+\DoxyCodeLine{129 norm}
+\DoxyCodeLine{130   (}
+\DoxyCodeLine{131   \textcolor{keyword}{const} T1\&   expr,}
+\DoxyCodeLine{132   \textcolor{keyword}{const} uword k = uword(2),}
+\DoxyCodeLine{133   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__or__cx__only}{arma\_real\_or\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{134   )}
+\DoxyCodeLine{135   \{}
+\DoxyCodeLine{136   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{137   arma\_ignore(junk);}
+\DoxyCodeLine{138   }
+\DoxyCodeLine{139   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{140   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{141   }
+\DoxyCodeLine{142   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__spmat}{unwrap\_spmat<T1>}} U(expr);}
+\DoxyCodeLine{143   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& X   = U.M;}
+\DoxyCodeLine{144   }
+\DoxyCodeLine{145   \textcolor{keywordflow}{if}(X.n\_nonzero == 0)  \{ \textcolor{keywordflow}{return} T(0); \}}
+\DoxyCodeLine{146   }
+\DoxyCodeLine{147   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_vec = (T1::is\_xvec) || (T1::is\_row) || (T1::is\_col) || (X.n\_rows == 1) || (X.n\_cols == 1);}
+\DoxyCodeLine{148   }
+\DoxyCodeLine{149   \textcolor{keywordflow}{if}(is\_vec)}
+\DoxyCodeLine{150     \{}
+\DoxyCodeLine{151     \textcolor{comment}{// create a fake dense vector to allow reuse of code for dense vectors}}
+\DoxyCodeLine{152     \mbox{\hyperlink{classCol}{Col<eT>}} fake\_vector( access::rwp(X.values), X.n\_nonzero, \textcolor{keyword}{false} );}
+\DoxyCodeLine{153     }
+\DoxyCodeLine{154     \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy< Col<eT>}} > P\_fake\_vector(fake\_vector);}
+\DoxyCodeLine{155     }
+\DoxyCodeLine{156     \textcolor{keywordflow}{if}(k == uword(1))  \{ \textcolor{keywordflow}{return} op\_norm::vec\_norm\_1(P\_fake\_vector); \}}
+\DoxyCodeLine{157     \textcolor{keywordflow}{if}(k == uword(2))  \{ \textcolor{keywordflow}{return} op\_norm::vec\_norm\_2(P\_fake\_vector); \}}
+\DoxyCodeLine{158     }
+\DoxyCodeLine{159     arma\_debug\_check( (k == 0), \textcolor{stringliteral}{"{}norm(): k must be greater than zero"{}} );}
+\DoxyCodeLine{160     }
+\DoxyCodeLine{161     \textcolor{keywordflow}{return} op\_norm::vec\_norm\_k(P\_fake\_vector, \textcolor{keywordtype}{int}(k));}
+\DoxyCodeLine{162     \}}
+\DoxyCodeLine{163   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{164     \{}
+\DoxyCodeLine{165     \textcolor{keywordflow}{if}(k == uword(1))  \{ \textcolor{keywordflow}{return} spop\_norm::mat\_norm\_1(X); \}}
+\DoxyCodeLine{166     \textcolor{keywordflow}{if}(k == uword(2))  \{ \textcolor{keywordflow}{return} spop\_norm::mat\_norm\_2(X); \}}
+\DoxyCodeLine{167     }
+\DoxyCodeLine{168     arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}norm(): unsupported or unimplemented norm type for sparse matrices"{}});}
+\DoxyCodeLine{169     \}}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   \textcolor{keywordflow}{return} T(0);}
+\DoxyCodeLine{172   \}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{177 \textcolor{keyword}{inline}}
+\DoxyCodeLine{178 arma\_warn\_unused}
+\DoxyCodeLine{179 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_sparse\_type<T1>::value}}, \textcolor{keyword}{typename} T1::pod\_type >::result}
+\DoxyCodeLine{180 norm}
+\DoxyCodeLine{181   (}
+\DoxyCodeLine{182   \textcolor{keyword}{const} T1\&   expr,}
+\DoxyCodeLine{183   \textcolor{keyword}{const} \textcolor{keywordtype}{char}* method,}
+\DoxyCodeLine{184   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__or__cx__only}{arma\_real\_or\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{185   )}
+\DoxyCodeLine{186   \{}
+\DoxyCodeLine{187   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{188   arma\_ignore(junk);}
+\DoxyCodeLine{189   }
+\DoxyCodeLine{190   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{191   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{192   }
+\DoxyCodeLine{193   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__spmat}{unwrap\_spmat<T1>}} U(expr);}
+\DoxyCodeLine{194   \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& X   = U.M;}
+\DoxyCodeLine{195   }
+\DoxyCodeLine{196   \textcolor{keywordflow}{if}(X.n\_nonzero == 0)  \{ \textcolor{keywordflow}{return} T(0); \}}
+\DoxyCodeLine{197   }
+\DoxyCodeLine{198   \textcolor{comment}{// create a fake dense vector to allow reuse of code for dense vectors}}
+\DoxyCodeLine{199   \mbox{\hyperlink{classCol}{Col<eT>}} fake\_vector( access::rwp(X.values), X.n\_nonzero, \textcolor{keyword}{false} );}
+\DoxyCodeLine{200   }
+\DoxyCodeLine{201   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy< Col<eT>}} > P\_fake\_vector(fake\_vector);}
+\DoxyCodeLine{202   }
+\DoxyCodeLine{203   }
+\DoxyCodeLine{204   \textcolor{keyword}{const} \textcolor{keywordtype}{char} sig    = (method != \textcolor{keyword}{nullptr}) ? method[0] : \textcolor{keywordtype}{char}(0);}
+\DoxyCodeLine{205   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_vec = (T1::is\_xvec) || (T1::is\_row) || (T1::is\_col) || (X.n\_rows == 1) || (X.n\_cols == 1);}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   \textcolor{keywordflow}{if}(is\_vec)}
+\DoxyCodeLine{208     \{}
+\DoxyCodeLine{209     \textcolor{keywordflow}{if}( (sig == \textcolor{charliteral}{'i'}) || (sig == \textcolor{charliteral}{'I'}) || (sig == \textcolor{charliteral}{'+'}) )   \textcolor{comment}{// max norm}}
+\DoxyCodeLine{210       \{}
+\DoxyCodeLine{211       \textcolor{keywordflow}{return} op\_norm::vec\_norm\_max(P\_fake\_vector);}
+\DoxyCodeLine{212       \}}
+\DoxyCodeLine{213     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{214     \textcolor{keywordflow}{if}(sig == \textcolor{charliteral}{'-\/'})   \textcolor{comment}{// min norm}}
+\DoxyCodeLine{215       \{}
+\DoxyCodeLine{216       \textcolor{keyword}{const} T val = op\_norm::vec\_norm\_min(P\_fake\_vector);}
+\DoxyCodeLine{217       }
+\DoxyCodeLine{218       \textcolor{keywordflow}{return} (X.n\_nonzero < X.n\_elem) ? T((\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(T(0), val)) : T(val);}
+\DoxyCodeLine{219       \}}
+\DoxyCodeLine{220     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{221     \textcolor{keywordflow}{if}( (sig == \textcolor{charliteral}{'f'}) || (sig == \textcolor{charliteral}{'F'}) )}
+\DoxyCodeLine{222       \{}
+\DoxyCodeLine{223       \textcolor{keywordflow}{return} op\_norm::vec\_norm\_2(P\_fake\_vector);}
+\DoxyCodeLine{224       \}}
+\DoxyCodeLine{225     }
+\DoxyCodeLine{226     arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}norm(): unsupported vector norm type"{}});}
+\DoxyCodeLine{227     \}}
+\DoxyCodeLine{228   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{229     \{}
+\DoxyCodeLine{230     \textcolor{keywordflow}{if}( (sig == \textcolor{charliteral}{'i'}) || (sig == \textcolor{charliteral}{'I'}) || (sig == \textcolor{charliteral}{'+'}) )   \textcolor{comment}{// inf norm}}
+\DoxyCodeLine{231       \{}
+\DoxyCodeLine{232       \textcolor{keywordflow}{return} spop\_norm::mat\_norm\_inf(X);}
+\DoxyCodeLine{233       \}}
+\DoxyCodeLine{234     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{235     \textcolor{keywordflow}{if}( (sig == \textcolor{charliteral}{'f'}) || (sig == \textcolor{charliteral}{'F'}) )}
+\DoxyCodeLine{236       \{}
+\DoxyCodeLine{237       \textcolor{keywordflow}{return} op\_norm::vec\_norm\_2(P\_fake\_vector);}
+\DoxyCodeLine{238       \}}
+\DoxyCodeLine{239     }
+\DoxyCodeLine{240     arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}norm(): unsupported matrix norm type"{}});}
+\DoxyCodeLine{241     \}}
+\DoxyCodeLine{242   }
+\DoxyCodeLine{243   \textcolor{keywordflow}{return} T(0);}
+\DoxyCodeLine{244   \}}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 }
+
+\end{DoxyCode}

@@ -1,0 +1,81 @@
+\hypertarget{arma__ostream__bones_8hpp_source}{}\doxysection{arma\+\_\+ostream\+\_\+bones.\+hpp}
+\label{arma__ostream__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arma\_ostream\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arma\_ostream\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classarma__ostream__state}{arma\_ostream\_state}}}
+\DoxyCodeLine{23   \{}
+\DoxyCodeLine{24   \textcolor{keyword}{private}:}
+\DoxyCodeLine{25   }
+\DoxyCodeLine{26   \textcolor{keyword}{const} ios::fmtflags   orig\_flags;}
+\DoxyCodeLine{27   \textcolor{keyword}{const} std::streamsize orig\_precision;}
+\DoxyCodeLine{28   \textcolor{keyword}{const} std::streamsize orig\_width;}
+\DoxyCodeLine{29   \textcolor{keyword}{const} \textcolor{keywordtype}{char}            orig\_fill;}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{public}:}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{inline} \mbox{\hyperlink{classarma__ostream__state}{arma\_ostream\_state}}(\textcolor{keyword}{const} std::ostream\& o);}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} restore(std::ostream\& o) \textcolor{keyword}{const};}
+\DoxyCodeLine{37   \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keyword}{class }\mbox{\hyperlink{classarma__ostream}{arma\_ostream}}}
+\DoxyCodeLine{42   \{}
+\DoxyCodeLine{43   \textcolor{keyword}{public}:}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} std::streamsize modify\_stream(std::ostream\& o, \textcolor{keyword}{const} eT*              data, \textcolor{keyword}{const} uword n\_elem);}
+\DoxyCodeLine{46   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T> \textcolor{keyword}{inline} \textcolor{keyword}{static} std::streamsize modify\_stream(std::ostream\& o, \textcolor{keyword}{const} std::complex<T>* data, \textcolor{keyword}{const} uword n\_elem);}
+\DoxyCodeLine{47   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} std::streamsize modify\_stream(std::ostream\& o, \textcolor{keyword}{typename} \mbox{\hyperlink{classSpMat_1_1const__iterator}{SpMat<eT>::const\_iterator}} begin, \textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} \textcolor{keyword}{typename}  arma\_not\_cx<eT>::result* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{48   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} std::streamsize modify\_stream(std::ostream\& o, \textcolor{keyword}{typename} \mbox{\hyperlink{classSpMat_1_1const__iterator}{SpMat<eT>::const\_iterator}} begin, \textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<eT>::result}}* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void}     print\_elem\_zero(std::ostream\& o, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} modify);}
+\DoxyCodeLine{51   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} raw\_print\_elem\_zero(std::ostream\& o);}
+\DoxyCodeLine{52   }
+\DoxyCodeLine{53   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void}     print\_elem(std::ostream\& o, \textcolor{keyword}{const} eT\& x, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} modify);}
+\DoxyCodeLine{54   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} raw\_print\_elem(std::ostream\& o, \textcolor{keyword}{const} eT\& x);}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void}     print\_elem(std::ostream\& o, \textcolor{keyword}{const} std::complex<T>\& x, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} modify);}
+\DoxyCodeLine{57   \textcolor{keyword}{template}<\textcolor{keyword}{typename}  T> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} raw\_print\_elem(std::ostream\& o, \textcolor{keyword}{const} std::complex<T>\& x);}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{print}}(std::ostream\& o, \textcolor{keyword}{const}  \mbox{\hyperlink{classMat}{Mat<eT>}}\& m, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} modify);}
+\DoxyCodeLine{60   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{print}}(std::ostream\& o, \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& m, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} modify);}
+\DoxyCodeLine{61   }
+\DoxyCodeLine{62   \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT> arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{print}}(std::ostream\& o, \textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field<oT>}}\&         m);}
+\DoxyCodeLine{63   \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT> arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{print}}(std::ostream\& o, \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}}\& m);}
+\DoxyCodeLine{64   }
+\DoxyCodeLine{65   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} print\_dense(std::ostream\& o, \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& m, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} modify);}
+\DoxyCodeLine{66   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void}       \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{print}}(std::ostream\& o, \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& m, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} modify);}
+\DoxyCodeLine{67   }
+\DoxyCodeLine{68   arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{print}}(std::ostream\& o, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\&  S);}
+\DoxyCodeLine{69   arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{print}}(std::ostream\& o, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& S);}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} brief\_print(std::ostream\& o, \textcolor{keyword}{const}   \mbox{\hyperlink{classMat}{Mat<eT>}}\& m, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} print\_size = \textcolor{keyword}{true});}
+\DoxyCodeLine{72   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} brief\_print(std::ostream\& o, \textcolor{keyword}{const}  \mbox{\hyperlink{classCube}{Cube<eT>}}\& m);}
+\DoxyCodeLine{73   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} brief\_print(std::ostream\& o, \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& m);}
+\DoxyCodeLine{74   \};}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+
+\end{DoxyCode}

@@ -1,0 +1,1168 @@
+\hypertarget{fn__elem_8hpp_source}{}\doxysection{fn\+\_\+elem.\+hpp}
+\label{fn__elem_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_elem.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_elem.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{comment}{//}}
+\DoxyCodeLine{22 \textcolor{comment}{// real}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{25 arma\_warn\_unused}
+\DoxyCodeLine{26 arma\_inline}
+\DoxyCodeLine{27 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keyword}{const} T1\& >::result}
+\DoxyCodeLine{28 real(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{29   \{}
+\DoxyCodeLine{30   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keywordflow}{return} X;}
+\DoxyCodeLine{33   \}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{38 arma\_warn\_unused}
+\DoxyCodeLine{39 arma\_inline}
+\DoxyCodeLine{40 \textcolor{keyword}{const} T1\&}
+\DoxyCodeLine{41 real(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::pod\_type, T1>}}\& X)}
+\DoxyCodeLine{42   \{}
+\DoxyCodeLine{43   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keywordflow}{return} X.get\_ref();}
+\DoxyCodeLine{46   \}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{51 arma\_warn\_unused}
+\DoxyCodeLine{52 arma\_inline}
+\DoxyCodeLine{53 \textcolor{keyword}{const} T1\&}
+\DoxyCodeLine{54 real(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{55   \{}
+\DoxyCodeLine{56   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keywordflow}{return} \mbox{\hyperlink{structA}{A}}.get\_ref();}
+\DoxyCodeLine{59   \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{64 arma\_warn\_unused}
+\DoxyCodeLine{65 \textcolor{keyword}{inline}}
+\DoxyCodeLine{66 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::yes}}), \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_real>}} >::result}
+\DoxyCodeLine{67 real(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{68   \{}
+\DoxyCodeLine{69   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_real>}}( X );}
+\DoxyCodeLine{72   \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{77 arma\_warn\_unused}
+\DoxyCodeLine{78 \textcolor{keyword}{inline}}
+\DoxyCodeLine{79 \textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_real>}}}
+\DoxyCodeLine{80 real(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube}}<std::complex<typename T1::pod\_type>, T1>\& X)}
+\DoxyCodeLine{81   \{}
+\DoxyCodeLine{82   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_real>}}( X.get\_ref() );}
+\DoxyCodeLine{85   \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{90 arma\_warn\_unused}
+\DoxyCodeLine{91 arma\_inline}
+\DoxyCodeLine{92 \textcolor{keyword}{const} \mbox{\hyperlink{classmtSpOp}{mtSpOp<typename T1::pod\_type, T1, spop\_real>}}}
+\DoxyCodeLine{93 real(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase}}<std::complex<typename T1::pod\_type>,T1>\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{94   \{}
+\DoxyCodeLine{95   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtSpOp}{mtSpOp<typename T1::pod\_type, T1, spop\_real>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{98   \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \textcolor{comment}{//}}
+\DoxyCodeLine{103 \textcolor{comment}{// imag}}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{106 arma\_warn\_unused}
+\DoxyCodeLine{107 \textcolor{keyword}{inline}}
+\DoxyCodeLine{108 \textcolor{keyword}{const} \mbox{\hyperlink{classGen}{Gen< Mat<typename T1::pod\_type>}}, gen\_zeros >}
+\DoxyCodeLine{109 imag(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& X)}
+\DoxyCodeLine{110   \{}
+\DoxyCodeLine{111   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} \mbox{\hyperlink{structA}{A}}(X.get\_ref());}
+\DoxyCodeLine{114   }
+\DoxyCodeLine{115   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGen}{Gen< Mat<typename T1::pod\_type>}}, gen\_zeros>(\mbox{\hyperlink{structA}{A}}.get\_n\_rows(), \mbox{\hyperlink{structA}{A}}.get\_n\_cols());}
+\DoxyCodeLine{116   \}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{121 arma\_warn\_unused}
+\DoxyCodeLine{122 \textcolor{keyword}{inline}}
+\DoxyCodeLine{123 \textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<typename T1::pod\_type, gen\_zeros>}}}
+\DoxyCodeLine{124 imag(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::pod\_type,T1>}}\& X)}
+\DoxyCodeLine{125   \{}
+\DoxyCodeLine{126   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{127   }
+\DoxyCodeLine{128   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} \mbox{\hyperlink{structA}{A}}(X.get\_ref());}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGenCube}{GenCube<typename T1::pod\_type, gen\_zeros>}}(\mbox{\hyperlink{structA}{A}}.get\_n\_rows(), \mbox{\hyperlink{structA}{A}}.get\_n\_cols(), \mbox{\hyperlink{structA}{A}}.get\_n\_slices());}
+\DoxyCodeLine{131   \}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{136 arma\_warn\_unused}
+\DoxyCodeLine{137 \textcolor{keyword}{inline}}
+\DoxyCodeLine{138 \mbox{\hyperlink{classSpMat}{SpMat<typename T1::pod\_type>}}}
+\DoxyCodeLine{139 imag(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{140   \{}
+\DoxyCodeLine{141   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{142   }
+\DoxyCodeLine{143   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{144   }
+\DoxyCodeLine{145   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpMat}{SpMat<typename T1::pod\_type>}}(P.get\_n\_rows(), P.get\_n\_cols());}
+\DoxyCodeLine{146   \}}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{151 arma\_warn\_unused}
+\DoxyCodeLine{152 \textcolor{keyword}{inline}}
+\DoxyCodeLine{153 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::yes}}), \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_imag>}} >::result}
+\DoxyCodeLine{154 imag(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{155   \{}
+\DoxyCodeLine{156   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{157   }
+\DoxyCodeLine{158   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_imag>}}( X );}
+\DoxyCodeLine{159   \}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{164 arma\_warn\_unused}
+\DoxyCodeLine{165 \textcolor{keyword}{inline}}
+\DoxyCodeLine{166 \textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_imag>}}}
+\DoxyCodeLine{167 imag(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube}}<std::complex<typename T1::pod\_type>,T1>\& X)}
+\DoxyCodeLine{168   \{}
+\DoxyCodeLine{169   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_imag>}}( X.get\_ref() );}
+\DoxyCodeLine{172   \}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{177 arma\_warn\_unused}
+\DoxyCodeLine{178 arma\_inline}
+\DoxyCodeLine{179 \textcolor{keyword}{const} \mbox{\hyperlink{classmtSpOp}{mtSpOp<typename T1::pod\_type, T1, spop\_imag>}}}
+\DoxyCodeLine{180 imag(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase}}<std::complex<typename T1::pod\_type>,T1>\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{181   \{}
+\DoxyCodeLine{182   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtSpOp}{mtSpOp<typename T1::pod\_type, T1, spop\_imag>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{185   \}}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{comment}{//}}
+\DoxyCodeLine{190 \textcolor{comment}{// log}}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{193 arma\_warn\_unused}
+\DoxyCodeLine{194 arma\_inline}
+\DoxyCodeLine{195 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_log>}} >::result}
+\DoxyCodeLine{196 log(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{197   \{}
+\DoxyCodeLine{198   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{199   }
+\DoxyCodeLine{200   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_log>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{201   \}}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{206 arma\_warn\_unused}
+\DoxyCodeLine{207 arma\_inline}
+\DoxyCodeLine{208 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_log>}}}
+\DoxyCodeLine{209 log(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{210   \{}
+\DoxyCodeLine{211   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{212   }
+\DoxyCodeLine{213   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_log>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{214   \}}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218 \textcolor{comment}{//}}
+\DoxyCodeLine{219 \textcolor{comment}{// log2}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{222 arma\_warn\_unused}
+\DoxyCodeLine{223 arma\_inline}
+\DoxyCodeLine{224 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_log2>}} >::result}
+\DoxyCodeLine{225 log2(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{226   \{}
+\DoxyCodeLine{227   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{228   }
+\DoxyCodeLine{229   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_log2>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{230   \}}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{235 arma\_warn\_unused}
+\DoxyCodeLine{236 arma\_inline}
+\DoxyCodeLine{237 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_log2>}}}
+\DoxyCodeLine{238 log2(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{239   \{}
+\DoxyCodeLine{240   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{241   }
+\DoxyCodeLine{242   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_log2>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{243   \}}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 \textcolor{comment}{//}}
+\DoxyCodeLine{248 \textcolor{comment}{// log10}}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{251 arma\_warn\_unused}
+\DoxyCodeLine{252 arma\_inline}
+\DoxyCodeLine{253 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_log10>}} >::result}
+\DoxyCodeLine{254 log10(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{255   \{}
+\DoxyCodeLine{256   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{257   }
+\DoxyCodeLine{258   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_log10>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{259   \}}
+\DoxyCodeLine{260 }
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 }
+\DoxyCodeLine{263 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{264 arma\_warn\_unused}
+\DoxyCodeLine{265 arma\_inline}
+\DoxyCodeLine{266 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_log10>}}}
+\DoxyCodeLine{267 log10(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{268   \{}
+\DoxyCodeLine{269   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{270   }
+\DoxyCodeLine{271   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_log10>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{272   \}}
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275 }
+\DoxyCodeLine{276 \textcolor{comment}{//}}
+\DoxyCodeLine{277 \textcolor{comment}{// log1p}}
+\DoxyCodeLine{278 }
+\DoxyCodeLine{279 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{280 arma\_warn\_unused}
+\DoxyCodeLine{281 arma\_inline}
+\DoxyCodeLine{282 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_log1p>}} >::result}
+\DoxyCodeLine{283 log1p(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{284   \{}
+\DoxyCodeLine{285   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{286   }
+\DoxyCodeLine{287   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_log1p>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{288   \}}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290 }
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{293 arma\_warn\_unused}
+\DoxyCodeLine{294 arma\_inline}
+\DoxyCodeLine{295 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_cx<typename T1::elem\_type>::no}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_log1p>}} >::result}
+\DoxyCodeLine{296 log1p(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{297   \{}
+\DoxyCodeLine{298   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{299   }
+\DoxyCodeLine{300   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_log1p>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{301   \}}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304 }
+\DoxyCodeLine{305 \textcolor{comment}{//}}
+\DoxyCodeLine{306 \textcolor{comment}{// exp}}
+\DoxyCodeLine{307 }
+\DoxyCodeLine{308 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{309 arma\_warn\_unused}
+\DoxyCodeLine{310 arma\_inline}
+\DoxyCodeLine{311 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_exp>}} >::result}
+\DoxyCodeLine{312 exp(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{313   \{}
+\DoxyCodeLine{314   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{315   }
+\DoxyCodeLine{316   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_exp>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{317   \}}
+\DoxyCodeLine{318 }
+\DoxyCodeLine{319 }
+\DoxyCodeLine{320 }
+\DoxyCodeLine{321 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{322 arma\_warn\_unused}
+\DoxyCodeLine{323 arma\_inline}
+\DoxyCodeLine{324 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_exp>}}}
+\DoxyCodeLine{325 exp(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{326   \{}
+\DoxyCodeLine{327   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{328   }
+\DoxyCodeLine{329   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_exp>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{330   \}}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333 }
+\DoxyCodeLine{334 \textcolor{comment}{// exp2}}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{337 arma\_warn\_unused}
+\DoxyCodeLine{338 arma\_inline}
+\DoxyCodeLine{339 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_exp2>}} >::result}
+\DoxyCodeLine{340 exp2(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{341   \{}
+\DoxyCodeLine{342   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{343   }
+\DoxyCodeLine{344   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_exp2>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{345   \}}
+\DoxyCodeLine{346 }
+\DoxyCodeLine{347 }
+\DoxyCodeLine{348 }
+\DoxyCodeLine{349 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{350 arma\_warn\_unused}
+\DoxyCodeLine{351 arma\_inline}
+\DoxyCodeLine{352 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_exp2>}}}
+\DoxyCodeLine{353 exp2(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{354   \{}
+\DoxyCodeLine{355   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{356   }
+\DoxyCodeLine{357   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_exp2>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{358   \}}
+\DoxyCodeLine{359 }
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361 }
+\DoxyCodeLine{362 \textcolor{comment}{// exp10}}
+\DoxyCodeLine{363 }
+\DoxyCodeLine{364 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{365 arma\_warn\_unused}
+\DoxyCodeLine{366 arma\_inline}
+\DoxyCodeLine{367 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_exp10>}} >::result}
+\DoxyCodeLine{368 exp10(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{369   \{}
+\DoxyCodeLine{370   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{371   }
+\DoxyCodeLine{372   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_exp10>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{373   \}}
+\DoxyCodeLine{374 }
+\DoxyCodeLine{375 }
+\DoxyCodeLine{376 }
+\DoxyCodeLine{377 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{378 arma\_warn\_unused}
+\DoxyCodeLine{379 arma\_inline}
+\DoxyCodeLine{380 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_exp10>}}}
+\DoxyCodeLine{381 exp10(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{382   \{}
+\DoxyCodeLine{383   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{384   }
+\DoxyCodeLine{385   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_exp10>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{386   \}}
+\DoxyCodeLine{387 }
+\DoxyCodeLine{388 }
+\DoxyCodeLine{389 }
+\DoxyCodeLine{390 \textcolor{comment}{// expm1}}
+\DoxyCodeLine{391 }
+\DoxyCodeLine{392 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{393 arma\_warn\_unused}
+\DoxyCodeLine{394 arma\_inline}
+\DoxyCodeLine{395 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_expm1>}} >::result}
+\DoxyCodeLine{396 expm1(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{397   \{}
+\DoxyCodeLine{398   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{399   }
+\DoxyCodeLine{400   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_expm1>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{401   \}}
+\DoxyCodeLine{402 }
+\DoxyCodeLine{403 }
+\DoxyCodeLine{404 }
+\DoxyCodeLine{405 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{406 arma\_warn\_unused}
+\DoxyCodeLine{407 arma\_inline}
+\DoxyCodeLine{408 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_cx<typename T1::elem\_type>::no}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_expm1>}} >::result}
+\DoxyCodeLine{409 expm1(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{410   \{}
+\DoxyCodeLine{411   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{412   }
+\DoxyCodeLine{413   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_expm1>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{414   \}}
+\DoxyCodeLine{415 }
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418 \textcolor{comment}{//}}
+\DoxyCodeLine{419 \textcolor{comment}{// abs}}
+\DoxyCodeLine{420 }
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{423 arma\_warn\_unused}
+\DoxyCodeLine{424 arma\_inline}
+\DoxyCodeLine{425 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_abs>}} >::result}
+\DoxyCodeLine{426 abs(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{427   \{}
+\DoxyCodeLine{428   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{429   }
+\DoxyCodeLine{430   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_abs>}}(X);}
+\DoxyCodeLine{431   \}}
+\DoxyCodeLine{432 }
+\DoxyCodeLine{433 }
+\DoxyCodeLine{434 }
+\DoxyCodeLine{435 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{436 arma\_warn\_unused}
+\DoxyCodeLine{437 arma\_inline}
+\DoxyCodeLine{438 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_abs>}}}
+\DoxyCodeLine{439 abs(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{440   \{}
+\DoxyCodeLine{441   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{442   }
+\DoxyCodeLine{443   arma\_ignore(junk);}
+\DoxyCodeLine{444   }
+\DoxyCodeLine{445   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_abs>}}(X.get\_ref());}
+\DoxyCodeLine{446   \}}
+\DoxyCodeLine{447 }
+\DoxyCodeLine{448 }
+\DoxyCodeLine{449 }
+\DoxyCodeLine{450 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{451 arma\_warn\_unused}
+\DoxyCodeLine{452 \textcolor{keyword}{inline}}
+\DoxyCodeLine{453 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::yes}}), \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_abs>}} >::result}
+\DoxyCodeLine{454 abs(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{455   \{}
+\DoxyCodeLine{456   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{457   }
+\DoxyCodeLine{458   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_abs>}}(X);}
+\DoxyCodeLine{459   \}}
+\DoxyCodeLine{460 }
+\DoxyCodeLine{461 }
+\DoxyCodeLine{462 }
+\DoxyCodeLine{463 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{464 arma\_warn\_unused}
+\DoxyCodeLine{465 \textcolor{keyword}{inline}}
+\DoxyCodeLine{466 \textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_abs>}}}
+\DoxyCodeLine{467 abs(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube}}< std::complex<typename T1::pod\_type>,T1>\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{468   \{}
+\DoxyCodeLine{469   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{470   }
+\DoxyCodeLine{471   arma\_ignore(junk);}
+\DoxyCodeLine{472   }
+\DoxyCodeLine{473   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_abs>}}( X.get\_ref() );}
+\DoxyCodeLine{474   \}}
+\DoxyCodeLine{475 }
+\DoxyCodeLine{476 }
+\DoxyCodeLine{477 }
+\DoxyCodeLine{478 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{479 arma\_warn\_unused}
+\DoxyCodeLine{480 arma\_inline}
+\DoxyCodeLine{481 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_abs>}}}
+\DoxyCodeLine{482 abs(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{483   \{}
+\DoxyCodeLine{484   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{485   arma\_ignore(junk);}
+\DoxyCodeLine{486   }
+\DoxyCodeLine{487   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_abs>}}(X.get\_ref());}
+\DoxyCodeLine{488   \}}
+\DoxyCodeLine{489 }
+\DoxyCodeLine{490 }
+\DoxyCodeLine{491 }
+\DoxyCodeLine{492 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{493 arma\_warn\_unused}
+\DoxyCodeLine{494 arma\_inline}
+\DoxyCodeLine{495 \textcolor{keyword}{const} \mbox{\hyperlink{classmtSpOp}{mtSpOp<typename T1::pod\_type, T1, spop\_cx\_abs>}}}
+\DoxyCodeLine{496 abs(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase}}< std::complex<typename T1::pod\_type>, T1>\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{497   \{}
+\DoxyCodeLine{498   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{499   arma\_ignore(junk);}
+\DoxyCodeLine{500   }
+\DoxyCodeLine{501   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtSpOp}{mtSpOp<typename T1::pod\_type, T1, spop\_cx\_abs>}}(X.get\_ref());}
+\DoxyCodeLine{502   \}}
+\DoxyCodeLine{503 }
+\DoxyCodeLine{504 }
+\DoxyCodeLine{505 }
+\DoxyCodeLine{506 \textcolor{comment}{//}}
+\DoxyCodeLine{507 \textcolor{comment}{// arg}}
+\DoxyCodeLine{508 }
+\DoxyCodeLine{509 }
+\DoxyCodeLine{510 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{511 arma\_warn\_unused}
+\DoxyCodeLine{512 arma\_inline}
+\DoxyCodeLine{513 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_arg>}} >::result}
+\DoxyCodeLine{514 \mbox{\hyperlink{structarg}{arg}}(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{515   \{}
+\DoxyCodeLine{516   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{517   }
+\DoxyCodeLine{518   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_arg>}}(X);}
+\DoxyCodeLine{519   \}}
+\DoxyCodeLine{520 }
+\DoxyCodeLine{521 }
+\DoxyCodeLine{522 }
+\DoxyCodeLine{523 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{524 arma\_warn\_unused}
+\DoxyCodeLine{525 arma\_inline}
+\DoxyCodeLine{526 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_arg>}}}
+\DoxyCodeLine{527 \mbox{\hyperlink{structarg}{arg}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{528   \{}
+\DoxyCodeLine{529   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{530   }
+\DoxyCodeLine{531   arma\_ignore(junk);}
+\DoxyCodeLine{532   }
+\DoxyCodeLine{533   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_arg>}}(X.get\_ref());}
+\DoxyCodeLine{534   \}}
+\DoxyCodeLine{535 }
+\DoxyCodeLine{536 }
+\DoxyCodeLine{537 }
+\DoxyCodeLine{538 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{539 arma\_warn\_unused}
+\DoxyCodeLine{540 \textcolor{keyword}{inline}}
+\DoxyCodeLine{541 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::yes}}), \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_arg>}} >::result}
+\DoxyCodeLine{542 \mbox{\hyperlink{structarg}{arg}}(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{543   \{}
+\DoxyCodeLine{544   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{545   }
+\DoxyCodeLine{546   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<typename T1::pod\_type, T1, op\_arg>}}(X);}
+\DoxyCodeLine{547   \}}
+\DoxyCodeLine{548 }
+\DoxyCodeLine{549 }
+\DoxyCodeLine{550 }
+\DoxyCodeLine{551 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{552 arma\_warn\_unused}
+\DoxyCodeLine{553 \textcolor{keyword}{inline}}
+\DoxyCodeLine{554 \textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_arg>}}}
+\DoxyCodeLine{555 \mbox{\hyperlink{structarg}{arg}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube}}< std::complex<typename T1::pod\_type>,T1>\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{556   \{}
+\DoxyCodeLine{557   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{558   }
+\DoxyCodeLine{559   arma\_ignore(junk);}
+\DoxyCodeLine{560   }
+\DoxyCodeLine{561   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOpCube}{mtOpCube<typename T1::pod\_type, T1, op\_arg>}}( X.get\_ref() );}
+\DoxyCodeLine{562   \}}
+\DoxyCodeLine{563 }
+\DoxyCodeLine{564 }
+\DoxyCodeLine{565 }
+\DoxyCodeLine{566 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{567 arma\_warn\_unused}
+\DoxyCodeLine{568 arma\_inline}
+\DoxyCodeLine{569 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_arg>}}}
+\DoxyCodeLine{570 \mbox{\hyperlink{structarg}{arg}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{571   \{}
+\DoxyCodeLine{572   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{573   arma\_ignore(junk);}
+\DoxyCodeLine{574   }
+\DoxyCodeLine{575   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_arg>}}(X.get\_ref());}
+\DoxyCodeLine{576   \}}
+\DoxyCodeLine{577 }
+\DoxyCodeLine{578 }
+\DoxyCodeLine{579 }
+\DoxyCodeLine{580 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{581 arma\_warn\_unused}
+\DoxyCodeLine{582 arma\_inline}
+\DoxyCodeLine{583 \textcolor{keyword}{const} \mbox{\hyperlink{classmtSpOp}{mtSpOp<typename T1::pod\_type, T1, spop\_cx\_arg>}}}
+\DoxyCodeLine{584 \mbox{\hyperlink{structarg}{arg}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase}}< std::complex<typename T1::pod\_type>, T1>\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{585   \{}
+\DoxyCodeLine{586   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{587   arma\_ignore(junk);}
+\DoxyCodeLine{588   }
+\DoxyCodeLine{589   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtSpOp}{mtSpOp<typename T1::pod\_type, T1, spop\_cx\_arg>}}(X.get\_ref());}
+\DoxyCodeLine{590   \}}
+\DoxyCodeLine{591 }
+\DoxyCodeLine{592 }
+\DoxyCodeLine{593 }
+\DoxyCodeLine{594 \textcolor{comment}{//}}
+\DoxyCodeLine{595 \textcolor{comment}{// square}}
+\DoxyCodeLine{596 }
+\DoxyCodeLine{597 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{598 arma\_warn\_unused}
+\DoxyCodeLine{599 arma\_inline}
+\DoxyCodeLine{600 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_square>}} >::result}
+\DoxyCodeLine{601 square(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{602   \{}
+\DoxyCodeLine{603   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{604   }
+\DoxyCodeLine{605   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_square>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{606   \}}
+\DoxyCodeLine{607 }
+\DoxyCodeLine{608 }
+\DoxyCodeLine{609 }
+\DoxyCodeLine{610 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{611 arma\_warn\_unused}
+\DoxyCodeLine{612 arma\_inline}
+\DoxyCodeLine{613 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_square>}}}
+\DoxyCodeLine{614 square(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{615   \{}
+\DoxyCodeLine{616   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{617   }
+\DoxyCodeLine{618   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_square>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{619   \}}
+\DoxyCodeLine{620 }
+\DoxyCodeLine{621 }
+\DoxyCodeLine{622 }
+\DoxyCodeLine{623 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{624 arma\_warn\_unused}
+\DoxyCodeLine{625 arma\_inline}
+\DoxyCodeLine{626 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_square>}}}
+\DoxyCodeLine{627 square(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{628   \{}
+\DoxyCodeLine{629   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{630   }
+\DoxyCodeLine{631   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_square>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{632   \}}
+\DoxyCodeLine{633 }
+\DoxyCodeLine{634 }
+\DoxyCodeLine{635 }
+\DoxyCodeLine{636 \textcolor{comment}{//}}
+\DoxyCodeLine{637 \textcolor{comment}{// sqrt}}
+\DoxyCodeLine{638 }
+\DoxyCodeLine{639 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{640 arma\_warn\_unused}
+\DoxyCodeLine{641 arma\_inline}
+\DoxyCodeLine{642 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_sqrt>}} >::result}
+\DoxyCodeLine{643 sqrt(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{644   \{}
+\DoxyCodeLine{645   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{646   }
+\DoxyCodeLine{647   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_sqrt>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{648   \}}
+\DoxyCodeLine{649 }
+\DoxyCodeLine{650 }
+\DoxyCodeLine{651 }
+\DoxyCodeLine{652 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{653 arma\_warn\_unused}
+\DoxyCodeLine{654 arma\_inline}
+\DoxyCodeLine{655 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_sqrt>}}}
+\DoxyCodeLine{656 sqrt(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{657   \{}
+\DoxyCodeLine{658   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{659   }
+\DoxyCodeLine{660   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_sqrt>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{661   \}}
+\DoxyCodeLine{662 }
+\DoxyCodeLine{663 }
+\DoxyCodeLine{664 }
+\DoxyCodeLine{665 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{666 arma\_warn\_unused}
+\DoxyCodeLine{667 arma\_inline}
+\DoxyCodeLine{668 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_sqrt>}}}
+\DoxyCodeLine{669 sqrt(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{670   \{}
+\DoxyCodeLine{671   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{672   }
+\DoxyCodeLine{673   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_sqrt>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{674   \}}
+\DoxyCodeLine{675 }
+\DoxyCodeLine{676 }
+\DoxyCodeLine{677 }
+\DoxyCodeLine{678 \textcolor{comment}{//}}
+\DoxyCodeLine{679 \textcolor{comment}{// conj}}
+\DoxyCodeLine{680 }
+\DoxyCodeLine{681 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{682 arma\_warn\_unused}
+\DoxyCodeLine{683 arma\_inline}
+\DoxyCodeLine{684 \textcolor{keyword}{const} T1\&}
+\DoxyCodeLine{685 conj(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{686   \{}
+\DoxyCodeLine{687   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{688   }
+\DoxyCodeLine{689   \textcolor{keywordflow}{return} \mbox{\hyperlink{structA}{A}}.get\_ref();}
+\DoxyCodeLine{690   \}}
+\DoxyCodeLine{691 }
+\DoxyCodeLine{692 }
+\DoxyCodeLine{693 }
+\DoxyCodeLine{694 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{695 arma\_warn\_unused}
+\DoxyCodeLine{696 arma\_inline}
+\DoxyCodeLine{697 \textcolor{keyword}{const} T1\&}
+\DoxyCodeLine{698 conj(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{699   \{}
+\DoxyCodeLine{700   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{701   }
+\DoxyCodeLine{702   \textcolor{keywordflow}{return} \mbox{\hyperlink{structA}{A}}.get\_ref();}
+\DoxyCodeLine{703   \}}
+\DoxyCodeLine{704 }
+\DoxyCodeLine{705 }
+\DoxyCodeLine{706 }
+\DoxyCodeLine{707 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{708 arma\_warn\_unused}
+\DoxyCodeLine{709 arma\_inline}
+\DoxyCodeLine{710 \textcolor{keyword}{const} T1\&}
+\DoxyCodeLine{711 conj(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{712   \{}
+\DoxyCodeLine{713   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{714   }
+\DoxyCodeLine{715   \textcolor{keywordflow}{return} \mbox{\hyperlink{structA}{A}}.get\_ref();}
+\DoxyCodeLine{716   \}}
+\DoxyCodeLine{717 }
+\DoxyCodeLine{718 }
+\DoxyCodeLine{719 }
+\DoxyCodeLine{720 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{721 arma\_warn\_unused}
+\DoxyCodeLine{722 arma\_inline}
+\DoxyCodeLine{723 \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_conj>}}}
+\DoxyCodeLine{724 conj(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<std::complex<typename T1::pod\_type>,T1>\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{725   \{}
+\DoxyCodeLine{726   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{727   }
+\DoxyCodeLine{728   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_conj>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{729   \}}
+\DoxyCodeLine{730 }
+\DoxyCodeLine{731 }
+\DoxyCodeLine{732 }
+\DoxyCodeLine{733 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{734 arma\_warn\_unused}
+\DoxyCodeLine{735 arma\_inline}
+\DoxyCodeLine{736 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_conj>}}}
+\DoxyCodeLine{737 conj(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube}}<std::complex<typename T1::pod\_type>,T1>\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{738   \{}
+\DoxyCodeLine{739   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{740 }
+\DoxyCodeLine{741   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_conj>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{742   \}}
+\DoxyCodeLine{743 }
+\DoxyCodeLine{744 }
+\DoxyCodeLine{745 }
+\DoxyCodeLine{746 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{747 arma\_warn\_unused}
+\DoxyCodeLine{748 arma\_inline}
+\DoxyCodeLine{749 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_conj>}}}
+\DoxyCodeLine{750 conj(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase}}<std::complex<typename T1::pod\_type>,T1>\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{751   \{}
+\DoxyCodeLine{752   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{753   }
+\DoxyCodeLine{754   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_conj>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{755   \}}
+\DoxyCodeLine{756 }
+\DoxyCodeLine{757 }
+\DoxyCodeLine{758 }
+\DoxyCodeLine{759 \textcolor{comment}{// pow}}
+\DoxyCodeLine{760 }
+\DoxyCodeLine{761 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{762 arma\_warn\_unused}
+\DoxyCodeLine{763 arma\_inline}
+\DoxyCodeLine{764 \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_pow>}}}
+\DoxyCodeLine{765 pow(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type exponent)}
+\DoxyCodeLine{766   \{}
+\DoxyCodeLine{767   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{768   }
+\DoxyCodeLine{769   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_pow>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), exponent);}
+\DoxyCodeLine{770   \}}
+\DoxyCodeLine{771 }
+\DoxyCodeLine{772 }
+\DoxyCodeLine{773 }
+\DoxyCodeLine{774 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{775 arma\_warn\_unused}
+\DoxyCodeLine{776 arma\_inline}
+\DoxyCodeLine{777 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_pow>}}}
+\DoxyCodeLine{778 pow(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type exponent)}
+\DoxyCodeLine{779   \{}
+\DoxyCodeLine{780   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{781   }
+\DoxyCodeLine{782   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_pow>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), exponent);}
+\DoxyCodeLine{783   \}}
+\DoxyCodeLine{784 }
+\DoxyCodeLine{785 }
+\DoxyCodeLine{786 }
+\DoxyCodeLine{787 \textcolor{comment}{// pow, specialised handling (non-\/complex exponent for complex matrices)}}
+\DoxyCodeLine{788 }
+\DoxyCodeLine{789 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{790 arma\_warn\_unused}
+\DoxyCodeLine{791 arma\_inline}
+\DoxyCodeLine{792 \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_pow>}}}
+\DoxyCodeLine{793 pow(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type::value\_type exponent)}
+\DoxyCodeLine{794   \{}
+\DoxyCodeLine{795   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{796   }
+\DoxyCodeLine{797   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{798   }
+\DoxyCodeLine{799   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_pow>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), eT(exponent));}
+\DoxyCodeLine{800   \}}
+\DoxyCodeLine{801 }
+\DoxyCodeLine{802 }
+\DoxyCodeLine{803 }
+\DoxyCodeLine{804 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{805 arma\_warn\_unused}
+\DoxyCodeLine{806 arma\_inline}
+\DoxyCodeLine{807 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_pow>}}}
+\DoxyCodeLine{808 pow(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type::value\_type exponent)}
+\DoxyCodeLine{809   \{}
+\DoxyCodeLine{810   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{811   }
+\DoxyCodeLine{812   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{813   }
+\DoxyCodeLine{814   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_pow>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), eT(exponent));}
+\DoxyCodeLine{815   \}}
+\DoxyCodeLine{816 }
+\DoxyCodeLine{817 }
+\DoxyCodeLine{818 }
+\DoxyCodeLine{819 \textcolor{comment}{//}}
+\DoxyCodeLine{820 \textcolor{comment}{// floor}}
+\DoxyCodeLine{821 }
+\DoxyCodeLine{822 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{823 arma\_warn\_unused}
+\DoxyCodeLine{824 arma\_inline}
+\DoxyCodeLine{825 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_floor>}} >::result}
+\DoxyCodeLine{826 floor(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{827   \{}
+\DoxyCodeLine{828   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{829   }
+\DoxyCodeLine{830   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_floor>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{831   \}}
+\DoxyCodeLine{832 }
+\DoxyCodeLine{833 }
+\DoxyCodeLine{834 }
+\DoxyCodeLine{835 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{836 arma\_warn\_unused}
+\DoxyCodeLine{837 arma\_inline}
+\DoxyCodeLine{838 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_floor>}}}
+\DoxyCodeLine{839 floor(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{840   \{}
+\DoxyCodeLine{841   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{842   }
+\DoxyCodeLine{843   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_floor>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{844   \}}
+\DoxyCodeLine{845 }
+\DoxyCodeLine{846 }
+\DoxyCodeLine{847 }
+\DoxyCodeLine{848 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{849 arma\_warn\_unused}
+\DoxyCodeLine{850 arma\_inline}
+\DoxyCodeLine{851 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_floor>}}}
+\DoxyCodeLine{852 floor(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{853   \{}
+\DoxyCodeLine{854   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{855   }
+\DoxyCodeLine{856   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_floor>}}(X.get\_ref());}
+\DoxyCodeLine{857   \}}
+\DoxyCodeLine{858 }
+\DoxyCodeLine{859 }
+\DoxyCodeLine{860 }
+\DoxyCodeLine{861 \textcolor{comment}{//}}
+\DoxyCodeLine{862 \textcolor{comment}{// ceil}}
+\DoxyCodeLine{863 }
+\DoxyCodeLine{864 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{865 arma\_warn\_unused}
+\DoxyCodeLine{866 arma\_inline}
+\DoxyCodeLine{867 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_ceil>}} >::result}
+\DoxyCodeLine{868 ceil(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{869   \{}
+\DoxyCodeLine{870   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{871   }
+\DoxyCodeLine{872   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_ceil>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{873   \}}
+\DoxyCodeLine{874 }
+\DoxyCodeLine{875 }
+\DoxyCodeLine{876 }
+\DoxyCodeLine{877 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{878 arma\_warn\_unused}
+\DoxyCodeLine{879 arma\_inline}
+\DoxyCodeLine{880 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_ceil>}}}
+\DoxyCodeLine{881 ceil(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{882   \{}
+\DoxyCodeLine{883   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{884   }
+\DoxyCodeLine{885   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_ceil>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{886   \}}
+\DoxyCodeLine{887 }
+\DoxyCodeLine{888 }
+\DoxyCodeLine{889 }
+\DoxyCodeLine{890 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{891 arma\_warn\_unused}
+\DoxyCodeLine{892 arma\_inline}
+\DoxyCodeLine{893 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_ceil>}}}
+\DoxyCodeLine{894 ceil(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{895   \{}
+\DoxyCodeLine{896   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{897   }
+\DoxyCodeLine{898   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_ceil>}}(X.get\_ref());}
+\DoxyCodeLine{899   \}}
+\DoxyCodeLine{900 }
+\DoxyCodeLine{901 }
+\DoxyCodeLine{902 }
+\DoxyCodeLine{903 \textcolor{comment}{//}}
+\DoxyCodeLine{904 \textcolor{comment}{// round}}
+\DoxyCodeLine{905 }
+\DoxyCodeLine{906 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{907 arma\_warn\_unused}
+\DoxyCodeLine{908 arma\_inline}
+\DoxyCodeLine{909 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_round>}} >::result}
+\DoxyCodeLine{910 round(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{911   \{}
+\DoxyCodeLine{912   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{913   }
+\DoxyCodeLine{914   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_round>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{915   \}}
+\DoxyCodeLine{916 }
+\DoxyCodeLine{917 }
+\DoxyCodeLine{918 }
+\DoxyCodeLine{919 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{920 arma\_warn\_unused}
+\DoxyCodeLine{921 arma\_inline}
+\DoxyCodeLine{922 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_round>}}}
+\DoxyCodeLine{923 round(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{924   \{}
+\DoxyCodeLine{925   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{926   }
+\DoxyCodeLine{927   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_round>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{928   \}}
+\DoxyCodeLine{929 }
+\DoxyCodeLine{930 }
+\DoxyCodeLine{931 }
+\DoxyCodeLine{932 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{933 arma\_warn\_unused}
+\DoxyCodeLine{934 arma\_inline}
+\DoxyCodeLine{935 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_round>}}}
+\DoxyCodeLine{936 round(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{937   \{}
+\DoxyCodeLine{938   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{939   }
+\DoxyCodeLine{940   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_round>}}(X.get\_ref());}
+\DoxyCodeLine{941   \}}
+\DoxyCodeLine{942 }
+\DoxyCodeLine{943 }
+\DoxyCodeLine{944 }
+\DoxyCodeLine{945 \textcolor{comment}{//}}
+\DoxyCodeLine{946 \textcolor{comment}{// trunc}}
+\DoxyCodeLine{947 }
+\DoxyCodeLine{948 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{949 arma\_warn\_unused}
+\DoxyCodeLine{950 arma\_inline}
+\DoxyCodeLine{951 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_trunc>}} >::result}
+\DoxyCodeLine{952 trunc(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{953   \{}
+\DoxyCodeLine{954   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{955   }
+\DoxyCodeLine{956   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_trunc>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{957   \}}
+\DoxyCodeLine{958 }
+\DoxyCodeLine{959 }
+\DoxyCodeLine{960 }
+\DoxyCodeLine{961 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{962 arma\_warn\_unused}
+\DoxyCodeLine{963 arma\_inline}
+\DoxyCodeLine{964 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_trunc>}}}
+\DoxyCodeLine{965 trunc(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{966   \{}
+\DoxyCodeLine{967   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{968   }
+\DoxyCodeLine{969   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_trunc>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{970   \}}
+\DoxyCodeLine{971 }
+\DoxyCodeLine{972 }
+\DoxyCodeLine{973 }
+\DoxyCodeLine{974 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{975 arma\_warn\_unused}
+\DoxyCodeLine{976 arma\_inline}
+\DoxyCodeLine{977 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_trunc>}}}
+\DoxyCodeLine{978 trunc(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{979   \{}
+\DoxyCodeLine{980   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{981   }
+\DoxyCodeLine{982   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_trunc>}}(X.get\_ref());}
+\DoxyCodeLine{983   \}}
+\DoxyCodeLine{984 }
+\DoxyCodeLine{985 }
+\DoxyCodeLine{986 }
+\DoxyCodeLine{987 \textcolor{comment}{//}}
+\DoxyCodeLine{988 \textcolor{comment}{// sign}}
+\DoxyCodeLine{989 }
+\DoxyCodeLine{990 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{991 arma\_warn\_unused}
+\DoxyCodeLine{992 arma\_inline}
+\DoxyCodeLine{993 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__scalar__only}{arma\_scalar\_only<eT>::result}}}
+\DoxyCodeLine{994 sign(\textcolor{keyword}{const} eT x)}
+\DoxyCodeLine{995   \{}
+\DoxyCodeLine{996   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{997   }
+\DoxyCodeLine{998   \textcolor{keywordflow}{return} arma\_sign(x);}
+\DoxyCodeLine{999   \}}
+\DoxyCodeLine{1000 }
+\DoxyCodeLine{1001 }
+\DoxyCodeLine{1002 }
+\DoxyCodeLine{1003 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1004 arma\_warn\_unused}
+\DoxyCodeLine{1005 arma\_inline}
+\DoxyCodeLine{1006 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_sign>}} >::result}
+\DoxyCodeLine{1007 sign(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1008   \{}
+\DoxyCodeLine{1009   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1010   }
+\DoxyCodeLine{1011   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_sign>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{1012   \}}
+\DoxyCodeLine{1013 }
+\DoxyCodeLine{1014 }
+\DoxyCodeLine{1015 }
+\DoxyCodeLine{1016 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1017 arma\_warn\_unused}
+\DoxyCodeLine{1018 arma\_inline}
+\DoxyCodeLine{1019 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_sign>}}}
+\DoxyCodeLine{1020 sign(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1021   \{}
+\DoxyCodeLine{1022   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1023   }
+\DoxyCodeLine{1024   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_sign>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{1025   \}}
+\DoxyCodeLine{1026 }
+\DoxyCodeLine{1027 }
+\DoxyCodeLine{1028 }
+\DoxyCodeLine{1029 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1030 arma\_warn\_unused}
+\DoxyCodeLine{1031 arma\_inline}
+\DoxyCodeLine{1032 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_sign>}}}
+\DoxyCodeLine{1033 sign(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{1034   \{}
+\DoxyCodeLine{1035   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1036   }
+\DoxyCodeLine{1037   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_sign>}}(X.get\_ref());}
+\DoxyCodeLine{1038   \}}
+\DoxyCodeLine{1039 }
+\DoxyCodeLine{1040 }
+\DoxyCodeLine{1041 }
+\DoxyCodeLine{1042 \textcolor{comment}{//}}
+\DoxyCodeLine{1043 \textcolor{comment}{// erf}}
+\DoxyCodeLine{1044 }
+\DoxyCodeLine{1045 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1046 arma\_warn\_unused}
+\DoxyCodeLine{1047 arma\_inline}
+\DoxyCodeLine{1048 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_erf>}} >::result}
+\DoxyCodeLine{1049 erf(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1050   \{}
+\DoxyCodeLine{1051   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1052   }
+\DoxyCodeLine{1053   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_erf>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{1054   \}}
+\DoxyCodeLine{1055 }
+\DoxyCodeLine{1056 }
+\DoxyCodeLine{1057 }
+\DoxyCodeLine{1058 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1059 arma\_warn\_unused}
+\DoxyCodeLine{1060 arma\_inline}
+\DoxyCodeLine{1061 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_cx<typename T1::elem\_type>::no}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_erf>}} >::result}
+\DoxyCodeLine{1062 erf(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1063   \{}
+\DoxyCodeLine{1064   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1065   }
+\DoxyCodeLine{1066   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_erf>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{1067   \}}
+\DoxyCodeLine{1068 }
+\DoxyCodeLine{1069 }
+\DoxyCodeLine{1070 }
+\DoxyCodeLine{1071 \textcolor{comment}{//}}
+\DoxyCodeLine{1072 \textcolor{comment}{// erfc}}
+\DoxyCodeLine{1073 }
+\DoxyCodeLine{1074 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1075 arma\_warn\_unused}
+\DoxyCodeLine{1076 arma\_inline}
+\DoxyCodeLine{1077 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_erfc>}} >::result}
+\DoxyCodeLine{1078 erfc(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1079   \{}
+\DoxyCodeLine{1080   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1081   }
+\DoxyCodeLine{1082   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_erfc>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{1083   \}}
+\DoxyCodeLine{1084 }
+\DoxyCodeLine{1085 }
+\DoxyCodeLine{1086 }
+\DoxyCodeLine{1087 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1088 arma\_warn\_unused}
+\DoxyCodeLine{1089 arma\_inline}
+\DoxyCodeLine{1090 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_cx<typename T1::elem\_type>::no}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_erfc>}} >::result}
+\DoxyCodeLine{1091 erfc(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1092   \{}
+\DoxyCodeLine{1093   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1094   }
+\DoxyCodeLine{1095   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_erfc>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{1096   \}}
+\DoxyCodeLine{1097 }
+\DoxyCodeLine{1098 }
+\DoxyCodeLine{1099 }
+\DoxyCodeLine{1100 \textcolor{comment}{//}}
+\DoxyCodeLine{1101 \textcolor{comment}{// lgamma}}
+\DoxyCodeLine{1102 }
+\DoxyCodeLine{1103 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1104 arma\_warn\_unused}
+\DoxyCodeLine{1105 arma\_inline}
+\DoxyCodeLine{1106 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_lgamma>}} >::result}
+\DoxyCodeLine{1107 lgamma(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1108   \{}
+\DoxyCodeLine{1109   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1110   }
+\DoxyCodeLine{1111   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_lgamma>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{1112   \}}
+\DoxyCodeLine{1113 }
+\DoxyCodeLine{1114 }
+\DoxyCodeLine{1115 }
+\DoxyCodeLine{1116 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1117 arma\_warn\_unused}
+\DoxyCodeLine{1118 arma\_inline}
+\DoxyCodeLine{1119 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_cx<typename T1::elem\_type>::no}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_lgamma>}} >::result}
+\DoxyCodeLine{1120 lgamma(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1121   \{}
+\DoxyCodeLine{1122   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1123   }
+\DoxyCodeLine{1124   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_lgamma>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{1125   \}}
+\DoxyCodeLine{1126 }
+\DoxyCodeLine{1127 }
+\DoxyCodeLine{1128 }
+\DoxyCodeLine{1129 \textcolor{comment}{//}}
+\DoxyCodeLine{1130 \textcolor{comment}{// tgamma}}
+\DoxyCodeLine{1131 }
+\DoxyCodeLine{1132 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1133 arma\_warn\_unused}
+\DoxyCodeLine{1134 arma\_inline}
+\DoxyCodeLine{1135 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_tgamma>}} >::result}
+\DoxyCodeLine{1136 tgamma(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1137   \{}
+\DoxyCodeLine{1138   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1139   }
+\DoxyCodeLine{1140   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_tgamma>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{1141   \}}
+\DoxyCodeLine{1142 }
+\DoxyCodeLine{1143 }
+\DoxyCodeLine{1144 }
+\DoxyCodeLine{1145 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1146 arma\_warn\_unused}
+\DoxyCodeLine{1147 arma\_inline}
+\DoxyCodeLine{1148 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_cx<typename T1::elem\_type>::no}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_tgamma>}} >::result}
+\DoxyCodeLine{1149 tgamma(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1150   \{}
+\DoxyCodeLine{1151   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1152   }
+\DoxyCodeLine{1153   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_tgamma>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{1154   \}}
+\DoxyCodeLine{1155 }
+\DoxyCodeLine{1156 }
+\DoxyCodeLine{1157 }
+\DoxyCodeLine{1158 \textcolor{comment}{// the functions below are currently unused; reserved for potential future use}}
+\DoxyCodeLine{1159 }
+\DoxyCodeLine{1160 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keywordtype}{void} exp\_approx(\textcolor{keyword}{const} T1\&) \{ arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}unimplemented"{}}); \}}
+\DoxyCodeLine{1161 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keywordtype}{void} log\_approx(\textcolor{keyword}{const} T1\&) \{ arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}unimplemented"{}}); \}}
+\DoxyCodeLine{1162 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keywordtype}{void} approx\_exp(\textcolor{keyword}{const} T1\&) \{ arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}unimplemented"{}}); \}}
+\DoxyCodeLine{1163 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keywordtype}{void} approx\_log(\textcolor{keyword}{const} T1\&) \{ arma\_stop\_logic\_error(\textcolor{stringliteral}{"{}unimplemented"{}}); \}}
+\DoxyCodeLine{1164 }
+
+\end{DoxyCode}

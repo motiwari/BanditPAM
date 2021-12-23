@@ -1,0 +1,147 @@
+\hypertarget{SizeMat__meat_8hpp_source}{}\doxysection{Size\+Mat\+\_\+meat.\+hpp}
+\label{SizeMat__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/SizeMat\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/SizeMat\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{inline}}
+\DoxyCodeLine{23 SizeMat::SizeMat(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols)}
+\DoxyCodeLine{24   : n\_rows(in\_n\_rows)}
+\DoxyCodeLine{25   , n\_cols(in\_n\_cols)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   \}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{inline}}
+\DoxyCodeLine{33 uword}
+\DoxyCodeLine{34 SizeMat::operator[](\textcolor{keyword}{const} uword dim)\textcolor{keyword}{ const}}
+\DoxyCodeLine{35 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{36   \textcolor{keywordflow}{if}(dim == 0)  \{ \textcolor{keywordflow}{return} n\_rows; \}}
+\DoxyCodeLine{37   \textcolor{keywordflow}{if}(dim == 1)  \{ \textcolor{keywordflow}{return} n\_cols; \}}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keywordflow}{return} uword(1);}
+\DoxyCodeLine{40   \}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{inline}}
+\DoxyCodeLine{45 uword}
+\DoxyCodeLine{46 SizeMat::operator()(\textcolor{keyword}{const} uword dim)\textcolor{keyword}{ const}}
+\DoxyCodeLine{47 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{48   \textcolor{keywordflow}{if}(dim == 0)  \{ \textcolor{keywordflow}{return} n\_rows; \}}
+\DoxyCodeLine{49   \textcolor{keywordflow}{if}(dim == 1)  \{ \textcolor{keywordflow}{return} n\_cols; \}}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   arma\_debug\_check\_bounds(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}size(): index out of bounds"{}});}
+\DoxyCodeLine{52   }
+\DoxyCodeLine{53   \textcolor{keywordflow}{return} uword(1);}
+\DoxyCodeLine{54   \}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{inline}}
+\DoxyCodeLine{59 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{60 SizeMat::operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)\textcolor{keyword}{ const}}
+\DoxyCodeLine{61 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{62   \textcolor{keywordflow}{if}(n\_rows != s.n\_rows)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{keywordflow}{if}(n\_cols != s.n\_cols)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{65   }
+\DoxyCodeLine{66   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{67   \}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{keyword}{inline}}
+\DoxyCodeLine{72 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{73 SizeMat::operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)\textcolor{keyword}{ const}}
+\DoxyCodeLine{74 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{75   \textcolor{keywordflow}{if}(n\_rows != s.n\_rows)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keywordflow}{if}(n\_cols != s.n\_cols)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{80   \}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{keyword}{inline}}
+\DoxyCodeLine{85 \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{86 SizeMat::operator+(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)\textcolor{keyword}{ const}}
+\DoxyCodeLine{87 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{88   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( (n\_rows + s.n\_rows), (n\_cols + s.n\_cols) );}
+\DoxyCodeLine{89   \}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{inline}}
+\DoxyCodeLine{94 \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{95 SizeMat::operator-\/(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)\textcolor{keyword}{ const}}
+\DoxyCodeLine{96 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{97   \textcolor{keyword}{const} uword out\_n\_rows = (n\_rows > s.n\_rows) ? (n\_rows -\/ s.n\_rows) : uword(0);}
+\DoxyCodeLine{98   \textcolor{keyword}{const} uword out\_n\_cols = (n\_cols > s.n\_cols) ? (n\_cols -\/ s.n\_cols) : uword(0);}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}(out\_n\_rows, out\_n\_cols);}
+\DoxyCodeLine{101   \}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keyword}{inline}}
+\DoxyCodeLine{106 \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{107 SizeMat::operator+(\textcolor{keyword}{const} uword val)\textcolor{keyword}{ const}}
+\DoxyCodeLine{108 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{109   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( (n\_rows + val), (n\_cols + val) );}
+\DoxyCodeLine{110   \}}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \textcolor{keyword}{inline}}
+\DoxyCodeLine{115 \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{116 SizeMat::operator-\/(\textcolor{keyword}{const} uword val)\textcolor{keyword}{ const}}
+\DoxyCodeLine{117 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{118   \textcolor{keyword}{const} uword out\_n\_rows = (n\_rows > val) ? (n\_rows -\/ val) : uword(0);}
+\DoxyCodeLine{119   \textcolor{keyword}{const} uword out\_n\_cols = (n\_cols > val) ? (n\_cols -\/ val) : uword(0);}
+\DoxyCodeLine{120   }
+\DoxyCodeLine{121   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}(out\_n\_rows, out\_n\_cols);}
+\DoxyCodeLine{122   \}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{keyword}{inline}}
+\DoxyCodeLine{127 \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{128 SizeMat::operator*(\textcolor{keyword}{const} uword val)\textcolor{keyword}{ const}}
+\DoxyCodeLine{129 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{130   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( (n\_rows * val), (n\_cols * val) );}
+\DoxyCodeLine{131   \}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keyword}{inline}}
+\DoxyCodeLine{136 \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{137 SizeMat::operator/(\textcolor{keyword}{const} uword val)\textcolor{keyword}{ const}}
+\DoxyCodeLine{138 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{139   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( (n\_rows / val), (n\_cols / val) );}
+\DoxyCodeLine{140   \}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 }
+
+\end{DoxyCode}

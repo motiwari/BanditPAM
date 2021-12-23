@@ -1,0 +1,48 @@
+\hypertarget{glue__hypot__bones_8hpp_source}{}\doxysection{glue\+\_\+hypot\+\_\+bones.\+hpp}
+\label{glue__hypot__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_hypot\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_hypot\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classglue__hypot}{glue\_hypot}}}
+\DoxyCodeLine{24   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__glue__or}{traits\_glue\_or}}}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   \textcolor{keyword}{public}:}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{comment}{// matrices}}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_hypot>}}\& expr);}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_noalias(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P1, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}}\& P2);}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{comment}{// cubes}}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_hypot>}}\& expr);}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_noalias(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P1, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>}}\& P2);}
+\DoxyCodeLine{41   \};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 }
+
+\end{DoxyCode}

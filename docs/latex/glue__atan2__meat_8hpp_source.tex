@@ -1,0 +1,229 @@
+\hypertarget{glue__atan2__meat_8hpp_source}{}\doxysection{glue\+\_\+atan2\+\_\+meat.\+hpp}
+\label{glue__atan2__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_atan2\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_atan2\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 glue\_atan2::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_atan2>}}\& expr)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P1(expr.\mbox{\hyperlink{classGlue_a22423031a9f05101ad23dfd897c6f1ab}{A}});}
+\DoxyCodeLine{32   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}} P2(expr.\mbox{\hyperlink{classGlue_a1b3a6b5891d84915448f3084e66476c6}{B}});}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   arma\_assert\_same\_size(P1, P2, \textcolor{stringliteral}{"{}atan2()"{}});}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} bad\_alias = ( (\mbox{\hyperlink{classProxy}{Proxy<T1>::has\_subview}} \&\& P1.is\_alias(out)) || (\mbox{\hyperlink{classProxy}{Proxy<T2>::has\_subview}} \&\& P2.is\_alias(out)) );}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keywordflow}{if}(bad\_alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{39     \{}
+\DoxyCodeLine{40     glue\_atan2::apply\_noalias(out, P1, P2);}
+\DoxyCodeLine{41     \}}
+\DoxyCodeLine{42   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{43     \{}
+\DoxyCodeLine{44     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{45     }
+\DoxyCodeLine{46     glue\_atan2::apply\_noalias(tmp, P1, P2);}
+\DoxyCodeLine{47     }
+\DoxyCodeLine{48     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{49     \}}
+\DoxyCodeLine{50   \}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{55 \textcolor{keyword}{inline}}
+\DoxyCodeLine{56 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{57 glue\_atan2::apply\_noalias(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P1, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}}\& P2)}
+\DoxyCodeLine{58   \{}
+\DoxyCodeLine{59   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{61   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   \textcolor{keyword}{const} uword n\_rows = P1.get\_n\_rows();}
+\DoxyCodeLine{64   \textcolor{keyword}{const} uword n\_cols = P1.get\_n\_cols();}
+\DoxyCodeLine{65   \textcolor{keyword}{const} uword n\_elem = P1.get\_n\_elem();}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_rows, n\_cols);}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_mp = arma\_config::openmp \&\& \mbox{\hyperlink{structmp__gate}{mp\_gate}}<eT, (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_mp}} || \mbox{\hyperlink{classProxy}{Proxy<T2>::use\_mp}})>::eval(n\_elem);}
+\DoxyCodeLine{72   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = \mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} || \mbox{\hyperlink{classProxy}{Proxy<T2>::use\_at}};}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keywordflow}{if}(use\_at == \textcolor{keyword}{false})}
+\DoxyCodeLine{75     \{}
+\DoxyCodeLine{76     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} eaP1 = P1.get\_ea();}
+\DoxyCodeLine{77     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T2>::ea\_type}} eaP2 = P2.get\_ea();}
+\DoxyCodeLine{78     }
+\DoxyCodeLine{79     \textcolor{keywordflow}{if}(use\_mp)}
+\DoxyCodeLine{80       \{}
+\DoxyCodeLine{81 \textcolor{preprocessor}{      \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{82         \{}
+\DoxyCodeLine{83         \textcolor{keyword}{const} \textcolor{keywordtype}{int} n\_threads = mp\_thread\_limit::get();}
+\DoxyCodeLine{84 \textcolor{preprocessor}{        \#pragma omp parallel for schedule(static) num\_threads(n\_threads)}}
+\DoxyCodeLine{85         \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{86           \{}
+\DoxyCodeLine{87           out\_mem[i] = std::atan2( eaP1[i], eaP2[i] );}
+\DoxyCodeLine{88           \}}
+\DoxyCodeLine{89         \}}
+\DoxyCodeLine{90 \textcolor{preprocessor}{      \#endif}}
+\DoxyCodeLine{91       \}}
+\DoxyCodeLine{92     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{93       \{}
+\DoxyCodeLine{94       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{95         \{}
+\DoxyCodeLine{96         out\_mem[i] = std::atan2( eaP1[i], eaP2[i] );}
+\DoxyCodeLine{97         \}}
+\DoxyCodeLine{98       \}}
+\DoxyCodeLine{99     \}}
+\DoxyCodeLine{100   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{101     \{}
+\DoxyCodeLine{102     \textcolor{keywordflow}{if}(use\_mp)}
+\DoxyCodeLine{103       \{}
+\DoxyCodeLine{104       \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<typename Proxy<T1>::stored\_type}}> U1(P1.Q);}
+\DoxyCodeLine{105       \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<typename Proxy<T2>::stored\_type}}> U2(P2.Q);}
+\DoxyCodeLine{106       }
+\DoxyCodeLine{107       out = arma::atan2(U1.M, U2.M);}
+\DoxyCodeLine{108       \}}
+\DoxyCodeLine{109     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{110       \{}
+\DoxyCodeLine{111       \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{112       \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{113         \{}
+\DoxyCodeLine{114         *out\_mem = std::atan2( P1.at(row,col), P2.at(row,col) );}
+\DoxyCodeLine{115         out\_mem++;}
+\DoxyCodeLine{116         \}}
+\DoxyCodeLine{117       \}}
+\DoxyCodeLine{118     \}}
+\DoxyCodeLine{119   \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{124 \textcolor{keyword}{inline}}
+\DoxyCodeLine{125 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{126 glue\_atan2::apply(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_atan2>}}\& expr)}
+\DoxyCodeLine{127   \{}
+\DoxyCodeLine{128   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} P1(expr.\mbox{\hyperlink{classGlueCube_a25d66df3c2248b7cc7d750c5a0b2e0b0}{A}});}
+\DoxyCodeLine{133   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>}} P2(expr.\mbox{\hyperlink{classGlueCube_a94a47687da2ded2666b559004e3f95d6}{B}});}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   arma\_assert\_same\_size(P1, P2, \textcolor{stringliteral}{"{}atan2()"{}});}
+\DoxyCodeLine{136   }
+\DoxyCodeLine{137   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} bad\_alias = ( (\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::has\_subview}} \&\& P1.is\_alias(out)) || (\mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::has\_subview}} \&\& P2.is\_alias(out)) );}
+\DoxyCodeLine{138   }
+\DoxyCodeLine{139   \textcolor{keywordflow}{if}(bad\_alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{140     \{}
+\DoxyCodeLine{141     glue\_atan2::apply\_noalias(out, P1, P2);}
+\DoxyCodeLine{142     \}}
+\DoxyCodeLine{143   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{144     \{}
+\DoxyCodeLine{145     \mbox{\hyperlink{classCube}{Cube<eT>}} tmp;}
+\DoxyCodeLine{146     }
+\DoxyCodeLine{147     glue\_atan2::apply\_noalias(tmp, P1, P2);}
+\DoxyCodeLine{148     }
+\DoxyCodeLine{149     out.\mbox{\hyperlink{group__Cube_ga70006d5a49f67d35d4ae10cb6c5a681f}{steal\_mem}}(tmp);}
+\DoxyCodeLine{150     \}}
+\DoxyCodeLine{151   \}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{156 \textcolor{keyword}{inline}}
+\DoxyCodeLine{157 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{158 glue\_atan2::apply\_noalias(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& P1, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>}}\& P2)}
+\DoxyCodeLine{159   \{}
+\DoxyCodeLine{160   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164   \textcolor{keyword}{const} uword n\_rows   = P1.get\_n\_rows();}
+\DoxyCodeLine{165   \textcolor{keyword}{const} uword n\_cols   = P1.get\_n\_cols();}
+\DoxyCodeLine{166   \textcolor{keyword}{const} uword n\_slices = P1.get\_n\_slices();}
+\DoxyCodeLine{167   \textcolor{keyword}{const} uword n\_elem   = P1.get\_n\_elem();}
+\DoxyCodeLine{168   }
+\DoxyCodeLine{169   out.\mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   eT* out\_mem = out.\mbox{\hyperlink{group__Cube_ga5b00237224a8e3bfb05728de7c962f85}{memptr}}();}
+\DoxyCodeLine{172   }
+\DoxyCodeLine{173   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_mp = arma\_config::openmp \&\& \mbox{\hyperlink{structmp__gate}{mp\_gate}}<eT, (\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_mp}} || \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::use\_mp}})>::eval(n\_elem);}
+\DoxyCodeLine{174   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} || \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::use\_at}};}
+\DoxyCodeLine{175   }
+\DoxyCodeLine{176   \textcolor{keywordflow}{if}(use\_at == \textcolor{keyword}{false})}
+\DoxyCodeLine{177     \{}
+\DoxyCodeLine{178     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} eaP1 = P1.get\_ea();}
+\DoxyCodeLine{179     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::ea\_type}} eaP2 = P2.get\_ea();}
+\DoxyCodeLine{180     }
+\DoxyCodeLine{181     \textcolor{keywordflow}{if}(use\_mp)}
+\DoxyCodeLine{182       \{}
+\DoxyCodeLine{183 \textcolor{preprocessor}{      \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{184         \{}
+\DoxyCodeLine{185         \textcolor{keyword}{const} \textcolor{keywordtype}{int} n\_threads = mp\_thread\_limit::get();}
+\DoxyCodeLine{186 \textcolor{preprocessor}{        \#pragma omp parallel for schedule(static) num\_threads(n\_threads)}}
+\DoxyCodeLine{187         \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{188           \{}
+\DoxyCodeLine{189           out\_mem[i] = std::atan2( eaP1[i], eaP2[i] );}
+\DoxyCodeLine{190           \}}
+\DoxyCodeLine{191         \}}
+\DoxyCodeLine{192 \textcolor{preprocessor}{      \#endif}}
+\DoxyCodeLine{193       \}}
+\DoxyCodeLine{194     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{195       \{}
+\DoxyCodeLine{196       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{197         \{}
+\DoxyCodeLine{198         out\_mem[i] = std::atan2( eaP1[i], eaP2[i] );}
+\DoxyCodeLine{199         \}}
+\DoxyCodeLine{200       \}}
+\DoxyCodeLine{201     \}}
+\DoxyCodeLine{202   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{203     \{}
+\DoxyCodeLine{204     \textcolor{keywordflow}{if}(use\_mp)}
+\DoxyCodeLine{205       \{}
+\DoxyCodeLine{206       \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<typename ProxyCube<T1>::stored\_type}}> U1(P1.Q);}
+\DoxyCodeLine{207       \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<typename ProxyCube<T2>::stored\_type}}> U2(P2.Q);}
+\DoxyCodeLine{208       }
+\DoxyCodeLine{209       out = arma::atan2(U1.M, U2.M);}
+\DoxyCodeLine{210       \}}
+\DoxyCodeLine{211     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{212       \{}
+\DoxyCodeLine{213       \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{214       \textcolor{keywordflow}{for}(uword   col=0;   col < n\_cols;   ++col  )}
+\DoxyCodeLine{215       \textcolor{keywordflow}{for}(uword   row=0;   row < n\_rows;   ++row  )}
+\DoxyCodeLine{216         \{}
+\DoxyCodeLine{217         *out\_mem = std::atan2( P1.at(row,col,\mbox{\hyperlink{classslice}{slice}}), P2.at(row,col,\mbox{\hyperlink{classslice}{slice}}) );}
+\DoxyCodeLine{218         out\_mem++;}
+\DoxyCodeLine{219         \}}
+\DoxyCodeLine{220       \}}
+\DoxyCodeLine{221     \}}
+\DoxyCodeLine{222   \}}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225 }
+
+\end{DoxyCode}

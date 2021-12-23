@@ -1,0 +1,338 @@
+\hypertarget{fn__dot_8hpp_source}{}\doxysection{fn\+\_\+dot.\+hpp}
+\label{fn__dot_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_dot.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_dot.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{22 arma\_warn\_unused}
+\DoxyCodeLine{23 arma\_inline}
+\DoxyCodeLine{24 \textcolor{keyword}{typename}}
+\DoxyCodeLine{25 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{26   <}
+\DoxyCodeLine{27   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::yes}},}
+\DoxyCodeLine{28   \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{29   >::result}
+\DoxyCodeLine{30 dot}
+\DoxyCodeLine{31   (}
+\DoxyCodeLine{32   \textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{33   \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}}}
+\DoxyCodeLine{34   )}
+\DoxyCodeLine{35   \{}
+\DoxyCodeLine{36   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keywordflow}{return} op\_dot::apply(\mbox{\hyperlink{structA}{A}},\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{39   \}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{44 arma\_warn\_unused}
+\DoxyCodeLine{45 \textcolor{keyword}{inline}}
+\DoxyCodeLine{46 \textcolor{keyword}{typename}}
+\DoxyCodeLine{47 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{48   <}
+\DoxyCodeLine{49   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::no}},}
+\DoxyCodeLine{50   \textcolor{keyword}{typename} promote\_type<typename T1::elem\_type, typename T2::elem\_type>::result}
+\DoxyCodeLine{51   >::result}
+\DoxyCodeLine{52 dot}
+\DoxyCodeLine{53   (}
+\DoxyCodeLine{54   \textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{55   \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}}}
+\DoxyCodeLine{56   )}
+\DoxyCodeLine{57   \{}
+\DoxyCodeLine{58   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{59   }
+\DoxyCodeLine{60   \textcolor{keywordflow}{return} op\_dot\_mixed::apply(\mbox{\hyperlink{structA}{A}},\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{61   \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{66 arma\_warn\_unused}
+\DoxyCodeLine{67 \textcolor{keyword}{inline}}
+\DoxyCodeLine{68 \textcolor{keyword}{typename}}
+\DoxyCodeLine{69 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{70   <}
+\DoxyCodeLine{71   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}},}
+\DoxyCodeLine{72   \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{73   >::result}
+\DoxyCodeLine{74 norm\_dot}
+\DoxyCodeLine{75   (}
+\DoxyCodeLine{76   \textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}}, }
+\DoxyCodeLine{77   \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}}}
+\DoxyCodeLine{78   )}
+\DoxyCodeLine{79   \{}
+\DoxyCodeLine{80   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keywordflow}{return} op\_norm\_dot::apply(\mbox{\hyperlink{structA}{A}},\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{83   \}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{comment}{//}}
+\DoxyCodeLine{88 \textcolor{comment}{// cdot}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{93 arma\_warn\_unused}
+\DoxyCodeLine{94 arma\_inline}
+\DoxyCodeLine{95 \textcolor{keyword}{typename}}
+\DoxyCodeLine{96 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{97   <}
+\DoxyCodeLine{98   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}},}
+\DoxyCodeLine{99   \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{100   >::result}
+\DoxyCodeLine{101 cdot}
+\DoxyCodeLine{102   (}
+\DoxyCodeLine{103   \textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{104   \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}}}
+\DoxyCodeLine{105   )}
+\DoxyCodeLine{106   \{}
+\DoxyCodeLine{107   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{108   }
+\DoxyCodeLine{109   \textcolor{keywordflow}{return} op\_dot::apply(\mbox{\hyperlink{structA}{A}},\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{110   \}}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{116 arma\_warn\_unused}
+\DoxyCodeLine{117 arma\_inline}
+\DoxyCodeLine{118 \textcolor{keyword}{typename}}
+\DoxyCodeLine{119 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{120   <}
+\DoxyCodeLine{121   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::yes}},}
+\DoxyCodeLine{122   \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{123   >::result}
+\DoxyCodeLine{124 cdot}
+\DoxyCodeLine{125   (}
+\DoxyCodeLine{126   \textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{127   \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}}}
+\DoxyCodeLine{128   )}
+\DoxyCodeLine{129   \{}
+\DoxyCodeLine{130   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   \textcolor{keywordflow}{return} op\_cdot::apply(\mbox{\hyperlink{structA}{A}},\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{133   \}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \textcolor{comment}{// convert dot(htrans(x), y) to cdot(x,y)}}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{140 arma\_warn\_unused}
+\DoxyCodeLine{141 arma\_inline}
+\DoxyCodeLine{142 \textcolor{keyword}{typename}}
+\DoxyCodeLine{143 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{144   <}
+\DoxyCodeLine{145   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::yes}},}
+\DoxyCodeLine{146   \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{147   >::result}
+\DoxyCodeLine{148 dot}
+\DoxyCodeLine{149   (}
+\DoxyCodeLine{150   \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_htrans>}}\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{151   \textcolor{keyword}{const} T2\&                \mbox{\hyperlink{structB}{B}}}
+\DoxyCodeLine{152   )}
+\DoxyCodeLine{153   \{}
+\DoxyCodeLine{154   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{155   }
+\DoxyCodeLine{156   \textcolor{keywordflow}{return} cdot(\mbox{\hyperlink{structA}{A}}.m, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{157   \}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{comment}{//}}
+\DoxyCodeLine{162 \textcolor{comment}{// for sparse matrices}}
+\DoxyCodeLine{163 \textcolor{comment}{// }}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167 \textcolor{keyword}{namespace }priv}
+\DoxyCodeLine{168   \{}
+\DoxyCodeLine{169   }
+\DoxyCodeLine{170   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{171   arma\_hot}
+\DoxyCodeLine{172   \textcolor{keyword}{inline}}
+\DoxyCodeLine{173   \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{174   dot\_helper(\textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}}\& pa, \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>}}\& pb)}
+\DoxyCodeLine{175     \{}
+\DoxyCodeLine{176     \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{177     }
+\DoxyCodeLine{178     \textcolor{comment}{// Iterate over both objects and see when they are the same}}
+\DoxyCodeLine{179     eT result = eT(0);}
+\DoxyCodeLine{180     }
+\DoxyCodeLine{181     \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::const\_iterator\_type}} a\_it  = pa.begin();}
+\DoxyCodeLine{182     \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::const\_iterator\_type}} a\_end = pa.end();}
+\DoxyCodeLine{183     }
+\DoxyCodeLine{184     \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>::const\_iterator\_type}} b\_it  = pb.begin();}
+\DoxyCodeLine{185     \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>::const\_iterator\_type}} b\_end = pb.end();}
+\DoxyCodeLine{186     }
+\DoxyCodeLine{187     \textcolor{keywordflow}{while}((a\_it != a\_end) \&\& (b\_it != b\_end))}
+\DoxyCodeLine{188       \{}
+\DoxyCodeLine{189       \textcolor{keywordflow}{if}(a\_it == b\_it)}
+\DoxyCodeLine{190         \{}
+\DoxyCodeLine{191         result += (*a\_it) * (*b\_it);}
+\DoxyCodeLine{192         }
+\DoxyCodeLine{193         ++a\_it;}
+\DoxyCodeLine{194         ++b\_it;}
+\DoxyCodeLine{195         \}}
+\DoxyCodeLine{196       \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}((a\_it.col() < b\_it.col()) || ((a\_it.col() == b\_it.col()) \&\& (a\_it.row() < b\_it.row())))}
+\DoxyCodeLine{197         \{}
+\DoxyCodeLine{198         \textcolor{comment}{// a\_it is "{}behind"{}}}
+\DoxyCodeLine{199         ++a\_it;}
+\DoxyCodeLine{200         \}}
+\DoxyCodeLine{201       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{202         \{}
+\DoxyCodeLine{203         \textcolor{comment}{// b\_it is "{}behind"{}}}
+\DoxyCodeLine{204         ++b\_it;}
+\DoxyCodeLine{205         \}}
+\DoxyCodeLine{206       \}}
+\DoxyCodeLine{207     }
+\DoxyCodeLine{208     \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{209     \}}
+\DoxyCodeLine{210   }
+\DoxyCodeLine{211   \}}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 }
+\DoxyCodeLine{216 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{217 arma\_warn\_unused}
+\DoxyCodeLine{218 arma\_hot}
+\DoxyCodeLine{219 \textcolor{keyword}{inline}}
+\DoxyCodeLine{220 \textcolor{keyword}{typename}}
+\DoxyCodeLine{221 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{222   <(\mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T2>::value}}) \&\& (\mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{223    \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{224   >::result}
+\DoxyCodeLine{225 dot}
+\DoxyCodeLine{226   (}
+\DoxyCodeLine{227   \textcolor{keyword}{const} T1\& x,}
+\DoxyCodeLine{228   \textcolor{keyword}{const} T2\& y}
+\DoxyCodeLine{229   )}
+\DoxyCodeLine{230   \{}
+\DoxyCodeLine{231   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{232   }
+\DoxyCodeLine{233   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} pa(x);}
+\DoxyCodeLine{234   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>}} pb(y);}
+\DoxyCodeLine{235   }
+\DoxyCodeLine{236   arma\_debug\_assert\_same\_size(pa.get\_n\_rows(), pa.get\_n\_cols(), pb.get\_n\_rows(), pb.get\_n\_cols(), \textcolor{stringliteral}{"{}dot()"{}});}
+\DoxyCodeLine{237   }
+\DoxyCodeLine{238   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{239   }
+\DoxyCodeLine{240   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::stored\_type}} pa\_Q\_type;}
+\DoxyCodeLine{241   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>::stored\_type}} pb\_Q\_type;}
+\DoxyCodeLine{242   }
+\DoxyCodeLine{243   \textcolor{keywordflow}{if}(}
+\DoxyCodeLine{244          ( (\mbox{\hyperlink{classSpProxy}{SpProxy<T1>::use\_iterator}}  == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{classSpProxy}{SpProxy<T2>::use\_iterator}}  == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{245       \&\& ( (\mbox{\hyperlink{structis__SpMat}{is\_SpMat<pa\_Q\_type>::value}} == \textcolor{keyword}{true} ) \&\& (\mbox{\hyperlink{structis__SpMat}{is\_SpMat<pb\_Q\_type>::value}} == \textcolor{keyword}{true} ) )   }
+\DoxyCodeLine{246     )}
+\DoxyCodeLine{247     \{}
+\DoxyCodeLine{248     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__spmat}{unwrap\_spmat<pa\_Q\_type>}} tmp\_a(pa.Q);}
+\DoxyCodeLine{249     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__spmat}{unwrap\_spmat<pb\_Q\_type>}} tmp\_b(pb.Q);}
+\DoxyCodeLine{250     }
+\DoxyCodeLine{251     \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \mbox{\hyperlink{structA}{A}} = tmp\_a.M;}
+\DoxyCodeLine{252     \textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& \mbox{\hyperlink{structB}{B}} = tmp\_b.M;}
+\DoxyCodeLine{253     }
+\DoxyCodeLine{254     \textcolor{keywordflow}{if}( \&\mbox{\hyperlink{structA}{A}} == \&\mbox{\hyperlink{structB}{B}} )}
+\DoxyCodeLine{255       \{}
+\DoxyCodeLine{256       \textcolor{comment}{// We can do it directly!}}
+\DoxyCodeLine{257       \textcolor{keywordflow}{return} \mbox{\hyperlink{group__op__dot_ga7af686a7089ac5d85b44405385578283}{op\_dot::direct\_dot\_arma}}(\mbox{\hyperlink{structA}{A}}.n\_nonzero, \mbox{\hyperlink{structA}{A}}.values, \mbox{\hyperlink{structA}{A}}.values);}
+\DoxyCodeLine{258       \}}
+\DoxyCodeLine{259     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{260       \{}
+\DoxyCodeLine{261       \textcolor{keywordflow}{return} priv::dot\_helper(pa,pb);}
+\DoxyCodeLine{262       \}}
+\DoxyCodeLine{263     \}}
+\DoxyCodeLine{264   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{265     \{}
+\DoxyCodeLine{266     \textcolor{keywordflow}{return} priv::dot\_helper(pa,pb);}
+\DoxyCodeLine{267     \}}
+\DoxyCodeLine{268   \}}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271 }
+\DoxyCodeLine{273 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{274 arma\_warn\_unused}
+\DoxyCodeLine{275 arma\_hot}
+\DoxyCodeLine{276 \textcolor{keyword}{inline}}
+\DoxyCodeLine{277 \textcolor{keyword}{typename}}
+\DoxyCodeLine{278 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{279   <(\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T2>::value}}) \&\& (\mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{280    \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{281   >::result}
+\DoxyCodeLine{282 dot}
+\DoxyCodeLine{283   (}
+\DoxyCodeLine{284   \textcolor{keyword}{const} T1\& x,}
+\DoxyCodeLine{285   \textcolor{keyword}{const} T2\& y}
+\DoxyCodeLine{286   )}
+\DoxyCodeLine{287   \{}
+\DoxyCodeLine{288   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{289   }
+\DoxyCodeLine{290   \textcolor{keyword}{const}   \mbox{\hyperlink{classProxy}{Proxy<T1>}} pa(x);}
+\DoxyCodeLine{291   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>}} pb(y);}
+\DoxyCodeLine{292   }
+\DoxyCodeLine{293   arma\_debug\_assert\_same\_size(pa.get\_n\_rows(), pa.get\_n\_cols(), pb.get\_n\_rows(), pb.get\_n\_cols(), \textcolor{stringliteral}{"{}dot()"{}});}
+\DoxyCodeLine{294   }
+\DoxyCodeLine{295   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{296   }
+\DoxyCodeLine{297   eT result = eT(0);}
+\DoxyCodeLine{298   }
+\DoxyCodeLine{299   \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>::const\_iterator\_type}} it     = pb.begin();}
+\DoxyCodeLine{300   \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T2>::const\_iterator\_type}} it\_end = pb.end();}
+\DoxyCodeLine{301   }
+\DoxyCodeLine{302   \textcolor{comment}{// use\_at == false won't save us operations}}
+\DoxyCodeLine{303   \textcolor{keywordflow}{while}(it != it\_end)}
+\DoxyCodeLine{304     \{}
+\DoxyCodeLine{305     result += (*it) * pa.at(it.row(), it.col());}
+\DoxyCodeLine{306     ++it;}
+\DoxyCodeLine{307     \}}
+\DoxyCodeLine{308   }
+\DoxyCodeLine{309   \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{310   \}}
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312 }
+\DoxyCodeLine{313 }
+\DoxyCodeLine{315 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{316 arma\_warn\_unused}
+\DoxyCodeLine{317 arma\_hot}
+\DoxyCodeLine{318 \textcolor{keyword}{inline}}
+\DoxyCodeLine{319 \textcolor{keyword}{typename}}
+\DoxyCodeLine{320 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{321   <(\mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}}) \&\& (\mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{322    \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{323   >::result}
+\DoxyCodeLine{324 dot}
+\DoxyCodeLine{325   (}
+\DoxyCodeLine{326   \textcolor{keyword}{const} T1\& x,}
+\DoxyCodeLine{327   \textcolor{keyword}{const} T2\& y}
+\DoxyCodeLine{328   )}
+\DoxyCodeLine{329   \{}
+\DoxyCodeLine{330   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{331   }
+\DoxyCodeLine{332   \textcolor{comment}{// this is commutative}}
+\DoxyCodeLine{333   \textcolor{keywordflow}{return} dot(y, x);}
+\DoxyCodeLine{334   \}}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337 }
+
+\end{DoxyCode}

@@ -1,0 +1,503 @@
+\hypertarget{fn__join_8hpp_source}{}\doxysection{fn\+\_\+join.\+hpp}
+\label{fn__join_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_join.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_join.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keyword}{typename}}
+\DoxyCodeLine{26 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{27   <}
+\DoxyCodeLine{28   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{29   \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_join\_cols>}}}
+\DoxyCodeLine{30   >::result}
+\DoxyCodeLine{31 join\_cols(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{32   \{}
+\DoxyCodeLine{33   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_join\_cols>}}(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{36   \}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{41 arma\_warn\_unused}
+\DoxyCodeLine{42 \textcolor{keyword}{inline}}
+\DoxyCodeLine{43 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{44 join\_cols(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T3>}}\& C)}
+\DoxyCodeLine{45   \{}
+\DoxyCodeLine{46   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \mbox{\hyperlink{classMat}{Mat<eT>}} out;}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   glue\_join\_cols::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref());}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{53   \}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{58 arma\_warn\_unused}
+\DoxyCodeLine{59 \textcolor{keyword}{inline}}
+\DoxyCodeLine{60 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{61 join\_cols(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T3>}}\& C, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T4>}}\& D)}
+\DoxyCodeLine{62   \{}
+\DoxyCodeLine{63   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{64   }
+\DoxyCodeLine{65   \mbox{\hyperlink{classMat}{Mat<eT>}} out;}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   glue\_join\_cols::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref(), D.get\_ref());}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{70   \}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{75 arma\_warn\_unused}
+\DoxyCodeLine{76 \textcolor{keyword}{inline}}
+\DoxyCodeLine{77 \textcolor{keyword}{typename}}
+\DoxyCodeLine{78 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{79   <}
+\DoxyCodeLine{80   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{81   \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_join\_cols>}}}
+\DoxyCodeLine{82   >::result}
+\DoxyCodeLine{83 join\_vert(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{84   \{}
+\DoxyCodeLine{85   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{86   }
+\DoxyCodeLine{87   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_join\_cols>}}(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{88   \}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{93 arma\_warn\_unused}
+\DoxyCodeLine{94 \textcolor{keyword}{inline}}
+\DoxyCodeLine{95 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{96 join\_vert(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T3>}}\& C)}
+\DoxyCodeLine{97   \{}
+\DoxyCodeLine{98   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \mbox{\hyperlink{classMat}{Mat<eT>}} out;}
+\DoxyCodeLine{101   }
+\DoxyCodeLine{102   glue\_join\_cols::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref());}
+\DoxyCodeLine{103   }
+\DoxyCodeLine{104   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{105   \}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{110 arma\_warn\_unused}
+\DoxyCodeLine{111 \textcolor{keyword}{inline}}
+\DoxyCodeLine{112 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{113 join\_vert(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T3>}}\& C, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T4>}}\& D)}
+\DoxyCodeLine{114   \{}
+\DoxyCodeLine{115   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{116   }
+\DoxyCodeLine{117   \mbox{\hyperlink{classMat}{Mat<eT>}} out;}
+\DoxyCodeLine{118   }
+\DoxyCodeLine{119   glue\_join\_cols::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref(), D.get\_ref());}
+\DoxyCodeLine{120   }
+\DoxyCodeLine{121   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{122   \}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{127 arma\_warn\_unused}
+\DoxyCodeLine{128 \textcolor{keyword}{inline}}
+\DoxyCodeLine{129 \textcolor{keyword}{typename}}
+\DoxyCodeLine{130 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{131   <}
+\DoxyCodeLine{132   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{133   \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_join\_rows>}}}
+\DoxyCodeLine{134   >::result}
+\DoxyCodeLine{135 join\_rows(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{136   \{}
+\DoxyCodeLine{137   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{138   }
+\DoxyCodeLine{139   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_join\_rows>}}(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{140   \}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{145 arma\_warn\_unused}
+\DoxyCodeLine{146 \textcolor{keyword}{inline}}
+\DoxyCodeLine{147 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{148 join\_rows(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T3>}}\& C)}
+\DoxyCodeLine{149   \{}
+\DoxyCodeLine{150   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{151   }
+\DoxyCodeLine{152   \mbox{\hyperlink{classMat}{Mat<eT>}} out;}
+\DoxyCodeLine{153   }
+\DoxyCodeLine{154   glue\_join\_rows::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref());}
+\DoxyCodeLine{155   }
+\DoxyCodeLine{156   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{157   \}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{162 arma\_warn\_unused}
+\DoxyCodeLine{163 \textcolor{keyword}{inline}}
+\DoxyCodeLine{164 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{165 join\_rows(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T3>}}\& C, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T4>}}\& D)}
+\DoxyCodeLine{166   \{}
+\DoxyCodeLine{167   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{168   }
+\DoxyCodeLine{169   \mbox{\hyperlink{classMat}{Mat<eT>}} out;}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   glue\_join\_rows::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref(), D.get\_ref());}
+\DoxyCodeLine{172   }
+\DoxyCodeLine{173   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{174   \}}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{179 arma\_warn\_unused}
+\DoxyCodeLine{180 \textcolor{keyword}{inline}}
+\DoxyCodeLine{181 \textcolor{keyword}{typename}}
+\DoxyCodeLine{182 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{183   <}
+\DoxyCodeLine{184   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{185   \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_join\_rows>}}}
+\DoxyCodeLine{186   >::result}
+\DoxyCodeLine{187 join\_horiz(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{188   \{}
+\DoxyCodeLine{189   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{190   }
+\DoxyCodeLine{191   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_join\_rows>}}(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{192   \}}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{197 arma\_warn\_unused}
+\DoxyCodeLine{198 \textcolor{keyword}{inline}}
+\DoxyCodeLine{199 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{200 join\_horiz(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T3>}}\& C)}
+\DoxyCodeLine{201   \{}
+\DoxyCodeLine{202   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{203   }
+\DoxyCodeLine{204   \mbox{\hyperlink{classMat}{Mat<eT>}} out;}
+\DoxyCodeLine{205   }
+\DoxyCodeLine{206   glue\_join\_rows::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref());}
+\DoxyCodeLine{207   }
+\DoxyCodeLine{208   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{209   \}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{214 arma\_warn\_unused}
+\DoxyCodeLine{215 \textcolor{keyword}{inline}}
+\DoxyCodeLine{216 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{217 join\_horiz(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T3>}}\& C, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T4>}}\& D)}
+\DoxyCodeLine{218   \{}
+\DoxyCodeLine{219   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{220   }
+\DoxyCodeLine{221   \mbox{\hyperlink{classMat}{Mat<eT>}} out;}
+\DoxyCodeLine{222   }
+\DoxyCodeLine{223   glue\_join\_rows::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref(), D.get\_ref());}
+\DoxyCodeLine{224   }
+\DoxyCodeLine{225   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{226   \}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230 \textcolor{comment}{//}}
+\DoxyCodeLine{231 \textcolor{comment}{// for cubes}}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{234 arma\_warn\_unused}
+\DoxyCodeLine{235 \textcolor{keyword}{inline}}
+\DoxyCodeLine{236 \textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_join\_slices>}}}
+\DoxyCodeLine{237 join\_slices(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{238   \{}
+\DoxyCodeLine{239   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{240   }
+\DoxyCodeLine{241   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_join\_slices>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref());}
+\DoxyCodeLine{242   \}}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{247 arma\_warn\_unused}
+\DoxyCodeLine{248 \textcolor{keyword}{inline}}
+\DoxyCodeLine{249 \mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}}
+\DoxyCodeLine{250 join\_slices(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{251   \{}
+\DoxyCodeLine{252   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{253   }
+\DoxyCodeLine{254   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{255   }
+\DoxyCodeLine{256   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} UA(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{257   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T2>}} UB(\mbox{\hyperlink{structB}{B}}.get\_ref());}
+\DoxyCodeLine{258   }
+\DoxyCodeLine{259   arma\_debug\_assert\_same\_size(UA.M.n\_rows, UA.M.n\_cols, UB.M.n\_rows, UB.M.n\_cols, \textcolor{stringliteral}{"{}join\_slices(): incompatible dimensions"{}});}
+\DoxyCodeLine{260   }
+\DoxyCodeLine{261   \mbox{\hyperlink{classCube}{Cube<eT>}} out(UA.M.n\_rows, UA.M.n\_cols, 2, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{262   }
+\DoxyCodeLine{263   arrayops::copy(out.slice\_memptr(0), UA.M.memptr(), UA.M.n\_elem);}
+\DoxyCodeLine{264   arrayops::copy(out.slice\_memptr(1), UB.M.memptr(), UB.M.n\_elem);}
+\DoxyCodeLine{265   }
+\DoxyCodeLine{266   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{267   \}}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{272 arma\_warn\_unused}
+\DoxyCodeLine{273 \textcolor{keyword}{inline}}
+\DoxyCodeLine{274 \mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}}
+\DoxyCodeLine{275 join\_slices(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{276   \{}
+\DoxyCodeLine{277   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{278   }
+\DoxyCodeLine{279   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{280   }
+\DoxyCodeLine{281   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} U(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{282   }
+\DoxyCodeLine{283   \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}} M(\textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(U.M.memptr()), U.M.n\_rows, U.M.n\_cols, 1, \textcolor{keyword}{false});}
+\DoxyCodeLine{284   }
+\DoxyCodeLine{285   \textcolor{keywordflow}{return} join\_slices(M,\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{286   \}}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288 }
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{291 arma\_warn\_unused}
+\DoxyCodeLine{292 \textcolor{keyword}{inline}}
+\DoxyCodeLine{293 \mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}}
+\DoxyCodeLine{294 join\_slices(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{295   \{}
+\DoxyCodeLine{296   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{297   }
+\DoxyCodeLine{298   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{299   }
+\DoxyCodeLine{300   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T2>}} U(\mbox{\hyperlink{structB}{B}}.get\_ref());}
+\DoxyCodeLine{301   }
+\DoxyCodeLine{302   \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}} M(\textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(U.M.memptr()), U.M.n\_rows, U.M.n\_cols, 1, \textcolor{keyword}{false});}
+\DoxyCodeLine{303   }
+\DoxyCodeLine{304   \textcolor{keywordflow}{return} join\_slices(\mbox{\hyperlink{structA}{A}},M);}
+\DoxyCodeLine{305   \}}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307 }
+\DoxyCodeLine{308 }
+\DoxyCodeLine{309 \textcolor{comment}{//}}
+\DoxyCodeLine{310 \textcolor{comment}{// for sparse matrices}}
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{313 arma\_warn\_unused}
+\DoxyCodeLine{314 \textcolor{keyword}{inline}}
+\DoxyCodeLine{315 \textcolor{keyword}{const} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_join\_cols>}}}
+\DoxyCodeLine{316 join\_cols(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{317   \{}
+\DoxyCodeLine{318   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{319   }
+\DoxyCodeLine{320   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_join\_cols>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref());}
+\DoxyCodeLine{321   \}}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323 }
+\DoxyCodeLine{324 }
+\DoxyCodeLine{325 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{326 arma\_warn\_unused}
+\DoxyCodeLine{327 \textcolor{keyword}{inline}}
+\DoxyCodeLine{328 \mbox{\hyperlink{classSpMat}{SpMat<eT>}}}
+\DoxyCodeLine{329 join\_cols(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T3>}}\& C)}
+\DoxyCodeLine{330   \{}
+\DoxyCodeLine{331   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{332   }
+\DoxyCodeLine{333   \mbox{\hyperlink{classSpMat}{SpMat<eT>}} out;}
+\DoxyCodeLine{334   }
+\DoxyCodeLine{335   spglue\_join\_cols::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref());}
+\DoxyCodeLine{336   }
+\DoxyCodeLine{337   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{338   \}}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{340 }
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{343 arma\_warn\_unused}
+\DoxyCodeLine{344 \textcolor{keyword}{inline}}
+\DoxyCodeLine{345 \mbox{\hyperlink{classSpMat}{SpMat<eT>}}}
+\DoxyCodeLine{346 join\_cols(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T3>}}\& C, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T4>}}\& D)}
+\DoxyCodeLine{347   \{}
+\DoxyCodeLine{348   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{349   }
+\DoxyCodeLine{350   \mbox{\hyperlink{classSpMat}{SpMat<eT>}} out;}
+\DoxyCodeLine{351   }
+\DoxyCodeLine{352   spglue\_join\_cols::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref(), D.get\_ref());}
+\DoxyCodeLine{353   }
+\DoxyCodeLine{354   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{355   \}}
+\DoxyCodeLine{356 }
+\DoxyCodeLine{357 }
+\DoxyCodeLine{358 }
+\DoxyCodeLine{359 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{360 arma\_warn\_unused}
+\DoxyCodeLine{361 \textcolor{keyword}{inline}}
+\DoxyCodeLine{362 \textcolor{keyword}{const} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_join\_cols>}}}
+\DoxyCodeLine{363 join\_vert(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{364   \{}
+\DoxyCodeLine{365   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{366   }
+\DoxyCodeLine{367   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_join\_cols>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref());}
+\DoxyCodeLine{368   \}}
+\DoxyCodeLine{369 }
+\DoxyCodeLine{370 }
+\DoxyCodeLine{371 }
+\DoxyCodeLine{372 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{373 arma\_warn\_unused}
+\DoxyCodeLine{374 \textcolor{keyword}{inline}}
+\DoxyCodeLine{375 \mbox{\hyperlink{classSpMat}{SpMat<eT>}}}
+\DoxyCodeLine{376 join\_vert(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T3>}}\& C)}
+\DoxyCodeLine{377   \{}
+\DoxyCodeLine{378   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{379   }
+\DoxyCodeLine{380   \mbox{\hyperlink{classSpMat}{SpMat<eT>}} out;}
+\DoxyCodeLine{381   }
+\DoxyCodeLine{382   spglue\_join\_cols::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref());}
+\DoxyCodeLine{383   }
+\DoxyCodeLine{384   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{385   \}}
+\DoxyCodeLine{386 }
+\DoxyCodeLine{387 }
+\DoxyCodeLine{388 }
+\DoxyCodeLine{389 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{390 arma\_warn\_unused}
+\DoxyCodeLine{391 \textcolor{keyword}{inline}}
+\DoxyCodeLine{392 \mbox{\hyperlink{classSpMat}{SpMat<eT>}}}
+\DoxyCodeLine{393 join\_vert(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T3>}}\& C, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T4>}}\& D)}
+\DoxyCodeLine{394   \{}
+\DoxyCodeLine{395   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{396   }
+\DoxyCodeLine{397   \mbox{\hyperlink{classSpMat}{SpMat<eT>}} out;}
+\DoxyCodeLine{398   }
+\DoxyCodeLine{399   spglue\_join\_cols::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref(), D.get\_ref());}
+\DoxyCodeLine{400   }
+\DoxyCodeLine{401   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{402   \}}
+\DoxyCodeLine{403 }
+\DoxyCodeLine{404 }
+\DoxyCodeLine{405 }
+\DoxyCodeLine{406 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{407 arma\_warn\_unused}
+\DoxyCodeLine{408 \textcolor{keyword}{inline}}
+\DoxyCodeLine{409 \textcolor{keyword}{const} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_join\_rows>}}}
+\DoxyCodeLine{410 join\_rows(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{411   \{}
+\DoxyCodeLine{412   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{413   }
+\DoxyCodeLine{414   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_join\_rows>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref());}
+\DoxyCodeLine{415   \}}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418 }
+\DoxyCodeLine{419 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{420 arma\_warn\_unused}
+\DoxyCodeLine{421 \textcolor{keyword}{inline}}
+\DoxyCodeLine{422 \mbox{\hyperlink{classSpMat}{SpMat<eT>}}}
+\DoxyCodeLine{423 join\_rows(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T3>}}\& C)}
+\DoxyCodeLine{424   \{}
+\DoxyCodeLine{425   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{426   }
+\DoxyCodeLine{427   \mbox{\hyperlink{classSpMat}{SpMat<eT>}} out;}
+\DoxyCodeLine{428   }
+\DoxyCodeLine{429   spglue\_join\_rows::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref());}
+\DoxyCodeLine{430   }
+\DoxyCodeLine{431   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{432   \}}
+\DoxyCodeLine{433 }
+\DoxyCodeLine{434 }
+\DoxyCodeLine{435 }
+\DoxyCodeLine{436 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{437 arma\_warn\_unused}
+\DoxyCodeLine{438 \textcolor{keyword}{inline}}
+\DoxyCodeLine{439 \mbox{\hyperlink{classSpMat}{SpMat<eT>}}}
+\DoxyCodeLine{440 join\_rows(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T3>}}\& C, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T4>}}\& D)}
+\DoxyCodeLine{441   \{}
+\DoxyCodeLine{442   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{443   }
+\DoxyCodeLine{444   \mbox{\hyperlink{classSpMat}{SpMat<eT>}} out;}
+\DoxyCodeLine{445   }
+\DoxyCodeLine{446   spglue\_join\_rows::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref(), D.get\_ref());}
+\DoxyCodeLine{447   }
+\DoxyCodeLine{448   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{449   \}}
+\DoxyCodeLine{450 }
+\DoxyCodeLine{451 }
+\DoxyCodeLine{452 }
+\DoxyCodeLine{453 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{454 arma\_warn\_unused}
+\DoxyCodeLine{455 \textcolor{keyword}{inline}}
+\DoxyCodeLine{456 \textcolor{keyword}{const} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_join\_rows>}}}
+\DoxyCodeLine{457 join\_horiz(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{458   \{}
+\DoxyCodeLine{459   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{460   }
+\DoxyCodeLine{461   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_join\_rows>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref());}
+\DoxyCodeLine{462   \}}
+\DoxyCodeLine{463 }
+\DoxyCodeLine{464 }
+\DoxyCodeLine{465 }
+\DoxyCodeLine{466 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{467 arma\_warn\_unused}
+\DoxyCodeLine{468 \textcolor{keyword}{inline}}
+\DoxyCodeLine{469 \mbox{\hyperlink{classSpMat}{SpMat<eT>}}}
+\DoxyCodeLine{470 join\_horiz(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T3>}}\& C)}
+\DoxyCodeLine{471   \{}
+\DoxyCodeLine{472   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{473   }
+\DoxyCodeLine{474   \mbox{\hyperlink{classSpMat}{SpMat<typename T1::elem\_type>}} out;}
+\DoxyCodeLine{475   }
+\DoxyCodeLine{476   spglue\_join\_rows::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref());}
+\DoxyCodeLine{477   }
+\DoxyCodeLine{478   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{479   \}}
+\DoxyCodeLine{480 }
+\DoxyCodeLine{481 }
+\DoxyCodeLine{482 }
+\DoxyCodeLine{483 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{484 arma\_warn\_unused}
+\DoxyCodeLine{485 \textcolor{keyword}{inline}}
+\DoxyCodeLine{486 \mbox{\hyperlink{classSpMat}{SpMat<eT>}}}
+\DoxyCodeLine{487 join\_horiz(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T2>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T3>}}\& C, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T4>}}\& D)}
+\DoxyCodeLine{488   \{}
+\DoxyCodeLine{489   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{490   }
+\DoxyCodeLine{491   \mbox{\hyperlink{classSpMat}{SpMat<eT>}} out;}
+\DoxyCodeLine{492   }
+\DoxyCodeLine{493   spglue\_join\_rows::apply(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), C.get\_ref(), D.get\_ref());}
+\DoxyCodeLine{494   }
+\DoxyCodeLine{495   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{496   \}}
+\DoxyCodeLine{497 }
+\DoxyCodeLine{498 }
+\DoxyCodeLine{499 }
+
+\end{DoxyCode}

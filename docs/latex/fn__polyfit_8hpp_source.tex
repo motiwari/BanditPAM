@@ -1,0 +1,68 @@
+\hypertarget{fn__polyfit_8hpp_source}{}\doxysection{fn\+\_\+polyfit.\+hpp}
+\label{fn__polyfit_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_polyfit.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_polyfit.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keyword}{typename}}
+\DoxyCodeLine{25 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{26   <}
+\DoxyCodeLine{27   \mbox{\hyperlink{structis__supported__blas__type}{is\_supported\_blas\_type<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{28   \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{29   >::result}
+\DoxyCodeLine{30 polyfit(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& Y, \textcolor{keyword}{const} uword N)}
+\DoxyCodeLine{31   \{}
+\DoxyCodeLine{32   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = glue\_polyfit::apply\_direct(out, X.get\_ref(), Y.get\_ref(), N);}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{37     \{}
+\DoxyCodeLine{38     out.soft\_reset();}
+\DoxyCodeLine{39     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}polyfit(): failed"{}});}
+\DoxyCodeLine{40     \}}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{43   \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{48 arma\_warn\_unused}
+\DoxyCodeLine{49 \textcolor{keyword}{inline}}
+\DoxyCodeLine{50 \textcolor{keyword}{typename}}
+\DoxyCodeLine{51 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{52   <}
+\DoxyCodeLine{53   \mbox{\hyperlink{structis__supported__blas__type}{is\_supported\_blas\_type<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{54   \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_polyfit>}}}
+\DoxyCodeLine{55   >::result}
+\DoxyCodeLine{56 polyfit(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& Y, \textcolor{keyword}{const} uword N)}
+\DoxyCodeLine{57   \{}
+\DoxyCodeLine{58   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{59   }
+\DoxyCodeLine{60   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_polyfit>}}(X.get\_ref(), Y.get\_ref(), N);}
+\DoxyCodeLine{61   \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+
+\end{DoxyCode}

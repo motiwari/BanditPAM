@@ -1,0 +1,111 @@
+\hypertarget{fn__strans_8hpp_source}{}\doxysection{fn\+\_\+strans.\+hpp}
+\label{fn__strans_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_strans.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_strans.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 arma\_inline}
+\DoxyCodeLine{25 \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_strans>}}}
+\DoxyCodeLine{26 strans}
+\DoxyCodeLine{27   (}
+\DoxyCodeLine{28   \textcolor{keyword}{const} T1\& X,}
+\DoxyCodeLine{29   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}< \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} >::result* junk1 = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{30   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk2 = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{31   )}
+\DoxyCodeLine{32   \{}
+\DoxyCodeLine{33   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{34   arma\_ignore(junk1);}
+\DoxyCodeLine{35   arma\_ignore(junk2);}
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_strans>}}(X);}
+\DoxyCodeLine{38   \}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{comment}{// NOTE: for non-\/complex objects, deliberately returning op\_htrans instead of op\_strans,}}
+\DoxyCodeLine{43 \textcolor{comment}{// NOTE: due to currently more optimisations available when using op\_htrans, especially by glue\_times}}
+\DoxyCodeLine{44 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{45 arma\_warn\_unused}
+\DoxyCodeLine{46 arma\_inline}
+\DoxyCodeLine{47 \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_htrans>}}}
+\DoxyCodeLine{48 strans}
+\DoxyCodeLine{49   (}
+\DoxyCodeLine{50   \textcolor{keyword}{const} T1\& X,}
+\DoxyCodeLine{51   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}< \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} >::result* junk1 = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{52   \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result*  junk2 = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{53   )}
+\DoxyCodeLine{54   \{}
+\DoxyCodeLine{55   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{56   arma\_ignore(junk1);}
+\DoxyCodeLine{57   arma\_ignore(junk2);}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_htrans>}}(X);}
+\DoxyCodeLine{60   \}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{comment}{//}}
+\DoxyCodeLine{65 \textcolor{comment}{// handling of sparse matrices}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{69 arma\_warn\_unused}
+\DoxyCodeLine{70 arma\_inline}
+\DoxyCodeLine{71 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_strans>}}}
+\DoxyCodeLine{72 strans}
+\DoxyCodeLine{73   (}
+\DoxyCodeLine{74   \textcolor{keyword}{const} T1\& X,}
+\DoxyCodeLine{75   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}< \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} >::result* junk1 = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{76   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}*        junk2 = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{77   )}
+\DoxyCodeLine{78   \{}
+\DoxyCodeLine{79   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{80   arma\_ignore(junk1);}
+\DoxyCodeLine{81   arma\_ignore(junk2);}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_strans>}}(X);}
+\DoxyCodeLine{84   \}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{89 arma\_warn\_unused}
+\DoxyCodeLine{90 arma\_inline}
+\DoxyCodeLine{91 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_htrans>}}}
+\DoxyCodeLine{92 strans}
+\DoxyCodeLine{93   (}
+\DoxyCodeLine{94   \textcolor{keyword}{const} T1\& X,}
+\DoxyCodeLine{95   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}< \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} >::result* junk1 = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{96   \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result*         junk2 = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{97   )}
+\DoxyCodeLine{98   \{}
+\DoxyCodeLine{99   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{100   arma\_ignore(junk1);}
+\DoxyCodeLine{101   arma\_ignore(junk2);}
+\DoxyCodeLine{102   }
+\DoxyCodeLine{103   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_htrans>}}(X);}
+\DoxyCodeLine{104   \}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 }
+
+\end{DoxyCode}

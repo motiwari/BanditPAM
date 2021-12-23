@@ -1,0 +1,380 @@
+\hypertarget{include__superlu_8hpp_source}{}\doxysection{include\+\_\+superlu.\+hpp}
+\label{include__superlu_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/include\_superlu.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/include\_superlu.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// }}
+\DoxyCodeLine{15 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{16 \textcolor{comment}{// }}
+\DoxyCodeLine{17 \textcolor{comment}{// This file includes portions of SuperLU 5.2 software,}}
+\DoxyCodeLine{18 \textcolor{comment}{// licensed under the following conditions.}}
+\DoxyCodeLine{19 \textcolor{comment}{// }}
+\DoxyCodeLine{20 \textcolor{comment}{// Copyright (c) 2003, The Regents of the University of California, through}}
+\DoxyCodeLine{21 \textcolor{comment}{// Lawrence Berkeley National Laboratory (subject to receipt of any required }}
+\DoxyCodeLine{22 \textcolor{comment}{// approvals from U.S. Dept. of Energy) }}
+\DoxyCodeLine{23 \textcolor{comment}{// }}
+\DoxyCodeLine{24 \textcolor{comment}{// All rights reserved. }}
+\DoxyCodeLine{25 \textcolor{comment}{// }}
+\DoxyCodeLine{26 \textcolor{comment}{// Redistribution and use in source and binary forms, with or without}}
+\DoxyCodeLine{27 \textcolor{comment}{// modification, are permitted provided that the following conditions are met: }}
+\DoxyCodeLine{28 \textcolor{comment}{// }}
+\DoxyCodeLine{29 \textcolor{comment}{// (1) Redistributions of source code must retain the above copyright notice,}}
+\DoxyCodeLine{30 \textcolor{comment}{// this list of conditions and the following disclaimer. }}
+\DoxyCodeLine{31 \textcolor{comment}{// (2) Redistributions in binary form must reproduce the above copyright notice,}}
+\DoxyCodeLine{32 \textcolor{comment}{// this list of conditions and the following disclaimer in the documentation}}
+\DoxyCodeLine{33 \textcolor{comment}{// and/or other materials provided with the distribution. }}
+\DoxyCodeLine{34 \textcolor{comment}{// (3) Neither the name of Lawrence Berkeley National Laboratory, U.S. Dept. of}}
+\DoxyCodeLine{35 \textcolor{comment}{// Energy nor the names of its contributors may be used to endorse or promote}}
+\DoxyCodeLine{36 \textcolor{comment}{// products derived from this software without specific prior written permission.}}
+\DoxyCodeLine{37 \textcolor{comment}{// }}
+\DoxyCodeLine{38 \textcolor{comment}{// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "{}AS IS"{}}}
+\DoxyCodeLine{39 \textcolor{comment}{// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,}}
+\DoxyCodeLine{40 \textcolor{comment}{// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR}}
+\DoxyCodeLine{41 \textcolor{comment}{// PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR}}
+\DoxyCodeLine{42 \textcolor{comment}{// CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,}}
+\DoxyCodeLine{43 \textcolor{comment}{// EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,}}
+\DoxyCodeLine{44 \textcolor{comment}{// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;}}
+\DoxyCodeLine{45 \textcolor{comment}{// OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,}}
+\DoxyCodeLine{46 \textcolor{comment}{// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE}}
+\DoxyCodeLine{47 \textcolor{comment}{// OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,}}
+\DoxyCodeLine{48 \textcolor{comment}{// EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.}}
+\DoxyCodeLine{49 \textcolor{comment}{// }}
+\DoxyCodeLine{50 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#if defined(ARMA\_USE\_SUPERLU)}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#if defined(ARMA\_USE\_SUPERLU\_HEADERS) || defined(ARMA\_SUPERLU\_INCLUDE\_DIR)}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{comment}{// Since we need to suport float, double, cx\_float and cx\_double,}}
+\DoxyCodeLine{59 \textcolor{comment}{// as well as preserve the sanity of the user,}}
+\DoxyCodeLine{60 \textcolor{comment}{// we cannot simply include all the SuperLU headers due to their messy state}}
+\DoxyCodeLine{61 \textcolor{comment}{// (duplicate definitions, pollution of global namespace, bizarro defines).}}
+\DoxyCodeLine{62 \textcolor{comment}{// As such we are forced to include only a subset of the headers}}
+\DoxyCodeLine{63 \textcolor{comment}{// and manually specify a few SuperLU structures and function prototypes.}}
+\DoxyCodeLine{64 \textcolor{comment}{//}}
+\DoxyCodeLine{65 \textcolor{comment}{// CAVEAT:}}
+\DoxyCodeLine{66 \textcolor{comment}{// This code requires SuperLU version 5.2,}}
+\DoxyCodeLine{67 \textcolor{comment}{// and assumes that newer 5.x versions will have no API changes.}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{namespace }arma}
+\DoxyCodeLine{70 \{}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \textcolor{keyword}{namespace }superlu}
+\DoxyCodeLine{73   \{}
+\DoxyCodeLine{74   \textcolor{comment}{// slu\_*defs.h has int typedefed to int\_t.}}
+\DoxyCodeLine{75   \textcolor{comment}{// I'll just write it as int for simplicity, where I can, but supermatrix.h needs int\_t.}}
+\DoxyCodeLine{76   \textcolor{keyword}{typedef} \textcolor{keywordtype}{int} int\_t;}
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78   \textcolor{comment}{// Include supermatrix.h.  This gives us SuperMatrix.}}
+\DoxyCodeLine{79   \textcolor{comment}{// Put it in the slu namespace.}}
+\DoxyCodeLine{80   \textcolor{comment}{// For versions of SuperLU I am familiar with, supermatrix.h does not include any other files.}}
+\DoxyCodeLine{81   \textcolor{comment}{// Therefore, putting it in the superlu namespace is reasonably safe.}}
+\DoxyCodeLine{82   \textcolor{comment}{// This same reasoning is true for superlu\_enum\_consts.h.}}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84 \textcolor{preprocessor}{  \#if defined(ARMA\_SUPERLU\_INCLUDE\_DIR)}}
+\DoxyCodeLine{85 \textcolor{preprocessor}{    \#define ARMA\_SLU\_STR(x) x}}
+\DoxyCodeLine{86 \textcolor{preprocessor}{    \#define ARMA\_SLU\_STR2(x) ARMA\_SLU\_STR(x)}}
+\DoxyCodeLine{87     }
+\DoxyCodeLine{88 \textcolor{preprocessor}{    \#define ARMA\_SLU\_SUPERMATRIX\_H         ARMA\_SLU\_STR2(ARMA\_SUPERLU\_INCLUDE\_DIR)ARMA\_SLU\_STR2(supermatrix.h)}}
+\DoxyCodeLine{89 \textcolor{preprocessor}{    \#define ARMA\_SLU\_SUPERLU\_ENUM\_CONSTS\_H ARMA\_SLU\_STR2(ARMA\_SUPERLU\_INCLUDE\_DIR)ARMA\_SLU\_STR2(superlu\_enum\_consts.h)}}
+\DoxyCodeLine{90 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{91 \textcolor{preprocessor}{    \#define ARMA\_SLU\_SUPERMATRIX\_H         supermatrix.h}}
+\DoxyCodeLine{92 \textcolor{preprocessor}{    \#define ARMA\_SLU\_SUPERLU\_ENUM\_CONSTS\_H superlu\_enum\_consts.h}}
+\DoxyCodeLine{93 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95 \textcolor{preprocessor}{  \#include ARMA\_INCFILE\_WRAP(ARMA\_SLU\_SUPERMATRIX\_H)}}
+\DoxyCodeLine{96 \textcolor{preprocessor}{  \#include ARMA\_INCFILE\_WRAP(ARMA\_SLU\_SUPERLU\_ENUM\_CONSTS\_H)}}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98 \textcolor{preprocessor}{  \#undef ARMA\_SLU\_SUPERMATRIX\_H}}
+\DoxyCodeLine{99 \textcolor{preprocessor}{  \#undef ARMA\_SLU\_SUPERLU\_ENUM\_CONSTS\_H}}
+\DoxyCodeLine{100   }
+\DoxyCodeLine{101   }
+\DoxyCodeLine{102   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{103     \{}
+\DoxyCodeLine{104     \textcolor{keywordtype}{int}*    panel\_histo;}
+\DoxyCodeLine{105     \textcolor{keywordtype}{double}* utime;}
+\DoxyCodeLine{106     \textcolor{keywordtype}{float}*  ops;}
+\DoxyCodeLine{107     \textcolor{keywordtype}{int}     TinyPivots;}
+\DoxyCodeLine{108     \textcolor{keywordtype}{int}     RefineSteps;}
+\DoxyCodeLine{109     \textcolor{keywordtype}{int}     expansions;}
+\DoxyCodeLine{110     \} SuperLUStat\_t;}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{114     \{}
+\DoxyCodeLine{115     fact\_t        Fact;}
+\DoxyCodeLine{116     yes\_no\_t      Equil;}
+\DoxyCodeLine{117     colperm\_t     ColPerm;}
+\DoxyCodeLine{118     trans\_t       Trans;}
+\DoxyCodeLine{119     IterRefine\_t  IterRefine;}
+\DoxyCodeLine{120     \textcolor{keywordtype}{double}        DiagPivotThresh;}
+\DoxyCodeLine{121     yes\_no\_t      SymmetricMode;}
+\DoxyCodeLine{122     yes\_no\_t      PivotGrowth;}
+\DoxyCodeLine{123     yes\_no\_t      ConditionNumber;}
+\DoxyCodeLine{124     rowperm\_t     RowPerm;}
+\DoxyCodeLine{125     \textcolor{keywordtype}{int}           ILU\_DropRule;}
+\DoxyCodeLine{126     \textcolor{keywordtype}{double}        ILU\_DropTol;}
+\DoxyCodeLine{127     \textcolor{keywordtype}{double}        ILU\_FillFactor;}
+\DoxyCodeLine{128     norm\_t        ILU\_Norm;}
+\DoxyCodeLine{129     \textcolor{keywordtype}{double}        ILU\_FillTol;}
+\DoxyCodeLine{130     milu\_t        ILU\_MILU;}
+\DoxyCodeLine{131     \textcolor{keywordtype}{double}        ILU\_MILU\_Dim;}
+\DoxyCodeLine{132     yes\_no\_t      ParSymbFact;}
+\DoxyCodeLine{133     yes\_no\_t      ReplaceTinyPivot;}
+\DoxyCodeLine{134     yes\_no\_t      SolveInitialized;}
+\DoxyCodeLine{135     yes\_no\_t      RefineInitialized;}
+\DoxyCodeLine{136     yes\_no\_t      PrintStat;}
+\DoxyCodeLine{137     \textcolor{keywordtype}{int}           nnzL, nnzU;}
+\DoxyCodeLine{138     \textcolor{keywordtype}{int}           num\_lookaheads;}
+\DoxyCodeLine{139     yes\_no\_t      lookahead\_etree;}
+\DoxyCodeLine{140     yes\_no\_t      SymPattern;}
+\DoxyCodeLine{141     \} superlu\_options\_t;}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{145     \{}
+\DoxyCodeLine{146     \textcolor{keywordtype}{float} for\_lu;}
+\DoxyCodeLine{147     \textcolor{keywordtype}{float} total\_needed;}
+\DoxyCodeLine{148     \} mem\_usage\_t;}
+\DoxyCodeLine{149   }
+\DoxyCodeLine{150   }
+\DoxyCodeLine{151   \textcolor{keyword}{typedef} \textcolor{keyword}{struct }e\_node}
+\DoxyCodeLine{152     \{}
+\DoxyCodeLine{153     \textcolor{keywordtype}{int}   size;}
+\DoxyCodeLine{154     \textcolor{keywordtype}{void}* mem;}
+\DoxyCodeLine{155     \} ExpHeader;}
+\DoxyCodeLine{156   }
+\DoxyCodeLine{157   }
+\DoxyCodeLine{158   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{159     \{}
+\DoxyCodeLine{160     \textcolor{keywordtype}{int}   size;}
+\DoxyCodeLine{161     \textcolor{keywordtype}{int}   used;}
+\DoxyCodeLine{162     \textcolor{keywordtype}{int}   top1;}
+\DoxyCodeLine{163     \textcolor{keywordtype}{int}   top2;}
+\DoxyCodeLine{164     \textcolor{keywordtype}{void}* \mbox{\hyperlink{classarray}{array}};}
+\DoxyCodeLine{165     \} LU\_stack\_t;}
+\DoxyCodeLine{166   }
+\DoxyCodeLine{167   }
+\DoxyCodeLine{168   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{169     \{}
+\DoxyCodeLine{170     \textcolor{keywordtype}{int}*       xsup;}
+\DoxyCodeLine{171     \textcolor{keywordtype}{int}*       supno;   }
+\DoxyCodeLine{172     \textcolor{keywordtype}{int}*       lsub;}
+\DoxyCodeLine{173     \textcolor{keywordtype}{int}*       xlsub;}
+\DoxyCodeLine{174     \textcolor{keywordtype}{void}*      lusup;}
+\DoxyCodeLine{175     \textcolor{keywordtype}{int}*       xlusup;}
+\DoxyCodeLine{176     \textcolor{keywordtype}{void}*      ucol;}
+\DoxyCodeLine{177     \textcolor{keywordtype}{int}*       usub;}
+\DoxyCodeLine{178     \textcolor{keywordtype}{int}*       xusub;}
+\DoxyCodeLine{179     \textcolor{keywordtype}{int}        nzlmax;}
+\DoxyCodeLine{180     \textcolor{keywordtype}{int}        nzumax;}
+\DoxyCodeLine{181     \textcolor{keywordtype}{int}        nzlumax;}
+\DoxyCodeLine{182     \textcolor{keywordtype}{int}        n;}
+\DoxyCodeLine{183     LU\_space\_t MemModel;}
+\DoxyCodeLine{184     \textcolor{keywordtype}{int}        num\_expansions;}
+\DoxyCodeLine{185     ExpHeader* expanders;}
+\DoxyCodeLine{186     LU\_stack\_t stack;}
+\DoxyCodeLine{187     \} GlobalLU\_t;}
+\DoxyCodeLine{188   \}}
+\DoxyCodeLine{189 \}}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 \textcolor{comment}{// Not using any SuperLU headers, so define all required enums and structs.}}
+\DoxyCodeLine{195 \textcolor{comment}{// }}
+\DoxyCodeLine{196 \textcolor{comment}{// CAVEAT:}}
+\DoxyCodeLine{197 \textcolor{comment}{// This code requires SuperLU version 5.2,}}
+\DoxyCodeLine{198 \textcolor{comment}{// and assumes that newer 5.x versions will have no API changes.}}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 \textcolor{keyword}{namespace }arma}
+\DoxyCodeLine{201 \{}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 \textcolor{keyword}{namespace }superlu}
+\DoxyCodeLine{204   \{}
+\DoxyCodeLine{205   \textcolor{keyword}{typedef} \textcolor{keywordtype}{int} int\_t;}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   \textcolor{keyword}{typedef} \textcolor{keyword}{enum}}
+\DoxyCodeLine{208     \{}
+\DoxyCodeLine{209     SLU\_NC,}
+\DoxyCodeLine{210     SLU\_NCP,}
+\DoxyCodeLine{211     SLU\_NR,}
+\DoxyCodeLine{212     SLU\_SC,}
+\DoxyCodeLine{213     SLU\_SCP,}
+\DoxyCodeLine{214     SLU\_SR,}
+\DoxyCodeLine{215     SLU\_DN,}
+\DoxyCodeLine{216     SLU\_NR\_loc}
+\DoxyCodeLine{217     \} Stype\_t;}
+\DoxyCodeLine{218   }
+\DoxyCodeLine{219   }
+\DoxyCodeLine{220   \textcolor{keyword}{typedef} \textcolor{keyword}{enum}}
+\DoxyCodeLine{221     \{}
+\DoxyCodeLine{222     SLU\_S,}
+\DoxyCodeLine{223     SLU\_D,}
+\DoxyCodeLine{224     SLU\_C,}
+\DoxyCodeLine{225     SLU\_Z}
+\DoxyCodeLine{226     \} Dtype\_t;}
+\DoxyCodeLine{227   }
+\DoxyCodeLine{228   }
+\DoxyCodeLine{229   \textcolor{keyword}{typedef} \textcolor{keyword}{enum}}
+\DoxyCodeLine{230     \{}
+\DoxyCodeLine{231     SLU\_GE,}
+\DoxyCodeLine{232     SLU\_TRLU,}
+\DoxyCodeLine{233     SLU\_TRUU,}
+\DoxyCodeLine{234     SLU\_TRL,}
+\DoxyCodeLine{235     SLU\_TRU,}
+\DoxyCodeLine{236     SLU\_SYL,}
+\DoxyCodeLine{237     SLU\_SYU,}
+\DoxyCodeLine{238     SLU\_HEL,}
+\DoxyCodeLine{239     SLU\_HEU}
+\DoxyCodeLine{240     \} Mtype\_t;}
+\DoxyCodeLine{241   }
+\DoxyCodeLine{242   }
+\DoxyCodeLine{243   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{244     \{}
+\DoxyCodeLine{245     Stype\_t Stype;}
+\DoxyCodeLine{246     Dtype\_t Dtype;}
+\DoxyCodeLine{247     Mtype\_t Mtype;}
+\DoxyCodeLine{248     int\_t   nrow;}
+\DoxyCodeLine{249     int\_t   ncol;}
+\DoxyCodeLine{250     \textcolor{keywordtype}{void}*   Store;}
+\DoxyCodeLine{251     \} SuperMatrix;}
+\DoxyCodeLine{252   }
+\DoxyCodeLine{253   }
+\DoxyCodeLine{254   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{255     \{}
+\DoxyCodeLine{256     \textcolor{keywordtype}{int}*    panel\_histo;}
+\DoxyCodeLine{257     \textcolor{keywordtype}{double}* utime;}
+\DoxyCodeLine{258     \textcolor{keywordtype}{float}*  ops;}
+\DoxyCodeLine{259     \textcolor{keywordtype}{int}     TinyPivots;}
+\DoxyCodeLine{260     \textcolor{keywordtype}{int}     RefineSteps;}
+\DoxyCodeLine{261     \textcolor{keywordtype}{int}     expansions;}
+\DoxyCodeLine{262     \} SuperLUStat\_t;}
+\DoxyCodeLine{263   }
+\DoxyCodeLine{264   }
+\DoxyCodeLine{265   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{NO, YES\}                                          yes\_no\_t;}
+\DoxyCodeLine{266   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{DOFACT, SamePattern, SamePattern\_SameRowPerm, FACTORED\} fact\_t;}
+\DoxyCodeLine{267   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{NOROWPERM, LargeDiag, MY\_PERMR\}                   rowperm\_t;}
+\DoxyCodeLine{268   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{NATURAL, MMD\_ATA, MMD\_AT\_PLUS\_A, COLAMD,}
+\DoxyCodeLine{269                 METIS\_AT\_PLUS\_A, PARMETIS, ZOLTAN, MY\_PERMC\}      colperm\_t;}
+\DoxyCodeLine{270   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{NOTRANS, TRANS, CONJ\}                             trans\_t;}
+\DoxyCodeLine{271   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{NOREFINE, SLU\_SINGLE=1, SLU\_DOUBLE, SLU\_EXTRA\}    IterRefine\_t;}
+\DoxyCodeLine{272   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{SYSTEM, USER\}                                     LU\_space\_t;}
+\DoxyCodeLine{273   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{ONE\_NORM, TWO\_NORM, INF\_NORM\}                     norm\_t;}
+\DoxyCodeLine{274   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{SILU, SMILU\_1, SMILU\_2, SMILU\_3\}                  milu\_t;}
+\DoxyCodeLine{275 }
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{278     \{}
+\DoxyCodeLine{279     fact\_t        Fact;}
+\DoxyCodeLine{280     yes\_no\_t      Equil;}
+\DoxyCodeLine{281     colperm\_t     ColPerm;}
+\DoxyCodeLine{282     trans\_t       Trans;}
+\DoxyCodeLine{283     IterRefine\_t  IterRefine;}
+\DoxyCodeLine{284     \textcolor{keywordtype}{double}        DiagPivotThresh;}
+\DoxyCodeLine{285     yes\_no\_t      SymmetricMode;}
+\DoxyCodeLine{286     yes\_no\_t      PivotGrowth;}
+\DoxyCodeLine{287     yes\_no\_t      ConditionNumber;}
+\DoxyCodeLine{288     rowperm\_t     RowPerm;}
+\DoxyCodeLine{289     \textcolor{keywordtype}{int}           ILU\_DropRule;}
+\DoxyCodeLine{290     \textcolor{keywordtype}{double}        ILU\_DropTol;}
+\DoxyCodeLine{291     \textcolor{keywordtype}{double}        ILU\_FillFactor;}
+\DoxyCodeLine{292     norm\_t        ILU\_Norm;}
+\DoxyCodeLine{293     \textcolor{keywordtype}{double}        ILU\_FillTol;}
+\DoxyCodeLine{294     milu\_t        ILU\_MILU;}
+\DoxyCodeLine{295     \textcolor{keywordtype}{double}        ILU\_MILU\_Dim;}
+\DoxyCodeLine{296     yes\_no\_t      ParSymbFact;}
+\DoxyCodeLine{297     yes\_no\_t      ReplaceTinyPivot;}
+\DoxyCodeLine{298     yes\_no\_t      SolveInitialized;}
+\DoxyCodeLine{299     yes\_no\_t      RefineInitialized;}
+\DoxyCodeLine{300     yes\_no\_t      PrintStat;}
+\DoxyCodeLine{301     \textcolor{keywordtype}{int}           nnzL, nnzU;}
+\DoxyCodeLine{302     \textcolor{keywordtype}{int}           num\_lookaheads;}
+\DoxyCodeLine{303     yes\_no\_t      lookahead\_etree;}
+\DoxyCodeLine{304     yes\_no\_t      SymPattern;}
+\DoxyCodeLine{305     \} superlu\_options\_t;}
+\DoxyCodeLine{306   }
+\DoxyCodeLine{307   }
+\DoxyCodeLine{308   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{309     \{}
+\DoxyCodeLine{310     \textcolor{keywordtype}{float} for\_lu;}
+\DoxyCodeLine{311     \textcolor{keywordtype}{float} total\_needed;}
+\DoxyCodeLine{312     \} mem\_usage\_t;}
+\DoxyCodeLine{313   }
+\DoxyCodeLine{314   }
+\DoxyCodeLine{315   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{316     \{}
+\DoxyCodeLine{317     int\_t  nnz;}
+\DoxyCodeLine{318     \textcolor{keywordtype}{void}*  nzval;}
+\DoxyCodeLine{319     int\_t* rowind;}
+\DoxyCodeLine{320     int\_t* colptr;}
+\DoxyCodeLine{321     \} NCformat;}
+\DoxyCodeLine{322   }
+\DoxyCodeLine{323   }
+\DoxyCodeLine{324   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{325     \{}
+\DoxyCodeLine{326     int\_t lda;}
+\DoxyCodeLine{327     \textcolor{keywordtype}{void}* nzval;}
+\DoxyCodeLine{328     \} DNformat;}
+\DoxyCodeLine{329   }
+\DoxyCodeLine{330   }
+\DoxyCodeLine{331   \textcolor{keyword}{typedef} \textcolor{keyword}{struct }e\_node}
+\DoxyCodeLine{332     \{}
+\DoxyCodeLine{333     \textcolor{keywordtype}{int}   size;}
+\DoxyCodeLine{334     \textcolor{keywordtype}{void}* mem;}
+\DoxyCodeLine{335     \} ExpHeader;}
+\DoxyCodeLine{336   }
+\DoxyCodeLine{337   }
+\DoxyCodeLine{338   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{339     \{}
+\DoxyCodeLine{340     \textcolor{keywordtype}{int}   size;}
+\DoxyCodeLine{341     \textcolor{keywordtype}{int}   used;}
+\DoxyCodeLine{342     \textcolor{keywordtype}{int}   top1;}
+\DoxyCodeLine{343     \textcolor{keywordtype}{int}   top2;}
+\DoxyCodeLine{344     \textcolor{keywordtype}{void}* \mbox{\hyperlink{classarray}{array}};}
+\DoxyCodeLine{345     \} LU\_stack\_t;}
+\DoxyCodeLine{346   }
+\DoxyCodeLine{347   }
+\DoxyCodeLine{348   \textcolor{keyword}{typedef} \textcolor{keyword}{struct}}
+\DoxyCodeLine{349     \{}
+\DoxyCodeLine{350     \textcolor{keywordtype}{int}*       xsup;}
+\DoxyCodeLine{351     \textcolor{keywordtype}{int}*       supno;   }
+\DoxyCodeLine{352     \textcolor{keywordtype}{int}*       lsub;}
+\DoxyCodeLine{353     \textcolor{keywordtype}{int}*       xlsub;}
+\DoxyCodeLine{354     \textcolor{keywordtype}{void}*      lusup;}
+\DoxyCodeLine{355     \textcolor{keywordtype}{int}*       xlusup;}
+\DoxyCodeLine{356     \textcolor{keywordtype}{void}*      ucol;}
+\DoxyCodeLine{357     \textcolor{keywordtype}{int}*       usub;}
+\DoxyCodeLine{358     \textcolor{keywordtype}{int}*       xusub;}
+\DoxyCodeLine{359     \textcolor{keywordtype}{int}        nzlmax;}
+\DoxyCodeLine{360     \textcolor{keywordtype}{int}        nzumax;}
+\DoxyCodeLine{361     \textcolor{keywordtype}{int}        nzlumax;}
+\DoxyCodeLine{362     \textcolor{keywordtype}{int}        n;}
+\DoxyCodeLine{363     LU\_space\_t MemModel;}
+\DoxyCodeLine{364     \textcolor{keywordtype}{int}        num\_expansions;}
+\DoxyCodeLine{365     ExpHeader* expanders;}
+\DoxyCodeLine{366     LU\_stack\_t stack;}
+\DoxyCodeLine{367     \} GlobalLU\_t;}
+\DoxyCodeLine{368   \}}
+\DoxyCodeLine{369 \}}
+\DoxyCodeLine{370 }
+\DoxyCodeLine{371 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{372 }
+\DoxyCodeLine{373 }
+\DoxyCodeLine{374 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,126 @@
+\hypertarget{op__hist__meat_8hpp_source}{}\doxysection{op\+\_\+hist\+\_\+meat.\+hpp}
+\label{op__hist__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_hist\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_hist\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{26 op\_hist::apply\_noalias(\mbox{\hyperlink{classMat}{Mat<uword>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword n\_bins, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   arma\_debug\_check( ((\mbox{\hyperlink{structA}{A}}.is\_vec() == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structA}{A}}.is\_empty() == \textcolor{keyword}{false})), \textcolor{stringliteral}{"{}hist(): only vectors are supported when automatically determining bin centers"{}} );}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keywordflow}{if}(n\_bins == 0)  \{ out.reset(); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34         uword A\_n\_elem = \mbox{\hyperlink{structA}{A}}.n\_elem;}
+\DoxyCodeLine{35   \textcolor{keyword}{const} eT*   A\_mem    = \mbox{\hyperlink{structA}{A}}.memptr();}
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37   eT min\_val = priv::most\_pos<eT>();}
+\DoxyCodeLine{38   eT max\_val = priv::most\_neg<eT>();}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   uword i,j;}
+\DoxyCodeLine{41   \textcolor{keywordflow}{for}(i=0, j=1; j < A\_n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{42     \{}
+\DoxyCodeLine{43     \textcolor{keyword}{const} eT val\_i = A\_mem[i];}
+\DoxyCodeLine{44     \textcolor{keyword}{const} eT val\_j = A\_mem[j];}
+\DoxyCodeLine{45     }
+\DoxyCodeLine{46     \textcolor{keywordflow}{if}(min\_val > val\_i) \{ min\_val = val\_i; \}}
+\DoxyCodeLine{47     \textcolor{keywordflow}{if}(min\_val > val\_j) \{ min\_val = val\_j; \}}
+\DoxyCodeLine{48       }
+\DoxyCodeLine{49     \textcolor{keywordflow}{if}(max\_val < val\_i) \{ max\_val = val\_i; \}}
+\DoxyCodeLine{50     \textcolor{keywordflow}{if}(max\_val < val\_j) \{ max\_val = val\_j; \}}
+\DoxyCodeLine{51     \}}
+\DoxyCodeLine{52   }
+\DoxyCodeLine{53   \textcolor{keywordflow}{if}(i < A\_n\_elem)}
+\DoxyCodeLine{54     \{}
+\DoxyCodeLine{55     \textcolor{keyword}{const} eT val\_i = A\_mem[i];}
+\DoxyCodeLine{56     }
+\DoxyCodeLine{57     \textcolor{keywordflow}{if}(min\_val > val\_i) \{ min\_val = val\_i; \}}
+\DoxyCodeLine{58     \textcolor{keywordflow}{if}(max\_val < val\_i) \{ max\_val = val\_i; \}}
+\DoxyCodeLine{59     \}}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{61   \textcolor{keywordflow}{if}(min\_val == max\_val)}
+\DoxyCodeLine{62     \{}
+\DoxyCodeLine{63     min\_val -\/= (n\_bins/2);}
+\DoxyCodeLine{64     max\_val += (n\_bins/2);}
+\DoxyCodeLine{65     \}}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keywordflow}{if}(arma\_isfinite(min\_val) == \textcolor{keyword}{false}) \{ min\_val = priv::most\_neg<eT>(); \}}
+\DoxyCodeLine{68   \textcolor{keywordflow}{if}(arma\_isfinite(max\_val) == \textcolor{keyword}{false}) \{ max\_val = priv::most\_pos<eT>(); \}}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   \mbox{\hyperlink{classCol}{Col<eT>}} c(n\_bins, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{71   eT* c\_mem = c.memptr();}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{keywordflow}{for}(uword ii=0; ii < n\_bins; ++ii)}
+\DoxyCodeLine{74     \{}
+\DoxyCodeLine{75     c\_mem[ii] = (0.5 + ii) / \textcolor{keywordtype}{double}(n\_bins);}
+\DoxyCodeLine{76     \}}
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78   c = ((max\_val -\/ min\_val) * c) + min\_val;}
+\DoxyCodeLine{79   }
+\DoxyCodeLine{80   glue\_hist::apply\_noalias(out, \mbox{\hyperlink{structA}{A}}, c, dim);}
+\DoxyCodeLine{81   \}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{86 \textcolor{keyword}{inline}}
+\DoxyCodeLine{87 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{88 op\_hist::apply(\mbox{\hyperlink{classMat}{Mat<uword>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_hist>}}\& X)}
+\DoxyCodeLine{89   \{}
+\DoxyCodeLine{90   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{91   }
+\DoxyCodeLine{92   \textcolor{keyword}{const} uword n\_bins = X.aux\_uword\_a;}
+\DoxyCodeLine{93   }
+\DoxyCodeLine{94   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} U(X.m);}
+\DoxyCodeLine{95   }
+\DoxyCodeLine{96   \textcolor{keyword}{const} uword dim = (T1::is\_xvec) ? uword(U.M.is\_rowvec() ? 1 : 0) : uword((T1::is\_row) ? 1 : 0);}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__non__integral}{is\_non\_integral<typename T1::elem\_type>::value}})}
+\DoxyCodeLine{99     \{}
+\DoxyCodeLine{100     \textcolor{keywordflow}{if}(U.is\_alias(out))}
+\DoxyCodeLine{101       \{}
+\DoxyCodeLine{102       \mbox{\hyperlink{classMat}{Mat<uword>}} tmp;}
+\DoxyCodeLine{103       }
+\DoxyCodeLine{104       op\_hist::apply\_noalias(tmp, U.M, n\_bins, dim);}
+\DoxyCodeLine{105       }
+\DoxyCodeLine{106       out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{107       \}}
+\DoxyCodeLine{108     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{109       \{}
+\DoxyCodeLine{110       op\_hist::apply\_noalias(out, U.M, n\_bins, dim);}
+\DoxyCodeLine{111       \}}
+\DoxyCodeLine{112     \}}
+\DoxyCodeLine{113   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{114     \{}
+\DoxyCodeLine{115     \mbox{\hyperlink{classMat}{Mat<double>}} converted = \mbox{\hyperlink{classconv__to}{conv\_to< Mat<double>}} >::from(U.M);}
+\DoxyCodeLine{116     }
+\DoxyCodeLine{117     op\_hist::apply\_noalias(out, converted, n\_bins, dim);}
+\DoxyCodeLine{118     \}}
+\DoxyCodeLine{119   \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+
+\end{DoxyCode}

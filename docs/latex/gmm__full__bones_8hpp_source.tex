@@ -1,0 +1,168 @@
+\hypertarget{gmm__full__bones_8hpp_source}{}\doxysection{gmm\+\_\+full\+\_\+bones.\+hpp}
+\label{gmm__full__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/gmm\_full\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/gmm\_full\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }gmm\_priv}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}}}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   \textcolor{keyword}{public}:}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat <eT>}} means;}
+\DoxyCodeLine{30   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}} fcovs;}
+\DoxyCodeLine{31   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classRow}{Row <eT>}} hefts;}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{comment}{//}}
+\DoxyCodeLine{34   \textcolor{comment}{//}}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keyword}{inline} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{\string~gmm\_full}}();}
+\DoxyCodeLine{37   \textcolor{keyword}{inline}  \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}}();}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{inline}            \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}}(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}}\& x);}
+\DoxyCodeLine{40   \textcolor{keyword}{inline} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}}\& x);}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{inline} \textcolor{keyword}{explicit}            \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}}(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__diag}{gmm\_diag<eT>}}\& x);}
+\DoxyCodeLine{43   \textcolor{keyword}{inline}          \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__diag}{gmm\_diag<eT>}}\& x);}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keyword}{inline}      \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}}(\textcolor{keyword}{const} uword in\_n\_dims, \textcolor{keyword}{const} uword in\_n\_gaus);}
+\DoxyCodeLine{46   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}    reset(\textcolor{keyword}{const} uword in\_n\_dims, \textcolor{keyword}{const} uword in\_n\_gaus);}
+\DoxyCodeLine{47   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}    reset();}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{50   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} set\_params(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& in\_means, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T2>}}\& in\_fcovs, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T3>}}\& in\_hefts);}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} set\_means(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base    <eT,T1>}}\& in\_means);}
+\DoxyCodeLine{53   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} set\_fcovs(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& in\_fcovs);}
+\DoxyCodeLine{54   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} set\_hefts(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base    <eT,T1>}}\& in\_hefts);}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{inline} uword n\_dims() \textcolor{keyword}{const};}
+\DoxyCodeLine{57   \textcolor{keyword}{inline} uword n\_gaus() \textcolor{keyword}{const};}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} load(\textcolor{keyword}{const} std::string \mbox{\hyperlink{structname}{name}});}
+\DoxyCodeLine{60   \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} std::string \mbox{\hyperlink{structname}{name}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{61   }
+\DoxyCodeLine{62   \textcolor{keyword}{inline} \mbox{\hyperlink{classCol}{Col<eT>}} generate()              \textcolor{keyword}{const};}
+\DoxyCodeLine{63   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{Mat<eT>}} generate(\textcolor{keyword}{const} uword N) \textcolor{keyword}{const};}
+\DoxyCodeLine{64   }
+\DoxyCodeLine{65   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} eT      log\_p(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__priv_1_1gmm__empty__arg}{gmm\_empty\_arg}}\& junk1 = \mbox{\hyperlink{structgmm__priv_1_1gmm__empty__arg}{gmm\_empty\_arg}}(), \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{true} ))>::result* junk2 = \textcolor{keyword}{nullptr}) \textcolor{keyword}{const};}
+\DoxyCodeLine{66   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} eT      log\_p(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} uword gaus\_id,                          \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{true} ))>::result* junk2 = \textcolor{keyword}{nullptr}) \textcolor{keyword}{const};}
+\DoxyCodeLine{67   }
+\DoxyCodeLine{68   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classRow}{Row<eT>}} log\_p(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__priv_1_1gmm__empty__arg}{gmm\_empty\_arg}}\& junk1 = \mbox{\hyperlink{structgmm__priv_1_1gmm__empty__arg}{gmm\_empty\_arg}}(), \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{false}))>::result* junk2 = \textcolor{keyword}{nullptr}) \textcolor{keyword}{const};}
+\DoxyCodeLine{69   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classRow}{Row<eT>}} log\_p(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} uword gaus\_id,                          \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{false}))>::result* junk2 = \textcolor{keyword}{nullptr}) \textcolor{keyword}{const};}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} eT  sum\_log\_p(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr)                      \textcolor{keyword}{const};}
+\DoxyCodeLine{72   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} eT  sum\_log\_p(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr, \textcolor{keyword}{const} uword gaus\_id) \textcolor{keyword}{const};}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} eT  avg\_log\_p(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr)                      \textcolor{keyword}{const};}
+\DoxyCodeLine{75   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} eT  avg\_log\_p(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr, \textcolor{keyword}{const} uword gaus\_id) \textcolor{keyword}{const};}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} uword   assign(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist, \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{true} ))>::result* junk = \textcolor{keyword}{nullptr}) \textcolor{keyword}{const};}
+\DoxyCodeLine{78   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classRow}{urowvec}} assign(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist, \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{false}))>::result* junk = \textcolor{keyword}{nullptr}) \textcolor{keyword}{const};}
+\DoxyCodeLine{79   }
+\DoxyCodeLine{80   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classRow}{urowvec}}  raw\_hist(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode) \textcolor{keyword}{const};}
+\DoxyCodeLine{81   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> \textcolor{keyword}{inline} \mbox{\hyperlink{classRow}{Row<eT>}} norm\_hist(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode) \textcolor{keyword}{const};}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{84   \textcolor{keyword}{inline}}
+\DoxyCodeLine{85   \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{86   learn}
+\DoxyCodeLine{87     (}
+\DoxyCodeLine{88     \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\&    data,}
+\DoxyCodeLine{89     \textcolor{keyword}{const} uword           n\_gaus,}
+\DoxyCodeLine{90     \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\&  dist\_mode,}
+\DoxyCodeLine{91     \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}\&  seed\_mode,}
+\DoxyCodeLine{92     \textcolor{keyword}{const} uword           km\_iter,}
+\DoxyCodeLine{93     \textcolor{keyword}{const} uword           em\_iter,}
+\DoxyCodeLine{94     \textcolor{keyword}{const} eT              var\_floor,}
+\DoxyCodeLine{95     \textcolor{keyword}{const} \textcolor{keywordtype}{bool}            print\_mode}
+\DoxyCodeLine{96     );}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   }
+\DoxyCodeLine{99   \textcolor{comment}{//}}
+\DoxyCodeLine{100   }
+\DoxyCodeLine{101   \textcolor{keyword}{protected}:}
+\DoxyCodeLine{102   }
+\DoxyCodeLine{103   }
+\DoxyCodeLine{104   arma\_aligned \mbox{\hyperlink{classCube}{Cube<eT>}} inv\_fcovs;}
+\DoxyCodeLine{105   arma\_aligned \mbox{\hyperlink{classRow}{Row<eT>}}  log\_det\_etc;}
+\DoxyCodeLine{106   arma\_aligned \mbox{\hyperlink{classRow}{Row<eT>}}  log\_hefts;}
+\DoxyCodeLine{107   arma\_aligned \mbox{\hyperlink{classCol}{Col<eT>}}  mah\_aux;}
+\DoxyCodeLine{108   arma\_aligned \mbox{\hyperlink{classCube}{Cube<eT>}} chol\_fcovs;}
+\DoxyCodeLine{109   }
+\DoxyCodeLine{110   \textcolor{comment}{//}}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}}\&     x);}
+\DoxyCodeLine{113   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__diag}{gmm\_diag<eT>}}\& x);}
+\DoxyCodeLine{114   }
+\DoxyCodeLine{115   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init(\textcolor{keyword}{const} uword in\_n\_dim, \textcolor{keyword}{const} uword in\_n\_gaus);}
+\DoxyCodeLine{116   }
+\DoxyCodeLine{117   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} init\_constants(\textcolor{keyword}{const} \textcolor{keywordtype}{bool} calc\_chol = \textcolor{keyword}{true});}
+\DoxyCodeLine{118   }
+\DoxyCodeLine{119   \textcolor{keyword}{inline} \mbox{\hyperlink{classMat}{umat}} internal\_gen\_boundaries(\textcolor{keyword}{const} uword N) \textcolor{keyword}{const};}
+\DoxyCodeLine{120   }
+\DoxyCodeLine{121   \textcolor{keyword}{inline} eT internal\_scalar\_log\_p(\textcolor{keyword}{const} eT* x                     ) \textcolor{keyword}{const};}
+\DoxyCodeLine{122   \textcolor{keyword}{inline} eT internal\_scalar\_log\_p(\textcolor{keyword}{const} eT* x, \textcolor{keyword}{const} uword gaus\_id) \textcolor{keyword}{const};}
+\DoxyCodeLine{123   }
+\DoxyCodeLine{124   \textcolor{keyword}{inline} \mbox{\hyperlink{classRow}{Row<eT>}} internal\_vec\_log\_p(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X                     ) \textcolor{keyword}{const};}
+\DoxyCodeLine{125   \textcolor{keyword}{inline} \mbox{\hyperlink{classRow}{Row<eT>}} internal\_vec\_log\_p(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword gaus\_id) \textcolor{keyword}{const};}
+\DoxyCodeLine{126   }
+\DoxyCodeLine{127   \textcolor{keyword}{inline} eT internal\_sum\_log\_p(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X                     ) \textcolor{keyword}{const};}
+\DoxyCodeLine{128   \textcolor{keyword}{inline} eT internal\_sum\_log\_p(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword gaus\_id) \textcolor{keyword}{const};}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keyword}{inline} eT internal\_avg\_log\_p(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X                     ) \textcolor{keyword}{const};}
+\DoxyCodeLine{131   \textcolor{keyword}{inline} eT internal\_avg\_log\_p(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword gaus\_id) \textcolor{keyword}{const};}
+\DoxyCodeLine{132   }
+\DoxyCodeLine{133   \textcolor{keyword}{inline} uword internal\_scalar\_assign(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode) \textcolor{keyword}{const};}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} internal\_vec\_assign(\mbox{\hyperlink{classRow}{urowvec}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode) \textcolor{keyword}{const};}
+\DoxyCodeLine{136   }
+\DoxyCodeLine{137   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} internal\_raw\_hist(\mbox{\hyperlink{classRow}{urowvec}}\& hist, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode) \textcolor{keyword}{const};}
+\DoxyCodeLine{138   }
+\DoxyCodeLine{139   \textcolor{comment}{//}}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keyword}{template}<uword dist\_\textcolor{keywordtype}{id}> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} generate\_initial\_means(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}\& seed);}
+\DoxyCodeLine{142   }
+\DoxyCodeLine{143   \textcolor{keyword}{template}<uword dist\_\textcolor{keywordtype}{id}> \textcolor{keyword}{inline} \textcolor{keywordtype}{void} generate\_initial\_params(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} eT var\_floor);}
+\DoxyCodeLine{144   }
+\DoxyCodeLine{145   \textcolor{keyword}{template}<uword dist\_\textcolor{keywordtype}{id}> \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classgmm__priv_1_1gmm__full_a09aca8a1f5e087ed1e8fa2d930f99aa0}{km\_iterate}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword max\_iter, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} verbose);}
+\DoxyCodeLine{146   }
+\DoxyCodeLine{147   \textcolor{comment}{//}}
+\DoxyCodeLine{148   }
+\DoxyCodeLine{149   \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} \mbox{\hyperlink{classgmm__priv_1_1gmm__full_a5b3c9267f6ffb6d48cb4bb5e278d12ed}{em\_iterate}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword max\_iter, \textcolor{keyword}{const} eT var\_floor, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} verbose);}
+\DoxyCodeLine{150   }
+\DoxyCodeLine{151   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} em\_update\_params(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}}\& boundaries, \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classMat}{Mat<eT>}} >\& t\_acc\_means, \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCube}{Cube<eT>}} >\& t\_acc\_fcovs, \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCol}{Col<eT>}} >\& t\_acc\_norm\_lhoods, \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCol}{Col<eT>}} >\& t\_gaus\_log\_lhoods, \mbox{\hyperlink{classCol}{Col<eT>}}\& t\_progress\_log\_lhoods, \textcolor{keyword}{const} eT var\_floor);}
+\DoxyCodeLine{152   }
+\DoxyCodeLine{153   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} em\_generate\_acc(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword start\_index, \textcolor{keyword}{const} uword end\_index, \mbox{\hyperlink{classMat}{Mat<eT>}}\& acc\_means, \mbox{\hyperlink{classCube}{Cube<eT>}}\& acc\_fcovs, \mbox{\hyperlink{classCol}{Col<eT>}}\& acc\_norm\_lhoods, \mbox{\hyperlink{classCol}{Col<eT>}}\& gaus\_log\_lhoods, eT\& progress\_log\_lhood) \textcolor{keyword}{const};}
+\DoxyCodeLine{154   }
+\DoxyCodeLine{155   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} em\_fix\_params(\textcolor{keyword}{const} eT var\_floor);}
+\DoxyCodeLine{156   \};}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \}}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{keyword}{typedef} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_priv::gmm\_full<double>}}  \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full}};}
+\DoxyCodeLine{162 \textcolor{keyword}{typedef} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_priv::gmm\_full<float>}}  \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{fgmm\_full}};}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 }
+
+\end{DoxyCode}

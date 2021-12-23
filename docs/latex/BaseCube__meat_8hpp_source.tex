@@ -1,0 +1,446 @@
+\hypertarget{BaseCube__meat_8hpp_source}{}\doxysection{Base\+Cube\+\_\+meat.\+hpp}
+\label{BaseCube__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/BaseCube\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/BaseCube\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{23 arma\_inline}
+\DoxyCodeLine{24 \textcolor{keyword}{const} derived\&}
+\DoxyCodeLine{25 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::get\_ref}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{26 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{27   \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }derived\&\textcolor{keyword}{>}(*this);}
+\DoxyCodeLine{28   \}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{33 arma\_cold}
+\DoxyCodeLine{34 \textcolor{keyword}{inline}}
+\DoxyCodeLine{35 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{36 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::print}}(\textcolor{keyword}{const} std::string extra\_text)\textcolor{keyword}{ const}}
+\DoxyCodeLine{37 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{38   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<derived>}} tmp( (*this).get\_ref() );}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keywordflow}{if}(extra\_text.length() != 0)}
+\DoxyCodeLine{43     \{}
+\DoxyCodeLine{44     \textcolor{keyword}{const} std::streamsize orig\_width = get\_cout\_stream().width();}
+\DoxyCodeLine{45     }
+\DoxyCodeLine{46     get\_cout\_stream() << extra\_text << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{47     }
+\DoxyCodeLine{48     get\_cout\_stream().width(orig\_width);}
+\DoxyCodeLine{49     \}}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{arma\_ostream::print}}(get\_cout\_stream(), tmp.M, \textcolor{keyword}{true});}
+\DoxyCodeLine{52   \}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{57 arma\_cold}
+\DoxyCodeLine{58 \textcolor{keyword}{inline}}
+\DoxyCodeLine{59 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{60 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::print}}(std::ostream\& user\_stream, \textcolor{keyword}{const} std::string extra\_text)\textcolor{keyword}{ const}}
+\DoxyCodeLine{61 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{62   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<derived>}} tmp( (*this).get\_ref() );}
+\DoxyCodeLine{65   }
+\DoxyCodeLine{66   \textcolor{keywordflow}{if}(extra\_text.length() != 0)}
+\DoxyCodeLine{67     \{}
+\DoxyCodeLine{68     \textcolor{keyword}{const} std::streamsize orig\_width = user\_stream.width();}
+\DoxyCodeLine{69     }
+\DoxyCodeLine{70     user\_stream << extra\_text << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{71     }
+\DoxyCodeLine{72     user\_stream.width(orig\_width);}
+\DoxyCodeLine{73     \}}
+\DoxyCodeLine{74   }
+\DoxyCodeLine{75   \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{arma\_ostream::print}}(user\_stream, tmp.M, \textcolor{keyword}{true});}
+\DoxyCodeLine{76   \}}
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{81 arma\_cold}
+\DoxyCodeLine{82 \textcolor{keyword}{inline}}
+\DoxyCodeLine{83 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{84 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::raw\_print}}(\textcolor{keyword}{const} std::string extra\_text)\textcolor{keyword}{ const}}
+\DoxyCodeLine{85 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{86   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{87   }
+\DoxyCodeLine{88   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<derived>}} tmp( (*this).get\_ref() );}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90   \textcolor{keywordflow}{if}(extra\_text.length() != 0)}
+\DoxyCodeLine{91     \{}
+\DoxyCodeLine{92     \textcolor{keyword}{const} std::streamsize orig\_width = get\_cout\_stream().width();}
+\DoxyCodeLine{93     }
+\DoxyCodeLine{94     get\_cout\_stream() << extra\_text << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{95     }
+\DoxyCodeLine{96     get\_cout\_stream().width(orig\_width);}
+\DoxyCodeLine{97     \}}
+\DoxyCodeLine{98   }
+\DoxyCodeLine{99   \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{arma\_ostream::print}}(get\_cout\_stream(), tmp.M, \textcolor{keyword}{false});}
+\DoxyCodeLine{100   \}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{105 arma\_cold}
+\DoxyCodeLine{106 \textcolor{keyword}{inline}}
+\DoxyCodeLine{107 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{108 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::raw\_print}}(std::ostream\& user\_stream, \textcolor{keyword}{const} std::string extra\_text)\textcolor{keyword}{ const}}
+\DoxyCodeLine{109 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{110   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<derived>}} tmp( (*this).get\_ref() );}
+\DoxyCodeLine{113   }
+\DoxyCodeLine{114   \textcolor{keywordflow}{if}(extra\_text.length() != 0)}
+\DoxyCodeLine{115     \{}
+\DoxyCodeLine{116     \textcolor{keyword}{const} std::streamsize orig\_width = user\_stream.width();}
+\DoxyCodeLine{117     }
+\DoxyCodeLine{118     user\_stream << extra\_text << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{119     }
+\DoxyCodeLine{120     user\_stream.width(orig\_width);}
+\DoxyCodeLine{121     \}}
+\DoxyCodeLine{122   }
+\DoxyCodeLine{123   \mbox{\hyperlink{group__arma__ostream_ga070548567bee392b998b21d9cce67326}{arma\_ostream::print}}(user\_stream, tmp.M, \textcolor{keyword}{false});}
+\DoxyCodeLine{124   \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{129 arma\_cold}
+\DoxyCodeLine{130 \textcolor{keyword}{inline}}
+\DoxyCodeLine{131 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{132 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::brief\_print}}(\textcolor{keyword}{const} std::string extra\_text)\textcolor{keyword}{ const}}
+\DoxyCodeLine{133 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{134   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{135   }
+\DoxyCodeLine{136   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<derived>}} tmp( (*this).get\_ref() );}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   \textcolor{keywordflow}{if}(extra\_text.length() != 0)}
+\DoxyCodeLine{139     \{}
+\DoxyCodeLine{140     \textcolor{keyword}{const} std::streamsize orig\_width = get\_cout\_stream().width();}
+\DoxyCodeLine{141     }
+\DoxyCodeLine{142     get\_cout\_stream() << extra\_text << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{143     }
+\DoxyCodeLine{144     get\_cout\_stream().width(orig\_width);}
+\DoxyCodeLine{145     \}}
+\DoxyCodeLine{146   }
+\DoxyCodeLine{147   arma\_ostream::brief\_print(get\_cout\_stream(), tmp.M);}
+\DoxyCodeLine{148   \}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{153 arma\_cold}
+\DoxyCodeLine{154 \textcolor{keyword}{inline}}
+\DoxyCodeLine{155 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{156 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::brief\_print}}(std::ostream\& user\_stream, \textcolor{keyword}{const} std::string extra\_text)\textcolor{keyword}{ const}}
+\DoxyCodeLine{157 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{158   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<derived>}} tmp( (*this).get\_ref() );}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162   \textcolor{keywordflow}{if}(extra\_text.length() != 0)}
+\DoxyCodeLine{163     \{}
+\DoxyCodeLine{164     \textcolor{keyword}{const} std::streamsize orig\_width = user\_stream.width();}
+\DoxyCodeLine{165     }
+\DoxyCodeLine{166     user\_stream << extra\_text << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{167     }
+\DoxyCodeLine{168     user\_stream.width(orig\_width);}
+\DoxyCodeLine{169     \}}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   arma\_ostream::brief\_print(user\_stream, tmp.M);}
+\DoxyCodeLine{172   \}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{177 \textcolor{keyword}{inline}}
+\DoxyCodeLine{178 arma\_warn\_unused}
+\DoxyCodeLine{179 elem\_type}
+\DoxyCodeLine{180 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::min}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{181 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{182   \textcolor{keywordflow}{return} op\_min::min( (*this).get\_ref() );}
+\DoxyCodeLine{183   \}}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{188 \textcolor{keyword}{inline}}
+\DoxyCodeLine{189 arma\_warn\_unused}
+\DoxyCodeLine{190 elem\_type}
+\DoxyCodeLine{191 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::max}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{192 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{193   \textcolor{keywordflow}{return} op\_max::max( (*this).get\_ref() );}
+\DoxyCodeLine{194   \}}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{199 \textcolor{keyword}{inline}}
+\DoxyCodeLine{200 arma\_warn\_unused}
+\DoxyCodeLine{201 uword}
+\DoxyCodeLine{202 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::index\_min}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{203 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{204   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>}} P( (*this).get\_ref() );}
+\DoxyCodeLine{205   }
+\DoxyCodeLine{206   uword index = 0;}
+\DoxyCodeLine{207   }
+\DoxyCodeLine{208   \textcolor{keywordflow}{if}(P.get\_n\_elem() == 0)}
+\DoxyCodeLine{209     \{}
+\DoxyCodeLine{210     arma\_debug\_check(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}index\_min(): object has no elements"{}});}
+\DoxyCodeLine{211     \}}
+\DoxyCodeLine{212   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{213     \{}
+\DoxyCodeLine{214     op\_min::min\_with\_index(P, index);}
+\DoxyCodeLine{215     \}}
+\DoxyCodeLine{216   }
+\DoxyCodeLine{217   \textcolor{keywordflow}{return} index;}
+\DoxyCodeLine{218   \}}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{223 \textcolor{keyword}{inline}}
+\DoxyCodeLine{224 arma\_warn\_unused}
+\DoxyCodeLine{225 uword}
+\DoxyCodeLine{226 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::index\_max}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{227 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{228   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>}} P( (*this).get\_ref() );}
+\DoxyCodeLine{229   }
+\DoxyCodeLine{230   uword index = 0;}
+\DoxyCodeLine{231   }
+\DoxyCodeLine{232   \textcolor{keywordflow}{if}(P.get\_n\_elem() == 0)}
+\DoxyCodeLine{233     \{}
+\DoxyCodeLine{234     arma\_debug\_check(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}index\_max(): object has no elements"{}});}
+\DoxyCodeLine{235     \}}
+\DoxyCodeLine{236   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{237     \{}
+\DoxyCodeLine{238     op\_max::max\_with\_index(P, index);}
+\DoxyCodeLine{239     \}}
+\DoxyCodeLine{240   }
+\DoxyCodeLine{241   \textcolor{keywordflow}{return} index;}
+\DoxyCodeLine{242   \}}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{247 \textcolor{keyword}{inline}}
+\DoxyCodeLine{248 arma\_warn\_unused}
+\DoxyCodeLine{249 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{250 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::is\_zero}}(\textcolor{keyword}{const} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result tol)\textcolor{keyword}{ const}}
+\DoxyCodeLine{251 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{252   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{253   }
+\DoxyCodeLine{254   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result T;}
+\DoxyCodeLine{255   }
+\DoxyCodeLine{256   arma\_debug\_check( (tol < T(0)), \textcolor{stringliteral}{"{}is\_zero(): parameter 'tol' must be >= 0"{}} );}
+\DoxyCodeLine{257   }
+\DoxyCodeLine{258   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxyCube}{ProxyCube<derived>::use\_at}} || \mbox{\hyperlink{structis__Cube}{is\_Cube}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>::stored\_type}}>::value)}
+\DoxyCodeLine{259     \{}
+\DoxyCodeLine{260     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<derived>}} U( (*this).get\_ref() );}
+\DoxyCodeLine{261     }
+\DoxyCodeLine{262     \textcolor{keywordflow}{return} arrayops::is\_zero( U.M.memptr(), U.M.n\_elem, tol );}
+\DoxyCodeLine{263     \}}
+\DoxyCodeLine{264   }
+\DoxyCodeLine{265   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>}} P( (*this).get\_ref() );}
+\DoxyCodeLine{266   }
+\DoxyCodeLine{267   \textcolor{keyword}{const} uword n\_elem = P.get\_n\_elem();}
+\DoxyCodeLine{268   }
+\DoxyCodeLine{269   \textcolor{keywordflow}{if}(n\_elem == 0)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{270   }
+\DoxyCodeLine{271   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{272   }
+\DoxyCodeLine{273   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<elem\_type>::yes}})}
+\DoxyCodeLine{274     \{}
+\DoxyCodeLine{275     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{276       \{}
+\DoxyCodeLine{277       \textcolor{keyword}{const} elem\_type val = Pea[i];}
+\DoxyCodeLine{278       }
+\DoxyCodeLine{279       \textcolor{keyword}{const} T val\_real = \mbox{\hyperlink{classaccess_a9687cee4d2be0fe591998d6f5c6d0849}{access::tmp\_real}}(val);}
+\DoxyCodeLine{280       \textcolor{keyword}{const} T val\_imag = \mbox{\hyperlink{classaccess_a7776f261d1bb262ab5437a8457cfb40c}{access::tmp\_imag}}(val);}
+\DoxyCodeLine{281       }
+\DoxyCodeLine{282       \textcolor{keywordflow}{if}(eop\_aux::arma\_abs(val\_real) > tol)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{283       \textcolor{keywordflow}{if}(eop\_aux::arma\_abs(val\_imag) > tol)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{284       \}}
+\DoxyCodeLine{285     \}}
+\DoxyCodeLine{286   \textcolor{keywordflow}{else}  \textcolor{comment}{// not complex}}
+\DoxyCodeLine{287     \{}
+\DoxyCodeLine{288     \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{289       \{}
+\DoxyCodeLine{290       \textcolor{keywordflow}{if}(eop\_aux::arma\_abs(Pea[i]) > tol)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{291       \}}
+\DoxyCodeLine{292     \}}
+\DoxyCodeLine{293   }
+\DoxyCodeLine{294   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{295   \}}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{300 \textcolor{keyword}{inline}}
+\DoxyCodeLine{301 arma\_warn\_unused}
+\DoxyCodeLine{302 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{303 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::is\_empty}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{304 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{305   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{306   }
+\DoxyCodeLine{307   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>}} P( (*this).get\_ref() );}
+\DoxyCodeLine{308   }
+\DoxyCodeLine{309   \textcolor{keywordflow}{return} (P.get\_n\_elem() == uword(0));}
+\DoxyCodeLine{310   \}}
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312 }
+\DoxyCodeLine{313 }
+\DoxyCodeLine{314 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{315 \textcolor{keyword}{inline}}
+\DoxyCodeLine{316 arma\_warn\_unused}
+\DoxyCodeLine{317 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{318 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::is\_finite}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{319 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{320   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{321   }
+\DoxyCodeLine{322   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>}} P( (*this).get\_ref() );}
+\DoxyCodeLine{323   }
+\DoxyCodeLine{324   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Cube}{is\_Cube}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>::stored\_type}}>::value)}
+\DoxyCodeLine{325     \{}
+\DoxyCodeLine{326     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<typename ProxyCube<derived>::stored\_type}}> U(P.Q);}
+\DoxyCodeLine{327     }
+\DoxyCodeLine{328     \textcolor{keywordflow}{return} arrayops::is\_finite( U.M.memptr(), U.M.n\_elem );}
+\DoxyCodeLine{329     \}}
+\DoxyCodeLine{330   }
+\DoxyCodeLine{331   \textcolor{keyword}{const} uword n\_r = P.get\_n\_rows();}
+\DoxyCodeLine{332   \textcolor{keyword}{const} uword n\_c = P.get\_n\_cols();}
+\DoxyCodeLine{333   \textcolor{keyword}{const} uword n\_s = P.get\_n\_slices();}
+\DoxyCodeLine{334   }
+\DoxyCodeLine{335   \textcolor{keywordflow}{for}(uword s=0; s<n\_s; ++s)}
+\DoxyCodeLine{336   \textcolor{keywordflow}{for}(uword c=0; c<n\_c; ++c)}
+\DoxyCodeLine{337   \textcolor{keywordflow}{for}(uword r=0; r<n\_r; ++r)}
+\DoxyCodeLine{338     \{}
+\DoxyCodeLine{339     \textcolor{keywordflow}{if}( arma\_isfinite(P.at(r,c,s)) == \textcolor{keyword}{false} )  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{340     \}}
+\DoxyCodeLine{341   }
+\DoxyCodeLine{342   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{343   \}}
+\DoxyCodeLine{344 }
+\DoxyCodeLine{345 }
+\DoxyCodeLine{346 }
+\DoxyCodeLine{347 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{348 \textcolor{keyword}{inline}}
+\DoxyCodeLine{349 arma\_warn\_unused}
+\DoxyCodeLine{350 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{351 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::has\_inf}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{352 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{353   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{354   }
+\DoxyCodeLine{355   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>}} P( (*this).get\_ref() );}
+\DoxyCodeLine{356   }
+\DoxyCodeLine{357   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Cube}{is\_Cube}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>::stored\_type}}>::value)}
+\DoxyCodeLine{358     \{}
+\DoxyCodeLine{359     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<typename ProxyCube<derived>::stored\_type}}> U(P.Q);}
+\DoxyCodeLine{360     }
+\DoxyCodeLine{361     \textcolor{keywordflow}{return} arrayops::has\_inf( U.M.memptr(), U.M.n\_elem );}
+\DoxyCodeLine{362     \}}
+\DoxyCodeLine{363   }
+\DoxyCodeLine{364   \textcolor{keyword}{const} uword n\_r = P.get\_n\_rows();}
+\DoxyCodeLine{365   \textcolor{keyword}{const} uword n\_c = P.get\_n\_cols();}
+\DoxyCodeLine{366   \textcolor{keyword}{const} uword n\_s = P.get\_n\_slices();}
+\DoxyCodeLine{367   }
+\DoxyCodeLine{368   \textcolor{keywordflow}{for}(uword s=0; s<n\_s; ++s)}
+\DoxyCodeLine{369   \textcolor{keywordflow}{for}(uword c=0; c<n\_c; ++c)}
+\DoxyCodeLine{370   \textcolor{keywordflow}{for}(uword r=0; r<n\_r; ++r)}
+\DoxyCodeLine{371     \{}
+\DoxyCodeLine{372     \textcolor{keywordflow}{if}(arma\_isinf(P.at(r,c,s)))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{373     \}}
+\DoxyCodeLine{374   }
+\DoxyCodeLine{375   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{376   \}}
+\DoxyCodeLine{377 }
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379 }
+\DoxyCodeLine{380 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{381 \textcolor{keyword}{inline}}
+\DoxyCodeLine{382 arma\_warn\_unused}
+\DoxyCodeLine{383 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{384 \mbox{\hyperlink{structBaseCube}{BaseCube<elem\_type,derived>::has\_nan}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{385 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{386   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{387   }
+\DoxyCodeLine{388   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>}} P( (*this).get\_ref() );}
+\DoxyCodeLine{389   }
+\DoxyCodeLine{390   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Cube}{is\_Cube}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<derived>::stored\_type}}>::value)}
+\DoxyCodeLine{391     \{}
+\DoxyCodeLine{392     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<typename ProxyCube<derived>::stored\_type}}> U(P.Q);}
+\DoxyCodeLine{393     }
+\DoxyCodeLine{394     \textcolor{keywordflow}{return} arrayops::has\_nan( U.M.memptr(), U.M.n\_elem );}
+\DoxyCodeLine{395     \}}
+\DoxyCodeLine{396   }
+\DoxyCodeLine{397   \textcolor{keyword}{const} uword n\_r = P.get\_n\_rows();}
+\DoxyCodeLine{398   \textcolor{keyword}{const} uword n\_c = P.get\_n\_cols();}
+\DoxyCodeLine{399   \textcolor{keyword}{const} uword n\_s = P.get\_n\_slices();}
+\DoxyCodeLine{400   }
+\DoxyCodeLine{401   \textcolor{keywordflow}{for}(uword s=0; s<n\_s; ++s)}
+\DoxyCodeLine{402   \textcolor{keywordflow}{for}(uword c=0; c<n\_c; ++c)}
+\DoxyCodeLine{403   \textcolor{keywordflow}{for}(uword r=0; r<n\_r; ++r)}
+\DoxyCodeLine{404     \{}
+\DoxyCodeLine{405     \textcolor{keywordflow}{if}(arma\_isnan(P.at(r,c,s)))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{406     \}}
+\DoxyCodeLine{407   }
+\DoxyCodeLine{408   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{409   \}}
+\DoxyCodeLine{410 }
+\DoxyCodeLine{411 }
+\DoxyCodeLine{412 }
+\DoxyCodeLine{413 \textcolor{comment}{//}}
+\DoxyCodeLine{414 \textcolor{comment}{// extra functions defined in BaseCube\_eval\_Cube}}
+\DoxyCodeLine{415 }
+\DoxyCodeLine{416 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{417 arma\_inline}
+\DoxyCodeLine{418 \textcolor{keyword}{const} derived\&}
+\DoxyCodeLine{419 \mbox{\hyperlink{structBaseCube__eval__Cube}{BaseCube\_eval\_Cube<elem\_type, derived>::eval}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{420 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{421   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{422   }
+\DoxyCodeLine{423   \textcolor{keywordflow}{return} \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }derived\&\textcolor{keyword}{>}(*this);}
+\DoxyCodeLine{424   \}}
+\DoxyCodeLine{425 }
+\DoxyCodeLine{426 }
+\DoxyCodeLine{427 }
+\DoxyCodeLine{428 \textcolor{comment}{//}}
+\DoxyCodeLine{429 \textcolor{comment}{// extra functions defined in BaseCube\_eval\_expr}}
+\DoxyCodeLine{430 }
+\DoxyCodeLine{431 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{432 arma\_inline}
+\DoxyCodeLine{433 \mbox{\hyperlink{classCube}{Cube<elem\_type>}}}
+\DoxyCodeLine{434 \mbox{\hyperlink{group__BaseCube_gafe4d70016b33a16e2f263734631f6fd0}{BaseCube\_eval\_expr<elem\_type, derived>::eval}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{435 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{436   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{437   }
+\DoxyCodeLine{438   \textcolor{keywordflow}{return} \mbox{\hyperlink{classCube}{Cube<elem\_type>}}( \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }derived\&\textcolor{keyword}{>}(*\textcolor{keyword}{this}) );}
+\DoxyCodeLine{439   \}}
+\DoxyCodeLine{440 }
+\DoxyCodeLine{441 }
+\DoxyCodeLine{442 }
+
+\end{DoxyCode}

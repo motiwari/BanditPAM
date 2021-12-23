@@ -1,0 +1,227 @@
+\hypertarget{glue__quantile__meat_8hpp_source}{}\doxysection{glue\+\_\+quantile\+\_\+meat.\+hpp}
+\label{glue__quantile__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_quantile\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_quantile\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eTa, \textcolor{keyword}{typename} eTb>}
+\DoxyCodeLine{22 \textcolor{keyword}{inline}}
+\DoxyCodeLine{23 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{24 glue\_quantile::worker(eTb* out\_mem, \mbox{\hyperlink{classCol}{Col<eTa>}}\& Y, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eTb>}}\& P)}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   \textcolor{comment}{// NOTE: assuming out\_mem is an array with P.n\_elem elements}}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{comment}{// TODO: ignore non-\/finite values ?}}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{comment}{// algorithm based on "{}Definition 5"{} in:}}
+\DoxyCodeLine{33   \textcolor{comment}{// Rob J. Hyndman and Yanan Fan.}}
+\DoxyCodeLine{34   \textcolor{comment}{// Sample Quantiles in Statistical Packages.}}
+\DoxyCodeLine{35   \textcolor{comment}{// The American Statistician, Vol. 50, No. 4, pp. 361-\/365, 1996.}}
+\DoxyCodeLine{36   \textcolor{comment}{// http://doi.org/10.2307/2684934}}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keyword}{const} eTb*  P\_mem    = P.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{39   \textcolor{keyword}{const} uword P\_n\_elem = P.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{40   }
+\DoxyCodeLine{41   \textcolor{keyword}{const} eTb alpha = 0.5;}
+\DoxyCodeLine{42   \textcolor{keyword}{const} eTb N     = eTb(Y.n\_elem);}
+\DoxyCodeLine{43   \textcolor{keyword}{const} eTb P\_min = (eTb(1) -\/ alpha) / N;}
+\DoxyCodeLine{44   \textcolor{keyword}{const} eTb P\_max = (N      -\/ alpha) / N;}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keywordflow}{for}(uword i=0; i < P\_n\_elem; ++i)}
+\DoxyCodeLine{47     \{}
+\DoxyCodeLine{48     \textcolor{keyword}{const} eTb P\_i = P\_mem[i];}
+\DoxyCodeLine{49     }
+\DoxyCodeLine{50     eTb out\_val = eTb(0);}
+\DoxyCodeLine{51     }
+\DoxyCodeLine{52     \textcolor{keywordflow}{if}(P\_i < P\_min)}
+\DoxyCodeLine{53       \{}
+\DoxyCodeLine{54       out\_val = (P\_i < eTb(0)) ? eTb(-\/std::numeric\_limits<eTb>::infinity()) : eTb(Y.min());}
+\DoxyCodeLine{55       \}}
+\DoxyCodeLine{56     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{57     \textcolor{keywordflow}{if}(P\_i > P\_max)}
+\DoxyCodeLine{58       \{}
+\DoxyCodeLine{59       out\_val = (P\_i > eTb(1)) ? eTb( std::numeric\_limits<eTb>::infinity()) : eTb(Y.max());}
+\DoxyCodeLine{60       \}}
+\DoxyCodeLine{61     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{62       \{}
+\DoxyCodeLine{63       \textcolor{keyword}{const} uword   k = uword(std::floor(N * P\_i + alpha));}
+\DoxyCodeLine{64       \textcolor{keyword}{const} eTb   P\_k = (eTb(k) -\/ alpha) / N;}
+\DoxyCodeLine{65       }
+\DoxyCodeLine{66       \textcolor{keyword}{const} eTb w = (P\_i -\/ P\_k) * N;}
+\DoxyCodeLine{67       }
+\DoxyCodeLine{68       eTa* Y\_k\_ptr = Y.begin() + uword(k);}
+\DoxyCodeLine{69       std::nth\_element( Y.begin(), Y\_k\_ptr, Y.end() );}
+\DoxyCodeLine{70       \textcolor{keyword}{const} eTa Y\_k\_val = (*Y\_k\_ptr);}
+\DoxyCodeLine{71       }
+\DoxyCodeLine{72       eTa* Y\_km1\_ptr = Y.begin() + uword(k-\/1);}
+\DoxyCodeLine{73       \textcolor{comment}{// std::nth\_element( Y.begin(), Y\_km1\_ptr, Y.end() );}}
+\DoxyCodeLine{74       std::nth\_element( Y.begin(), Y\_km1\_ptr, Y\_k\_ptr );}
+\DoxyCodeLine{75       \textcolor{keyword}{const} eTa Y\_km1\_val = (*Y\_km1\_ptr);}
+\DoxyCodeLine{76       }
+\DoxyCodeLine{77       out\_val = ((eTb(1) -\/ w) * Y\_km1\_val) + (w * Y\_k\_val);}
+\DoxyCodeLine{78       \}}
+\DoxyCodeLine{79     }
+\DoxyCodeLine{80     out\_mem[i] = out\_val;}
+\DoxyCodeLine{81     \}}
+\DoxyCodeLine{82   \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eTa, \textcolor{keyword}{typename} eTb>}
+\DoxyCodeLine{87 \textcolor{keyword}{inline}}
+\DoxyCodeLine{88 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{89 glue\_quantile::apply\_noalias(\mbox{\hyperlink{classMat}{Mat<eTb>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eTa>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eTb>}}\& P, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{90   \{}
+\DoxyCodeLine{91   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{92   }
+\DoxyCodeLine{93   arma\_debug\_check( ((P.\mbox{\hyperlink{group__Mat_ga87639faacb2a4bfd8cbc80d23b993edf}{is\_vec}}() == \textcolor{keyword}{false}) \&\& (P.\mbox{\hyperlink{group__Mat_ga3008049216e02308ff665862f451a7ff}{is\_empty}}() == \textcolor{keyword}{false})), \textcolor{stringliteral}{"{}quantile(): parameter 'P' must be a vector"{}} );}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   \textcolor{keywordflow}{if}(X.is\_empty())  \{ out.reset(); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keyword}{const} uword X\_n\_rows = X.n\_rows;}
+\DoxyCodeLine{98   \textcolor{keyword}{const} uword X\_n\_cols = X.n\_cols;}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \textcolor{keyword}{const} uword P\_n\_elem = P.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{101   }
+\DoxyCodeLine{102   \textcolor{keywordflow}{if}(dim == 0)}
+\DoxyCodeLine{103     \{}
+\DoxyCodeLine{104     out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(P\_n\_elem, X\_n\_cols);}
+\DoxyCodeLine{105     }
+\DoxyCodeLine{106     \textcolor{keywordflow}{if}(out.\mbox{\hyperlink{group__Mat_ga3008049216e02308ff665862f451a7ff}{is\_empty}}())  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{107     }
+\DoxyCodeLine{108     \mbox{\hyperlink{classCol}{Col<eTa>}} Y(X\_n\_rows, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{109     }
+\DoxyCodeLine{110     \textcolor{keywordflow}{if}(X\_n\_cols == 1)}
+\DoxyCodeLine{111       \{}
+\DoxyCodeLine{112       arrayops::copy(Y.memptr(), X.memptr(), X\_n\_rows);}
+\DoxyCodeLine{113       }
+\DoxyCodeLine{114       glue\_quantile::worker(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), Y, P);}
+\DoxyCodeLine{115       \}}
+\DoxyCodeLine{116     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{117       \{}
+\DoxyCodeLine{118       \textcolor{keywordflow}{for}(uword col=0; col < X\_n\_cols; ++col)}
+\DoxyCodeLine{119         \{}
+\DoxyCodeLine{120         arrayops::copy(Y.memptr(), X.colptr(col), X\_n\_rows);}
+\DoxyCodeLine{121         }
+\DoxyCodeLine{122         glue\_quantile::worker(out.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(col), Y, P);}
+\DoxyCodeLine{123         \}}
+\DoxyCodeLine{124       \}}
+\DoxyCodeLine{125     \}}
+\DoxyCodeLine{126   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{127   \textcolor{keywordflow}{if}(dim == 1)}
+\DoxyCodeLine{128     \{}
+\DoxyCodeLine{129     out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(X\_n\_rows, P\_n\_elem);}
+\DoxyCodeLine{130     }
+\DoxyCodeLine{131     \textcolor{keywordflow}{if}(out.\mbox{\hyperlink{group__Mat_ga3008049216e02308ff665862f451a7ff}{is\_empty}}())  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{132     }
+\DoxyCodeLine{133     \mbox{\hyperlink{classCol}{Col<eTa>}} Y(X\_n\_cols, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{134     }
+\DoxyCodeLine{135     \textcolor{keywordflow}{if}(X\_n\_rows == 1)}
+\DoxyCodeLine{136       \{}
+\DoxyCodeLine{137       arrayops::copy(Y.memptr(), X.memptr(), X\_n\_cols);}
+\DoxyCodeLine{138       }
+\DoxyCodeLine{139       glue\_quantile::worker(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), Y, P);}
+\DoxyCodeLine{140       \}}
+\DoxyCodeLine{141     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{142       \{}
+\DoxyCodeLine{143       \mbox{\hyperlink{classCol}{Col<eTb>}} tmp(P\_n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{144       }
+\DoxyCodeLine{145       eTb* tmp\_mem = tmp.memptr();}
+\DoxyCodeLine{146       }
+\DoxyCodeLine{147       \textcolor{keywordflow}{for}(uword row=0; row < X\_n\_rows; ++row)}
+\DoxyCodeLine{148         \{}
+\DoxyCodeLine{149         eTa* Y\_mem = Y.memptr();}
+\DoxyCodeLine{150         }
+\DoxyCodeLine{151         \textcolor{keywordflow}{for}(uword col=0; col < X\_n\_cols; ++col)  \{ Y\_mem[col] = X.at(row,col); \}}
+\DoxyCodeLine{152         }
+\DoxyCodeLine{153         glue\_quantile::worker(tmp\_mem, Y, P);}
+\DoxyCodeLine{154         }
+\DoxyCodeLine{155         \textcolor{keywordflow}{for}(uword i=0; i < P\_n\_elem; ++i)  \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row,i) = tmp\_mem[i]; \}}
+\DoxyCodeLine{156         \}}
+\DoxyCodeLine{157       \}}
+\DoxyCodeLine{158     \}}
+\DoxyCodeLine{159   \}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{164 \textcolor{keyword}{inline}}
+\DoxyCodeLine{165 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{166 glue\_quantile::apply(\mbox{\hyperlink{classMat}{Mat<typename T2::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<typename T2::elem\_type,T1,T2,glue\_quantile>}}\& expr)}
+\DoxyCodeLine{167   \{}
+\DoxyCodeLine{168   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{169   }
+\DoxyCodeLine{170   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eTb;}
+\DoxyCodeLine{171   }
+\DoxyCodeLine{172   \textcolor{keyword}{const} uword dim = expr.\mbox{\hyperlink{classmtGlue_ad18cf3b7394987c4983dd88ba7ed9a61}{aux\_uword}};}
+\DoxyCodeLine{173   }
+\DoxyCodeLine{174   arma\_debug\_check( (dim > 1), \textcolor{stringliteral}{"{}quantile(): parameter 'dim' must be 0 or 1"{}} );}
+\DoxyCodeLine{175   }
+\DoxyCodeLine{176   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} UA(expr.\mbox{\hyperlink{classmtGlue_a77131a39c19f01beaeaee66908385315}{A}});}
+\DoxyCodeLine{177   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T2>}} UB(expr.\mbox{\hyperlink{classmtGlue_a98973407d37b2496bab7af7032233f93}{B}});}
+\DoxyCodeLine{178   }
+\DoxyCodeLine{179   \textcolor{keywordflow}{if}(UA.is\_alias(out) || UB.is\_alias(out))}
+\DoxyCodeLine{180     \{}
+\DoxyCodeLine{181     \mbox{\hyperlink{classMat}{Mat<eTb>}} tmp;}
+\DoxyCodeLine{182     }
+\DoxyCodeLine{183     glue\_quantile::apply\_noalias(tmp, UA.M, UB.M, dim);}
+\DoxyCodeLine{184     }
+\DoxyCodeLine{185     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{186     \}}
+\DoxyCodeLine{187   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{188     \{}
+\DoxyCodeLine{189     glue\_quantile::apply\_noalias(out, UA.M, UB.M, dim);}
+\DoxyCodeLine{190     \}}
+\DoxyCodeLine{191   \}}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{196 \textcolor{keyword}{inline}}
+\DoxyCodeLine{197 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{198 glue\_quantile\_default::apply(\mbox{\hyperlink{classMat}{Mat<typename T2::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<typename T2::elem\_type,T1,T2,glue\_quantile\_default>}}\& expr)}
+\DoxyCodeLine{199   \{}
+\DoxyCodeLine{200   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{201   }
+\DoxyCodeLine{202   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eTb;}
+\DoxyCodeLine{203   }
+\DoxyCodeLine{204   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} UA(expr.\mbox{\hyperlink{classmtGlue_a77131a39c19f01beaeaee66908385315}{A}});}
+\DoxyCodeLine{205   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T2>}} UB(expr.\mbox{\hyperlink{classmtGlue_a98973407d37b2496bab7af7032233f93}{B}});}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   \textcolor{keyword}{const} uword dim = (T1::is\_xvec) ? uword(UA.M.is\_rowvec() ? 1 : 0) : uword((T1::is\_row) ? 1 : 0);}
+\DoxyCodeLine{208   }
+\DoxyCodeLine{209   \textcolor{keywordflow}{if}(UA.is\_alias(out) || UB.is\_alias(out))}
+\DoxyCodeLine{210     \{}
+\DoxyCodeLine{211     \mbox{\hyperlink{classMat}{Mat<eTb>}} tmp;}
+\DoxyCodeLine{212     }
+\DoxyCodeLine{213     glue\_quantile::apply\_noalias(tmp, UA.M, UB.M, dim);}
+\DoxyCodeLine{214     }
+\DoxyCodeLine{215     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{216     \}}
+\DoxyCodeLine{217   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{218     \{}
+\DoxyCodeLine{219     glue\_quantile::apply\_noalias(out, UA.M, UB.M, dim);}
+\DoxyCodeLine{220     \}}
+\DoxyCodeLine{221   \}}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223 }
+
+\end{DoxyCode}

@@ -1,0 +1,270 @@
+\hypertarget{config_8hpp_source}{}\doxysection{config.\+hpp}
+\label{config_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/config.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/config.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#if !defined(ARMA\_WARN\_LEVEL)}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{  \#define ARMA\_WARN\_LEVEL 2}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#if !defined(ARMA\_USE\_LAPACK)}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define ARMA\_USE\_LAPACK}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#if !defined(ARMA\_USE\_BLAS)}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define ARMA\_USE\_BLAS}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#if !defined(ARMA\_USE\_NEWARP)}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#define ARMA\_USE\_NEWARP}}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#if !defined(ARMA\_USE\_ARPACK)}}
+\DoxyCodeLine{50 \textcolor{comment}{// \#define ARMA\_USE\_ARPACK}}
+\DoxyCodeLine{53 \textcolor{comment}{}\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#if !defined(ARMA\_USE\_SUPERLU)}}
+\DoxyCodeLine{56 \textcolor{comment}{// \#define ARMA\_USE\_SUPERLU}}
+\DoxyCodeLine{60 \textcolor{comment}{}\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#if !defined(ARMA\_SUPERLU\_INCLUDE\_DIR)}}
+\DoxyCodeLine{63 \textcolor{comment}{// \#define ARMA\_SUPERLU\_INCLUDE\_DIR /usr/include/}}
+\DoxyCodeLine{67 \textcolor{comment}{}\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{comment}{// \#define ARMA\_USE\_WRAPPER}}
+\DoxyCodeLine{73 \textcolor{comment}{}}
+\DoxyCodeLine{74 \textcolor{comment}{// \#define ARMA\_BLAS\_CAPITALS}}
+\DoxyCodeLine{76 \textcolor{comment}{}}
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#define ARMA\_BLAS\_UNDERSCORE}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{comment}{// \#define ARMA\_BLAS\_LONG}}
+\DoxyCodeLine{83 \textcolor{comment}{}}
+\DoxyCodeLine{84 \textcolor{comment}{// \#define ARMA\_BLAS\_LONG\_LONG}}
+\DoxyCodeLine{86 \textcolor{comment}{}}
+\DoxyCodeLine{87 \textcolor{comment}{// \#define ARMA\_BLAS\_NOEXCEPT}}
+\DoxyCodeLine{89 \textcolor{comment}{}}
+\DoxyCodeLine{90 \textcolor{comment}{// \#define ARMA\_LAPACK\_NOEXCEPT}}
+\DoxyCodeLine{92 \textcolor{comment}{}}
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#define ARMA\_USE\_FORTRAN\_HIDDEN\_ARGS}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{comment}{// \#define ARMA\_USE\_TBB\_ALLOC}}
+\DoxyCodeLine{102 \textcolor{comment}{}}
+\DoxyCodeLine{103 \textcolor{comment}{// \#define ARMA\_USE\_MKL\_ALLOC}}
+\DoxyCodeLine{105 \textcolor{comment}{}}
+\DoxyCodeLine{106 \textcolor{comment}{// \#define ARMA\_USE\_MKL\_TYPES}}
+\DoxyCodeLine{111 \textcolor{comment}{}}
+\DoxyCodeLine{112 \textcolor{comment}{// \#define ARMA\_USE\_ATLAS}}
+\DoxyCodeLine{113 \textcolor{comment}{// \#define ARMA\_ATLAS\_INCLUDE\_DIR /usr/include/}}
+\DoxyCodeLine{117 \textcolor{comment}{}}
+\DoxyCodeLine{118 \textcolor{preprocessor}{\#if !defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{119 \textcolor{comment}{// \#define ARMA\_USE\_OPENMP}}
+\DoxyCodeLine{122 \textcolor{comment}{}\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{preprocessor}{\#if !defined(ARMA\_64BIT\_WORD)}}
+\DoxyCodeLine{125 \textcolor{comment}{// \#define ARMA\_64BIT\_WORD}}
+\DoxyCodeLine{128 \textcolor{comment}{}\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{preprocessor}{\#if !defined(ARMA\_USE\_HDF5)}}
+\DoxyCodeLine{131 \textcolor{comment}{// \#define ARMA\_USE\_HDF5}}
+\DoxyCodeLine{135 \textcolor{comment}{}\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \textcolor{preprocessor}{\#if !defined(ARMA\_OPTIMISE\_BAND)}}
+\DoxyCodeLine{138 \textcolor{preprocessor}{  \#define ARMA\_OPTIMISE\_BAND}}
+\DoxyCodeLine{141 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{preprocessor}{\#if !defined(ARMA\_OPTIMISE\_SYMPD)}}
+\DoxyCodeLine{144 \textcolor{preprocessor}{  \#define ARMA\_OPTIMISE\_SYMPD}}
+\DoxyCodeLine{148 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{comment}{// \#define ARMA\_USE\_HDF5\_ALT}}
+\DoxyCodeLine{151 \textcolor{preprocessor}{\#if defined(ARMA\_USE\_HDF5\_ALT) \&\& defined(ARMA\_USE\_WRAPPER)}}
+\DoxyCodeLine{152 \textcolor{preprocessor}{  \#undef  ARMA\_USE\_HDF5}}
+\DoxyCodeLine{153 \textcolor{preprocessor}{  \#define ARMA\_USE\_HDF5}}
+\DoxyCodeLine{154   }
+\DoxyCodeLine{155   \textcolor{comment}{// \#define ARMA\_HDF5\_INCLUDE\_DIR /usr/include/}}
+\DoxyCodeLine{156 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{preprocessor}{\#if !defined(ARMA\_MAT\_PREALLOC)}}
+\DoxyCodeLine{159 \textcolor{preprocessor}{  \#define ARMA\_MAT\_PREALLOC 16}}
+\DoxyCodeLine{160 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 \textcolor{preprocessor}{\#if !defined(ARMA\_OPENMP\_THRESHOLD)}}
+\DoxyCodeLine{167 \textcolor{preprocessor}{  \#define ARMA\_OPENMP\_THRESHOLD 320}}
+\DoxyCodeLine{168 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 \textcolor{preprocessor}{\#if !defined(ARMA\_OPENMP\_THREADS)}}
+\DoxyCodeLine{173 \textcolor{preprocessor}{  \#define ARMA\_OPENMP\_THREADS 8}}
+\DoxyCodeLine{174 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 \textcolor{comment}{// \#define ARMA\_NO\_DEBUG}}
+\DoxyCodeLine{184 \textcolor{comment}{}}
+\DoxyCodeLine{185 \textcolor{comment}{// \#define ARMA\_EXTRA\_DEBUG}}
+\DoxyCodeLine{188 \textcolor{comment}{}}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 \textcolor{preprocessor}{\#if defined(ARMA\_DEFAULT\_OSTREAM)}}
+\DoxyCodeLine{191 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: support for ARMA\_DEFAULT\_OSTREAM is deprecated and will be removed;"{}})}
+\DoxyCodeLine{192 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: use ARMA\_COUT\_STREAM and ARMA\_CERR\_STREAM instead"{}})}
+\DoxyCodeLine{193 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \textcolor{preprocessor}{\#if !defined(ARMA\_COUT\_STREAM)}}
+\DoxyCodeLine{197 \textcolor{preprocessor}{  \#if defined(ARMA\_DEFAULT\_OSTREAM)}}
+\DoxyCodeLine{198     \textcolor{comment}{// for compatibility with earlier versions of Armadillo}}
+\DoxyCodeLine{199 \textcolor{preprocessor}{    \#define ARMA\_COUT\_STREAM ARMA\_DEFAULT\_OSTREAM}}
+\DoxyCodeLine{200 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{201 \textcolor{preprocessor}{    \#define ARMA\_COUT\_STREAM std::cout}}
+\DoxyCodeLine{202 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{203 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205 \textcolor{preprocessor}{\#if !defined(ARMA\_CERR\_STREAM)}}
+\DoxyCodeLine{206 \textcolor{preprocessor}{  \#if defined(ARMA\_DEFAULT\_OSTREAM)}}
+\DoxyCodeLine{207     \textcolor{comment}{// for compatibility with earlier versions of Armadillo}}
+\DoxyCodeLine{208 \textcolor{preprocessor}{    \#define ARMA\_CERR\_STREAM ARMA\_DEFAULT\_OSTREAM}}
+\DoxyCodeLine{209 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{210 \textcolor{preprocessor}{    \#define ARMA\_CERR\_STREAM std::cerr}}
+\DoxyCodeLine{211 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{212 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 \textcolor{preprocessor}{\#if !defined(ARMA\_PRINT\_ERRORS)}}
+\DoxyCodeLine{216 \textcolor{preprocessor}{\#define ARMA\_PRINT\_ERRORS}}
+\DoxyCodeLine{218 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220 \textcolor{preprocessor}{\#if !defined(ARMA\_PRINT\_EXCEPTIONS)}}
+\DoxyCodeLine{221 \textcolor{comment}{// \#define ARMA\_PRINT\_EXCEPTIONS}}
+\DoxyCodeLine{223 \textcolor{comment}{}\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225 \textcolor{preprocessor}{\#if !defined(ARMA\_PRINT\_HDF5\_ERRORS)}}
+\DoxyCodeLine{226 \textcolor{comment}{// \#define ARMA\_PRINT\_HDF5\_ERRORS}}
+\DoxyCodeLine{227 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_LAPACK)}}
+\DoxyCodeLine{230 \textcolor{preprocessor}{  \#undef ARMA\_USE\_LAPACK}}
+\DoxyCodeLine{231 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_BLAS)}}
+\DoxyCodeLine{234 \textcolor{preprocessor}{  \#undef ARMA\_USE\_BLAS}}
+\DoxyCodeLine{235 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_NEWARP) || !defined(ARMA\_USE\_LAPACK)}}
+\DoxyCodeLine{238 \textcolor{preprocessor}{  \#undef ARMA\_USE\_NEWARP}}
+\DoxyCodeLine{239 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_ARPACK)}}
+\DoxyCodeLine{242 \textcolor{preprocessor}{  \#undef ARMA\_USE\_ARPACK}}
+\DoxyCodeLine{243 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_SUPERLU)}}
+\DoxyCodeLine{246 \textcolor{preprocessor}{  \#undef ARMA\_USE\_SUPERLU}}
+\DoxyCodeLine{247 \textcolor{preprocessor}{  \#undef ARMA\_SUPERLU\_INCLUDE\_DIR}}
+\DoxyCodeLine{248 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_ATLAS)}}
+\DoxyCodeLine{251 \textcolor{preprocessor}{  \#undef ARMA\_USE\_ATLAS}}
+\DoxyCodeLine{252 \textcolor{preprocessor}{  \#undef ARMA\_ATLAS\_INCLUDE\_DIR}}
+\DoxyCodeLine{253 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_WRAPPER)}}
+\DoxyCodeLine{256 \textcolor{preprocessor}{  \#undef ARMA\_USE\_WRAPPER}}
+\DoxyCodeLine{257 \textcolor{preprocessor}{  \#undef ARMA\_USE\_HDF5\_ALT}}
+\DoxyCodeLine{258 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_FORTRAN\_HIDDEN\_ARGS)}}
+\DoxyCodeLine{261 \textcolor{preprocessor}{  \#undef ARMA\_USE\_FORTRAN\_HIDDEN\_ARGS}}
+\DoxyCodeLine{262 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{264 \textcolor{preprocessor}{\#if !defined(ARMA\_DONT\_USE\_STD\_MUTEX)}}
+\DoxyCodeLine{265   \textcolor{comment}{// \#define ARMA\_DONT\_USE\_STD\_MUTEX}}
+\DoxyCodeLine{267 \textcolor{comment}{}\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269 \textcolor{comment}{// for compatibility with earlier versions of Armadillo}}
+\DoxyCodeLine{270 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_CXX11\_MUTEX)}}
+\DoxyCodeLine{271 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: support for ARMA\_DONT\_USE\_CXX11\_MUTEX is deprecated and will be removed;"{}})}
+\DoxyCodeLine{272 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: use ARMA\_DONT\_USE\_STD\_MUTEX instead"{}})}
+\DoxyCodeLine{273 \textcolor{preprocessor}{  \#undef  ARMA\_DONT\_USE\_STD\_MUTEX}}
+\DoxyCodeLine{274 \textcolor{preprocessor}{  \#define ARMA\_DONT\_USE\_STD\_MUTEX}}
+\DoxyCodeLine{275 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_OPENMP)}}
+\DoxyCodeLine{278 \textcolor{preprocessor}{  \#undef ARMA\_USE\_OPENMP}}
+\DoxyCodeLine{279 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{280 }
+\DoxyCodeLine{281 \textcolor{preprocessor}{\#if defined(ARMA\_USE\_WRAPPER)}}
+\DoxyCodeLine{282 \textcolor{preprocessor}{  \#if !defined(ARMA\_USE\_EXTERN\_RNG)}}
+\DoxyCodeLine{283     \textcolor{comment}{// \#define ARMA\_USE\_EXTERN\_RNG}}
+\DoxyCodeLine{284 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{285 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_EXTERN\_RNG)}}
+\DoxyCodeLine{288 \textcolor{preprocessor}{  \#undef ARMA\_USE\_EXTERN\_RNG}}
+\DoxyCodeLine{289 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{290 }
+\DoxyCodeLine{291 \textcolor{comment}{// for compatibility with earlier versions of Armadillo}}
+\DoxyCodeLine{292 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_EXTERN\_CXX11\_RNG)}}
+\DoxyCodeLine{293 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: support for ARMA\_DONT\_USE\_EXTERN\_CXX11\_RNG is deprecated and will be removed;"{}})}
+\DoxyCodeLine{294 \textcolor{preprocessor}{  \#pragma message ("{}WARNING: use ARMA\_DONT\_USE\_EXTERN\_RNG instead"{}})}
+\DoxyCodeLine{295 \textcolor{preprocessor}{  \#undef ARMA\_USE\_EXTERN\_RNG}}
+\DoxyCodeLine{296 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 \textcolor{preprocessor}{\#if defined(ARMA\_32BIT\_WORD)}}
+\DoxyCodeLine{299 \textcolor{preprocessor}{  \#undef ARMA\_64BIT\_WORD}}
+\DoxyCodeLine{300 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{301 }
+\DoxyCodeLine{302 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_USE\_HDF5)}}
+\DoxyCodeLine{303 \textcolor{preprocessor}{  \#undef ARMA\_USE\_HDF5}}
+\DoxyCodeLine{304 \textcolor{preprocessor}{  \#undef ARMA\_USE\_HDF5\_ALT}}
+\DoxyCodeLine{305 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_OPTIMISE\_BAND) || defined(ARMA\_DONT\_OPTIMISE\_SOLVE\_BAND)}}
+\DoxyCodeLine{308 \textcolor{preprocessor}{  \#undef ARMA\_OPTIMISE\_BAND}}
+\DoxyCodeLine{309 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{310 }
+\DoxyCodeLine{311 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_OPTIMISE\_SYMPD) || defined(ARMA\_DONT\_OPTIMISE\_SOLVE\_SYMPD)}}
+\DoxyCodeLine{312 \textcolor{preprocessor}{  \#undef ARMA\_OPTIMISE\_SYMPD}}
+\DoxyCodeLine{313 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{314 }
+\DoxyCodeLine{315 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_PRINT\_ERRORS)}}
+\DoxyCodeLine{316 \textcolor{preprocessor}{  \#undef ARMA\_PRINT\_ERRORS}}
+\DoxyCodeLine{317 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{318 }
+\DoxyCodeLine{319 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_PRINT\_EXCEPTIONS)}}
+\DoxyCodeLine{320 \textcolor{preprocessor}{  \#undef ARMA\_PRINT\_EXCEPTIONS}}
+\DoxyCodeLine{321 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323 \textcolor{preprocessor}{\#if !defined(ARMA\_DONT\_ZERO\_INIT)}}
+\DoxyCodeLine{324   \textcolor{comment}{// \#define ARMA\_DONT\_ZERO\_INIT}}
+\DoxyCodeLine{326 \textcolor{comment}{}\textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{327 }
+\DoxyCodeLine{328 \textcolor{preprocessor}{\#if defined(ARMA\_DONT\_PRINT\_HDF5\_ERRORS)}}
+\DoxyCodeLine{329 \textcolor{preprocessor}{  \#undef ARMA\_PRINT\_HDF5\_ERRORS}}
+\DoxyCodeLine{330 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 \textcolor{preprocessor}{\#if defined(ARMA\_NO\_CRIPPLED\_LAPACK)}}
+\DoxyCodeLine{333 \textcolor{preprocessor}{  \#undef ARMA\_CRIPPLED\_LAPACK}}
+\DoxyCodeLine{334 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337 \textcolor{comment}{// if Armadillo was installed on this system via CMake and ARMA\_USE\_WRAPPER is not defined,}}
+\DoxyCodeLine{338 \textcolor{comment}{// ARMA\_AUX\_LIBS lists the libraries required by Armadillo on this system, and}}
+\DoxyCodeLine{339 \textcolor{comment}{// ARMA\_AUX\_INCDIRS lists the include directories required by Armadillo on this system.}}
+\DoxyCodeLine{340 \textcolor{comment}{// Do not use these unless you know what you are doing.}}
+\DoxyCodeLine{341 \textcolor{preprocessor}{\#define ARMA\_AUX\_LIBS}}
+\DoxyCodeLine{342 \textcolor{preprocessor}{\#define ARMA\_AUX\_INCDIRS}}
+
+\end{DoxyCode}

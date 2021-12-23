@@ -1,0 +1,205 @@
+\hypertarget{fn__wishrnd_8hpp_source}{}\doxysection{fn\+\_\+wishrnd.\+hpp}
+\label{fn__wishrnd_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_wishrnd.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_wishrnd.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keyword}{typename}}
+\DoxyCodeLine{26 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{27   <}
+\DoxyCodeLine{28   \mbox{\hyperlink{structis__real}{is\_real<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{29   \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_wishrnd>}}}
+\DoxyCodeLine{30   >::result}
+\DoxyCodeLine{31 wishrnd(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& S, \textcolor{keyword}{typename} T1::elem\_type df)}
+\DoxyCodeLine{32   \{}
+\DoxyCodeLine{33   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_wishrnd>}}(S.get\_ref(), df, uword(1), uword(0));}
+\DoxyCodeLine{36   \}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{41 arma\_warn\_unused}
+\DoxyCodeLine{42 \textcolor{keyword}{inline}}
+\DoxyCodeLine{43 \textcolor{keyword}{typename}}
+\DoxyCodeLine{44 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{45   <}
+\DoxyCodeLine{46   \mbox{\hyperlink{structis__real}{is\_real<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{47   \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T2, op\_wishrnd>}}}
+\DoxyCodeLine{48   >::result}
+\DoxyCodeLine{49 wishrnd(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& S, \textcolor{keyword}{typename} T1::elem\_type df, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& D)}
+\DoxyCodeLine{50   \{}
+\DoxyCodeLine{51   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{52   arma\_ignore(S);}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T2, op\_wishrnd>}}(D.get\_ref(), df, uword(2), uword(0));}
+\DoxyCodeLine{55   \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{60 \textcolor{keyword}{inline}}
+\DoxyCodeLine{61 \textcolor{keyword}{typename}}
+\DoxyCodeLine{62 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{63   <}
+\DoxyCodeLine{64   \mbox{\hyperlink{structis__real}{is\_real<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{65   \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{66   >::result}
+\DoxyCodeLine{67 wishrnd(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& W, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& S, \textcolor{keyword}{typename} T1::elem\_type df)}
+\DoxyCodeLine{68   \{}
+\DoxyCodeLine{69   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_wishrnd::apply\_direct(W, S.get\_ref(), df, uword(1));}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{74     \{}
+\DoxyCodeLine{75     W.soft\_reset();}
+\DoxyCodeLine{76     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}wishrnd(): given matrix is not symmetric positive definite"{}});}
+\DoxyCodeLine{77     \}}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{80   \}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{85 \textcolor{keyword}{inline}}
+\DoxyCodeLine{86 \textcolor{keyword}{typename}}
+\DoxyCodeLine{87 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{88   <}
+\DoxyCodeLine{89   \mbox{\hyperlink{structis__real}{is\_real<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{90   \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{91   >::result}
+\DoxyCodeLine{92 wishrnd(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& W, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& S, \textcolor{keyword}{typename} T1::elem\_type df, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& D)}
+\DoxyCodeLine{93   \{}
+\DoxyCodeLine{94   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{95   arma\_ignore(S);}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_wishrnd::apply\_direct(W, D.get\_ref(), df, uword(2));}
+\DoxyCodeLine{98   }
+\DoxyCodeLine{99   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{100     \{}
+\DoxyCodeLine{101     W.soft\_reset();}
+\DoxyCodeLine{102     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}wishrnd(): problem with given 'D' matrix"{}});}
+\DoxyCodeLine{103     \}}
+\DoxyCodeLine{104   }
+\DoxyCodeLine{105   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{106   \}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \textcolor{comment}{//}}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{115 arma\_warn\_unused}
+\DoxyCodeLine{116 \textcolor{keyword}{inline}}
+\DoxyCodeLine{117 \textcolor{keyword}{typename}}
+\DoxyCodeLine{118 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{119   <}
+\DoxyCodeLine{120   \mbox{\hyperlink{structis__real}{is\_real<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{121   \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_iwishrnd>}}}
+\DoxyCodeLine{122   >::result}
+\DoxyCodeLine{123 iwishrnd(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& T, \textcolor{keyword}{typename} T1::elem\_type df)}
+\DoxyCodeLine{124   \{}
+\DoxyCodeLine{125   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{126   }
+\DoxyCodeLine{127   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_iwishrnd>}}(T.get\_ref(), df, uword(1), uword(0));}
+\DoxyCodeLine{128   \}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{133 arma\_warn\_unused}
+\DoxyCodeLine{134 \textcolor{keyword}{inline}}
+\DoxyCodeLine{135 \textcolor{keyword}{typename}}
+\DoxyCodeLine{136 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{137   <}
+\DoxyCodeLine{138   \mbox{\hyperlink{structis__real}{is\_real<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{139   \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T2, op\_iwishrnd>}}}
+\DoxyCodeLine{140   >::result}
+\DoxyCodeLine{141 iwishrnd(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& T, \textcolor{keyword}{typename} T1::elem\_type df, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& Dinv)}
+\DoxyCodeLine{142   \{}
+\DoxyCodeLine{143   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{144   arma\_ignore(T);}
+\DoxyCodeLine{145   }
+\DoxyCodeLine{146   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T2, op\_iwishrnd>}}(Dinv.get\_ref(), df, uword(2), uword(0));}
+\DoxyCodeLine{147   \}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{152 \textcolor{keyword}{inline}}
+\DoxyCodeLine{153 \textcolor{keyword}{typename}}
+\DoxyCodeLine{154 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{155   <}
+\DoxyCodeLine{156   \mbox{\hyperlink{structis__real}{is\_real<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{157   \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{158   >::result}
+\DoxyCodeLine{159 iwishrnd(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& W, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& T, \textcolor{keyword}{typename} T1::elem\_type df)}
+\DoxyCodeLine{160   \{}
+\DoxyCodeLine{161   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{162   }
+\DoxyCodeLine{163   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_iwishrnd::apply\_direct(W, T.get\_ref(), df, uword(1));}
+\DoxyCodeLine{164   }
+\DoxyCodeLine{165   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{166     \{}
+\DoxyCodeLine{167     W.soft\_reset();}
+\DoxyCodeLine{168     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}iwishrnd(): given matrix is not symmetric positive definite and/or df is too low"{}});}
+\DoxyCodeLine{169     \}}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{172   \}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{177 \textcolor{keyword}{inline}}
+\DoxyCodeLine{178 \textcolor{keyword}{typename}}
+\DoxyCodeLine{179 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{180   <}
+\DoxyCodeLine{181   \mbox{\hyperlink{structis__real}{is\_real<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{182   \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{183   >::result}
+\DoxyCodeLine{184 iwishrnd(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& W, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& T, \textcolor{keyword}{typename} T1::elem\_type df, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& Dinv)}
+\DoxyCodeLine{185   \{}
+\DoxyCodeLine{186   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{187   arma\_ignore(T);}
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_iwishrnd::apply\_direct(W, Dinv.get\_ref(), df, uword(2));}
+\DoxyCodeLine{190   }
+\DoxyCodeLine{191   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{192     \{}
+\DoxyCodeLine{193     W.soft\_reset();}
+\DoxyCodeLine{194     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}wishrnd(): problem with given 'Dinv' matrix and/or df is too low"{}});}
+\DoxyCodeLine{195     \}}
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{198   \}}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 }
+
+\end{DoxyCode}

@@ -1,0 +1,117 @@
+\hypertarget{op__cond__meat_8hpp_source}{}\doxysection{op\+\_\+cond\+\_\+meat.\+hpp}
+\label{op__cond__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_cond\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_cond\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keyword}{typename} T1::pod\_type}
+\DoxyCodeLine{25 op\_cond::cond(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{30   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \mbox{\hyperlink{classMat}{Mat<eT>}} \mbox{\hyperlink{structA}{A}}(X.get\_ref());}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \mbox{\hyperlink{classCol}{Col<T>}} S;}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = auxlib::svd\_dc(S, \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{39     \{}
+\DoxyCodeLine{40     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}cond(): svd failed"{}});}
+\DoxyCodeLine{41     }
+\DoxyCodeLine{42     \textcolor{keywordflow}{return} T(0);}
+\DoxyCodeLine{43     \}}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keywordflow}{return} (S.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}} > 0) ? T( \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(S) / \mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{min}}(S) ) : T(0);}
+\DoxyCodeLine{46   \}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{51 \textcolor{keyword}{inline}}
+\DoxyCodeLine{52 \textcolor{keyword}{typename} T1::pod\_type}
+\DoxyCodeLine{53 op\_cond::rcond(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X)}
+\DoxyCodeLine{54   \{}
+\DoxyCodeLine{55   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{58   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{59   }
+\DoxyCodeLine{60   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structstrip__trimat}{strip\_trimat<T1>::do\_trimat}})}
+\DoxyCodeLine{61     \{}
+\DoxyCodeLine{62     \textcolor{keyword}{const} \mbox{\hyperlink{structstrip__trimat}{strip\_trimat<T1>}} S(X.get\_ref());}
+\DoxyCodeLine{63     }
+\DoxyCodeLine{64     \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<typename strip\_trimat<T1>::stored\_type}}> U(S.M);}
+\DoxyCodeLine{65     }
+\DoxyCodeLine{66     arma\_debug\_check( (U.M.is\_square() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}rcond(): matrix must be square sized"{}} );}
+\DoxyCodeLine{67     }
+\DoxyCodeLine{68     \textcolor{keyword}{const} uword layout = (S.do\_triu) ? uword(0) : uword(1);}
+\DoxyCodeLine{69     }
+\DoxyCodeLine{70     \textcolor{keywordflow}{return} auxlib::rcond\_trimat(U.M, layout);}
+\DoxyCodeLine{71     \}}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \mbox{\hyperlink{classMat}{Mat<eT>}} \mbox{\hyperlink{structA}{A}} = X.get\_ref();}
+\DoxyCodeLine{74   }
+\DoxyCodeLine{75   arma\_debug\_check( (\mbox{\hyperlink{structA}{A}}.is\_square() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}rcond(): matrix must be square sized"{}} );}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structA}{A}}.is\_empty()) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classDatum}{Datum<T>::inf}}; \}}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_triu =                     trimat\_helper::is\_triu(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{80   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_tril = (is\_triu) ? \textcolor{keyword}{false} : trimat\_helper::is\_tril(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keywordflow}{if}(is\_triu || is\_tril)}
+\DoxyCodeLine{83     \{}
+\DoxyCodeLine{84     \textcolor{keyword}{const} uword layout = (is\_triu) ? uword(0) : uword(1);}
+\DoxyCodeLine{85     }
+\DoxyCodeLine{86     \textcolor{keywordflow}{return} auxlib::rcond\_trimat(\mbox{\hyperlink{structA}{A}}, layout);}
+\DoxyCodeLine{87     \}}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89 \textcolor{preprocessor}{  \#if defined(ARMA\_OPTIMISE\_SYMPD)}}
+\DoxyCodeLine{90     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} try\_sympd = auxlib::crippled\_lapack(\mbox{\hyperlink{structA}{A}}) ? false : sympd\_helper::guess\_sympd\_anysize(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{91 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{92     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} try\_sympd = \textcolor{keyword}{false};}
+\DoxyCodeLine{93 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   \textcolor{keywordflow}{if}(try\_sympd)}
+\DoxyCodeLine{96     \{}
+\DoxyCodeLine{97     \textcolor{keywordtype}{bool} calc\_ok = \textcolor{keyword}{false};}
+\DoxyCodeLine{98     }
+\DoxyCodeLine{99     \textcolor{keyword}{const} T out\_val = auxlib::rcond\_sympd(\mbox{\hyperlink{structA}{A}}, calc\_ok);}
+\DoxyCodeLine{100     }
+\DoxyCodeLine{101     \textcolor{keywordflow}{if}(calc\_ok)  \{ \textcolor{keywordflow}{return} out\_val; \}}
+\DoxyCodeLine{102     }
+\DoxyCodeLine{103     \textcolor{comment}{// auxlib::rcond\_sympd() may have failed because A isn't really sympd}}
+\DoxyCodeLine{104     \textcolor{comment}{// restore A, as auxlib::rcond\_sympd() may have destroyed it}}
+\DoxyCodeLine{105     \mbox{\hyperlink{structA}{A}} = X.get\_ref();}
+\DoxyCodeLine{106     \textcolor{comment}{// fallthrough to the next return statement}}
+\DoxyCodeLine{107     \}}
+\DoxyCodeLine{108   }
+\DoxyCodeLine{109   \textcolor{keywordflow}{return} auxlib::rcond(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{110   \}}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+
+\end{DoxyCode}

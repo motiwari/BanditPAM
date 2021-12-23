@@ -1,0 +1,503 @@
+\hypertarget{op__strans__meat_8hpp_source}{}\doxysection{op\+\_\+strans\+\_\+meat.\+hpp}
+\label{op__strans__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_strans\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_strans\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} TA>}
+\DoxyCodeLine{24 arma\_cold}
+\DoxyCodeLine{25 \textcolor{keyword}{inline}}
+\DoxyCodeLine{26 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{27 \mbox{\hyperlink{group__op__strans_gac7cc2cfa347e5d0f44d5a022148648d6}{op\_strans::apply\_mat\_noalias\_tinysq}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} TA\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{28   \{}
+\DoxyCodeLine{29   \textcolor{keyword}{const} eT*   Am =   \mbox{\hyperlink{structA}{A}}.memptr();}
+\DoxyCodeLine{30         eT* outm = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keywordflow}{switch}(\mbox{\hyperlink{structA}{A}}.n\_rows)}
+\DoxyCodeLine{33     \{}
+\DoxyCodeLine{34     \textcolor{keywordflow}{case} 1:}
+\DoxyCodeLine{35       \{}
+\DoxyCodeLine{36       outm[0] = Am[0];}
+\DoxyCodeLine{37       \}}
+\DoxyCodeLine{38       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{39       }
+\DoxyCodeLine{40     \textcolor{keywordflow}{case} 2:}
+\DoxyCodeLine{41       \{}
+\DoxyCodeLine{42       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,0,0>::n2}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,0,0>::n2}}];}
+\DoxyCodeLine{43       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,1,0>::n2}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,1,0>::n2}}];}
+\DoxyCodeLine{44       }
+\DoxyCodeLine{45       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,0,1>::n2}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,0,1>::n2}}];}
+\DoxyCodeLine{46       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,1,1>::n2}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,1,1>::n2}}];}
+\DoxyCodeLine{47       \}}
+\DoxyCodeLine{48       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{49     }
+\DoxyCodeLine{50     \textcolor{keywordflow}{case} 3:}
+\DoxyCodeLine{51       \{}
+\DoxyCodeLine{52       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,0,0>::n3}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,0,0>::n3}}];}
+\DoxyCodeLine{53       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,1,0>::n3}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,1,0>::n3}}];}
+\DoxyCodeLine{54       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,2,0>::n3}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,2,0>::n3}}];}
+\DoxyCodeLine{55       }
+\DoxyCodeLine{56       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,0,1>::n3}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,0,1>::n3}}];}
+\DoxyCodeLine{57       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,1,1>::n3}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,1,1>::n3}}];}
+\DoxyCodeLine{58       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,2,1>::n3}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,2,1>::n3}}];}
+\DoxyCodeLine{59       }
+\DoxyCodeLine{60       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,0,2>::n3}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,0,2>::n3}}];}
+\DoxyCodeLine{61       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,1,2>::n3}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,1,2>::n3}}];}
+\DoxyCodeLine{62       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,2,2>::n3}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,2,2>::n3}}];}
+\DoxyCodeLine{63       \}}
+\DoxyCodeLine{64       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{65     }
+\DoxyCodeLine{66     \textcolor{keywordflow}{case} 4:}
+\DoxyCodeLine{67       \{}
+\DoxyCodeLine{68       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,0,0>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,0,0>::n4}}];}
+\DoxyCodeLine{69       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,1,0>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,1,0>::n4}}];}
+\DoxyCodeLine{70       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,2,0>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,2,0>::n4}}];}
+\DoxyCodeLine{71       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,3,0>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,3,0>::n4}}];}
+\DoxyCodeLine{72       }
+\DoxyCodeLine{73       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,0,1>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,0,1>::n4}}];}
+\DoxyCodeLine{74       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,1,1>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,1,1>::n4}}];}
+\DoxyCodeLine{75       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,2,1>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,2,1>::n4}}];}
+\DoxyCodeLine{76       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,3,1>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,3,1>::n4}}];}
+\DoxyCodeLine{77       }
+\DoxyCodeLine{78       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,0,2>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,0,2>::n4}}];}
+\DoxyCodeLine{79       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,1,2>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,1,2>::n4}}];}
+\DoxyCodeLine{80       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,2,2>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,2,2>::n4}}];}
+\DoxyCodeLine{81       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,3,2>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,3,2>::n4}}];}
+\DoxyCodeLine{82       }
+\DoxyCodeLine{83       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,0,3>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,0,3>::n4}}];}
+\DoxyCodeLine{84       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,1,3>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,1,3>::n4}}];}
+\DoxyCodeLine{85       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,2,3>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,2,3>::n4}}];}
+\DoxyCodeLine{86       outm[\mbox{\hyperlink{structop__strans_1_1pos}{pos<false,3,3>::n4}}] = Am[\mbox{\hyperlink{structop__strans_1_1pos}{pos<true,3,3>::n4}}];}
+\DoxyCodeLine{87       \}}
+\DoxyCodeLine{88       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{89     }
+\DoxyCodeLine{90     \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{91       ;}
+\DoxyCodeLine{92     \}}
+\DoxyCodeLine{93   }
+\DoxyCodeLine{94   \}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{99 arma\_hot}
+\DoxyCodeLine{100 \textcolor{keyword}{inline}}
+\DoxyCodeLine{101 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{102 op\_strans::block\_worker(eT* Y, \textcolor{keyword}{const} eT* X, \textcolor{keyword}{const} uword X\_n\_rows, \textcolor{keyword}{const} uword Y\_n\_rows, \textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols)}
+\DoxyCodeLine{103   \{}
+\DoxyCodeLine{104   \textcolor{keywordflow}{for}(uword row = 0; row < n\_rows; ++row)}
+\DoxyCodeLine{105     \{}
+\DoxyCodeLine{106     \textcolor{keyword}{const} uword Y\_offset = row * Y\_n\_rows;}
+\DoxyCodeLine{107     }
+\DoxyCodeLine{108     \textcolor{keywordflow}{for}(uword col = 0; col < n\_cols; ++col)}
+\DoxyCodeLine{109       \{}
+\DoxyCodeLine{110       \textcolor{keyword}{const} uword X\_offset = col * X\_n\_rows;}
+\DoxyCodeLine{111       }
+\DoxyCodeLine{112       Y[col + Y\_offset] = X[row + X\_offset];}
+\DoxyCodeLine{113       \}}
+\DoxyCodeLine{114     \}}
+\DoxyCodeLine{115   \}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{120 arma\_hot}
+\DoxyCodeLine{121 \textcolor{keyword}{inline}}
+\DoxyCodeLine{122 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{123 op\_strans::apply\_mat\_noalias\_large(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{124   \{}
+\DoxyCodeLine{125   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{126   }
+\DoxyCodeLine{127   \textcolor{keyword}{const} uword n\_rows = \mbox{\hyperlink{structA}{A}}.n\_rows;}
+\DoxyCodeLine{128   \textcolor{keyword}{const} uword n\_cols = \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keyword}{const} uword block\_size = 64;}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   \textcolor{keyword}{const} uword n\_rows\_base = block\_size * (n\_rows / block\_size);}
+\DoxyCodeLine{133   \textcolor{keyword}{const} uword n\_cols\_base = block\_size * (n\_cols / block\_size);}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   \textcolor{keyword}{const} uword n\_rows\_extra = n\_rows -\/ n\_rows\_base;}
+\DoxyCodeLine{136   \textcolor{keyword}{const} uword n\_cols\_extra = n\_cols -\/ n\_cols\_base;}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   \textcolor{keyword}{const} eT* X =   \mbox{\hyperlink{structA}{A}}.memptr();}
+\DoxyCodeLine{139         eT* Y = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keywordflow}{for}(uword row = 0; row < n\_rows\_base; row += block\_size)}
+\DoxyCodeLine{142     \{}
+\DoxyCodeLine{143     \textcolor{keyword}{const} uword Y\_offset = row * n\_cols;}
+\DoxyCodeLine{144     }
+\DoxyCodeLine{145     \textcolor{keywordflow}{for}(uword col = 0; col < n\_cols\_base; col += block\_size)}
+\DoxyCodeLine{146       \{}
+\DoxyCodeLine{147       \textcolor{keyword}{const} uword X\_offset = col * n\_rows;}
+\DoxyCodeLine{148       }
+\DoxyCodeLine{149       op\_strans::block\_worker(\&Y[col + Y\_offset], \&X[row + X\_offset], n\_rows, n\_cols, block\_size, block\_size);}
+\DoxyCodeLine{150       \}}
+\DoxyCodeLine{151     }
+\DoxyCodeLine{152     \textcolor{keyword}{const} uword X\_offset = n\_cols\_base * n\_rows;}
+\DoxyCodeLine{153     }
+\DoxyCodeLine{154     op\_strans::block\_worker(\&Y[n\_cols\_base + Y\_offset], \&X[row + X\_offset], n\_rows, n\_cols, block\_size, n\_cols\_extra);}
+\DoxyCodeLine{155     \}}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157   \textcolor{keywordflow}{if}(n\_rows\_extra == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{158   }
+\DoxyCodeLine{159   \textcolor{keyword}{const} uword Y\_offset = n\_rows\_base * n\_cols;}
+\DoxyCodeLine{160   }
+\DoxyCodeLine{161   \textcolor{keywordflow}{for}(uword col = 0; col < n\_cols\_base; col += block\_size)}
+\DoxyCodeLine{162     \{}
+\DoxyCodeLine{163     \textcolor{keyword}{const} uword X\_offset = col * n\_rows;}
+\DoxyCodeLine{164     }
+\DoxyCodeLine{165     op\_strans::block\_worker(\&Y[col + Y\_offset], \&X[n\_rows\_base + X\_offset], n\_rows, n\_cols, n\_rows\_extra, block\_size);}
+\DoxyCodeLine{166     \}}
+\DoxyCodeLine{167   }
+\DoxyCodeLine{168   \textcolor{keyword}{const} uword X\_offset = n\_cols\_base * n\_rows;}
+\DoxyCodeLine{169   }
+\DoxyCodeLine{170   op\_strans::block\_worker(\&Y[n\_cols\_base + Y\_offset], \&X[n\_rows\_base + X\_offset], n\_rows, n\_cols, n\_rows\_extra, n\_cols\_extra);}
+\DoxyCodeLine{171   \}}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{176 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} TA>}
+\DoxyCodeLine{177 arma\_hot}
+\DoxyCodeLine{178 \textcolor{keyword}{inline}}
+\DoxyCodeLine{179 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{180 \mbox{\hyperlink{group__op__strans_gafd56208012c4a9b31acbeaf21cfa63cc}{op\_strans::apply\_mat\_noalias}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} TA\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{181   \{}
+\DoxyCodeLine{182   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   \textcolor{keyword}{const} uword A\_n\_cols = \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{185   \textcolor{keyword}{const} uword A\_n\_rows = \mbox{\hyperlink{structA}{A}}.n\_rows;}
+\DoxyCodeLine{186   }
+\DoxyCodeLine{187   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(A\_n\_cols, A\_n\_rows);}
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   \textcolor{keywordflow}{if}( (TA::is\_row) || (TA::is\_col) || (A\_n\_cols == 1) || (A\_n\_rows == 1) )}
+\DoxyCodeLine{190     \{}
+\DoxyCodeLine{191     arrayops::copy( out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), \mbox{\hyperlink{structA}{A}}.memptr(), \mbox{\hyperlink{structA}{A}}.n\_elem );}
+\DoxyCodeLine{192     \}}
+\DoxyCodeLine{193   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{194     \{}
+\DoxyCodeLine{195     \textcolor{keywordflow}{if}( (A\_n\_rows <= 4) \&\& (A\_n\_rows == A\_n\_cols) )}
+\DoxyCodeLine{196       \{}
+\DoxyCodeLine{197       \mbox{\hyperlink{group__op__strans_gac7cc2cfa347e5d0f44d5a022148648d6}{op\_strans::apply\_mat\_noalias\_tinysq}}(out, \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{198       \}}
+\DoxyCodeLine{199     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{200     \textcolor{keywordflow}{if}( (A\_n\_rows >= 512) \&\& (A\_n\_cols >= 512) )}
+\DoxyCodeLine{201       \{}
+\DoxyCodeLine{202       op\_strans::apply\_mat\_noalias\_large(out, \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{203       \}}
+\DoxyCodeLine{204     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{205       \{}
+\DoxyCodeLine{206       eT* outptr = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{207       }
+\DoxyCodeLine{208       \textcolor{keywordflow}{for}(uword k=0; k < A\_n\_rows; ++k)}
+\DoxyCodeLine{209         \{}
+\DoxyCodeLine{210         \textcolor{keyword}{const} eT* Aptr = \&(\mbox{\hyperlink{structA}{A}}.at(k,0));}
+\DoxyCodeLine{211         }
+\DoxyCodeLine{212         uword j;}
+\DoxyCodeLine{213         \textcolor{keywordflow}{for}(j=1; j < A\_n\_cols; j+=2)}
+\DoxyCodeLine{214           \{}
+\DoxyCodeLine{215           \textcolor{keyword}{const} eT tmp\_i = (*Aptr);  Aptr += A\_n\_rows;}
+\DoxyCodeLine{216           \textcolor{keyword}{const} eT tmp\_j = (*Aptr);  Aptr += A\_n\_rows;}
+\DoxyCodeLine{217           }
+\DoxyCodeLine{218           (*outptr) = tmp\_i;  outptr++;}
+\DoxyCodeLine{219           (*outptr) = tmp\_j;  outptr++;}
+\DoxyCodeLine{220           \}}
+\DoxyCodeLine{221         }
+\DoxyCodeLine{222         \textcolor{keywordflow}{if}((j-\/1) < A\_n\_cols)}
+\DoxyCodeLine{223           \{}
+\DoxyCodeLine{224           (*outptr) = (*Aptr);  outptr++;;}
+\DoxyCodeLine{225           \}}
+\DoxyCodeLine{226         \}}
+\DoxyCodeLine{227       \}}
+\DoxyCodeLine{228     \}}
+\DoxyCodeLine{229   \}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{234 arma\_hot}
+\DoxyCodeLine{235 \textcolor{keyword}{inline}}
+\DoxyCodeLine{236 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{237 op\_strans::apply\_mat\_inplace(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out)}
+\DoxyCodeLine{238   \{}
+\DoxyCodeLine{239   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{240   }
+\DoxyCodeLine{241   \textcolor{keyword}{const} uword n\_rows = out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{242   \textcolor{keyword}{const} uword n\_cols = out.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{243   }
+\DoxyCodeLine{244   \textcolor{keywordflow}{if}(n\_rows == n\_cols)}
+\DoxyCodeLine{245     \{}
+\DoxyCodeLine{246     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_strans::apply(): doing in-\/place transpose of a square matrix"{}});}
+\DoxyCodeLine{247     }
+\DoxyCodeLine{248     \textcolor{keyword}{const} uword N = n\_rows;}
+\DoxyCodeLine{249     }
+\DoxyCodeLine{250     \textcolor{keywordflow}{for}(uword k=0; k < N; ++k)}
+\DoxyCodeLine{251       \{}
+\DoxyCodeLine{252       eT* colptr = \&(out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(k,k));}
+\DoxyCodeLine{253       eT* rowptr = colptr;}
+\DoxyCodeLine{254       }
+\DoxyCodeLine{255       colptr++;}
+\DoxyCodeLine{256       rowptr += N;}
+\DoxyCodeLine{257       }
+\DoxyCodeLine{258       uword j;}
+\DoxyCodeLine{259       }
+\DoxyCodeLine{260       \textcolor{keywordflow}{for}(j=(k+2); j < N; j+=2)}
+\DoxyCodeLine{261         \{}
+\DoxyCodeLine{262         std::swap( (*rowptr), (*colptr) );  rowptr += N;  colptr++;}
+\DoxyCodeLine{263         std::swap( (*rowptr), (*colptr) );  rowptr += N;  colptr++;}
+\DoxyCodeLine{264         \}}
+\DoxyCodeLine{265       }
+\DoxyCodeLine{266       \textcolor{keywordflow}{if}((j-\/1) < N)}
+\DoxyCodeLine{267         \{}
+\DoxyCodeLine{268         std::swap( (*rowptr), (*colptr) );}
+\DoxyCodeLine{269         \}}
+\DoxyCodeLine{270       \}}
+\DoxyCodeLine{271     \}}
+\DoxyCodeLine{272   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{273     \{}
+\DoxyCodeLine{274     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{275     }
+\DoxyCodeLine{276     \mbox{\hyperlink{group__op__strans_gafd56208012c4a9b31acbeaf21cfa63cc}{op\_strans::apply\_mat\_noalias}}(tmp, out);}
+\DoxyCodeLine{277     }
+\DoxyCodeLine{278     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{279     \}}
+\DoxyCodeLine{280   \}}
+\DoxyCodeLine{281 }
+\DoxyCodeLine{282 }
+\DoxyCodeLine{283 }
+\DoxyCodeLine{284 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} TA>}
+\DoxyCodeLine{285 arma\_hot}
+\DoxyCodeLine{286 \textcolor{keyword}{inline}}
+\DoxyCodeLine{287 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{288 op\_strans::apply\_mat(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} TA\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{289   \{}
+\DoxyCodeLine{290   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{291   }
+\DoxyCodeLine{292   \textcolor{keywordflow}{if}(\&out != \&\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{293     \{}
+\DoxyCodeLine{294     \mbox{\hyperlink{group__op__strans_gafd56208012c4a9b31acbeaf21cfa63cc}{op\_strans::apply\_mat\_noalias}}(out, \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{295     \}}
+\DoxyCodeLine{296   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{297     \{}
+\DoxyCodeLine{298     op\_strans::apply\_mat\_inplace(out);}
+\DoxyCodeLine{299     \}}
+\DoxyCodeLine{300   \}}
+\DoxyCodeLine{301 }
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{305 arma\_hot}
+\DoxyCodeLine{306 \textcolor{keyword}{inline}}
+\DoxyCodeLine{307 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{308 op\_strans::apply\_proxy(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{309   \{}
+\DoxyCodeLine{310   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{311   }
+\DoxyCodeLine{312   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{313   }
+\DoxyCodeLine{314   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X);}
+\DoxyCodeLine{315   }
+\DoxyCodeLine{316   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{317   \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{318   }
+\DoxyCodeLine{319   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_alias = P.is\_alias(out);}
+\DoxyCodeLine{320   }
+\DoxyCodeLine{321   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structresolves__to__vector}{resolves\_to\_vector<T1>::yes}}) \&\& (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{322     \{}
+\DoxyCodeLine{323     \textcolor{keywordflow}{if}(is\_alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{324       \{}
+\DoxyCodeLine{325       out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_cols, n\_rows);}
+\DoxyCodeLine{326       }
+\DoxyCodeLine{327       eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{328       }
+\DoxyCodeLine{329       \textcolor{keyword}{const} uword n\_elem = P.get\_n\_elem();}
+\DoxyCodeLine{330       }
+\DoxyCodeLine{331       \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{332       }
+\DoxyCodeLine{333       uword i,j;}
+\DoxyCodeLine{334       \textcolor{keywordflow}{for}(i=0, j=1; j < n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{335         \{}
+\DoxyCodeLine{336         \textcolor{keyword}{const} eT tmp\_i = Pea[i];}
+\DoxyCodeLine{337         \textcolor{keyword}{const} eT tmp\_j = Pea[j];}
+\DoxyCodeLine{338         }
+\DoxyCodeLine{339         out\_mem[i] = tmp\_i;}
+\DoxyCodeLine{340         out\_mem[j] = tmp\_j;}
+\DoxyCodeLine{341         \}}
+\DoxyCodeLine{342       }
+\DoxyCodeLine{343       \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{344         \{}
+\DoxyCodeLine{345         out\_mem[i] = Pea[i];}
+\DoxyCodeLine{346         \}}
+\DoxyCodeLine{347       \}}
+\DoxyCodeLine{348     \textcolor{keywordflow}{else}  \textcolor{comment}{// aliasing}}
+\DoxyCodeLine{349       \{}
+\DoxyCodeLine{350       \mbox{\hyperlink{classMat}{Mat<eT>}} out2(n\_cols, n\_rows, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{351       }
+\DoxyCodeLine{352       eT* out\_mem = out2.memptr();}
+\DoxyCodeLine{353       }
+\DoxyCodeLine{354       \textcolor{keyword}{const} uword n\_elem = P.get\_n\_elem();}
+\DoxyCodeLine{355       }
+\DoxyCodeLine{356       \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{357       }
+\DoxyCodeLine{358       uword i,j;}
+\DoxyCodeLine{359       \textcolor{keywordflow}{for}(i=0, j=1; j < n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{360         \{}
+\DoxyCodeLine{361         \textcolor{keyword}{const} eT tmp\_i = Pea[i];}
+\DoxyCodeLine{362         \textcolor{keyword}{const} eT tmp\_j = Pea[j];}
+\DoxyCodeLine{363         }
+\DoxyCodeLine{364         out\_mem[i] = tmp\_i;}
+\DoxyCodeLine{365         out\_mem[j] = tmp\_j;}
+\DoxyCodeLine{366         \}}
+\DoxyCodeLine{367       }
+\DoxyCodeLine{368       \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{369         \{}
+\DoxyCodeLine{370         out\_mem[i] = Pea[i];}
+\DoxyCodeLine{371         \}}
+\DoxyCodeLine{372       }
+\DoxyCodeLine{373       out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(out2);}
+\DoxyCodeLine{374       \}}
+\DoxyCodeLine{375     \}}
+\DoxyCodeLine{376   \textcolor{keywordflow}{else}   \textcolor{comment}{// general matrix transpose}}
+\DoxyCodeLine{377     \{}
+\DoxyCodeLine{378     \textcolor{keywordflow}{if}(is\_alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{379       \{}
+\DoxyCodeLine{380       out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_cols, n\_rows);}
+\DoxyCodeLine{381       }
+\DoxyCodeLine{382       eT* outptr = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{383       }
+\DoxyCodeLine{384       \textcolor{keywordflow}{for}(uword k=0; k < n\_rows; ++k)}
+\DoxyCodeLine{385         \{}
+\DoxyCodeLine{386         uword j;}
+\DoxyCodeLine{387         \textcolor{keywordflow}{for}(j=1; j < n\_cols; j+=2)}
+\DoxyCodeLine{388           \{}
+\DoxyCodeLine{389           \textcolor{keyword}{const} uword i = j-\/1;}
+\DoxyCodeLine{390           }
+\DoxyCodeLine{391           \textcolor{keyword}{const} eT tmp\_i = P.at(k,i);}
+\DoxyCodeLine{392           \textcolor{keyword}{const} eT tmp\_j = P.at(k,j);}
+\DoxyCodeLine{393           }
+\DoxyCodeLine{394           (*outptr) = tmp\_i;  outptr++;}
+\DoxyCodeLine{395           (*outptr) = tmp\_j;  outptr++;}
+\DoxyCodeLine{396           \}}
+\DoxyCodeLine{397         }
+\DoxyCodeLine{398         \textcolor{keyword}{const} uword i = j-\/1;}
+\DoxyCodeLine{399         }
+\DoxyCodeLine{400         \textcolor{keywordflow}{if}(i < n\_cols)}
+\DoxyCodeLine{401           \{}
+\DoxyCodeLine{402           (*outptr) = P.at(k,i);  outptr++;}
+\DoxyCodeLine{403           \}}
+\DoxyCodeLine{404         \}}
+\DoxyCodeLine{405       \}}
+\DoxyCodeLine{406     \textcolor{keywordflow}{else} \textcolor{comment}{// aliasing}}
+\DoxyCodeLine{407       \{}
+\DoxyCodeLine{408       \mbox{\hyperlink{classMat}{Mat<eT>}} out2(n\_cols, n\_rows, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{409       }
+\DoxyCodeLine{410       eT* out2ptr = out2.memptr();}
+\DoxyCodeLine{411       }
+\DoxyCodeLine{412       \textcolor{keywordflow}{for}(uword k=0; k < n\_rows; ++k)}
+\DoxyCodeLine{413         \{}
+\DoxyCodeLine{414         uword j;}
+\DoxyCodeLine{415         \textcolor{keywordflow}{for}(j=1; j < n\_cols; j+=2)}
+\DoxyCodeLine{416           \{}
+\DoxyCodeLine{417           \textcolor{keyword}{const} uword i = j-\/1;}
+\DoxyCodeLine{418           }
+\DoxyCodeLine{419           \textcolor{keyword}{const} eT tmp\_i = P.at(k,i);}
+\DoxyCodeLine{420           \textcolor{keyword}{const} eT tmp\_j = P.at(k,j);}
+\DoxyCodeLine{421           }
+\DoxyCodeLine{422           (*out2ptr) = tmp\_i;  out2ptr++;}
+\DoxyCodeLine{423           (*out2ptr) = tmp\_j;  out2ptr++;}
+\DoxyCodeLine{424           \}}
+\DoxyCodeLine{425         }
+\DoxyCodeLine{426         \textcolor{keyword}{const} uword i = j-\/1;}
+\DoxyCodeLine{427       }
+\DoxyCodeLine{428         \textcolor{keywordflow}{if}(i < n\_cols)}
+\DoxyCodeLine{429           \{}
+\DoxyCodeLine{430           (*out2ptr) = P.at(k,i);  out2ptr++;}
+\DoxyCodeLine{431           \}}
+\DoxyCodeLine{432         \}}
+\DoxyCodeLine{433       }
+\DoxyCodeLine{434       out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(out2);}
+\DoxyCodeLine{435       \}}
+\DoxyCodeLine{436     \}}
+\DoxyCodeLine{437   \}}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{439 }
+\DoxyCodeLine{440 }
+\DoxyCodeLine{441 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{442 arma\_hot}
+\DoxyCodeLine{443 \textcolor{keyword}{inline}}
+\DoxyCodeLine{444 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{445 op\_strans::apply\_direct(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{446   \{}
+\DoxyCodeLine{447   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{448   }
+\DoxyCodeLine{449   \textcolor{comment}{// allow detection of in-\/place transpose}}
+\DoxyCodeLine{450   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Mat}{is\_Mat<T1>::value}} || \mbox{\hyperlink{structis__Mat}{is\_Mat}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value || (arma\_config::openmp \&\& \mbox{\hyperlink{classProxy}{Proxy<T1>::use\_mp}}))}
+\DoxyCodeLine{451     \{}
+\DoxyCodeLine{452     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}} U(X);}
+\DoxyCodeLine{453     }
+\DoxyCodeLine{454     op\_strans::apply\_mat(out, U.M);}
+\DoxyCodeLine{455     \}}
+\DoxyCodeLine{456   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{457     \{}
+\DoxyCodeLine{458     op\_strans::apply\_proxy(out, X);}
+\DoxyCodeLine{459     \}}
+\DoxyCodeLine{460   \}}
+\DoxyCodeLine{461 }
+\DoxyCodeLine{462 }
+\DoxyCodeLine{463 }
+\DoxyCodeLine{464 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{465 arma\_hot}
+\DoxyCodeLine{466 \textcolor{keyword}{inline}}
+\DoxyCodeLine{467 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{468 op\_strans::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_strans>}}\& in)}
+\DoxyCodeLine{469   \{}
+\DoxyCodeLine{470   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{471   }
+\DoxyCodeLine{472   op\_strans::apply\_direct(out, in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}});}
+\DoxyCodeLine{473   \}}
+\DoxyCodeLine{474 }
+\DoxyCodeLine{475 }
+\DoxyCodeLine{476 }
+\DoxyCodeLine{477 \textcolor{comment}{//}}
+\DoxyCodeLine{478 \textcolor{comment}{//}}
+\DoxyCodeLine{479 \textcolor{comment}{//}}
+\DoxyCodeLine{480 }
+\DoxyCodeLine{481 }
+\DoxyCodeLine{482 }
+\DoxyCodeLine{483 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{484 \textcolor{keyword}{inline}}
+\DoxyCodeLine{485 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{486 op\_strans\_cube::apply\_noalias(\mbox{\hyperlink{classCube}{Cube<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& X)}
+\DoxyCodeLine{487   \{}
+\DoxyCodeLine{488   out.\mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}(X.n\_cols, X.n\_rows, X.n\_slices);}
+\DoxyCodeLine{489   }
+\DoxyCodeLine{490   \textcolor{keywordflow}{for}(uword s=0; s < X.n\_slices; ++s)}
+\DoxyCodeLine{491     \{}
+\DoxyCodeLine{492     \mbox{\hyperlink{classMat}{Mat<eT>}} out\_slice( out.\mbox{\hyperlink{group__Cube_gaa880766c421f4a9f006662c7fd96850e}{slice\_memptr}}(s), X.n\_cols, X.n\_rows, \textcolor{keyword}{false}, \textcolor{keyword}{true} );}
+\DoxyCodeLine{493     }
+\DoxyCodeLine{494     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} X\_slice( \textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(X.slice\_memptr(s)), X.n\_rows, X.n\_cols, \textcolor{keyword}{false}, \textcolor{keyword}{true} );}
+\DoxyCodeLine{495     }
+\DoxyCodeLine{496     \mbox{\hyperlink{group__op__strans_gafd56208012c4a9b31acbeaf21cfa63cc}{op\_strans::apply\_mat\_noalias}}(out\_slice, X\_slice);}
+\DoxyCodeLine{497     \}}
+\DoxyCodeLine{498   \}}
+\DoxyCodeLine{499 }
+\DoxyCodeLine{500 }
+\DoxyCodeLine{501 }
+
+\end{DoxyCode}

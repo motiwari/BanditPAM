@@ -1,0 +1,1790 @@
+\hypertarget{Col__meat_8hpp_source}{}\doxysection{Col\+\_\+meat.\+hpp}
+\label{Col__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/Col\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/Col\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}()}
+\DoxyCodeLine{25   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   \}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{33 \textcolor{keyword}{inline}}
+\DoxyCodeLine{34 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}\& X)}
+\DoxyCodeLine{35   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), X.n\_elem, 1, 1)}
+\DoxyCodeLine{36   \{}
+\DoxyCodeLine{37   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   arrayops::copy((*this).memptr(), X.memptr(), X.n\_elem);}
+\DoxyCodeLine{40   \}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{45 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{46 \textcolor{keyword}{inline}}
+\DoxyCodeLine{47 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} uword in\_n\_elem)}
+\DoxyCodeLine{48   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), in\_n\_elem, 1, 1)}
+\DoxyCodeLine{49   \{}
+\DoxyCodeLine{50   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52 \textcolor{preprocessor}{  \#if (!defined(ARMA\_DONT\_ZERO\_INIT))}}
+\DoxyCodeLine{53     \{}
+\DoxyCodeLine{54     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}Col::constructor: zeroing memory"{}});}
+\DoxyCodeLine{55     arrayops::fill\_zeros(\mbox{\hyperlink{classMat}{Mat<eT>::memptr}}(), \mbox{\hyperlink{classMat}{Mat<eT>::n\_elem}});}
+\DoxyCodeLine{56     \}}
+\DoxyCodeLine{57 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{58   \}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{63 \textcolor{keyword}{inline}}
+\DoxyCodeLine{64 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols)}
+\DoxyCodeLine{65   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 0, 0, 1)}
+\DoxyCodeLine{66   \{}
+\DoxyCodeLine{67   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   \mbox{\hyperlink{classMat}{Mat<eT>::init\_warm}}(in\_n\_rows, in\_n\_cols);}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71 \textcolor{preprocessor}{  \#if (!defined(ARMA\_DONT\_ZERO\_INIT))}}
+\DoxyCodeLine{72     \{}
+\DoxyCodeLine{73     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}Col::constructor: zeroing memory"{}});}
+\DoxyCodeLine{74     arrayops::fill\_zeros(\mbox{\hyperlink{classMat}{Mat<eT>::memptr}}(), \mbox{\hyperlink{classMat}{Mat<eT>::n\_elem}});}
+\DoxyCodeLine{75     \}}
+\DoxyCodeLine{76 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{77   \}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{82 \textcolor{keyword}{inline}}
+\DoxyCodeLine{83 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{84   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 0, 0, 1)}
+\DoxyCodeLine{85   \{}
+\DoxyCodeLine{86   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{87   }
+\DoxyCodeLine{88   \mbox{\hyperlink{classMat}{Mat<eT>::init\_warm}}(s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90 \textcolor{preprocessor}{  \#if (!defined(ARMA\_DONT\_ZERO\_INIT))}}
+\DoxyCodeLine{91     \{}
+\DoxyCodeLine{92     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}Col::constructor: zeroing memory"{}});}
+\DoxyCodeLine{93     arrayops::fill\_zeros(\mbox{\hyperlink{classMat}{Mat<eT>::memptr}}(), \mbox{\hyperlink{classMat}{Mat<eT>::n\_elem}});}
+\DoxyCodeLine{94     \}}
+\DoxyCodeLine{95 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{96   \}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{101 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{102 \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} do\_zeros>}
+\DoxyCodeLine{103 \textcolor{keyword}{inline}}
+\DoxyCodeLine{104 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} uword in\_n\_elem, \textcolor{keyword}{const} \mbox{\hyperlink{structarma__initmode__indicator}{arma\_initmode\_indicator<do\_zeros>}}\&)}
+\DoxyCodeLine{105   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), in\_n\_elem, 1, 1)}
+\DoxyCodeLine{106   \{}
+\DoxyCodeLine{107   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{108   }
+\DoxyCodeLine{109   \textcolor{keywordflow}{if}(do\_zeros)}
+\DoxyCodeLine{110     \{}
+\DoxyCodeLine{111     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}Col::constructor: zeroing memory"{}});}
+\DoxyCodeLine{112     arrayops::fill\_zeros(\mbox{\hyperlink{classMat}{Mat<eT>::memptr}}(), \mbox{\hyperlink{classMat}{Mat<eT>::n\_elem}});}
+\DoxyCodeLine{113     \}}
+\DoxyCodeLine{114   \}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 }
+\DoxyCodeLine{119 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{120 \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} do\_zeros>}
+\DoxyCodeLine{121 \textcolor{keyword}{inline}}
+\DoxyCodeLine{122 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols, \textcolor{keyword}{const} \mbox{\hyperlink{structarma__initmode__indicator}{arma\_initmode\_indicator<do\_zeros>}}\&)}
+\DoxyCodeLine{123   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 0, 0, 1)}
+\DoxyCodeLine{124   \{}
+\DoxyCodeLine{125   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{126   }
+\DoxyCodeLine{127   \mbox{\hyperlink{classMat}{Mat<eT>::init\_warm}}(in\_n\_rows, in\_n\_cols);}
+\DoxyCodeLine{128   }
+\DoxyCodeLine{129   \textcolor{keywordflow}{if}(do\_zeros)}
+\DoxyCodeLine{130     \{}
+\DoxyCodeLine{131     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}Col::constructor: zeroing memory"{}});}
+\DoxyCodeLine{132     arrayops::fill\_zeros(\mbox{\hyperlink{classMat}{Mat<eT>::memptr}}(), \mbox{\hyperlink{classMat}{Mat<eT>::n\_elem}});}
+\DoxyCodeLine{133     \}}
+\DoxyCodeLine{134   \}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 }
+\DoxyCodeLine{139 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{140 \textcolor{keyword}{template}<\textcolor{keywordtype}{bool} do\_zeros>}
+\DoxyCodeLine{141 \textcolor{keyword}{inline}}
+\DoxyCodeLine{142 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{structarma__initmode__indicator}{arma\_initmode\_indicator<do\_zeros>}}\&)}
+\DoxyCodeLine{143   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 0, 0, 1)}
+\DoxyCodeLine{144   \{}
+\DoxyCodeLine{145   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{146   }
+\DoxyCodeLine{147   \mbox{\hyperlink{classMat}{Mat<eT>::init\_warm}}(s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{148   }
+\DoxyCodeLine{149   \textcolor{keywordflow}{if}(do\_zeros)}
+\DoxyCodeLine{150     \{}
+\DoxyCodeLine{151     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}Col::constructor: zeroing memory"{}});}
+\DoxyCodeLine{152     arrayops::fill\_zeros(\mbox{\hyperlink{classMat}{Mat<eT>::memptr}}(), \mbox{\hyperlink{classMat}{Mat<eT>::n\_elem}});}
+\DoxyCodeLine{153     \}}
+\DoxyCodeLine{154   \}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{159 \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type>}
+\DoxyCodeLine{160 \textcolor{keyword}{inline}}
+\DoxyCodeLine{161 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} uword in\_n\_elem, \textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\& f)}
+\DoxyCodeLine{162   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), in\_n\_elem, 1, 1)}
+\DoxyCodeLine{163   \{}
+\DoxyCodeLine{164   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{165   }
+\DoxyCodeLine{166   (*this).fill(f);}
+\DoxyCodeLine{167   \}}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{172 \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type>}
+\DoxyCodeLine{173 \textcolor{keyword}{inline}}
+\DoxyCodeLine{174 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols, \textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\& f)}
+\DoxyCodeLine{175   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 0, 0, 1)}
+\DoxyCodeLine{176   \{}
+\DoxyCodeLine{177   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{178   }
+\DoxyCodeLine{179   \mbox{\hyperlink{classMat}{Mat<eT>::init\_warm}}(in\_n\_rows, in\_n\_cols);}
+\DoxyCodeLine{180   }
+\DoxyCodeLine{181   (*this).fill(f);}
+\DoxyCodeLine{182   \}}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{187 \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type>}
+\DoxyCodeLine{188 \textcolor{keyword}{inline}}
+\DoxyCodeLine{189 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\& f)}
+\DoxyCodeLine{190   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 0, 0, 1)}
+\DoxyCodeLine{191   \{}
+\DoxyCodeLine{192   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{193   }
+\DoxyCodeLine{194   \mbox{\hyperlink{classMat}{Mat<eT>::init\_warm}}(s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{195   }
+\DoxyCodeLine{196   (*this).fill(f);}
+\DoxyCodeLine{197   \}}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{202 \textcolor{keyword}{inline}}
+\DoxyCodeLine{203 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* text)}
+\DoxyCodeLine{204   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{205   \{}
+\DoxyCodeLine{206   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{207   }
+\DoxyCodeLine{208   (*this).operator=(text);}
+\DoxyCodeLine{209   \}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{214 \textcolor{keyword}{inline}}
+\DoxyCodeLine{215 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{216 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* text)}
+\DoxyCodeLine{217   \{}
+\DoxyCodeLine{218   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{219   }
+\DoxyCodeLine{220   \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(text);}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222   arma\_debug\_check( ((tmp.n\_elem > 0) \&\& (tmp.is\_vec() == \textcolor{keyword}{false})), \textcolor{stringliteral}{"{}Mat::init(): requested size is not compatible with column vector layout"{}} );}
+\DoxyCodeLine{223   }
+\DoxyCodeLine{224   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.n\_rows) = tmp.n\_elem;}
+\DoxyCodeLine{225   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.n\_cols) = 1;}
+\DoxyCodeLine{226   }
+\DoxyCodeLine{227   (*this).steal\_mem(tmp);}
+\DoxyCodeLine{228   }
+\DoxyCodeLine{229   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{230   \}}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{235 \textcolor{keyword}{inline}}
+\DoxyCodeLine{236 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} std::string\& text)}
+\DoxyCodeLine{237   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{238   \{}
+\DoxyCodeLine{239   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{240   }
+\DoxyCodeLine{241   (*this).operator=(text);}
+\DoxyCodeLine{242   \}}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 }
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{247 \textcolor{keyword}{inline}}
+\DoxyCodeLine{248 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{249 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\textcolor{keyword}{const} std::string\& text)}
+\DoxyCodeLine{250   \{}
+\DoxyCodeLine{251   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{252   }
+\DoxyCodeLine{253   \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(text);}
+\DoxyCodeLine{254   }
+\DoxyCodeLine{255   arma\_debug\_check( ((tmp.n\_elem > 0) \&\& (tmp.is\_vec() == \textcolor{keyword}{false})), \textcolor{stringliteral}{"{}Mat::init(): requested size is not compatible with column vector layout"{}} );}
+\DoxyCodeLine{256   }
+\DoxyCodeLine{257   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.n\_rows) = tmp.n\_elem;}
+\DoxyCodeLine{258   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.n\_cols) = 1;}
+\DoxyCodeLine{259   }
+\DoxyCodeLine{260   (*this).steal\_mem(tmp);}
+\DoxyCodeLine{261   }
+\DoxyCodeLine{262   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{263   \}}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 }
+\DoxyCodeLine{268 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{269 \textcolor{keyword}{inline}}
+\DoxyCodeLine{270 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} std::vector<eT>\& x)}
+\DoxyCodeLine{271   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), uword(x.size()), 1, 1)}
+\DoxyCodeLine{272   \{}
+\DoxyCodeLine{273   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{274   }
+\DoxyCodeLine{275   \textcolor{keywordflow}{if}(x.size() > 0)}
+\DoxyCodeLine{276     \{}
+\DoxyCodeLine{277     arrayops::copy( \mbox{\hyperlink{classMat}{Mat<eT>::memptr}}(), \&(x[0]), uword(x.size()) );}
+\DoxyCodeLine{278     \}}
+\DoxyCodeLine{279   \}}
+\DoxyCodeLine{280   }
+\DoxyCodeLine{281   }
+\DoxyCodeLine{282   }
+\DoxyCodeLine{284 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{285 \textcolor{keyword}{inline}}
+\DoxyCodeLine{286 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{287 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\textcolor{keyword}{const} std::vector<eT>\& x)}
+\DoxyCodeLine{288   \{}
+\DoxyCodeLine{289   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{290   }
+\DoxyCodeLine{291   \mbox{\hyperlink{classMat}{Mat<eT>::init\_warm}}(uword(x.size()), 1);}
+\DoxyCodeLine{292   }
+\DoxyCodeLine{293   \textcolor{keywordflow}{if}(x.size() > 0)}
+\DoxyCodeLine{294     \{}
+\DoxyCodeLine{295     arrayops::copy( \mbox{\hyperlink{classMat}{Mat<eT>::memptr}}(), \&(x[0]), uword(x.size()) );}
+\DoxyCodeLine{296     \}}
+\DoxyCodeLine{297   }
+\DoxyCodeLine{298   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{299   \}}
+\DoxyCodeLine{300 }
+\DoxyCodeLine{301 }
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{304 \textcolor{keyword}{inline}}
+\DoxyCodeLine{305 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} std::initializer\_list<eT>\& \mbox{\hyperlink{classlist}{list}})}
+\DoxyCodeLine{306   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{307   \{}
+\DoxyCodeLine{308   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{309   }
+\DoxyCodeLine{310   (*this).operator=(\mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{311   \}}
+\DoxyCodeLine{312 }
+\DoxyCodeLine{313 }
+\DoxyCodeLine{314 }
+\DoxyCodeLine{315 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{316 \textcolor{keyword}{inline}}
+\DoxyCodeLine{317 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{318 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\textcolor{keyword}{const} std::initializer\_list<eT>\& \mbox{\hyperlink{classlist}{list}})}
+\DoxyCodeLine{319   \{}
+\DoxyCodeLine{320   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{321   }
+\DoxyCodeLine{322   \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(\mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{323   }
+\DoxyCodeLine{324   arma\_debug\_check( ((tmp.n\_elem > 0) \&\& (tmp.is\_vec() == \textcolor{keyword}{false})), \textcolor{stringliteral}{"{}Mat::init(): requested size is not compatible with column vector layout"{}} );}
+\DoxyCodeLine{325   }
+\DoxyCodeLine{326   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.n\_rows) = tmp.n\_elem;}
+\DoxyCodeLine{327   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(tmp.n\_cols) = 1;}
+\DoxyCodeLine{328   }
+\DoxyCodeLine{329   (*this).steal\_mem(tmp);}
+\DoxyCodeLine{330   }
+\DoxyCodeLine{331   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{332   \}}
+\DoxyCodeLine{333 }
+\DoxyCodeLine{334 }
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{337 \textcolor{keyword}{inline}}
+\DoxyCodeLine{338 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\mbox{\hyperlink{classCol}{Col<eT>}}\&\& X)}
+\DoxyCodeLine{339   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{340   \{}
+\DoxyCodeLine{341   arma\_extra\_debug\_sigprint(\mbox{\hyperlink{classarma__str_1_1format}{arma\_str::format}}(\textcolor{stringliteral}{"{}this = \%x   X = \%x"{}}) \% \textcolor{keyword}{this} \% \&X);}
+\DoxyCodeLine{342   }
+\DoxyCodeLine{343   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}})  = X.n\_rows;}
+\DoxyCodeLine{344   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::n\_cols}})  = 1;}
+\DoxyCodeLine{345   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::n\_elem}})  = X.n\_elem;}
+\DoxyCodeLine{346   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::n\_alloc}}) = X.n\_alloc;}
+\DoxyCodeLine{347   }
+\DoxyCodeLine{348   \textcolor{keywordflow}{if}( (X.n\_alloc > arma\_config::mat\_prealloc) || (X.mem\_state == 1) || (X.mem\_state == 2) )}
+\DoxyCodeLine{349     \{}
+\DoxyCodeLine{350     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::mem\_state}}) = X.mem\_state;}
+\DoxyCodeLine{351     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::mem}})       = X.mem;}
+\DoxyCodeLine{352     }
+\DoxyCodeLine{353     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.n\_rows)    = 0;}
+\DoxyCodeLine{354     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.n\_cols)    = 1;}
+\DoxyCodeLine{355     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.n\_elem)    = 0;}
+\DoxyCodeLine{356     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.n\_alloc)   = 0;}
+\DoxyCodeLine{357     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.mem\_state) = 0;}
+\DoxyCodeLine{358     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.mem)       = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{359     \}}
+\DoxyCodeLine{360   \textcolor{keywordflow}{else}  \textcolor{comment}{// condition: (X.n\_alloc <= arma\_config::mat\_prealloc) || (X.mem\_state == 0) || (X.mem\_state == 3)}}
+\DoxyCodeLine{361     \{}
+\DoxyCodeLine{362     (*this).init\_cold();}
+\DoxyCodeLine{363     }
+\DoxyCodeLine{364     arrayops::copy( (*this).memptr(), X.mem, X.n\_elem );}
+\DoxyCodeLine{365     }
+\DoxyCodeLine{366     \textcolor{keywordflow}{if}( (X.mem\_state == 0) \&\& (X.n\_alloc <= arma\_config::mat\_prealloc) )}
+\DoxyCodeLine{367       \{}
+\DoxyCodeLine{368       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.n\_rows)  = 0;}
+\DoxyCodeLine{369       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.n\_cols)  = 1;}
+\DoxyCodeLine{370       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.n\_elem)  = 0;}
+\DoxyCodeLine{371       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.mem)     = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{372       \}}
+\DoxyCodeLine{373     \}}
+\DoxyCodeLine{374   \}}
+\DoxyCodeLine{375 }
+\DoxyCodeLine{376 }
+\DoxyCodeLine{377 }
+\DoxyCodeLine{378 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{379 \textcolor{keyword}{inline}}
+\DoxyCodeLine{380 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{381 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\mbox{\hyperlink{classCol}{Col<eT>}}\&\& X)}
+\DoxyCodeLine{382   \{}
+\DoxyCodeLine{383   arma\_extra\_debug\_sigprint(\mbox{\hyperlink{classarma__str_1_1format}{arma\_str::format}}(\textcolor{stringliteral}{"{}this = \%x   X = \%x"{}}) \% \textcolor{keyword}{this} \% \&X);}
+\DoxyCodeLine{384   }
+\DoxyCodeLine{385   (*this).steal\_mem(X);}
+\DoxyCodeLine{386   }
+\DoxyCodeLine{387   \textcolor{keywordflow}{if}( (X.mem\_state == 0) \&\& (X.n\_alloc <= arma\_config::mat\_prealloc) \&\& (\textcolor{keyword}{this} != \&X) )}
+\DoxyCodeLine{388     \{}
+\DoxyCodeLine{389     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.n\_rows) = 0;}
+\DoxyCodeLine{390     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.n\_cols) = 1;}
+\DoxyCodeLine{391     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.n\_elem) = 0;}
+\DoxyCodeLine{392     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(X.mem)    = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{393     \}}
+\DoxyCodeLine{394   }
+\DoxyCodeLine{395   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{396   \}}
+\DoxyCodeLine{397 }
+\DoxyCodeLine{398 }
+\DoxyCodeLine{399 }
+\DoxyCodeLine{400 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{401 \textcolor{keyword}{inline}}
+\DoxyCodeLine{402 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{403 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{404   \{}
+\DoxyCodeLine{405   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{406   }
+\DoxyCodeLine{407   \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{Mat<eT>::operator=}}(val);}
+\DoxyCodeLine{408   }
+\DoxyCodeLine{409   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{410   \}}
+\DoxyCodeLine{411 }
+\DoxyCodeLine{412 }
+\DoxyCodeLine{413 }
+\DoxyCodeLine{414 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{415 \textcolor{keyword}{inline}}
+\DoxyCodeLine{416 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{417 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}\& X)}
+\DoxyCodeLine{418   \{}
+\DoxyCodeLine{419   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{420   }
+\DoxyCodeLine{421   \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{Mat<eT>::operator=}}(X);}
+\DoxyCodeLine{422   }
+\DoxyCodeLine{423   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{424   \}}
+\DoxyCodeLine{425 }
+\DoxyCodeLine{426 }
+\DoxyCodeLine{427 }
+\DoxyCodeLine{428 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{429 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{430 \textcolor{keyword}{inline}}
+\DoxyCodeLine{431 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X)}
+\DoxyCodeLine{432   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{433   \{}
+\DoxyCodeLine{434   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{435   }
+\DoxyCodeLine{436   \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{Mat<eT>::operator=}}(X.get\_ref());}
+\DoxyCodeLine{437   \}}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{439 }
+\DoxyCodeLine{440 }
+\DoxyCodeLine{441 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{442 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{443 \textcolor{keyword}{inline}}
+\DoxyCodeLine{444 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{445 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X)}
+\DoxyCodeLine{446   \{}
+\DoxyCodeLine{447   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{448   }
+\DoxyCodeLine{449   \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{Mat<eT>::operator=}}(X.get\_ref());}
+\DoxyCodeLine{450   }
+\DoxyCodeLine{451   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{452   \}}
+\DoxyCodeLine{453 }
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455 }
+\DoxyCodeLine{456 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{457 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{458 \textcolor{keyword}{inline}}
+\DoxyCodeLine{459 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& X)}
+\DoxyCodeLine{460   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{461   \{}
+\DoxyCodeLine{462   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{463   }
+\DoxyCodeLine{464   \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{Mat<eT>::operator=}}(X.get\_ref());}
+\DoxyCodeLine{465   \}}
+\DoxyCodeLine{466 }
+\DoxyCodeLine{467 }
+\DoxyCodeLine{468 }
+\DoxyCodeLine{469 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{470 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{471 \textcolor{keyword}{inline}}
+\DoxyCodeLine{472 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{473 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& X)}
+\DoxyCodeLine{474   \{}
+\DoxyCodeLine{475   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{476   }
+\DoxyCodeLine{477   \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{Mat<eT>::operator=}}(X.get\_ref());}
+\DoxyCodeLine{478   }
+\DoxyCodeLine{479   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{480   \}}
+\DoxyCodeLine{481 }
+\DoxyCodeLine{482 }
+\DoxyCodeLine{483 }
+\DoxyCodeLine{485 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{486 \textcolor{keyword}{inline}}
+\DoxyCodeLine{487 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(eT* aux\_mem, \textcolor{keyword}{const} uword aux\_length, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} copy\_aux\_mem, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} strict)}
+\DoxyCodeLine{488   : \mbox{\hyperlink{classMat}{Mat}}<eT>(aux\_mem, aux\_length, 1, copy\_aux\_mem, strict)}
+\DoxyCodeLine{489   \{}
+\DoxyCodeLine{490   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{491   }
+\DoxyCodeLine{492   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::vec\_state}}) = 1;}
+\DoxyCodeLine{493   \}}
+\DoxyCodeLine{494 }
+\DoxyCodeLine{495 }
+\DoxyCodeLine{496 }
+\DoxyCodeLine{498 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{499 \textcolor{keyword}{inline}}
+\DoxyCodeLine{500 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} eT* aux\_mem, \textcolor{keyword}{const} uword aux\_length)}
+\DoxyCodeLine{501   : \mbox{\hyperlink{classMat}{Mat}}<eT>(aux\_mem, aux\_length, 1)}
+\DoxyCodeLine{502   \{}
+\DoxyCodeLine{503   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{504   }
+\DoxyCodeLine{505   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::vec\_state}}) = 1;}
+\DoxyCodeLine{506   \}}
+\DoxyCodeLine{507 }
+\DoxyCodeLine{508 }
+\DoxyCodeLine{509 }
+\DoxyCodeLine{510 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{511 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{512 \textcolor{keyword}{inline}}
+\DoxyCodeLine{513 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}}
+\DoxyCodeLine{514   (}
+\DoxyCodeLine{515   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<\textcolor{keyword}{typename} Col<eT>::pod\_type, T1>\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{516   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<\textcolor{keyword}{typename} Col<eT>::pod\_type, T2>\& \mbox{\hyperlink{structB}{B}}}
+\DoxyCodeLine{517   )}
+\DoxyCodeLine{518   \{}
+\DoxyCodeLine{519   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{520   }
+\DoxyCodeLine{521   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::vec\_state}}) = 1;}
+\DoxyCodeLine{522   }
+\DoxyCodeLine{523   \mbox{\hyperlink{group__Mat_ga1202427ce718a10cd17f68d239700934}{Mat<eT>::init}}(\mbox{\hyperlink{structA}{A}},\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{524   \}}
+\DoxyCodeLine{525 }
+\DoxyCodeLine{526 }
+\DoxyCodeLine{527 }
+\DoxyCodeLine{528 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{529 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{530 \textcolor{keyword}{inline}}
+\DoxyCodeLine{531 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X)}
+\DoxyCodeLine{532   \{}
+\DoxyCodeLine{533   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{534   }
+\DoxyCodeLine{535   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::vec\_state}}) = 1;}
+\DoxyCodeLine{536   }
+\DoxyCodeLine{537   \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{Mat<eT>::operator=}}(X);}
+\DoxyCodeLine{538   \}}
+\DoxyCodeLine{539 }
+\DoxyCodeLine{540 }
+\DoxyCodeLine{541 }
+\DoxyCodeLine{542 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{543 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{544 \textcolor{keyword}{inline}}
+\DoxyCodeLine{545 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{546 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& X)}
+\DoxyCodeLine{547   \{}
+\DoxyCodeLine{548   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{549   }
+\DoxyCodeLine{550   \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{Mat<eT>::operator=}}(X);}
+\DoxyCodeLine{551   }
+\DoxyCodeLine{552   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{553   \}}
+\DoxyCodeLine{554 }
+\DoxyCodeLine{555 }
+\DoxyCodeLine{556 }
+\DoxyCodeLine{557 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{558 \textcolor{keyword}{inline}}
+\DoxyCodeLine{559 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X)}
+\DoxyCodeLine{560   \{}
+\DoxyCodeLine{561   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{562   }
+\DoxyCodeLine{563   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::vec\_state}}) = 1;}
+\DoxyCodeLine{564   }
+\DoxyCodeLine{565   \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{Mat<eT>::operator=}}(X);}
+\DoxyCodeLine{566   \}}
+\DoxyCodeLine{567 }
+\DoxyCodeLine{568 }
+\DoxyCodeLine{569 }
+\DoxyCodeLine{570 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{571 \textcolor{keyword}{inline}}
+\DoxyCodeLine{572 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{573 \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X)}
+\DoxyCodeLine{574   \{}
+\DoxyCodeLine{575   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{576   }
+\DoxyCodeLine{577   \mbox{\hyperlink{group__Mat_ga8001916efd55b21174b460f147969b06}{Mat<eT>::operator=}}(X);}
+\DoxyCodeLine{578   }
+\DoxyCodeLine{579   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{580   \}}
+\DoxyCodeLine{581 }
+\DoxyCodeLine{582 }
+\DoxyCodeLine{583 }
+\DoxyCodeLine{584 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{585 \textcolor{keyword}{inline}}
+\DoxyCodeLine{586 arma\_cold}
+\DoxyCodeLine{587 \mbox{\hyperlink{classmat__injector}{mat\_injector< Col<eT>}} >}
+\DoxyCodeLine{588 \mbox{\hyperlink{classCol}{Col<eT>::operator<<}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{589   \{}
+\DoxyCodeLine{590   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmat__injector}{mat\_injector< Col<eT>}} >(*\textcolor{keyword}{this}, val);}
+\DoxyCodeLine{591   \}}
+\DoxyCodeLine{592 }
+\DoxyCodeLine{593 }
+\DoxyCodeLine{594 }
+\DoxyCodeLine{595 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{596 arma\_inline}
+\DoxyCodeLine{597 \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<Col<eT>}},\mbox{\hyperlink{classop__htrans}{op\_htrans}}>}
+\DoxyCodeLine{598 \mbox{\hyperlink{classCol}{Col<eT>::t}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{599 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{600   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<Col<eT>}},\mbox{\hyperlink{classop__htrans}{op\_htrans}}>(*this);}
+\DoxyCodeLine{601   \}}
+\DoxyCodeLine{602 }
+\DoxyCodeLine{603 }
+\DoxyCodeLine{604 }
+\DoxyCodeLine{605 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{606 arma\_inline}
+\DoxyCodeLine{607 \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<Col<eT>}},\mbox{\hyperlink{classop__htrans}{op\_htrans}}>}
+\DoxyCodeLine{608 \mbox{\hyperlink{classCol}{Col<eT>::ht}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{609 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{610   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<Col<eT>}},\mbox{\hyperlink{classop__htrans}{op\_htrans}}>(*this);}
+\DoxyCodeLine{611   \}}
+\DoxyCodeLine{612 }
+\DoxyCodeLine{613 }
+\DoxyCodeLine{614 }
+\DoxyCodeLine{615 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{616 arma\_inline}
+\DoxyCodeLine{617 \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<Col<eT>}},\mbox{\hyperlink{classop__strans}{op\_strans}}>}
+\DoxyCodeLine{618 \mbox{\hyperlink{classCol}{Col<eT>::st}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{619 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{620   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<Col<eT>}},\mbox{\hyperlink{classop__strans}{op\_strans}}>(*this);}
+\DoxyCodeLine{621   \}}
+\DoxyCodeLine{622 }
+\DoxyCodeLine{623 }
+\DoxyCodeLine{624 }
+\DoxyCodeLine{625 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{626 arma\_inline}
+\DoxyCodeLine{627 \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<Col<eT>}},\mbox{\hyperlink{classop__strans}{op\_strans}}>}
+\DoxyCodeLine{628 \mbox{\hyperlink{classCol}{Col<eT>::as\_row}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{629 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{630   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<Col<eT>}},\mbox{\hyperlink{classop__strans}{op\_strans}}>(*this);}
+\DoxyCodeLine{631   \}}
+\DoxyCodeLine{632 }
+\DoxyCodeLine{633 }
+\DoxyCodeLine{634 }
+\DoxyCodeLine{635 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{636 arma\_inline}
+\DoxyCodeLine{637 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{638 \mbox{\hyperlink{classCol}{Col<eT>::row}}(\textcolor{keyword}{const} uword in\_row1)}
+\DoxyCodeLine{639   \{}
+\DoxyCodeLine{640   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{641   }
+\DoxyCodeLine{642   arma\_debug\_check\_bounds( (in\_row1 >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}Col::row(): indices out of bounds or incorrectly used"{}} );}
+\DoxyCodeLine{643   }
+\DoxyCodeLine{644   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, in\_row1, 1);}
+\DoxyCodeLine{645   \}}
+\DoxyCodeLine{646 }
+\DoxyCodeLine{647 }
+\DoxyCodeLine{648 }
+\DoxyCodeLine{649 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{650 arma\_inline}
+\DoxyCodeLine{651 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{652 \mbox{\hyperlink{classCol}{Col<eT>::row}}(\textcolor{keyword}{const} uword in\_row1)\textcolor{keyword}{ const}}
+\DoxyCodeLine{653 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{654   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{655   }
+\DoxyCodeLine{656   arma\_debug\_check\_bounds( (in\_row1 >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}Col::row(): indices out of bounds or incorrectly used"{}} );}
+\DoxyCodeLine{657   }
+\DoxyCodeLine{658   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, in\_row1, 1);}
+\DoxyCodeLine{659   \}}
+\DoxyCodeLine{660 }
+\DoxyCodeLine{661 }
+\DoxyCodeLine{662 }
+\DoxyCodeLine{663 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{664 arma\_inline}
+\DoxyCodeLine{665 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{666 \mbox{\hyperlink{classCol}{Col<eT>::rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2)}
+\DoxyCodeLine{667   \{}
+\DoxyCodeLine{668   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{669   }
+\DoxyCodeLine{670   arma\_debug\_check\_bounds( ( (in\_row1 > in\_row2) || (in\_row2 >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}) ), \textcolor{stringliteral}{"{}Col::rows(): indices out of bounds or incorrectly used"{}} );}
+\DoxyCodeLine{671   }
+\DoxyCodeLine{672   \textcolor{keyword}{const} uword subview\_n\_rows = in\_row2 -\/ in\_row1 + 1;}
+\DoxyCodeLine{673   }
+\DoxyCodeLine{674   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, in\_row1, subview\_n\_rows);}
+\DoxyCodeLine{675   \}}
+\DoxyCodeLine{676 }
+\DoxyCodeLine{677 }
+\DoxyCodeLine{678 }
+\DoxyCodeLine{679 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{680 arma\_inline}
+\DoxyCodeLine{681 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{682 \mbox{\hyperlink{classCol}{Col<eT>::rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2)\textcolor{keyword}{ const}}
+\DoxyCodeLine{683 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{684   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{685   }
+\DoxyCodeLine{686   arma\_debug\_check\_bounds( ( (in\_row1 > in\_row2) || (in\_row2 >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}) ), \textcolor{stringliteral}{"{}Col::rows(): indices out of bounds or incorrectly used"{}} );}
+\DoxyCodeLine{687   }
+\DoxyCodeLine{688   \textcolor{keyword}{const} uword subview\_n\_rows = in\_row2 -\/ in\_row1 + 1;}
+\DoxyCodeLine{689   }
+\DoxyCodeLine{690   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, in\_row1, subview\_n\_rows);}
+\DoxyCodeLine{691   \}}
+\DoxyCodeLine{692 }
+\DoxyCodeLine{693 }
+\DoxyCodeLine{694 }
+\DoxyCodeLine{695 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{696 arma\_inline}
+\DoxyCodeLine{697 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{698 \mbox{\hyperlink{classCol}{Col<eT>::subvec}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2)}
+\DoxyCodeLine{699   \{}
+\DoxyCodeLine{700   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{701   }
+\DoxyCodeLine{702   arma\_debug\_check\_bounds( ( (in\_row1 > in\_row2) || (in\_row2 >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}) ), \textcolor{stringliteral}{"{}Col::subvec(): indices out of bounds or incorrectly used"{}} );}
+\DoxyCodeLine{703   }
+\DoxyCodeLine{704   \textcolor{keyword}{const} uword subview\_n\_rows = in\_row2 -\/ in\_row1 + 1;}
+\DoxyCodeLine{705   }
+\DoxyCodeLine{706   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, in\_row1, subview\_n\_rows);}
+\DoxyCodeLine{707   \}}
+\DoxyCodeLine{708 }
+\DoxyCodeLine{709 }
+\DoxyCodeLine{710 }
+\DoxyCodeLine{711 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{712 arma\_inline}
+\DoxyCodeLine{713 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{714 \mbox{\hyperlink{classCol}{Col<eT>::subvec}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2)\textcolor{keyword}{ const}}
+\DoxyCodeLine{715 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{716   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{717   }
+\DoxyCodeLine{718   arma\_debug\_check\_bounds( ( (in\_row1 > in\_row2) || (in\_row2 >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}) ), \textcolor{stringliteral}{"{}Col::subvec(): indices out of bounds or incorrectly used"{}} );}
+\DoxyCodeLine{719   }
+\DoxyCodeLine{720   \textcolor{keyword}{const} uword subview\_n\_rows = in\_row2 -\/ in\_row1 + 1;}
+\DoxyCodeLine{721   }
+\DoxyCodeLine{722   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, in\_row1, subview\_n\_rows);}
+\DoxyCodeLine{723   \}}
+\DoxyCodeLine{724 }
+\DoxyCodeLine{725 }
+\DoxyCodeLine{726 }
+\DoxyCodeLine{727 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{728 arma\_inline}
+\DoxyCodeLine{729 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{730 \mbox{\hyperlink{classCol}{Col<eT>::rows}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span)}
+\DoxyCodeLine{731   \{}
+\DoxyCodeLine{732   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{733   }
+\DoxyCodeLine{734   \textcolor{keywordflow}{return} subvec(row\_span);}
+\DoxyCodeLine{735   \}}
+\DoxyCodeLine{736 }
+\DoxyCodeLine{737 }
+\DoxyCodeLine{738 }
+\DoxyCodeLine{739 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{740 arma\_inline}
+\DoxyCodeLine{741 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{742 \mbox{\hyperlink{classCol}{Col<eT>::rows}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span)\textcolor{keyword}{ const}}
+\DoxyCodeLine{743 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{744   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{745   }
+\DoxyCodeLine{746   \textcolor{keywordflow}{return} subvec(row\_span);}
+\DoxyCodeLine{747   \}}
+\DoxyCodeLine{748 }
+\DoxyCodeLine{749 }
+\DoxyCodeLine{750 }
+\DoxyCodeLine{751 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{752 arma\_inline}
+\DoxyCodeLine{753 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{754 \mbox{\hyperlink{classCol}{Col<eT>::subvec}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span)}
+\DoxyCodeLine{755   \{}
+\DoxyCodeLine{756   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{757   }
+\DoxyCodeLine{758   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} row\_all = row\_span.whole;}
+\DoxyCodeLine{759 }
+\DoxyCodeLine{760   \textcolor{keyword}{const} uword local\_n\_rows = \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}};}
+\DoxyCodeLine{761   }
+\DoxyCodeLine{762   \textcolor{keyword}{const} uword in\_row1       = row\_all ? 0            : row\_span.a;}
+\DoxyCodeLine{763   \textcolor{keyword}{const} uword in\_row2       =                          row\_span.b;}
+\DoxyCodeLine{764   \textcolor{keyword}{const} uword subvec\_n\_rows = row\_all ? local\_n\_rows : in\_row2 -\/ in\_row1 + 1;}
+\DoxyCodeLine{765 }
+\DoxyCodeLine{766   arma\_debug\_check\_bounds( ( row\_all ? \textcolor{keyword}{false} : ((in\_row1 > in\_row2) || (in\_row2 >= local\_n\_rows)) ), \textcolor{stringliteral}{"{}Col::subvec(): indices out of bounds or incorrectly used"{}} );}
+\DoxyCodeLine{767   }
+\DoxyCodeLine{768   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, in\_row1, subvec\_n\_rows);}
+\DoxyCodeLine{769   \}}
+\DoxyCodeLine{770 }
+\DoxyCodeLine{771 }
+\DoxyCodeLine{772 }
+\DoxyCodeLine{773 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{774 arma\_inline}
+\DoxyCodeLine{775 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{776 \mbox{\hyperlink{classCol}{Col<eT>::subvec}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span)\textcolor{keyword}{ const}}
+\DoxyCodeLine{777 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{778   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{779   }
+\DoxyCodeLine{780   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} row\_all = row\_span.whole;}
+\DoxyCodeLine{781 }
+\DoxyCodeLine{782   \textcolor{keyword}{const} uword local\_n\_rows = \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}};}
+\DoxyCodeLine{783   }
+\DoxyCodeLine{784   \textcolor{keyword}{const} uword in\_row1       = row\_all ? 0            : row\_span.a;}
+\DoxyCodeLine{785   \textcolor{keyword}{const} uword in\_row2       =                          row\_span.b;}
+\DoxyCodeLine{786   \textcolor{keyword}{const} uword subvec\_n\_rows = row\_all ? local\_n\_rows : in\_row2 -\/ in\_row1 + 1;}
+\DoxyCodeLine{787 }
+\DoxyCodeLine{788   arma\_debug\_check\_bounds( ( row\_all ? \textcolor{keyword}{false} : ((in\_row1 > in\_row2) || (in\_row2 >= local\_n\_rows)) ), \textcolor{stringliteral}{"{}Col::subvec(): indices out of bounds or incorrectly used"{}} );}
+\DoxyCodeLine{789   }
+\DoxyCodeLine{790   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, in\_row1, subvec\_n\_rows);}
+\DoxyCodeLine{791   \}}
+\DoxyCodeLine{792 }
+\DoxyCodeLine{793 }
+\DoxyCodeLine{794 }
+\DoxyCodeLine{795 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{796 arma\_inline}
+\DoxyCodeLine{797 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{798 \mbox{\hyperlink{classCol}{Col<eT>::operator()}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span)}
+\DoxyCodeLine{799   \{}
+\DoxyCodeLine{800   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{801   }
+\DoxyCodeLine{802   \textcolor{keywordflow}{return} subvec(row\_span);}
+\DoxyCodeLine{803   \}}
+\DoxyCodeLine{804 }
+\DoxyCodeLine{805 }
+\DoxyCodeLine{806 }
+\DoxyCodeLine{807 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{808 arma\_inline}
+\DoxyCodeLine{809 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{810 \mbox{\hyperlink{classCol}{Col<eT>::operator()}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span)\textcolor{keyword}{ const}}
+\DoxyCodeLine{811 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{812   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{813   }
+\DoxyCodeLine{814   \textcolor{keywordflow}{return} subvec(row\_span);}
+\DoxyCodeLine{815   \}}
+\DoxyCodeLine{816 }
+\DoxyCodeLine{817 }
+\DoxyCodeLine{818 }
+\DoxyCodeLine{819 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{820 arma\_inline}
+\DoxyCodeLine{821 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{822 \mbox{\hyperlink{classCol}{Col<eT>::subvec}}(\textcolor{keyword}{const} uword start\_row, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{823   \{}
+\DoxyCodeLine{824   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{825   }
+\DoxyCodeLine{826   arma\_debug\_check( (s.n\_cols != 1), \textcolor{stringliteral}{"{}Col::subvec(): given size does not specify a column vector"{}} );}
+\DoxyCodeLine{827   }
+\DoxyCodeLine{828   arma\_debug\_check\_bounds( ( (start\_row >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}) || ((start\_row + s.n\_rows) > \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}) ), \textcolor{stringliteral}{"{}Col::subvec(): size out of bounds"{}} );}
+\DoxyCodeLine{829   }
+\DoxyCodeLine{830   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, start\_row, s.n\_rows);}
+\DoxyCodeLine{831   \}}
+\DoxyCodeLine{832 }
+\DoxyCodeLine{833 }
+\DoxyCodeLine{834 }
+\DoxyCodeLine{835 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{836 arma\_inline}
+\DoxyCodeLine{837 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{838 \mbox{\hyperlink{classCol}{Col<eT>::subvec}}(\textcolor{keyword}{const} uword start\_row, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)\textcolor{keyword}{ const}}
+\DoxyCodeLine{839 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{840   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{841   }
+\DoxyCodeLine{842   arma\_debug\_check( (s.n\_cols != 1), \textcolor{stringliteral}{"{}Col::subvec(): given size does not specify a column vector"{}} );}
+\DoxyCodeLine{843   }
+\DoxyCodeLine{844   arma\_debug\_check\_bounds( ( (start\_row >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}) || ((start\_row + s.n\_rows) > \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}) ), \textcolor{stringliteral}{"{}Col::subvec(): size out of bounds"{}} );}
+\DoxyCodeLine{845   }
+\DoxyCodeLine{846   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, start\_row, s.n\_rows);}
+\DoxyCodeLine{847   \}}
+\DoxyCodeLine{848 }
+\DoxyCodeLine{849 }
+\DoxyCodeLine{850 }
+\DoxyCodeLine{851 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{852 arma\_inline}
+\DoxyCodeLine{853 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{854 \mbox{\hyperlink{classCol}{Col<eT>::head}}(\textcolor{keyword}{const} uword N)}
+\DoxyCodeLine{855   \{}
+\DoxyCodeLine{856   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{857   }
+\DoxyCodeLine{858   arma\_debug\_check\_bounds( (N > \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}Col::head(): size out of bounds"{}} );}
+\DoxyCodeLine{859   }
+\DoxyCodeLine{860   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, 0, N);}
+\DoxyCodeLine{861   \}}
+\DoxyCodeLine{862 }
+\DoxyCodeLine{863 }
+\DoxyCodeLine{864 }
+\DoxyCodeLine{865 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{866 arma\_inline}
+\DoxyCodeLine{867 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{868 \mbox{\hyperlink{classCol}{Col<eT>::head}}(\textcolor{keyword}{const} uword N)\textcolor{keyword}{ const}}
+\DoxyCodeLine{869 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{870   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{871   }
+\DoxyCodeLine{872   arma\_debug\_check\_bounds( (N > \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}Col::head(): size out of bounds"{}} );}
+\DoxyCodeLine{873   }
+\DoxyCodeLine{874   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, 0, N);}
+\DoxyCodeLine{875   \}}
+\DoxyCodeLine{876 }
+\DoxyCodeLine{877 }
+\DoxyCodeLine{878 }
+\DoxyCodeLine{879 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{880 arma\_inline}
+\DoxyCodeLine{881 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{882 \mbox{\hyperlink{classCol}{Col<eT>::tail}}(\textcolor{keyword}{const} uword N)}
+\DoxyCodeLine{883   \{}
+\DoxyCodeLine{884   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{885   }
+\DoxyCodeLine{886   arma\_debug\_check\_bounds( (N > \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}Col::tail(): size out of bounds"{}} );}
+\DoxyCodeLine{887   }
+\DoxyCodeLine{888   \textcolor{keyword}{const} uword start\_row = \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}} -\/ N;}
+\DoxyCodeLine{889   }
+\DoxyCodeLine{890   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, start\_row, N);}
+\DoxyCodeLine{891   \}}
+\DoxyCodeLine{892 }
+\DoxyCodeLine{893 }
+\DoxyCodeLine{894 }
+\DoxyCodeLine{895 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{896 arma\_inline}
+\DoxyCodeLine{897 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{898 \mbox{\hyperlink{classCol}{Col<eT>::tail}}(\textcolor{keyword}{const} uword N)\textcolor{keyword}{ const}}
+\DoxyCodeLine{899 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{900   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{901   }
+\DoxyCodeLine{902   arma\_debug\_check\_bounds( (N > \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}Col::tail(): size out of bounds"{}} );}
+\DoxyCodeLine{903   }
+\DoxyCodeLine{904   \textcolor{keyword}{const} uword start\_row = \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}} -\/ N;}
+\DoxyCodeLine{905   }
+\DoxyCodeLine{906   \textcolor{keywordflow}{return} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}(*\textcolor{keyword}{this}, 0, start\_row, N);}
+\DoxyCodeLine{907   \}}
+\DoxyCodeLine{908 }
+\DoxyCodeLine{909 }
+\DoxyCodeLine{910 }
+\DoxyCodeLine{911 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{912 arma\_inline}
+\DoxyCodeLine{913 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{914 \mbox{\hyperlink{classCol}{Col<eT>::head\_rows}}(\textcolor{keyword}{const} uword N)}
+\DoxyCodeLine{915   \{}
+\DoxyCodeLine{916   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{917   }
+\DoxyCodeLine{918   \textcolor{keywordflow}{return} (*this).head(N);}
+\DoxyCodeLine{919   \}}
+\DoxyCodeLine{920 }
+\DoxyCodeLine{921 }
+\DoxyCodeLine{922 }
+\DoxyCodeLine{923 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{924 arma\_inline}
+\DoxyCodeLine{925 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{926 \mbox{\hyperlink{classCol}{Col<eT>::head\_rows}}(\textcolor{keyword}{const} uword N)\textcolor{keyword}{ const}}
+\DoxyCodeLine{927 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{928   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{929   }
+\DoxyCodeLine{930   \textcolor{keywordflow}{return} (*this).head(N);}
+\DoxyCodeLine{931   \}}
+\DoxyCodeLine{932 }
+\DoxyCodeLine{933 }
+\DoxyCodeLine{934 }
+\DoxyCodeLine{935 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{936 arma\_inline}
+\DoxyCodeLine{937 \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{938 \mbox{\hyperlink{classCol}{Col<eT>::tail\_rows}}(\textcolor{keyword}{const} uword N)}
+\DoxyCodeLine{939   \{}
+\DoxyCodeLine{940   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{941   }
+\DoxyCodeLine{942   \textcolor{keywordflow}{return} (*this).tail(N);}
+\DoxyCodeLine{943   \}}
+\DoxyCodeLine{944 }
+\DoxyCodeLine{945 }
+\DoxyCodeLine{946 }
+\DoxyCodeLine{947 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{948 arma\_inline}
+\DoxyCodeLine{949 \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__col}{subview\_col<eT>}}}
+\DoxyCodeLine{950 \mbox{\hyperlink{classCol}{Col<eT>::tail\_rows}}(\textcolor{keyword}{const} uword N)\textcolor{keyword}{ const}}
+\DoxyCodeLine{951 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{952   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{953   }
+\DoxyCodeLine{954   \textcolor{keywordflow}{return} (*this).tail(N);}
+\DoxyCodeLine{955   \}}
+\DoxyCodeLine{956 }
+\DoxyCodeLine{957 }
+\DoxyCodeLine{958 }
+\DoxyCodeLine{960 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{961 \textcolor{keyword}{inline}}
+\DoxyCodeLine{962 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{963 \mbox{\hyperlink{group__Col_ga73c21c7b3cf0c16ea49c812ac8a09ecf}{Col<eT>::shed\_row}}(\textcolor{keyword}{const} uword row\_num)}
+\DoxyCodeLine{964   \{}
+\DoxyCodeLine{965   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{966   }
+\DoxyCodeLine{967   arma\_debug\_check\_bounds( row\_num >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}, \textcolor{stringliteral}{"{}Col::shed\_row(): index out of bounds"{}} );}
+\DoxyCodeLine{968   }
+\DoxyCodeLine{969   shed\_rows(row\_num, row\_num);}
+\DoxyCodeLine{970   \}}
+\DoxyCodeLine{971 }
+\DoxyCodeLine{972 }
+\DoxyCodeLine{973 }
+\DoxyCodeLine{975 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{976 \textcolor{keyword}{inline}}
+\DoxyCodeLine{977 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{978 \mbox{\hyperlink{group__Col_ga82b3a4facee9186ff9a5a5bb95f8b15a}{Col<eT>::shed\_rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2)}
+\DoxyCodeLine{979   \{}
+\DoxyCodeLine{980   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{981   }
+\DoxyCodeLine{982   arma\_debug\_check\_bounds}
+\DoxyCodeLine{983     (}
+\DoxyCodeLine{984     (in\_row1 > in\_row2) || (in\_row2 >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}),}
+\DoxyCodeLine{985     \textcolor{stringliteral}{"{}Col::shed\_rows(): indices out of bounds or incorrectly used"{}}}
+\DoxyCodeLine{986     );}
+\DoxyCodeLine{987   }
+\DoxyCodeLine{988   \textcolor{keyword}{const} uword n\_keep\_front = in\_row1;}
+\DoxyCodeLine{989   \textcolor{keyword}{const} uword n\_keep\_back  = \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}} -\/ (in\_row2 + 1);}
+\DoxyCodeLine{990   }
+\DoxyCodeLine{991   \mbox{\hyperlink{classCol}{Col<eT>}} X(n\_keep\_front + n\_keep\_back, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{992   }
+\DoxyCodeLine{993         eT* X\_mem = X.memptr();}
+\DoxyCodeLine{994   \textcolor{keyword}{const} eT* t\_mem = (*this).memptr();}
+\DoxyCodeLine{995   }
+\DoxyCodeLine{996   \textcolor{keywordflow}{if}(n\_keep\_front > 0)}
+\DoxyCodeLine{997     \{}
+\DoxyCodeLine{998     arrayops::copy( X\_mem, t\_mem, n\_keep\_front );}
+\DoxyCodeLine{999     \}}
+\DoxyCodeLine{1000   }
+\DoxyCodeLine{1001   \textcolor{keywordflow}{if}(n\_keep\_back > 0)}
+\DoxyCodeLine{1002     \{}
+\DoxyCodeLine{1003     arrayops::copy( \&(X\_mem[n\_keep\_front]), \&(t\_mem[in\_row2+1]), n\_keep\_back);}
+\DoxyCodeLine{1004     \}}
+\DoxyCodeLine{1005   }
+\DoxyCodeLine{1006   \mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{Mat<eT>::steal\_mem}}(X);}
+\DoxyCodeLine{1007   \}}
+\DoxyCodeLine{1008 }
+\DoxyCodeLine{1009 }
+\DoxyCodeLine{1010 }
+\DoxyCodeLine{1012 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1013 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1014 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1015 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1016 \mbox{\hyperlink{group__Col_ga82b3a4facee9186ff9a5a5bb95f8b15a}{Col<eT>::shed\_rows}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword, T1>}}\& indices)}
+\DoxyCodeLine{1017   \{}
+\DoxyCodeLine{1018   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1019   }
+\DoxyCodeLine{1020   \mbox{\hyperlink{group__Mat_gae18e4671dd983be00b17c691ff18a4f1}{Mat<eT>::shed\_rows}}(indices);}
+\DoxyCodeLine{1021   \}}
+\DoxyCodeLine{1022 }
+\DoxyCodeLine{1023 }
+\DoxyCodeLine{1024 }
+\DoxyCodeLine{1027 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1028 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1029 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1030 \mbox{\hyperlink{group__Col_ga4d8f4d168c2226f1dde34d501ace8f7c}{Col<eT>::insert\_rows}}(\textcolor{keyword}{const} uword row\_num, \textcolor{keyword}{const} uword N, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} set\_to\_zero)}
+\DoxyCodeLine{1031   \{}
+\DoxyCodeLine{1032   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1033   }
+\DoxyCodeLine{1034   \textcolor{keyword}{const} uword t\_n\_rows = \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}};}
+\DoxyCodeLine{1035   }
+\DoxyCodeLine{1036   \textcolor{keyword}{const} uword A\_n\_rows = row\_num;}
+\DoxyCodeLine{1037   \textcolor{keyword}{const} uword B\_n\_rows = t\_n\_rows -\/ row\_num;}
+\DoxyCodeLine{1038   }
+\DoxyCodeLine{1039   \textcolor{comment}{// insertion at row\_num == n\_rows is in effect an append operation}}
+\DoxyCodeLine{1040   arma\_debug\_check\_bounds( (row\_num > t\_n\_rows), \textcolor{stringliteral}{"{}Col::insert\_rows(): index out of bounds"{}} );}
+\DoxyCodeLine{1041   }
+\DoxyCodeLine{1042   \textcolor{keywordflow}{if}(N > 0)}
+\DoxyCodeLine{1043     \{}
+\DoxyCodeLine{1044     \mbox{\hyperlink{classCol}{Col<eT>}} out(t\_n\_rows + N, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{1045     }
+\DoxyCodeLine{1046           eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{1047     \textcolor{keyword}{const} eT*   t\_mem = (*this).memptr();}
+\DoxyCodeLine{1048     }
+\DoxyCodeLine{1049     \textcolor{keywordflow}{if}(A\_n\_rows > 0)}
+\DoxyCodeLine{1050       \{}
+\DoxyCodeLine{1051       arrayops::copy( out\_mem, t\_mem, A\_n\_rows );}
+\DoxyCodeLine{1052       \}}
+\DoxyCodeLine{1053     }
+\DoxyCodeLine{1054     \textcolor{keywordflow}{if}(B\_n\_rows > 0)}
+\DoxyCodeLine{1055       \{}
+\DoxyCodeLine{1056       arrayops::copy( \&(out\_mem[row\_num + N]), \&(t\_mem[row\_num]), B\_n\_rows );}
+\DoxyCodeLine{1057       \}}
+\DoxyCodeLine{1058     }
+\DoxyCodeLine{1059     \textcolor{keywordflow}{if}(set\_to\_zero)}
+\DoxyCodeLine{1060       \{}
+\DoxyCodeLine{1061       arrayops::inplace\_set( \&(out\_mem[row\_num]), eT(0), N );}
+\DoxyCodeLine{1062       \}}
+\DoxyCodeLine{1063     }
+\DoxyCodeLine{1064     \mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{Mat<eT>::steal\_mem}}(out);}
+\DoxyCodeLine{1065     \}}
+\DoxyCodeLine{1066   \}}
+\DoxyCodeLine{1067 }
+\DoxyCodeLine{1068 }
+\DoxyCodeLine{1069 }
+\DoxyCodeLine{1072 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1073 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1074 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1075 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1076 \mbox{\hyperlink{group__Col_ga4d8f4d168c2226f1dde34d501ace8f7c}{Col<eT>::insert\_rows}}(\textcolor{keyword}{const} uword row\_num, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X)}
+\DoxyCodeLine{1077   \{}
+\DoxyCodeLine{1078   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1079   }
+\DoxyCodeLine{1080   \mbox{\hyperlink{group__Mat_gaa1a1e4d8245aa664bf447192b58ba703}{Mat<eT>::insert\_rows}}(row\_num, X);}
+\DoxyCodeLine{1081   \}}
+\DoxyCodeLine{1082 }
+\DoxyCodeLine{1083 }
+\DoxyCodeLine{1084 }
+\DoxyCodeLine{1085 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1086 arma\_inline}
+\DoxyCodeLine{1087 arma\_warn\_unused}
+\DoxyCodeLine{1088 eT\&}
+\DoxyCodeLine{1089 \mbox{\hyperlink{classCol}{Col<eT>::at}}(\textcolor{keyword}{const} uword i)}
+\DoxyCodeLine{1090   \{}
+\DoxyCodeLine{1091   \textcolor{keywordflow}{return} \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classMat}{Mat<eT>::mem}}[i]);}
+\DoxyCodeLine{1092   \}}
+\DoxyCodeLine{1093 }
+\DoxyCodeLine{1094 }
+\DoxyCodeLine{1095 }
+\DoxyCodeLine{1096 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1097 arma\_inline}
+\DoxyCodeLine{1098 arma\_warn\_unused}
+\DoxyCodeLine{1099 \textcolor{keyword}{const} eT\&}
+\DoxyCodeLine{1100 \mbox{\hyperlink{classCol}{Col<eT>::at}}(\textcolor{keyword}{const} uword i)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1101 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1102   \textcolor{keywordflow}{return} \mbox{\hyperlink{classMat}{Mat<eT>::mem}}[i];}
+\DoxyCodeLine{1103   \}}
+\DoxyCodeLine{1104 }
+\DoxyCodeLine{1105 }
+\DoxyCodeLine{1106 }
+\DoxyCodeLine{1107 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1108 arma\_inline}
+\DoxyCodeLine{1109 arma\_warn\_unused}
+\DoxyCodeLine{1110 eT\&}
+\DoxyCodeLine{1111 \mbox{\hyperlink{classCol}{Col<eT>::at}}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword)}
+\DoxyCodeLine{1112   \{}
+\DoxyCodeLine{1113   \textcolor{keywordflow}{return} \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}( \mbox{\hyperlink{classMat}{Mat<eT>::mem}}[in\_row] );}
+\DoxyCodeLine{1114   \}}
+\DoxyCodeLine{1115 }
+\DoxyCodeLine{1116 }
+\DoxyCodeLine{1117 }
+\DoxyCodeLine{1118 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1119 arma\_inline}
+\DoxyCodeLine{1120 arma\_warn\_unused}
+\DoxyCodeLine{1121 \textcolor{keyword}{const} eT\&}
+\DoxyCodeLine{1122 \mbox{\hyperlink{classCol}{Col<eT>::at}}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1123 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1124   \textcolor{keywordflow}{return} \mbox{\hyperlink{classMat}{Mat<eT>::mem}}[in\_row];}
+\DoxyCodeLine{1125   \}}
+\DoxyCodeLine{1126 }
+\DoxyCodeLine{1127 }
+\DoxyCodeLine{1128 }
+\DoxyCodeLine{1129 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1130 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1131 \textcolor{keyword}{typename} Col<eT>::row\_iterator}
+\DoxyCodeLine{1132 \mbox{\hyperlink{classCol}{Col<eT>::begin\_row}}(\textcolor{keyword}{const} uword row\_num)}
+\DoxyCodeLine{1133   \{}
+\DoxyCodeLine{1134   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1135   }
+\DoxyCodeLine{1136   arma\_debug\_check\_bounds( (row\_num >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}Col::begin\_row(): index out of bounds"{}} );}
+\DoxyCodeLine{1137   }
+\DoxyCodeLine{1138   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{Mat<eT>::memptr}}() + row\_num;}
+\DoxyCodeLine{1139   \}}
+\DoxyCodeLine{1140 }
+\DoxyCodeLine{1141 }
+\DoxyCodeLine{1142 }
+\DoxyCodeLine{1143 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1144 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1145 \textcolor{keyword}{typename} Col<eT>::const\_row\_iterator}
+\DoxyCodeLine{1146 \mbox{\hyperlink{classCol}{Col<eT>::begin\_row}}(\textcolor{keyword}{const} uword row\_num)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1147 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1148   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1149   }
+\DoxyCodeLine{1150   arma\_debug\_check\_bounds( (row\_num >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}Col::begin\_row(): index out of bounds"{}} );}
+\DoxyCodeLine{1151   }
+\DoxyCodeLine{1152   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{Mat<eT>::memptr}}() + row\_num;}
+\DoxyCodeLine{1153   \}}
+\DoxyCodeLine{1154 }
+\DoxyCodeLine{1155 }
+\DoxyCodeLine{1156 }
+\DoxyCodeLine{1157 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1158 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1159 \textcolor{keyword}{typename} Col<eT>::row\_iterator}
+\DoxyCodeLine{1160 \mbox{\hyperlink{classCol}{Col<eT>::end\_row}}(\textcolor{keyword}{const} uword row\_num)}
+\DoxyCodeLine{1161   \{}
+\DoxyCodeLine{1162   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1163   }
+\DoxyCodeLine{1164   arma\_debug\_check\_bounds( (row\_num >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}Col::end\_row(): index out of bounds"{}} );}
+\DoxyCodeLine{1165   }
+\DoxyCodeLine{1166   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{Mat<eT>::memptr}}() + row\_num + 1;}
+\DoxyCodeLine{1167   \}}
+\DoxyCodeLine{1168 }
+\DoxyCodeLine{1169 }
+\DoxyCodeLine{1170 }
+\DoxyCodeLine{1171 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1172 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1173 \textcolor{keyword}{typename} Col<eT>::const\_row\_iterator}
+\DoxyCodeLine{1174 \mbox{\hyperlink{classCol}{Col<eT>::end\_row}}(\textcolor{keyword}{const} uword row\_num)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1175 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1176   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1177   }
+\DoxyCodeLine{1178   arma\_debug\_check\_bounds( (row\_num >= \mbox{\hyperlink{classMat}{Mat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}Col::end\_row(): index out of bounds"{}} );}
+\DoxyCodeLine{1179   }
+\DoxyCodeLine{1180   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{Mat<eT>::memptr}}() + row\_num + 1;}
+\DoxyCodeLine{1181   \}}
+\DoxyCodeLine{1182 }
+\DoxyCodeLine{1183 }
+\DoxyCodeLine{1184 }
+\DoxyCodeLine{1185 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1186 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1187 arma\_inline}
+\DoxyCodeLine{1188 \mbox{\hyperlink{classCol_1_1fixed}{Col<eT>::fixed<fixed\_n\_elem>::fixed}}()}
+\DoxyCodeLine{1189   : \mbox{\hyperlink{classCol}{Col}}<eT>( \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), fixed\_n\_elem, ((use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat}}<eT>::mem\_local) )}
+\DoxyCodeLine{1190   \{}
+\DoxyCodeLine{1191   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1192   }
+\DoxyCodeLine{1193 \textcolor{preprocessor}{  \#if (!defined(ARMA\_DONT\_ZERO\_INIT))}}
+\DoxyCodeLine{1194     \{}
+\DoxyCodeLine{1195     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}Col::fixed::constructor: zeroing memory"{}});}
+\DoxyCodeLine{1196     }
+\DoxyCodeLine{1197     eT* mem\_use = (use\_extra) ? \&(mem\_local\_extra[0]) : \&(\mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[0]);}
+\DoxyCodeLine{1198     }
+\DoxyCodeLine{1199     arrayops::inplace\_set\_fixed<eT,fixed\_n\_elem>( mem\_use, eT(0) );}
+\DoxyCodeLine{1200     \}}
+\DoxyCodeLine{1201 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1202   \}}
+\DoxyCodeLine{1203 }
+\DoxyCodeLine{1204 }
+\DoxyCodeLine{1205 }
+\DoxyCodeLine{1206 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1207 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1208 arma\_inline}
+\DoxyCodeLine{1209 \mbox{\hyperlink{classCol_1_1fixed}{Col<eT>::fixed<fixed\_n\_elem>::fixed}}(\textcolor{keyword}{const} fixed<fixed\_n\_elem>\& X)}
+\DoxyCodeLine{1210   : \mbox{\hyperlink{classCol}{Col}}<eT>( \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), fixed\_n\_elem, ((use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat}}<eT>::mem\_local) )}
+\DoxyCodeLine{1211   \{}
+\DoxyCodeLine{1212   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1213   }
+\DoxyCodeLine{1214         eT* dest = (use\_extra) ?   mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}};}
+\DoxyCodeLine{1215   \textcolor{keyword}{const} eT* src  = (use\_extra) ? X.mem\_local\_extra :        X.mem\_local;}
+\DoxyCodeLine{1216   }
+\DoxyCodeLine{1217   arrayops::copy( dest, src, fixed\_n\_elem );}
+\DoxyCodeLine{1218   \}}
+\DoxyCodeLine{1219 }
+\DoxyCodeLine{1220 }
+\DoxyCodeLine{1221 }
+\DoxyCodeLine{1222 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1223 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1224 arma\_inline}
+\DoxyCodeLine{1225 \mbox{\hyperlink{classCol_1_1fixed}{Col<eT>::fixed<fixed\_n\_elem>::fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X)}
+\DoxyCodeLine{1226   : \mbox{\hyperlink{classCol}{Col}}<eT>( \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), fixed\_n\_elem, ((use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat}}<eT>::mem\_local) )}
+\DoxyCodeLine{1227   \{}
+\DoxyCodeLine{1228   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1229   }
+\DoxyCodeLine{1230   \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(X);}
+\DoxyCodeLine{1231   \}}
+\DoxyCodeLine{1232 }
+\DoxyCodeLine{1233 }
+\DoxyCodeLine{1234 }
+\DoxyCodeLine{1235 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1236 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1237 \textcolor{keyword}{template}<\textcolor{keyword}{typename} fill\_type>}
+\DoxyCodeLine{1238 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1239 \mbox{\hyperlink{classCol_1_1fixed}{Col<eT>::fixed<fixed\_n\_elem>::fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{structfill_1_1fill__class}{fill::fill\_class<fill\_type>}}\&)}
+\DoxyCodeLine{1240   : \mbox{\hyperlink{classCol}{Col}}<eT>( \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), fixed\_n\_elem, ((use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat}}<eT>::mem\_local) )}
+\DoxyCodeLine{1241   \{}
+\DoxyCodeLine{1242   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1243   }
+\DoxyCodeLine{1244   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<fill\_type, fill::fill\_zeros>::yes}})  \{ (*this).zeros(); \}}
+\DoxyCodeLine{1245   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<fill\_type, fill::fill\_ones >::yes}})  \{ (*this).ones();  \}}
+\DoxyCodeLine{1246   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<fill\_type, fill::fill\_eye  >::yes}})  \{ (*this).eye();   \}}
+\DoxyCodeLine{1247   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<fill\_type, fill::fill\_randu>::yes}})  \{ (*this).randu(); \}}
+\DoxyCodeLine{1248   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<fill\_type, fill::fill\_randn>::yes}})  \{ (*this).randn(); \}}
+\DoxyCodeLine{1249   \}}
+\DoxyCodeLine{1250 }
+\DoxyCodeLine{1251 }
+\DoxyCodeLine{1252 }
+\DoxyCodeLine{1253 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1254 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1255 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1256 arma\_inline}
+\DoxyCodeLine{1257 \mbox{\hyperlink{classCol_1_1fixed}{Col<eT>::fixed<fixed\_n\_elem>::fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1258   : \mbox{\hyperlink{classCol}{Col}}<eT>( \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), fixed\_n\_elem, ((use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat}}<eT>::mem\_local) )}
+\DoxyCodeLine{1259   \{}
+\DoxyCodeLine{1260   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1261   }
+\DoxyCodeLine{1262   \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{1263   \}}
+\DoxyCodeLine{1264 }
+\DoxyCodeLine{1265 }
+\DoxyCodeLine{1266 }
+\DoxyCodeLine{1267 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1268 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1269 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{1270 arma\_inline}
+\DoxyCodeLine{1271 \mbox{\hyperlink{classCol_1_1fixed}{Col<eT>::fixed<fixed\_n\_elem>::fixed}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<pod\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<pod\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{1272   : \mbox{\hyperlink{classCol}{Col}}<eT>( \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), fixed\_n\_elem, ((use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat}}<eT>::mem\_local) )}
+\DoxyCodeLine{1273   \{}
+\DoxyCodeLine{1274   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1275   }
+\DoxyCodeLine{1276   \mbox{\hyperlink{group__Mat_ga1202427ce718a10cd17f68d239700934}{Col<eT>::init}}(\mbox{\hyperlink{structA}{A}},\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{1277   \}}
+\DoxyCodeLine{1278 }
+\DoxyCodeLine{1279 }
+\DoxyCodeLine{1280 }
+\DoxyCodeLine{1281 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1282 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1283 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1284 \mbox{\hyperlink{classCol_1_1fixed}{Col<eT>::fixed<fixed\_n\_elem>::fixed}}(\textcolor{keyword}{const} eT* aux\_mem)}
+\DoxyCodeLine{1285   : \mbox{\hyperlink{classCol}{Col}}<eT>( \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), fixed\_n\_elem, ((use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat}}<eT>::mem\_local) )}
+\DoxyCodeLine{1286   \{}
+\DoxyCodeLine{1287   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1288   }
+\DoxyCodeLine{1289   eT* dest = (use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}};}
+\DoxyCodeLine{1290   }
+\DoxyCodeLine{1291   arrayops::copy( dest, aux\_mem, fixed\_n\_elem );}
+\DoxyCodeLine{1292   \}}
+\DoxyCodeLine{1293 }
+\DoxyCodeLine{1294 }
+\DoxyCodeLine{1295 }
+\DoxyCodeLine{1296 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1297 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1298 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1299 \mbox{\hyperlink{classCol_1_1fixed}{Col<eT>::fixed<fixed\_n\_elem>::fixed}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* text)}
+\DoxyCodeLine{1300   : \mbox{\hyperlink{classCol}{Col}}<eT>( \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), fixed\_n\_elem, ((use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat}}<eT>::mem\_local) )}
+\DoxyCodeLine{1301   \{}
+\DoxyCodeLine{1302   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1303   }
+\DoxyCodeLine{1304   \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(text);}
+\DoxyCodeLine{1305   \}}
+\DoxyCodeLine{1306 }
+\DoxyCodeLine{1307 }
+\DoxyCodeLine{1308 }
+\DoxyCodeLine{1309 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1310 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1311 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1312 \mbox{\hyperlink{classCol_1_1fixed}{Col<eT>::fixed<fixed\_n\_elem>::fixed}}(\textcolor{keyword}{const} std::string\& text)}
+\DoxyCodeLine{1313   : \mbox{\hyperlink{classCol}{Col}}<eT>( \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), fixed\_n\_elem, ((use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat}}<eT>::mem\_local) )}
+\DoxyCodeLine{1314   \{}
+\DoxyCodeLine{1315   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1316   }
+\DoxyCodeLine{1317   \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(text);}
+\DoxyCodeLine{1318   \}}
+\DoxyCodeLine{1319 }
+\DoxyCodeLine{1320 }
+\DoxyCodeLine{1321 }
+\DoxyCodeLine{1322 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1323 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1324 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{1325 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1326 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{1327   \{}
+\DoxyCodeLine{1328   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1329   }
+\DoxyCodeLine{1330   \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{1331   }
+\DoxyCodeLine{1332   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1333   \}}
+\DoxyCodeLine{1334 }
+\DoxyCodeLine{1335 }
+\DoxyCodeLine{1336 }
+\DoxyCodeLine{1337 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1338 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1339 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1340 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator=}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{1341   \{}
+\DoxyCodeLine{1342   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1343   }
+\DoxyCodeLine{1344   \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(val);}
+\DoxyCodeLine{1345   }
+\DoxyCodeLine{1346   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1347   \}}
+\DoxyCodeLine{1348 }
+\DoxyCodeLine{1349 }
+\DoxyCodeLine{1350 }
+\DoxyCodeLine{1351 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1352 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1353 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1354 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator=}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* text)}
+\DoxyCodeLine{1355   \{}
+\DoxyCodeLine{1356   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1357   }
+\DoxyCodeLine{1358   \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(text);}
+\DoxyCodeLine{1359   }
+\DoxyCodeLine{1360   \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; }
+\DoxyCodeLine{1361   \}}
+\DoxyCodeLine{1362 }
+\DoxyCodeLine{1363 }
+\DoxyCodeLine{1364 }
+\DoxyCodeLine{1365 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1366 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1367 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1368 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator=}}(\textcolor{keyword}{const} std::string\& text)}
+\DoxyCodeLine{1369   \{}
+\DoxyCodeLine{1370   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1371   }
+\DoxyCodeLine{1372   \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(text);}
+\DoxyCodeLine{1373   }
+\DoxyCodeLine{1374   \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; }
+\DoxyCodeLine{1375   \}}
+\DoxyCodeLine{1376 }
+\DoxyCodeLine{1377 }
+\DoxyCodeLine{1378 }
+\DoxyCodeLine{1379 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1380 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1381 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1382 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& X)}
+\DoxyCodeLine{1383   \{}
+\DoxyCodeLine{1384   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1385   }
+\DoxyCodeLine{1386   \mbox{\hyperlink{classCol}{Col<eT>::operator=}}(X);}
+\DoxyCodeLine{1387   }
+\DoxyCodeLine{1388   \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; }
+\DoxyCodeLine{1389   \}}
+\DoxyCodeLine{1390 }
+\DoxyCodeLine{1391 }
+\DoxyCodeLine{1392 }
+\DoxyCodeLine{1393 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1394 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1395 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1396 \mbox{\hyperlink{classCol_1_1fixed}{Col<eT>::fixed<fixed\_n\_elem>::fixed}}(\textcolor{keyword}{const} std::initializer\_list<eT>\& \mbox{\hyperlink{classlist}{list}})}
+\DoxyCodeLine{1397   : \mbox{\hyperlink{classCol}{Col}}<eT>( \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), fixed\_n\_elem, ((use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat}}<eT>::mem\_local) )}
+\DoxyCodeLine{1398   \{}
+\DoxyCodeLine{1399   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1400   }
+\DoxyCodeLine{1401   (*this).operator=(\mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{1402   \}}
+\DoxyCodeLine{1403 }
+\DoxyCodeLine{1404 }
+\DoxyCodeLine{1405 }
+\DoxyCodeLine{1406 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1407 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1408 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1409 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1410 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator=}}(\textcolor{keyword}{const} std::initializer\_list<eT>\& \mbox{\hyperlink{classlist}{list}})}
+\DoxyCodeLine{1411   \{}
+\DoxyCodeLine{1412   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1413   }
+\DoxyCodeLine{1414   \textcolor{keyword}{const} uword N = uword(\mbox{\hyperlink{classlist}{list}}.size());}
+\DoxyCodeLine{1415   }
+\DoxyCodeLine{1416   arma\_debug\_check( (N > fixed\_n\_elem), \textcolor{stringliteral}{"{}Col::fixed: initialiser list is too long"{}} );}
+\DoxyCodeLine{1417   }
+\DoxyCodeLine{1418   eT* this\_mem = (*this).memptr();}
+\DoxyCodeLine{1419   }
+\DoxyCodeLine{1420   arrayops::copy( this\_mem, \mbox{\hyperlink{classlist}{list}}.begin(), N );}
+\DoxyCodeLine{1421   }
+\DoxyCodeLine{1422   \textcolor{keywordflow}{for}(uword iq=N; iq < fixed\_n\_elem; ++iq) \{ this\_mem[iq] = eT(0); \}}
+\DoxyCodeLine{1423   }
+\DoxyCodeLine{1424   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1425   \}}
+\DoxyCodeLine{1426 }
+\DoxyCodeLine{1427 }
+\DoxyCodeLine{1428 }
+\DoxyCodeLine{1429 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1430 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1431 arma\_inline}
+\DoxyCodeLine{1432 \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1433 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator=}}(\textcolor{keyword}{const} fixed<fixed\_n\_elem>\& X)}
+\DoxyCodeLine{1434   \{}
+\DoxyCodeLine{1435   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1436   }
+\DoxyCodeLine{1437   \textcolor{keywordflow}{if}(\textcolor{keyword}{this} != \&X)}
+\DoxyCodeLine{1438     \{}
+\DoxyCodeLine{1439           eT* dest = (use\_extra) ?   mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}};}
+\DoxyCodeLine{1440     \textcolor{keyword}{const} eT* src  = (use\_extra) ? X.mem\_local\_extra :        X.mem\_local;}
+\DoxyCodeLine{1441     }
+\DoxyCodeLine{1442     arrayops::copy( dest, src, fixed\_n\_elem );}
+\DoxyCodeLine{1443     \}}
+\DoxyCodeLine{1444   }
+\DoxyCodeLine{1445   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1446   \}}
+\DoxyCodeLine{1447 }
+\DoxyCodeLine{1448 }
+\DoxyCodeLine{1449 }
+\DoxyCodeLine{1450 \textcolor{preprocessor}{\#if defined(ARMA\_GOOD\_COMPILER)}}
+\DoxyCodeLine{1451   }
+\DoxyCodeLine{1452   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1453   \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1454   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type>}
+\DoxyCodeLine{1455   \textcolor{keyword}{inline}}
+\DoxyCodeLine{1456   \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1457   \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& X)}
+\DoxyCodeLine{1458     \{}
+\DoxyCodeLine{1459     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1460     }
+\DoxyCodeLine{1461     arma\_type\_check(( \mbox{\hyperlink{structis__same__type}{is\_same\_type< eT, typename T1::elem\_type >::no}} ));}
+\DoxyCodeLine{1462     }
+\DoxyCodeLine{1463     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} bad\_alias = (\mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>::proxy\_type::has\_subview}}  \&\&  X.P.is\_alias(*\textcolor{keyword}{this}));}
+\DoxyCodeLine{1464     }
+\DoxyCodeLine{1465     \textcolor{keywordflow}{if}(bad\_alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{1466       \{}
+\DoxyCodeLine{1467       arma\_debug\_assert\_same\_size(fixed\_n\_elem, uword(1), X.get\_n\_rows(), X.get\_n\_cols(), \textcolor{stringliteral}{"{}Col::fixed::operator="{}});}
+\DoxyCodeLine{1468       }
+\DoxyCodeLine{1469       eop\_type::apply(*\textcolor{keyword}{this}, X);}
+\DoxyCodeLine{1470       \}}
+\DoxyCodeLine{1471     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1472       \{}
+\DoxyCodeLine{1473       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}bad\_alias = true"{}});}
+\DoxyCodeLine{1474       }
+\DoxyCodeLine{1475       \mbox{\hyperlink{classCol}{Col<eT>}} tmp(X);}
+\DoxyCodeLine{1476       }
+\DoxyCodeLine{1477       (*this) = tmp;}
+\DoxyCodeLine{1478       \}}
+\DoxyCodeLine{1479     }
+\DoxyCodeLine{1480     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1481     \}}
+\DoxyCodeLine{1482   }
+\DoxyCodeLine{1483   }
+\DoxyCodeLine{1484   }
+\DoxyCodeLine{1485   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1486   \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1487   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{1488   \textcolor{keyword}{inline}}
+\DoxyCodeLine{1489   \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1490   \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>}}\& X)}
+\DoxyCodeLine{1491     \{}
+\DoxyCodeLine{1492     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1493     }
+\DoxyCodeLine{1494     arma\_type\_check(( \mbox{\hyperlink{structis__same__type}{is\_same\_type< eT, typename T1::elem\_type >::no}} ));}
+\DoxyCodeLine{1495     arma\_type\_check(( \mbox{\hyperlink{structis__same__type}{is\_same\_type< eT, typename T2::elem\_type >::no}} ));}
+\DoxyCodeLine{1496     }
+\DoxyCodeLine{1497     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} bad\_alias =}
+\DoxyCodeLine{1498       (}
+\DoxyCodeLine{1499       (\mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>::proxy1\_type::has\_subview}}  \&\&  X.P1.is\_alias(*\textcolor{keyword}{this}))}
+\DoxyCodeLine{1500       ||}
+\DoxyCodeLine{1501       (\mbox{\hyperlink{classeGlue}{eGlue<T1, T2, eglue\_type>::proxy2\_type::has\_subview}}  \&\&  X.P2.is\_alias(*\textcolor{keyword}{this}))}
+\DoxyCodeLine{1502       );}
+\DoxyCodeLine{1503     }
+\DoxyCodeLine{1504     \textcolor{keywordflow}{if}(bad\_alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{1505       \{}
+\DoxyCodeLine{1506       arma\_debug\_assert\_same\_size(fixed\_n\_elem, uword(1), X.get\_n\_rows(), X.get\_n\_cols(), \textcolor{stringliteral}{"{}Col::fixed::operator="{}});}
+\DoxyCodeLine{1507       }
+\DoxyCodeLine{1508       eglue\_type::apply(*\textcolor{keyword}{this}, X);}
+\DoxyCodeLine{1509       \}}
+\DoxyCodeLine{1510     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1511       \{}
+\DoxyCodeLine{1512       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}bad\_alias = true"{}});}
+\DoxyCodeLine{1513       }
+\DoxyCodeLine{1514       \mbox{\hyperlink{classCol}{Col<eT>}} tmp(X);}
+\DoxyCodeLine{1515       }
+\DoxyCodeLine{1516       (*this) = tmp;}
+\DoxyCodeLine{1517       \}}
+\DoxyCodeLine{1518     }
+\DoxyCodeLine{1519     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1520     \}}
+\DoxyCodeLine{1521   }
+\DoxyCodeLine{1522 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{1523 }
+\DoxyCodeLine{1524 }
+\DoxyCodeLine{1525 }
+\DoxyCodeLine{1526 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1527 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1528 arma\_inline}
+\DoxyCodeLine{1529 \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op< typename Col<eT>::template}} fixed<fixed\_n\_elem>::Col\_fixed\_type, \mbox{\hyperlink{classop__htrans}{op\_htrans}} >}
+\DoxyCodeLine{1530 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::t}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{1531 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1532   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op< typename Col<eT>::template}} fixed<fixed\_n\_elem>::Col\_fixed\_type, \mbox{\hyperlink{classop__htrans}{op\_htrans}} >(*this);}
+\DoxyCodeLine{1533   \}}
+\DoxyCodeLine{1534 }
+\DoxyCodeLine{1535 }
+\DoxyCodeLine{1536 }
+\DoxyCodeLine{1537 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1538 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1539 arma\_inline}
+\DoxyCodeLine{1540 \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op< typename Col<eT>::template}} fixed<fixed\_n\_elem>::Col\_fixed\_type, \mbox{\hyperlink{classop__htrans}{op\_htrans}} >}
+\DoxyCodeLine{1541 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::ht}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{1542 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1543   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op< typename Col<eT>::template}} fixed<fixed\_n\_elem>::Col\_fixed\_type, \mbox{\hyperlink{classop__htrans}{op\_htrans}} >(*this);}
+\DoxyCodeLine{1544   \}}
+\DoxyCodeLine{1545 }
+\DoxyCodeLine{1546 }
+\DoxyCodeLine{1547 }
+\DoxyCodeLine{1548 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1549 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1550 arma\_inline}
+\DoxyCodeLine{1551 \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op< typename Col<eT>::template}} fixed<fixed\_n\_elem>::Col\_fixed\_type, \mbox{\hyperlink{classop__strans}{op\_strans}} >}
+\DoxyCodeLine{1552 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::st}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{1553 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1554   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op< typename Col<eT>::template}} fixed<fixed\_n\_elem>::Col\_fixed\_type, \mbox{\hyperlink{classop__strans}{op\_strans}} >(*this);}
+\DoxyCodeLine{1555   \}}
+\DoxyCodeLine{1556 }
+\DoxyCodeLine{1557 }
+\DoxyCodeLine{1558 }
+\DoxyCodeLine{1559 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1560 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1561 arma\_inline}
+\DoxyCodeLine{1562 arma\_warn\_unused}
+\DoxyCodeLine{1563 \textcolor{keyword}{const} eT\&}
+\DoxyCodeLine{1564 \mbox{\hyperlink{group__Mat_gae92c18f94a67c7f5a5387600c24fc375}{Col<eT>::fixed<fixed\_n\_elem>::at\_alt}}(\textcolor{keyword}{const} uword ii)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1565 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1566 \textcolor{preprocessor}{  \#if defined(ARMA\_HAVE\_ALIGNED\_ATTRIBUTE)}}
+\DoxyCodeLine{1567   }
+\DoxyCodeLine{1568     \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[ii] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[ii];}
+\DoxyCodeLine{1569     }
+\DoxyCodeLine{1570 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1571     \textcolor{keyword}{const} eT* mem\_aligned = (use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}};}
+\DoxyCodeLine{1572     }
+\DoxyCodeLine{1573     memory::mark\_as\_aligned(mem\_aligned);}
+\DoxyCodeLine{1574     }
+\DoxyCodeLine{1575     \textcolor{keywordflow}{return} mem\_aligned[ii];}
+\DoxyCodeLine{1576 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1577   \}}
+\DoxyCodeLine{1578 }
+\DoxyCodeLine{1579 }
+\DoxyCodeLine{1580 }
+\DoxyCodeLine{1581 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1582 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1583 arma\_inline}
+\DoxyCodeLine{1584 arma\_warn\_unused}
+\DoxyCodeLine{1585 eT\&}
+\DoxyCodeLine{1586 \mbox{\hyperlink{group__Mat_ga7d9c27e738bfcfc208e4f285f8cd6cc6}{Col<eT>::fixed<fixed\_n\_elem>::operator[] }}(\textcolor{keyword}{const} uword ii)}
+\DoxyCodeLine{1587   \{}
+\DoxyCodeLine{1588   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[ii] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[ii];}
+\DoxyCodeLine{1589   \}}
+\DoxyCodeLine{1590 }
+\DoxyCodeLine{1591 }
+\DoxyCodeLine{1592 }
+\DoxyCodeLine{1593 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1594 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1595 arma\_inline}
+\DoxyCodeLine{1596 arma\_warn\_unused}
+\DoxyCodeLine{1597 \textcolor{keyword}{const} eT\&}
+\DoxyCodeLine{1598 \mbox{\hyperlink{group__Mat_ga7d9c27e738bfcfc208e4f285f8cd6cc6}{Col<eT>::fixed<fixed\_n\_elem>::operator[] }}(\textcolor{keyword}{const} uword ii)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1599 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1600   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[ii] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[ii];}
+\DoxyCodeLine{1601   \}}
+\DoxyCodeLine{1602 }
+\DoxyCodeLine{1603 }
+\DoxyCodeLine{1604 }
+\DoxyCodeLine{1605 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1606 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1607 arma\_inline}
+\DoxyCodeLine{1608 arma\_warn\_unused}
+\DoxyCodeLine{1609 eT\&}
+\DoxyCodeLine{1610 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::at}}(\textcolor{keyword}{const} uword ii)}
+\DoxyCodeLine{1611   \{}
+\DoxyCodeLine{1612   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[ii] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[ii];}
+\DoxyCodeLine{1613   \}}
+\DoxyCodeLine{1614 }
+\DoxyCodeLine{1615 }
+\DoxyCodeLine{1616 }
+\DoxyCodeLine{1617 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1618 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1619 arma\_inline}
+\DoxyCodeLine{1620 arma\_warn\_unused}
+\DoxyCodeLine{1621 \textcolor{keyword}{const} eT\&}
+\DoxyCodeLine{1622 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::at}}(\textcolor{keyword}{const} uword ii)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1623 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1624   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[ii] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[ii];}
+\DoxyCodeLine{1625   \}}
+\DoxyCodeLine{1626 }
+\DoxyCodeLine{1627 }
+\DoxyCodeLine{1628 }
+\DoxyCodeLine{1629 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1630 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1631 arma\_inline}
+\DoxyCodeLine{1632 arma\_warn\_unused}
+\DoxyCodeLine{1633 eT\&}
+\DoxyCodeLine{1634 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator() }}(\textcolor{keyword}{const} uword ii)}
+\DoxyCodeLine{1635   \{}
+\DoxyCodeLine{1636   arma\_debug\_check\_bounds( (ii >= fixed\_n\_elem), \textcolor{stringliteral}{"{}Col::operator(): index out of bounds"{}} );}
+\DoxyCodeLine{1637   }
+\DoxyCodeLine{1638   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[ii] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[ii];}
+\DoxyCodeLine{1639   \}}
+\DoxyCodeLine{1640 }
+\DoxyCodeLine{1641 }
+\DoxyCodeLine{1642 }
+\DoxyCodeLine{1643 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1644 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1645 arma\_inline}
+\DoxyCodeLine{1646 arma\_warn\_unused}
+\DoxyCodeLine{1647 \textcolor{keyword}{const} eT\&}
+\DoxyCodeLine{1648 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator() }}(\textcolor{keyword}{const} uword ii)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1649 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1650   arma\_debug\_check\_bounds( (ii >= fixed\_n\_elem), \textcolor{stringliteral}{"{}Col::operator(): index out of bounds"{}} );}
+\DoxyCodeLine{1651   }
+\DoxyCodeLine{1652   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[ii] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[ii];}
+\DoxyCodeLine{1653   \}}
+\DoxyCodeLine{1654 }
+\DoxyCodeLine{1655 }
+\DoxyCodeLine{1656 }
+\DoxyCodeLine{1657 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1658 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1659 arma\_inline}
+\DoxyCodeLine{1660 arma\_warn\_unused}
+\DoxyCodeLine{1661 eT\&}
+\DoxyCodeLine{1662 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::at}}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword)}
+\DoxyCodeLine{1663   \{}
+\DoxyCodeLine{1664   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[in\_row] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[in\_row];}
+\DoxyCodeLine{1665   \}}
+\DoxyCodeLine{1666 }
+\DoxyCodeLine{1667 }
+\DoxyCodeLine{1668 }
+\DoxyCodeLine{1669 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1670 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1671 arma\_inline}
+\DoxyCodeLine{1672 arma\_warn\_unused}
+\DoxyCodeLine{1673 \textcolor{keyword}{const} eT\&}
+\DoxyCodeLine{1674 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::at}}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1675 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1676   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[in\_row] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[in\_row];}
+\DoxyCodeLine{1677   \}}
+\DoxyCodeLine{1678 }
+\DoxyCodeLine{1679 }
+\DoxyCodeLine{1680 }
+\DoxyCodeLine{1681 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1682 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1683 arma\_inline}
+\DoxyCodeLine{1684 arma\_warn\_unused}
+\DoxyCodeLine{1685 eT\&}
+\DoxyCodeLine{1686 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator() }}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col)}
+\DoxyCodeLine{1687   \{}
+\DoxyCodeLine{1688   arma\_debug\_check\_bounds( ((in\_row >= fixed\_n\_elem) || (in\_col > 0)), \textcolor{stringliteral}{"{}Col::operator(): index out of bounds"{}} );}
+\DoxyCodeLine{1689   }
+\DoxyCodeLine{1690   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[in\_row] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[in\_row];}
+\DoxyCodeLine{1691   \}}
+\DoxyCodeLine{1692 }
+\DoxyCodeLine{1693 }
+\DoxyCodeLine{1694 }
+\DoxyCodeLine{1695 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1696 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1697 arma\_inline}
+\DoxyCodeLine{1698 arma\_warn\_unused}
+\DoxyCodeLine{1699 \textcolor{keyword}{const} eT\&}
+\DoxyCodeLine{1700 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::operator() }}(\textcolor{keyword}{const} uword in\_row, \textcolor{keyword}{const} uword in\_col)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1701 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1702   arma\_debug\_check\_bounds( ((in\_row >= fixed\_n\_elem) || (in\_col > 0)), \textcolor{stringliteral}{"{}Col::operator(): index out of bounds"{}} );}
+\DoxyCodeLine{1703   }
+\DoxyCodeLine{1704   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra[in\_row] : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[in\_row];}
+\DoxyCodeLine{1705   \}}
+\DoxyCodeLine{1706 }
+\DoxyCodeLine{1707 }
+\DoxyCodeLine{1708 }
+\DoxyCodeLine{1709 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1710 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1711 arma\_inline}
+\DoxyCodeLine{1712 arma\_warn\_unused}
+\DoxyCodeLine{1713 eT*}
+\DoxyCodeLine{1714 \mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{Col<eT>::fixed<fixed\_n\_elem>::memptr}}()}
+\DoxyCodeLine{1715   \{}
+\DoxyCodeLine{1716   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}};}
+\DoxyCodeLine{1717   \}}
+\DoxyCodeLine{1718 }
+\DoxyCodeLine{1719 }
+\DoxyCodeLine{1720 }
+\DoxyCodeLine{1721 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1722 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1723 arma\_inline}
+\DoxyCodeLine{1724 arma\_warn\_unused}
+\DoxyCodeLine{1725 \textcolor{keyword}{const} eT*}
+\DoxyCodeLine{1726 \mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{Col<eT>::fixed<fixed\_n\_elem>::memptr}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{1727 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1728   \textcolor{keywordflow}{return} (use\_extra) ? mem\_local\_extra : \mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}};}
+\DoxyCodeLine{1729   \}}
+\DoxyCodeLine{1730 }
+\DoxyCodeLine{1731 }
+\DoxyCodeLine{1732 }
+\DoxyCodeLine{1733 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1734 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1735 arma\_hot}
+\DoxyCodeLine{1736 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1737 \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1738 \mbox{\hyperlink{group__Mat_gab60eae61ede0f0df33fb2a67cf62b696}{Col<eT>::fixed<fixed\_n\_elem>::fill}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{1739   \{}
+\DoxyCodeLine{1740   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1741   }
+\DoxyCodeLine{1742   eT* mem\_use = (use\_extra) ? \&(mem\_local\_extra[0]) : \&(\mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[0]);}
+\DoxyCodeLine{1743   }
+\DoxyCodeLine{1744   arrayops::inplace\_set\_fixed<eT,fixed\_n\_elem>( mem\_use, val );}
+\DoxyCodeLine{1745   }
+\DoxyCodeLine{1746   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1747   \}}
+\DoxyCodeLine{1748 }
+\DoxyCodeLine{1749 }
+\DoxyCodeLine{1750 }
+\DoxyCodeLine{1751 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1752 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1753 arma\_hot}
+\DoxyCodeLine{1754 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1755 \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1756 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::zeros}}()}
+\DoxyCodeLine{1757   \{}
+\DoxyCodeLine{1758   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1759   }
+\DoxyCodeLine{1760   eT* mem\_use = (use\_extra) ? \&(mem\_local\_extra[0]) : \&(\mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[0]);}
+\DoxyCodeLine{1761   }
+\DoxyCodeLine{1762   arrayops::inplace\_set\_fixed<eT,fixed\_n\_elem>( mem\_use, eT(0) );}
+\DoxyCodeLine{1763   }
+\DoxyCodeLine{1764   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1765   \}}
+\DoxyCodeLine{1766 }
+\DoxyCodeLine{1767 }
+\DoxyCodeLine{1768 }
+\DoxyCodeLine{1769 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1770 \textcolor{keyword}{template}<uword fixed\_n\_elem>}
+\DoxyCodeLine{1771 arma\_hot}
+\DoxyCodeLine{1772 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1773 \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}\&}
+\DoxyCodeLine{1774 \mbox{\hyperlink{classCol}{Col<eT>::fixed<fixed\_n\_elem>::ones}}()}
+\DoxyCodeLine{1775   \{}
+\DoxyCodeLine{1776   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1777   }
+\DoxyCodeLine{1778   eT* mem\_use = (use\_extra) ? \&(mem\_local\_extra[0]) : \&(\mbox{\hyperlink{classMat}{Mat<eT>::mem\_local}}[0]);}
+\DoxyCodeLine{1779   }
+\DoxyCodeLine{1780   arrayops::inplace\_set\_fixed<eT,fixed\_n\_elem>( mem\_use, eT(1) );}
+\DoxyCodeLine{1781   }
+\DoxyCodeLine{1782   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{1783   \}}
+\DoxyCodeLine{1784 }
+\DoxyCodeLine{1785 }
+\DoxyCodeLine{1786 }
+\DoxyCodeLine{1787 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1788 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1789 \mbox{\hyperlink{group__Col_ga3cbca6262a577f8823e4d2ac1b75a558}{Col<eT>::Col}}(\textcolor{keyword}{const} \mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}\&, \textcolor{keyword}{const} uword in\_n\_elem, \textcolor{keyword}{const} eT* in\_mem)}
+\DoxyCodeLine{1790   : \mbox{\hyperlink{classMat}{Mat}}<eT>(\mbox{\hyperlink{structarma__fixed__indicator}{arma\_fixed\_indicator}}(), in\_n\_elem, 1, 1, in\_mem)}
+\DoxyCodeLine{1791   \{}
+\DoxyCodeLine{1792   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{1793   \}}
+\DoxyCodeLine{1794 }
+\DoxyCodeLine{1795 }
+\DoxyCodeLine{1796 }
+\DoxyCodeLine{1797 \textcolor{preprocessor}{\#ifdef ARMA\_EXTRA\_COL\_MEAT}}
+\DoxyCodeLine{1798 \textcolor{preprocessor}{  \#include ARMA\_INCFILE\_WRAP(ARMA\_EXTRA\_COL\_MEAT)}}
+\DoxyCodeLine{1799 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{1800 }
+\DoxyCodeLine{1801 }
+\DoxyCodeLine{1802 }
+
+\end{DoxyCode}

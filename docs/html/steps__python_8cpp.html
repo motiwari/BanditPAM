@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BanditPAM: /Users/motiwari/Desktop/BanditPAM/src/steps_python.cpp File Reference</title>
+<title>BanditPAM: /Users/motiwari/Desktop/BanditPAM/src/python_bindings/steps_python.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2089f1c86a5c695e25bdd8ee7b7d2080.html">python_bindings</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -71,45 +71,43 @@ $(function() {
   <div class="headertitle"><div class="title">steps_python.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;kmedoids_pywrapper.hpp&quot;</code><br />
+<div class="textblock"><code>#include &lt;pybind11/pybind11.h&gt;</code><br />
+<code>#include &lt;pybind11/numpy.h&gt;</code><br />
 <code>#include &lt;carma&gt;</code><br />
 <code>#include &lt;armadillo&gt;</code><br />
-<code>#include &lt;pybind11/pybind11.h&gt;</code><br />
-<code>#include &lt;pybind11/numpy.h&gt;</code><br />
+<code>#include &quot;kmedoids_pywrapper.hpp&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for steps_python.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="steps__python_8cpp__incl.png" border="0" usemap="#a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2steps__python_8cpp" alt=""/></div>
-<map name="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2steps__python_8cpp" id="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2steps__python_8cpp">
-<area shape="rect" title=" " alt="" coords="279,5,501,47"/>
-<area shape="rect" href="kmedoids__pywrapper_8hpp_source.html" title=" " alt="" coords="303,95,477,121"/>
-<area shape="rect" title=" " alt="" coords="173,169,231,196"/>
-<area shape="rect" title=" " alt="" coords="5,244,81,271"/>
-<area shape="rect" title=" " alt="" coords="497,169,640,196"/>
-<area shape="rect" title=" " alt="" coords="664,169,793,196"/>
-<area shape="rect" href="kmedoids__algorithm_8hpp_source.html" title=" " alt="" coords="307,169,473,196"/>
-<area shape="rect" title=" " alt="" coords="755,244,814,271"/>
-<area shape="rect" title=" " alt="" coords="838,244,905,271"/>
-<area shape="rect" title=" " alt="" coords="929,244,1003,271"/>
-<area shape="rect" title=" " alt="" coords="105,244,168,271"/>
-<area shape="rect" title=" " alt="" coords="193,244,251,271"/>
-<area shape="rect" title=" " alt="" coords="275,244,326,271"/>
-<area shape="rect" title=" " alt="" coords="351,244,429,271"/>
-<area shape="rect" title=" " alt="" coords="453,244,569,271"/>
-<area shape="rect" title=" " alt="" coords="593,244,648,271"/>
-<area shape="rect" title=" " alt="" coords="673,244,731,271"/>
+<div class="center"><img src="steps__python_8cpp__incl.png" border="0" usemap="#a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2python__bindings_2steps__python_8cpp" alt=""/></div>
+<map name="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2python__bindings_2steps__python_8cpp" id="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2python__bindings_2steps__python_8cpp">
+<area shape="rect" title=" " alt="" coords="342,5,529,61"/>
+<area shape="rect" title=" " alt="" coords="5,184,148,211"/>
+<area shape="rect" title=" " alt="" coords="172,184,301,211"/>
+<area shape="rect" title=" " alt="" coords="619,184,678,211"/>
+<area shape="rect" title=" " alt="" coords="792,259,868,285"/>
+<area shape="rect" href="kmedoids__pywrapper_8hpp_source.html" title=" " alt="" coords="349,109,522,136"/>
+<area shape="rect" title=" " alt="" coords="39,259,93,285"/>
+<area shape="rect" href="kmedoids__algorithm_8hpp_source.html" title=" " alt="" coords="377,184,544,211"/>
+<area shape="rect" title=" " alt="" coords="626,259,685,285"/>
+<area shape="rect" title=" " alt="" coords="709,259,767,285"/>
+<area shape="rect" title=" " alt="" coords="118,259,185,285"/>
+<area shape="rect" title=" " alt="" coords="209,259,283,285"/>
+<area shape="rect" title=" " alt="" coords="307,259,358,285"/>
+<area shape="rect" title=" " alt="" coords="383,259,461,285"/>
+<area shape="rect" title=" " alt="" coords="485,259,601,285"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a82f1f61048937f7232ccf0c153a8ff8f"><td class="memItemLeft" align="right" valign="top"><a id="a82f1f61048937f7232ccf0c153a8ff8f" name="a82f1f61048937f7232ccf0c153a8ff8f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>steps_python</b> (py::class_&lt; <a class="el" href="classKMedoidsWrapper.html">KMedoidsWrapper</a> &gt; &amp;cls)</td></tr>
-<tr class="separator:a82f1f61048937f7232ccf0c153a8ff8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e0c423f2e695e1573f6d22f5945be9c"><td class="memItemLeft" align="right" valign="top"><a id="a3e0c423f2e695e1573f6d22f5945be9c" name="a3e0c423f2e695e1573f6d22f5945be9c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>km::steps_python</b> (pybind11::class_&lt; KMedoidsWrapper &gt; *cls)</td></tr>
+<tr class="separator:a3e0c423f2e695e1573f6d22f5945be9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>2021-08-16</dd></dl>
-<p>Defines the function getStepsPython in <a class="el" href="classKMedoidsWrapper.html" title="Python wrapper for KMedoids class.">KMedoidsWrapper</a> class which is used in Python bindings. </p>
+<p>Defines the function getStepsPython in KMedoidsWrapper class which is used in Python bindings. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

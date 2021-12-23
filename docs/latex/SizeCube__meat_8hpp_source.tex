@@ -1,0 +1,156 @@
+\hypertarget{SizeCube__meat_8hpp_source}{}\doxysection{Size\+Cube\+\_\+meat.\+hpp}
+\label{SizeCube__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/SizeCube\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/SizeCube\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{inline}}
+\DoxyCodeLine{23 SizeCube::SizeCube(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols, \textcolor{keyword}{const} uword in\_n\_slices)}
+\DoxyCodeLine{24   : n\_rows  (in\_n\_rows  )}
+\DoxyCodeLine{25   , n\_cols  (in\_n\_cols  )}
+\DoxyCodeLine{26   , n\_slices(in\_n\_slices)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   \}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{inline}}
+\DoxyCodeLine{34 uword}
+\DoxyCodeLine{35 SizeCube::operator[](\textcolor{keyword}{const} uword dim)\textcolor{keyword}{ const}}
+\DoxyCodeLine{36 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{37   \textcolor{keywordflow}{if}(dim == 0)  \{ \textcolor{keywordflow}{return} n\_rows;   \}}
+\DoxyCodeLine{38   \textcolor{keywordflow}{if}(dim == 1)  \{ \textcolor{keywordflow}{return} n\_cols;   \}}
+\DoxyCodeLine{39   \textcolor{keywordflow}{if}(dim == 2)  \{ \textcolor{keywordflow}{return} n\_slices; \}}
+\DoxyCodeLine{40   }
+\DoxyCodeLine{41   \textcolor{keywordflow}{return} uword(1);}
+\DoxyCodeLine{42   \}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{inline}}
+\DoxyCodeLine{47 uword}
+\DoxyCodeLine{48 SizeCube::operator()(\textcolor{keyword}{const} uword dim)\textcolor{keyword}{ const}}
+\DoxyCodeLine{49 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{50   \textcolor{keywordflow}{if}(dim == 0)  \{ \textcolor{keywordflow}{return} n\_rows;   \}}
+\DoxyCodeLine{51   \textcolor{keywordflow}{if}(dim == 1)  \{ \textcolor{keywordflow}{return} n\_cols;   \}}
+\DoxyCodeLine{52   \textcolor{keywordflow}{if}(dim == 2)  \{ \textcolor{keywordflow}{return} n\_slices; \}}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   arma\_debug\_check\_bounds(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}size(): index out of bounds"{}});}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keywordflow}{return} uword(1);}
+\DoxyCodeLine{57   \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 \textcolor{keyword}{inline}}
+\DoxyCodeLine{62 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{63 SizeCube::operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s)\textcolor{keyword}{ const}}
+\DoxyCodeLine{64 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{65   \textcolor{keywordflow}{if}(n\_rows   != s.n\_rows  )  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keywordflow}{if}(n\_cols   != s.n\_cols  )  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   \textcolor{keywordflow}{if}(n\_slices != s.n\_slices)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{72   \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{inline}}
+\DoxyCodeLine{77 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{78 SizeCube::operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s)\textcolor{keyword}{ const}}
+\DoxyCodeLine{79 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{80   \textcolor{keywordflow}{if}(n\_rows   != s.n\_rows  )  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keywordflow}{if}(n\_cols   != s.n\_cols  )  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keywordflow}{if}(n\_slices != s.n\_slices)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{85   }
+\DoxyCodeLine{86   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{87   \}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \textcolor{keyword}{inline}}
+\DoxyCodeLine{92 \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{93 SizeCube::operator+(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s)\textcolor{keyword}{ const}}
+\DoxyCodeLine{94 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{95   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( (n\_rows + s.n\_rows), (n\_cols + s.n\_cols), (n\_slices + s.n\_slices) );}
+\DoxyCodeLine{96   \}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{keyword}{inline}}
+\DoxyCodeLine{101 \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{102 SizeCube::operator-\/(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s)\textcolor{keyword}{ const}}
+\DoxyCodeLine{103 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{104   \textcolor{keyword}{const} uword out\_n\_rows   = (n\_rows   > s.n\_rows  ) ? (n\_rows   -\/ s.n\_rows  ) : uword(0);}
+\DoxyCodeLine{105   \textcolor{keyword}{const} uword out\_n\_cols   = (n\_cols   > s.n\_cols  ) ? (n\_cols   -\/ s.n\_cols  ) : uword(0);}
+\DoxyCodeLine{106   \textcolor{keyword}{const} uword out\_n\_slices = (n\_slices > s.n\_slices) ? (n\_slices -\/ s.n\_slices) : uword(0);}
+\DoxyCodeLine{107   }
+\DoxyCodeLine{108   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}(out\_n\_rows, out\_n\_cols, out\_n\_slices);}
+\DoxyCodeLine{109   \}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keyword}{inline}}
+\DoxyCodeLine{114 \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{115 SizeCube::operator+(\textcolor{keyword}{const} uword val)\textcolor{keyword}{ const}}
+\DoxyCodeLine{116 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{117   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( (n\_rows + val), (n\_cols + val), (n\_slices + val) );}
+\DoxyCodeLine{118   \}}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 \textcolor{keyword}{inline}}
+\DoxyCodeLine{123 \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{124 SizeCube::operator-\/(\textcolor{keyword}{const} uword val)\textcolor{keyword}{ const}}
+\DoxyCodeLine{125 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{126   \textcolor{keyword}{const} uword out\_n\_rows   = (n\_rows   > val) ? (n\_rows   -\/ val) : uword(0);}
+\DoxyCodeLine{127   \textcolor{keyword}{const} uword out\_n\_cols   = (n\_cols   > val) ? (n\_cols   -\/ val) : uword(0);}
+\DoxyCodeLine{128   \textcolor{keyword}{const} uword out\_n\_slices = (n\_slices > val) ? (n\_slices -\/ val) : uword(0);}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}(out\_n\_rows, out\_n\_cols, out\_n\_slices);}
+\DoxyCodeLine{131   \}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{keyword}{inline}}
+\DoxyCodeLine{136 \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{137 SizeCube::operator*(\textcolor{keyword}{const} uword val)\textcolor{keyword}{ const}}
+\DoxyCodeLine{138 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{139   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( (n\_rows * val), (n\_cols * val), (n\_slices * val) );}
+\DoxyCodeLine{140   \}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 \textcolor{keyword}{inline}}
+\DoxyCodeLine{145 \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{146 SizeCube::operator/(\textcolor{keyword}{const} uword val)\textcolor{keyword}{ const}}
+\DoxyCodeLine{147 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{148   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( (n\_rows / val), (n\_cols / val), (n\_slices / val)  );}
+\DoxyCodeLine{149   \}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 }
+
+\end{DoxyCode}

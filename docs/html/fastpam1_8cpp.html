@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BanditPAM: /Users/motiwari/Desktop/BanditPAM/src/fastpam1.cpp File Reference</title>
+<title>BanditPAM: /Users/motiwari/Desktop/BanditPAM/src/algorithms/fastpam1.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_e6df591b0639d4c4807ef64d058833e2.html">algorithms</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -72,32 +72,28 @@ $(function() {
 <div class="textblock"><code>#include &quot;fastpam1.hpp&quot;</code><br />
 <code>#include &lt;armadillo&gt;</code><br />
 <code>#include &lt;unordered_map&gt;</code><br />
-<code>#include &lt;regex&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for fastpam1.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="fastpam1_8cpp__incl.png" border="0" usemap="#a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2fastpam1_8cpp" alt=""/></div>
-<map name="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2fastpam1_8cpp" id="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2fastpam1_8cpp">
-<area shape="rect" title=" " alt="" coords="593,5,789,47"/>
-<area shape="rect" href="fastpam1_8hpp_source.html" title=" " alt="" coords="504,95,607,121"/>
-<area shape="rect" title=" " alt="" coords="5,244,81,271"/>
-<area shape="rect" title=" " alt="" coords="887,244,1003,271"/>
-<area shape="rect" title=" " alt="" coords="806,95,862,121"/>
-<area shape="rect" href="kmedoids__algorithm_8hpp_source.html" title=" " alt="" coords="412,169,579,196"/>
-<area shape="rect" title=" " alt="" coords="713,244,771,271"/>
-<area shape="rect" title=" " alt="" coords="795,244,862,271"/>
-<area shape="rect" title=" " alt="" coords="105,244,179,271"/>
-<area shape="rect" title=" " alt="" coords="203,244,265,271"/>
-<area shape="rect" title=" " alt="" coords="630,244,689,271"/>
-<area shape="rect" title=" " alt="" coords="290,244,341,271"/>
-<area shape="rect" title=" " alt="" coords="365,244,444,271"/>
-<area shape="rect" title=" " alt="" coords="468,244,523,271"/>
-<area shape="rect" title=" " alt="" coords="547,244,606,271"/>
+<div class="center"><img src="fastpam1_8cpp__incl.png" border="0" usemap="#a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2algorithms_2fastpam1_8cpp" alt=""/></div>
+<map name="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2algorithms_2fastpam1_8cpp" id="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2algorithms_2fastpam1_8cpp">
+<area shape="rect" title=" " alt="" coords="218,5,397,61"/>
+<area shape="rect" href="fastpam1_8hpp_source.html" title=" " alt="" coords="256,109,359,136"/>
+<area shape="rect" title=" " alt="" coords="5,259,81,285"/>
+<area shape="rect" title=" " alt="" coords="717,259,833,285"/>
+<area shape="rect" title=" " alt="" coords="634,259,693,285"/>
+<area shape="rect" title=" " alt="" coords="106,259,165,285"/>
+<area shape="rect" title=" " alt="" coords="189,259,255,285"/>
+<area shape="rect" title=" " alt="" coords="536,259,609,285"/>
+<area shape="rect" href="kmedoids__algorithm_8hpp_source.html" title=" " alt="" coords="297,184,464,211"/>
+<area shape="rect" title=" " alt="" coords="279,259,330,285"/>
+<area shape="rect" title=" " alt="" coords="355,259,433,285"/>
+<area shape="rect" title=" " alt="" coords="457,259,512,285"/>
 </map>
 </div>
 </div><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>2021-08-03</dd></dl>
-<p>This file contains the primary C++ implementation of the <a class="el" href="classFastPAM1.html" title="Class implementation for FastPAM1 algorithm.">FastPAM1</a> code follows from the paper: Erich Schubert and Peter J. Rousseeuw: Faster k-Medoids Clustering: Improving the <a class="el" href="classPAM.html" title="Class implementation for PAM algorithm.">PAM</a>, CLARA, and CLARANS Algorithms. (<a href="https://arxiv.org/pdf/1810.05691.pdf">https://arxiv.org/pdf/1810.05691.pdf</a>). The original <a class="el" href="classPAM.html" title="Class implementation for PAM algorithm.">PAM</a> papers are: 1) Leonard Kaufman and Peter J. Rousseeuw: Clustering by means of medoids. 2) Leonard Kaufman and Peter J. Rousseeuw: Partitioning around medoids (program pam). </p>
+<p>This file contains the primary C++ implementation of the FastPAM1 code follows from the paper: Erich Schubert and Peter J. Rousseeuw: Faster k-Medoids Clustering: Improving the PAM, CLARA, and CLARANS Algorithms. (<a href="https://arxiv.org/pdf/1810.05691.pdf">https://arxiv.org/pdf/1810.05691.pdf</a>). The original PAM papers are: 1) Leonard Kaufman and Peter J. Rousseeuw: Clustering by means of medoids. 2) Leonard Kaufman and Peter J. Rousseeuw: Partitioning around medoids (program pam). </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

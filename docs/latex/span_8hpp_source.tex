@@ -1,0 +1,91 @@
+\hypertarget{span_8hpp_source}{}\doxysection{span.\+hpp}
+\label{span_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/span.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/span.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{struct }\mbox{\hyperlink{structspan__alt}{span\_alt}} \{\};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{template}<\textcolor{keyword}{typename} junk = \textcolor{keywordtype}{int}>}
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classspan__base}{span\_base}}}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   \textcolor{keyword}{public}:}
+\DoxyCodeLine{29   \textcolor{keyword}{static} \textcolor{keyword}{const} \mbox{\hyperlink{structspan__alt}{span\_alt}} all;}
+\DoxyCodeLine{30   \};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{template}<\textcolor{keyword}{typename} junk>}
+\DoxyCodeLine{34 \textcolor{keyword}{const} \mbox{\hyperlink{structspan__alt}{span\_alt}} \mbox{\hyperlink{classspan__base}{span\_base<junk>::all}} = \mbox{\hyperlink{structspan__alt}{span\_alt}}();}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{keyword}{class }\mbox{\hyperlink{classspan}{span}} : \textcolor{keyword}{public} \mbox{\hyperlink{classspan__base}{span\_base}}<>}
+\DoxyCodeLine{38   \{}
+\DoxyCodeLine{39   \textcolor{keyword}{public}:}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   uword a;}
+\DoxyCodeLine{42   uword b;}
+\DoxyCodeLine{43   \textcolor{keywordtype}{bool}  whole;}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keyword}{inline}}
+\DoxyCodeLine{46   \mbox{\hyperlink{classspan}{span}}()}
+\DoxyCodeLine{47     : a(0)}
+\DoxyCodeLine{48     , b(0)}
+\DoxyCodeLine{49     , whole(\textcolor{keyword}{true})}
+\DoxyCodeLine{50     \{}
+\DoxyCodeLine{51     \}}
+\DoxyCodeLine{52   }
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keyword}{inline}}
+\DoxyCodeLine{55   \mbox{\hyperlink{classspan}{span}}(\textcolor{keyword}{const} \mbox{\hyperlink{structspan__alt}{span\_alt}}\&)}
+\DoxyCodeLine{56     : a(0)}
+\DoxyCodeLine{57     , b(0)}
+\DoxyCodeLine{58     , whole(\textcolor{keyword}{true})}
+\DoxyCodeLine{59     \{}
+\DoxyCodeLine{60     \}}
+\DoxyCodeLine{61   }
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   \textcolor{keyword}{inline}}
+\DoxyCodeLine{64   \textcolor{keyword}{explicit}}
+\DoxyCodeLine{65   \mbox{\hyperlink{classspan}{span}}(\textcolor{keyword}{const} uword in\_a)}
+\DoxyCodeLine{66     : a(in\_a)}
+\DoxyCodeLine{67     , b(in\_a)}
+\DoxyCodeLine{68     , whole(\textcolor{keyword}{false})}
+\DoxyCodeLine{69     \{}
+\DoxyCodeLine{70     \}}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{comment}{// the "{}explicit"{} keyword is required here to prevent automatic conversion of \{a,b\}}}
+\DoxyCodeLine{74   \textcolor{comment}{// into an instance of span() when submatrices are specified}}
+\DoxyCodeLine{75   \textcolor{keyword}{inline}}
+\DoxyCodeLine{76   \textcolor{keyword}{explicit}}
+\DoxyCodeLine{77   \mbox{\hyperlink{classspan}{span}}(\textcolor{keyword}{const} uword in\_a, \textcolor{keyword}{const} uword in\_b)}
+\DoxyCodeLine{78     : a(in\_a)}
+\DoxyCodeLine{79     , b(in\_b)}
+\DoxyCodeLine{80     , whole(\textcolor{keyword}{false})}
+\DoxyCodeLine{81     \{}
+\DoxyCodeLine{82     \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84   \};}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+
+\end{DoxyCode}

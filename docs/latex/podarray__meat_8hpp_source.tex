@@ -1,0 +1,395 @@
+\hypertarget{podarray__meat_8hpp_source}{}\doxysection{podarray\+\_\+meat.\+hpp}
+\label{podarray__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/podarray\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/podarray\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{22 arma\_hot}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \mbox{\hyperlink{classpodarray}{podarray<eT>::\string~podarray}}()}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   \textcolor{keywordflow}{if}(n\_elem > podarray\_prealloc\_n\_elem::val )}
+\DoxyCodeLine{29     \{}
+\DoxyCodeLine{30     memory::release( mem );}
+\DoxyCodeLine{31     \}}
+\DoxyCodeLine{32   \}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{37 \textcolor{keyword}{inline}}
+\DoxyCodeLine{38 \mbox{\hyperlink{classpodarray}{podarray<eT>::podarray}}()}
+\DoxyCodeLine{39   : n\_elem(0)}
+\DoxyCodeLine{40   , mem   (0)}
+\DoxyCodeLine{41   \{}
+\DoxyCodeLine{42   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{43   \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{48 \textcolor{keyword}{inline}}
+\DoxyCodeLine{49 \mbox{\hyperlink{classpodarray}{podarray<eT>::podarray}}(\textcolor{keyword}{const} \mbox{\hyperlink{classpodarray}{podarray}}\& x)}
+\DoxyCodeLine{50   : n\_elem(x.n\_elem)}
+\DoxyCodeLine{51   \{}
+\DoxyCodeLine{52   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keyword}{const} uword x\_n\_elem = x.n\_elem;}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   init\_cold(x\_n\_elem);}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   arrayops::copy( memptr(), x.memptr(), x\_n\_elem );}
+\DoxyCodeLine{59   \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{64 \textcolor{keyword}{inline}}
+\DoxyCodeLine{65 \textcolor{keyword}{const} \mbox{\hyperlink{classpodarray}{podarray<eT>}}\&}
+\DoxyCodeLine{66 \mbox{\hyperlink{classpodarray}{podarray<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classpodarray}{podarray}}\& x)}
+\DoxyCodeLine{67   \{}
+\DoxyCodeLine{68   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   \textcolor{keywordflow}{if}(\textcolor{keyword}{this} != \&x)}
+\DoxyCodeLine{71     \{}
+\DoxyCodeLine{72     \textcolor{keyword}{const} uword x\_n\_elem = x.n\_elem;}
+\DoxyCodeLine{73     }
+\DoxyCodeLine{74     init\_warm(x\_n\_elem);}
+\DoxyCodeLine{75     }
+\DoxyCodeLine{76     arrayops::copy( memptr(), x.memptr(), x\_n\_elem );}
+\DoxyCodeLine{77     \}}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{80   \}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{85 arma\_hot}
+\DoxyCodeLine{86 arma\_inline}
+\DoxyCodeLine{87 \mbox{\hyperlink{classpodarray}{podarray<eT>::podarray}}(\textcolor{keyword}{const} uword new\_n\_elem)}
+\DoxyCodeLine{88   : n\_elem(new\_n\_elem)}
+\DoxyCodeLine{89   \{}
+\DoxyCodeLine{90   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{91   }
+\DoxyCodeLine{92   init\_cold(new\_n\_elem);}
+\DoxyCodeLine{93   \}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{98 arma\_inline}
+\DoxyCodeLine{99 \mbox{\hyperlink{classpodarray}{podarray<eT>::podarray}}(\textcolor{keyword}{const} eT* X, \textcolor{keyword}{const} uword new\_n\_elem)}
+\DoxyCodeLine{100   : n\_elem(new\_n\_elem)}
+\DoxyCodeLine{101   \{}
+\DoxyCodeLine{102   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{103   }
+\DoxyCodeLine{104   init\_cold(new\_n\_elem);}
+\DoxyCodeLine{105   }
+\DoxyCodeLine{106   arrayops::copy( memptr(), X, new\_n\_elem );}
+\DoxyCodeLine{107   \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{comment}{// template<typename eT>}}
+\DoxyCodeLine{112 \textcolor{comment}{// template<typename T1>}}
+\DoxyCodeLine{113 \textcolor{comment}{// inline}}
+\DoxyCodeLine{114 \textcolor{comment}{// podarray<eT>::podarray(const Proxy<T1>\& P)}}
+\DoxyCodeLine{115 \textcolor{comment}{//   : n\_elem(P.get\_n\_elem())}}
+\DoxyCodeLine{116 \textcolor{comment}{//   \{}}
+\DoxyCodeLine{117 \textcolor{comment}{//   arma\_extra\_debug\_sigprint\_this(this);}}
+\DoxyCodeLine{118 \textcolor{comment}{//   }}
+\DoxyCodeLine{119 \textcolor{comment}{//   const uword P\_n\_elem = P.get\_n\_elem();}}
+\DoxyCodeLine{120 \textcolor{comment}{//     }}
+\DoxyCodeLine{121 \textcolor{comment}{//   init\_cold(P\_n\_elem);}}
+\DoxyCodeLine{122 \textcolor{comment}{//   }}
+\DoxyCodeLine{123 \textcolor{comment}{//   eT* out\_mem = (*this).memptr();}}
+\DoxyCodeLine{124 \textcolor{comment}{//     }}
+\DoxyCodeLine{125 \textcolor{comment}{//   if(Proxy<T1>::use\_at == false)}}
+\DoxyCodeLine{126 \textcolor{comment}{//     \{}}
+\DoxyCodeLine{127 \textcolor{comment}{//     typename Proxy<T1>::ea\_type A = P.get\_ea();}}
+\DoxyCodeLine{128 \textcolor{comment}{//     }}
+\DoxyCodeLine{129 \textcolor{comment}{//     uword i,j;}}
+\DoxyCodeLine{130 \textcolor{comment}{//     for(i=0, j=1; j < P\_n\_elem; i+=2, j+=2)}}
+\DoxyCodeLine{131 \textcolor{comment}{//       \{}}
+\DoxyCodeLine{132 \textcolor{comment}{//       const eT val\_i = A[i];}}
+\DoxyCodeLine{133 \textcolor{comment}{//       const eT val\_j = A[j];}}
+\DoxyCodeLine{134 \textcolor{comment}{//       }}
+\DoxyCodeLine{135 \textcolor{comment}{//       out\_mem[i] = val\_i;}}
+\DoxyCodeLine{136 \textcolor{comment}{//       out\_mem[j] = val\_j;}}
+\DoxyCodeLine{137 \textcolor{comment}{//       \}}}
+\DoxyCodeLine{138 \textcolor{comment}{//     }}
+\DoxyCodeLine{139 \textcolor{comment}{//     if(i < P\_n\_elem)}}
+\DoxyCodeLine{140 \textcolor{comment}{//       \{}}
+\DoxyCodeLine{141 \textcolor{comment}{//       out\_mem[i] = A[i];}}
+\DoxyCodeLine{142 \textcolor{comment}{//       \}}}
+\DoxyCodeLine{143 \textcolor{comment}{//     \}}}
+\DoxyCodeLine{144 \textcolor{comment}{//   else}}
+\DoxyCodeLine{145 \textcolor{comment}{//     \{}}
+\DoxyCodeLine{146 \textcolor{comment}{//     const uword P\_n\_rows = P.get\_n\_rows();}}
+\DoxyCodeLine{147 \textcolor{comment}{//     const uword P\_n\_cols = P.get\_n\_cols();}}
+\DoxyCodeLine{148 \textcolor{comment}{//     }}
+\DoxyCodeLine{149 \textcolor{comment}{//     if(P\_n\_rows != 1)}}
+\DoxyCodeLine{150 \textcolor{comment}{//       \{}}
+\DoxyCodeLine{151 \textcolor{comment}{//       uword count = 0;}}
+\DoxyCodeLine{152 \textcolor{comment}{//       }}
+\DoxyCodeLine{153 \textcolor{comment}{//       for(uword col=0; col < P\_n\_cols; ++col)}}
+\DoxyCodeLine{154 \textcolor{comment}{//       for(uword row=0; row < P\_n\_rows; ++row, ++count)}}
+\DoxyCodeLine{155 \textcolor{comment}{//         \{}}
+\DoxyCodeLine{156 \textcolor{comment}{//         out\_mem[count] = P.at(row,col);}}
+\DoxyCodeLine{157 \textcolor{comment}{//         \}}}
+\DoxyCodeLine{158 \textcolor{comment}{//       \}}}
+\DoxyCodeLine{159 \textcolor{comment}{//     else}}
+\DoxyCodeLine{160 \textcolor{comment}{//       \{}}
+\DoxyCodeLine{161 \textcolor{comment}{//       for(uword col=0; col < P\_n\_cols; ++col)}}
+\DoxyCodeLine{162 \textcolor{comment}{//         \{}}
+\DoxyCodeLine{163 \textcolor{comment}{//         out\_mem[col] = P.at(0,col);}}
+\DoxyCodeLine{164 \textcolor{comment}{//         \}}}
+\DoxyCodeLine{165 \textcolor{comment}{//       \}}}
+\DoxyCodeLine{166 \textcolor{comment}{//     \}}}
+\DoxyCodeLine{167 \textcolor{comment}{//   \}}}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{172 arma\_inline}
+\DoxyCodeLine{173 eT}
+\DoxyCodeLine{174 \mbox{\hyperlink{classpodarray}{podarray<eT>::operator[] }}(\textcolor{keyword}{const} uword i)\textcolor{keyword}{ const}}
+\DoxyCodeLine{175 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{176   \textcolor{keywordflow}{return} mem[i];}
+\DoxyCodeLine{177   \}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{182 arma\_inline}
+\DoxyCodeLine{183 eT\&}
+\DoxyCodeLine{184 \mbox{\hyperlink{classpodarray}{podarray<eT>::operator[] }}(\textcolor{keyword}{const} uword i)}
+\DoxyCodeLine{185   \{}
+\DoxyCodeLine{186   \textcolor{keywordflow}{return} \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(mem[i]);}
+\DoxyCodeLine{187   \}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{192 arma\_inline}
+\DoxyCodeLine{193 eT}
+\DoxyCodeLine{194 \mbox{\hyperlink{classpodarray}{podarray<eT>::operator() }}(\textcolor{keyword}{const} uword i)\textcolor{keyword}{ const}}
+\DoxyCodeLine{195 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{196   arma\_debug\_check\_bounds( (i >= n\_elem), \textcolor{stringliteral}{"{}podarray::operator(): index out of bounds"{}} );}
+\DoxyCodeLine{197   }
+\DoxyCodeLine{198   \textcolor{keywordflow}{return} mem[i];}
+\DoxyCodeLine{199   \}}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{204 arma\_inline}
+\DoxyCodeLine{205 eT\&}
+\DoxyCodeLine{206 \mbox{\hyperlink{classpodarray}{podarray<eT>::operator() }}(\textcolor{keyword}{const} uword i)}
+\DoxyCodeLine{207   \{}
+\DoxyCodeLine{208   arma\_debug\_check\_bounds( (i >= n\_elem), \textcolor{stringliteral}{"{}podarray::operator(): index out of bounds"{}} );}
+\DoxyCodeLine{209   }
+\DoxyCodeLine{210   \textcolor{keywordflow}{return} \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(mem[i]);}
+\DoxyCodeLine{211   \}}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{216 \textcolor{keyword}{inline}}
+\DoxyCodeLine{217 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{218 \mbox{\hyperlink{classpodarray}{podarray<eT>::set\_min\_size}}(\textcolor{keyword}{const} uword min\_n\_elem)}
+\DoxyCodeLine{219   \{}
+\DoxyCodeLine{220   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222   \textcolor{keywordflow}{if}(min\_n\_elem > n\_elem)  \{ init\_warm(min\_n\_elem); \}}
+\DoxyCodeLine{223   \}}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226 }
+\DoxyCodeLine{227 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{228 \textcolor{keyword}{inline}}
+\DoxyCodeLine{229 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{230 \mbox{\hyperlink{classpodarray}{podarray<eT>::set\_size}}(\textcolor{keyword}{const} uword new\_n\_elem)}
+\DoxyCodeLine{231   \{}
+\DoxyCodeLine{232   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{233   }
+\DoxyCodeLine{234   init\_warm(new\_n\_elem);}
+\DoxyCodeLine{235   \}}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{240 \textcolor{keyword}{inline}}
+\DoxyCodeLine{241 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{242 \mbox{\hyperlink{classpodarray}{podarray<eT>::reset}}()}
+\DoxyCodeLine{243   \{}
+\DoxyCodeLine{244   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{245   }
+\DoxyCodeLine{246   init\_warm(0);}
+\DoxyCodeLine{247   \}}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{252 \textcolor{keyword}{inline}}
+\DoxyCodeLine{253 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{254 \mbox{\hyperlink{classpodarray}{podarray<eT>::fill}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{255   \{}
+\DoxyCodeLine{256   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{257   }
+\DoxyCodeLine{258   arrayops::inplace\_set(memptr(), val, n\_elem);}
+\DoxyCodeLine{259   \}}
+\DoxyCodeLine{260 }
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 }
+\DoxyCodeLine{263 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{264 \textcolor{keyword}{inline}}
+\DoxyCodeLine{265 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{266 \mbox{\hyperlink{classpodarray}{podarray<eT>::zeros}}()}
+\DoxyCodeLine{267   \{}
+\DoxyCodeLine{268   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{269   }
+\DoxyCodeLine{270   arrayops::fill\_zeros(memptr(), n\_elem);}
+\DoxyCodeLine{271   \}}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{276 \textcolor{keyword}{inline}}
+\DoxyCodeLine{277 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{278 \mbox{\hyperlink{classpodarray}{podarray<eT>::zeros}}(\textcolor{keyword}{const} uword new\_n\_elem)}
+\DoxyCodeLine{279   \{}
+\DoxyCodeLine{280   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{281   }
+\DoxyCodeLine{282   init\_warm(new\_n\_elem);}
+\DoxyCodeLine{283   }
+\DoxyCodeLine{284   arrayops::fill\_zeros(memptr(), n\_elem);}
+\DoxyCodeLine{285   \}}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288 }
+\DoxyCodeLine{289 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{290 arma\_inline}
+\DoxyCodeLine{291 eT*}
+\DoxyCodeLine{292 \mbox{\hyperlink{classpodarray}{podarray<eT>::memptr}}()}
+\DoxyCodeLine{293   \{}
+\DoxyCodeLine{294   \textcolor{keywordflow}{return} mem;}
+\DoxyCodeLine{295   \}}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{300 arma\_inline}
+\DoxyCodeLine{301 \textcolor{keyword}{const} eT*}
+\DoxyCodeLine{302 \mbox{\hyperlink{classpodarray}{podarray<eT>::memptr}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{303 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{304   \textcolor{keywordflow}{return} mem;}
+\DoxyCodeLine{305   \}}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307 }
+\DoxyCodeLine{308 }
+\DoxyCodeLine{309 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{310 \textcolor{keyword}{inline}}
+\DoxyCodeLine{311 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{312 \mbox{\hyperlink{classpodarray}{podarray<eT>::copy\_row}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword row)}
+\DoxyCodeLine{313   \{}
+\DoxyCodeLine{314   \textcolor{keyword}{const} uword cols = \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{315   }
+\DoxyCodeLine{316   \textcolor{comment}{// note: this function assumes that the podarray has been set to the correct size beforehand}}
+\DoxyCodeLine{317   eT* out = memptr();}
+\DoxyCodeLine{318   }
+\DoxyCodeLine{319   \textcolor{keywordflow}{switch}(cols)}
+\DoxyCodeLine{320     \{}
+\DoxyCodeLine{321     \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{322       \{}
+\DoxyCodeLine{323       uword i,j;}
+\DoxyCodeLine{324       \textcolor{keywordflow}{for}(i=0, j=1; j < cols; i+=2, j+=2)}
+\DoxyCodeLine{325         \{}
+\DoxyCodeLine{326         \textcolor{keyword}{const} eT tmp\_i = \mbox{\hyperlink{structA}{A}}.at(row, i);}
+\DoxyCodeLine{327         \textcolor{keyword}{const} eT tmp\_j = \mbox{\hyperlink{structA}{A}}.at(row, j);}
+\DoxyCodeLine{328         }
+\DoxyCodeLine{329         out[i] = tmp\_i;}
+\DoxyCodeLine{330         out[j] = tmp\_j;}
+\DoxyCodeLine{331         \}}
+\DoxyCodeLine{332       }
+\DoxyCodeLine{333       \textcolor{keywordflow}{if}(i < cols)}
+\DoxyCodeLine{334         \{}
+\DoxyCodeLine{335         out[i] = \mbox{\hyperlink{structA}{A}}.at(row, i);}
+\DoxyCodeLine{336         \}}
+\DoxyCodeLine{337       \}}
+\DoxyCodeLine{338       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{339     }
+\DoxyCodeLine{340     \textcolor{keywordflow}{case} 8:  out[7] = \mbox{\hyperlink{structA}{A}}.at(row, 7);}
+\DoxyCodeLine{341     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{342     \textcolor{keywordflow}{case} 7:  out[6] = \mbox{\hyperlink{structA}{A}}.at(row, 6);}
+\DoxyCodeLine{343     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{344     \textcolor{keywordflow}{case} 6:  out[5] = \mbox{\hyperlink{structA}{A}}.at(row, 5);}
+\DoxyCodeLine{345     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{346     \textcolor{keywordflow}{case} 5:  out[4] = \mbox{\hyperlink{structA}{A}}.at(row, 4);}
+\DoxyCodeLine{347     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{348     \textcolor{keywordflow}{case} 4:  out[3] = \mbox{\hyperlink{structA}{A}}.at(row, 3);}
+\DoxyCodeLine{349     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{350     \textcolor{keywordflow}{case} 3:  out[2] = \mbox{\hyperlink{structA}{A}}.at(row, 2);}
+\DoxyCodeLine{351     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{352     \textcolor{keywordflow}{case} 2:  out[1] = \mbox{\hyperlink{structA}{A}}.at(row, 1);}
+\DoxyCodeLine{353     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{354     \textcolor{keywordflow}{case} 1:  out[0] = \mbox{\hyperlink{structA}{A}}.at(row, 0);}
+\DoxyCodeLine{355     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{356     \textcolor{keywordflow}{case} 0:  ;}
+\DoxyCodeLine{357     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{358     \}}
+\DoxyCodeLine{359   \}}
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361 }
+\DoxyCodeLine{362 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{363 \textcolor{keyword}{inline}}
+\DoxyCodeLine{364 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{365 \mbox{\hyperlink{classpodarray}{podarray<eT>::init\_cold}}(\textcolor{keyword}{const} uword new\_n\_elem)}
+\DoxyCodeLine{366   \{}
+\DoxyCodeLine{367   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{368   }
+\DoxyCodeLine{369   mem = (new\_n\_elem <= podarray\_prealloc\_n\_elem::val) ? mem\_local : memory::acquire<eT>(new\_n\_elem);}
+\DoxyCodeLine{370   \}}
+\DoxyCodeLine{371 }
+\DoxyCodeLine{372 }
+\DoxyCodeLine{373 }
+\DoxyCodeLine{374 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{375 \textcolor{keyword}{inline}}
+\DoxyCodeLine{376 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{377 \mbox{\hyperlink{classpodarray}{podarray<eT>::init\_warm}}(\textcolor{keyword}{const} uword new\_n\_elem)}
+\DoxyCodeLine{378   \{}
+\DoxyCodeLine{379   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{380   }
+\DoxyCodeLine{381   \textcolor{keywordflow}{if}(n\_elem == new\_n\_elem)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{382     }
+\DoxyCodeLine{383   \textcolor{keywordflow}{if}(n\_elem > podarray\_prealloc\_n\_elem::val)  \{ memory::release( mem ); \}}
+\DoxyCodeLine{384   }
+\DoxyCodeLine{385   mem = (new\_n\_elem <= podarray\_prealloc\_n\_elem::val) ? mem\_local : memory::acquire<eT>(new\_n\_elem);}
+\DoxyCodeLine{386   }
+\DoxyCodeLine{387   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(n\_elem) = new\_n\_elem;}
+\DoxyCodeLine{388   \}}
+\DoxyCodeLine{389 }
+\DoxyCodeLine{390 }
+\DoxyCodeLine{391 }
+
+\end{DoxyCode}

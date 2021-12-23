@@ -1,0 +1,285 @@
+\hypertarget{mul__gemm__mixed_8hpp_source}{}\doxysection{mul\+\_\+gemm\+\_\+mixed.\+hpp}
+\label{mul__gemm__mixed_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/mul\_gemm\_mixed.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/mul\_gemm\_mixed.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{template}<const \textcolor{keywordtype}{bool} do\_trans\_A=false, const \textcolor{keywordtype}{bool} do\_trans\_B=false, const \textcolor{keywordtype}{bool} use\_alpha=false, const \textcolor{keywordtype}{bool} use\_beta=false>}
+\DoxyCodeLine{28 \textcolor{keyword}{class }\mbox{\hyperlink{classgemm__mixed__large}{gemm\_mixed\_large}}}
+\DoxyCodeLine{29   \{}
+\DoxyCodeLine{30   \textcolor{keyword}{public}:}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_eT, \textcolor{keyword}{typename} in\_eT1, \textcolor{keyword}{typename} in\_eT2>}
+\DoxyCodeLine{33   arma\_hot}
+\DoxyCodeLine{34   \textcolor{keyword}{inline}}
+\DoxyCodeLine{35   \textcolor{keyword}{static}}
+\DoxyCodeLine{36   \textcolor{keywordtype}{void}}
+\DoxyCodeLine{37   apply}
+\DoxyCodeLine{38     (}
+\DoxyCodeLine{39           \mbox{\hyperlink{classMat}{Mat<out\_eT>}}\& C,}
+\DoxyCodeLine{40     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<in\_eT1>}}\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{41     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<in\_eT2>}}\& \mbox{\hyperlink{structB}{B}},}
+\DoxyCodeLine{42     \textcolor{keyword}{const} out\_eT       alpha = out\_eT(1),}
+\DoxyCodeLine{43     \textcolor{keyword}{const} out\_eT       beta  = out\_eT(0)}
+\DoxyCodeLine{44     )}
+\DoxyCodeLine{45     \{}
+\DoxyCodeLine{46     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{47     }
+\DoxyCodeLine{48     \textcolor{keyword}{const} uword A\_n\_rows = \mbox{\hyperlink{structA}{A}}.n\_rows;}
+\DoxyCodeLine{49     \textcolor{keyword}{const} uword A\_n\_cols = \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{50     }
+\DoxyCodeLine{51     \textcolor{keyword}{const} uword B\_n\_rows = \mbox{\hyperlink{structB}{B}}.n\_rows;}
+\DoxyCodeLine{52     \textcolor{keyword}{const} uword B\_n\_cols = \mbox{\hyperlink{structB}{B}}.n\_cols;}
+\DoxyCodeLine{53     }
+\DoxyCodeLine{54     \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{false}) \&\& (do\_trans\_B == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{55       \{}
+\DoxyCodeLine{56       \mbox{\hyperlink{classpodarray}{podarray<in\_eT1>}} tmp(A\_n\_cols);}
+\DoxyCodeLine{57       in\_eT1* A\_rowdata = tmp.memptr();}
+\DoxyCodeLine{58       }
+\DoxyCodeLine{59 \textcolor{preprocessor}{      \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{60       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_mp = (B\_n\_cols >= 2) \&\& (\mbox{\hyperlink{structB}{B}}.n\_elem >= 8192) \&\& (mp\_thread\_limit::in\_parallel() == \textcolor{keyword}{false});}
+\DoxyCodeLine{61 \textcolor{preprocessor}{      \#else}}
+\DoxyCodeLine{62       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_mp = \textcolor{keyword}{false};}
+\DoxyCodeLine{63 \textcolor{preprocessor}{      \#endif}}
+\DoxyCodeLine{64       }
+\DoxyCodeLine{65       \textcolor{keywordflow}{if}(use\_mp)}
+\DoxyCodeLine{66         \{}
+\DoxyCodeLine{67 \textcolor{preprocessor}{        \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{68           \{}
+\DoxyCodeLine{69           \textcolor{keyword}{const} \textcolor{keywordtype}{int} n\_threads = int( (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})( uword(mp\_thread\_limit::get()), uword(B\_n\_cols) ) );}
+\DoxyCodeLine{70           }
+\DoxyCodeLine{71           \textcolor{keywordflow}{for}(uword row\_A=0; row\_A < A\_n\_rows; ++row\_A)}
+\DoxyCodeLine{72             \{}
+\DoxyCodeLine{73             tmp.copy\_row(\mbox{\hyperlink{structA}{A}}, row\_A);}
+\DoxyCodeLine{74             }
+\DoxyCodeLine{75 \textcolor{preprocessor}{            \#pragma omp parallel for schedule(static) num\_threads(n\_threads)}}
+\DoxyCodeLine{76             \textcolor{keywordflow}{for}(uword col\_B=0; col\_B < B\_n\_cols; ++col\_B)}
+\DoxyCodeLine{77               \{}
+\DoxyCodeLine{78               \textcolor{keyword}{const} in\_eT2* B\_coldata = \mbox{\hyperlink{structB}{B}}.colptr(col\_B);}
+\DoxyCodeLine{79               }
+\DoxyCodeLine{80               out\_eT acc = out\_eT(0);}
+\DoxyCodeLine{81               \textcolor{keywordflow}{for}(uword i=0; i < B\_n\_rows; ++i)}
+\DoxyCodeLine{82                 \{}
+\DoxyCodeLine{83                 acc += \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(A\_rowdata[i]) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(B\_coldata[i]);}
+\DoxyCodeLine{84                 \}}
+\DoxyCodeLine{85               }
+\DoxyCodeLine{86                    \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{false}) \&\& (use\_beta == \textcolor{keyword}{false}) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B) =       acc;                          \}}
+\DoxyCodeLine{87               \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{true} ) \&\& (use\_beta == \textcolor{keyword}{false}) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B) = alpha*acc;                          \}}
+\DoxyCodeLine{88               \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{false}) \&\& (use\_beta == \textcolor{keyword}{true} ) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B) =       acc + beta*C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B); \}}
+\DoxyCodeLine{89               \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{true} ) \&\& (use\_beta == \textcolor{keyword}{true} ) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B) = alpha*acc + beta*C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B); \}}
+\DoxyCodeLine{90               \}}
+\DoxyCodeLine{91             \}}
+\DoxyCodeLine{92           \}}
+\DoxyCodeLine{93 \textcolor{preprocessor}{        \#endif}}
+\DoxyCodeLine{94         \}}
+\DoxyCodeLine{95       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{96         \{}
+\DoxyCodeLine{97         \textcolor{keywordflow}{for}(uword row\_A=0; row\_A < A\_n\_rows; ++row\_A)}
+\DoxyCodeLine{98           \{}
+\DoxyCodeLine{99           tmp.copy\_row(\mbox{\hyperlink{structA}{A}}, row\_A);}
+\DoxyCodeLine{100             }
+\DoxyCodeLine{101           \textcolor{keywordflow}{for}(uword col\_B=0; col\_B < B\_n\_cols; ++col\_B)}
+\DoxyCodeLine{102             \{}
+\DoxyCodeLine{103             \textcolor{keyword}{const} in\_eT2* B\_coldata = \mbox{\hyperlink{structB}{B}}.colptr(col\_B);}
+\DoxyCodeLine{104             }
+\DoxyCodeLine{105             out\_eT acc = out\_eT(0);}
+\DoxyCodeLine{106             \textcolor{keywordflow}{for}(uword i=0; i < B\_n\_rows; ++i)}
+\DoxyCodeLine{107               \{}
+\DoxyCodeLine{108               acc += \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(A\_rowdata[i]) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(B\_coldata[i]);}
+\DoxyCodeLine{109               \}}
+\DoxyCodeLine{110           }
+\DoxyCodeLine{111                  \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{false}) \&\& (use\_beta == \textcolor{keyword}{false}) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B) =       acc;                          \}}
+\DoxyCodeLine{112             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{true} ) \&\& (use\_beta == \textcolor{keyword}{false}) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B) = alpha*acc;                          \}}
+\DoxyCodeLine{113             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{false}) \&\& (use\_beta == \textcolor{keyword}{true} ) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B) =       acc + beta*C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B); \}}
+\DoxyCodeLine{114             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{true} ) \&\& (use\_beta == \textcolor{keyword}{true} ) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B) = alpha*acc + beta*C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_A,col\_B); \}}
+\DoxyCodeLine{115             \}}
+\DoxyCodeLine{116           \}}
+\DoxyCodeLine{117         \}}
+\DoxyCodeLine{118       \}}
+\DoxyCodeLine{119     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{120     \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (do\_trans\_B == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{121       \{}
+\DoxyCodeLine{122 \textcolor{preprocessor}{      \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{123       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_mp = (B\_n\_cols >= 2) \&\& (\mbox{\hyperlink{structB}{B}}.n\_elem >= 8192) \&\& (mp\_thread\_limit::in\_parallel() == \textcolor{keyword}{false});}
+\DoxyCodeLine{124 \textcolor{preprocessor}{      \#else}}
+\DoxyCodeLine{125       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_mp = \textcolor{keyword}{false};}
+\DoxyCodeLine{126 \textcolor{preprocessor}{      \#endif}}
+\DoxyCodeLine{127       }
+\DoxyCodeLine{128       \textcolor{keywordflow}{if}(use\_mp)}
+\DoxyCodeLine{129         \{}
+\DoxyCodeLine{130 \textcolor{preprocessor}{        \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{131           \{}
+\DoxyCodeLine{132           \textcolor{keyword}{const} \textcolor{keywordtype}{int} n\_threads = int( (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})( uword(mp\_thread\_limit::get()), uword(B\_n\_cols) ) );}
+\DoxyCodeLine{133           }
+\DoxyCodeLine{134           \textcolor{keywordflow}{for}(uword col\_A=0; col\_A < A\_n\_cols; ++col\_A)}
+\DoxyCodeLine{135             \{}
+\DoxyCodeLine{136             \textcolor{comment}{// col\_A is interpreted as row\_A when storing the results in matrix C}}
+\DoxyCodeLine{137             }
+\DoxyCodeLine{138             \textcolor{keyword}{const} in\_eT1* A\_coldata = \mbox{\hyperlink{structA}{A}}.colptr(col\_A);}
+\DoxyCodeLine{139             }
+\DoxyCodeLine{140 \textcolor{preprocessor}{            \#pragma omp parallel for schedule(static) num\_threads(n\_threads)}}
+\DoxyCodeLine{141             \textcolor{keywordflow}{for}(uword col\_B=0; col\_B < B\_n\_cols; ++col\_B)}
+\DoxyCodeLine{142               \{}
+\DoxyCodeLine{143               \textcolor{keyword}{const} in\_eT2* B\_coldata = \mbox{\hyperlink{structB}{B}}.colptr(col\_B);}
+\DoxyCodeLine{144               }
+\DoxyCodeLine{145               out\_eT acc = out\_eT(0);}
+\DoxyCodeLine{146               \textcolor{keywordflow}{for}(uword i=0; i < B\_n\_rows; ++i)}
+\DoxyCodeLine{147                 \{}
+\DoxyCodeLine{148                 acc += \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(A\_coldata[i]) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(B\_coldata[i]);}
+\DoxyCodeLine{149                 \}}
+\DoxyCodeLine{150             }
+\DoxyCodeLine{151                    \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{false}) \&\& (use\_beta == \textcolor{keyword}{false}) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B) =       acc;                          \}}
+\DoxyCodeLine{152               \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{true} ) \&\& (use\_beta == \textcolor{keyword}{false}) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B) = alpha*acc;                          \}}
+\DoxyCodeLine{153               \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{false}) \&\& (use\_beta == \textcolor{keyword}{true} ) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B) =       acc + beta*C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B); \}}
+\DoxyCodeLine{154               \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{true} ) \&\& (use\_beta == \textcolor{keyword}{true} ) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B) = alpha*acc + beta*C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B); \}}
+\DoxyCodeLine{155               \}}
+\DoxyCodeLine{156             \}}
+\DoxyCodeLine{157           \}}
+\DoxyCodeLine{158 \textcolor{preprocessor}{        \#endif}}
+\DoxyCodeLine{159         \}}
+\DoxyCodeLine{160       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{161         \{}
+\DoxyCodeLine{162         \textcolor{keywordflow}{for}(uword col\_A=0; col\_A < A\_n\_cols; ++col\_A)}
+\DoxyCodeLine{163           \{}
+\DoxyCodeLine{164           \textcolor{comment}{// col\_A is interpreted as row\_A when storing the results in matrix C}}
+\DoxyCodeLine{165           }
+\DoxyCodeLine{166           \textcolor{keyword}{const} in\_eT1* A\_coldata = \mbox{\hyperlink{structA}{A}}.colptr(col\_A);}
+\DoxyCodeLine{167           }
+\DoxyCodeLine{168           \textcolor{keywordflow}{for}(uword col\_B=0; col\_B < B\_n\_cols; ++col\_B)}
+\DoxyCodeLine{169             \{}
+\DoxyCodeLine{170             \textcolor{keyword}{const} in\_eT2* B\_coldata = \mbox{\hyperlink{structB}{B}}.colptr(col\_B);}
+\DoxyCodeLine{171             }
+\DoxyCodeLine{172             out\_eT acc = out\_eT(0);}
+\DoxyCodeLine{173             \textcolor{keywordflow}{for}(uword i=0; i < B\_n\_rows; ++i)}
+\DoxyCodeLine{174               \{}
+\DoxyCodeLine{175               acc += \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(A\_coldata[i]) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(B\_coldata[i]);}
+\DoxyCodeLine{176               \}}
+\DoxyCodeLine{177           }
+\DoxyCodeLine{178                  \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{false}) \&\& (use\_beta == \textcolor{keyword}{false}) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B) =       acc;                          \}}
+\DoxyCodeLine{179             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{true} ) \&\& (use\_beta == \textcolor{keyword}{false}) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B) = alpha*acc;                          \}}
+\DoxyCodeLine{180             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{false}) \&\& (use\_beta == \textcolor{keyword}{true} ) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B) =       acc + beta*C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B); \}}
+\DoxyCodeLine{181             \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{true} ) \&\& (use\_beta == \textcolor{keyword}{true} ) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B) = alpha*acc + beta*C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,col\_B); \}}
+\DoxyCodeLine{182             \}}
+\DoxyCodeLine{183           \}}
+\DoxyCodeLine{184         \}}
+\DoxyCodeLine{185       \}}
+\DoxyCodeLine{186     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{187     \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{false}) \&\& (do\_trans\_B == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{188       \{}
+\DoxyCodeLine{189       \mbox{\hyperlink{classMat}{Mat<in\_eT2>}} B\_tmp;}
+\DoxyCodeLine{190       }
+\DoxyCodeLine{191       \mbox{\hyperlink{group__op__strans_gafd56208012c4a9b31acbeaf21cfa63cc}{op\_strans::apply\_mat\_noalias}}(B\_tmp, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{192       }
+\DoxyCodeLine{193       \mbox{\hyperlink{classgemm__mixed__large}{gemm\_mixed\_large<false, false, use\_alpha, use\_beta>::apply}}(C, \mbox{\hyperlink{structA}{A}}, B\_tmp, alpha, beta);}
+\DoxyCodeLine{194       \}}
+\DoxyCodeLine{195     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{196     \textcolor{keywordflow}{if}( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (do\_trans\_B == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{197       \{}
+\DoxyCodeLine{198       \textcolor{comment}{// mat B\_tmp = trans(B);}}
+\DoxyCodeLine{199       \textcolor{comment}{// dgemm\_arma<true, false,  use\_alpha, use\_beta>::apply(C, A, B\_tmp, alpha, beta);}}
+\DoxyCodeLine{200       }
+\DoxyCodeLine{201       }
+\DoxyCodeLine{202       \textcolor{comment}{// By using the trans(A)*trans(B) = trans(B*A) equivalency,}}
+\DoxyCodeLine{203       \textcolor{comment}{// transpose operations are not needed}}
+\DoxyCodeLine{204       }
+\DoxyCodeLine{205       \mbox{\hyperlink{classpodarray}{podarray<in\_eT2>}} tmp(B\_n\_cols);}
+\DoxyCodeLine{206       in\_eT2* B\_rowdata = tmp.memptr();}
+\DoxyCodeLine{207       }
+\DoxyCodeLine{208       \textcolor{keywordflow}{for}(uword row\_B=0; row\_B < B\_n\_rows; ++row\_B)}
+\DoxyCodeLine{209         \{}
+\DoxyCodeLine{210         tmp.copy\_row(\mbox{\hyperlink{structB}{B}}, row\_B);}
+\DoxyCodeLine{211         }
+\DoxyCodeLine{212         \textcolor{keywordflow}{for}(uword col\_A=0; col\_A < A\_n\_cols; ++col\_A)}
+\DoxyCodeLine{213           \{}
+\DoxyCodeLine{214           \textcolor{keyword}{const} in\_eT1* A\_coldata = \mbox{\hyperlink{structA}{A}}.colptr(col\_A);}
+\DoxyCodeLine{215           }
+\DoxyCodeLine{216           out\_eT acc = out\_eT(0);}
+\DoxyCodeLine{217           \textcolor{keywordflow}{for}(uword i=0; i < A\_n\_rows; ++i)}
+\DoxyCodeLine{218             \{}
+\DoxyCodeLine{219             acc += \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(B\_rowdata[i]) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(A\_coldata[i]);}
+\DoxyCodeLine{220             \}}
+\DoxyCodeLine{221           }
+\DoxyCodeLine{222                \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{false}) \&\& (use\_beta == \textcolor{keyword}{false}) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,row\_B) =       acc;                          \}}
+\DoxyCodeLine{223           \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{true} ) \&\& (use\_beta == \textcolor{keyword}{false}) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,row\_B) = alpha*acc;                          \}}
+\DoxyCodeLine{224           \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{false}) \&\& (use\_beta == \textcolor{keyword}{true} ) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,row\_B) =       acc + beta*C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,row\_B); \}}
+\DoxyCodeLine{225           \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}( (use\_alpha == \textcolor{keyword}{true} ) \&\& (use\_beta == \textcolor{keyword}{true} ) )  \{ C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,row\_B) = alpha*acc + beta*C.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(col\_A,row\_B); \}}
+\DoxyCodeLine{226           \}}
+\DoxyCodeLine{227         \}}
+\DoxyCodeLine{228       }
+\DoxyCodeLine{229       \}}
+\DoxyCodeLine{230     \}}
+\DoxyCodeLine{231     }
+\DoxyCodeLine{232   \};}
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235 }
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 \textcolor{keyword}{template}<const \textcolor{keywordtype}{bool} do\_trans\_A=false, const \textcolor{keywordtype}{bool} do\_trans\_B=false, const \textcolor{keywordtype}{bool} use\_alpha=false, const \textcolor{keywordtype}{bool} use\_beta=false>}
+\DoxyCodeLine{240 \textcolor{keyword}{class }\mbox{\hyperlink{classgemm__mixed}{gemm\_mixed}}}
+\DoxyCodeLine{241   \{}
+\DoxyCodeLine{242   \textcolor{keyword}{public}:}
+\DoxyCodeLine{243   }
+\DoxyCodeLine{245   \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_eT, \textcolor{keyword}{typename} in\_eT1, \textcolor{keyword}{typename} in\_eT2>}
+\DoxyCodeLine{246   \textcolor{keyword}{inline}}
+\DoxyCodeLine{247   \textcolor{keyword}{static}}
+\DoxyCodeLine{248   \textcolor{keywordtype}{void}}
+\DoxyCodeLine{249   \mbox{\hyperlink{classgemm__mixed_a8f0873dd8d17be60e74d73fbe31b1d1e}{apply}}}
+\DoxyCodeLine{250     (}
+\DoxyCodeLine{251           \mbox{\hyperlink{classMat}{Mat<out\_eT>}}\& C,}
+\DoxyCodeLine{252     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<in\_eT1>}}\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{253     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<in\_eT2>}}\& \mbox{\hyperlink{structB}{B}},}
+\DoxyCodeLine{254     \textcolor{keyword}{const} out\_eT       alpha = out\_eT(1),}
+\DoxyCodeLine{255     \textcolor{keyword}{const} out\_eT       beta  = out\_eT(0)}
+\DoxyCodeLine{256     )}
+\DoxyCodeLine{257     \{}
+\DoxyCodeLine{258     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{259     }
+\DoxyCodeLine{260     \textcolor{keywordflow}{if}((\mbox{\hyperlink{structis__cx}{is\_cx<in\_eT1>::yes}} \&\& do\_trans\_A) || (\mbox{\hyperlink{structis__cx}{is\_cx<in\_eT2>::yes}} \&\& do\_trans\_B))}
+\DoxyCodeLine{261       \{}
+\DoxyCodeLine{262       \textcolor{comment}{// better-\/than-\/nothing handling of hermitian transpose}}
+\DoxyCodeLine{263       }
+\DoxyCodeLine{264       \mbox{\hyperlink{classMat}{Mat<in\_eT1>}} tmp\_A;}
+\DoxyCodeLine{265       \mbox{\hyperlink{classMat}{Mat<in\_eT2>}} tmp\_B;}
+\DoxyCodeLine{266       }
+\DoxyCodeLine{267       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} predo\_trans\_A = ( (do\_trans\_A == \textcolor{keyword}{true}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<in\_eT1>::yes}}) );}
+\DoxyCodeLine{268       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} predo\_trans\_B = ( (do\_trans\_B == \textcolor{keyword}{true}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<in\_eT2>::yes}}) );}
+\DoxyCodeLine{269       }
+\DoxyCodeLine{270       \textcolor{keywordflow}{if}(predo\_trans\_A)  \{ op\_htrans::apply\_mat\_noalias(tmp\_A, \mbox{\hyperlink{structA}{A}}); \}}
+\DoxyCodeLine{271       \textcolor{keywordflow}{if}(predo\_trans\_B)  \{ op\_htrans::apply\_mat\_noalias(tmp\_B, \mbox{\hyperlink{structB}{B}}); \}}
+\DoxyCodeLine{272       }
+\DoxyCodeLine{273       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<in\_eT1>}}\& AA = (predo\_trans\_A == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structA}{A}} : tmp\_A;}
+\DoxyCodeLine{274       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<in\_eT2>}}\& BB = (predo\_trans\_B == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structB}{B}} : tmp\_B;}
+\DoxyCodeLine{275       }
+\DoxyCodeLine{276       \mbox{\hyperlink{classgemm__mixed__large}{gemm\_mixed\_large}}<((predo\_trans\_A) ? \textcolor{keyword}{false} : do\_trans\_A), ((predo\_trans\_B) ? \textcolor{keyword}{false} : do\_trans\_B), use\_alpha, use\_beta>\mbox{\hyperlink{classgemm__mixed_a8f0873dd8d17be60e74d73fbe31b1d1e}{::apply}}(C, AA, BB, alpha, beta);}
+\DoxyCodeLine{277       \}}
+\DoxyCodeLine{278     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{279       \{}
+\DoxyCodeLine{280       \mbox{\hyperlink{classgemm__mixed__large}{gemm\_mixed\_large<do\_trans\_A, do\_trans\_B, use\_alpha, use\_beta>::apply}}(C, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, alpha, beta);}
+\DoxyCodeLine{281       \}}
+\DoxyCodeLine{282     \}}
+\DoxyCodeLine{283   }
+\DoxyCodeLine{284   }
+\DoxyCodeLine{285   \};}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288 }
+
+\end{DoxyCode}

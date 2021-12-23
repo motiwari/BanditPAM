@@ -1,0 +1,105 @@
+\hypertarget{op__cov__meat_8hpp_source}{}\doxysection{op\+\_\+cov\+\_\+meat.\+hpp}
+\label{op__cov__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_cov\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_cov\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{26 op\_cov::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_cov>}}\& in)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{const} uword norm\_type = in.\mbox{\hyperlink{classOp_a197cb9330fe0d72c976d6223514c4bd6}{aux\_uword\_a}};}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}}   U(in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}});}
+\DoxyCodeLine{35   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = U.M;}
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structA}{A}}.n\_elem == 0)}
+\DoxyCodeLine{38     \{}
+\DoxyCodeLine{39     out.reset();}
+\DoxyCodeLine{40     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{41     \}}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& AA = (\mbox{\hyperlink{structA}{A}}.n\_rows == 1) }
+\DoxyCodeLine{44                       ? \mbox{\hyperlink{classMat}{Mat<eT>}}(\textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(\mbox{\hyperlink{structA}{A}}.memptr()), \mbox{\hyperlink{structA}{A}}.n\_cols, \mbox{\hyperlink{structA}{A}}.n\_rows, \textcolor{keyword}{false}, \textcolor{keyword}{false})}
+\DoxyCodeLine{45                       : \mbox{\hyperlink{classMat}{Mat<eT>}}(\textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(\mbox{\hyperlink{structA}{A}}.memptr()), \mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols, \textcolor{keyword}{false}, \textcolor{keyword}{false});}
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   \textcolor{keyword}{const} uword N        = AA.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{48   \textcolor{keyword}{const} eT    norm\_val = (norm\_type == 0) ? ( (N > 1) ? eT(N-\/1) : eT(1) ) : eT(N);}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} tmp = AA.each\_row() -\/ mean(AA,0);}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   out = tmp.t() * tmp;}
+\DoxyCodeLine{53   out /= norm\_val;}
+\DoxyCodeLine{54   \}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{59 \textcolor{keyword}{inline}}
+\DoxyCodeLine{60 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{61 op\_cov::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op}}< \mbox{\hyperlink{classOp}{Op<T1,op\_htrans>}}, \mbox{\hyperlink{classop__cov}{op\_cov}}>\& in)}
+\DoxyCodeLine{62   \{}
+\DoxyCodeLine{63   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{64   }
+\DoxyCodeLine{65   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keyword}{const} uword norm\_type = in.\mbox{\hyperlink{classOp_a197cb9330fe0d72c976d6223514c4bd6}{aux\_uword\_a}};}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::yes}})}
+\DoxyCodeLine{70     \{}
+\DoxyCodeLine{71     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} tmp = in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}};  \textcolor{comment}{// force the evaluation of Op<T1,op\_htrans>}}
+\DoxyCodeLine{72     }
+\DoxyCodeLine{73     out = cov(tmp, norm\_type);}
+\DoxyCodeLine{74     \}}
+\DoxyCodeLine{75   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{76     \{}
+\DoxyCodeLine{77     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}}   U(in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}}.m);}
+\DoxyCodeLine{78     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = U.M;}
+\DoxyCodeLine{79     }
+\DoxyCodeLine{80     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structA}{A}}.n\_elem == 0)}
+\DoxyCodeLine{81       \{}
+\DoxyCodeLine{82       out.reset();}
+\DoxyCodeLine{83       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{84       \}}
+\DoxyCodeLine{85     }
+\DoxyCodeLine{86     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& AA = (\mbox{\hyperlink{structA}{A}}.n\_cols == 1)}
+\DoxyCodeLine{87                         ? \mbox{\hyperlink{classMat}{Mat<eT>}}(\textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(\mbox{\hyperlink{structA}{A}}.memptr()), \mbox{\hyperlink{structA}{A}}.n\_cols, \mbox{\hyperlink{structA}{A}}.n\_rows, \textcolor{keyword}{false}, \textcolor{keyword}{false})}
+\DoxyCodeLine{88                         : \mbox{\hyperlink{classMat}{Mat<eT>}}(\textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(\mbox{\hyperlink{structA}{A}}.memptr()), \mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols, \textcolor{keyword}{false}, \textcolor{keyword}{false});}
+\DoxyCodeLine{89     }
+\DoxyCodeLine{90     \textcolor{keyword}{const} uword N        = AA.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{91     \textcolor{keyword}{const} eT    norm\_val = (norm\_type == 0) ? ( (N > 1) ? eT(N-\/1) : eT(1) ) : eT(N);}
+\DoxyCodeLine{92     }
+\DoxyCodeLine{93     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} tmp = AA.each\_col() -\/ mean(AA,1);}
+\DoxyCodeLine{94     }
+\DoxyCodeLine{95     out = tmp * tmp.t();}
+\DoxyCodeLine{96     out /= norm\_val;}
+\DoxyCodeLine{97     \}}
+\DoxyCodeLine{98   \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 }
+
+\end{DoxyCode}

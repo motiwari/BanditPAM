@@ -1,0 +1,604 @@
+\hypertarget{ProxyCube_8hpp_source}{}\doxysection{Proxy\+Cube.\+hpp}
+\label{ProxyCube_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/ProxyCube.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/ProxyCube.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   \textcolor{keyword}{inline} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} T1\&)}
+\DoxyCodeLine{27     \{}
+\DoxyCodeLine{28     arma\_type\_check(( \mbox{\hyperlink{structis__arma__cube__type}{is\_arma\_cube\_type<T1>::value}} == \textcolor{keyword}{false} ));}
+\DoxyCodeLine{29     \}}
+\DoxyCodeLine{30   \};}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{comment}{// ea\_type is the "{}element accessor"{} type,}}
+\DoxyCodeLine{35 \textcolor{comment}{// which can provide access to elements via operator[]}}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{38 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classCube}{Cube}}<eT> >}
+\DoxyCodeLine{39   \{}
+\DoxyCodeLine{40   \textcolor{keyword}{public}:}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{typedef} eT                                       elem\_type;}
+\DoxyCodeLine{43   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{44   \textcolor{keyword}{typedef} \mbox{\hyperlink{classCube}{Cube<eT>}}                                 \mbox{\hyperlink{classCube}{stored\_type}};}
+\DoxyCodeLine{45   \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT*                                ea\_type;}
+\DoxyCodeLine{46   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\&                          \mbox{\hyperlink{classCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \textcolor{keyword}{false};}
+\DoxyCodeLine{49   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \textcolor{keyword}{false};}
+\DoxyCodeLine{50   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \textcolor{keyword}{false};}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& Q;}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{55     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{56     \{}
+\DoxyCodeLine{57     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{58     \}}
+\DoxyCodeLine{59   }
+\DoxyCodeLine{60   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows;       \}}
+\DoxyCodeLine{61   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_cols;       \}}
+\DoxyCodeLine{62   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.n\_elem\_slice; \}}
+\DoxyCodeLine{63   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.n\_slices;     \}}
+\DoxyCodeLine{64   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_elem;       \}}
+\DoxyCodeLine{65   }
+\DoxyCodeLine{66   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{67   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{68   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   arma\_inline         ea\_type         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.memptr(); \}}
+\DoxyCodeLine{71   arma\_inline \mbox{\hyperlink{classCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q;          \}}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{74   arma\_inline \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\& X)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (void\_ptr(\&Q) == void\_ptr(\&X)); \}}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{77   arma\_inline \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\& X)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} is\_alias(X.m); \}}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} memory::is\_aligned(Q.memptr()); \}}
+\DoxyCodeLine{80   \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} gen\_type>}
+\DoxyCodeLine{85 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classGenCube}{GenCube}}<eT, gen\_type> >}
+\DoxyCodeLine{86   \{}
+\DoxyCodeLine{87   \textcolor{keyword}{public}:}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89   \textcolor{keyword}{typedef}          eT                              elem\_type;}
+\DoxyCodeLine{90   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{91   \textcolor{keyword}{typedef} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}                    \mbox{\hyperlink{classGenCube}{stored\_type}};}
+\DoxyCodeLine{92   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}\&             \mbox{\hyperlink{classGenCube}{ea\_type}};}
+\DoxyCodeLine{93   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}\&             \mbox{\hyperlink{classGenCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \textcolor{keyword}{false};}
+\DoxyCodeLine{96   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \textcolor{keyword}{false};}
+\DoxyCodeLine{97   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \textcolor{keyword}{false};}
+\DoxyCodeLine{98   }
+\DoxyCodeLine{99   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}\& Q;}
+\DoxyCodeLine{100   }
+\DoxyCodeLine{101   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{102     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{103     \{}
+\DoxyCodeLine{104     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{105     \}}
+\DoxyCodeLine{106   }
+\DoxyCodeLine{107   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows;                     \}}
+\DoxyCodeLine{108   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_cols;                     \}}
+\DoxyCodeLine{109   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.n\_rows*Q.n\_cols;            \}}
+\DoxyCodeLine{110   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.n\_slices;                   \}}
+\DoxyCodeLine{111   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows*Q.n\_cols*Q.n\_slices; \}}
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{114   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{115   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{116   }
+\DoxyCodeLine{117   arma\_inline         \mbox{\hyperlink{classGenCube}{ea\_type}}         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q; \}}
+\DoxyCodeLine{118   arma\_inline \mbox{\hyperlink{classGenCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q; \}}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{121   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{122   }
+\DoxyCodeLine{123   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{124   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{125   }
+\DoxyCodeLine{126   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_type>::is\_simple}}; \}}
+\DoxyCodeLine{127   \};}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{132 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classGenCube}{GenCube}}<eT, gen\_randu> >}
+\DoxyCodeLine{133   \{}
+\DoxyCodeLine{134   \textcolor{keyword}{public}:}
+\DoxyCodeLine{135   }
+\DoxyCodeLine{136   \textcolor{keyword}{typedef} eT                                       elem\_type;}
+\DoxyCodeLine{137   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{138   \textcolor{keyword}{typedef} \mbox{\hyperlink{classCube}{Cube<eT>}}                                 \mbox{\hyperlink{classCube}{stored\_type}};}
+\DoxyCodeLine{139   \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT*                                ea\_type;}
+\DoxyCodeLine{140   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\&                          \mbox{\hyperlink{classCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{141   }
+\DoxyCodeLine{142   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \textcolor{keyword}{false};}
+\DoxyCodeLine{143   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \textcolor{keyword}{false};}
+\DoxyCodeLine{144   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \textcolor{keyword}{false};}
+\DoxyCodeLine{145   }
+\DoxyCodeLine{146   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}} Q;}
+\DoxyCodeLine{147   }
+\DoxyCodeLine{148   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_randu>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{149     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{150     \{}
+\DoxyCodeLine{151     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{152     \}}
+\DoxyCodeLine{153   }
+\DoxyCodeLine{154   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows;       \}}
+\DoxyCodeLine{155   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_cols;       \}}
+\DoxyCodeLine{156   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.n\_elem\_slice; \}}
+\DoxyCodeLine{157   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.n\_slices;     \}}
+\DoxyCodeLine{158   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_elem;       \}}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{161   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{162   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164   arma\_inline         ea\_type         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.memptr(); \}}
+\DoxyCodeLine{165   arma\_inline \mbox{\hyperlink{classCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q;          \}}
+\DoxyCodeLine{166   }
+\DoxyCodeLine{167   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{168   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{169   }
+\DoxyCodeLine{170   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{171   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{172   }
+\DoxyCodeLine{173   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} memory::is\_aligned(Q.memptr()); \}}
+\DoxyCodeLine{174   \};}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{179 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classGenCube}{GenCube}}<eT, gen\_randn> >}
+\DoxyCodeLine{180   \{}
+\DoxyCodeLine{181   \textcolor{keyword}{public}:}
+\DoxyCodeLine{182   }
+\DoxyCodeLine{183   \textcolor{keyword}{typedef} eT                                       elem\_type;}
+\DoxyCodeLine{184   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{185   \textcolor{keyword}{typedef} \mbox{\hyperlink{classCube}{Cube<eT>}}                                 \mbox{\hyperlink{classCube}{stored\_type}};}
+\DoxyCodeLine{186   \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT*                                ea\_type;}
+\DoxyCodeLine{187   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\&                          \mbox{\hyperlink{classCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \textcolor{keyword}{false};}
+\DoxyCodeLine{190   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \textcolor{keyword}{false};}
+\DoxyCodeLine{191   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \textcolor{keyword}{false};}
+\DoxyCodeLine{192   }
+\DoxyCodeLine{193   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}} Q;}
+\DoxyCodeLine{194   }
+\DoxyCodeLine{195   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGenCube}{GenCube<eT, gen\_randn>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{196     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{197     \{}
+\DoxyCodeLine{198     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{199     \}}
+\DoxyCodeLine{200   }
+\DoxyCodeLine{201   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows;       \}}
+\DoxyCodeLine{202   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_cols;       \}}
+\DoxyCodeLine{203   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.n\_elem\_slice; \}}
+\DoxyCodeLine{204   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.n\_slices;     \}}
+\DoxyCodeLine{205   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_elem;       \}}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{208   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{209   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{210   }
+\DoxyCodeLine{211   arma\_inline         ea\_type         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.memptr(); \}}
+\DoxyCodeLine{212   arma\_inline \mbox{\hyperlink{classCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q;          \}}
+\DoxyCodeLine{213   }
+\DoxyCodeLine{214   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{215   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{216   }
+\DoxyCodeLine{217   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{218   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{219   }
+\DoxyCodeLine{220   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} memory::is\_aligned(Q.memptr()); \}}
+\DoxyCodeLine{221   \};}
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type>}
+\DoxyCodeLine{226 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classOpCube}{OpCube}}<T1, op\_type> >}
+\DoxyCodeLine{227   \{}
+\DoxyCodeLine{228   \textcolor{keyword}{public}:}
+\DoxyCodeLine{229   }
+\DoxyCodeLine{230   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type                   elem\_type;}
+\DoxyCodeLine{231   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{232   \textcolor{keyword}{typedef} \mbox{\hyperlink{classCube}{Cube<elem\_type>}}                          \mbox{\hyperlink{classCube}{stored\_type}};}
+\DoxyCodeLine{233   \textcolor{keyword}{typedef} \textcolor{keyword}{const} elem\_type*                         ea\_type;}
+\DoxyCodeLine{234   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<elem\_type>}}\&                   \mbox{\hyperlink{classCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{235   }
+\DoxyCodeLine{236   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \textcolor{keyword}{false};}
+\DoxyCodeLine{237   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \textcolor{keyword}{false};}
+\DoxyCodeLine{238   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \textcolor{keyword}{false};}
+\DoxyCodeLine{239   }
+\DoxyCodeLine{240   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<elem\_type>}} Q;}
+\DoxyCodeLine{241   }
+\DoxyCodeLine{242   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_type>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{243     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{244     \{}
+\DoxyCodeLine{245     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{246     \}}
+\DoxyCodeLine{247   }
+\DoxyCodeLine{248   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows;       \}}
+\DoxyCodeLine{249   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_cols;       \}}
+\DoxyCodeLine{250   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.n\_elem\_slice; \}}
+\DoxyCodeLine{251   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.n\_slices;     \}}
+\DoxyCodeLine{252   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_elem;       \}}
+\DoxyCodeLine{253   }
+\DoxyCodeLine{254   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{255   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{256   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{257   }
+\DoxyCodeLine{258   arma\_inline         ea\_type         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.memptr(); \}}
+\DoxyCodeLine{259   arma\_inline \mbox{\hyperlink{classCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q;          \}}
+\DoxyCodeLine{260   }
+\DoxyCodeLine{261   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{262   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{263   }
+\DoxyCodeLine{264   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{265   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{266   }
+\DoxyCodeLine{267   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} memory::is\_aligned(Q.memptr()); \}}
+\DoxyCodeLine{268   \};}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271 }
+\DoxyCodeLine{272 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type>}
+\DoxyCodeLine{273 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classGlueCube}{GlueCube}}<T1, T2, glue\_type> >}
+\DoxyCodeLine{274   \{}
+\DoxyCodeLine{275   \textcolor{keyword}{public}:}
+\DoxyCodeLine{276   }
+\DoxyCodeLine{277   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type                   elem\_type;}
+\DoxyCodeLine{278   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{279   \textcolor{keyword}{typedef} \mbox{\hyperlink{classCube}{Cube<elem\_type>}}                          \mbox{\hyperlink{classCube}{stored\_type}};}
+\DoxyCodeLine{280   \textcolor{keyword}{typedef} \textcolor{keyword}{const} elem\_type*                         ea\_type;}
+\DoxyCodeLine{281   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<elem\_type>}}\&                   \mbox{\hyperlink{classCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{282   }
+\DoxyCodeLine{283   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \textcolor{keyword}{false};}
+\DoxyCodeLine{284   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \textcolor{keyword}{false};}
+\DoxyCodeLine{285   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \textcolor{keyword}{false};}
+\DoxyCodeLine{286   }
+\DoxyCodeLine{287   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<elem\_type>}} Q;}
+\DoxyCodeLine{288   }
+\DoxyCodeLine{289   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_type>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{290     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{291     \{}
+\DoxyCodeLine{292     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{293     \}}
+\DoxyCodeLine{294 }
+\DoxyCodeLine{295   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows;       \}}
+\DoxyCodeLine{296   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_cols;       \}}
+\DoxyCodeLine{297   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.n\_elem\_slice; \}}
+\DoxyCodeLine{298   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.n\_slices;     \}}
+\DoxyCodeLine{299   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_elem;       \}}
+\DoxyCodeLine{300   }
+\DoxyCodeLine{301   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{302   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{303   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{304   }
+\DoxyCodeLine{305   arma\_inline         ea\_type         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.memptr(); \}}
+\DoxyCodeLine{306   arma\_inline \mbox{\hyperlink{classCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q;          \}}
+\DoxyCodeLine{307   }
+\DoxyCodeLine{308   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{309   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{310   }
+\DoxyCodeLine{311   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{312   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{313   }
+\DoxyCodeLine{314   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} memory::is\_aligned(Q.memptr()); \}}
+\DoxyCodeLine{315   \};}
+\DoxyCodeLine{316 }
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318 }
+\DoxyCodeLine{319 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{320 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classsubview__cube}{subview\_cube}}<eT> >}
+\DoxyCodeLine{321   \{}
+\DoxyCodeLine{322   \textcolor{keyword}{public}:}
+\DoxyCodeLine{323   }
+\DoxyCodeLine{324   \textcolor{keyword}{typedef} eT                                       elem\_type;}
+\DoxyCodeLine{325   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{326   \textcolor{keyword}{typedef} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}                         \mbox{\hyperlink{classsubview__cube}{stored\_type}};}
+\DoxyCodeLine{327   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\&                  \mbox{\hyperlink{classsubview__cube}{ea\_type}};}
+\DoxyCodeLine{328   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\&                  \mbox{\hyperlink{classsubview__cube}{aligned\_ea\_type}};}
+\DoxyCodeLine{329   }
+\DoxyCodeLine{330   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \textcolor{keyword}{true};}
+\DoxyCodeLine{331   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \textcolor{keyword}{false};}
+\DoxyCodeLine{332   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \textcolor{keyword}{true};}
+\DoxyCodeLine{333   }
+\DoxyCodeLine{334   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& Q;}
+\DoxyCodeLine{335   }
+\DoxyCodeLine{336   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{337     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{338     \{}
+\DoxyCodeLine{339     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{340     \}}
+\DoxyCodeLine{341   }
+\DoxyCodeLine{342   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows;       \}}
+\DoxyCodeLine{343   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_cols;       \}}
+\DoxyCodeLine{344   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.n\_elem\_slice; \}}
+\DoxyCodeLine{345   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.n\_slices;     \}}
+\DoxyCodeLine{346   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_elem;       \}}
+\DoxyCodeLine{347   }
+\DoxyCodeLine{348   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{349   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{350   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{351   }
+\DoxyCodeLine{352   arma\_inline         \mbox{\hyperlink{classsubview__cube}{ea\_type}}         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q; \}}
+\DoxyCodeLine{353   arma\_inline \mbox{\hyperlink{classsubview__cube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q; \}}
+\DoxyCodeLine{354   }
+\DoxyCodeLine{355   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{356   arma\_inline \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\& X)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (void\_ptr(\&(Q.m)) == void\_ptr(\&X)); \}}
+\DoxyCodeLine{357   }
+\DoxyCodeLine{358   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{359   arma\_inline \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\& X)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.check\_overlap(X); \}}
+\DoxyCodeLine{360   }
+\DoxyCodeLine{361   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{362   \};}
+\DoxyCodeLine{363 }
+\DoxyCodeLine{364 }
+\DoxyCodeLine{365 }
+\DoxyCodeLine{366 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{367 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classsubview__cube__slices}{subview\_cube\_slices}}<eT,T1> >}
+\DoxyCodeLine{368   \{}
+\DoxyCodeLine{369   \textcolor{keyword}{public}:}
+\DoxyCodeLine{370   }
+\DoxyCodeLine{371   \textcolor{keyword}{typedef} eT                                       elem\_type;}
+\DoxyCodeLine{372   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{373   \textcolor{keyword}{typedef} \mbox{\hyperlink{classCube}{Cube<eT>}}                                 \mbox{\hyperlink{classCube}{stored\_type}};}
+\DoxyCodeLine{374   \textcolor{keyword}{typedef} \textcolor{keyword}{const} eT*                                ea\_type;}
+\DoxyCodeLine{375   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\&                          \mbox{\hyperlink{classCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{376   }
+\DoxyCodeLine{377   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \textcolor{keyword}{false};}
+\DoxyCodeLine{378   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \textcolor{keyword}{false};}
+\DoxyCodeLine{379   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \textcolor{keyword}{false};}
+\DoxyCodeLine{380   }
+\DoxyCodeLine{381   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}} Q;}
+\DoxyCodeLine{382   }
+\DoxyCodeLine{383   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube__slices}{subview\_cube\_slices<eT,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{384     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{385     \{}
+\DoxyCodeLine{386     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{387     \}}
+\DoxyCodeLine{388   }
+\DoxyCodeLine{389   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows;       \}}
+\DoxyCodeLine{390   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_cols;       \}}
+\DoxyCodeLine{391   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.n\_elem\_slice; \}}
+\DoxyCodeLine{392   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.n\_slices;     \}}
+\DoxyCodeLine{393   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_elem;       \}}
+\DoxyCodeLine{394   }
+\DoxyCodeLine{395   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{396   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{397   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{398   }
+\DoxyCodeLine{399   arma\_inline         ea\_type         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.memptr(); \}}
+\DoxyCodeLine{400   arma\_inline \mbox{\hyperlink{classCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q;          \}}
+\DoxyCodeLine{401   }
+\DoxyCodeLine{402   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{403   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{404   }
+\DoxyCodeLine{405   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{406   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{407   }
+\DoxyCodeLine{408   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} memory::is\_aligned(Q.memptr()); \}}
+\DoxyCodeLine{409   \};}
+\DoxyCodeLine{410 }
+\DoxyCodeLine{411 }
+\DoxyCodeLine{412 }
+\DoxyCodeLine{413 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} eop\_type>}
+\DoxyCodeLine{414 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classeOpCube}{eOpCube}}<T1, eop\_type > >}
+\DoxyCodeLine{415   \{}
+\DoxyCodeLine{416   \textcolor{keyword}{public}:}
+\DoxyCodeLine{417   }
+\DoxyCodeLine{418   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type                   elem\_type;}
+\DoxyCodeLine{419   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{420   \textcolor{keyword}{typedef} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}                    \mbox{\hyperlink{classeOpCube}{stored\_type}};}
+\DoxyCodeLine{421   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\&             \mbox{\hyperlink{classeOpCube}{ea\_type}};}
+\DoxyCodeLine{422   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\&             \mbox{\hyperlink{classeOpCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{423   }
+\DoxyCodeLine{424   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>::use\_at}};}
+\DoxyCodeLine{425   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>::use\_mp}};}
+\DoxyCodeLine{426   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>::has\_subview}};}
+\DoxyCodeLine{427   }
+\DoxyCodeLine{428   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& Q;}
+\DoxyCodeLine{429   }
+\DoxyCodeLine{430   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{431     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{432     \{}
+\DoxyCodeLine{433     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{434     \}}
+\DoxyCodeLine{435   }
+\DoxyCodeLine{436   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.get\_n\_rows();       \}}
+\DoxyCodeLine{437   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.get\_n\_cols();       \}}
+\DoxyCodeLine{438   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.get\_n\_elem\_slice(); \}}
+\DoxyCodeLine{439   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.get\_n\_slices();     \}}
+\DoxyCodeLine{440   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.get\_n\_elem();       \}}
+\DoxyCodeLine{441   }
+\DoxyCodeLine{442   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{443   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{444   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{445   }
+\DoxyCodeLine{446   arma\_inline         \mbox{\hyperlink{classeOpCube}{ea\_type}}         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q; \}}
+\DoxyCodeLine{447   arma\_inline \mbox{\hyperlink{classeOpCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q; \}}
+\DoxyCodeLine{448   }
+\DoxyCodeLine{449   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{450   arma\_inline \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\& X)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.P.is\_alias(X); \}}
+\DoxyCodeLine{451   }
+\DoxyCodeLine{452   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{453   arma\_inline \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\& X)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.P.has\_overlap(X); \}}
+\DoxyCodeLine{454   }
+\DoxyCodeLine{455   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.P.is\_aligned(); \}}
+\DoxyCodeLine{456   \};}
+\DoxyCodeLine{457 }
+\DoxyCodeLine{458 }
+\DoxyCodeLine{459 }
+\DoxyCodeLine{460 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{461 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classeGlueCube}{eGlueCube}}<T1, T2, eglue\_type > >}
+\DoxyCodeLine{462   \{}
+\DoxyCodeLine{463   \textcolor{keyword}{public}:}
+\DoxyCodeLine{464   }
+\DoxyCodeLine{465   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type                   elem\_type;}
+\DoxyCodeLine{466   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{467   \textcolor{keyword}{typedef} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}            \mbox{\hyperlink{classeGlueCube}{stored\_type}};}
+\DoxyCodeLine{468   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}\&     \mbox{\hyperlink{classeGlueCube}{ea\_type}};}
+\DoxyCodeLine{469   \textcolor{keyword}{typedef} \textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}\&     \mbox{\hyperlink{classeGlueCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{470   }
+\DoxyCodeLine{471   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>::use\_at}};}
+\DoxyCodeLine{472   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>::use\_mp}};}
+\DoxyCodeLine{473   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>::has\_subview}};}
+\DoxyCodeLine{474   }
+\DoxyCodeLine{475   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}\& Q;}
+\DoxyCodeLine{476   }
+\DoxyCodeLine{477   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1, T2, eglue\_type>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{478     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{479     \{}
+\DoxyCodeLine{480     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{481     \}}
+\DoxyCodeLine{482   }
+\DoxyCodeLine{483   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.get\_n\_rows();       \}}
+\DoxyCodeLine{484   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.get\_n\_cols();       \}}
+\DoxyCodeLine{485   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.get\_n\_elem\_slice(); \}}
+\DoxyCodeLine{486   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.get\_n\_slices();     \}}
+\DoxyCodeLine{487   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.get\_n\_elem();       \}}
+\DoxyCodeLine{488   }
+\DoxyCodeLine{489   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{490   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{491   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{492   }
+\DoxyCodeLine{493   arma\_inline         \mbox{\hyperlink{classeGlueCube}{ea\_type}}         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q; \}}
+\DoxyCodeLine{494   arma\_inline \mbox{\hyperlink{classeGlueCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q; \}}
+\DoxyCodeLine{495   }
+\DoxyCodeLine{496   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{497   arma\_inline \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\& X)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (Q.P1.is\_alias(X) || Q.P2.is\_alias(X)); \}}
+\DoxyCodeLine{498   }
+\DoxyCodeLine{499   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{500   arma\_inline \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\& X)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (Q.P1.has\_overlap(X) || Q.P2.has\_overlap(X)); \}}
+\DoxyCodeLine{501   }
+\DoxyCodeLine{502   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.P1.is\_aligned() \&\& Q.P2.is\_aligned(); \}}
+\DoxyCodeLine{503   \};}
+\DoxyCodeLine{504 }
+\DoxyCodeLine{505 }
+\DoxyCodeLine{506 }
+\DoxyCodeLine{507 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type>}
+\DoxyCodeLine{508 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classmtOpCube}{mtOpCube}}<out\_eT, T1, op\_type> >}
+\DoxyCodeLine{509   \{}
+\DoxyCodeLine{510   \textcolor{keyword}{public}:}
+\DoxyCodeLine{511   }
+\DoxyCodeLine{512   \textcolor{keyword}{typedef}          out\_eT                       elem\_type;}
+\DoxyCodeLine{513   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<out\_eT>::result pod\_type;}
+\DoxyCodeLine{514   \textcolor{keyword}{typedef}          \mbox{\hyperlink{classCube}{Cube<out\_eT>}}                 \mbox{\hyperlink{classCube}{stored\_type}};}
+\DoxyCodeLine{515   \textcolor{keyword}{typedef}          \textcolor{keyword}{const} elem\_type*             ea\_type;}
+\DoxyCodeLine{516   \textcolor{keyword}{typedef}          \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<out\_eT>}}\&          \mbox{\hyperlink{classCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{517   }
+\DoxyCodeLine{518   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \textcolor{keyword}{false};}
+\DoxyCodeLine{519   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \textcolor{keyword}{false};}
+\DoxyCodeLine{520   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \textcolor{keyword}{false};}
+\DoxyCodeLine{521   }
+\DoxyCodeLine{522   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<out\_eT>}} Q;}
+\DoxyCodeLine{523   }
+\DoxyCodeLine{524   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<out\_eT, T1, op\_type>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{525     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{526     \{}
+\DoxyCodeLine{527     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{528     \}}
+\DoxyCodeLine{529   }
+\DoxyCodeLine{530   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows;       \}}
+\DoxyCodeLine{531   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_cols;       \}}
+\DoxyCodeLine{532   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.n\_elem\_slice; \}}
+\DoxyCodeLine{533   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.n\_slices;     \}}
+\DoxyCodeLine{534   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_elem;       \}}
+\DoxyCodeLine{535   }
+\DoxyCodeLine{536   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{537   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{538   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{539   }
+\DoxyCodeLine{540   arma\_inline         ea\_type         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.memptr(); \}}
+\DoxyCodeLine{541   arma\_inline \mbox{\hyperlink{classCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q;          \}}
+\DoxyCodeLine{542   }
+\DoxyCodeLine{543   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{544   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{545   }
+\DoxyCodeLine{546   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{547   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{548   }
+\DoxyCodeLine{549   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} memory::is\_aligned(Q.memptr()); \}}
+\DoxyCodeLine{550   \};}
+\DoxyCodeLine{551 }
+\DoxyCodeLine{552 }
+\DoxyCodeLine{553 }
+\DoxyCodeLine{554 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type>}
+\DoxyCodeLine{555 \textcolor{keyword}{class }\mbox{\hyperlink{classProxyCube}{ProxyCube}}< \mbox{\hyperlink{classmtGlueCube}{mtGlueCube}}<out\_eT, T1, T2, glue\_type > >}
+\DoxyCodeLine{556   \{}
+\DoxyCodeLine{557   \textcolor{keyword}{public}:}
+\DoxyCodeLine{558   }
+\DoxyCodeLine{559   \textcolor{keyword}{typedef}          out\_eT                       elem\_type;}
+\DoxyCodeLine{560   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<out\_eT>::result pod\_type;}
+\DoxyCodeLine{561   \textcolor{keyword}{typedef}          \mbox{\hyperlink{classCube}{Cube<out\_eT>}}                 \mbox{\hyperlink{classCube}{stored\_type}};}
+\DoxyCodeLine{562   \textcolor{keyword}{typedef}          \textcolor{keyword}{const} elem\_type*             ea\_type;}
+\DoxyCodeLine{563   \textcolor{keyword}{typedef}          \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<out\_eT>}}\&          \mbox{\hyperlink{classCube}{aligned\_ea\_type}};}
+\DoxyCodeLine{564   }
+\DoxyCodeLine{565   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_at      = \textcolor{keyword}{false};}
+\DoxyCodeLine{566   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp      = \textcolor{keyword}{false};}
+\DoxyCodeLine{567   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_subview = \textcolor{keyword}{false};}
+\DoxyCodeLine{568   }
+\DoxyCodeLine{569   arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<out\_eT>}} Q;}
+\DoxyCodeLine{570   }
+\DoxyCodeLine{571   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classProxyCube}{ProxyCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube<out\_eT, T1, T2, glue\_type>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{572     : Q(\mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{573     \{}
+\DoxyCodeLine{574     arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{575     \}}
+\DoxyCodeLine{576   }
+\DoxyCodeLine{577   arma\_inline uword get\_n\_rows()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_rows;       \}}
+\DoxyCodeLine{578   arma\_inline uword get\_n\_cols()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_cols;       \}}
+\DoxyCodeLine{579   arma\_inline uword get\_n\_elem\_slice()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.n\_elem\_slice; \}}
+\DoxyCodeLine{580   arma\_inline uword get\_n\_slices()\textcolor{keyword}{     const }\{ \textcolor{keywordflow}{return} Q.n\_slices;     \}}
+\DoxyCodeLine{581   arma\_inline uword get\_n\_elem()\textcolor{keyword}{       const }\{ \textcolor{keywordflow}{return} Q.n\_elem;       \}}
+\DoxyCodeLine{582   }
+\DoxyCodeLine{583   arma\_inline elem\_type operator[] (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q[i];          \}}
+\DoxyCodeLine{584   arma\_inline elem\_type at         (\textcolor{keyword}{const} uword r, \textcolor{keyword}{const} uword c, \textcolor{keyword}{const} uword s)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.at(r, c, s); \}}
+\DoxyCodeLine{585   arma\_inline elem\_type at\_alt     (\textcolor{keyword}{const} uword i)\textcolor{keyword}{                               const }\{ \textcolor{keywordflow}{return} Q.at\_alt(i);   \}}
+\DoxyCodeLine{586   }
+\DoxyCodeLine{587   arma\_inline         ea\_type         get\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q.memptr(); \}}
+\DoxyCodeLine{588   arma\_inline \mbox{\hyperlink{classCube}{aligned\_ea\_type}} get\_aligned\_ea()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} Q;          \}}
+\DoxyCodeLine{589   }
+\DoxyCodeLine{590   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{591   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_alias(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{592   }
+\DoxyCodeLine{593   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT2>}
+\DoxyCodeLine{594   \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} has\_overlap(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__cube}{subview\_cube<eT2>}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{595   }
+\DoxyCodeLine{596   arma\_inline \textcolor{keywordtype}{bool} is\_aligned()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} memory::is\_aligned(Q.memptr()); \}}
+\DoxyCodeLine{597   \};}
+\DoxyCodeLine{598 }
+\DoxyCodeLine{599 }
+\DoxyCodeLine{600 }
+
+\end{DoxyCode}

@@ -1,0 +1,118 @@
+\hypertarget{running__stat__bones_8hpp_source}{}\doxysection{running\+\_\+stat\+\_\+bones.\+hpp}
+\label{running__stat__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/running\_stat\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/running\_stat\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classarma__counter}{arma\_counter}}}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   }
+\DoxyCodeLine{27   \textcolor{keyword}{inline} \mbox{\hyperlink{classarma__counter}{\string~arma\_counter}}();}
+\DoxyCodeLine{28   \textcolor{keyword}{inline}  \mbox{\hyperlink{classarma__counter}{arma\_counter}}();}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classarma__counter}{arma\_counter}}\& operator++();}
+\DoxyCodeLine{31   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}                operator++(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} reset();}
+\DoxyCodeLine{34   \textcolor{keyword}{inline} eT   value()         \textcolor{keyword}{const};}
+\DoxyCodeLine{35   \textcolor{keyword}{inline} eT   value\_plus\_1()  \textcolor{keyword}{const};}
+\DoxyCodeLine{36   \textcolor{keyword}{inline} eT   value\_minus\_1() \textcolor{keyword}{const};}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{private}:}
+\DoxyCodeLine{40   }
+\DoxyCodeLine{41   arma\_aligned eT    d\_count;}
+\DoxyCodeLine{42   arma\_aligned uword i\_count;}
+\DoxyCodeLine{43   \};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{51 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{52 \textcolor{keyword}{class }\mbox{\hyperlink{classrunning__stat}{running\_stat}}}
+\DoxyCodeLine{53   \{}
+\DoxyCodeLine{54   \textcolor{keyword}{public}:}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   \textcolor{keyword}{inline} \mbox{\hyperlink{classrunning__stat}{\string~running\_stat}}();}
+\DoxyCodeLine{60   \textcolor{keyword}{inline}  \mbox{\hyperlink{classrunning__stat}{running\_stat}}();}
+\DoxyCodeLine{61   }
+\DoxyCodeLine{62   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} operator() (\textcolor{keyword}{const} T sample);}
+\DoxyCodeLine{63   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} operator() (\textcolor{keyword}{const} std::complex<T>\& sample);}
+\DoxyCodeLine{64   }
+\DoxyCodeLine{65   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__running__stat_gab5299a8b23735c18f080c64cbce6863b}{reset}}();}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keyword}{inline} eT \mbox{\hyperlink{group__running__stat_ga3a67c2c60ce02164f91c4174b51fc61b}{mean}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   \textcolor{keyword}{inline}  T \mbox{\hyperlink{group__running__stat_ga745ecc9a78242437ad7940f48a5c5084}{var}}   (\textcolor{keyword}{const} uword norm\_type = 0) \textcolor{keyword}{const};}
+\DoxyCodeLine{70   \textcolor{keyword}{inline}  T \mbox{\hyperlink{group__running__stat_gac51a96334efd20b35bc3db2c507d9bfd}{stddev}}(\textcolor{keyword}{const} uword norm\_type = 0) \textcolor{keyword}{const};}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keyword}{inline} eT \mbox{\hyperlink{group__running__stat_ga2b4915b6ef9b79e7c60d8d8ee971d5dd}{min}}()   \textcolor{keyword}{const};}
+\DoxyCodeLine{73   \textcolor{keyword}{inline} eT \mbox{\hyperlink{group__running__stat_ga5b3b4bac859e7e46ccd90102d116b569}{max}}()   \textcolor{keyword}{const};}
+\DoxyCodeLine{74   \textcolor{keyword}{inline} eT range() \textcolor{keyword}{const};}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   \textcolor{keyword}{inline} T \mbox{\hyperlink{group__running__stat_gaa3a2b133de732354c9f904f797c2fdce}{count}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78   \textcolor{comment}{//}}
+\DoxyCodeLine{79   \textcolor{comment}{//}}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   \textcolor{keyword}{private}:}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   arma\_aligned \mbox{\hyperlink{classarma__counter}{arma\_counter<T>}} counter;}
+\DoxyCodeLine{84   }
+\DoxyCodeLine{85   arma\_aligned eT r\_mean;}
+\DoxyCodeLine{86   arma\_aligned  T r\_var;}
+\DoxyCodeLine{87   }
+\DoxyCodeLine{88   arma\_aligned eT min\_val;}
+\DoxyCodeLine{89   arma\_aligned eT max\_val;}
+\DoxyCodeLine{90   }
+\DoxyCodeLine{91   arma\_aligned  T min\_val\_norm;}
+\DoxyCodeLine{92   arma\_aligned  T max\_val\_norm;}
+\DoxyCodeLine{93   }
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classrunning__stat__aux}{running\_stat\_aux}};}
+\DoxyCodeLine{96   \};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{keyword}{class }\mbox{\hyperlink{classrunning__stat__aux}{running\_stat\_aux}}}
+\DoxyCodeLine{101   \{}
+\DoxyCodeLine{102   \textcolor{keyword}{public}:}
+\DoxyCodeLine{103   }
+\DoxyCodeLine{104   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{105   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__running__stat_gafc82cbf3d2562f378394a7389e843a58}{update\_stats}}(\mbox{\hyperlink{classrunning__stat}{running\_stat<eT>}}\& x, \textcolor{keyword}{const} eT sample, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<eT>::result* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{106   }
+\DoxyCodeLine{107   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{108   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__running__stat_gafc82cbf3d2562f378394a7389e843a58}{update\_stats}}(\mbox{\hyperlink{classrunning__stat}{running\_stat<eT>}}\& x, \textcolor{keyword}{const} std::complex<eT>\& sample, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<eT>::result* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{109   }
+\DoxyCodeLine{110   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{111   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__running__stat_gafc82cbf3d2562f378394a7389e843a58}{update\_stats}}(\mbox{\hyperlink{classrunning__stat}{running\_stat<eT>}}\& x, \textcolor{keyword}{const} \textcolor{keyword}{typename} eT::value\_type sample, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<eT>::result}}* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{114   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__running__stat_gafc82cbf3d2562f378394a7389e843a58}{update\_stats}}(\mbox{\hyperlink{classrunning__stat}{running\_stat<eT>}}\& x, \textcolor{keyword}{const} eT\& sample, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<eT>::result}}* junk = \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{115   \};}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 }
+
+\end{DoxyCode}

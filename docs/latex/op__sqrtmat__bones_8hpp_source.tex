@@ -1,0 +1,79 @@
+\hypertarget{op__sqrtmat__bones_8hpp_source}{}\doxysection{op\+\_\+sqrtmat\+\_\+bones.\+hpp}
+\label{op__sqrtmat__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_sqrtmat\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_sqrtmat\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classop__sqrtmat}{op\_sqrtmat}}}
+\DoxyCodeLine{23   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__default}{traits\_op\_default}}}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   }
+\DoxyCodeLine{27   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{28   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__op__sqrtmat_gaa5a21a53a4f925aa9ebb5316651746bb}{apply}}(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::elem\_type> >\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp}}<std::complex<typename T1::elem\_type>,T1,\mbox{\hyperlink{classop__sqrtmat}{op\_sqrtmat}}>\& in);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{31   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} apply\_direct(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::elem\_type> >\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_diagmat>}}\& expr);}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{34   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} apply\_direct(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::elem\_type> >\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& expr);}
+\DoxyCodeLine{35   \};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{class }\mbox{\hyperlink{classop__sqrtmat__cx}{op\_sqrtmat\_cx}}}
+\DoxyCodeLine{40   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__default}{traits\_op\_default}}}
+\DoxyCodeLine{41   \{}
+\DoxyCodeLine{42   \textcolor{keyword}{public}:}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{45   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_sqrtmat\_cx>}}\& in);}
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{48   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} apply\_direct(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_diagmat>}}\& expr);}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{51   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} apply\_direct\_noalias(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classdiagmat__proxy}{diagmat\_proxy<T1>}}\& P);}
+\DoxyCodeLine{52   }
+\DoxyCodeLine{53   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{54   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} apply\_direct(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& expr);}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{57   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} helper(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& S);}
+\DoxyCodeLine{58   \};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{class }\mbox{\hyperlink{classop__sqrtmat__sympd}{op\_sqrtmat\_sympd}}}
+\DoxyCodeLine{63   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__default}{traits\_op\_default}}}
+\DoxyCodeLine{64   \{}
+\DoxyCodeLine{65   \textcolor{keyword}{public}:}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{68   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_sqrtmat\_sympd>}}\& in);}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{71   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} apply\_direct(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& expr);}
+\DoxyCodeLine{72   \};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+
+\end{DoxyCode}

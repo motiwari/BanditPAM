@@ -1,0 +1,339 @@
+\hypertarget{field__bones_8hpp_source}{}\doxysection{field\+\_\+bones.\+hpp}
+\label{field__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/field\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/field\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{struct }\mbox{\hyperlink{structfield__prealloc__n__elem}{field\_prealloc\_n\_elem}}}
+\DoxyCodeLine{23   \{}
+\DoxyCodeLine{24   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword val = 16;}
+\DoxyCodeLine{25   \};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT>}
+\DoxyCodeLine{33 \textcolor{keyword}{class }\mbox{\hyperlink{classfield}{field}}}
+\DoxyCodeLine{34   \{}
+\DoxyCodeLine{35   \textcolor{keyword}{public}:}
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37   \textcolor{keyword}{typedef} oT object\_type;}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{const} uword \mbox{\hyperlink{classfield_a4558dcdf4a32d1b458753cbc79efb71b}{n\_rows}};     }
+\DoxyCodeLine{40   \textcolor{keyword}{const} uword \mbox{\hyperlink{classfield_aaf3ddd72496570c418d27aded645ec5b}{n\_cols}};     }
+\DoxyCodeLine{41   \textcolor{keyword}{const} uword \mbox{\hyperlink{classfield_a7fb434b8e87d1b32eb12fa49fde7ae6f}{n\_slices}};   }
+\DoxyCodeLine{42   \textcolor{keyword}{const} uword \mbox{\hyperlink{classfield_ab81d4115f84d73a4118dedf0194b3e3c}{n\_elem}};     }
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keyword}{private}:}
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   arma\_aligned oT** \mbox{\hyperlink{classfield_a629fd7018ad614c32a42751d2ab4a844}{mem}};                                     }
+\DoxyCodeLine{48   arma\_aligned oT*  \mbox{\hyperlink{classfield_acc0345a7b02f06ff7d8370b29b603a27}{mem\_local}}[ field\_prealloc\_n\_elem::val ]; }
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   \textcolor{keyword}{public}:}
+\DoxyCodeLine{52   }
+\DoxyCodeLine{53   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield}{\string~field}}();}
+\DoxyCodeLine{54   \textcolor{keyword}{inline}  \mbox{\hyperlink{classfield}{field}}();}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{inline}            \mbox{\hyperlink{classfield}{field}}(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}\& x);}
+\DoxyCodeLine{57   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield}{field}}\& \mbox{\hyperlink{group__field_ga462b0fa2a024b72fa269b357192007a3}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}\& x);}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   \textcolor{keyword}{inline}            \mbox{\hyperlink{classfield}{field}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}}\& x);}
+\DoxyCodeLine{60   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield}{field}}\& \mbox{\hyperlink{group__field_ga462b0fa2a024b72fa269b357192007a3}{operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}}\& x);}
+\DoxyCodeLine{61   }
+\DoxyCodeLine{62   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classfield}{field}}(\textcolor{keyword}{const} uword n\_elem\_in);}
+\DoxyCodeLine{63   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classfield}{field}}(\textcolor{keyword}{const} uword n\_rows\_in, \textcolor{keyword}{const} uword n\_cols\_in);}
+\DoxyCodeLine{64   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classfield}{field}}(\textcolor{keyword}{const} uword n\_rows\_in, \textcolor{keyword}{const} uword n\_cols\_in, \textcolor{keyword}{const} uword n\_slices\_in);}
+\DoxyCodeLine{65   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classfield}{field}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\&  s);}
+\DoxyCodeLine{66   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classfield}{field}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{67   }
+\DoxyCodeLine{68   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  \mbox{\hyperlink{group__field_ga0d8cc9b33d72bd17c62f4492f0459ec8}{set\_size}}(\textcolor{keyword}{const} uword n\_obj\_in);}
+\DoxyCodeLine{69   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  \mbox{\hyperlink{group__field_ga0d8cc9b33d72bd17c62f4492f0459ec8}{set\_size}}(\textcolor{keyword}{const} uword n\_rows\_in, \textcolor{keyword}{const} uword n\_cols\_in);}
+\DoxyCodeLine{70   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  \mbox{\hyperlink{group__field_ga0d8cc9b33d72bd17c62f4492f0459ec8}{set\_size}}(\textcolor{keyword}{const} uword n\_rows\_in, \textcolor{keyword}{const} uword n\_cols\_in, \textcolor{keyword}{const} uword n\_slices\_in);}
+\DoxyCodeLine{71   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  \mbox{\hyperlink{group__field_ga0d8cc9b33d72bd17c62f4492f0459ec8}{set\_size}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\&  s);}
+\DoxyCodeLine{72   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  \mbox{\hyperlink{group__field_ga0d8cc9b33d72bd17c62f4492f0459ec8}{set\_size}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keyword}{inline}            \mbox{\hyperlink{classfield}{field}}(\textcolor{keyword}{const} std::vector<oT>\& x);}
+\DoxyCodeLine{75   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield}{field}}\& \mbox{\hyperlink{group__field_ga462b0fa2a024b72fa269b357192007a3}{operator=}}(\textcolor{keyword}{const} std::vector<oT>\& x);}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keyword}{inline}            \mbox{\hyperlink{classfield}{field}}(\textcolor{keyword}{const} std::initializer\_list<oT>\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{78   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield}{field}}\& \mbox{\hyperlink{group__field_ga462b0fa2a024b72fa269b357192007a3}{operator=}}(\textcolor{keyword}{const} std::initializer\_list<oT>\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{79   }
+\DoxyCodeLine{80   \textcolor{keyword}{inline}            \mbox{\hyperlink{classfield}{field}}(\textcolor{keyword}{const} std::initializer\_list< std::initializer\_list<oT> >\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{81   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield}{field}}\& \mbox{\hyperlink{group__field_ga462b0fa2a024b72fa269b357192007a3}{operator=}}(\textcolor{keyword}{const} std::initializer\_list< std::initializer\_list<oT> >\& \mbox{\hyperlink{classlist}{list}});}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \textcolor{keyword}{inline}            \mbox{\hyperlink{classfield}{field}}(\mbox{\hyperlink{classfield}{field}}\&\& X);}
+\DoxyCodeLine{84   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield}{field}}\& \mbox{\hyperlink{group__field_ga462b0fa2a024b72fa269b357192007a3}{operator=}}(\mbox{\hyperlink{classfield}{field}}\&\& X);}
+\DoxyCodeLine{85   }
+\DoxyCodeLine{86   \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT2>}
+\DoxyCodeLine{87   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__field_ga1ca4c6404df4a026680bb6aa4e2759d0}{copy\_size}}(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field<oT2>}}\& x);}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89   arma\_inline       oT\& \mbox{\hyperlink{group__field_ga63568753f6e20b886a9ae92b125c013b}{operator[]}}(\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{90   arma\_inline \textcolor{keyword}{const} oT\& \mbox{\hyperlink{group__field_ga63568753f6e20b886a9ae92b125c013b}{operator[]}}(\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{91   }
+\DoxyCodeLine{92   arma\_inline       oT\&         \mbox{\hyperlink{group__field_gad86418c0a65bb58844812b995560cffe}{at}}(\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{93   arma\_inline \textcolor{keyword}{const} oT\&         \mbox{\hyperlink{group__field_gad86418c0a65bb58844812b995560cffe}{at}}(\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   arma\_inline       oT\& \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} uword i);}
+\DoxyCodeLine{96   arma\_inline \textcolor{keyword}{const} oT\& \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   arma\_inline       oT\&         \mbox{\hyperlink{group__field_gad86418c0a65bb58844812b995560cffe}{at}}(\textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_gaffd7e1085d273f2549b9cf83ba1f9c5b}{row}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_ga2fbd86e99bfbec1635b7845821988634}{col}});}
+\DoxyCodeLine{99   arma\_inline \textcolor{keyword}{const} oT\&         \mbox{\hyperlink{group__field_gad86418c0a65bb58844812b995560cffe}{at}}(\textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_gaffd7e1085d273f2549b9cf83ba1f9c5b}{row}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_ga2fbd86e99bfbec1635b7845821988634}{col}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101   arma\_inline       oT\&         \mbox{\hyperlink{group__field_gad86418c0a65bb58844812b995560cffe}{at}}(\textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_gaffd7e1085d273f2549b9cf83ba1f9c5b}{row}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_ga2fbd86e99bfbec1635b7845821988634}{col}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}});}
+\DoxyCodeLine{102   arma\_inline \textcolor{keyword}{const} oT\&         \mbox{\hyperlink{group__field_gad86418c0a65bb58844812b995560cffe}{at}}(\textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_gaffd7e1085d273f2549b9cf83ba1f9c5b}{row}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_ga2fbd86e99bfbec1635b7845821988634}{col}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{103   }
+\DoxyCodeLine{104   arma\_inline       oT\& \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_gaffd7e1085d273f2549b9cf83ba1f9c5b}{row}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_ga2fbd86e99bfbec1635b7845821988634}{col}});}
+\DoxyCodeLine{105   arma\_inline \textcolor{keyword}{const} oT\& \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_gaffd7e1085d273f2549b9cf83ba1f9c5b}{row}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_ga2fbd86e99bfbec1635b7845821988634}{col}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107   arma\_inline       oT\& \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_gaffd7e1085d273f2549b9cf83ba1f9c5b}{row}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_ga2fbd86e99bfbec1635b7845821988634}{col}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}});}
+\DoxyCodeLine{108   arma\_inline \textcolor{keyword}{const} oT\& \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_gaffd7e1085d273f2549b9cf83ba1f9c5b}{row}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{group__field_ga2fbd86e99bfbec1635b7845821988634}{col}}, \textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{109   }
+\DoxyCodeLine{110   }
+\DoxyCodeLine{111   arma\_cold \textcolor{keyword}{inline} \mbox{\hyperlink{classfield__injector}{field\_injector<field>}} operator<<(\textcolor{keyword}{const} oT\& val);}
+\DoxyCodeLine{112   arma\_cold \textcolor{keyword}{inline} \mbox{\hyperlink{classfield__injector}{field\_injector<field>}} operator<<(\textcolor{keyword}{const} \mbox{\hyperlink{structinjector__end__of__row}{injector\_end\_of\_row<>}}\& x);}
+\DoxyCodeLine{113   }
+\DoxyCodeLine{114   }
+\DoxyCodeLine{115   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_gaffd7e1085d273f2549b9cf83ba1f9c5b}{row}}(\textcolor{keyword}{const} uword row\_num);}
+\DoxyCodeLine{116   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_gaffd7e1085d273f2549b9cf83ba1f9c5b}{row}}(\textcolor{keyword}{const} uword row\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga2fbd86e99bfbec1635b7845821988634}{col}}(\textcolor{keyword}{const} uword col\_num);}
+\DoxyCodeLine{119   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga2fbd86e99bfbec1635b7845821988634}{col}}(\textcolor{keyword}{const} uword col\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga9cf318c64ee92633227605e788c0ede1}{slice}}(\textcolor{keyword}{const} uword slice\_num);}
+\DoxyCodeLine{122   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga9cf318c64ee92633227605e788c0ede1}{slice}}(\textcolor{keyword}{const} uword slice\_num) \textcolor{keyword}{const};}
+\DoxyCodeLine{123   }
+\DoxyCodeLine{124   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_gaf5bce1249db850b4fe302f4d8a7c03e9}{rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2);}
+\DoxyCodeLine{125   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_gaf5bce1249db850b4fe302f4d8a7c03e9}{rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2) \textcolor{keyword}{const};}
+\DoxyCodeLine{126   }
+\DoxyCodeLine{127   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_gacbc63ce4b04992f4773bc97a4c936447}{cols}}(\textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_col2);}
+\DoxyCodeLine{128   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_gacbc63ce4b04992f4773bc97a4c936447}{cols}}(\textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_col2) \textcolor{keyword}{const};}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_gae75719150d1c4b05fcca657331e7232a}{slices}}(\textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} uword in\_slice2);}
+\DoxyCodeLine{131   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_gae75719150d1c4b05fcca657331e7232a}{slices}}(\textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} uword in\_slice2) \textcolor{keyword}{const};}
+\DoxyCodeLine{132   }
+\DoxyCodeLine{133   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_row2, \textcolor{keyword}{const} uword in\_col2);}
+\DoxyCodeLine{134   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_row2, \textcolor{keyword}{const} uword in\_col2) \textcolor{keyword}{const};}
+\DoxyCodeLine{135   }
+\DoxyCodeLine{136   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} uword in\_row2, \textcolor{keyword}{const} uword in\_col2, \textcolor{keyword}{const} uword in\_slice2);}
+\DoxyCodeLine{137   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} uword in\_row2, \textcolor{keyword}{const} uword in\_col2, \textcolor{keyword}{const} uword in\_slice2) \textcolor{keyword}{const};}
+\DoxyCodeLine{138   }
+\DoxyCodeLine{139   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{140   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{141   }
+\DoxyCodeLine{142   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{143   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{144   }
+\DoxyCodeLine{145   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span);}
+\DoxyCodeLine{146   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{147   }
+\DoxyCodeLine{148   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& slice\_span);}
+\DoxyCodeLine{149   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga917f1bac2014f3e25945417628bccf6f}{subfield}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& slice\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{150   }
+\DoxyCodeLine{151   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span);}
+\DoxyCodeLine{152   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{153   }
+\DoxyCodeLine{154   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& slice\_span);}
+\DoxyCodeLine{155   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& slice\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{156   }
+\DoxyCodeLine{157   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s);}
+\DoxyCodeLine{158   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   \textcolor{keyword}{inline}       \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s);}
+\DoxyCodeLine{161   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}} \mbox{\hyperlink{group__field_ga5b3563d1ef6e212f21333ee21ab6d149}{operator()}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_col1, \textcolor{keyword}{const} uword in\_slice1, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{162   }
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164   arma\_cold \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__field_ga507e2a83228032662c1340bb89b567e2}{print}}(                           \textcolor{keyword}{const} std::string extra\_text = \textcolor{stringliteral}{"{}"{}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{165   arma\_cold \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__field_ga507e2a83228032662c1340bb89b567e2}{print}}(std::ostream\& user\_stream, \textcolor{keyword}{const} std::string extra\_text = \textcolor{stringliteral}{"{}"{}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{166   }
+\DoxyCodeLine{167   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}\& \mbox{\hyperlink{group__field_ga5cd960025bab1f3c7ea38f7ea704ce2f}{for\_each}}(\textcolor{keyword}{const} std::function< \textcolor{keywordtype}{void}(      oT\&) >\& F);}
+\DoxyCodeLine{168   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}\& \mbox{\hyperlink{group__field_ga5cd960025bab1f3c7ea38f7ea704ce2f}{for\_each}}(\textcolor{keyword}{const} std::function< \textcolor{keywordtype}{void}(\textcolor{keyword}{const} oT\&) >\& F) \textcolor{keyword}{const};}
+\DoxyCodeLine{169   }
+\DoxyCodeLine{170   \textcolor{keyword}{inline} \textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}\& \mbox{\hyperlink{group__field_ga138c6572dd151288e75b61451e6cd63b}{fill}}(\textcolor{keyword}{const} oT\& x);}
+\DoxyCodeLine{171   }
+\DoxyCodeLine{172   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__field_gac9dc9ea2b0eb588746b147e2e25d48db}{reset}}();}
+\DoxyCodeLine{173   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__field_ga48ed706bfd715ba335267b07cb656761}{reset\_objects}}();}
+\DoxyCodeLine{174   }
+\DoxyCodeLine{175   arma\_inline \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gaebb4a8f1d8041e813d1cdf967822254b}{is\_empty}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{176   }
+\DoxyCodeLine{177   }
+\DoxyCodeLine{178   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gab36cad11aa2290fec7178a79e1fa4056}{in\_range}}(\textcolor{keyword}{const} uword i) \textcolor{keyword}{const};}
+\DoxyCodeLine{179   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gab36cad11aa2290fec7178a79e1fa4056}{in\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& x) \textcolor{keyword}{const};}
+\DoxyCodeLine{180   }
+\DoxyCodeLine{181   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gab36cad11aa2290fec7178a79e1fa4056}{in\_range}}(\textcolor{keyword}{const} uword   in\_row, \textcolor{keyword}{const} uword   in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{182   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gab36cad11aa2290fec7178a79e1fa4056}{in\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} uword   in\_col) \textcolor{keyword}{const};}
+\DoxyCodeLine{183   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gab36cad11aa2290fec7178a79e1fa4056}{in\_range}}(\textcolor{keyword}{const} uword   in\_row, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{184   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gab36cad11aa2290fec7178a79e1fa4056}{in\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{185   }
+\DoxyCodeLine{186   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gab36cad11aa2290fec7178a79e1fa4056}{in\_range}}(\textcolor{keyword}{const} uword   in\_row, \textcolor{keyword}{const} uword   in\_col, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{187   }
+\DoxyCodeLine{188   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gab36cad11aa2290fec7178a79e1fa4056}{in\_range}}(\textcolor{keyword}{const} uword   in\_row, \textcolor{keyword}{const} uword   in\_col, \textcolor{keyword}{const} uword   in\_slice) \textcolor{keyword}{const};}
+\DoxyCodeLine{189   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gab36cad11aa2290fec7178a79e1fa4056}{in\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& row\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& col\_span, \textcolor{keyword}{const} \mbox{\hyperlink{classspan}{span}}\& slice\_span) \textcolor{keyword}{const};}
+\DoxyCodeLine{190   }
+\DoxyCodeLine{191   arma\_inline arma\_warn\_unused \textcolor{keywordtype}{bool} \mbox{\hyperlink{group__field_gab36cad11aa2290fec7178a79e1fa4056}{in\_range}}(\textcolor{keyword}{const} uword   in\_row, \textcolor{keyword}{const} uword in\_col, \textcolor{keyword}{const} uword in\_slice, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s) \textcolor{keyword}{const};}
+\DoxyCodeLine{192   }
+\DoxyCodeLine{193   }
+\DoxyCodeLine{194   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{195   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} save(      std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} load(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{198   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} load(      std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{199   }
+\DoxyCodeLine{200   }
+\DoxyCodeLine{201   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} quiet\_save(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{202   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} quiet\_save(      std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{203   }
+\DoxyCodeLine{204   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} quiet\_load(\textcolor{keyword}{const} std::string   \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{205   \textcolor{keyword}{inline} arma\_cold \textcolor{keywordtype}{bool} quiet\_load(      std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}} = \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260ea60db33599fbe80f2d536ce9ffb5f2377}{auto\_detect}});}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   }
+\DoxyCodeLine{208   \textcolor{comment}{// for container-\/like functionality}}
+\DoxyCodeLine{209   }
+\DoxyCodeLine{210   \textcolor{keyword}{typedef} oT    value\_type;}
+\DoxyCodeLine{211   \textcolor{keyword}{typedef} uword size\_type;}
+\DoxyCodeLine{212     }
+\DoxyCodeLine{213   }
+\DoxyCodeLine{214   \textcolor{keyword}{class }\mbox{\hyperlink{classfield_1_1iterator}{iterator}}}
+\DoxyCodeLine{215     \{}
+\DoxyCodeLine{216     \textcolor{keyword}{public}:}
+\DoxyCodeLine{217     }
+\DoxyCodeLine{218     \textcolor{keyword}{inline} \mbox{\hyperlink{classfield_1_1iterator}{iterator}}(\mbox{\hyperlink{classfield}{field<oT>}}\& in\_M, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} at\_end = \textcolor{keyword}{false});}
+\DoxyCodeLine{219     }
+\DoxyCodeLine{220     \textcolor{keyword}{inline} oT\& operator* ();}
+\DoxyCodeLine{221     }
+\DoxyCodeLine{222     \textcolor{keyword}{inline} \mbox{\hyperlink{classfield_1_1iterator}{iterator}}\& operator++();}
+\DoxyCodeLine{223     \textcolor{keyword}{inline} \textcolor{keywordtype}{void}      operator++(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{224     }
+\DoxyCodeLine{225     \textcolor{keyword}{inline} \mbox{\hyperlink{classfield_1_1iterator}{iterator}}\& operator-\/-\/();}
+\DoxyCodeLine{226     \textcolor{keyword}{inline} \textcolor{keywordtype}{void}      operator-\/-\/(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{227     }
+\DoxyCodeLine{228     \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classfield_1_1iterator}{iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{229     \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classfield_1_1iterator}{iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{230     }
+\DoxyCodeLine{231     arma\_aligned \mbox{\hyperlink{classfield}{field<oT>}}\& M;}
+\DoxyCodeLine{232     arma\_aligned uword      i;}
+\DoxyCodeLine{233     \};}
+\DoxyCodeLine{234   }
+\DoxyCodeLine{235   }
+\DoxyCodeLine{236   \textcolor{keyword}{class }\mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}}}
+\DoxyCodeLine{237     \{}
+\DoxyCodeLine{238     \textcolor{keyword}{public}:}
+\DoxyCodeLine{239     }
+\DoxyCodeLine{240     \mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field<oT>}}\& in\_M, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} at\_end = \textcolor{keyword}{false});}
+\DoxyCodeLine{241     \mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classfield_1_1iterator}{iterator}}\& X);}
+\DoxyCodeLine{242     }
+\DoxyCodeLine{243     \textcolor{keyword}{inline} \textcolor{keyword}{const} oT\& operator*() \textcolor{keyword}{const};}
+\DoxyCodeLine{244     }
+\DoxyCodeLine{245     \textcolor{keyword}{inline} \mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}}\& operator++();}
+\DoxyCodeLine{246     \textcolor{keyword}{inline} \textcolor{keywordtype}{void}            operator++(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{247     }
+\DoxyCodeLine{248     \textcolor{keyword}{inline} \mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}}\& operator-\/-\/();}
+\DoxyCodeLine{249     \textcolor{keyword}{inline} \textcolor{keywordtype}{void}            operator-\/-\/(\textcolor{keywordtype}{int});}
+\DoxyCodeLine{250     }
+\DoxyCodeLine{251     \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{252     \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}}\& X) \textcolor{keyword}{const};}
+\DoxyCodeLine{253     }
+\DoxyCodeLine{254     arma\_aligned \textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field<oT>}}\& M;}
+\DoxyCodeLine{255     arma\_aligned       uword      i;}
+\DoxyCodeLine{256     \};}
+\DoxyCodeLine{257   }
+\DoxyCodeLine{258   \textcolor{keyword}{inline}       \mbox{\hyperlink{classfield_1_1iterator}{iterator}}  begin();}
+\DoxyCodeLine{259   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}}  begin() \textcolor{keyword}{const};}
+\DoxyCodeLine{260   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}} cbegin() \textcolor{keyword}{const};}
+\DoxyCodeLine{261   }
+\DoxyCodeLine{262   \textcolor{keyword}{inline}       \mbox{\hyperlink{classfield_1_1iterator}{iterator}}  end();}
+\DoxyCodeLine{263   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}}  end() \textcolor{keyword}{const};}
+\DoxyCodeLine{264   \textcolor{keyword}{inline} \mbox{\hyperlink{classfield_1_1const__iterator}{const\_iterator}} cend() \textcolor{keyword}{const};}
+\DoxyCodeLine{265   }
+\DoxyCodeLine{266   \textcolor{keyword}{inline} \textcolor{keywordtype}{void}  clear();}
+\DoxyCodeLine{267   \textcolor{keyword}{inline} \textcolor{keywordtype}{bool}  \mbox{\hyperlink{structempty}{empty}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{268   \textcolor{keyword}{inline} uword size()  \textcolor{keyword}{const};}
+\DoxyCodeLine{269   }
+\DoxyCodeLine{270     }
+\DoxyCodeLine{271   \textcolor{keyword}{private}:}
+\DoxyCodeLine{272   }
+\DoxyCodeLine{273   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__field_ga509eae0e5a7e2e0a4d001b7178726b2e}{init}}(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field<oT>}}\& x);}
+\DoxyCodeLine{274   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__field_ga509eae0e5a7e2e0a4d001b7178726b2e}{init}}(\textcolor{keyword}{const} uword n\_rows\_in, \textcolor{keyword}{const} uword n\_cols\_in);}
+\DoxyCodeLine{275   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__field_ga509eae0e5a7e2e0a4d001b7178726b2e}{init}}(\textcolor{keyword}{const} uword n\_rows\_in, \textcolor{keyword}{const} uword n\_cols\_in, \textcolor{keyword}{const} uword n\_slices\_in);}
+\DoxyCodeLine{276   }
+\DoxyCodeLine{277   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} delete\_objects();}
+\DoxyCodeLine{278   \textcolor{keyword}{inline} \textcolor{keywordtype}{void} create\_objects();}
+\DoxyCodeLine{279   }
+\DoxyCodeLine{280   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classfield__aux}{field\_aux}};}
+\DoxyCodeLine{281   \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classsubview__field}{subview\_field}}<oT>;}
+\DoxyCodeLine{282   }
+\DoxyCodeLine{283   }
+\DoxyCodeLine{284   \textcolor{keyword}{public}:}
+\DoxyCodeLine{285   }
+\DoxyCodeLine{286 \textcolor{preprocessor}{  \#ifdef ARMA\_EXTRA\_FIELD\_PROTO}}
+\DoxyCodeLine{287 \textcolor{preprocessor}{    \#include ARMA\_INCFILE\_WRAP(ARMA\_EXTRA\_FIELD\_PROTO)}}
+\DoxyCodeLine{288 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{289   \};}
+\DoxyCodeLine{290 }
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293 \textcolor{keyword}{class }\mbox{\hyperlink{classfield__aux}{field\_aux}}}
+\DoxyCodeLine{294   \{}
+\DoxyCodeLine{295   \textcolor{keyword}{public}:}
+\DoxyCodeLine{296   }
+\DoxyCodeLine{297   \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} reset\_objects(\mbox{\hyperlink{classfield}{field< oT >}}\& x);}
+\DoxyCodeLine{298   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} reset\_objects(\mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classMat}{Mat<eT>}} >\& x);}
+\DoxyCodeLine{299   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} reset\_objects(\mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCol}{Col<eT>}} >\& x);}
+\DoxyCodeLine{300   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} reset\_objects(\mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classRow}{Row<eT>}} >\& x);}
+\DoxyCodeLine{301   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} reset\_objects(\mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCube}{Cube<eT>}} >\& x);}
+\DoxyCodeLine{302                         \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} reset\_objects(\mbox{\hyperlink{classfield}{field< std::string >}}\& x);}
+\DoxyCodeLine{303   }
+\DoxyCodeLine{304   }
+\DoxyCodeLine{305   \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field< oT >}}\& x,       \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{306   \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field< oT >}}\& x,             std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{307   \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field< oT >}}\& x,       \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{308   \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field< oT >}}\& x,             std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{309 }
+\DoxyCodeLine{310   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classMat}{Mat<eT>}} >\& x,  \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{311   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classMat}{Mat<eT>}} >\& x,        std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{312   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classMat}{Mat<eT>}} >\& x,  \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{313   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classMat}{Mat<eT>}} >\& x,        std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{314   }
+\DoxyCodeLine{315   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCol}{Col<eT>}} >\& x,  \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{316   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCol}{Col<eT>}} >\& x,        std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{317   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCol}{Col<eT>}} >\& x,  \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{318   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCol}{Col<eT>}} >\& x,        std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{319   }
+\DoxyCodeLine{320   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classRow}{Row<eT>}} >\& x,  \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{321   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classRow}{Row<eT>}} >\& x,        std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{322   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classRow}{Row<eT>}} >\& x,  \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{323   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classRow}{Row<eT>}} >\& x,        std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{324 }
+\DoxyCodeLine{325   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCube}{Cube<eT>}} >\& x, \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{326   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCube}{Cube<eT>}} >\& x,       std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{327   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCube}{Cube<eT>}} >\& x, \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{328   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCube}{Cube<eT>}} >\& x,       std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{329   }
+\DoxyCodeLine{330   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field< std::string >}}\& x, \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{331   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} save(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field< std::string >}}\& x,       std::ostream\& os,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{332   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field< std::string >}}\& x, \textcolor{keyword}{const} std::string\&  \mbox{\hyperlink{structname}{name}}, \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{333   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{bool} load(      \mbox{\hyperlink{classfield}{field< std::string >}}\& x,       std::istream\& is,   \textcolor{keyword}{const} \mbox{\hyperlink{group__diskio_ga0de594dadb1bc493ecc618520a2d260e}{file\_type}} \mbox{\hyperlink{classtype}{type}}, std::string\& err\_msg);}
+\DoxyCodeLine{334   }
+\DoxyCodeLine{335   \};}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337 }
+
+\end{DoxyCode}

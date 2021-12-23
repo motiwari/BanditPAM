@@ -1,0 +1,523 @@
+\hypertarget{arma__str_8hpp_source}{}\doxysection{arma\+\_\+str.\+hpp}
+\label{arma__str_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arma\_str.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arma\_str.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }arma\_str}
+\DoxyCodeLine{22   \{}
+\DoxyCodeLine{23   }
+\DoxyCodeLine{24   \textcolor{keyword}{class }\mbox{\hyperlink{classarma__str_1_1format}{format}}}
+\DoxyCodeLine{25     \{}
+\DoxyCodeLine{26     \textcolor{keyword}{public}:}
+\DoxyCodeLine{27     }
+\DoxyCodeLine{28     \mbox{\hyperlink{classarma__str_1_1format}{format}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* in\_fmt)}
+\DoxyCodeLine{29       : \mbox{\hyperlink{structA}{A}}(in\_fmt)}
+\DoxyCodeLine{30       \{}
+\DoxyCodeLine{31       \}}
+\DoxyCodeLine{32     }
+\DoxyCodeLine{33     \mbox{\hyperlink{classarma__str_1_1format}{format}}(\textcolor{keyword}{const} std::string\& in\_fmt)}
+\DoxyCodeLine{34       : \mbox{\hyperlink{structA}{A}}(in\_fmt)}
+\DoxyCodeLine{35       \{}
+\DoxyCodeLine{36       \}}
+\DoxyCodeLine{37     }
+\DoxyCodeLine{38     \textcolor{comment}{// TODO: constructor to handle std::string\&\& ?}}
+\DoxyCodeLine{39     }
+\DoxyCodeLine{40     \textcolor{keyword}{const} std::string \mbox{\hyperlink{structA}{A}};}
+\DoxyCodeLine{41     }
+\DoxyCodeLine{42     \textcolor{keyword}{private}:}
+\DoxyCodeLine{43     \mbox{\hyperlink{classarma__str_1_1format}{format}}();}
+\DoxyCodeLine{44     \};}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{49   \textcolor{keyword}{class }\mbox{\hyperlink{classarma__str_1_1basic__format}{basic\_format}}}
+\DoxyCodeLine{50     \{}
+\DoxyCodeLine{51     \textcolor{keyword}{public}:}
+\DoxyCodeLine{52     }
+\DoxyCodeLine{53     \mbox{\hyperlink{classarma__str_1_1basic__format}{basic\_format}}(\textcolor{keyword}{const} T1\& in\_A, \textcolor{keyword}{const} T2\& in\_B)}
+\DoxyCodeLine{54       : \mbox{\hyperlink{structA}{A}}(in\_A)}
+\DoxyCodeLine{55       , \mbox{\hyperlink{structB}{B}}(in\_B)}
+\DoxyCodeLine{56       \{}
+\DoxyCodeLine{57       \}}
+\DoxyCodeLine{58     }
+\DoxyCodeLine{59     \textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}};}
+\DoxyCodeLine{60     \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}};}
+\DoxyCodeLine{61     }
+\DoxyCodeLine{62     \textcolor{keyword}{private}:}
+\DoxyCodeLine{63     \mbox{\hyperlink{classarma__str_1_1basic__format}{basic\_format}}();}
+\DoxyCodeLine{64     \};}
+\DoxyCodeLine{65   }
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   }
+\DoxyCodeLine{68   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{69   \textcolor{keyword}{inline}}
+\DoxyCodeLine{70   \mbox{\hyperlink{classarma__str_1_1basic__format}{basic\_format< format, T2 >}}}
+\DoxyCodeLine{71   \mbox{\hyperlink{group__operator__cube__schur_gadb42190dc6d228c60cf66a85bbf9f7fb}{operator\% }}(\textcolor{keyword}{const} \mbox{\hyperlink{classarma__str_1_1format}{format}}\& X, \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structarg}{arg}})}
+\DoxyCodeLine{72     \{}
+\DoxyCodeLine{73     \textcolor{keywordflow}{return} \mbox{\hyperlink{classarma__str_1_1basic__format}{basic\_format< format, T2 >}}(X, \mbox{\hyperlink{structarg}{arg}});}
+\DoxyCodeLine{74     \}}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{79   \textcolor{keyword}{inline}}
+\DoxyCodeLine{80   basic\_format< basic\_format<T1,T2>, T3 >}
+\DoxyCodeLine{81   \mbox{\hyperlink{group__operator__cube__schur_gadb42190dc6d228c60cf66a85bbf9f7fb}{operator\% }}(\textcolor{keyword}{const} basic\_format<T1,T2>\& X, \textcolor{keyword}{const} T3\& \mbox{\hyperlink{structarg}{arg}})}
+\DoxyCodeLine{82     \{}
+\DoxyCodeLine{83     \textcolor{keywordflow}{return} basic\_format< basic\_format<T1,T2>, T3 >(X, \mbox{\hyperlink{structarg}{arg}});}
+\DoxyCodeLine{84     \}}
+\DoxyCodeLine{85   }
+\DoxyCodeLine{86   }
+\DoxyCodeLine{87   }
+\DoxyCodeLine{88   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{89   \textcolor{keyword}{inline}}
+\DoxyCodeLine{90   std::string}
+\DoxyCodeLine{91   \mbox{\hyperlink{classstr}{str}}(\textcolor{keyword}{const} basic\_format< format, T2>\& X)}
+\DoxyCodeLine{92     \{}
+\DoxyCodeLine{93     \textcolor{keywordtype}{char}  local\_buffer[1024];}
+\DoxyCodeLine{94     \textcolor{keywordtype}{char}* \mbox{\hyperlink{classbuffer}{buffer}} = local\_buffer;}
+\DoxyCodeLine{95     }
+\DoxyCodeLine{96     \textcolor{keywordtype}{int} buffer\_size   = 1024;}
+\DoxyCodeLine{97     \textcolor{keywordtype}{int} required\_size = buffer\_size;}
+\DoxyCodeLine{98     }
+\DoxyCodeLine{99     \textcolor{keywordtype}{bool} using\_local\_buffer = \textcolor{keyword}{true};}
+\DoxyCodeLine{100     }
+\DoxyCodeLine{101     std::string out;}
+\DoxyCodeLine{102     }
+\DoxyCodeLine{103     \textcolor{keywordflow}{do}}
+\DoxyCodeLine{104       \{}
+\DoxyCodeLine{105       \textcolor{keywordflow}{if}(using\_local\_buffer == \textcolor{keyword}{false})}
+\DoxyCodeLine{106         \{}
+\DoxyCodeLine{107         \mbox{\hyperlink{classbuffer}{buffer}} = \textcolor{keyword}{new} \textcolor{keywordtype}{char}[size\_t(buffer\_size)];}
+\DoxyCodeLine{108         \}}
+\DoxyCodeLine{109       }
+\DoxyCodeLine{110       required\_size = std::snprintf(\mbox{\hyperlink{classbuffer}{buffer}}, \textcolor{keywordtype}{size\_t}(buffer\_size), X.A.A.c\_str(), X.B);}
+\DoxyCodeLine{111       }
+\DoxyCodeLine{112       \textcolor{keywordflow}{if}(required\_size < 0)  \{ \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{113       }
+\DoxyCodeLine{114       \textcolor{keywordflow}{if}(required\_size < buffer\_size)}
+\DoxyCodeLine{115         \{}
+\DoxyCodeLine{116         \textcolor{keywordflow}{if}(required\_size > 0)}
+\DoxyCodeLine{117           \{}
+\DoxyCodeLine{118           out = \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{119           \}}
+\DoxyCodeLine{120         \}}
+\DoxyCodeLine{121       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{122         \{}
+\DoxyCodeLine{123         buffer\_size *= 2;}
+\DoxyCodeLine{124         \}}
+\DoxyCodeLine{125       }
+\DoxyCodeLine{126       \textcolor{keywordflow}{if}(using\_local\_buffer)}
+\DoxyCodeLine{127         \{}
+\DoxyCodeLine{128         using\_local\_buffer = \textcolor{keyword}{false};}
+\DoxyCodeLine{129         \}}
+\DoxyCodeLine{130       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{131         \{}
+\DoxyCodeLine{132         \textcolor{keyword}{delete}[] \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{133         \}}
+\DoxyCodeLine{134       }
+\DoxyCodeLine{135       \} \textcolor{keywordflow}{while}( (required\_size >= buffer\_size) );}
+\DoxyCodeLine{136     }
+\DoxyCodeLine{137     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{138     \}}
+\DoxyCodeLine{139   }
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   }
+\DoxyCodeLine{142   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{143   \textcolor{keyword}{inline}}
+\DoxyCodeLine{144   std::string}
+\DoxyCodeLine{145   \mbox{\hyperlink{classstr}{str}}(\textcolor{keyword}{const} basic\_format< basic\_format< format, T2>, T3>\& X)}
+\DoxyCodeLine{146     \{}
+\DoxyCodeLine{147     \textcolor{keywordtype}{char}  local\_buffer[1024];}
+\DoxyCodeLine{148     \textcolor{keywordtype}{char}* \mbox{\hyperlink{classbuffer}{buffer}} = local\_buffer;}
+\DoxyCodeLine{149     }
+\DoxyCodeLine{150     \textcolor{keywordtype}{int} buffer\_size   = 1024;}
+\DoxyCodeLine{151     \textcolor{keywordtype}{int} required\_size = buffer\_size;}
+\DoxyCodeLine{152     }
+\DoxyCodeLine{153     \textcolor{keywordtype}{bool} using\_local\_buffer = \textcolor{keyword}{true};}
+\DoxyCodeLine{154     }
+\DoxyCodeLine{155     std::string out;}
+\DoxyCodeLine{156     }
+\DoxyCodeLine{157     \textcolor{keywordflow}{do}}
+\DoxyCodeLine{158       \{}
+\DoxyCodeLine{159       \textcolor{keywordflow}{if}(using\_local\_buffer == \textcolor{keyword}{false})}
+\DoxyCodeLine{160         \{}
+\DoxyCodeLine{161         \mbox{\hyperlink{classbuffer}{buffer}} = \textcolor{keyword}{new} \textcolor{keywordtype}{char}[size\_t(buffer\_size)];}
+\DoxyCodeLine{162         \}}
+\DoxyCodeLine{163       }
+\DoxyCodeLine{164       required\_size = std::snprintf(\mbox{\hyperlink{classbuffer}{buffer}}, \textcolor{keywordtype}{size\_t}(buffer\_size), X.A.A.A.c\_str(), X.A.B, X.B);}
+\DoxyCodeLine{165       }
+\DoxyCodeLine{166       \textcolor{keywordflow}{if}(required\_size < 0)  \{ \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{167       }
+\DoxyCodeLine{168       \textcolor{keywordflow}{if}(required\_size < buffer\_size)}
+\DoxyCodeLine{169         \{}
+\DoxyCodeLine{170         \textcolor{keywordflow}{if}(required\_size > 0)}
+\DoxyCodeLine{171           \{}
+\DoxyCodeLine{172           out = \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{173           \}}
+\DoxyCodeLine{174         \}}
+\DoxyCodeLine{175       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{176         \{}
+\DoxyCodeLine{177         buffer\_size *= 2;}
+\DoxyCodeLine{178         \}}
+\DoxyCodeLine{179       }
+\DoxyCodeLine{180       \textcolor{keywordflow}{if}(using\_local\_buffer)}
+\DoxyCodeLine{181         \{}
+\DoxyCodeLine{182         using\_local\_buffer = \textcolor{keyword}{false};}
+\DoxyCodeLine{183         \}}
+\DoxyCodeLine{184       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{185         \{}
+\DoxyCodeLine{186         \textcolor{keyword}{delete}[] \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{187         \}}
+\DoxyCodeLine{188       }
+\DoxyCodeLine{189       \} \textcolor{keywordflow}{while}( (required\_size >= buffer\_size) );}
+\DoxyCodeLine{190     }
+\DoxyCodeLine{191     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{192     \}}
+\DoxyCodeLine{193   }
+\DoxyCodeLine{194   }
+\DoxyCodeLine{195   }
+\DoxyCodeLine{196   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4>}
+\DoxyCodeLine{197   \textcolor{keyword}{inline}}
+\DoxyCodeLine{198   std::string}
+\DoxyCodeLine{199   \mbox{\hyperlink{classstr}{str}}(\textcolor{keyword}{const} basic\_format< basic\_format< basic\_format< format, T2>, T3>, T4>\& X)}
+\DoxyCodeLine{200     \{}
+\DoxyCodeLine{201     \textcolor{keywordtype}{char}  local\_buffer[1024];}
+\DoxyCodeLine{202     \textcolor{keywordtype}{char}* \mbox{\hyperlink{classbuffer}{buffer}} = local\_buffer;}
+\DoxyCodeLine{203     }
+\DoxyCodeLine{204     \textcolor{keywordtype}{int} buffer\_size   = 1024;}
+\DoxyCodeLine{205     \textcolor{keywordtype}{int} required\_size = buffer\_size;}
+\DoxyCodeLine{206     }
+\DoxyCodeLine{207     \textcolor{keywordtype}{bool} using\_local\_buffer = \textcolor{keyword}{true};}
+\DoxyCodeLine{208     }
+\DoxyCodeLine{209     std::string out;}
+\DoxyCodeLine{210     }
+\DoxyCodeLine{211     \textcolor{keywordflow}{do}}
+\DoxyCodeLine{212       \{}
+\DoxyCodeLine{213       \textcolor{keywordflow}{if}(using\_local\_buffer == \textcolor{keyword}{false})}
+\DoxyCodeLine{214         \{}
+\DoxyCodeLine{215         \mbox{\hyperlink{classbuffer}{buffer}} = \textcolor{keyword}{new} \textcolor{keywordtype}{char}[size\_t(buffer\_size)];}
+\DoxyCodeLine{216         \}}
+\DoxyCodeLine{217       }
+\DoxyCodeLine{218       required\_size = std::snprintf(\mbox{\hyperlink{classbuffer}{buffer}}, \textcolor{keywordtype}{size\_t}(buffer\_size), X.A.A.A.A.c\_str(), X.A.A.B, X.A.B, X.B);}
+\DoxyCodeLine{219       }
+\DoxyCodeLine{220       \textcolor{keywordflow}{if}(required\_size < 0)  \{ \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{221       }
+\DoxyCodeLine{222       \textcolor{keywordflow}{if}(required\_size < buffer\_size)}
+\DoxyCodeLine{223         \{}
+\DoxyCodeLine{224         \textcolor{keywordflow}{if}(required\_size > 0)}
+\DoxyCodeLine{225           \{}
+\DoxyCodeLine{226           out = \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{227           \}}
+\DoxyCodeLine{228         \}}
+\DoxyCodeLine{229       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{230         \{}
+\DoxyCodeLine{231         buffer\_size *= 2;}
+\DoxyCodeLine{232         \}}
+\DoxyCodeLine{233       }
+\DoxyCodeLine{234       \textcolor{keywordflow}{if}(using\_local\_buffer)}
+\DoxyCodeLine{235         \{}
+\DoxyCodeLine{236         using\_local\_buffer = \textcolor{keyword}{false};}
+\DoxyCodeLine{237         \}}
+\DoxyCodeLine{238       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{239         \{}
+\DoxyCodeLine{240         \textcolor{keyword}{delete}[] \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{241         \}}
+\DoxyCodeLine{242       }
+\DoxyCodeLine{243       \} \textcolor{keywordflow}{while}( (required\_size >= buffer\_size) );}
+\DoxyCodeLine{244     }
+\DoxyCodeLine{245     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{246     \}}
+\DoxyCodeLine{247   }
+\DoxyCodeLine{248   }
+\DoxyCodeLine{249   }
+\DoxyCodeLine{250   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4, \textcolor{keyword}{typename} T5>}
+\DoxyCodeLine{251   \textcolor{keyword}{inline}}
+\DoxyCodeLine{252   std::string}
+\DoxyCodeLine{253   \mbox{\hyperlink{classstr}{str}}(\textcolor{keyword}{const} basic\_format< basic\_format< basic\_format< basic\_format< format, T2>, T3>, T4>, T5>\& X)}
+\DoxyCodeLine{254     \{}
+\DoxyCodeLine{255     \textcolor{keywordtype}{char}  local\_buffer[1024];}
+\DoxyCodeLine{256     \textcolor{keywordtype}{char}* \mbox{\hyperlink{classbuffer}{buffer}} = local\_buffer;}
+\DoxyCodeLine{257     }
+\DoxyCodeLine{258     \textcolor{keywordtype}{int} buffer\_size   = 1024;}
+\DoxyCodeLine{259     \textcolor{keywordtype}{int} required\_size = buffer\_size;}
+\DoxyCodeLine{260     }
+\DoxyCodeLine{261     \textcolor{keywordtype}{bool} using\_local\_buffer = \textcolor{keyword}{true};}
+\DoxyCodeLine{262     }
+\DoxyCodeLine{263     std::string out;}
+\DoxyCodeLine{264     }
+\DoxyCodeLine{265     \textcolor{keywordflow}{do}}
+\DoxyCodeLine{266       \{}
+\DoxyCodeLine{267       \textcolor{keywordflow}{if}(using\_local\_buffer == \textcolor{keyword}{false})}
+\DoxyCodeLine{268         \{}
+\DoxyCodeLine{269         \mbox{\hyperlink{classbuffer}{buffer}} = \textcolor{keyword}{new} \textcolor{keywordtype}{char}[size\_t(buffer\_size)];}
+\DoxyCodeLine{270         \}}
+\DoxyCodeLine{271       }
+\DoxyCodeLine{272       required\_size = std::snprintf(\mbox{\hyperlink{classbuffer}{buffer}}, \textcolor{keywordtype}{size\_t}(buffer\_size), X.A.A.A.A.A.c\_str(), X.A.A.A.B, X.A.A.B, X.A.B, X.B);}
+\DoxyCodeLine{273       }
+\DoxyCodeLine{274       \textcolor{keywordflow}{if}(required\_size < 0)  \{ \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{275       }
+\DoxyCodeLine{276       \textcolor{keywordflow}{if}(required\_size < buffer\_size)}
+\DoxyCodeLine{277         \{}
+\DoxyCodeLine{278         \textcolor{keywordflow}{if}(required\_size > 0)}
+\DoxyCodeLine{279           \{}
+\DoxyCodeLine{280           out = \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{281           \}}
+\DoxyCodeLine{282         \}}
+\DoxyCodeLine{283       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{284         \{}
+\DoxyCodeLine{285         buffer\_size *= 2;}
+\DoxyCodeLine{286         \}}
+\DoxyCodeLine{287       }
+\DoxyCodeLine{288       \textcolor{keywordflow}{if}(using\_local\_buffer)}
+\DoxyCodeLine{289         \{}
+\DoxyCodeLine{290         using\_local\_buffer = \textcolor{keyword}{false};}
+\DoxyCodeLine{291         \}}
+\DoxyCodeLine{292       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{293         \{}
+\DoxyCodeLine{294         \textcolor{keyword}{delete}[] \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{295         \}}
+\DoxyCodeLine{296       }
+\DoxyCodeLine{297       \} \textcolor{keywordflow}{while}( (required\_size >= buffer\_size) );}
+\DoxyCodeLine{298     }
+\DoxyCodeLine{299     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{300     \}}
+\DoxyCodeLine{301   }
+\DoxyCodeLine{302   }
+\DoxyCodeLine{303   }
+\DoxyCodeLine{304   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4, \textcolor{keyword}{typename} T5, \textcolor{keyword}{typename} T6>}
+\DoxyCodeLine{305   \textcolor{keyword}{inline}}
+\DoxyCodeLine{306   std::string}
+\DoxyCodeLine{307   \mbox{\hyperlink{classstr}{str}}(\textcolor{keyword}{const} basic\_format< basic\_format< basic\_format< basic\_format< basic\_format< format, T2>, T3>, T4>, T5>, T6>\& X)}
+\DoxyCodeLine{308     \{}
+\DoxyCodeLine{309     \textcolor{keywordtype}{char}  local\_buffer[1024];}
+\DoxyCodeLine{310     \textcolor{keywordtype}{char}* \mbox{\hyperlink{classbuffer}{buffer}} = local\_buffer;}
+\DoxyCodeLine{311     }
+\DoxyCodeLine{312     \textcolor{keywordtype}{int} buffer\_size   = 1024;}
+\DoxyCodeLine{313     \textcolor{keywordtype}{int} required\_size = buffer\_size;}
+\DoxyCodeLine{314     }
+\DoxyCodeLine{315     \textcolor{keywordtype}{bool} using\_local\_buffer = \textcolor{keyword}{true};}
+\DoxyCodeLine{316     }
+\DoxyCodeLine{317     std::string out;}
+\DoxyCodeLine{318     }
+\DoxyCodeLine{319     \textcolor{keywordflow}{do}}
+\DoxyCodeLine{320       \{}
+\DoxyCodeLine{321       \textcolor{keywordflow}{if}(using\_local\_buffer == \textcolor{keyword}{false})}
+\DoxyCodeLine{322         \{}
+\DoxyCodeLine{323         \mbox{\hyperlink{classbuffer}{buffer}} = \textcolor{keyword}{new} \textcolor{keywordtype}{char}[size\_t(buffer\_size)];}
+\DoxyCodeLine{324         \}}
+\DoxyCodeLine{325       }
+\DoxyCodeLine{326       required\_size = std::snprintf(\mbox{\hyperlink{classbuffer}{buffer}}, \textcolor{keywordtype}{size\_t}(buffer\_size), X.A.A.A.A.A.A.c\_str(), X.A.A.A.A.B, X.A.A.A.B, X.A.A.B, X.A.B, X.B);}
+\DoxyCodeLine{327       }
+\DoxyCodeLine{328       \textcolor{keywordflow}{if}(required\_size < 0)  \{ \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{329       }
+\DoxyCodeLine{330       \textcolor{keywordflow}{if}(required\_size < buffer\_size)}
+\DoxyCodeLine{331         \{}
+\DoxyCodeLine{332         \textcolor{keywordflow}{if}(required\_size > 0)}
+\DoxyCodeLine{333           \{}
+\DoxyCodeLine{334           out = \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{335           \}}
+\DoxyCodeLine{336         \}}
+\DoxyCodeLine{337       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{338         \{}
+\DoxyCodeLine{339         buffer\_size *= 2;}
+\DoxyCodeLine{340         \}}
+\DoxyCodeLine{341       }
+\DoxyCodeLine{342       \textcolor{keywordflow}{if}(using\_local\_buffer)}
+\DoxyCodeLine{343         \{}
+\DoxyCodeLine{344         using\_local\_buffer = \textcolor{keyword}{false};}
+\DoxyCodeLine{345         \}}
+\DoxyCodeLine{346       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{347         \{}
+\DoxyCodeLine{348         \textcolor{keyword}{delete}[] \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{349         \}}
+\DoxyCodeLine{350       }
+\DoxyCodeLine{351       \} \textcolor{keywordflow}{while}( (required\_size >= buffer\_size) );}
+\DoxyCodeLine{352     }
+\DoxyCodeLine{353     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{354     \}}
+\DoxyCodeLine{355   }
+\DoxyCodeLine{356   }
+\DoxyCodeLine{357   }
+\DoxyCodeLine{358   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3, \textcolor{keyword}{typename} T4, \textcolor{keyword}{typename} T5, \textcolor{keyword}{typename} T6, \textcolor{keyword}{typename} T7>}
+\DoxyCodeLine{359   \textcolor{keyword}{inline}}
+\DoxyCodeLine{360   std::string}
+\DoxyCodeLine{361   \mbox{\hyperlink{classstr}{str}}(\textcolor{keyword}{const} basic\_format< basic\_format< basic\_format< basic\_format< basic\_format< basic\_format< format, T2>, T3>, T4>, T5>, T6>, T7>\& X)}
+\DoxyCodeLine{362     \{}
+\DoxyCodeLine{363     \textcolor{keywordtype}{char}  local\_buffer[1024];}
+\DoxyCodeLine{364     \textcolor{keywordtype}{char}* \mbox{\hyperlink{classbuffer}{buffer}} = local\_buffer;}
+\DoxyCodeLine{365     }
+\DoxyCodeLine{366     \textcolor{keywordtype}{int} buffer\_size   = 1024;}
+\DoxyCodeLine{367     \textcolor{keywordtype}{int} required\_size = buffer\_size;}
+\DoxyCodeLine{368     }
+\DoxyCodeLine{369     \textcolor{keywordtype}{bool} using\_local\_buffer = \textcolor{keyword}{true};}
+\DoxyCodeLine{370     }
+\DoxyCodeLine{371     std::string out;}
+\DoxyCodeLine{372     }
+\DoxyCodeLine{373     \textcolor{keywordflow}{do}}
+\DoxyCodeLine{374       \{}
+\DoxyCodeLine{375       \textcolor{keywordflow}{if}(using\_local\_buffer == \textcolor{keyword}{false})}
+\DoxyCodeLine{376         \{}
+\DoxyCodeLine{377         \mbox{\hyperlink{classbuffer}{buffer}} = \textcolor{keyword}{new} \textcolor{keywordtype}{char}[size\_t(buffer\_size)];}
+\DoxyCodeLine{378         \}}
+\DoxyCodeLine{379       }
+\DoxyCodeLine{380       required\_size = std::snprintf(\mbox{\hyperlink{classbuffer}{buffer}}, \textcolor{keywordtype}{size\_t}(buffer\_size), X.A.A.A.A.A.A.A.c\_str(), X.A.A.A.A.A.B, X.A.A.A.A.B, X.A.A.A.B, X.A.A.B, X.A.B, X.B);}
+\DoxyCodeLine{381       }
+\DoxyCodeLine{382       \textcolor{keywordflow}{if}(required\_size < 0)  \{ \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{383       }
+\DoxyCodeLine{384       \textcolor{keywordflow}{if}(required\_size < buffer\_size)}
+\DoxyCodeLine{385         \{}
+\DoxyCodeLine{386         \textcolor{keywordflow}{if}(required\_size > 0)}
+\DoxyCodeLine{387           \{}
+\DoxyCodeLine{388           out = \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{389           \}}
+\DoxyCodeLine{390         \}}
+\DoxyCodeLine{391       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{392         \{}
+\DoxyCodeLine{393         buffer\_size *= 2;}
+\DoxyCodeLine{394         \}}
+\DoxyCodeLine{395       }
+\DoxyCodeLine{396       \textcolor{keywordflow}{if}(using\_local\_buffer)}
+\DoxyCodeLine{397         \{}
+\DoxyCodeLine{398         using\_local\_buffer = \textcolor{keyword}{false};}
+\DoxyCodeLine{399         \}}
+\DoxyCodeLine{400       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{401         \{}
+\DoxyCodeLine{402         \textcolor{keyword}{delete}[] \mbox{\hyperlink{classbuffer}{buffer}};}
+\DoxyCodeLine{403         \}}
+\DoxyCodeLine{404       }
+\DoxyCodeLine{405       \} \textcolor{keywordflow}{while}( (required\_size >= buffer\_size) );}
+\DoxyCodeLine{406     }
+\DoxyCodeLine{407     \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{408     \}}
+\DoxyCodeLine{409   }
+\DoxyCodeLine{410   }
+\DoxyCodeLine{411   }
+\DoxyCodeLine{412   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{413   \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__str_1_1format__metaprog}{format\_metaprog}}}
+\DoxyCodeLine{414     \{}
+\DoxyCodeLine{415     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword depth = 0;}
+\DoxyCodeLine{416     }
+\DoxyCodeLine{417     \textcolor{keyword}{inline}}
+\DoxyCodeLine{418     \textcolor{keyword}{static}  }
+\DoxyCodeLine{419     \textcolor{keyword}{const} std::string\&}
+\DoxyCodeLine{420     get\_fmt(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{421       \{}
+\DoxyCodeLine{422       \textcolor{keywordflow}{return} X.A;}
+\DoxyCodeLine{423       \}}
+\DoxyCodeLine{424     \};}
+\DoxyCodeLine{425   }
+\DoxyCodeLine{426   }
+\DoxyCodeLine{427   }
+\DoxyCodeLine{428   \textcolor{comment}{//template<>}}
+\DoxyCodeLine{429   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{430   \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__str_1_1format__metaprog}{format\_metaprog}}< \mbox{\hyperlink{classarma__str_1_1basic__format}{basic\_format}}<T1,T2> >}
+\DoxyCodeLine{431     \{}
+\DoxyCodeLine{432     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword depth = 1 + \mbox{\hyperlink{structarma__str_1_1format__metaprog}{format\_metaprog<T1>::depth}};}
+\DoxyCodeLine{433     }
+\DoxyCodeLine{434     \textcolor{keyword}{inline}}
+\DoxyCodeLine{435     \textcolor{keyword}{static}}
+\DoxyCodeLine{436     \textcolor{keyword}{const} std::string\&}
+\DoxyCodeLine{437     get\_fmt(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{438       \{}
+\DoxyCodeLine{439       \textcolor{keywordflow}{return} \mbox{\hyperlink{structarma__str_1_1format__metaprog}{format\_metaprog<T1>::get\_fmt}}(X.A);}
+\DoxyCodeLine{440       \}}
+\DoxyCodeLine{441     }
+\DoxyCodeLine{442     \};}
+\DoxyCodeLine{443   }
+\DoxyCodeLine{444   }
+\DoxyCodeLine{445   }
+\DoxyCodeLine{446   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{447   \textcolor{keyword}{inline}}
+\DoxyCodeLine{448   std::string}
+\DoxyCodeLine{449   \mbox{\hyperlink{classstr}{str}}(\textcolor{keyword}{const} \mbox{\hyperlink{classarma__str_1_1basic__format}{basic\_format<T1,T2>}}\& X)}
+\DoxyCodeLine{450     \{}
+\DoxyCodeLine{451     \textcolor{keywordflow}{return} \mbox{\hyperlink{structarma__str_1_1format__metaprog}{format\_metaprog< basic\_format<T1,T2>}} >::get\_fmt(X.A);}
+\DoxyCodeLine{452     \}}
+\DoxyCodeLine{453   }
+\DoxyCodeLine{454   }
+\DoxyCodeLine{455   }
+\DoxyCodeLine{456   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{457   \textcolor{keyword}{inline}}
+\DoxyCodeLine{458   std::ostream\&}
+\DoxyCodeLine{459   operator<< (std::ostream\& o, \textcolor{keyword}{const} basic\_format<T1,T2>\& X)}
+\DoxyCodeLine{460     \{}
+\DoxyCodeLine{461     o << \mbox{\hyperlink{classstr}{str}}(X);}
+\DoxyCodeLine{462     \textcolor{keywordflow}{return} o;}
+\DoxyCodeLine{463     \}}
+\DoxyCodeLine{464    }
+\DoxyCodeLine{465   }
+\DoxyCodeLine{466   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__str_1_1string__only}{string\_only}}              \{ \};}
+\DoxyCodeLine{467   \textcolor{keyword}{template}<>           \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__str_1_1string__only}{string\_only}}<std::string> \{ \textcolor{keyword}{typedef} std::string result; \};}
+\DoxyCodeLine{468   }
+\DoxyCodeLine{469   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T> \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__str_1_1char__only}{char\_only}}                \{ \};}
+\DoxyCodeLine{470   \textcolor{keyword}{template}<>           \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__str_1_1char__only}{char\_only}}<char         > \{ \textcolor{keyword}{typedef} \textcolor{keywordtype}{char}        result; \};}
+\DoxyCodeLine{471   }
+\DoxyCodeLine{472   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{473   \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__str_1_1basic__format__only}{basic\_format\_only}} \{ \};}
+\DoxyCodeLine{474   }
+\DoxyCodeLine{475   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{476   \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__str_1_1basic__format__only}{basic\_format\_only}}< \mbox{\hyperlink{classarma__str_1_1basic__format}{basic\_format}}<T1, T2> > \{ \textcolor{keyword}{typedef} \mbox{\hyperlink{classarma__str_1_1basic__format}{basic\_format<T1,T2>}} \mbox{\hyperlink{classarma__str_1_1basic__format}{result}}; \};}
+\DoxyCodeLine{477   }
+\DoxyCodeLine{478   }
+\DoxyCodeLine{479   }
+\DoxyCodeLine{480   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{481   \textcolor{keyword}{inline}}
+\DoxyCodeLine{482   \textcolor{keyword}{static}}
+\DoxyCodeLine{483   \textcolor{keyword}{const} T1\&}
+\DoxyCodeLine{484   str\_wrapper(\textcolor{keyword}{const} T1\& x, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__str_1_1string__only}{string\_only<T1>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{485     \{}
+\DoxyCodeLine{486     arma\_ignore(junk);}
+\DoxyCodeLine{487     }
+\DoxyCodeLine{488     \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{489     \}}
+\DoxyCodeLine{490   }
+\DoxyCodeLine{491   }
+\DoxyCodeLine{492   }
+\DoxyCodeLine{493   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{494   \textcolor{keyword}{inline}}
+\DoxyCodeLine{495   \textcolor{keyword}{static}}
+\DoxyCodeLine{496   \textcolor{keyword}{const} T1*}
+\DoxyCodeLine{497   str\_wrapper(\textcolor{keyword}{const} T1* x, \textcolor{keyword}{const} \textcolor{keyword}{typename} char\_only<T1>::result* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{498     \{}
+\DoxyCodeLine{499     arma\_ignore(junk);}
+\DoxyCodeLine{500     }
+\DoxyCodeLine{501     \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{502     \}}
+\DoxyCodeLine{503   }
+\DoxyCodeLine{504   }
+\DoxyCodeLine{505   }
+\DoxyCodeLine{506   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{507   \textcolor{keyword}{inline}}
+\DoxyCodeLine{508   \textcolor{keyword}{static}}
+\DoxyCodeLine{509   std::string}
+\DoxyCodeLine{510   str\_wrapper(\textcolor{keyword}{const} T1\& x, \textcolor{keyword}{const} \textcolor{keyword}{typename} basic\_format\_only<T1>::result* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{511     \{}
+\DoxyCodeLine{512     arma\_ignore(junk);}
+\DoxyCodeLine{513     }
+\DoxyCodeLine{514     \textcolor{keywordflow}{return} \mbox{\hyperlink{classstr}{str}}(x);}
+\DoxyCodeLine{515     \}}
+\DoxyCodeLine{516   }
+\DoxyCodeLine{517   \}}
+\DoxyCodeLine{518 }
+\DoxyCodeLine{519 }
+
+\end{DoxyCode}

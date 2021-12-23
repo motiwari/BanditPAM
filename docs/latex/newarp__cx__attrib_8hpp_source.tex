@@ -1,0 +1,40 @@
+\hypertarget{newarp__cx__attrib_8hpp_source}{}\doxysection{newarp\+\_\+cx\+\_\+attrib.\+hpp}
+\label{newarp__cx__attrib_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_cx\_attrib.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_cx\_attrib.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }newarp}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{22 \textcolor{keyword}{struct }\mbox{\hyperlink{structnewarp_1_1cx__attrib}{cx\_attrib}}}
+\DoxyCodeLine{23   \{}
+\DoxyCodeLine{24   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{25   arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{structis__real}{is\_real}}   (\textcolor{keyword}{const} std::complex<T>\& v, \textcolor{keyword}{const} T eps) \{ \textcolor{keywordflow}{return} (std::abs(v.imag()) <= eps); \}}
+\DoxyCodeLine{26   }
+\DoxyCodeLine{27   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{28   arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{bool} \mbox{\hyperlink{structis__complex}{is\_complex}}(\textcolor{keyword}{const} std::complex<T>\& v, \textcolor{keyword}{const} T eps) \{ \textcolor{keywordflow}{return} (std::abs(v.imag()) >  eps); \}}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{31   arma\_inline \textcolor{keyword}{static} \textcolor{keywordtype}{bool} is\_conj(\textcolor{keyword}{const} std::complex<T>\& v1, \textcolor{keyword}{const} std::complex<T>\& v2, \textcolor{keyword}{const} T eps)  \{ \textcolor{keywordflow}{return} (std::abs(v1 -\/ std::conj(v2)) <= eps); \}}
+\DoxyCodeLine{32   \};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \}  \textcolor{comment}{// namespace newarp}}
+
+\end{DoxyCode}

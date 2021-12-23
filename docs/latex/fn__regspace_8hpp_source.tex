@@ -1,0 +1,266 @@
+\hypertarget{fn__regspace_8hpp_source}{}\doxysection{fn\+\_\+regspace.\+hpp}
+\label{fn__regspace_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_regspace.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_regspace.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 internal\_regspace\_default\_delta}
+\DoxyCodeLine{26   (}
+\DoxyCodeLine{27   \mbox{\hyperlink{classMat}{Mat<eT>}}\& x,}
+\DoxyCodeLine{28   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{Mat<eT>::pod\_type}} start,}
+\DoxyCodeLine{29   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{Mat<eT>::pod\_type}} end}
+\DoxyCodeLine{30   )}
+\DoxyCodeLine{31   \{}
+\DoxyCodeLine{32   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{Mat<eT>::pod\_type}} T;}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} ascend = (start <= end);}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keyword}{const} uword N = uword(1) + uword((ascend) ? (end-\/start) : (start-\/end));}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   x.set\_size(N);}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   eT* x\_mem = x.memptr();}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keywordflow}{if}(ascend)}
+\DoxyCodeLine{45     \{}
+\DoxyCodeLine{46     \textcolor{keywordflow}{for}(uword i=0; i < N; ++i)  \{ x\_mem[i] = eT(start + T(i)); \}}
+\DoxyCodeLine{47     \}}
+\DoxyCodeLine{48   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{49     \{}
+\DoxyCodeLine{50     \textcolor{keywordflow}{for}(uword i=0; i < N; ++i)  \{ x\_mem[i] = eT(start -\/ T(i)); \}}
+\DoxyCodeLine{51     \}}
+\DoxyCodeLine{52   \}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} sT>}
+\DoxyCodeLine{57 \textcolor{keyword}{inline}}
+\DoxyCodeLine{58 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__signed}{is\_signed<sT>::value}} == \textcolor{keyword}{true}), \textcolor{keywordtype}{void} >::result}
+\DoxyCodeLine{59 internal\_regspace\_var\_delta}
+\DoxyCodeLine{60   (}
+\DoxyCodeLine{61   \mbox{\hyperlink{classMat}{Mat<eT>}}\& x,}
+\DoxyCodeLine{62   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{Mat<eT>::pod\_type}} start,}
+\DoxyCodeLine{63   \textcolor{keyword}{const} sT                         delta,}
+\DoxyCodeLine{64   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{Mat<eT>::pod\_type}} end}
+\DoxyCodeLine{65   )}
+\DoxyCodeLine{66   \{}
+\DoxyCodeLine{67   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{68   arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}internal\_regspace\_var\_delta(): signed version"{}});}
+\DoxyCodeLine{69   }
+\DoxyCodeLine{70   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{Mat<eT>::pod\_type}} T;}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keywordflow}{if}( ((start < end) \&\& (delta < sT(0))) || ((start > end) \&\& (delta > sT(0))) || (delta == sT(0)) )  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} ascend = (start <= end);}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   \textcolor{keyword}{const} T inc = (delta < sT(0)) ? T(-\/delta) : T(delta);}
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78   \textcolor{keyword}{const} T M = ((ascend) ? T(end-\/start) : T(start-\/end)) / T(inc);}
+\DoxyCodeLine{79   }
+\DoxyCodeLine{80   \textcolor{keyword}{const} uword N = uword(1) + ( (\mbox{\hyperlink{structis__non__integral}{is\_non\_integral<T>::value}}) ? uword(std::floor(\textcolor{keywordtype}{double}(M))) : uword(M) );}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   x.set\_size(N);}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   eT* x\_mem = x.memptr();}
+\DoxyCodeLine{85   }
+\DoxyCodeLine{86   \textcolor{keywordflow}{if}(ascend)}
+\DoxyCodeLine{87     \{}
+\DoxyCodeLine{88     \textcolor{keywordflow}{for}(uword i=0; i < N; ++i) \{ x\_mem[i] = eT( start + T(i*inc) ); \}}
+\DoxyCodeLine{89     \}}
+\DoxyCodeLine{90   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{91     \{}
+\DoxyCodeLine{92     \textcolor{keywordflow}{for}(uword i=0; i < N; ++i) \{ x\_mem[i] = eT( start -\/ T(i*inc) ); \}}
+\DoxyCodeLine{93     \}}
+\DoxyCodeLine{94   \}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} uT>}
+\DoxyCodeLine{99 \textcolor{keyword}{inline}}
+\DoxyCodeLine{100 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__signed}{is\_signed<uT>::value}} == \textcolor{keyword}{false}), \textcolor{keywordtype}{void} >::result}
+\DoxyCodeLine{101 internal\_regspace\_var\_delta}
+\DoxyCodeLine{102   (}
+\DoxyCodeLine{103   \mbox{\hyperlink{classMat}{Mat<eT>}}\& x,}
+\DoxyCodeLine{104   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{Mat<eT>::pod\_type}} start,}
+\DoxyCodeLine{105   \textcolor{keyword}{const}          uT                delta,}
+\DoxyCodeLine{106   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{Mat<eT>::pod\_type}} end}
+\DoxyCodeLine{107   )}
+\DoxyCodeLine{108   \{}
+\DoxyCodeLine{109   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{110   arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}internal\_regspace\_var\_delta(): unsigned version"{}});}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} \mbox{\hyperlink{classMat_a0fc14012052d730de3388eaac02e540d}{Mat<eT>::pod\_type}} T;}
+\DoxyCodeLine{113   }
+\DoxyCodeLine{114   \textcolor{keywordflow}{if}( ((start > end) \&\& (delta > uT(0))) || (delta == uT(0)) )  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} ascend = (start <= end);}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keyword}{const} T inc = T(delta);}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   \textcolor{keyword}{const} T M = ((ascend) ? T(end-\/start) : T(start-\/end)) / T(inc);}
+\DoxyCodeLine{121   }
+\DoxyCodeLine{122   \textcolor{keyword}{const} uword N = uword(1) + ( (\mbox{\hyperlink{structis__non__integral}{is\_non\_integral<T>::value}}) ? uword(std::floor(\textcolor{keywordtype}{double}(M))) : uword(M) );}
+\DoxyCodeLine{123   }
+\DoxyCodeLine{124   x.set\_size(N);}
+\DoxyCodeLine{125   }
+\DoxyCodeLine{126   eT* x\_mem = x.memptr();}
+\DoxyCodeLine{127   }
+\DoxyCodeLine{128   \textcolor{keywordflow}{if}(ascend)}
+\DoxyCodeLine{129     \{}
+\DoxyCodeLine{130     \textcolor{keywordflow}{for}(uword i=0; i < N; ++i) \{ x\_mem[i] = eT( start + T(i*inc) ); \}}
+\DoxyCodeLine{131     \}}
+\DoxyCodeLine{132   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{133     \{}
+\DoxyCodeLine{134     \textcolor{keywordflow}{for}(uword i=0; i < N; ++i) \{ x\_mem[i] = eT( start -\/ T(i*inc) ); \}}
+\DoxyCodeLine{135     \}}
+\DoxyCodeLine{136   \}}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 \textcolor{keyword}{template}<\textcolor{keyword}{typename} vec\_type, \textcolor{keyword}{typename} sT>}
+\DoxyCodeLine{141 \textcolor{keyword}{inline}}
+\DoxyCodeLine{142 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_Mat<vec\_type>::value}} \&\& (\mbox{\hyperlink{structis__signed}{is\_signed<sT>::value}} == \textcolor{keyword}{true}), vec\_type >::result}
+\DoxyCodeLine{143 regspace}
+\DoxyCodeLine{144   (}
+\DoxyCodeLine{145   \textcolor{keyword}{const} \textcolor{keyword}{typename} vec\_type::pod\_type start,}
+\DoxyCodeLine{146   \textcolor{keyword}{const}          sT                 delta,}
+\DoxyCodeLine{147   \textcolor{keyword}{const} \textcolor{keyword}{typename} vec\_type::pod\_type end}
+\DoxyCodeLine{148   )}
+\DoxyCodeLine{149   \{}
+\DoxyCodeLine{150   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{151   arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}regspace(): signed version"{}});}
+\DoxyCodeLine{152   }
+\DoxyCodeLine{153   vec\_type x;}
+\DoxyCodeLine{154   }
+\DoxyCodeLine{155   \textcolor{keywordflow}{if}( ((delta == sT(+1)) \&\& (start <= end)) || ((delta == sT(-\/1)) \&\& (start > end)) )}
+\DoxyCodeLine{156     \{}
+\DoxyCodeLine{157     internal\_regspace\_default\_delta(x, start, end);}
+\DoxyCodeLine{158     \}}
+\DoxyCodeLine{159   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{160     \{}
+\DoxyCodeLine{161     internal\_regspace\_var\_delta(x, start, delta, end);}
+\DoxyCodeLine{162     \}}
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164   \textcolor{keywordflow}{if}(x.n\_elem == 0)}
+\DoxyCodeLine{165     \{}
+\DoxyCodeLine{166     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Mat__only}{is\_Mat\_only<vec\_type>::value}})  \{ x.set\_size(1,0); \}}
+\DoxyCodeLine{167     \}}
+\DoxyCodeLine{168   }
+\DoxyCodeLine{169   \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{170   \}}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 \textcolor{keyword}{template}<\textcolor{keyword}{typename} vec\_type, \textcolor{keyword}{typename} uT>}
+\DoxyCodeLine{175 \textcolor{keyword}{inline}}
+\DoxyCodeLine{176 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_Mat<vec\_type>::value}} \&\& (\mbox{\hyperlink{structis__signed}{is\_signed<uT>::value}} == \textcolor{keyword}{false}), vec\_type >::result}
+\DoxyCodeLine{177 regspace}
+\DoxyCodeLine{178   (}
+\DoxyCodeLine{179   \textcolor{keyword}{const} \textcolor{keyword}{typename} vec\_type::pod\_type start,}
+\DoxyCodeLine{180   \textcolor{keyword}{const}          uT                 delta,}
+\DoxyCodeLine{181   \textcolor{keyword}{const} \textcolor{keyword}{typename} vec\_type::pod\_type end}
+\DoxyCodeLine{182   )}
+\DoxyCodeLine{183   \{}
+\DoxyCodeLine{184   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{185   arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}regspace(): unsigned version"{}});}
+\DoxyCodeLine{186   }
+\DoxyCodeLine{187   vec\_type x;}
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   \textcolor{keywordflow}{if}( (delta == uT(+1)) \&\& (start <= end) )}
+\DoxyCodeLine{190     \{}
+\DoxyCodeLine{191     internal\_regspace\_default\_delta(x, start, end);}
+\DoxyCodeLine{192     \}}
+\DoxyCodeLine{193   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{194     \{}
+\DoxyCodeLine{195     internal\_regspace\_var\_delta(x, start, delta, end);}
+\DoxyCodeLine{196     \}}
+\DoxyCodeLine{197   }
+\DoxyCodeLine{198   \textcolor{keywordflow}{if}(x.n\_elem == 0)}
+\DoxyCodeLine{199     \{}
+\DoxyCodeLine{200     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Mat__only}{is\_Mat\_only<vec\_type>::value}})  \{ x.set\_size(1,0); \}}
+\DoxyCodeLine{201     \}}
+\DoxyCodeLine{202   }
+\DoxyCodeLine{203   \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{204   \}}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208 \textcolor{keyword}{template}<\textcolor{keyword}{typename} vec\_type>}
+\DoxyCodeLine{209 arma\_warn\_unused}
+\DoxyCodeLine{210 \textcolor{keyword}{inline}}
+\DoxyCodeLine{211 \textcolor{keyword}{typename}}
+\DoxyCodeLine{212 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{213   <}
+\DoxyCodeLine{214   \mbox{\hyperlink{structis__Mat}{is\_Mat<vec\_type>::value}},}
+\DoxyCodeLine{215   vec\_type}
+\DoxyCodeLine{216   >::result}
+\DoxyCodeLine{217 regspace}
+\DoxyCodeLine{218   (}
+\DoxyCodeLine{219   \textcolor{keyword}{const} \textcolor{keyword}{typename} vec\_type::pod\_type start,}
+\DoxyCodeLine{220   \textcolor{keyword}{const} \textcolor{keyword}{typename} vec\_type::pod\_type end}
+\DoxyCodeLine{221   )}
+\DoxyCodeLine{222   \{}
+\DoxyCodeLine{223   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{224   }
+\DoxyCodeLine{225   vec\_type x;}
+\DoxyCodeLine{226   }
+\DoxyCodeLine{227   internal\_regspace\_default\_delta(x, start, end);}
+\DoxyCodeLine{228   }
+\DoxyCodeLine{229   \textcolor{keywordflow}{if}(x.n\_elem == 0)}
+\DoxyCodeLine{230     \{}
+\DoxyCodeLine{231     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Mat__only}{is\_Mat\_only<vec\_type>::value}})  \{ x.set\_size(1,0); \}}
+\DoxyCodeLine{232     \}}
+\DoxyCodeLine{233   }
+\DoxyCodeLine{234   \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{235   \}}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 arma\_warn\_unused}
+\DoxyCodeLine{240 \textcolor{keyword}{inline}}
+\DoxyCodeLine{241 \mbox{\hyperlink{classCol}{vec}}}
+\DoxyCodeLine{242 regspace(\textcolor{keyword}{const} \textcolor{keywordtype}{double} start, \textcolor{keyword}{const} \textcolor{keywordtype}{double} delta, \textcolor{keyword}{const} \textcolor{keywordtype}{double} end)}
+\DoxyCodeLine{243   \{}
+\DoxyCodeLine{244   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{245   }
+\DoxyCodeLine{246   \textcolor{keywordflow}{return} regspace<vec>(start, delta, end);}
+\DoxyCodeLine{247   \}}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251 arma\_warn\_unused}
+\DoxyCodeLine{252 \textcolor{keyword}{inline}}
+\DoxyCodeLine{253 \mbox{\hyperlink{classCol}{vec}}}
+\DoxyCodeLine{254 regspace(\textcolor{keyword}{const} \textcolor{keywordtype}{double} start, \textcolor{keyword}{const} \textcolor{keywordtype}{double} end)}
+\DoxyCodeLine{255   \{}
+\DoxyCodeLine{256   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{257   }
+\DoxyCodeLine{258   \textcolor{keywordflow}{return} regspace<vec>(start, end);}
+\DoxyCodeLine{259   \}}
+\DoxyCodeLine{260 }
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 }
+
+\end{DoxyCode}

@@ -1,0 +1,126 @@
+\hypertarget{fn__sqrtmat_8hpp_source}{}\doxysection{fn\+\_\+sqrtmat.\+hpp}
+\label{fn__sqrtmat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_sqrtmat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_sqrtmat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 arma\_inline}
+\DoxyCodeLine{25 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__supported__blas__type}{is\_supported\_blas\_type<typename T1::elem\_type>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp}}<std::complex<typename T1::elem\_type>, T1, \mbox{\hyperlink{classop__sqrtmat}{op\_sqrtmat}}> >::result}
+\DoxyCodeLine{26 sqrtmat(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<std::complex<typename T1::elem\_type>}}, T1, \mbox{\hyperlink{classop__sqrtmat}{op\_sqrtmat}}>(X.get\_ref());}
+\DoxyCodeLine{31   \}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{36 arma\_warn\_unused}
+\DoxyCodeLine{37 arma\_inline}
+\DoxyCodeLine{38 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__supported__blas__type}{is\_supported\_blas\_type<typename T1::elem\_type>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::yes}}), \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_sqrtmat\_cx>}} >::result}
+\DoxyCodeLine{39 sqrtmat(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{40   \{}
+\DoxyCodeLine{41   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_sqrtmat\_cx>}}(X.get\_ref());}
+\DoxyCodeLine{44   \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{49 \textcolor{keyword}{inline}}
+\DoxyCodeLine{50 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__supported__blas__type}{is\_supported\_blas\_type<typename T1::elem\_type>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}), \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{51 sqrtmat(\mbox{\hyperlink{classMat}{Mat}}< std::complex<typename T1::elem\_type> >\& Y, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{52   \{}
+\DoxyCodeLine{53   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_sqrtmat::apply\_direct(Y, X.get\_ref());}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{58     \{}
+\DoxyCodeLine{59     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}sqrtmat(): given matrix is singular; may not have a square root"{}});}
+\DoxyCodeLine{60     \}}
+\DoxyCodeLine{61   }
+\DoxyCodeLine{62   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{63   \}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{68 \textcolor{keyword}{inline}}
+\DoxyCodeLine{69 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__supported__blas__type}{is\_supported\_blas\_type<typename T1::elem\_type>::value}} \&\& \mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::yes}}), \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{70 sqrtmat(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& Y, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{71   \{}
+\DoxyCodeLine{72   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_sqrtmat\_cx::apply\_direct(Y, X.get\_ref());}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{77     \{}
+\DoxyCodeLine{78     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}sqrtmat(): given matrix is singular; may not have a square root"{}});}
+\DoxyCodeLine{79     \}}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{82   \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{comment}{//}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{91 arma\_warn\_unused}
+\DoxyCodeLine{92 arma\_inline}
+\DoxyCodeLine{93 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_supported\_blas\_type<typename T1::elem\_type>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_sqrtmat\_sympd>}} >::result}
+\DoxyCodeLine{94 sqrtmat\_sympd(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{95   \{}
+\DoxyCodeLine{96   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_sqrtmat\_sympd>}}(X.get\_ref());}
+\DoxyCodeLine{99   \}}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{104 \textcolor{keyword}{inline}}
+\DoxyCodeLine{105 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_supported\_blas\_type<typename T1::elem\_type>::value}}, \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{106 sqrtmat\_sympd(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& Y, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{107   \{}
+\DoxyCodeLine{108   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{109   }
+\DoxyCodeLine{110   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_sqrtmat\_sympd::apply\_direct(Y, X.get\_ref());}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{113     \{}
+\DoxyCodeLine{114     Y.soft\_reset();}
+\DoxyCodeLine{115     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}sqrtmat\_sympd(): transformation failed"{}});}
+\DoxyCodeLine{116     \}}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{119   \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+
+\end{DoxyCode}

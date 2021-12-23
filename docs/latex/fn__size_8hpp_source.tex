@@ -1,0 +1,328 @@
+\hypertarget{fn__size_8hpp_source}{}\doxysection{fn\+\_\+size.\+hpp}
+\label{fn__size_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_size.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_size.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 arma\_warn\_unused}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{25 size(\textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}(n\_rows, n\_cols);}
+\DoxyCodeLine{30   \}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{35 arma\_warn\_unused}
+\DoxyCodeLine{36 \textcolor{keyword}{inline}}
+\DoxyCodeLine{37 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{38 size(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{39   \{}
+\DoxyCodeLine{40   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( P.get\_n\_rows(), P.get\_n\_cols() );}
+\DoxyCodeLine{45   \}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{comment}{// explicit overload to workround ADL issues with C++17 std::size()}}
+\DoxyCodeLine{50 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{51 arma\_warn\_unused}
+\DoxyCodeLine{52 \textcolor{keyword}{inline}}
+\DoxyCodeLine{53 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{54 size(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)}
+\DoxyCodeLine{55   \{}
+\DoxyCodeLine{56   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( X.n\_rows, X.n\_cols );}
+\DoxyCodeLine{59   \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{comment}{// explicit overload to workround ADL issues with C++17 std::size()}}
+\DoxyCodeLine{64 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{65 arma\_warn\_unused}
+\DoxyCodeLine{66 \textcolor{keyword}{inline}}
+\DoxyCodeLine{67 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{68 size(\textcolor{keyword}{const} \mbox{\hyperlink{classRow}{Row<eT>}}\& X)}
+\DoxyCodeLine{69   \{}
+\DoxyCodeLine{70   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( X.n\_rows, X.n\_cols );}
+\DoxyCodeLine{73   \}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{comment}{// explicit overload to workround ADL issues with C++17 std::size()}}
+\DoxyCodeLine{78 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{79 arma\_warn\_unused}
+\DoxyCodeLine{80 \textcolor{keyword}{inline}}
+\DoxyCodeLine{81 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{82 size(\textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}}\& X)}
+\DoxyCodeLine{83   \{}
+\DoxyCodeLine{84   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{85   }
+\DoxyCodeLine{86   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( X.n\_rows, X.n\_cols );}
+\DoxyCodeLine{87   \}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 arma\_warn\_unused}
+\DoxyCodeLine{92 \textcolor{keyword}{inline}}
+\DoxyCodeLine{93 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{94 size(\textcolor{keyword}{const} arma::span\& row\_span, \textcolor{keyword}{const} arma::span\& col\_span)}
+\DoxyCodeLine{95   \{}
+\DoxyCodeLine{96   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   uword n\_rows = 0;}
+\DoxyCodeLine{99   uword n\_cols = 0;}
+\DoxyCodeLine{100   }
+\DoxyCodeLine{101   \textcolor{keywordflow}{if}(row\_span.whole || col\_span.whole)}
+\DoxyCodeLine{102     \{}
+\DoxyCodeLine{103     arma\_debug\_check(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}size(): span::all not supported"{}});}
+\DoxyCodeLine{104     \}}
+\DoxyCodeLine{105   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{106     \{}
+\DoxyCodeLine{107     \textcolor{keywordflow}{if}((row\_span.a > row\_span.b) || (col\_span.a > col\_span.b))}
+\DoxyCodeLine{108       \{}
+\DoxyCodeLine{109       arma\_debug\_check\_bounds(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}size(): span indices incorrectly used"{}});}
+\DoxyCodeLine{110       \}}
+\DoxyCodeLine{111     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{112       \{}
+\DoxyCodeLine{113       n\_rows = row\_span.b -\/ row\_span.a + 1;}
+\DoxyCodeLine{114       n\_cols = col\_span.b -\/ col\_span.a + 1;}
+\DoxyCodeLine{115       \}}
+\DoxyCodeLine{116     \}}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}(n\_rows, n\_cols);}
+\DoxyCodeLine{119   \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{124 arma\_warn\_unused}
+\DoxyCodeLine{125 \textcolor{keyword}{inline}}
+\DoxyCodeLine{126 uword}
+\DoxyCodeLine{127 size(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{128   \{}
+\DoxyCodeLine{129   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{130   }
+\DoxyCodeLine{131   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{132   }
+\DoxyCodeLine{133   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( P.get\_n\_rows(), P.get\_n\_cols() )( dim );}
+\DoxyCodeLine{134   \}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 arma\_warn\_unused}
+\DoxyCodeLine{139 \textcolor{keyword}{inline}}
+\DoxyCodeLine{140 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{141 size(\textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols, \textcolor{keyword}{const} uword n\_slices)}
+\DoxyCodeLine{142   \{}
+\DoxyCodeLine{143   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{144   }
+\DoxyCodeLine{145   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{146   \}}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{151 arma\_warn\_unused}
+\DoxyCodeLine{152 \textcolor{keyword}{inline}}
+\DoxyCodeLine{153 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{154 size(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& X)}
+\DoxyCodeLine{155   \{}
+\DoxyCodeLine{156   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{157   }
+\DoxyCodeLine{158   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( P.get\_n\_rows(), P.get\_n\_cols(), P.get\_n\_slices() );}
+\DoxyCodeLine{161   \}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 \textcolor{comment}{// explicit overload to workround ADL issues with C++17 std::size()}}
+\DoxyCodeLine{166 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{167 arma\_warn\_unused}
+\DoxyCodeLine{168 \textcolor{keyword}{inline}}
+\DoxyCodeLine{169 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{170 size(\textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& X)}
+\DoxyCodeLine{171   \{}
+\DoxyCodeLine{172   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{173   }
+\DoxyCodeLine{174   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( X.n\_rows, X.n\_cols, X.n\_slices );}
+\DoxyCodeLine{175   \}}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{180 arma\_warn\_unused}
+\DoxyCodeLine{181 \textcolor{keyword}{inline}}
+\DoxyCodeLine{182 uword}
+\DoxyCodeLine{183 size(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& X, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{184   \{}
+\DoxyCodeLine{185   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{186   }
+\DoxyCodeLine{187   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( P.get\_n\_rows(), P.get\_n\_cols(), P.get\_n\_slices() )( dim );}
+\DoxyCodeLine{190   \}}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 arma\_warn\_unused}
+\DoxyCodeLine{195 \textcolor{keyword}{inline}}
+\DoxyCodeLine{196 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{197 size(\textcolor{keyword}{const} arma::span\& row\_span, \textcolor{keyword}{const} arma::span\& col\_span, \textcolor{keyword}{const} arma::span\& slice\_span)}
+\DoxyCodeLine{198   \{}
+\DoxyCodeLine{199   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{200   }
+\DoxyCodeLine{201   uword n\_rows   = 0;}
+\DoxyCodeLine{202   uword n\_cols   = 0;}
+\DoxyCodeLine{203   uword n\_slices = 0;}
+\DoxyCodeLine{204   }
+\DoxyCodeLine{205   \textcolor{keywordflow}{if}(row\_span.whole || col\_span.whole || slice\_span.whole)}
+\DoxyCodeLine{206     \{}
+\DoxyCodeLine{207     arma\_debug\_check(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}size(): span::all not supported"{}});}
+\DoxyCodeLine{208     \}}
+\DoxyCodeLine{209   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{210     \{}
+\DoxyCodeLine{211     \textcolor{keywordflow}{if}((row\_span.a > row\_span.b) || (col\_span.a > col\_span.b) || (slice\_span.a > slice\_span.b))}
+\DoxyCodeLine{212       \{}
+\DoxyCodeLine{213       arma\_debug\_check\_bounds(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}size(): span indices incorrectly used"{}});}
+\DoxyCodeLine{214       \}}
+\DoxyCodeLine{215     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{216       \{}
+\DoxyCodeLine{217       n\_rows   =   row\_span.b -\/   row\_span.a + 1;}
+\DoxyCodeLine{218       n\_cols   =   col\_span.b -\/   col\_span.a + 1;}
+\DoxyCodeLine{219       n\_slices = slice\_span.b -\/ slice\_span.a + 1;}
+\DoxyCodeLine{220       \}}
+\DoxyCodeLine{221     \}}
+\DoxyCodeLine{222   }
+\DoxyCodeLine{223   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{224   \}}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226 }
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{229 arma\_warn\_unused}
+\DoxyCodeLine{230 \textcolor{keyword}{inline}}
+\DoxyCodeLine{231 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{232 size(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{233   \{}
+\DoxyCodeLine{234   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{235   }
+\DoxyCodeLine{236   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{237   }
+\DoxyCodeLine{238   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( P.get\_n\_rows(), P.get\_n\_cols() );}
+\DoxyCodeLine{239   \}}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243 \textcolor{comment}{// explicit overload to workround ADL issues with C++17 std::size()}}
+\DoxyCodeLine{244 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{245 arma\_warn\_unused}
+\DoxyCodeLine{246 \textcolor{keyword}{inline}}
+\DoxyCodeLine{247 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}}
+\DoxyCodeLine{248 size(\textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& X)}
+\DoxyCodeLine{249   \{}
+\DoxyCodeLine{250   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{251   }
+\DoxyCodeLine{252   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( X.n\_rows, X.n\_cols );}
+\DoxyCodeLine{253   \}}
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256 }
+\DoxyCodeLine{257 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{258 arma\_warn\_unused}
+\DoxyCodeLine{259 \textcolor{keyword}{inline}}
+\DoxyCodeLine{260 uword}
+\DoxyCodeLine{261 size(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{262   \{}
+\DoxyCodeLine{263   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{264   }
+\DoxyCodeLine{265   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{266   }
+\DoxyCodeLine{267   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeMat}{SizeMat}}( P.get\_n\_rows(), P.get\_n\_cols() )( dim );}
+\DoxyCodeLine{268   \}}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271 }
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT>}
+\DoxyCodeLine{274 arma\_warn\_unused}
+\DoxyCodeLine{275 \textcolor{keyword}{inline}}
+\DoxyCodeLine{276 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{277 size(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field<oT>}}\& X)}
+\DoxyCodeLine{278   \{}
+\DoxyCodeLine{279   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{280   }
+\DoxyCodeLine{281   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( X.n\_rows, X.n\_cols, X.n\_slices );}
+\DoxyCodeLine{282   \}}
+\DoxyCodeLine{283 }
+\DoxyCodeLine{284 }
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286 \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT>}
+\DoxyCodeLine{287 arma\_warn\_unused}
+\DoxyCodeLine{288 \textcolor{keyword}{inline}}
+\DoxyCodeLine{289 uword}
+\DoxyCodeLine{290 size(\textcolor{keyword}{const} \mbox{\hyperlink{classfield}{field<oT>}}\& X, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{291   \{}
+\DoxyCodeLine{292   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{293   }
+\DoxyCodeLine{294   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( X.n\_rows, X.n\_cols, X.n\_slices )( dim );}
+\DoxyCodeLine{295   \}}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 }
+\DoxyCodeLine{299 \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT>}
+\DoxyCodeLine{300 arma\_warn\_unused}
+\DoxyCodeLine{301 \textcolor{keyword}{inline}}
+\DoxyCodeLine{302 \textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}}
+\DoxyCodeLine{303 size(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}}\& X)}
+\DoxyCodeLine{304   \{}
+\DoxyCodeLine{305   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{306   }
+\DoxyCodeLine{307   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( X.n\_rows, X.n\_cols, X.n\_slices );}
+\DoxyCodeLine{308   \}}
+\DoxyCodeLine{309 }
+\DoxyCodeLine{310 }
+\DoxyCodeLine{311 }
+\DoxyCodeLine{312 \textcolor{keyword}{template}<\textcolor{keyword}{typename} oT>}
+\DoxyCodeLine{313 arma\_warn\_unused}
+\DoxyCodeLine{314 \textcolor{keyword}{inline}}
+\DoxyCodeLine{315 uword}
+\DoxyCodeLine{316 size(\textcolor{keyword}{const} \mbox{\hyperlink{classsubview__field}{subview\_field<oT>}}\& X, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{317   \{}
+\DoxyCodeLine{318   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{319   }
+\DoxyCodeLine{320   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSizeCube}{SizeCube}}( X.n\_rows, X.n\_cols, X.n\_slices )( dim );}
+\DoxyCodeLine{321   \}}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323 }
+\DoxyCodeLine{324 }
+
+\end{DoxyCode}

@@ -1,0 +1,53 @@
+\hypertarget{OpCube__bones_8hpp_source}{}\doxysection{Op\+Cube\+\_\+bones.\+hpp}
+\label{OpCube__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/OpCube\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/OpCube\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type>}
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classOpCube}{OpCube}} : \textcolor{keyword}{public} \mbox{\hyperlink{structBaseCube}{BaseCube}}< typename T1::elem\_type, OpCube<T1, op\_type> >}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   \textcolor{keyword}{public}:}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type                   elem\_type;}
+\DoxyCodeLine{29   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classOpCube}{OpCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& in\_m);}
+\DoxyCodeLine{33   \textcolor{keyword}{inline}          \mbox{\hyperlink{classOpCube}{OpCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& in\_m, \textcolor{keyword}{const} elem\_type in\_aux);}
+\DoxyCodeLine{34   \textcolor{keyword}{inline}          \mbox{\hyperlink{classOpCube}{OpCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& in\_m, \textcolor{keyword}{const} elem\_type in\_aux, \textcolor{keyword}{const} uword in\_aux\_uword\_a, \textcolor{keyword}{const} uword in\_aux\_uword\_b, \textcolor{keyword}{const} uword in\_aux\_uword\_c);}
+\DoxyCodeLine{35   \textcolor{keyword}{inline}          \mbox{\hyperlink{classOpCube}{OpCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& in\_m, \textcolor{keyword}{const} uword in\_aux\_uword\_a, \textcolor{keyword}{const} uword in\_aux\_uword\_b);}
+\DoxyCodeLine{36   \textcolor{keyword}{inline}          \mbox{\hyperlink{classOpCube}{OpCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& in\_m, \textcolor{keyword}{const} uword in\_aux\_uword\_a, \textcolor{keyword}{const} uword in\_aux\_uword\_b, \textcolor{keyword}{const} uword in\_aux\_uword\_c);}
+\DoxyCodeLine{37   \textcolor{keyword}{inline}          \mbox{\hyperlink{classOpCube}{OpCube}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& in\_m, \textcolor{keyword}{const} uword in\_aux\_uword\_a, \textcolor{keyword}{const} uword in\_aux\_uword\_b, \textcolor{keyword}{const} uword in\_aux\_uword\_c, \textcolor{keyword}{const} uword in\_aux\_uword\_d, \textcolor{keyword}{const} \textcolor{keywordtype}{char} junk);}
+\DoxyCodeLine{38   \textcolor{keyword}{inline}         \mbox{\hyperlink{classOpCube}{\string~OpCube}}();}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   arma\_aligned \textcolor{keyword}{const} T1\&       \mbox{\hyperlink{classOpCube_ab2037da2bd74604392dc38d382669e2a}{m}};            }
+\DoxyCodeLine{41   arma\_aligned       elem\_type \mbox{\hyperlink{classOpCube_adbcf9381d8254b71bc4da814b328582f}{aux}};          }
+\DoxyCodeLine{42   arma\_aligned       uword     \mbox{\hyperlink{classOpCube_a13c280aa2895e181d6e5f1f0a3b2ad02}{aux\_uword\_a}};  }
+\DoxyCodeLine{43   arma\_aligned       uword     \mbox{\hyperlink{classOpCube_a67a9f891a4b21955675a96044c6729cf}{aux\_uword\_b}};  }
+\DoxyCodeLine{44   arma\_aligned       uword     \mbox{\hyperlink{classOpCube_a777e451734fd6d95bf2e1987cd688e20}{aux\_uword\_c}};  }
+\DoxyCodeLine{45   arma\_aligned       uword     \mbox{\hyperlink{classOpCube_a5a94c077f18ef491688d5d1b29368782}{aux\_uword\_d}};  }
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   \};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 }
+
+\end{DoxyCode}

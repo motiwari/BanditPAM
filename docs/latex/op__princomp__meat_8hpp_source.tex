@@ -1,0 +1,298 @@
+\hypertarget{op__princomp__meat_8hpp_source}{}\doxysection{op\+\_\+princomp\+\_\+meat.\+hpp}
+\label{op__princomp__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_princomp\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_princomp\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{29 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{30 \textcolor{keyword}{inline}}
+\DoxyCodeLine{31 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{32 \mbox{\hyperlink{group__op__princomp_ga7418ad8ec6f69b386cada6b430e1d595}{op\_princomp::direct\_princomp}}}
+\DoxyCodeLine{33   (}
+\DoxyCodeLine{34          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&     coeff\_out,}
+\DoxyCodeLine{35          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&     score\_out,}
+\DoxyCodeLine{36          \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type>}}\&      latent\_out,}
+\DoxyCodeLine{37          \mbox{\hyperlink{classCol}{Col<typename T1::elem\_type>}}\&     tsquared\_out,}
+\DoxyCodeLine{38   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X}
+\DoxyCodeLine{39   )}
+\DoxyCodeLine{40   \{}
+\DoxyCodeLine{41   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{44   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__check}{unwrap\_check<T1>}} Y( X.get\_ref(), score\_out );}
+\DoxyCodeLine{47   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& in    = Y.M;}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   \textcolor{keyword}{const} uword n\_rows = in.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{50   \textcolor{keyword}{const} uword n\_cols = in.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \textcolor{keywordflow}{if}(n\_rows > 1) \textcolor{comment}{// more than one sample}}
+\DoxyCodeLine{53     \{}
+\DoxyCodeLine{54     \textcolor{comment}{// subtract the mean -\/ use score\_out as temporary matrix}}
+\DoxyCodeLine{55     score\_out = in;  score\_out.each\_row() -\/= mean(in);}
+\DoxyCodeLine{56     }
+\DoxyCodeLine{57     \textcolor{comment}{// singular value decomposition}}
+\DoxyCodeLine{58     \mbox{\hyperlink{classMat}{Mat<eT>}} U;}
+\DoxyCodeLine{59     \mbox{\hyperlink{classCol}{Col< T>}} s;}
+\DoxyCodeLine{60     }
+\DoxyCodeLine{61     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} svd\_ok = (n\_rows >= n\_cols) ? svd\_econ(U, s, coeff\_out, score\_out) : svd(U, s, coeff\_out, score\_out);}
+\DoxyCodeLine{62     }
+\DoxyCodeLine{63     \textcolor{keywordflow}{if}(svd\_ok == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{64     }
+\DoxyCodeLine{65     \textcolor{comment}{// normalize the eigenvalues}}
+\DoxyCodeLine{66     s /= std::sqrt( \textcolor{keywordtype}{double}(n\_rows -\/ 1) );}
+\DoxyCodeLine{67     }
+\DoxyCodeLine{68     \textcolor{comment}{// project the samples to the principals}}
+\DoxyCodeLine{69     score\_out *= coeff\_out;}
+\DoxyCodeLine{70     }
+\DoxyCodeLine{71     \textcolor{keywordflow}{if}(n\_rows <= n\_cols) \textcolor{comment}{// number of samples is less than their dimensionality}}
+\DoxyCodeLine{72       \{}
+\DoxyCodeLine{73       score\_out.\mbox{\hyperlink{group__Mat_ga37d3669348116f17e41410adb1b39eab}{cols}}(n\_rows-\/1,n\_cols-\/1).zeros();}
+\DoxyCodeLine{74       }
+\DoxyCodeLine{75       \mbox{\hyperlink{classCol}{Col<T>}} s\_tmp(n\_cols, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{76       }
+\DoxyCodeLine{77       s\_tmp.rows(0,n\_rows-\/2) = s.rows(0,n\_rows-\/2);}
+\DoxyCodeLine{78       s = s\_tmp;}
+\DoxyCodeLine{79           }
+\DoxyCodeLine{80       \textcolor{comment}{// compute the Hotelling's T-\/squared}}
+\DoxyCodeLine{81       s\_tmp.rows(0,n\_rows-\/2) = T(1) / s\_tmp.rows(0,n\_rows-\/2);}
+\DoxyCodeLine{82       }
+\DoxyCodeLine{83       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} S = score\_out * \mbox{\hyperlink{group__fn__diagmat_ga8bb70dfa94511eb84368ef6107dd030e}{diagmat}}(\mbox{\hyperlink{classCol}{Col<T>}}(s\_tmp));}
+\DoxyCodeLine{84       tsquared\_out = \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(S\%S,1);}
+\DoxyCodeLine{85       \}}
+\DoxyCodeLine{86     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{87       \{}
+\DoxyCodeLine{88       \textcolor{comment}{// compute the Hotelling's T-\/squared}}
+\DoxyCodeLine{89       \textcolor{comment}{// TODO: replace with more robust approach}}
+\DoxyCodeLine{90       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} S = score\_out * \mbox{\hyperlink{group__fn__diagmat_ga8bb70dfa94511eb84368ef6107dd030e}{diagmat}}(\mbox{\hyperlink{classCol}{Col<T>}}( T(1) / s));}
+\DoxyCodeLine{91       tsquared\_out = \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(S\%S,1);}
+\DoxyCodeLine{92       \}}
+\DoxyCodeLine{93     }
+\DoxyCodeLine{94     \textcolor{comment}{// compute the eigenvalues of the principal vectors}}
+\DoxyCodeLine{95     latent\_out = s\%s;}
+\DoxyCodeLine{96     \}}
+\DoxyCodeLine{97   \textcolor{keywordflow}{else} \textcolor{comment}{// 0 or 1 samples}}
+\DoxyCodeLine{98     \{}
+\DoxyCodeLine{99     coeff\_out.eye(n\_cols, n\_cols);}
+\DoxyCodeLine{100     }
+\DoxyCodeLine{101     score\_out.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(in);}
+\DoxyCodeLine{102     score\_out.zeros();}
+\DoxyCodeLine{103     }
+\DoxyCodeLine{104     latent\_out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_cols);}
+\DoxyCodeLine{105     latent\_out.zeros();}
+\DoxyCodeLine{106     }
+\DoxyCodeLine{107     tsquared\_out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_rows);}
+\DoxyCodeLine{108     tsquared\_out.zeros();}
+\DoxyCodeLine{109     \}}
+\DoxyCodeLine{110   }
+\DoxyCodeLine{111   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{112   \}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 }
+\DoxyCodeLine{122 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{123 \textcolor{keyword}{inline}}
+\DoxyCodeLine{124 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{125 \mbox{\hyperlink{group__op__princomp_ga7418ad8ec6f69b386cada6b430e1d595}{op\_princomp::direct\_princomp}}}
+\DoxyCodeLine{126   (}
+\DoxyCodeLine{127          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&     coeff\_out,}
+\DoxyCodeLine{128          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&     score\_out,}
+\DoxyCodeLine{129          \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type>}}\&      latent\_out,}
+\DoxyCodeLine{130   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X}
+\DoxyCodeLine{131   )}
+\DoxyCodeLine{132   \{}
+\DoxyCodeLine{133   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{136   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__check}{unwrap\_check<T1>}} Y( X.get\_ref(), score\_out );}
+\DoxyCodeLine{139   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& in    = Y.M;}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keyword}{const} uword n\_rows = in.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{142   \textcolor{keyword}{const} uword n\_cols = in.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{143   }
+\DoxyCodeLine{144   \textcolor{keywordflow}{if}(n\_rows > 1) \textcolor{comment}{// more than one sample}}
+\DoxyCodeLine{145     \{}
+\DoxyCodeLine{146     \textcolor{comment}{// subtract the mean -\/ use score\_out as temporary matrix}}
+\DoxyCodeLine{147     score\_out = in;  score\_out.each\_row() -\/= mean(in);}
+\DoxyCodeLine{148     }
+\DoxyCodeLine{149     \textcolor{comment}{// singular value decomposition}}
+\DoxyCodeLine{150     \mbox{\hyperlink{classMat}{Mat<eT>}} U;}
+\DoxyCodeLine{151     \mbox{\hyperlink{classCol}{Col< T>}} s;}
+\DoxyCodeLine{152     }
+\DoxyCodeLine{153     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} svd\_ok = (n\_rows >= n\_cols) ? svd\_econ(U, s, coeff\_out, score\_out) : svd(U, s, coeff\_out, score\_out);}
+\DoxyCodeLine{154     }
+\DoxyCodeLine{155     \textcolor{keywordflow}{if}(svd\_ok == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{156     }
+\DoxyCodeLine{157     \textcolor{comment}{// normalize the eigenvalues}}
+\DoxyCodeLine{158     s /= std::sqrt( \textcolor{keywordtype}{double}(n\_rows -\/ 1) );}
+\DoxyCodeLine{159     }
+\DoxyCodeLine{160     \textcolor{comment}{// project the samples to the principals}}
+\DoxyCodeLine{161     score\_out *= coeff\_out;}
+\DoxyCodeLine{162     }
+\DoxyCodeLine{163     \textcolor{keywordflow}{if}(n\_rows <= n\_cols) \textcolor{comment}{// number of samples is less than their dimensionality}}
+\DoxyCodeLine{164       \{}
+\DoxyCodeLine{165       score\_out.\mbox{\hyperlink{group__Mat_ga37d3669348116f17e41410adb1b39eab}{cols}}(n\_rows-\/1,n\_cols-\/1).zeros();}
+\DoxyCodeLine{166       }
+\DoxyCodeLine{167       \mbox{\hyperlink{classCol}{Col<T>}} s\_tmp(n\_cols, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{168       }
+\DoxyCodeLine{169       s\_tmp.rows(0,n\_rows-\/2) = s.rows(0,n\_rows-\/2);}
+\DoxyCodeLine{170       s = s\_tmp;}
+\DoxyCodeLine{171       \}}
+\DoxyCodeLine{172     }
+\DoxyCodeLine{173     \textcolor{comment}{// compute the eigenvalues of the principal vectors}}
+\DoxyCodeLine{174     latent\_out = s\%s;}
+\DoxyCodeLine{175     \}}
+\DoxyCodeLine{176   \textcolor{keywordflow}{else} \textcolor{comment}{// 0 or 1 samples}}
+\DoxyCodeLine{177     \{}
+\DoxyCodeLine{178     coeff\_out.eye(n\_cols, n\_cols);}
+\DoxyCodeLine{179     }
+\DoxyCodeLine{180     score\_out.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(in);}
+\DoxyCodeLine{181     score\_out.zeros();}
+\DoxyCodeLine{182     }
+\DoxyCodeLine{183     latent\_out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_cols);}
+\DoxyCodeLine{184     latent\_out.zeros(); }
+\DoxyCodeLine{185     \}}
+\DoxyCodeLine{186   }
+\DoxyCodeLine{187   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{188   \}}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 }
+\DoxyCodeLine{197 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{198 \textcolor{keyword}{inline}}
+\DoxyCodeLine{199 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{200 \mbox{\hyperlink{group__op__princomp_ga7418ad8ec6f69b386cada6b430e1d595}{op\_princomp::direct\_princomp}}}
+\DoxyCodeLine{201   (}
+\DoxyCodeLine{202          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&     coeff\_out,}
+\DoxyCodeLine{203          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&     score\_out,}
+\DoxyCodeLine{204   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X}
+\DoxyCodeLine{205   )}
+\DoxyCodeLine{206   \{}
+\DoxyCodeLine{207   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{208   }
+\DoxyCodeLine{209   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{210   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__check}{unwrap\_check<T1>}} Y( X.get\_ref(), score\_out );}
+\DoxyCodeLine{213   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& in    = Y.M;}
+\DoxyCodeLine{214   }
+\DoxyCodeLine{215   \textcolor{keyword}{const} uword n\_rows = in.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{216   \textcolor{keyword}{const} uword n\_cols = in.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{217   }
+\DoxyCodeLine{218   \textcolor{keywordflow}{if}(n\_rows > 1) \textcolor{comment}{// more than one sample}}
+\DoxyCodeLine{219     \{}
+\DoxyCodeLine{220     \textcolor{comment}{// subtract the mean -\/ use score\_out as temporary matrix}}
+\DoxyCodeLine{221     score\_out = in;  score\_out.each\_row() -\/= mean(in);}
+\DoxyCodeLine{222     }
+\DoxyCodeLine{223     \textcolor{comment}{// singular value decomposition}}
+\DoxyCodeLine{224     \mbox{\hyperlink{classMat}{Mat<eT>}} U;}
+\DoxyCodeLine{225     \mbox{\hyperlink{classCol}{Col< T>}} s;}
+\DoxyCodeLine{226     }
+\DoxyCodeLine{227     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} svd\_ok = (n\_rows >= n\_cols) ? svd\_econ(U, s, coeff\_out, score\_out) : svd(U, s, coeff\_out, score\_out);}
+\DoxyCodeLine{228     }
+\DoxyCodeLine{229     \textcolor{keywordflow}{if}(svd\_ok == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{230     }
+\DoxyCodeLine{231     \textcolor{comment}{// project the samples to the principals}}
+\DoxyCodeLine{232     score\_out *= coeff\_out;}
+\DoxyCodeLine{233     }
+\DoxyCodeLine{234     \textcolor{keywordflow}{if}(n\_rows <= n\_cols) \textcolor{comment}{// number of samples is less than their dimensionality}}
+\DoxyCodeLine{235       \{}
+\DoxyCodeLine{236       score\_out.\mbox{\hyperlink{group__Mat_ga37d3669348116f17e41410adb1b39eab}{cols}}(n\_rows-\/1,n\_cols-\/1).zeros();}
+\DoxyCodeLine{237       \}}
+\DoxyCodeLine{238     \}}
+\DoxyCodeLine{239   \textcolor{keywordflow}{else} \textcolor{comment}{// 0 or 1 samples}}
+\DoxyCodeLine{240     \{}
+\DoxyCodeLine{241     coeff\_out.eye(n\_cols, n\_cols);}
+\DoxyCodeLine{242     score\_out.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(in);}
+\DoxyCodeLine{243     score\_out.zeros();}
+\DoxyCodeLine{244     \}}
+\DoxyCodeLine{245   }
+\DoxyCodeLine{246   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{247   \}}
+\DoxyCodeLine{248 }
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250 }
+\DoxyCodeLine{255 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{256 \textcolor{keyword}{inline}}
+\DoxyCodeLine{257 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{258 \mbox{\hyperlink{group__op__princomp_ga7418ad8ec6f69b386cada6b430e1d595}{op\_princomp::direct\_princomp}}}
+\DoxyCodeLine{259   (}
+\DoxyCodeLine{260          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&     coeff\_out,}
+\DoxyCodeLine{261   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X}
+\DoxyCodeLine{262   )}
+\DoxyCodeLine{263   \{}
+\DoxyCodeLine{264   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{265   }
+\DoxyCodeLine{266   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{267   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{268   }
+\DoxyCodeLine{269   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}}    Y( X.get\_ref() );}
+\DoxyCodeLine{270   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& in = Y.M;}
+\DoxyCodeLine{271   }
+\DoxyCodeLine{272   \textcolor{keywordflow}{if}(in.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}} != 0)}
+\DoxyCodeLine{273     \{}
+\DoxyCodeLine{274     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp = in; tmp.each\_row() -\/= mean(in);}
+\DoxyCodeLine{275     }
+\DoxyCodeLine{276     \textcolor{comment}{// singular value decomposition}}
+\DoxyCodeLine{277     \mbox{\hyperlink{classMat}{Mat<eT>}} U;}
+\DoxyCodeLine{278     \mbox{\hyperlink{classCol}{Col< T>}} s;}
+\DoxyCodeLine{279     }
+\DoxyCodeLine{280     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} svd\_ok = (in.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} >= in.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}) ? svd\_econ(U, s, coeff\_out, tmp) : svd(U, s, coeff\_out, tmp);}
+\DoxyCodeLine{281     }
+\DoxyCodeLine{282     \textcolor{keywordflow}{if}(svd\_ok == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{283     \}}
+\DoxyCodeLine{284   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{285     \{}
+\DoxyCodeLine{286     coeff\_out.eye(in.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}, in.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}});}
+\DoxyCodeLine{287     \}}
+\DoxyCodeLine{288   }
+\DoxyCodeLine{289   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{290   \}}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{295 \textcolor{keyword}{inline}}
+\DoxyCodeLine{296 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{297 op\_princomp::apply}
+\DoxyCodeLine{298   (}
+\DoxyCodeLine{299         \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out,}
+\DoxyCodeLine{300   \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_princomp>}}\&          in}
+\DoxyCodeLine{301   )}
+\DoxyCodeLine{302   \{}
+\DoxyCodeLine{303   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{304   }
+\DoxyCodeLine{305   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__op__princomp_ga7418ad8ec6f69b386cada6b430e1d595}{op\_princomp::direct\_princomp}}(out, in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}});}
+\DoxyCodeLine{306   }
+\DoxyCodeLine{307   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{308     \{}
+\DoxyCodeLine{309     out.soft\_reset();}
+\DoxyCodeLine{310     }
+\DoxyCodeLine{311     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}princomp(): decomposition failed"{}});}
+\DoxyCodeLine{312     \}}
+\DoxyCodeLine{313   \}}
+\DoxyCodeLine{314 }
+\DoxyCodeLine{315 }
+\DoxyCodeLine{316 }
+
+\end{DoxyCode}

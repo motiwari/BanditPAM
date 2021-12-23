@@ -1,0 +1,105 @@
+\hypertarget{fn__kron_8hpp_source}{}\doxysection{fn\+\_\+kron.\+hpp}
+\label{fn__kron_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_kron.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_kron.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 arma\_inline}
+\DoxyCodeLine{25 \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_kron>}}}
+\DoxyCodeLine{26 kron(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_kron>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref());}
+\DoxyCodeLine{31   \}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{36 arma\_warn\_unused}
+\DoxyCodeLine{37 \textcolor{keyword}{inline}}
+\DoxyCodeLine{38 \mbox{\hyperlink{classMat}{Mat<typename eT\_promoter<T1,T2>::eT}}>}
+\DoxyCodeLine{39 kron(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<std::complex<T>,T1>\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<T,T2>}}\& Y)}
+\DoxyCodeLine{40   \{}
+\DoxyCodeLine{41   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT1;}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \mbox{\hyperlink{structpromote__type}{promote\_type<eT1,T>::check}}();}
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp1(X.get\_ref());}
+\DoxyCodeLine{48   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T2>}} tmp2(Y.get\_ref());}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT1>}}\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{51   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<T  >}}\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \mbox{\hyperlink{classMat}{Mat<eT1>}} out;}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   \mbox{\hyperlink{group__glue__kron_ga7a5559045edf7ee358fece2655e7532a}{glue\_kron::direct\_kron}}(out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{58   \}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{63 arma\_warn\_unused}
+\DoxyCodeLine{64 \textcolor{keyword}{inline}}
+\DoxyCodeLine{65 \mbox{\hyperlink{classMat}{Mat<typename eT\_promoter<T1,T2>::eT}}>}
+\DoxyCodeLine{66 kron(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<T,T1>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base}}<std::complex<T>,T2>\& Y)}
+\DoxyCodeLine{67   \{}
+\DoxyCodeLine{68   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT2;  }
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72   \mbox{\hyperlink{structpromote__type}{promote\_type<T,eT2>::check}}();}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp1(X.get\_ref());}
+\DoxyCodeLine{75   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T2>}} tmp2(Y.get\_ref());}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<T  >}}\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{78   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT2>}}\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80   \mbox{\hyperlink{classMat}{Mat<eT2>}} out;}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \mbox{\hyperlink{group__glue__kron_ga7a5559045edf7ee358fece2655e7532a}{glue\_kron::direct\_kron}}(out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{85   \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{90 arma\_warn\_unused}
+\DoxyCodeLine{91 arma\_inline}
+\DoxyCodeLine{92 \textcolor{keyword}{const} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_kron>}}}
+\DoxyCodeLine{93 kron(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T2>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{94   \{}
+\DoxyCodeLine{95   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_kron>}}(\mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref());}
+\DoxyCodeLine{98   \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 }
+
+\end{DoxyCode}

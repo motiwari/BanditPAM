@@ -1,0 +1,83 @@
+\hypertarget{fn__det_8hpp_source}{}\doxysection{fn\+\_\+det.\+hpp}
+\label{fn__det_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_det.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_det.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_supported\_blas\_type<typename T1::elem\_type>::value}}, \textcolor{keyword}{typename} T1::elem\_type >::result}
+\DoxyCodeLine{26 det(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   eT out\_val = eT(0);}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_det::apply\_direct(out\_val, X.get\_ref());}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{37     \{}
+\DoxyCodeLine{38     out\_val = eT(0);}
+\DoxyCodeLine{39     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}det(): failed to find determinant"{}});}
+\DoxyCodeLine{40     \}}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keywordflow}{return} out\_val;}
+\DoxyCodeLine{43   \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{48 \textcolor{keyword}{inline}}
+\DoxyCodeLine{49 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_supported\_blas\_type<typename T1::elem\_type>::value}}, \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{50 det(\textcolor{keyword}{typename} T1::elem\_type\& out\_val, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{51   \{}
+\DoxyCodeLine{52   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = op\_det::apply\_direct(out\_val, X.get\_ref());}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{59     \{}
+\DoxyCodeLine{60     out\_val = eT(0);}
+\DoxyCodeLine{61     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}det(): failed to find determinant"{}});}
+\DoxyCodeLine{62     \}}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{65   \}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{70 arma\_warn\_unused}
+\DoxyCodeLine{71 arma\_inline}
+\DoxyCodeLine{72 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__scalar__only}{arma\_scalar\_only<T>::result}}}
+\DoxyCodeLine{73 det(\textcolor{keyword}{const} T\& x)}
+\DoxyCodeLine{74   \{}
+\DoxyCodeLine{75   \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{76   \}}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+
+\end{DoxyCode}

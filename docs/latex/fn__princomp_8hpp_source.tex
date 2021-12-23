@@ -1,0 +1,163 @@
+\hypertarget{fn__princomp_8hpp_source}{}\doxysection{fn\+\_\+princomp.\+hpp}
+\label{fn__princomp_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_princomp.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_princomp.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{28 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{29 \textcolor{keyword}{inline}}
+\DoxyCodeLine{30 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{31 \mbox{\hyperlink{group__fn__princomp_ga165ef257b42a5e28acf5ced3d3a88e1d}{princomp}}}
+\DoxyCodeLine{32   (}
+\DoxyCodeLine{33          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    coeff\_out,}
+\DoxyCodeLine{34          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    score\_out,}
+\DoxyCodeLine{35          \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type>}}\&     latent\_out,}
+\DoxyCodeLine{36          \mbox{\hyperlink{classCol}{Col<typename T1::elem\_type>}}\&    tsquared\_out,}
+\DoxyCodeLine{37   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{38   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{39   )}
+\DoxyCodeLine{40   \{}
+\DoxyCodeLine{41   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{42   arma\_ignore(junk);}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__op__princomp_ga7418ad8ec6f69b386cada6b430e1d595}{op\_princomp::direct\_princomp}}(coeff\_out, score\_out, latent\_out, tsquared\_out, X);}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{47     \{}
+\DoxyCodeLine{48     coeff\_out.soft\_reset();}
+\DoxyCodeLine{49     score\_out.soft\_reset();}
+\DoxyCodeLine{50     latent\_out.soft\_reset();}
+\DoxyCodeLine{51     tsquared\_out.soft\_reset();}
+\DoxyCodeLine{52     }
+\DoxyCodeLine{53     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}princomp(): decomposition failed"{}});}
+\DoxyCodeLine{54     \}}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{57   \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 }
+\DoxyCodeLine{66 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{67 \textcolor{keyword}{inline}}
+\DoxyCodeLine{68 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{69 \mbox{\hyperlink{group__fn__princomp_ga165ef257b42a5e28acf5ced3d3a88e1d}{princomp}}}
+\DoxyCodeLine{70   (}
+\DoxyCodeLine{71          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    coeff\_out,}
+\DoxyCodeLine{72          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    score\_out,}
+\DoxyCodeLine{73          \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type>}}\&     latent\_out,}
+\DoxyCodeLine{74   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{75   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{76   )}
+\DoxyCodeLine{77   \{}
+\DoxyCodeLine{78   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{79   arma\_ignore(junk);}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__op__princomp_ga7418ad8ec6f69b386cada6b430e1d595}{op\_princomp::direct\_princomp}}(coeff\_out, score\_out, latent\_out, X); }
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{84     \{}
+\DoxyCodeLine{85     coeff\_out.soft\_reset();}
+\DoxyCodeLine{86     score\_out.soft\_reset();}
+\DoxyCodeLine{87     latent\_out.soft\_reset();}
+\DoxyCodeLine{88     }
+\DoxyCodeLine{89     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}princomp(): decomposition failed"{}});}
+\DoxyCodeLine{90     \}}
+\DoxyCodeLine{91   }
+\DoxyCodeLine{92   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{93   \}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 }
+\DoxyCodeLine{101 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{102 \textcolor{keyword}{inline}}
+\DoxyCodeLine{103 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{104 \mbox{\hyperlink{group__fn__princomp_ga165ef257b42a5e28acf5ced3d3a88e1d}{princomp}}}
+\DoxyCodeLine{105   (}
+\DoxyCodeLine{106          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    coeff\_out,}
+\DoxyCodeLine{107          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    score\_out,}
+\DoxyCodeLine{108   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{109   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{110   )}
+\DoxyCodeLine{111   \{}
+\DoxyCodeLine{112   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{113   arma\_ignore(junk);}
+\DoxyCodeLine{114   }
+\DoxyCodeLine{115   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__op__princomp_ga7418ad8ec6f69b386cada6b430e1d595}{op\_princomp::direct\_princomp}}(coeff\_out, score\_out, X); }
+\DoxyCodeLine{116   }
+\DoxyCodeLine{117   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{118     \{}
+\DoxyCodeLine{119     coeff\_out.soft\_reset();}
+\DoxyCodeLine{120     score\_out.soft\_reset();}
+\DoxyCodeLine{121     }
+\DoxyCodeLine{122     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}princomp(): decomposition failed"{}});}
+\DoxyCodeLine{123     \}}
+\DoxyCodeLine{124   }
+\DoxyCodeLine{125   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{126   \}}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{133 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{134 \textcolor{keyword}{inline}}
+\DoxyCodeLine{135 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{136 \mbox{\hyperlink{group__fn__princomp_ga165ef257b42a5e28acf5ced3d3a88e1d}{princomp}}}
+\DoxyCodeLine{137   (}
+\DoxyCodeLine{138          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    coeff\_out,}
+\DoxyCodeLine{139   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{140   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{141   )}
+\DoxyCodeLine{142   \{}
+\DoxyCodeLine{143   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{144   arma\_ignore(junk);}
+\DoxyCodeLine{145   }
+\DoxyCodeLine{146   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__op__princomp_ga7418ad8ec6f69b386cada6b430e1d595}{op\_princomp::direct\_princomp}}(coeff\_out, X);}
+\DoxyCodeLine{147   }
+\DoxyCodeLine{148   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{149     \{}
+\DoxyCodeLine{150     coeff\_out.soft\_reset();}
+\DoxyCodeLine{151     }
+\DoxyCodeLine{152     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}princomp(): decomposition failed"{}});}
+\DoxyCodeLine{153     \}}
+\DoxyCodeLine{154   }
+\DoxyCodeLine{155   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{156   \}}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{161 arma\_warn\_unused}
+\DoxyCodeLine{162 \textcolor{keyword}{inline}}
+\DoxyCodeLine{163 \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_princomp>}}}
+\DoxyCodeLine{164 \mbox{\hyperlink{group__fn__princomp_ga165ef257b42a5e28acf5ced3d3a88e1d}{princomp}}}
+\DoxyCodeLine{165   (}
+\DoxyCodeLine{166   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{167   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{168   )}
+\DoxyCodeLine{169   \{}
+\DoxyCodeLine{170   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{171   arma\_ignore(junk);}
+\DoxyCodeLine{172   }
+\DoxyCodeLine{173   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_princomp>}}(X.get\_ref());}
+\DoxyCodeLine{174   \}}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 }
+
+\end{DoxyCode}

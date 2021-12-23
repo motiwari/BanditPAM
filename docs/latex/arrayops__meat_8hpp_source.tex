@@ -1,0 +1,1209 @@
+\hypertarget{arrayops__meat_8hpp_source}{}\doxysection{arrayops\+\_\+meat.\+hpp}
+\label{arrayops__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arrayops\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arrayops\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 arma\_inline}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 arrayops::copy(eT* dest, \textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   \textcolor{keywordflow}{if}( (dest == src) || (n\_elem == 0) )  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}})}
+\DoxyCodeLine{30     \{}
+\DoxyCodeLine{31     \textcolor{keywordflow}{if}(n\_elem <= 9)}
+\DoxyCodeLine{32       \{}
+\DoxyCodeLine{33       arrayops::copy\_small(dest, src, n\_elem);}
+\DoxyCodeLine{34       \}}
+\DoxyCodeLine{35     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{36       \{}
+\DoxyCodeLine{37       std::memcpy(dest, src, n\_elem*\textcolor{keyword}{sizeof}(eT));}
+\DoxyCodeLine{38       \}}
+\DoxyCodeLine{39     \}}
+\DoxyCodeLine{40   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{41     \{}
+\DoxyCodeLine{42     std::memcpy(dest, src, n\_elem*\textcolor{keyword}{sizeof}(eT));}
+\DoxyCodeLine{43     \}}
+\DoxyCodeLine{44   \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{49 arma\_cold}
+\DoxyCodeLine{50 \textcolor{keyword}{inline}}
+\DoxyCodeLine{51 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{52 arrayops::copy\_small(eT* dest, \textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{53   \{}
+\DoxyCodeLine{54   \textcolor{keywordflow}{switch}(n\_elem)}
+\DoxyCodeLine{55     \{}
+\DoxyCodeLine{56     \textcolor{keywordflow}{case}  9:  dest[ 8] = src[ 8];}
+\DoxyCodeLine{57     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{58     \textcolor{keywordflow}{case}  8:  dest[ 7] = src[ 7];}
+\DoxyCodeLine{59     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{60     \textcolor{keywordflow}{case}  7:  dest[ 6] = src[ 6];}
+\DoxyCodeLine{61     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{62     \textcolor{keywordflow}{case}  6:  dest[ 5] = src[ 5];}
+\DoxyCodeLine{63     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{64     \textcolor{keywordflow}{case}  5:  dest[ 4] = src[ 4];}
+\DoxyCodeLine{65     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{66     \textcolor{keywordflow}{case}  4:  dest[ 3] = src[ 3];}
+\DoxyCodeLine{67     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{68     \textcolor{keywordflow}{case}  3:  dest[ 2] = src[ 2];}
+\DoxyCodeLine{69     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{70     \textcolor{keywordflow}{case}  2:  dest[ 1] = src[ 1];}
+\DoxyCodeLine{71     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{72     \textcolor{keywordflow}{case}  1:  dest[ 0] = src[ 0];}
+\DoxyCodeLine{73     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{74     \textcolor{keywordflow}{default}:  ;}
+\DoxyCodeLine{75     \}}
+\DoxyCodeLine{76   \}}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{81 \textcolor{keyword}{inline}}
+\DoxyCodeLine{82 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{83 arrayops::fill\_zeros(eT* dest, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{84   \{}
+\DoxyCodeLine{85   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result pod\_type;}
+\DoxyCodeLine{86   }
+\DoxyCodeLine{87   \textcolor{keywordflow}{if}(n\_elem == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89   \textcolor{keywordflow}{if}(std::numeric\_limits<eT>::is\_integer || std::numeric\_limits<pod\_type>::is\_iec559)}
+\DoxyCodeLine{90     \{}
+\DoxyCodeLine{91     std::memset((\textcolor{keywordtype}{void}*)dest, 0, \textcolor{keyword}{sizeof}(eT)*n\_elem);}
+\DoxyCodeLine{92     \}}
+\DoxyCodeLine{93   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{94     \{}
+\DoxyCodeLine{95     arrayops::inplace\_set\_simple(dest, eT(0), n\_elem);}
+\DoxyCodeLine{96     \}}
+\DoxyCodeLine{97   \}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{102 arma\_hot}
+\DoxyCodeLine{103 \textcolor{keyword}{inline}}
+\DoxyCodeLine{104 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{105 arrayops::replace(eT* mem, \textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT old\_val, \textcolor{keyword}{const} eT new\_val)}
+\DoxyCodeLine{106   \{}
+\DoxyCodeLine{107   \textcolor{keywordflow}{if}(arma\_isnan(old\_val))}
+\DoxyCodeLine{108     \{}
+\DoxyCodeLine{109     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{110       \{}
+\DoxyCodeLine{111       eT\& val = mem[i];}
+\DoxyCodeLine{112       }
+\DoxyCodeLine{113       val = (arma\_isnan(val)) ? new\_val : val;}
+\DoxyCodeLine{114       \}}
+\DoxyCodeLine{115     \}}
+\DoxyCodeLine{116   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{117     \{}
+\DoxyCodeLine{118     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{119       \{}
+\DoxyCodeLine{120       eT\& val = mem[i];}
+\DoxyCodeLine{121       }
+\DoxyCodeLine{122       val = (val == old\_val) ? new\_val : val;}
+\DoxyCodeLine{123       \}}
+\DoxyCodeLine{124     \}}
+\DoxyCodeLine{125   \}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{130 arma\_hot}
+\DoxyCodeLine{131 \textcolor{keyword}{inline}}
+\DoxyCodeLine{132 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{133 arrayops::clean(eT* mem, \textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT abs\_limit, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<eT>::result* junk)}
+\DoxyCodeLine{134   \{}
+\DoxyCodeLine{135   arma\_ignore(junk);}
+\DoxyCodeLine{136   }
+\DoxyCodeLine{137   \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{138     \{}
+\DoxyCodeLine{139     eT\& val = mem[i];}
+\DoxyCodeLine{140     }
+\DoxyCodeLine{141     val = (eop\_aux::arma\_abs(val) <= abs\_limit) ? eT(0) : val;}
+\DoxyCodeLine{142     \}}
+\DoxyCodeLine{143   \}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{148 arma\_hot}
+\DoxyCodeLine{149 \textcolor{keyword}{inline}}
+\DoxyCodeLine{150 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{151 arrayops::clean(std::complex<T>* mem, \textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} T abs\_limit)}
+\DoxyCodeLine{152   \{}
+\DoxyCodeLine{153   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT;}
+\DoxyCodeLine{154   }
+\DoxyCodeLine{155   \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{156     \{}
+\DoxyCodeLine{157     eT\& val = mem[i];}
+\DoxyCodeLine{158     }
+\DoxyCodeLine{159     T val\_real = std::real(val);}
+\DoxyCodeLine{160     T val\_imag = std::imag(val);}
+\DoxyCodeLine{161     }
+\DoxyCodeLine{162     \textcolor{keywordflow}{if}(std::abs(val\_real) <= abs\_limit)}
+\DoxyCodeLine{163       \{}
+\DoxyCodeLine{164       val\_imag = (std::abs(val\_imag) <= abs\_limit) ? T(0) : val\_imag;}
+\DoxyCodeLine{165       }
+\DoxyCodeLine{166       val = std::complex<T>(T(0), val\_imag);}
+\DoxyCodeLine{167       \}}
+\DoxyCodeLine{168     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{169     \textcolor{keywordflow}{if}(std::abs(val\_imag) <= abs\_limit)}
+\DoxyCodeLine{170       \{}
+\DoxyCodeLine{171       val = std::complex<T>(val\_real, T(0));}
+\DoxyCodeLine{172       \}}
+\DoxyCodeLine{173     \}}
+\DoxyCodeLine{174   \}}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{179 \textcolor{keyword}{inline}}
+\DoxyCodeLine{180 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{181 arrayops::clamp(eT* mem, \textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT min\_val, \textcolor{keyword}{const} eT max\_val, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<eT>::result* junk)}
+\DoxyCodeLine{182   \{}
+\DoxyCodeLine{183   arma\_ignore(junk);}
+\DoxyCodeLine{184   }
+\DoxyCodeLine{185   \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{186     \{}
+\DoxyCodeLine{187     eT\& val = mem[i];}
+\DoxyCodeLine{188     }
+\DoxyCodeLine{189     val = (val < min\_val) ? min\_val : ((val > max\_val) ? max\_val : val);}
+\DoxyCodeLine{190     \}}
+\DoxyCodeLine{191   \}}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{196 \textcolor{keyword}{inline}}
+\DoxyCodeLine{197 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{198 arrayops::clamp(std::complex<T>* mem, \textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} std::complex<T>\& min\_val, \textcolor{keyword}{const} std::complex<T>\& max\_val)}
+\DoxyCodeLine{199   \{}
+\DoxyCodeLine{200   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT;}
+\DoxyCodeLine{201   }
+\DoxyCodeLine{202   \textcolor{keyword}{const} T min\_val\_real = std::real(min\_val);}
+\DoxyCodeLine{203   \textcolor{keyword}{const} T min\_val\_imag = std::imag(min\_val);}
+\DoxyCodeLine{204   }
+\DoxyCodeLine{205   \textcolor{keyword}{const} T max\_val\_real = std::real(max\_val);}
+\DoxyCodeLine{206   \textcolor{keyword}{const} T max\_val\_imag = std::imag(max\_val);}
+\DoxyCodeLine{207   }
+\DoxyCodeLine{208   \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{209     \{}
+\DoxyCodeLine{210     eT\& val = mem[i];}
+\DoxyCodeLine{211     }
+\DoxyCodeLine{212     T val\_real = std::real(val);}
+\DoxyCodeLine{213     T val\_imag = std::imag(val);}
+\DoxyCodeLine{214     }
+\DoxyCodeLine{215     val\_real = (val\_real < min\_val\_real) ? min\_val\_real : ((val\_real > max\_val\_real) ? max\_val\_real : val\_real);}
+\DoxyCodeLine{216     val\_imag = (val\_imag < min\_val\_imag) ? min\_val\_imag : ((val\_imag > max\_val\_imag) ? max\_val\_imag : val\_imag);}
+\DoxyCodeLine{217     }
+\DoxyCodeLine{218     val = std::complex<T>(val\_real,val\_imag);}
+\DoxyCodeLine{219     \}}
+\DoxyCodeLine{220   \}}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_eT, \textcolor{keyword}{typename} in\_eT>}
+\DoxyCodeLine{225 arma\_inline}
+\DoxyCodeLine{226 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{227 arrayops::convert\_cx\_scalar}
+\DoxyCodeLine{228   (}
+\DoxyCodeLine{229         out\_eT\& out,}
+\DoxyCodeLine{230   \textcolor{keyword}{const} in\_eT\&  in,}
+\DoxyCodeLine{231   \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<out\_eT>::result* junk1,}
+\DoxyCodeLine{232   \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx< in\_eT>::result* junk2}
+\DoxyCodeLine{233   )}
+\DoxyCodeLine{234   \{}
+\DoxyCodeLine{235   arma\_ignore(junk1);}
+\DoxyCodeLine{236   arma\_ignore(junk2);}
+\DoxyCodeLine{237   }
+\DoxyCodeLine{238   out = out\_eT(in);}
+\DoxyCodeLine{239   \}}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_eT, \textcolor{keyword}{typename} in\_T>}
+\DoxyCodeLine{244 arma\_inline}
+\DoxyCodeLine{245 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{246 arrayops::convert\_cx\_scalar}
+\DoxyCodeLine{247   (}
+\DoxyCodeLine{248         out\_eT\&             out,}
+\DoxyCodeLine{249   \textcolor{keyword}{const} std::complex<in\_T>\& in,}
+\DoxyCodeLine{250   \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<out\_eT>::result* junk}
+\DoxyCodeLine{251   )}
+\DoxyCodeLine{252   \{}
+\DoxyCodeLine{253   arma\_ignore(junk);}
+\DoxyCodeLine{254   }
+\DoxyCodeLine{255   out = out\_eT( in.real() );}
+\DoxyCodeLine{256   \}}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_T, \textcolor{keyword}{typename} in\_T>}
+\DoxyCodeLine{261 arma\_inline}
+\DoxyCodeLine{262 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{263 arrayops::convert\_cx\_scalar}
+\DoxyCodeLine{264   (}
+\DoxyCodeLine{265         std::complex<out\_T>\& out,}
+\DoxyCodeLine{266   \textcolor{keyword}{const} std::complex< in\_T>\& in}
+\DoxyCodeLine{267   )}
+\DoxyCodeLine{268   \{}
+\DoxyCodeLine{269   \textcolor{keyword}{typedef} std::complex<out\_T> out\_eT;}
+\DoxyCodeLine{270   }
+\DoxyCodeLine{271   out = out\_eT(in);}
+\DoxyCodeLine{272   \}}
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275 }
+\DoxyCodeLine{276 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_eT, \textcolor{keyword}{typename} in\_eT>}
+\DoxyCodeLine{277 arma\_hot}
+\DoxyCodeLine{278 \textcolor{keyword}{inline}}
+\DoxyCodeLine{279 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{280 arrayops::convert(out\_eT* dest, \textcolor{keyword}{const} in\_eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{281   \{}
+\DoxyCodeLine{282   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<out\_eT,in\_eT>::value}})}
+\DoxyCodeLine{283     \{}
+\DoxyCodeLine{284     \textcolor{keyword}{const} out\_eT* src2 = (\textcolor{keyword}{const} out\_eT*)src;}
+\DoxyCodeLine{285     }
+\DoxyCodeLine{286     \textcolor{keywordflow}{if}(dest != src2)  \{ arrayops::copy(dest, src2, n\_elem); \}}
+\DoxyCodeLine{287     }
+\DoxyCodeLine{288     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{289     \}}
+\DoxyCodeLine{290   }
+\DoxyCodeLine{291   }
+\DoxyCodeLine{292   uword j;}
+\DoxyCodeLine{293   }
+\DoxyCodeLine{294   \textcolor{keywordflow}{for}(j=1; j<n\_elem; j+=2)}
+\DoxyCodeLine{295     \{}
+\DoxyCodeLine{296     \textcolor{keyword}{const} in\_eT tmp\_i = (*src);  src++;}
+\DoxyCodeLine{297     \textcolor{keyword}{const} in\_eT tmp\_j = (*src);  src++;}
+\DoxyCodeLine{298     }
+\DoxyCodeLine{299     \textcolor{comment}{// dest[i] = out\_eT( tmp\_i );}}
+\DoxyCodeLine{300     \textcolor{comment}{// dest[j] = out\_eT( tmp\_j );}}
+\DoxyCodeLine{301     }
+\DoxyCodeLine{302     (*dest) = (\mbox{\hyperlink{structis__signed}{is\_signed<out\_eT>::value}})}
+\DoxyCodeLine{303               ? out\_eT( tmp\_i )}
+\DoxyCodeLine{304               : ( \mbox{\hyperlink{classcond__rel}{cond\_rel< is\_signed<in\_eT>::value}} >::lt(tmp\_i, in\_eT(0)) ? out\_eT(0) : out\_eT(tmp\_i) );}
+\DoxyCodeLine{305     }
+\DoxyCodeLine{306     dest++;}
+\DoxyCodeLine{307     }
+\DoxyCodeLine{308     (*dest) = (\mbox{\hyperlink{structis__signed}{is\_signed<out\_eT>::value}})}
+\DoxyCodeLine{309               ? out\_eT( tmp\_j )}
+\DoxyCodeLine{310               : ( \mbox{\hyperlink{classcond__rel}{cond\_rel< is\_signed<in\_eT>::value}} >::lt(tmp\_j, in\_eT(0)) ? out\_eT(0) : out\_eT(tmp\_j) );}
+\DoxyCodeLine{311     dest++;}
+\DoxyCodeLine{312     \}}
+\DoxyCodeLine{313   }
+\DoxyCodeLine{314   \textcolor{keywordflow}{if}((j-\/1) < n\_elem)}
+\DoxyCodeLine{315     \{}
+\DoxyCodeLine{316     \textcolor{keyword}{const} in\_eT tmp\_i = (*src);}
+\DoxyCodeLine{317     }
+\DoxyCodeLine{318     \textcolor{comment}{// dest[i] = out\_eT( tmp\_i );}}
+\DoxyCodeLine{319     }
+\DoxyCodeLine{320     (*dest) = (\mbox{\hyperlink{structis__signed}{is\_signed<out\_eT>::value}})}
+\DoxyCodeLine{321               ? out\_eT( tmp\_i )}
+\DoxyCodeLine{322               : ( \mbox{\hyperlink{classcond__rel}{cond\_rel< is\_signed<in\_eT>::value}} >::lt(tmp\_i, in\_eT(0)) ? out\_eT(0) : out\_eT(tmp\_i) );}
+\DoxyCodeLine{323     \}}
+\DoxyCodeLine{324   \}}
+\DoxyCodeLine{325 }
+\DoxyCodeLine{326 }
+\DoxyCodeLine{327 }
+\DoxyCodeLine{328 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_eT, \textcolor{keyword}{typename} in\_eT>}
+\DoxyCodeLine{329 arma\_hot}
+\DoxyCodeLine{330 \textcolor{keyword}{inline}}
+\DoxyCodeLine{331 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{332 arrayops::convert\_cx(out\_eT* dest, \textcolor{keyword}{const} in\_eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{333   \{}
+\DoxyCodeLine{334   uword j;}
+\DoxyCodeLine{335   }
+\DoxyCodeLine{336   \textcolor{keywordflow}{for}(j=1; j<n\_elem; j+=2)}
+\DoxyCodeLine{337     \{}
+\DoxyCodeLine{338     arrayops::convert\_cx\_scalar( (*dest), (*src) );  dest++; src++;}
+\DoxyCodeLine{339     arrayops::convert\_cx\_scalar( (*dest), (*src) );  dest++; src++;}
+\DoxyCodeLine{340     \}}
+\DoxyCodeLine{341   }
+\DoxyCodeLine{342   \textcolor{keywordflow}{if}((j-\/1) < n\_elem)}
+\DoxyCodeLine{343     \{}
+\DoxyCodeLine{344     arrayops::convert\_cx\_scalar( (*dest), (*src) );}
+\DoxyCodeLine{345     \}}
+\DoxyCodeLine{346   \}}
+\DoxyCodeLine{347 }
+\DoxyCodeLine{348 }
+\DoxyCodeLine{349 }
+\DoxyCodeLine{350 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{351 arma\_hot}
+\DoxyCodeLine{352 \textcolor{keyword}{inline}}
+\DoxyCodeLine{353 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{354 arrayops::inplace\_plus(eT* dest, \textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{355   \{}
+\DoxyCodeLine{356   \textcolor{keywordflow}{if}(memory::is\_aligned(dest))}
+\DoxyCodeLine{357     \{}
+\DoxyCodeLine{358     memory::mark\_as\_aligned(dest);}
+\DoxyCodeLine{359     }
+\DoxyCodeLine{360     \textcolor{keywordflow}{if}(memory::is\_aligned(src))}
+\DoxyCodeLine{361       \{}
+\DoxyCodeLine{362       memory::mark\_as\_aligned(src);}
+\DoxyCodeLine{363       }
+\DoxyCodeLine{364       arrayops::inplace\_plus\_base(dest, src, n\_elem);}
+\DoxyCodeLine{365       \}}
+\DoxyCodeLine{366     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{367       \{}
+\DoxyCodeLine{368       arrayops::inplace\_plus\_base(dest, src, n\_elem);}
+\DoxyCodeLine{369       \}}
+\DoxyCodeLine{370     \}}
+\DoxyCodeLine{371   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{372     \{}
+\DoxyCodeLine{373     \textcolor{keywordflow}{if}(memory::is\_aligned(src))}
+\DoxyCodeLine{374       \{}
+\DoxyCodeLine{375       memory::mark\_as\_aligned(src);}
+\DoxyCodeLine{376       }
+\DoxyCodeLine{377       arrayops::inplace\_plus\_base(dest, src, n\_elem);}
+\DoxyCodeLine{378       \}}
+\DoxyCodeLine{379     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{380       \{}
+\DoxyCodeLine{381       arrayops::inplace\_plus\_base(dest, src, n\_elem);}
+\DoxyCodeLine{382       \}}
+\DoxyCodeLine{383     \}}
+\DoxyCodeLine{384   \}}
+\DoxyCodeLine{385 }
+\DoxyCodeLine{386 }
+\DoxyCodeLine{387 }
+\DoxyCodeLine{388 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{389 arma\_hot}
+\DoxyCodeLine{390 \textcolor{keyword}{inline}}
+\DoxyCodeLine{391 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{392 arrayops::inplace\_minus(eT* dest, \textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{393   \{}
+\DoxyCodeLine{394   \textcolor{keywordflow}{if}(memory::is\_aligned(dest))}
+\DoxyCodeLine{395     \{}
+\DoxyCodeLine{396     memory::mark\_as\_aligned(dest);}
+\DoxyCodeLine{397     }
+\DoxyCodeLine{398     \textcolor{keywordflow}{if}(memory::is\_aligned(src))}
+\DoxyCodeLine{399       \{}
+\DoxyCodeLine{400       memory::mark\_as\_aligned(src);}
+\DoxyCodeLine{401       }
+\DoxyCodeLine{402       arrayops::inplace\_minus\_base(dest, src, n\_elem);}
+\DoxyCodeLine{403       \}}
+\DoxyCodeLine{404     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{405       \{}
+\DoxyCodeLine{406       arrayops::inplace\_minus\_base(dest, src, n\_elem);}
+\DoxyCodeLine{407       \}}
+\DoxyCodeLine{408     \}}
+\DoxyCodeLine{409   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{410     \{}
+\DoxyCodeLine{411     \textcolor{keywordflow}{if}(memory::is\_aligned(src))}
+\DoxyCodeLine{412       \{}
+\DoxyCodeLine{413       memory::mark\_as\_aligned(src);}
+\DoxyCodeLine{414       }
+\DoxyCodeLine{415       arrayops::inplace\_minus\_base(dest, src, n\_elem);}
+\DoxyCodeLine{416       \}}
+\DoxyCodeLine{417     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{418       \{}
+\DoxyCodeLine{419       arrayops::inplace\_minus\_base(dest, src, n\_elem);}
+\DoxyCodeLine{420       \}}
+\DoxyCodeLine{421     \}}
+\DoxyCodeLine{422   \}}
+\DoxyCodeLine{423 }
+\DoxyCodeLine{424 }
+\DoxyCodeLine{425 }
+\DoxyCodeLine{426 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{427 arma\_hot}
+\DoxyCodeLine{428 \textcolor{keyword}{inline}}
+\DoxyCodeLine{429 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{430 arrayops::inplace\_mul(eT* dest, \textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{431   \{}
+\DoxyCodeLine{432   \textcolor{keywordflow}{if}(memory::is\_aligned(dest))}
+\DoxyCodeLine{433     \{}
+\DoxyCodeLine{434     memory::mark\_as\_aligned(dest);}
+\DoxyCodeLine{435     }
+\DoxyCodeLine{436     \textcolor{keywordflow}{if}(memory::is\_aligned(src))}
+\DoxyCodeLine{437       \{}
+\DoxyCodeLine{438       memory::mark\_as\_aligned(src);}
+\DoxyCodeLine{439       }
+\DoxyCodeLine{440       arrayops::inplace\_mul\_base(dest, src, n\_elem);}
+\DoxyCodeLine{441       \}}
+\DoxyCodeLine{442     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{443       \{}
+\DoxyCodeLine{444       arrayops::inplace\_mul\_base(dest, src, n\_elem);}
+\DoxyCodeLine{445       \}}
+\DoxyCodeLine{446     \}}
+\DoxyCodeLine{447   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{448     \{}
+\DoxyCodeLine{449     \textcolor{keywordflow}{if}(memory::is\_aligned(src))}
+\DoxyCodeLine{450       \{}
+\DoxyCodeLine{451       memory::mark\_as\_aligned(src);}
+\DoxyCodeLine{452       }
+\DoxyCodeLine{453       arrayops::inplace\_mul\_base(dest, src, n\_elem);}
+\DoxyCodeLine{454       \}}
+\DoxyCodeLine{455     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{456       \{}
+\DoxyCodeLine{457       arrayops::inplace\_mul\_base(dest, src, n\_elem);}
+\DoxyCodeLine{458       \}}
+\DoxyCodeLine{459     \}}
+\DoxyCodeLine{460   \}}
+\DoxyCodeLine{461 }
+\DoxyCodeLine{462 }
+\DoxyCodeLine{463 }
+\DoxyCodeLine{464 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{465 arma\_hot}
+\DoxyCodeLine{466 \textcolor{keyword}{inline}}
+\DoxyCodeLine{467 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{468 arrayops::inplace\_div(eT* dest, \textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{469   \{}
+\DoxyCodeLine{470   \textcolor{keywordflow}{if}(memory::is\_aligned(dest))}
+\DoxyCodeLine{471     \{}
+\DoxyCodeLine{472     memory::mark\_as\_aligned(dest);}
+\DoxyCodeLine{473     }
+\DoxyCodeLine{474     \textcolor{keywordflow}{if}(memory::is\_aligned(src))}
+\DoxyCodeLine{475       \{}
+\DoxyCodeLine{476       memory::mark\_as\_aligned(src);}
+\DoxyCodeLine{477       }
+\DoxyCodeLine{478       arrayops::inplace\_div\_base(dest, src, n\_elem);}
+\DoxyCodeLine{479       \}}
+\DoxyCodeLine{480     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{481       \{}
+\DoxyCodeLine{482       arrayops::inplace\_div\_base(dest, src, n\_elem);}
+\DoxyCodeLine{483       \}}
+\DoxyCodeLine{484     \}}
+\DoxyCodeLine{485   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{486     \{}
+\DoxyCodeLine{487     \textcolor{keywordflow}{if}(memory::is\_aligned(src))}
+\DoxyCodeLine{488       \{}
+\DoxyCodeLine{489       memory::mark\_as\_aligned(src);}
+\DoxyCodeLine{490       }
+\DoxyCodeLine{491       arrayops::inplace\_div\_base(dest, src, n\_elem);}
+\DoxyCodeLine{492       \}}
+\DoxyCodeLine{493     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{494       \{}
+\DoxyCodeLine{495       arrayops::inplace\_div\_base(dest, src, n\_elem);}
+\DoxyCodeLine{496       \}}
+\DoxyCodeLine{497     \}}
+\DoxyCodeLine{498   \}}
+\DoxyCodeLine{499 }
+\DoxyCodeLine{500 }
+\DoxyCodeLine{501 }
+\DoxyCodeLine{502 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{503 arma\_hot}
+\DoxyCodeLine{504 \textcolor{keyword}{inline}}
+\DoxyCodeLine{505 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{506 arrayops::inplace\_plus\_base(eT* dest, \textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{507   \{}
+\DoxyCodeLine{508 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS)}}
+\DoxyCodeLine{509     \{}
+\DoxyCodeLine{510     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{511       \{}
+\DoxyCodeLine{512       dest[i] += src[i];}
+\DoxyCodeLine{513       \}}
+\DoxyCodeLine{514     \}}
+\DoxyCodeLine{515 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{516     \{}
+\DoxyCodeLine{517     uword i,j;}
+\DoxyCodeLine{518     }
+\DoxyCodeLine{519     \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{520       \{}
+\DoxyCodeLine{521       \textcolor{keyword}{const} eT tmp\_i = src[i];}
+\DoxyCodeLine{522       \textcolor{keyword}{const} eT tmp\_j = src[j];}
+\DoxyCodeLine{523       }
+\DoxyCodeLine{524       dest[i] += tmp\_i;}
+\DoxyCodeLine{525       dest[j] += tmp\_j;}
+\DoxyCodeLine{526       \}}
+\DoxyCodeLine{527     }
+\DoxyCodeLine{528     \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{529       \{}
+\DoxyCodeLine{530       dest[i] += src[i];}
+\DoxyCodeLine{531       \}}
+\DoxyCodeLine{532     \}}
+\DoxyCodeLine{533 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{534   \}}
+\DoxyCodeLine{535 }
+\DoxyCodeLine{536 }
+\DoxyCodeLine{537 }
+\DoxyCodeLine{538 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{539 arma\_hot}
+\DoxyCodeLine{540 \textcolor{keyword}{inline}}
+\DoxyCodeLine{541 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{542 arrayops::inplace\_minus\_base(eT* dest, \textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{543   \{}
+\DoxyCodeLine{544 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS)}}
+\DoxyCodeLine{545     \{}
+\DoxyCodeLine{546     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{547       \{}
+\DoxyCodeLine{548       dest[i] -\/= src[i];}
+\DoxyCodeLine{549       \}}
+\DoxyCodeLine{550     \}}
+\DoxyCodeLine{551 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{552     \{}
+\DoxyCodeLine{553     uword i,j;}
+\DoxyCodeLine{554     }
+\DoxyCodeLine{555     \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{556       \{}
+\DoxyCodeLine{557       \textcolor{keyword}{const} eT tmp\_i = src[i];}
+\DoxyCodeLine{558       \textcolor{keyword}{const} eT tmp\_j = src[j];}
+\DoxyCodeLine{559       }
+\DoxyCodeLine{560       dest[i] -\/= tmp\_i;}
+\DoxyCodeLine{561       dest[j] -\/= tmp\_j;}
+\DoxyCodeLine{562       \}}
+\DoxyCodeLine{563     }
+\DoxyCodeLine{564     \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{565       \{}
+\DoxyCodeLine{566       dest[i] -\/= src[i];}
+\DoxyCodeLine{567       \}}
+\DoxyCodeLine{568     \}}
+\DoxyCodeLine{569 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{570   \}}
+\DoxyCodeLine{571 }
+\DoxyCodeLine{572 }
+\DoxyCodeLine{573 }
+\DoxyCodeLine{574 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{575 arma\_hot}
+\DoxyCodeLine{576 \textcolor{keyword}{inline}}
+\DoxyCodeLine{577 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{578 arrayops::inplace\_mul\_base(eT* dest, \textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{579   \{}
+\DoxyCodeLine{580 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS)}}
+\DoxyCodeLine{581     \{}
+\DoxyCodeLine{582     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{583       \{}
+\DoxyCodeLine{584       dest[i] *= src[i];}
+\DoxyCodeLine{585       \}}
+\DoxyCodeLine{586     \}}
+\DoxyCodeLine{587 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{588     \{}
+\DoxyCodeLine{589     uword i,j;}
+\DoxyCodeLine{590     }
+\DoxyCodeLine{591     \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{592       \{}
+\DoxyCodeLine{593       \textcolor{keyword}{const} eT tmp\_i = src[i];}
+\DoxyCodeLine{594       \textcolor{keyword}{const} eT tmp\_j = src[j];}
+\DoxyCodeLine{595       }
+\DoxyCodeLine{596       dest[i] *= tmp\_i;}
+\DoxyCodeLine{597       dest[j] *= tmp\_j;}
+\DoxyCodeLine{598       \}}
+\DoxyCodeLine{599     }
+\DoxyCodeLine{600     \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{601       \{}
+\DoxyCodeLine{602       dest[i] *= src[i];}
+\DoxyCodeLine{603       \}}
+\DoxyCodeLine{604     \}}
+\DoxyCodeLine{605 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{606   \}}
+\DoxyCodeLine{607 }
+\DoxyCodeLine{608 }
+\DoxyCodeLine{609 }
+\DoxyCodeLine{610 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{611 arma\_hot}
+\DoxyCodeLine{612 \textcolor{keyword}{inline}}
+\DoxyCodeLine{613 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{614 arrayops::inplace\_div\_base(eT* dest, \textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{615   \{}
+\DoxyCodeLine{616 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS)}}
+\DoxyCodeLine{617     \{}
+\DoxyCodeLine{618     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{619       \{}
+\DoxyCodeLine{620       dest[i] /= src[i];}
+\DoxyCodeLine{621       \}}
+\DoxyCodeLine{622     \}}
+\DoxyCodeLine{623 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{624     \{}
+\DoxyCodeLine{625     uword i,j;}
+\DoxyCodeLine{626     }
+\DoxyCodeLine{627     \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{628       \{}
+\DoxyCodeLine{629       \textcolor{keyword}{const} eT tmp\_i = src[i];}
+\DoxyCodeLine{630       \textcolor{keyword}{const} eT tmp\_j = src[j];}
+\DoxyCodeLine{631       }
+\DoxyCodeLine{632       dest[i] /= tmp\_i;}
+\DoxyCodeLine{633       dest[j] /= tmp\_j;}
+\DoxyCodeLine{634       \}}
+\DoxyCodeLine{635     }
+\DoxyCodeLine{636     \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{637       \{}
+\DoxyCodeLine{638       dest[i] /= src[i];}
+\DoxyCodeLine{639       \}}
+\DoxyCodeLine{640     \}}
+\DoxyCodeLine{641 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{642   \}}
+\DoxyCodeLine{643 }
+\DoxyCodeLine{644 }
+\DoxyCodeLine{645 }
+\DoxyCodeLine{646 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{647 arma\_hot}
+\DoxyCodeLine{648 \textcolor{keyword}{inline}}
+\DoxyCodeLine{649 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{650 arrayops::inplace\_set(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{651   \{}
+\DoxyCodeLine{652   \textcolor{keywordflow}{if}(val == eT(0))}
+\DoxyCodeLine{653     \{}
+\DoxyCodeLine{654     arrayops::fill\_zeros(dest, n\_elem);}
+\DoxyCodeLine{655     \}}
+\DoxyCodeLine{656   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{657     \{}
+\DoxyCodeLine{658     \textcolor{keywordflow}{if}( (n\_elem <= 9) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<eT>::no}}) )}
+\DoxyCodeLine{659       \{}
+\DoxyCodeLine{660       arrayops::inplace\_set\_small(dest, val, n\_elem);}
+\DoxyCodeLine{661       \}}
+\DoxyCodeLine{662     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{663       \{}
+\DoxyCodeLine{664       arrayops::inplace\_set\_simple(dest, val, n\_elem);}
+\DoxyCodeLine{665       \}}
+\DoxyCodeLine{666     \}}
+\DoxyCodeLine{667   \}}
+\DoxyCodeLine{668 }
+\DoxyCodeLine{669 }
+\DoxyCodeLine{670 }
+\DoxyCodeLine{671 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{672 arma\_hot}
+\DoxyCodeLine{673 \textcolor{keyword}{inline}}
+\DoxyCodeLine{674 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{675 arrayops::inplace\_set\_simple(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{676   \{}
+\DoxyCodeLine{677   \textcolor{keywordflow}{if}(memory::is\_aligned(dest))}
+\DoxyCodeLine{678     \{}
+\DoxyCodeLine{679     memory::mark\_as\_aligned(dest);}
+\DoxyCodeLine{680     }
+\DoxyCodeLine{681     arrayops::inplace\_set\_base(dest, val, n\_elem);}
+\DoxyCodeLine{682     \}}
+\DoxyCodeLine{683   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{684     \{}
+\DoxyCodeLine{685     arrayops::inplace\_set\_base(dest, val, n\_elem);}
+\DoxyCodeLine{686     \}}
+\DoxyCodeLine{687   \}}
+\DoxyCodeLine{688 }
+\DoxyCodeLine{689 }
+\DoxyCodeLine{690 }
+\DoxyCodeLine{691 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{692 arma\_hot}
+\DoxyCodeLine{693 \textcolor{keyword}{inline}}
+\DoxyCodeLine{694 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{695 arrayops::inplace\_set\_base(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{696   \{}
+\DoxyCodeLine{697 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS)}}
+\DoxyCodeLine{698     \{}
+\DoxyCodeLine{699     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{700       \{}
+\DoxyCodeLine{701       dest[i] = val;}
+\DoxyCodeLine{702       \}}
+\DoxyCodeLine{703     \}}
+\DoxyCodeLine{704 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{705     \{}
+\DoxyCodeLine{706     uword i,j;}
+\DoxyCodeLine{707     }
+\DoxyCodeLine{708     \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{709       \{}
+\DoxyCodeLine{710       dest[i] = val;}
+\DoxyCodeLine{711       dest[j] = val;}
+\DoxyCodeLine{712       \}}
+\DoxyCodeLine{713     }
+\DoxyCodeLine{714     \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{715       \{}
+\DoxyCodeLine{716       dest[i] = val;}
+\DoxyCodeLine{717       \}}
+\DoxyCodeLine{718     \}}
+\DoxyCodeLine{719 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{720   \}}
+\DoxyCodeLine{721 }
+\DoxyCodeLine{722 }
+\DoxyCodeLine{723 }
+\DoxyCodeLine{724 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{725 arma\_cold}
+\DoxyCodeLine{726 \textcolor{keyword}{inline}}
+\DoxyCodeLine{727 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{728 arrayops::inplace\_set\_small(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{729   \{}
+\DoxyCodeLine{730   \textcolor{keywordflow}{switch}(n\_elem)}
+\DoxyCodeLine{731     \{}
+\DoxyCodeLine{732     \textcolor{keywordflow}{case}  9: dest[ 8] = val;}
+\DoxyCodeLine{733     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{734     \textcolor{keywordflow}{case}  8: dest[ 7] = val;}
+\DoxyCodeLine{735     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{736     \textcolor{keywordflow}{case}  7: dest[ 6] = val;}
+\DoxyCodeLine{737     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{738     \textcolor{keywordflow}{case}  6: dest[ 5] = val;}
+\DoxyCodeLine{739     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{740     \textcolor{keywordflow}{case}  5: dest[ 4] = val;}
+\DoxyCodeLine{741     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{742     \textcolor{keywordflow}{case}  4: dest[ 3] = val;}
+\DoxyCodeLine{743     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{744     \textcolor{keywordflow}{case}  3: dest[ 2] = val;}
+\DoxyCodeLine{745     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{746     \textcolor{keywordflow}{case}  2: dest[ 1] = val;}
+\DoxyCodeLine{747     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{748     \textcolor{keywordflow}{case}  1: dest[ 0] = val;}
+\DoxyCodeLine{749     \textcolor{comment}{// fallthrough}}
+\DoxyCodeLine{750     \textcolor{keywordflow}{default}:;}
+\DoxyCodeLine{751     \}}
+\DoxyCodeLine{752   \}}
+\DoxyCodeLine{753 }
+\DoxyCodeLine{754 }
+\DoxyCodeLine{755 }
+\DoxyCodeLine{756 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, const uword n\_elem>}
+\DoxyCodeLine{757 arma\_hot}
+\DoxyCodeLine{758 \textcolor{keyword}{inline}}
+\DoxyCodeLine{759 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{760 arrayops::inplace\_set\_fixed(eT* dest, \textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{761   \{}
+\DoxyCodeLine{762   \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{763     \{}
+\DoxyCodeLine{764     dest[i] = val;}
+\DoxyCodeLine{765     \}}
+\DoxyCodeLine{766   \}}
+\DoxyCodeLine{767 }
+\DoxyCodeLine{768 }
+\DoxyCodeLine{769 }
+\DoxyCodeLine{770 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{771 arma\_hot}
+\DoxyCodeLine{772 \textcolor{keyword}{inline}}
+\DoxyCodeLine{773 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{774 arrayops::inplace\_plus(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{775   \{}
+\DoxyCodeLine{776   \textcolor{keywordflow}{if}(memory::is\_aligned(dest))}
+\DoxyCodeLine{777     \{}
+\DoxyCodeLine{778     memory::mark\_as\_aligned(dest);}
+\DoxyCodeLine{779     }
+\DoxyCodeLine{780     arrayops::inplace\_plus\_base(dest, val, n\_elem);}
+\DoxyCodeLine{781     \}}
+\DoxyCodeLine{782   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{783     \{}
+\DoxyCodeLine{784     arrayops::inplace\_plus\_base(dest, val, n\_elem);}
+\DoxyCodeLine{785     \}}
+\DoxyCodeLine{786   \}}
+\DoxyCodeLine{787 }
+\DoxyCodeLine{788 }
+\DoxyCodeLine{789 }
+\DoxyCodeLine{790 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{791 arma\_hot}
+\DoxyCodeLine{792 \textcolor{keyword}{inline}}
+\DoxyCodeLine{793 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{794 arrayops::inplace\_minus(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{795   \{}
+\DoxyCodeLine{796   \textcolor{keywordflow}{if}(memory::is\_aligned(dest))}
+\DoxyCodeLine{797     \{}
+\DoxyCodeLine{798     memory::mark\_as\_aligned(dest);}
+\DoxyCodeLine{799     }
+\DoxyCodeLine{800     arrayops::inplace\_minus\_base(dest, val, n\_elem);}
+\DoxyCodeLine{801     \}}
+\DoxyCodeLine{802   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{803     \{}
+\DoxyCodeLine{804     arrayops::inplace\_minus\_base(dest, val, n\_elem);}
+\DoxyCodeLine{805     \}}
+\DoxyCodeLine{806   \}}
+\DoxyCodeLine{807 }
+\DoxyCodeLine{808 }
+\DoxyCodeLine{809 }
+\DoxyCodeLine{810 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{811 arma\_hot}
+\DoxyCodeLine{812 \textcolor{keyword}{inline}}
+\DoxyCodeLine{813 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{814 arrayops::inplace\_mul(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{815   \{}
+\DoxyCodeLine{816   \textcolor{keywordflow}{if}(memory::is\_aligned(dest))}
+\DoxyCodeLine{817     \{}
+\DoxyCodeLine{818     memory::mark\_as\_aligned(dest);}
+\DoxyCodeLine{819     }
+\DoxyCodeLine{820     arrayops::inplace\_mul\_base(dest, val, n\_elem);}
+\DoxyCodeLine{821     \}}
+\DoxyCodeLine{822   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{823     \{}
+\DoxyCodeLine{824     arrayops::inplace\_mul\_base(dest, val, n\_elem);}
+\DoxyCodeLine{825     \}}
+\DoxyCodeLine{826   \}}
+\DoxyCodeLine{827 }
+\DoxyCodeLine{828 }
+\DoxyCodeLine{829 }
+\DoxyCodeLine{830 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{831 arma\_hot}
+\DoxyCodeLine{832 \textcolor{keyword}{inline}}
+\DoxyCodeLine{833 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{834 arrayops::inplace\_div(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{835   \{}
+\DoxyCodeLine{836   \textcolor{keywordflow}{if}(memory::is\_aligned(dest))}
+\DoxyCodeLine{837     \{}
+\DoxyCodeLine{838     memory::mark\_as\_aligned(dest);}
+\DoxyCodeLine{839     }
+\DoxyCodeLine{840     arrayops::inplace\_div\_base(dest, val, n\_elem);}
+\DoxyCodeLine{841     \}}
+\DoxyCodeLine{842   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{843     \{}
+\DoxyCodeLine{844     arrayops::inplace\_div\_base(dest, val, n\_elem);}
+\DoxyCodeLine{845     \}}
+\DoxyCodeLine{846   \}}
+\DoxyCodeLine{847 }
+\DoxyCodeLine{848 }
+\DoxyCodeLine{849 }
+\DoxyCodeLine{850 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{851 arma\_hot}
+\DoxyCodeLine{852 \textcolor{keyword}{inline}}
+\DoxyCodeLine{853 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{854 arrayops::inplace\_plus\_base(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{855   \{}
+\DoxyCodeLine{856 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS)}}
+\DoxyCodeLine{857     \{}
+\DoxyCodeLine{858     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{859       \{}
+\DoxyCodeLine{860       dest[i] += val;}
+\DoxyCodeLine{861       \}}
+\DoxyCodeLine{862     \}}
+\DoxyCodeLine{863 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{864     \{}
+\DoxyCodeLine{865     uword i,j;}
+\DoxyCodeLine{866     }
+\DoxyCodeLine{867     \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{868       \{}
+\DoxyCodeLine{869       dest[i] += val;}
+\DoxyCodeLine{870       dest[j] += val;}
+\DoxyCodeLine{871       \}}
+\DoxyCodeLine{872     }
+\DoxyCodeLine{873     \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{874       \{}
+\DoxyCodeLine{875       dest[i] += val;}
+\DoxyCodeLine{876       \}}
+\DoxyCodeLine{877     \}}
+\DoxyCodeLine{878 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{879   \}}
+\DoxyCodeLine{880 }
+\DoxyCodeLine{881 }
+\DoxyCodeLine{882 }
+\DoxyCodeLine{883 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{884 arma\_hot}
+\DoxyCodeLine{885 \textcolor{keyword}{inline}}
+\DoxyCodeLine{886 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{887 arrayops::inplace\_minus\_base(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{888   \{}
+\DoxyCodeLine{889 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS)}}
+\DoxyCodeLine{890     \{}
+\DoxyCodeLine{891     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{892       \{}
+\DoxyCodeLine{893       dest[i] -\/= val;}
+\DoxyCodeLine{894       \}}
+\DoxyCodeLine{895     \}}
+\DoxyCodeLine{896 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{897     \{}
+\DoxyCodeLine{898     uword i,j;}
+\DoxyCodeLine{899     }
+\DoxyCodeLine{900     \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{901       \{}
+\DoxyCodeLine{902       dest[i] -\/= val;}
+\DoxyCodeLine{903       dest[j] -\/= val;}
+\DoxyCodeLine{904       \}}
+\DoxyCodeLine{905     }
+\DoxyCodeLine{906     \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{907       \{}
+\DoxyCodeLine{908       dest[i] -\/= val;}
+\DoxyCodeLine{909       \}}
+\DoxyCodeLine{910     \}}
+\DoxyCodeLine{911 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{912   \}}
+\DoxyCodeLine{913 }
+\DoxyCodeLine{914 }
+\DoxyCodeLine{915 }
+\DoxyCodeLine{916 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{917 arma\_hot}
+\DoxyCodeLine{918 \textcolor{keyword}{inline}}
+\DoxyCodeLine{919 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{920 arrayops::inplace\_mul\_base(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{921   \{}
+\DoxyCodeLine{922 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS)}}
+\DoxyCodeLine{923     \{}
+\DoxyCodeLine{924     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{925       \{}
+\DoxyCodeLine{926       dest[i] *= val;}
+\DoxyCodeLine{927       \}}
+\DoxyCodeLine{928     \}}
+\DoxyCodeLine{929 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{930     \{}
+\DoxyCodeLine{931     uword i,j;}
+\DoxyCodeLine{932     }
+\DoxyCodeLine{933     \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{934       \{}
+\DoxyCodeLine{935       dest[i] *= val;}
+\DoxyCodeLine{936       dest[j] *= val;}
+\DoxyCodeLine{937       \}}
+\DoxyCodeLine{938     }
+\DoxyCodeLine{939     \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{940       \{}
+\DoxyCodeLine{941       dest[i] *= val;}
+\DoxyCodeLine{942       \}}
+\DoxyCodeLine{943     \}}
+\DoxyCodeLine{944 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{945   \}}
+\DoxyCodeLine{946 }
+\DoxyCodeLine{947 }
+\DoxyCodeLine{948 }
+\DoxyCodeLine{949 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{950 arma\_hot}
+\DoxyCodeLine{951 \textcolor{keyword}{inline}}
+\DoxyCodeLine{952 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{953 arrayops::inplace\_div\_base(eT* dest, \textcolor{keyword}{const} eT val, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{954   \{}
+\DoxyCodeLine{955 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS)}}
+\DoxyCodeLine{956     \{}
+\DoxyCodeLine{957     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{958       \{}
+\DoxyCodeLine{959       dest[i] /= val;}
+\DoxyCodeLine{960       \}}
+\DoxyCodeLine{961     \}}
+\DoxyCodeLine{962 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{963     \{}
+\DoxyCodeLine{964     uword i,j;}
+\DoxyCodeLine{965     }
+\DoxyCodeLine{966     \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{967       \{}
+\DoxyCodeLine{968       dest[i] /= val;}
+\DoxyCodeLine{969       dest[j] /= val;}
+\DoxyCodeLine{970       \}}
+\DoxyCodeLine{971     }
+\DoxyCodeLine{972     \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{973       \{}
+\DoxyCodeLine{974       dest[i] /= val;}
+\DoxyCodeLine{975       \}}
+\DoxyCodeLine{976     \}}
+\DoxyCodeLine{977 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{978   \}}
+\DoxyCodeLine{979 }
+\DoxyCodeLine{980 }
+\DoxyCodeLine{981 }
+\DoxyCodeLine{982 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{983 arma\_hot}
+\DoxyCodeLine{984 \textcolor{keyword}{inline}}
+\DoxyCodeLine{985 eT}
+\DoxyCodeLine{986 arrayops::accumulate(\textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{987   \{}
+\DoxyCodeLine{988 \textcolor{preprocessor}{  \#if defined(\_\_FINITE\_MATH\_ONLY\_\_) \&\& (\_\_FINITE\_MATH\_ONLY\_\_ > 0)}}
+\DoxyCodeLine{989     \{}
+\DoxyCodeLine{990     eT acc = eT(0);}
+\DoxyCodeLine{991     }
+\DoxyCodeLine{992     \textcolor{keywordflow}{if}(memory::is\_aligned(src))}
+\DoxyCodeLine{993       \{}
+\DoxyCodeLine{994       memory::mark\_as\_aligned(src);}
+\DoxyCodeLine{995       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)  \{ acc += src[i]; \}}
+\DoxyCodeLine{996       \}}
+\DoxyCodeLine{997     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{998       \{}
+\DoxyCodeLine{999       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)  \{ acc += src[i]; \}}
+\DoxyCodeLine{1000       \}}
+\DoxyCodeLine{1001     }
+\DoxyCodeLine{1002     \textcolor{keywordflow}{return} acc;}
+\DoxyCodeLine{1003     \}}
+\DoxyCodeLine{1004 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1005     \{}
+\DoxyCodeLine{1006     eT acc1 = eT(0);}
+\DoxyCodeLine{1007     eT acc2 = eT(0);}
+\DoxyCodeLine{1008     }
+\DoxyCodeLine{1009     uword j;}
+\DoxyCodeLine{1010     }
+\DoxyCodeLine{1011     \textcolor{keywordflow}{for}(j=1; j<n\_elem; j+=2)}
+\DoxyCodeLine{1012       \{}
+\DoxyCodeLine{1013       acc1 += (*src);  src++;}
+\DoxyCodeLine{1014       acc2 += (*src);  src++;}
+\DoxyCodeLine{1015       \}}
+\DoxyCodeLine{1016     }
+\DoxyCodeLine{1017     \textcolor{keywordflow}{if}((j-\/1) < n\_elem)}
+\DoxyCodeLine{1018       \{}
+\DoxyCodeLine{1019       acc1 += (*src);}
+\DoxyCodeLine{1020       \}}
+\DoxyCodeLine{1021     }
+\DoxyCodeLine{1022     \textcolor{keywordflow}{return} acc1 + acc2;}
+\DoxyCodeLine{1023     \}}
+\DoxyCodeLine{1024 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1025   \}}
+\DoxyCodeLine{1026 }
+\DoxyCodeLine{1027 }
+\DoxyCodeLine{1028 }
+\DoxyCodeLine{1029 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1030 arma\_hot}
+\DoxyCodeLine{1031 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1032 eT}
+\DoxyCodeLine{1033 arrayops::product(\textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{1034   \{}
+\DoxyCodeLine{1035   eT val1 = eT(1);}
+\DoxyCodeLine{1036   eT val2 = eT(1);}
+\DoxyCodeLine{1037   }
+\DoxyCodeLine{1038   uword i,j;}
+\DoxyCodeLine{1039   }
+\DoxyCodeLine{1040   \textcolor{keywordflow}{for}(i=0, j=1; j<n\_elem; i+=2, j+=2)}
+\DoxyCodeLine{1041     \{}
+\DoxyCodeLine{1042     val1 *= src[i];}
+\DoxyCodeLine{1043     val2 *= src[j];}
+\DoxyCodeLine{1044     \}}
+\DoxyCodeLine{1045   }
+\DoxyCodeLine{1046   \textcolor{keywordflow}{if}(i < n\_elem)}
+\DoxyCodeLine{1047     \{}
+\DoxyCodeLine{1048     val1 *= src[i];}
+\DoxyCodeLine{1049     \}}
+\DoxyCodeLine{1050   }
+\DoxyCodeLine{1051   \textcolor{keywordflow}{return} val1 * val2;}
+\DoxyCodeLine{1052   \}}
+\DoxyCodeLine{1053 }
+\DoxyCodeLine{1054 }
+\DoxyCodeLine{1055 }
+\DoxyCodeLine{1056 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1057 arma\_hot}
+\DoxyCodeLine{1058 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1059 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{1060 arrayops::is\_zero(\textcolor{keyword}{const} eT* mem, \textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} eT abs\_limit, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<eT>::result* junk)}
+\DoxyCodeLine{1061   \{}
+\DoxyCodeLine{1062   arma\_ignore(junk);}
+\DoxyCodeLine{1063   }
+\DoxyCodeLine{1064   \textcolor{keywordflow}{if}(n\_elem == 0)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{1065   }
+\DoxyCodeLine{1066   \textcolor{keywordflow}{if}(abs\_limit == eT(0))}
+\DoxyCodeLine{1067     \{}
+\DoxyCodeLine{1068     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{1069       \{}
+\DoxyCodeLine{1070       \textcolor{keywordflow}{if}(mem[i] != eT(0))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{1071       \}}
+\DoxyCodeLine{1072     \}}
+\DoxyCodeLine{1073   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1074     \{}
+\DoxyCodeLine{1075     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{1076       \{}
+\DoxyCodeLine{1077       \textcolor{keywordflow}{if}(eop\_aux::arma\_abs(mem[i]) > abs\_limit)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{1078       \}}
+\DoxyCodeLine{1079     \}}
+\DoxyCodeLine{1080   }
+\DoxyCodeLine{1081   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{1082   \}}
+\DoxyCodeLine{1083 }
+\DoxyCodeLine{1084 }
+\DoxyCodeLine{1085 }
+\DoxyCodeLine{1086 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{1087 arma\_hot}
+\DoxyCodeLine{1088 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1089 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{1090 arrayops::is\_zero(\textcolor{keyword}{const} std::complex<T>* mem, \textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} T abs\_limit)}
+\DoxyCodeLine{1091   \{}
+\DoxyCodeLine{1092   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT;}
+\DoxyCodeLine{1093   }
+\DoxyCodeLine{1094   \textcolor{keywordflow}{if}(n\_elem == 0)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{1095   }
+\DoxyCodeLine{1096   \textcolor{keywordflow}{if}(abs\_limit == T(0))}
+\DoxyCodeLine{1097     \{}
+\DoxyCodeLine{1098     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{1099       \{}
+\DoxyCodeLine{1100       \textcolor{keyword}{const} eT\& val = mem[i];}
+\DoxyCodeLine{1101       }
+\DoxyCodeLine{1102       \textcolor{keywordflow}{if}(std::real(val) != T(0))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{1103       \textcolor{keywordflow}{if}(std::imag(val) != T(0))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{1104       \}}
+\DoxyCodeLine{1105     \}}
+\DoxyCodeLine{1106   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1107     \{}
+\DoxyCodeLine{1108     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{1109       \{}
+\DoxyCodeLine{1110       \textcolor{keyword}{const} eT\& val = mem[i];}
+\DoxyCodeLine{1111       }
+\DoxyCodeLine{1112       \textcolor{keywordflow}{if}(std::abs(std::real(val)) > abs\_limit)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{1113       \textcolor{keywordflow}{if}(std::abs(std::imag(val)) > abs\_limit)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{1114       \}}
+\DoxyCodeLine{1115     \}}
+\DoxyCodeLine{1116   }
+\DoxyCodeLine{1117   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{1118   \}}
+\DoxyCodeLine{1119 }
+\DoxyCodeLine{1120 }
+\DoxyCodeLine{1121 }
+\DoxyCodeLine{1122 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1123 arma\_hot}
+\DoxyCodeLine{1124 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1125 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{1126 arrayops::is\_finite(\textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{1127   \{}
+\DoxyCodeLine{1128   uword j;}
+\DoxyCodeLine{1129   }
+\DoxyCodeLine{1130   \textcolor{keywordflow}{for}(j=1; j<n\_elem; j+=2)}
+\DoxyCodeLine{1131     \{}
+\DoxyCodeLine{1132     \textcolor{keyword}{const} eT val\_i = (*src);  src++;}
+\DoxyCodeLine{1133     \textcolor{keyword}{const} eT val\_j = (*src);  src++;}
+\DoxyCodeLine{1134     }
+\DoxyCodeLine{1135     \textcolor{keywordflow}{if}( (arma\_isfinite(val\_i) == \textcolor{keyword}{false}) || (arma\_isfinite(val\_j) == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{1136       \{}
+\DoxyCodeLine{1137       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{1138       \}}
+\DoxyCodeLine{1139     \}}
+\DoxyCodeLine{1140   }
+\DoxyCodeLine{1141   \textcolor{keywordflow}{if}((j-\/1) < n\_elem)}
+\DoxyCodeLine{1142     \{}
+\DoxyCodeLine{1143     \textcolor{keywordflow}{if}(arma\_isfinite(*src) == \textcolor{keyword}{false})}
+\DoxyCodeLine{1144       \{}
+\DoxyCodeLine{1145       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{1146       \}}
+\DoxyCodeLine{1147     \}}
+\DoxyCodeLine{1148   }
+\DoxyCodeLine{1149   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{1150   \}}
+\DoxyCodeLine{1151 }
+\DoxyCodeLine{1152 }
+\DoxyCodeLine{1153 }
+\DoxyCodeLine{1154 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1155 arma\_hot}
+\DoxyCodeLine{1156 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1157 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{1158 arrayops::has\_inf(\textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{1159   \{}
+\DoxyCodeLine{1160   uword j;}
+\DoxyCodeLine{1161   }
+\DoxyCodeLine{1162   \textcolor{keywordflow}{for}(j=1; j<n\_elem; j+=2)}
+\DoxyCodeLine{1163     \{}
+\DoxyCodeLine{1164     \textcolor{keyword}{const} eT val\_i = (*src);  src++;}
+\DoxyCodeLine{1165     \textcolor{keyword}{const} eT val\_j = (*src);  src++;}
+\DoxyCodeLine{1166     }
+\DoxyCodeLine{1167     \textcolor{keywordflow}{if}( arma\_isinf(val\_i) || arma\_isinf(val\_j) )  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{1168     \}}
+\DoxyCodeLine{1169   }
+\DoxyCodeLine{1170   \textcolor{keywordflow}{if}((j-\/1) < n\_elem)}
+\DoxyCodeLine{1171     \{}
+\DoxyCodeLine{1172     \textcolor{keywordflow}{if}(arma\_isinf(*src))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{1173     \}}
+\DoxyCodeLine{1174   }
+\DoxyCodeLine{1175   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{1176   \}}
+\DoxyCodeLine{1177 }
+\DoxyCodeLine{1178 }
+\DoxyCodeLine{1179 }
+\DoxyCodeLine{1180 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1181 arma\_hot}
+\DoxyCodeLine{1182 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1183 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{1184 arrayops::has\_nan(\textcolor{keyword}{const} eT* src, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{1185   \{}
+\DoxyCodeLine{1186   uword j;}
+\DoxyCodeLine{1187   }
+\DoxyCodeLine{1188   \textcolor{keywordflow}{for}(j=1; j<n\_elem; j+=2)}
+\DoxyCodeLine{1189     \{}
+\DoxyCodeLine{1190     \textcolor{keyword}{const} eT val\_i = (*src);  src++;}
+\DoxyCodeLine{1191     \textcolor{keyword}{const} eT val\_j = (*src);  src++;}
+\DoxyCodeLine{1192     }
+\DoxyCodeLine{1193     \textcolor{keywordflow}{if}( arma\_isnan(val\_i) || arma\_isnan(val\_j) )  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{1194     \}}
+\DoxyCodeLine{1195   }
+\DoxyCodeLine{1196   \textcolor{keywordflow}{if}((j-\/1) < n\_elem)}
+\DoxyCodeLine{1197     \{}
+\DoxyCodeLine{1198     \textcolor{keywordflow}{if}(arma\_isnan(*src))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{1199     \}}
+\DoxyCodeLine{1200   }
+\DoxyCodeLine{1201   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{1202   \}}
+\DoxyCodeLine{1203 }
+\DoxyCodeLine{1204 }
+\DoxyCodeLine{1205 }
+
+\end{DoxyCode}

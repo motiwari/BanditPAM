@@ -1,0 +1,62 @@
+\hypertarget{arma__version_8hpp_source}{}\doxysection{arma\+\_\+version.\+hpp}
+\label{arma__version_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arma\_version.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arma\_version.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define ARMA\_VERSION\_MAJOR 10}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define ARMA\_VERSION\_MINOR 5}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define ARMA\_VERSION\_PATCH 1}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#define ARMA\_VERSION\_NAME  "{}Antipodean Fortress"{}}}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__version}{arma\_version}}}
+\DoxyCodeLine{30   \{}
+\DoxyCodeLine{31   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} major = ARMA\_VERSION\_MAJOR;}
+\DoxyCodeLine{32   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} minor = ARMA\_VERSION\_MINOR;}
+\DoxyCodeLine{33   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} patch = ARMA\_VERSION\_PATCH;}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keyword}{static}}
+\DoxyCodeLine{36   \textcolor{keyword}{inline}}
+\DoxyCodeLine{37   std::string}
+\DoxyCodeLine{38   as\_string()}
+\DoxyCodeLine{39     \{}
+\DoxyCodeLine{40     \textcolor{keyword}{const} \textcolor{keywordtype}{char}* nickname = ARMA\_VERSION\_NAME;}
+\DoxyCodeLine{41     }
+\DoxyCodeLine{42     std::ostringstream ss;}
+\DoxyCodeLine{43     }
+\DoxyCodeLine{44     ss << arma\_version::major}
+\DoxyCodeLine{45        << \textcolor{charliteral}{'.'}}
+\DoxyCodeLine{46        << arma\_version::minor}
+\DoxyCodeLine{47        << \textcolor{charliteral}{'.'}}
+\DoxyCodeLine{48        << arma\_version::patch}
+\DoxyCodeLine{49        << \textcolor{stringliteral}{"{} ("{}}}
+\DoxyCodeLine{50        << nickname}
+\DoxyCodeLine{51        << \textcolor{charliteral}{')'};}
+\DoxyCodeLine{52     }
+\DoxyCodeLine{53     \textcolor{keywordflow}{return} ss.str();}
+\DoxyCodeLine{54     \}}
+\DoxyCodeLine{55   \};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+
+\end{DoxyCode}

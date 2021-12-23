@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BanditPAM: /Users/motiwari/Desktop/BanditPAM/src/build_medoids_python.cpp File Reference</title>
+<title>BanditPAM: /Users/motiwari/Desktop/BanditPAM/src/python_bindings/build_medoids_python.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,7 +62,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2089f1c86a5c695e25bdd8ee7b7d2080.html">python_bindings</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -71,45 +71,43 @@ $(function() {
   <div class="headertitle"><div class="title">build_medoids_python.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;kmedoids_pywrapper.hpp&quot;</code><br />
+<div class="textblock"><code>#include &lt;pybind11/pybind11.h&gt;</code><br />
+<code>#include &lt;pybind11/numpy.h&gt;</code><br />
 <code>#include &lt;carma&gt;</code><br />
 <code>#include &lt;armadillo&gt;</code><br />
-<code>#include &lt;pybind11/pybind11.h&gt;</code><br />
-<code>#include &lt;pybind11/numpy.h&gt;</code><br />
+<code>#include &quot;kmedoids_pywrapper.hpp&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for build_medoids_python.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="build__medoids__python_8cpp__incl.png" border="0" usemap="#a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2build__medoids__python_8cpp" alt=""/></div>
-<map name="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2build__medoids__python_8cpp" id="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2build__medoids__python_8cpp">
-<area shape="rect" title=" " alt="" coords="289,5,491,61"/>
-<area shape="rect" href="kmedoids__pywrapper_8hpp_source.html" title=" " alt="" coords="303,109,477,136"/>
-<area shape="rect" title=" " alt="" coords="173,184,231,211"/>
-<area shape="rect" title=" " alt="" coords="5,259,81,285"/>
-<area shape="rect" title=" " alt="" coords="497,184,640,211"/>
-<area shape="rect" title=" " alt="" coords="664,184,793,211"/>
-<area shape="rect" href="kmedoids__algorithm_8hpp_source.html" title=" " alt="" coords="307,184,473,211"/>
-<area shape="rect" title=" " alt="" coords="755,259,814,285"/>
-<area shape="rect" title=" " alt="" coords="838,259,905,285"/>
-<area shape="rect" title=" " alt="" coords="929,259,1003,285"/>
-<area shape="rect" title=" " alt="" coords="105,259,168,285"/>
-<area shape="rect" title=" " alt="" coords="193,259,251,285"/>
-<area shape="rect" title=" " alt="" coords="275,259,326,285"/>
-<area shape="rect" title=" " alt="" coords="351,259,429,285"/>
-<area shape="rect" title=" " alt="" coords="453,259,569,285"/>
-<area shape="rect" title=" " alt="" coords="593,259,648,285"/>
-<area shape="rect" title=" " alt="" coords="673,259,731,285"/>
+<div class="center"><img src="build__medoids__python_8cpp__incl.png" border="0" usemap="#a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2python__bindings_2build__medoids__python_8cpp" alt=""/></div>
+<map name="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2python__bindings_2build__medoids__python_8cpp" id="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2python__bindings_2build__medoids__python_8cpp">
+<area shape="rect" title=" " alt="" coords="351,5,520,76"/>
+<area shape="rect" title=" " alt="" coords="5,199,148,225"/>
+<area shape="rect" title=" " alt="" coords="172,199,301,225"/>
+<area shape="rect" title=" " alt="" coords="619,199,678,225"/>
+<area shape="rect" title=" " alt="" coords="792,273,868,300"/>
+<area shape="rect" href="kmedoids__pywrapper_8hpp_source.html" title=" " alt="" coords="349,124,522,151"/>
+<area shape="rect" title=" " alt="" coords="39,273,93,300"/>
+<area shape="rect" href="kmedoids__algorithm_8hpp_source.html" title=" " alt="" coords="377,199,544,225"/>
+<area shape="rect" title=" " alt="" coords="626,273,685,300"/>
+<area shape="rect" title=" " alt="" coords="709,273,767,300"/>
+<area shape="rect" title=" " alt="" coords="118,273,185,300"/>
+<area shape="rect" title=" " alt="" coords="209,273,283,300"/>
+<area shape="rect" title=" " alt="" coords="307,273,358,300"/>
+<area shape="rect" title=" " alt="" coords="383,273,461,300"/>
+<area shape="rect" title=" " alt="" coords="485,273,601,300"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a63432ba6523d63bb693bce4e2e4fb6bc"><td class="memItemLeft" align="right" valign="top"><a id="a63432ba6523d63bb693bce4e2e4fb6bc" name="a63432ba6523d63bb693bce4e2e4fb6bc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>build_medoids_python</b> (py::class_&lt; <a class="el" href="classKMedoidsWrapper.html">KMedoidsWrapper</a> &gt; &amp;cls)</td></tr>
-<tr class="separator:a63432ba6523d63bb693bce4e2e4fb6bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab37f7e338589468bc8f498ac5d09292d"><td class="memItemLeft" align="right" valign="top"><a id="ab37f7e338589468bc8f498ac5d09292d" name="ab37f7e338589468bc8f498ac5d09292d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>km::build_medoids_python</b> (pybind11::class_&lt; KMedoidsWrapper &gt; *cls)</td></tr>
+<tr class="separator:ab37f7e338589468bc8f498ac5d09292d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>2021-08-16</dd></dl>
-<p>Defines the function getMedoidsBuildPython in <a class="el" href="classKMedoidsWrapper.html" title="Python wrapper for KMedoids class.">KMedoidsWrapper</a> class which is used in Python bindings. </p>
+<p>Defines the function getMedoidsBuildPython in KMedoidsWrapper class which is used in Python bindings. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

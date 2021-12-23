@@ -1,0 +1,146 @@
+\hypertarget{fn__sum_8hpp_source}{}\doxysection{fn\+\_\+sum.\+hpp}
+\label{fn__sum_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_sum.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_sum.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{22 arma\_warn\_unused}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structresolves__to__vector}{resolves\_to\_vector<T1>::yes}}, \textcolor{keyword}{typename} T1::elem\_type >::result}
+\DoxyCodeLine{25 \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(X);}
+\DoxyCodeLine{30   \}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{35 arma\_warn\_unused}
+\DoxyCodeLine{36 arma\_inline}
+\DoxyCodeLine{37 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structresolves__to__vector}{resolves\_to\_vector<T1>::no}}, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_sum>}} >::result}
+\DoxyCodeLine{38 \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{39   \{}
+\DoxyCodeLine{40   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_sum>}}(X, 0, 0);}
+\DoxyCodeLine{43   \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{48 arma\_warn\_unused}
+\DoxyCodeLine{49 arma\_inline}
+\DoxyCodeLine{50 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_sum>}} >::result}
+\DoxyCodeLine{51 \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{52   \{}
+\DoxyCodeLine{53   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_sum>}}(X, dim, 0);}
+\DoxyCodeLine{56   \}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{61 arma\_warn\_unused}
+\DoxyCodeLine{62 arma\_inline}
+\DoxyCodeLine{63 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__scalar__only}{arma\_scalar\_only<T>::result}}}
+\DoxyCodeLine{64 \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(\textcolor{keyword}{const} T\& x)}
+\DoxyCodeLine{65   \{}
+\DoxyCodeLine{66   \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{67   \}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{72 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{73 arma\_warn\_unused}
+\DoxyCodeLine{74 arma\_inline}
+\DoxyCodeLine{75 \textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_sum>}}}
+\DoxyCodeLine{76 \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}}
+\DoxyCodeLine{77   (}
+\DoxyCodeLine{78   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{79   \textcolor{keyword}{const} uword dim = 0}
+\DoxyCodeLine{80   )}
+\DoxyCodeLine{81   \{}
+\DoxyCodeLine{82   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_sum>}}(X.get\_ref(), dim, 0);}
+\DoxyCodeLine{85   \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{90 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{91 arma\_warn\_unused}
+\DoxyCodeLine{92 \textcolor{keyword}{inline}}
+\DoxyCodeLine{93 \textcolor{keyword}{typename}}
+\DoxyCodeLine{94 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{95   <}
+\DoxyCodeLine{96   \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} \&\& \mbox{\hyperlink{structresolves__to__sparse__vector}{resolves\_to\_sparse\_vector<T1>::yes}},}
+\DoxyCodeLine{97   \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{98   >::result}
+\DoxyCodeLine{99 \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(\textcolor{keyword}{const} T1\& x)}
+\DoxyCodeLine{100   \{}
+\DoxyCodeLine{101   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{102   }
+\DoxyCodeLine{103   \textcolor{comment}{// sum elements}}
+\DoxyCodeLine{104   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(x);}
+\DoxyCodeLine{105   \}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{110 arma\_warn\_unused}
+\DoxyCodeLine{111 \textcolor{keyword}{inline}}
+\DoxyCodeLine{112 \textcolor{keyword}{typename}}
+\DoxyCodeLine{113 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{114   <}
+\DoxyCodeLine{115   \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} \&\& \mbox{\hyperlink{structresolves__to__sparse__vector}{resolves\_to\_sparse\_vector<T1>::no}},}
+\DoxyCodeLine{116   \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1,spop\_sum>}}}
+\DoxyCodeLine{117   >::result}
+\DoxyCodeLine{118 \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(\textcolor{keyword}{const} T1\& x)}
+\DoxyCodeLine{119   \{}
+\DoxyCodeLine{120   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{121   }
+\DoxyCodeLine{122   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1,spop\_sum>}}(x, 0, 0);}
+\DoxyCodeLine{123   \}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{128 arma\_warn\_unused}
+\DoxyCodeLine{129 \textcolor{keyword}{inline}}
+\DoxyCodeLine{130 \textcolor{keyword}{typename}}
+\DoxyCodeLine{131 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{132   <}
+\DoxyCodeLine{133   \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}},}
+\DoxyCodeLine{134   \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1,spop\_sum>}}}
+\DoxyCodeLine{135   >::result}
+\DoxyCodeLine{136 \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(\textcolor{keyword}{const} T1\& x, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{137   \{}
+\DoxyCodeLine{138   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{139   }
+\DoxyCodeLine{140   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1,spop\_sum>}}(x, dim, 0);}
+\DoxyCodeLine{141   \}}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 }
+
+\end{DoxyCode}

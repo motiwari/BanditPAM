@@ -1,50 +1,52 @@
 \hypertarget{kmedoids__pywrapper_8hpp_source}{}\doxysection{kmedoids\+\_\+pywrapper.\+hpp}
-\label{kmedoids__pywrapper_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/kmedoids\_pywrapper.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/kmedoids\_pywrapper.hpp}}
+\label{kmedoids__pywrapper_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/python\_bindings/kmedoids\_pywrapper.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/python\_bindings/kmedoids\_pywrapper.hpp}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef KMEDOIDS\_PYWRAPPER\_H\_}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define KMEDOIDS\_PYWRAPPER\_H\_}}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef HEADERS\_PYTHON\_BINDINGS\_KMEDOIDS\_PYWRAPPER\_HPP\_}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define HEADERS\_PYTHON\_BINDINGS\_KMEDOIDS\_PYWRAPPER\_HPP\_}}
 \DoxyCodeLine{3 }
 \DoxyCodeLine{4 \textcolor{comment}{/* }}
 \DoxyCodeLine{5 \textcolor{comment}{ * We perform these imports first because kmedoids\_pywrapper is compiled first}}
 \DoxyCodeLine{6 \textcolor{comment}{ * when building the python package, and carma must be 'include'd before armadillo}}
 \DoxyCodeLine{7 \textcolor{comment}{ */}}
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <carma>}}
-\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <armadillo>}}
-\DoxyCodeLine{10 }
-\DoxyCodeLine{11 \textcolor{preprocessor}{\#include "{}kmedoids\_algorithm.hpp"{}}}
-\DoxyCodeLine{12 }
-\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <pybind11/pybind11.h>}}
-\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <pybind11/numpy.h>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <pybind11/pybind11.h>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <pybind11/numpy.h>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <carma>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <armadillo>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}kmedoids\_algorithm.hpp"{}}}
 \DoxyCodeLine{15 }
-\DoxyCodeLine{16 \textcolor{keyword}{namespace }py = pybind11;}
-\DoxyCodeLine{17 }
-\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classKMedoidsWrapper}{KMedoidsWrapper}} : \textcolor{keyword}{public} \mbox{\hyperlink{classkm_1_1KMedoids}{km::KMedoids}} \{}
-\DoxyCodeLine{25 \textcolor{keyword}{public}:}
-\DoxyCodeLine{26   \textcolor{keyword}{using} \mbox{\hyperlink{classkm_1_1KMedoids_ad8223737ca28d3eb65611a0a7e05e719}{km::KMedoids::KMedoids}};}
-\DoxyCodeLine{27 }
-\DoxyCodeLine{38   \textcolor{keywordtype}{void} \mbox{\hyperlink{classKMedoidsWrapper_a797e0752e20ce1b32a4047f5c63b1730}{fitPython}}(\textcolor{keyword}{const} py::array\_t<double>\& inputData, \textcolor{keyword}{const} std::string\& loss, py::kwargs kw);}
-\DoxyCodeLine{39 }
-\DoxyCodeLine{46   py::array\_t<arma::uword> \mbox{\hyperlink{classKMedoidsWrapper_a38a4684e55fd4d88d0799bbf28a157d1}{getMedoidsFinalPython}}();}
-\DoxyCodeLine{47 }
-\DoxyCodeLine{54   py::array\_t<arma::uword> \mbox{\hyperlink{classKMedoidsWrapper_a0979e5ecaf1f10adbccfe0a077f2f563}{getMedoidsBuildPython}}();}
-\DoxyCodeLine{55 }
-\DoxyCodeLine{62   py::array\_t<arma::uword> \mbox{\hyperlink{classKMedoidsWrapper_ae06abf0305fe84eec0fa66278a448c5f}{getLabelsPython}}();}
-\DoxyCodeLine{63 }
-\DoxyCodeLine{70   \textcolor{keywordtype}{int} \mbox{\hyperlink{classKMedoidsWrapper_acfbcaf672bd1f1db1c00d35704341988}{getStepsPython}}();}
-\DoxyCodeLine{71 \};}
-\DoxyCodeLine{72 }
-\DoxyCodeLine{73 \textcolor{comment}{// The functions below correspond to the class methods for Python bindings}}
-\DoxyCodeLine{74 \textcolor{keywordtype}{void} fit\_python(py::class\_<KMedoidsWrapper> \&);}
-\DoxyCodeLine{75 }
-\DoxyCodeLine{76 \textcolor{keywordtype}{void} medoids\_python(py::class\_<KMedoidsWrapper> \&);}
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }km \{}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classkm_1_1KMedoidsWrapper}{KMedoidsWrapper}} : \textcolor{keyword}{public} \mbox{\hyperlink{classkm_1_1KMedoids}{km::KMedoids}} \{}
+\DoxyCodeLine{24  \textcolor{keyword}{public}:}
+\DoxyCodeLine{25   \textcolor{keyword}{using} \mbox{\hyperlink{classkm_1_1KMedoids_a0a09762011e8dfa7b520765c37f5f3e7}{km::KMedoids::KMedoids}};  \textcolor{comment}{// TODO(@motiwari): fix?}}
+\DoxyCodeLine{36 \textcolor{comment}{}  \textcolor{keywordtype}{void} \mbox{\hyperlink{classkm_1_1KMedoidsWrapper_a027369933fc66b63463430282eff34a9}{fitPython}}(}
+\DoxyCodeLine{37     \textcolor{keyword}{const} pybind11::array\_t<double>\& inputData,}
+\DoxyCodeLine{38     \textcolor{keyword}{const} std::string\& loss,}
+\DoxyCodeLine{39     pybind11::kwargs kw);}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{47   pybind11::array\_t<arma::uword> \mbox{\hyperlink{classkm_1_1KMedoidsWrapper_a7ddf744975d300cf7a10171ffa9eaf69}{getMedoidsFinalPython}}();}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{55   pybind11::array\_t<arma::uword> \mbox{\hyperlink{classkm_1_1KMedoidsWrapper_a06b6786e8d13680ace7b5693a739fe88}{getMedoidsBuildPython}}();}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{63   pybind11::array\_t<arma::uword> \mbox{\hyperlink{classkm_1_1KMedoidsWrapper_a02e69edbec22658b62071dd8ca9ae6fb}{getLabelsPython}}();}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{71   \textcolor{keywordtype}{int} \mbox{\hyperlink{classkm_1_1KMedoidsWrapper_aba2ab8784e8077c24c4ace728094986f}{getStepsPython}}();}
+\DoxyCodeLine{72 \};}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{comment}{// The functions below correspond to the class methods for Python bindings}}
+\DoxyCodeLine{75 \textcolor{comment}{// TODO(@motiwari): Encapsulate these}}
+\DoxyCodeLine{76 \textcolor{keywordtype}{void} fit\_python(pybind11::class\_<km::KMedoidsWrapper> *);}
 \DoxyCodeLine{77 }
-\DoxyCodeLine{78 \textcolor{keywordtype}{void} build\_medoids\_python(py::class\_<KMedoidsWrapper> \&);}
+\DoxyCodeLine{78 \textcolor{keywordtype}{void} medoids\_python(pybind11::class\_<km::KMedoidsWrapper> *);}
 \DoxyCodeLine{79 }
-\DoxyCodeLine{80 \textcolor{keywordtype}{void} labels\_python(py::class\_<KMedoidsWrapper> \&);}
+\DoxyCodeLine{80 \textcolor{keywordtype}{void} build\_medoids\_python(pybind11::class\_<km::KMedoidsWrapper> *);}
 \DoxyCodeLine{81 }
-\DoxyCodeLine{82 \textcolor{keywordtype}{void} steps\_python(py::class\_<KMedoidsWrapper> \&);}
+\DoxyCodeLine{82 \textcolor{keywordtype}{void} labels\_python(pybind11::class\_<km::KMedoidsWrapper> *);}
 \DoxyCodeLine{83 }
-\DoxyCodeLine{84 \textcolor{preprocessor}{\# endif }\textcolor{comment}{// KMEDOIDS\_PYWRAPPER\_H\_}}
+\DoxyCodeLine{84 \textcolor{keywordtype}{void} steps\_python(pybind11::class\_<km::KMedoidsWrapper> *);}
+\DoxyCodeLine{85 \}  \textcolor{comment}{// namespace km}}
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// HEADERS\_PYTHON\_BINDINGS\_KMEDOIDS\_PYWRAPPER\_HPP\_}}
 
 \end{DoxyCode}

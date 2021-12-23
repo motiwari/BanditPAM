@@ -1,0 +1,584 @@
+\hypertarget{fn__misc_8hpp_source}{}\doxysection{fn\+\_\+misc.\+hpp}
+\label{fn__misc_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_misc.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_misc.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_type>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keyword}{typename}}
+\DoxyCodeLine{26 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{27   <}
+\DoxyCodeLine{28   \mbox{\hyperlink{structis__Mat}{is\_Mat<out\_type>::value}},}
+\DoxyCodeLine{29   out\_type}
+\DoxyCodeLine{30   >::result}
+\DoxyCodeLine{31 linspace}
+\DoxyCodeLine{32   (}
+\DoxyCodeLine{33   \textcolor{keyword}{const} \textcolor{keyword}{typename} out\_type::pod\_type start,}
+\DoxyCodeLine{34   \textcolor{keyword}{const} \textcolor{keyword}{typename} out\_type::pod\_type end,}
+\DoxyCodeLine{35   \textcolor{keyword}{const} uword                       num = 100u}
+\DoxyCodeLine{36   )}
+\DoxyCodeLine{37   \{}
+\DoxyCodeLine{38   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} out\_type::elem\_type eT;}
+\DoxyCodeLine{41   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} out\_type::pod\_type   T;}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   out\_type x;}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keywordflow}{if}(num == 1)}
+\DoxyCodeLine{46     \{}
+\DoxyCodeLine{47     x.set\_size(1);}
+\DoxyCodeLine{48     }
+\DoxyCodeLine{49     x[0] = eT(end);}
+\DoxyCodeLine{50     \}}
+\DoxyCodeLine{51   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{52   \textcolor{keywordflow}{if}(num >= 2)}
+\DoxyCodeLine{53     \{}
+\DoxyCodeLine{54     x.set\_size(num);}
+\DoxyCodeLine{55     }
+\DoxyCodeLine{56     eT* x\_mem = x.memptr();}
+\DoxyCodeLine{57     }
+\DoxyCodeLine{58     \textcolor{keyword}{const} uword num\_m1 = num -\/ 1;}
+\DoxyCodeLine{59     }
+\DoxyCodeLine{60     \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__non__integral}{is\_non\_integral<T>::value}})}
+\DoxyCodeLine{61       \{}
+\DoxyCodeLine{62       \textcolor{keyword}{const} T delta = (end-\/start)/T(num\_m1);}
+\DoxyCodeLine{63       }
+\DoxyCodeLine{64       \textcolor{keywordflow}{for}(uword i=0; i<num\_m1; ++i)}
+\DoxyCodeLine{65         \{}
+\DoxyCodeLine{66         x\_mem[i] = eT(start + i*delta);}
+\DoxyCodeLine{67         \}}
+\DoxyCodeLine{68       }
+\DoxyCodeLine{69       x\_mem[num\_m1] = eT(end);}
+\DoxyCodeLine{70       \}}
+\DoxyCodeLine{71     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{72       \{}
+\DoxyCodeLine{73       \textcolor{keyword}{const} \textcolor{keywordtype}{double} delta = (end >= start) ? \textcolor{keywordtype}{double}(end-\/start)/double(num\_m1) : -\/double(start-\/end)/double(num\_m1);}
+\DoxyCodeLine{74       }
+\DoxyCodeLine{75       \textcolor{keywordflow}{for}(uword i=0; i<num\_m1; ++i)}
+\DoxyCodeLine{76         \{}
+\DoxyCodeLine{77         x\_mem[i] = eT(\textcolor{keywordtype}{double}(start) + i*delta);}
+\DoxyCodeLine{78         \}}
+\DoxyCodeLine{79       }
+\DoxyCodeLine{80       x\_mem[num\_m1] = eT(end);}
+\DoxyCodeLine{81       \}}
+\DoxyCodeLine{82     \}}
+\DoxyCodeLine{83   }
+\DoxyCodeLine{84   \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{85   \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 arma\_warn\_unused}
+\DoxyCodeLine{90 \textcolor{keyword}{inline}}
+\DoxyCodeLine{91 \mbox{\hyperlink{classCol}{vec}}}
+\DoxyCodeLine{92 linspace(\textcolor{keyword}{const} \textcolor{keywordtype}{double} start, \textcolor{keyword}{const} \textcolor{keywordtype}{double} end, \textcolor{keyword}{const} uword num = 100u)}
+\DoxyCodeLine{93   \{}
+\DoxyCodeLine{94   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{95   \textcolor{keywordflow}{return} linspace<vec>(start, end, num);}
+\DoxyCodeLine{96   \}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{keyword}{template}<\textcolor{keyword}{typename} out\_type>}
+\DoxyCodeLine{101 arma\_warn\_unused}
+\DoxyCodeLine{102 \textcolor{keyword}{inline}}
+\DoxyCodeLine{103 \textcolor{keyword}{typename}}
+\DoxyCodeLine{104 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{105   <}
+\DoxyCodeLine{106   (\mbox{\hyperlink{structis__Mat}{is\_Mat<out\_type>::value}} \&\& \mbox{\hyperlink{structis__real}{is\_real<typename out\_type::pod\_type>::value}}),}
+\DoxyCodeLine{107   out\_type}
+\DoxyCodeLine{108   >::result}
+\DoxyCodeLine{109 logspace}
+\DoxyCodeLine{110   (}
+\DoxyCodeLine{111   \textcolor{keyword}{const} \textcolor{keyword}{typename} out\_type::pod\_type \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{112   \textcolor{keyword}{const} \textcolor{keyword}{typename} out\_type::pod\_type \mbox{\hyperlink{structB}{B}},}
+\DoxyCodeLine{113   \textcolor{keyword}{const} uword                       N = 50u}
+\DoxyCodeLine{114   )}
+\DoxyCodeLine{115   \{}
+\DoxyCodeLine{116   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} out\_type::elem\_type eT;}
+\DoxyCodeLine{119   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} out\_type::pod\_type   T;}
+\DoxyCodeLine{120   }
+\DoxyCodeLine{121   out\_type x = linspace<out\_type>(\mbox{\hyperlink{structA}{A}},\mbox{\hyperlink{structB}{B}},N);}
+\DoxyCodeLine{122   }
+\DoxyCodeLine{123   \textcolor{keyword}{const} uword n\_elem = x.n\_elem;}
+\DoxyCodeLine{124   }
+\DoxyCodeLine{125   eT* x\_mem = x.memptr();}
+\DoxyCodeLine{126   }
+\DoxyCodeLine{127   \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)}
+\DoxyCodeLine{128     \{}
+\DoxyCodeLine{129     x\_mem[i] = std::pow(T(10), x\_mem[i]);}
+\DoxyCodeLine{130     \}}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{133   \}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 arma\_warn\_unused}
+\DoxyCodeLine{138 \textcolor{keyword}{inline}}
+\DoxyCodeLine{139 \mbox{\hyperlink{classCol}{vec}}}
+\DoxyCodeLine{140 logspace(\textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \textcolor{keywordtype}{double} \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} uword N = 50u)}
+\DoxyCodeLine{141   \{}
+\DoxyCodeLine{142   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{143   \textcolor{keywordflow}{return} logspace<vec>(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, N);}
+\DoxyCodeLine{144   \}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 \textcolor{comment}{//}}
+\DoxyCodeLine{149 \textcolor{comment}{// log\_exp\_add}}
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{152 arma\_warn\_unused}
+\DoxyCodeLine{153 \textcolor{keyword}{inline}}
+\DoxyCodeLine{154 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__only}{arma\_real\_only<eT>::result}}}
+\DoxyCodeLine{155 log\_add\_exp(eT log\_a, eT log\_b)}
+\DoxyCodeLine{156   \{}
+\DoxyCodeLine{157   \textcolor{keywordflow}{if}(log\_a < log\_b)}
+\DoxyCodeLine{158     \{}
+\DoxyCodeLine{159     std::swap(log\_a, log\_b);}
+\DoxyCodeLine{160     \}}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162   \textcolor{keyword}{const} eT negdelta = log\_b -\/ log\_a;}
+\DoxyCodeLine{163   }
+\DoxyCodeLine{164   \textcolor{keywordflow}{if}( (negdelta < \mbox{\hyperlink{classDatum}{Datum<eT>::log\_min}}) || (arma\_isfinite(negdelta) == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{165     \{}
+\DoxyCodeLine{166     \textcolor{keywordflow}{return} log\_a;}
+\DoxyCodeLine{167     \}}
+\DoxyCodeLine{168   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{169     \{}
+\DoxyCodeLine{170     \textcolor{keywordflow}{return} (log\_a + std::log1p(std::exp(negdelta)));}
+\DoxyCodeLine{171     \}}
+\DoxyCodeLine{172   \}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{comment}{// for compatibility with earlier versions}}
+\DoxyCodeLine{177 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{178 arma\_warn\_unused}
+\DoxyCodeLine{179 \textcolor{keyword}{inline}}
+\DoxyCodeLine{180 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__only}{arma\_real\_only<eT>::result}}}
+\DoxyCodeLine{181 log\_add(eT log\_a, eT log\_b)}
+\DoxyCodeLine{182   \{}
+\DoxyCodeLine{183   \textcolor{keywordflow}{return} log\_add\_exp(log\_a, log\_b);}
+\DoxyCodeLine{184   \}}
+\DoxyCodeLine{185   }
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187 }
+\DoxyCodeLine{189 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{190 arma\_warn\_unused}
+\DoxyCodeLine{191 arma\_inline}
+\DoxyCodeLine{192 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{193 \mbox{\hyperlink{group__fn__misc_ga2cfbda9ab3edef6a9f0981bcb62174e3}{is\_finite}}(\textcolor{keyword}{const} eT x, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__scalar__only}{arma\_scalar\_only<eT>::result}}* junk = \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{194   \{}
+\DoxyCodeLine{195   arma\_ignore(junk);}
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197   \textcolor{keywordflow}{return} arma\_isfinite(x);}
+\DoxyCodeLine{198   \}}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 }
+\DoxyCodeLine{203 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{204 arma\_warn\_unused}
+\DoxyCodeLine{205 \textcolor{keyword}{inline}}
+\DoxyCodeLine{206 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{207 \mbox{\hyperlink{group__fn__misc_ga2cfbda9ab3edef6a9f0981bcb62174e3}{is\_finite}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{208   \{}
+\DoxyCodeLine{209   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{210   }
+\DoxyCodeLine{211   \textcolor{keywordflow}{return} X.is\_finite();}
+\DoxyCodeLine{212   \}}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 }
+\DoxyCodeLine{217 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{218 arma\_warn\_unused}
+\DoxyCodeLine{219 \textcolor{keyword}{inline}}
+\DoxyCodeLine{220 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{221 \mbox{\hyperlink{group__fn__misc_ga2cfbda9ab3edef6a9f0981bcb62174e3}{is\_finite}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{222   \{}
+\DoxyCodeLine{223   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{224   }
+\DoxyCodeLine{225   \textcolor{keywordflow}{return} X.is\_finite();}
+\DoxyCodeLine{226   \}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 }
+\DoxyCodeLine{231 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{232 arma\_warn\_unused}
+\DoxyCodeLine{233 \textcolor{keyword}{inline}}
+\DoxyCodeLine{234 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{235 \mbox{\hyperlink{group__fn__misc_ga2cfbda9ab3edef6a9f0981bcb62174e3}{is\_finite}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{236   \{}
+\DoxyCodeLine{237   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{238   }
+\DoxyCodeLine{239   \textcolor{keywordflow}{return} X.is\_finite();}
+\DoxyCodeLine{240   \}}
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{245 \textcolor{keyword}{inline}}
+\DoxyCodeLine{246 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{247 swap(\mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{248   \{}
+\DoxyCodeLine{249   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{250   }
+\DoxyCodeLine{251   \mbox{\hyperlink{structA}{A}}.swap(\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{252   \}}
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{257 \textcolor{keyword}{inline}}
+\DoxyCodeLine{258 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{259 swap(\mbox{\hyperlink{classCube}{Cube<eT>}}\& \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{classCube}{Cube<eT>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{260   \{}
+\DoxyCodeLine{261   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{262   }
+\DoxyCodeLine{263   \mbox{\hyperlink{structA}{A}}.swap(\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{264   \}}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268 arma\_warn\_unused}
+\DoxyCodeLine{269 \textcolor{keyword}{inline}}
+\DoxyCodeLine{270 \mbox{\hyperlink{classCol}{uvec}}}
+\DoxyCodeLine{271 ind2sub(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s, \textcolor{keyword}{const} uword i)}
+\DoxyCodeLine{272   \{}
+\DoxyCodeLine{273   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{274   }
+\DoxyCodeLine{275   \textcolor{keyword}{const} uword s\_n\_rows = s.n\_rows;}
+\DoxyCodeLine{276   }
+\DoxyCodeLine{277   arma\_debug\_check( (i >= (s\_n\_rows * s.n\_cols) ), \textcolor{stringliteral}{"{}ind2sub(): index out of range"{}} );}
+\DoxyCodeLine{278   }
+\DoxyCodeLine{279   \textcolor{keyword}{const} uword row = i \% s\_n\_rows;}
+\DoxyCodeLine{280   \textcolor{keyword}{const} uword col = i / s\_n\_rows;}
+\DoxyCodeLine{281   }
+\DoxyCodeLine{282   \mbox{\hyperlink{classCol}{uvec}} out(2, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{283   }
+\DoxyCodeLine{284   uword* out\_mem = out.memptr();}
+\DoxyCodeLine{285   }
+\DoxyCodeLine{286   out\_mem[0] = row;}
+\DoxyCodeLine{287   out\_mem[1] = col;}
+\DoxyCodeLine{288   }
+\DoxyCodeLine{289   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{290   \}}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{295 arma\_warn\_unused}
+\DoxyCodeLine{296 \textcolor{keyword}{inline}}
+\DoxyCodeLine{297 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<uword,typename T1::elem\_type>::yes}}), \mbox{\hyperlink{classMat}{umat}} >::result}
+\DoxyCodeLine{298 ind2sub(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s, \textcolor{keyword}{const} T1\& indices)}
+\DoxyCodeLine{299   \{}
+\DoxyCodeLine{300   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{301   }
+\DoxyCodeLine{302   \textcolor{keyword}{const} uword s\_n\_rows = s.n\_rows;}
+\DoxyCodeLine{303   \textcolor{keyword}{const} uword s\_n\_elem = s\_n\_rows * s.n\_cols;}
+\DoxyCodeLine{304   }
+\DoxyCodeLine{305   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(indices);}
+\DoxyCodeLine{306   }
+\DoxyCodeLine{307   \textcolor{keyword}{const} uword P\_n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{308   \textcolor{keyword}{const} uword P\_n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{309   \textcolor{keyword}{const} uword P\_n\_elem = P.get\_n\_elem();}
+\DoxyCodeLine{310   }
+\DoxyCodeLine{311   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} P\_is\_empty = (P\_n\_elem == 0);}
+\DoxyCodeLine{312   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} P\_is\_vec   = ((P\_n\_rows == 1) || (P\_n\_cols == 1));}
+\DoxyCodeLine{313   }
+\DoxyCodeLine{314   arma\_debug\_check( ((P\_is\_empty == \textcolor{keyword}{false}) \&\& (P\_is\_vec == \textcolor{keyword}{false})), \textcolor{stringliteral}{"{}ind2sub(): parameter 'indices' must be a vector"{}} );}
+\DoxyCodeLine{315   }
+\DoxyCodeLine{316   \mbox{\hyperlink{classMat}{umat}} out(2, P\_n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{317   }
+\DoxyCodeLine{318   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{319     \{}
+\DoxyCodeLine{320     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{321     }
+\DoxyCodeLine{322     \textcolor{keywordflow}{for}(uword count=0; count < P\_n\_elem; ++count)}
+\DoxyCodeLine{323       \{}
+\DoxyCodeLine{324       \textcolor{keyword}{const} uword i = Pea[count];}
+\DoxyCodeLine{325       }
+\DoxyCodeLine{326       arma\_debug\_check( (i >= s\_n\_elem), \textcolor{stringliteral}{"{}ind2sub(): index out of range"{}} );}
+\DoxyCodeLine{327       }
+\DoxyCodeLine{328       \textcolor{keyword}{const} uword row = i \% s\_n\_rows;}
+\DoxyCodeLine{329       \textcolor{keyword}{const} uword col = i / s\_n\_rows;}
+\DoxyCodeLine{330       }
+\DoxyCodeLine{331       uword* out\_colptr = out.colptr(count);}
+\DoxyCodeLine{332       }
+\DoxyCodeLine{333       out\_colptr[0] = row;}
+\DoxyCodeLine{334       out\_colptr[1] = col;}
+\DoxyCodeLine{335       \}}
+\DoxyCodeLine{336     \}}
+\DoxyCodeLine{337   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{338     \{}
+\DoxyCodeLine{339     \textcolor{keywordflow}{if}(P\_n\_rows == 1)}
+\DoxyCodeLine{340       \{}
+\DoxyCodeLine{341       \textcolor{keywordflow}{for}(uword count=0; count < P\_n\_cols; ++count)}
+\DoxyCodeLine{342         \{}
+\DoxyCodeLine{343         \textcolor{keyword}{const} uword i = P.at(0,count);}
+\DoxyCodeLine{344         }
+\DoxyCodeLine{345         arma\_debug\_check( (i >= s\_n\_elem), \textcolor{stringliteral}{"{}ind2sub(): index out of range"{}} );}
+\DoxyCodeLine{346         }
+\DoxyCodeLine{347         \textcolor{keyword}{const} uword row = i \% s\_n\_rows;}
+\DoxyCodeLine{348         \textcolor{keyword}{const} uword col = i / s\_n\_rows;}
+\DoxyCodeLine{349         }
+\DoxyCodeLine{350         uword* out\_colptr = out.colptr(count);}
+\DoxyCodeLine{351         }
+\DoxyCodeLine{352         out\_colptr[0] = row;}
+\DoxyCodeLine{353         out\_colptr[1] = col;}
+\DoxyCodeLine{354         \}}
+\DoxyCodeLine{355       \}}
+\DoxyCodeLine{356     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{357     \textcolor{keywordflow}{if}(P\_n\_cols == 1)}
+\DoxyCodeLine{358       \{}
+\DoxyCodeLine{359       \textcolor{keywordflow}{for}(uword count=0; count < P\_n\_rows; ++count)}
+\DoxyCodeLine{360         \{}
+\DoxyCodeLine{361         \textcolor{keyword}{const} uword i = P.at(count,0);}
+\DoxyCodeLine{362         }
+\DoxyCodeLine{363         arma\_debug\_check( (i >= s\_n\_elem), \textcolor{stringliteral}{"{}ind2sub(): index out of range"{}} );}
+\DoxyCodeLine{364         }
+\DoxyCodeLine{365         \textcolor{keyword}{const} uword row = i \% s\_n\_rows;}
+\DoxyCodeLine{366         \textcolor{keyword}{const} uword col = i / s\_n\_rows;}
+\DoxyCodeLine{367         }
+\DoxyCodeLine{368         uword* out\_colptr = out.colptr(count);}
+\DoxyCodeLine{369         }
+\DoxyCodeLine{370         out\_colptr[0] = row;}
+\DoxyCodeLine{371         out\_colptr[1] = col;}
+\DoxyCodeLine{372         \}}
+\DoxyCodeLine{373       \}}
+\DoxyCodeLine{374     \}}
+\DoxyCodeLine{375   }
+\DoxyCodeLine{376   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{377   \}}
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379 }
+\DoxyCodeLine{380 }
+\DoxyCodeLine{381 arma\_warn\_unused}
+\DoxyCodeLine{382 \textcolor{keyword}{inline}}
+\DoxyCodeLine{383 \mbox{\hyperlink{classCol}{uvec}}}
+\DoxyCodeLine{384 ind2sub(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s, \textcolor{keyword}{const} uword i)}
+\DoxyCodeLine{385   \{}
+\DoxyCodeLine{386   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{387   }
+\DoxyCodeLine{388   \textcolor{keyword}{const} uword s\_n\_rows       = s.n\_rows;}
+\DoxyCodeLine{389   \textcolor{keyword}{const} uword s\_n\_elem\_slice = s\_n\_rows * s.n\_cols;}
+\DoxyCodeLine{390   }
+\DoxyCodeLine{391   arma\_debug\_check( (i >= (s\_n\_elem\_slice * s.n\_slices) ), \textcolor{stringliteral}{"{}ind2sub(): index out of range"{}} );}
+\DoxyCodeLine{392   }
+\DoxyCodeLine{393   \textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}}  = i / s\_n\_elem\_slice;}
+\DoxyCodeLine{394   \textcolor{keyword}{const} uword j      = i -\/ (\mbox{\hyperlink{classslice}{slice}} * s\_n\_elem\_slice);}
+\DoxyCodeLine{395   \textcolor{keyword}{const} uword row    = j \% s\_n\_rows;}
+\DoxyCodeLine{396   \textcolor{keyword}{const} uword col    = j / s\_n\_rows;}
+\DoxyCodeLine{397   }
+\DoxyCodeLine{398   \mbox{\hyperlink{classCol}{uvec}} out(3, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{399   }
+\DoxyCodeLine{400   uword* out\_mem = out.memptr();}
+\DoxyCodeLine{401   }
+\DoxyCodeLine{402   out\_mem[0] = row;}
+\DoxyCodeLine{403   out\_mem[1] = col;}
+\DoxyCodeLine{404   out\_mem[2] = \mbox{\hyperlink{classslice}{slice}};}
+\DoxyCodeLine{405   }
+\DoxyCodeLine{406   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{407   \}}
+\DoxyCodeLine{408 }
+\DoxyCodeLine{409 }
+\DoxyCodeLine{410 }
+\DoxyCodeLine{411 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{412 arma\_warn\_unused}
+\DoxyCodeLine{413 \textcolor{keyword}{inline}}
+\DoxyCodeLine{414 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2}}< (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<uword,typename T1::elem\_type>::yes}}), \mbox{\hyperlink{classMat}{umat}} >::result}
+\DoxyCodeLine{415 ind2sub(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s, \textcolor{keyword}{const} T1\& indices)}
+\DoxyCodeLine{416   \{}
+\DoxyCodeLine{417   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{418   }
+\DoxyCodeLine{419   \textcolor{keyword}{const} uword s\_n\_rows       = s.n\_rows;}
+\DoxyCodeLine{420   \textcolor{keyword}{const} uword s\_n\_elem\_slice = s\_n\_rows * s.n\_cols;}
+\DoxyCodeLine{421   \textcolor{keyword}{const} uword s\_n\_elem       = s.n\_slices * s\_n\_elem\_slice;}
+\DoxyCodeLine{422     }
+\DoxyCodeLine{423   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} U(indices);}
+\DoxyCodeLine{424   }
+\DoxyCodeLine{425   arma\_debug\_check( ((U.M.is\_empty() == \textcolor{keyword}{false}) \&\& (U.M.is\_vec() == \textcolor{keyword}{false})), \textcolor{stringliteral}{"{}ind2sub(): parameter 'indices' must be a vector"{}} );}
+\DoxyCodeLine{426   }
+\DoxyCodeLine{427   \textcolor{keyword}{const} uword  U\_n\_elem = U.M.n\_elem;}
+\DoxyCodeLine{428   \textcolor{keyword}{const} uword* U\_mem    = U.M.memptr();}
+\DoxyCodeLine{429   }
+\DoxyCodeLine{430   \mbox{\hyperlink{classMat}{umat}} out(3, U\_n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{431   }
+\DoxyCodeLine{432   \textcolor{keywordflow}{for}(uword count=0; count < U\_n\_elem; ++count)}
+\DoxyCodeLine{433     \{}
+\DoxyCodeLine{434     \textcolor{keyword}{const} uword i = U\_mem[count];}
+\DoxyCodeLine{435     }
+\DoxyCodeLine{436     arma\_debug\_check( (i >= s\_n\_elem), \textcolor{stringliteral}{"{}ind2sub(): index out of range"{}} );}
+\DoxyCodeLine{437     }
+\DoxyCodeLine{438     \textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}}  = i / s\_n\_elem\_slice;}
+\DoxyCodeLine{439     \textcolor{keyword}{const} uword j      = i -\/ (\mbox{\hyperlink{classslice}{slice}} * s\_n\_elem\_slice);}
+\DoxyCodeLine{440     \textcolor{keyword}{const} uword row    = j \% s\_n\_rows;}
+\DoxyCodeLine{441     \textcolor{keyword}{const} uword col    = j / s\_n\_rows;}
+\DoxyCodeLine{442     }
+\DoxyCodeLine{443     uword* out\_colptr = out.colptr(count);}
+\DoxyCodeLine{444     }
+\DoxyCodeLine{445     out\_colptr[0] = row;}
+\DoxyCodeLine{446     out\_colptr[1] = col;}
+\DoxyCodeLine{447     out\_colptr[2] = \mbox{\hyperlink{classslice}{slice}};}
+\DoxyCodeLine{448     \}}
+\DoxyCodeLine{449   }
+\DoxyCodeLine{450   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{451   \}}
+\DoxyCodeLine{452 }
+\DoxyCodeLine{453 }
+\DoxyCodeLine{454 }
+\DoxyCodeLine{455 arma\_warn\_unused}
+\DoxyCodeLine{456 arma\_inline}
+\DoxyCodeLine{457 uword}
+\DoxyCodeLine{458 sub2ind(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s, \textcolor{keyword}{const} uword row, \textcolor{keyword}{const} uword col)}
+\DoxyCodeLine{459   \{}
+\DoxyCodeLine{460   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{461   }
+\DoxyCodeLine{462   \textcolor{keyword}{const} uword s\_n\_rows = s.n\_rows;}
+\DoxyCodeLine{463   }
+\DoxyCodeLine{464   arma\_debug\_check( ((row >= s\_n\_rows) || (col >= s.n\_cols)), \textcolor{stringliteral}{"{}sub2ind(): subscript out of range"{}} );}
+\DoxyCodeLine{465   }
+\DoxyCodeLine{466   \textcolor{keywordflow}{return} uword(row + col*s\_n\_rows);}
+\DoxyCodeLine{467   \}}
+\DoxyCodeLine{468 }
+\DoxyCodeLine{469 }
+\DoxyCodeLine{470 }
+\DoxyCodeLine{471 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{472 arma\_warn\_unused}
+\DoxyCodeLine{473 \textcolor{keyword}{inline}}
+\DoxyCodeLine{474 \mbox{\hyperlink{classCol}{uvec}}}
+\DoxyCodeLine{475 sub2ind(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& subscripts)}
+\DoxyCodeLine{476   \{}
+\DoxyCodeLine{477   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{478   }
+\DoxyCodeLine{479   \textcolor{keyword}{const} uword s\_n\_rows = s.n\_rows;}
+\DoxyCodeLine{480   \textcolor{keyword}{const} uword s\_n\_cols = s.n\_cols;}
+\DoxyCodeLine{481   }
+\DoxyCodeLine{482   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} U(subscripts.get\_ref());}
+\DoxyCodeLine{483   }
+\DoxyCodeLine{484   arma\_debug\_check( (U.M.n\_rows != 2), \textcolor{stringliteral}{"{}sub2ind(): matrix of subscripts must have 2 rows"{}} );}
+\DoxyCodeLine{485   }
+\DoxyCodeLine{486   \textcolor{keyword}{const} uword U\_M\_n\_cols = U.M.n\_cols;}
+\DoxyCodeLine{487   }
+\DoxyCodeLine{488   \mbox{\hyperlink{classCol}{uvec}} out(U\_M\_n\_cols, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{489   }
+\DoxyCodeLine{490         uword* out\_mem = out.memptr();}
+\DoxyCodeLine{491   \textcolor{keyword}{const} uword* U\_M\_mem = U.M.memptr();}
+\DoxyCodeLine{492   }
+\DoxyCodeLine{493   \textcolor{keywordflow}{for}(uword count=0; count < U\_M\_n\_cols; ++count)}
+\DoxyCodeLine{494     \{}
+\DoxyCodeLine{495     \textcolor{keyword}{const} uword row = U\_M\_mem[0];}
+\DoxyCodeLine{496     \textcolor{keyword}{const} uword col = U\_M\_mem[1];}
+\DoxyCodeLine{497     }
+\DoxyCodeLine{498     U\_M\_mem += 2; \textcolor{comment}{// next column}}
+\DoxyCodeLine{499     }
+\DoxyCodeLine{500     arma\_debug\_check( ((row >= s\_n\_rows) || (col >= s\_n\_cols)), \textcolor{stringliteral}{"{}sub2ind(): subscript out of range"{}} );}
+\DoxyCodeLine{501     }
+\DoxyCodeLine{502     out\_mem[count] = uword(row + col*s\_n\_rows);}
+\DoxyCodeLine{503     \}}
+\DoxyCodeLine{504   }
+\DoxyCodeLine{505   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{506   \}}
+\DoxyCodeLine{507 }
+\DoxyCodeLine{508 }
+\DoxyCodeLine{509 }
+\DoxyCodeLine{510 arma\_warn\_unused}
+\DoxyCodeLine{511 arma\_inline}
+\DoxyCodeLine{512 uword}
+\DoxyCodeLine{513 sub2ind(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s, \textcolor{keyword}{const} uword row, \textcolor{keyword}{const} uword col, \textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{514   \{}
+\DoxyCodeLine{515   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{516   }
+\DoxyCodeLine{517   \textcolor{keyword}{const} uword s\_n\_rows = s.n\_rows;}
+\DoxyCodeLine{518   \textcolor{keyword}{const} uword s\_n\_cols = s.n\_cols;}
+\DoxyCodeLine{519   }
+\DoxyCodeLine{520   arma\_debug\_check( ((row >= s\_n\_rows) || (col >= s\_n\_cols) || (\mbox{\hyperlink{classslice}{slice}} >= s.n\_slices)), \textcolor{stringliteral}{"{}sub2ind(): subscript out of range"{}} );}
+\DoxyCodeLine{521   }
+\DoxyCodeLine{522   \textcolor{keywordflow}{return} uword( (\mbox{\hyperlink{classslice}{slice}} * s\_n\_rows * s\_n\_cols) + (col * s\_n\_rows) + row );}
+\DoxyCodeLine{523   \}}
+\DoxyCodeLine{524 }
+\DoxyCodeLine{525 }
+\DoxyCodeLine{526 }
+\DoxyCodeLine{527 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{528 arma\_warn\_unused}
+\DoxyCodeLine{529 \textcolor{keyword}{inline}}
+\DoxyCodeLine{530 \mbox{\hyperlink{classCol}{uvec}}}
+\DoxyCodeLine{531 sub2ind(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<uword,T1>}}\& subscripts)}
+\DoxyCodeLine{532   \{}
+\DoxyCodeLine{533   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{534   }
+\DoxyCodeLine{535   \textcolor{keyword}{const} uword s\_n\_rows   = s.n\_rows;}
+\DoxyCodeLine{536   \textcolor{keyword}{const} uword s\_n\_cols   = s.n\_cols;}
+\DoxyCodeLine{537   \textcolor{keyword}{const} uword s\_n\_slices = s.n\_slices;}
+\DoxyCodeLine{538   }
+\DoxyCodeLine{539   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} U(subscripts.get\_ref());}
+\DoxyCodeLine{540   }
+\DoxyCodeLine{541   arma\_debug\_check( (U.M.n\_rows != 3), \textcolor{stringliteral}{"{}sub2ind(): matrix of subscripts must have 3 rows"{}} );}
+\DoxyCodeLine{542   }
+\DoxyCodeLine{543   \textcolor{keyword}{const} uword U\_M\_n\_cols = U.M.n\_cols;}
+\DoxyCodeLine{544   }
+\DoxyCodeLine{545   \mbox{\hyperlink{classCol}{uvec}} out(U\_M\_n\_cols, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{546   }
+\DoxyCodeLine{547         uword* out\_mem = out.memptr();}
+\DoxyCodeLine{548   \textcolor{keyword}{const} uword* U\_M\_mem = U.M.memptr();}
+\DoxyCodeLine{549   }
+\DoxyCodeLine{550   \textcolor{keywordflow}{for}(uword count=0; count < U\_M\_n\_cols; ++count)}
+\DoxyCodeLine{551     \{}
+\DoxyCodeLine{552     \textcolor{keyword}{const} uword row   = U\_M\_mem[0];}
+\DoxyCodeLine{553     \textcolor{keyword}{const} uword col   = U\_M\_mem[1];}
+\DoxyCodeLine{554     \textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}} = U\_M\_mem[2];}
+\DoxyCodeLine{555     }
+\DoxyCodeLine{556     U\_M\_mem += 3; \textcolor{comment}{// next column}}
+\DoxyCodeLine{557     }
+\DoxyCodeLine{558     arma\_debug\_check( ((row >= s\_n\_rows) || (col >= s\_n\_cols) || (\mbox{\hyperlink{classslice}{slice}} >= s\_n\_slices)), \textcolor{stringliteral}{"{}sub2ind(): subscript out of range"{}} );}
+\DoxyCodeLine{559     }
+\DoxyCodeLine{560     out\_mem[count] = uword( (\mbox{\hyperlink{classslice}{slice}} * s\_n\_rows * s\_n\_cols) + (col * s\_n\_rows) + row );}
+\DoxyCodeLine{561     \}}
+\DoxyCodeLine{562   }
+\DoxyCodeLine{563   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{564   \}}
+\DoxyCodeLine{565 }
+\DoxyCodeLine{566 }
+\DoxyCodeLine{567 }
+\DoxyCodeLine{568 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{569 arma\_inline}
+\DoxyCodeLine{570 \textcolor{keyword}{typename}}
+\DoxyCodeLine{571 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{572   <}
+\DoxyCodeLine{573   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{574   \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_affmul>}}}
+\DoxyCodeLine{575   >::result}
+\DoxyCodeLine{576 affmul(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{577   \{}
+\DoxyCodeLine{578   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{579   }
+\DoxyCodeLine{580   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_affmul>}}(\mbox{\hyperlink{structA}{A}},\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{581   \}}
+\DoxyCodeLine{582 }
+\DoxyCodeLine{583 }
+\DoxyCodeLine{584 }
+
+\end{DoxyCode}

@@ -1,0 +1,117 @@
+\hypertarget{eop__core__bones_8hpp_source}{}\doxysection{eop\+\_\+core\+\_\+bones.\+hpp}
+\label{eop__core__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/eop\_core\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/eop\_core\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eop\_type>}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__core}{eop\_core}}}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   }
+\DoxyCodeLine{27   \textcolor{comment}{// matrices}}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{template}<\textcolor{keyword}{typename} outT, \textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(outT\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& x);}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inplace\_plus (\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& x);}
+\DoxyCodeLine{32   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inplace\_minus(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& x);}
+\DoxyCodeLine{33   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inplace\_schur(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& x);}
+\DoxyCodeLine{34   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inplace\_div  (\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_type>}}\& x);}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37   \textcolor{comment}{// cubes}}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& x);}
+\DoxyCodeLine{40   }
+\DoxyCodeLine{41   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inplace\_plus (\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& x);}
+\DoxyCodeLine{42   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inplace\_minus(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& x);}
+\DoxyCodeLine{43   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inplace\_schur(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& x);}
+\DoxyCodeLine{44   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1> arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inplace\_div  (\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_type>}}\& x);}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   \textcolor{comment}{// common}}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT> arma\_inline \textcolor{keyword}{static} eT process(\textcolor{keyword}{const} eT val, \textcolor{keyword}{const} eT k);}
+\DoxyCodeLine{50   \};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{keyword}{struct }\mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{ \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp = \textcolor{keyword}{true};  \};}
+\DoxyCodeLine{54 \textcolor{keyword}{struct }\mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{ \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} use\_mp = \textcolor{keyword}{false}; \};}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__neg}{eop\_neg}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_neg>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{58 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__scalar__plus}{eop\_scalar\_plus}}       : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_scalar\_plus>       , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{59 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__scalar__minus__pre}{eop\_scalar\_minus\_pre}}  : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_scalar\_minus\_pre>  , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{60 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__scalar__minus__post}{eop\_scalar\_minus\_post}} : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_scalar\_minus\_post> , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{61 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__scalar__times}{eop\_scalar\_times}}      : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_scalar\_times>      , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{62 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__scalar__div__pre}{eop\_scalar\_div\_pre}}    : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_scalar\_div\_pre>    , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{63 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__scalar__div__post}{eop\_scalar\_div\_post}}   : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_scalar\_div\_post>   , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{64 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__square}{eop\_square}}            : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_square>            , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{65 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__sqrt}{eop\_sqrt}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_sqrt>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{66 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__pow}{eop\_pow}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_pow>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};  \textcolor{comment}{// for pow(), use\_mp is selectively enabled in eop\_core\_meat.hpp}}
+\DoxyCodeLine{67 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__log}{eop\_log}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_log>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{68 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__log2}{eop\_log2}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_log2>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{69 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__log10}{eop\_log10}}             : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_log10>             , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{70 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__trunc__log}{eop\_trunc\_log}}         : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_trunc\_log>         , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{71 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__log1p}{eop\_log1p}}             : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_log1p>             , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{72 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__exp}{eop\_exp}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_exp>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{73 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__exp2}{eop\_exp2}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_exp2>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{74 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__exp10}{eop\_exp10}}             : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_exp10>             , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{75 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__trunc__exp}{eop\_trunc\_exp}}         : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_trunc\_exp>         , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{76 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__expm1}{eop\_expm1}}             : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_expm1>             , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{77 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__cos}{eop\_cos}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_cos>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{78 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__sin}{eop\_sin}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_sin>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{79 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__tan}{eop\_tan}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_tan>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{80 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__acos}{eop\_acos}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_acos>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{81 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__asin}{eop\_asin}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_asin>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{82 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__atan}{eop\_atan}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_atan>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{83 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__cosh}{eop\_cosh}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_cosh>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{84 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__sinh}{eop\_sinh}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_sinh>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{85 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__tanh}{eop\_tanh}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_tanh>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{86 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__acosh}{eop\_acosh}}             : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_acosh>             , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{87 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__asinh}{eop\_asinh}}             : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_asinh>             , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{88 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__atanh}{eop\_atanh}}             : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_atanh>             , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{89 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__sinc}{eop\_sinc}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_sinc>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{90 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__eps}{eop\_eps}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_eps>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{91 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__abs}{eop\_abs}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_abs>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{92 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__arg}{eop\_arg}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_arg>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{93 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__conj}{eop\_conj}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_conj>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{94 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__floor}{eop\_floor}}             : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_floor>             , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{95 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__ceil}{eop\_ceil}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_ceil>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{96 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__round}{eop\_round}}             : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_round>             , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{97 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__trunc}{eop\_trunc}}             : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_trunc>             , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{98 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__sign}{eop\_sign}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_sign>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__false}{eop\_use\_mp\_false}} \{\};}
+\DoxyCodeLine{99 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__erf}{eop\_erf}}               : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_erf>               , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{100 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__erfc}{eop\_erfc}}              : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_erfc>              , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{101 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__lgamma}{eop\_lgamma}}            : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_lgamma>            , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{102 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__tgamma}{eop\_tgamma}}            : \textcolor{keyword}{public} \mbox{\hyperlink{classeop__core}{eop\_core}}<eop\_tgamma>            , \textcolor{keyword}{public} \mbox{\hyperlink{structeop__use__mp__true}{eop\_use\_mp\_true}}  \{\};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{comment}{// the classes below are currently not used; reserved for potential future use}}
+\DoxyCodeLine{107 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__log__approx}{eop\_log\_approx}} \{\};}
+\DoxyCodeLine{108 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__exp__approx}{eop\_exp\_approx}} \{\};}
+\DoxyCodeLine{109 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__approx__log}{eop\_approx\_log}} \{\};}
+\DoxyCodeLine{110 \textcolor{keyword}{class }\mbox{\hyperlink{classeop__approx__exp}{eop\_approx\_exp}} \{\};}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+
+\end{DoxyCode}

@@ -1,0 +1,183 @@
+\hypertarget{fn__chi2rnd_8hpp_source}{}\doxysection{fn\+\_\+chi2rnd.\+hpp}
+\label{fn__chi2rnd_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_chi2rnd.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_chi2rnd.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 arma\_warn\_unused}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{double}}
+\DoxyCodeLine{25 chi2rnd(\textcolor{keyword}{const} \textcolor{keywordtype}{double} df)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \mbox{\hyperlink{classop__chi2rnd__varying__df}{op\_chi2rnd\_varying\_df<double>}} generator;}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keywordflow}{return} generator(df);}
+\DoxyCodeLine{32   \}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{37 arma\_warn\_unused}
+\DoxyCodeLine{38 \textcolor{keyword}{inline}}
+\DoxyCodeLine{39 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__only}{arma\_real\_only<eT>::result}}}
+\DoxyCodeLine{40 chi2rnd(\textcolor{keyword}{const} eT df)}
+\DoxyCodeLine{41   \{}
+\DoxyCodeLine{42   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \mbox{\hyperlink{classop__chi2rnd__varying__df}{op\_chi2rnd\_varying\_df<eT>}} generator;}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keywordflow}{return} generator(df);}
+\DoxyCodeLine{47   \}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{52 arma\_warn\_unused}
+\DoxyCodeLine{53 \textcolor{keyword}{inline}}
+\DoxyCodeLine{54 \textcolor{keyword}{typename}}
+\DoxyCodeLine{55 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{56   <}
+\DoxyCodeLine{57   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__real}{is\_real<typename T1::elem\_type>::value}}),}
+\DoxyCodeLine{58   \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_chi2rnd>}}}
+\DoxyCodeLine{59   >::result}
+\DoxyCodeLine{60 chi2rnd(\textcolor{keyword}{const} T1\& expr)}
+\DoxyCodeLine{61   \{}
+\DoxyCodeLine{62   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_chi2rnd>}}(expr);}
+\DoxyCodeLine{65   \}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{template}<\textcolor{keyword}{typename} obj\_type>}
+\DoxyCodeLine{70 arma\_warn\_unused}
+\DoxyCodeLine{71 \textcolor{keyword}{inline}}
+\DoxyCodeLine{72 \textcolor{keyword}{typename}}
+\DoxyCodeLine{73 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{74   <}
+\DoxyCodeLine{75   (\mbox{\hyperlink{structis__Mat}{is\_Mat<obj\_type>::value}} \&\& \mbox{\hyperlink{structis__real}{is\_real<typename obj\_type::elem\_type>::value}}),}
+\DoxyCodeLine{76   obj\_type}
+\DoxyCodeLine{77   >::result}
+\DoxyCodeLine{78 chi2rnd(\textcolor{keyword}{const} \textcolor{keyword}{typename} obj\_type::elem\_type df, \textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols)}
+\DoxyCodeLine{79   \{}
+\DoxyCodeLine{80   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{81   }
+\DoxyCodeLine{82   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Col}{is\_Col<obj\_type>::value}})}
+\DoxyCodeLine{83     \{}
+\DoxyCodeLine{84     arma\_debug\_check( (n\_cols != 1), \textcolor{stringliteral}{"{}chi2rnd(): incompatible size"{}} );}
+\DoxyCodeLine{85     \}}
+\DoxyCodeLine{86   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{87   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Row}{is\_Row<obj\_type>::value}})}
+\DoxyCodeLine{88     \{}
+\DoxyCodeLine{89     arma\_debug\_check( (n\_rows != 1), \textcolor{stringliteral}{"{}chi2rnd(): incompatible size"{}} );}
+\DoxyCodeLine{90     \}}
+\DoxyCodeLine{91   }
+\DoxyCodeLine{92   obj\_type out(n\_rows, n\_cols, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{93   }
+\DoxyCodeLine{94   op\_chi2rnd::fill\_constant\_df(out, df);}
+\DoxyCodeLine{95   }
+\DoxyCodeLine{96   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{97   \}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{keyword}{template}<\textcolor{keyword}{typename} obj\_type>}
+\DoxyCodeLine{102 arma\_warn\_unused}
+\DoxyCodeLine{103 \textcolor{keyword}{inline}}
+\DoxyCodeLine{104 \textcolor{keyword}{typename}}
+\DoxyCodeLine{105 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{106   <}
+\DoxyCodeLine{107   (\mbox{\hyperlink{structis__Mat}{is\_Mat<obj\_type>::value}} \&\& \mbox{\hyperlink{structis__real}{is\_real<typename obj\_type::elem\_type>::value}}),}
+\DoxyCodeLine{108   obj\_type}
+\DoxyCodeLine{109   >::result}
+\DoxyCodeLine{110 chi2rnd(\textcolor{keyword}{const} \textcolor{keyword}{typename} obj\_type::elem\_type df, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{111   \{}
+\DoxyCodeLine{112   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{113   }
+\DoxyCodeLine{114   \textcolor{keywordflow}{return} chi2rnd<obj\_type>(df, s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{115   \}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{keyword}{template}<\textcolor{keyword}{typename} obj\_type>}
+\DoxyCodeLine{120 arma\_warn\_unused}
+\DoxyCodeLine{121 \textcolor{keyword}{inline}}
+\DoxyCodeLine{122 \textcolor{keyword}{typename}}
+\DoxyCodeLine{123 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{124   <}
+\DoxyCodeLine{125   (\mbox{\hyperlink{structis__Mat}{is\_Mat<obj\_type>::value}} \&\& \mbox{\hyperlink{structis__real}{is\_real<typename obj\_type::elem\_type>::value}}),}
+\DoxyCodeLine{126   obj\_type}
+\DoxyCodeLine{127   >::result}
+\DoxyCodeLine{128 chi2rnd(\textcolor{keyword}{const} \textcolor{keyword}{typename} obj\_type::elem\_type df, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{129   \{}
+\DoxyCodeLine{130   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Row}{is\_Row<obj\_type>::value}})}
+\DoxyCodeLine{133     \{}
+\DoxyCodeLine{134     \textcolor{keywordflow}{return} chi2rnd<obj\_type>(df, 1, n\_elem);}
+\DoxyCodeLine{135     \}}
+\DoxyCodeLine{136   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{137     \{}
+\DoxyCodeLine{138     \textcolor{keywordflow}{return} chi2rnd<obj\_type>(df, n\_elem, 1);}
+\DoxyCodeLine{139     \}}
+\DoxyCodeLine{140   \}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 arma\_warn\_unused}
+\DoxyCodeLine{145 \textcolor{keyword}{inline}}
+\DoxyCodeLine{146 \mbox{\hyperlink{classMat}{mat}}}
+\DoxyCodeLine{147 chi2rnd(\textcolor{keyword}{const} \textcolor{keywordtype}{double} df, \textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols)}
+\DoxyCodeLine{148   \{}
+\DoxyCodeLine{149   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{150   }
+\DoxyCodeLine{151   \textcolor{keywordflow}{return} chi2rnd<mat>(df, n\_rows, n\_cols);}
+\DoxyCodeLine{152   \}}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 arma\_warn\_unused}
+\DoxyCodeLine{157 \textcolor{keyword}{inline}}
+\DoxyCodeLine{158 \mbox{\hyperlink{classMat}{mat}}}
+\DoxyCodeLine{159 chi2rnd(\textcolor{keyword}{const} \textcolor{keywordtype}{double} df, \textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{160   \{}
+\DoxyCodeLine{161   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{162   }
+\DoxyCodeLine{163   \textcolor{keywordflow}{return} chi2rnd<mat>(df, s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{164   \}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168 arma\_warn\_unused}
+\DoxyCodeLine{169 \textcolor{keyword}{inline}}
+\DoxyCodeLine{170 \mbox{\hyperlink{classCol}{vec}}}
+\DoxyCodeLine{171 chi2rnd(\textcolor{keyword}{const} \textcolor{keywordtype}{double} df, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{172   \{}
+\DoxyCodeLine{173   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{174   }
+\DoxyCodeLine{175   \textcolor{keywordflow}{return} chi2rnd<vec>(df, n\_elem, 1);}
+\DoxyCodeLine{176   \}}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 }
+
+\end{DoxyCode}

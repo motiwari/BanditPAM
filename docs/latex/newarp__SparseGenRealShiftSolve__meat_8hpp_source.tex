@@ -1,0 +1,139 @@
+\hypertarget{newarp__SparseGenRealShiftSolve__meat_8hpp_source}{}\doxysection{newarp\+\_\+\+Sparse\+Gen\+Real\+Shift\+Solve\+\_\+meat.\+hpp}
+\label{newarp__SparseGenRealShiftSolve__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_SparseGenRealShiftSolve\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_SparseGenRealShiftSolve\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }newarp}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{22 \textcolor{keyword}{inline}}
+\DoxyCodeLine{23 SparseGenRealShiftSolve<eT>::SparseGenRealShiftSolve(\textcolor{keyword}{const} \mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& mat\_obj, \textcolor{keyword}{const} eT shift)}
+\DoxyCodeLine{24   \textcolor{preprocessor}{\#if defined(ARMA\_USE\_SUPERLU)}}
+\DoxyCodeLine{25     : perm\_c(mat\_obj.\mbox{\hyperlink{classSpMat_a4f01c9d35f90eb836c6be489605052dd}{n\_cols}} + 1)}
+\DoxyCodeLine{26     , perm\_r(mat\_obj.\mbox{\hyperlink{classSpMat_a84c06dc8c923afc6e779fd6ab79b4c26}{n\_rows}} + 1)}
+\DoxyCodeLine{27     , n\_rows(mat\_obj.\mbox{\hyperlink{classSpMat_a84c06dc8c923afc6e779fd6ab79b4c26}{n\_rows}})}
+\DoxyCodeLine{28     , n\_cols(mat\_obj.\mbox{\hyperlink{classSpMat_a4f01c9d35f90eb836c6be489605052dd}{n\_cols}})}
+\DoxyCodeLine{29   \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{30   \{}
+\DoxyCodeLine{31   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_SUPERLU)}}
+\DoxyCodeLine{34     \{}
+\DoxyCodeLine{35     \textcolor{comment}{// Derived from sp\_auxlib::run\_aupd\_shiftinvert()}}
+\DoxyCodeLine{36     \mbox{\hyperlink{structsuperlu__opts}{superlu\_opts}} superlu\_opts\_default;}
+\DoxyCodeLine{37     superlu::superlu\_options\_t \mbox{\hyperlink{classoptions}{options}};}
+\DoxyCodeLine{38     sp\_auxlib::set\_superlu\_opts(\mbox{\hyperlink{classoptions}{options}}, superlu\_opts\_default);}
+\DoxyCodeLine{39     }
+\DoxyCodeLine{40     superlu::GlobalLU\_t Glu;}
+\DoxyCodeLine{41     arrayops::fill\_zeros(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&Glu), \textcolor{keyword}{sizeof}(superlu::GlobalLU\_t));}
+\DoxyCodeLine{42     }
+\DoxyCodeLine{43     superlu\_supermatrix\_wrangler x;}
+\DoxyCodeLine{44     superlu\_supermatrix\_wrangler xC;}
+\DoxyCodeLine{45     superlu\_array\_wrangler<int> etree(mat\_obj.\mbox{\hyperlink{classSpMat_a4f01c9d35f90eb836c6be489605052dd}{n\_cols}}+1);}
+\DoxyCodeLine{46     }
+\DoxyCodeLine{47     \textcolor{comment}{// Copy A-\/shift*I to x}}
+\DoxyCodeLine{48     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status\_x = sp\_auxlib::copy\_to\_supermatrix\_with\_shift(x.get\_ref(), mat\_obj, shift);}
+\DoxyCodeLine{49     }
+\DoxyCodeLine{50     \textcolor{keywordflow}{if}(status\_x == \textcolor{keyword}{false})  \{ arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}newarp::SparseGenRealShiftSolve::SparseGenRealShiftSolve(): could not construct SuperLU matrix"{}}); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{51     }
+\DoxyCodeLine{52     \textcolor{keywordtype}{int} panel\_size = superlu::sp\_ispec\_environ(1);}
+\DoxyCodeLine{53     \textcolor{keywordtype}{int} relax      = superlu::sp\_ispec\_environ(2);}
+\DoxyCodeLine{54     \textcolor{keywordtype}{int} slu\_info   = 0; \textcolor{comment}{// Return code}}
+\DoxyCodeLine{55     \textcolor{keywordtype}{int} lwork      = 0; \textcolor{comment}{// lwork = 0: allocate space internally by system malloc}}
+\DoxyCodeLine{56     }
+\DoxyCodeLine{57     superlu\_stat\_wrangler stat;}
+\DoxyCodeLine{58     }
+\DoxyCodeLine{59     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}superlu::gstrf()"{}});}
+\DoxyCodeLine{60     superlu::get\_permutation\_c(\mbox{\hyperlink{classoptions}{options}}.ColPerm, x.get\_ptr(), perm\_c.get\_ptr());}
+\DoxyCodeLine{61     superlu::sp\_preorder\_mat(\&\mbox{\hyperlink{classoptions}{options}}, x.get\_ptr(), perm\_c.get\_ptr(), etree.get\_ptr(), xC.get\_ptr());}
+\DoxyCodeLine{62     superlu::gstrf<eT>(\&\mbox{\hyperlink{classoptions}{options}}, xC.get\_ptr(), relax, panel\_size, etree.get\_ptr(), NULL, lwork, perm\_c.get\_ptr(), perm\_r.get\_ptr(), l.get\_ptr(), u.get\_ptr(), \&Glu, stat.get\_ptr(), \&slu\_info);}
+\DoxyCodeLine{63     }
+\DoxyCodeLine{64     \textcolor{keywordflow}{if}(slu\_info != 0)}
+\DoxyCodeLine{65       \{}
+\DoxyCodeLine{66       arma\_debug\_warn\_level(2, \textcolor{stringliteral}{"{}matrix is singular to working precision"{}});}
+\DoxyCodeLine{67       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{68       \}}
+\DoxyCodeLine{69     }
+\DoxyCodeLine{70     eT x\_norm\_val = sp\_auxlib::norm1<eT>(x.get\_ptr());}
+\DoxyCodeLine{71     eT x\_rcond    = sp\_auxlib::lu\_rcond<eT>(l.get\_ptr(), u.get\_ptr(), x\_norm\_val);}
+\DoxyCodeLine{72     }
+\DoxyCodeLine{73     \textcolor{keywordflow}{if}( (x\_rcond < std::numeric\_limits<eT>::epsilon()) || arma\_isnan(x\_rcond) )}
+\DoxyCodeLine{74       \{}
+\DoxyCodeLine{75       \textcolor{keywordflow}{if}(x\_rcond > eT(0))  \{ arma\_debug\_warn\_level(2, \textcolor{stringliteral}{"{}matrix is singular to working precision (rcond: "{}}, x\_rcond, \textcolor{stringliteral}{"{})"{}}); \}}
+\DoxyCodeLine{76       \textcolor{keywordflow}{else}                 \{ arma\_debug\_warn\_level(2, \textcolor{stringliteral}{"{}matrix is singular to working precision"{}});                        \}}
+\DoxyCodeLine{77       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{78       \}}
+\DoxyCodeLine{79     }
+\DoxyCodeLine{80     valid = \textcolor{keyword}{true};}
+\DoxyCodeLine{81     \}}
+\DoxyCodeLine{82 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{83     \{}
+\DoxyCodeLine{84     arma\_ignore(mat\_obj);}
+\DoxyCodeLine{85     arma\_ignore(shift);}
+\DoxyCodeLine{86     \}}
+\DoxyCodeLine{87 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{88   \}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 \textcolor{comment}{// Perform the shift-\/solve operation \(\backslash\)f\$y=(A-\/\(\backslash\)sigma I)\string^\{-\/1\}x\(\backslash\)f\$.}}
+\DoxyCodeLine{93 \textcolor{comment}{// y\_out = inv(A -\/ sigma * I) * x\_in}}
+\DoxyCodeLine{94 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{95 \textcolor{keyword}{inline}}
+\DoxyCodeLine{96 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{97 SparseGenRealShiftSolve<eT>::perform\_op(eT* x\_in, eT* y\_out)\textcolor{keyword}{ const}}
+\DoxyCodeLine{98 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{99   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{100   }
+\DoxyCodeLine{101 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_SUPERLU)}}
+\DoxyCodeLine{102     \{}
+\DoxyCodeLine{103     \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}} x(x\_in , n\_cols, \textcolor{keyword}{false}, \textcolor{keyword}{true});}
+\DoxyCodeLine{104           \mbox{\hyperlink{classCol}{Col<eT>}} y(y\_out, n\_rows, \textcolor{keyword}{false}, \textcolor{keyword}{true});}
+\DoxyCodeLine{105     }
+\DoxyCodeLine{106     \textcolor{comment}{// Derived from sp\_auxlib::run\_aupd\_shiftinvert()}}
+\DoxyCodeLine{107     y = x;}
+\DoxyCodeLine{108     superlu\_supermatrix\_wrangler out\_slu;}
+\DoxyCodeLine{109     }
+\DoxyCodeLine{110     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status\_out\_slu = sp\_auxlib::wrap\_to\_supermatrix(out\_slu.get\_ref(), y);}
+\DoxyCodeLine{111     }
+\DoxyCodeLine{112     \textcolor{keywordflow}{if}(status\_out\_slu == \textcolor{keyword}{false})  \{ arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}newarp::SparseGenRealShiftSolve::perform\_op(): could not construct SuperLU matrix"{}}); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{113     }
+\DoxyCodeLine{114     superlu\_stat\_wrangler stat;}
+\DoxyCodeLine{115     \textcolor{keywordtype}{int} info = 0;}
+\DoxyCodeLine{116     }
+\DoxyCodeLine{117     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}superlu::gstrs()"{}});}
+\DoxyCodeLine{118     superlu::gstrs<eT>(superlu::NOTRANS, l.get\_ptr(), u.get\_ptr(), perm\_c.get\_ptr(), perm\_r.get\_ptr(), out\_slu.get\_ptr(), stat.get\_ptr(), \&info);}
+\DoxyCodeLine{119     }
+\DoxyCodeLine{120     \textcolor{keywordflow}{if}(info != 0)  \{ arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}newarp::SparseGenRealShiftSolve::perform\_op(): could not solve linear equation"{}}); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{121     }
+\DoxyCodeLine{122     \textcolor{comment}{// No need to modify memory further since it was all done in-\/place.}}
+\DoxyCodeLine{123     \}}
+\DoxyCodeLine{124 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{125     \{}
+\DoxyCodeLine{126     arma\_ignore(x\_in);}
+\DoxyCodeLine{127     arma\_ignore(y\_out);}
+\DoxyCodeLine{128     \}}
+\DoxyCodeLine{129 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{130   \}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 \}  \textcolor{comment}{// namespace newarp}}
+
+\end{DoxyCode}

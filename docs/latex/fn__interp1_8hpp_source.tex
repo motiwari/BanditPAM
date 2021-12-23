@@ -1,0 +1,340 @@
+\hypertarget{fn__interp1_8hpp_source}{}\doxysection{fn\+\_\+interp1.\+hpp}
+\label{fn__interp1_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_interp1.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_interp1.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 interp1\_helper\_nearest(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& XG, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& YG, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& XI, \mbox{\hyperlink{classMat}{Mat<eT>}}\& YI, \textcolor{keyword}{const} eT extrap\_val)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{const} eT XG\_min = XG.min();}
+\DoxyCodeLine{30   \textcolor{keyword}{const} eT XG\_max = XG.max();}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   YI.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(XI);}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   \textcolor{keyword}{const} eT* XG\_mem = XG.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{35   \textcolor{keyword}{const} eT* YG\_mem = YG.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{36   \textcolor{keyword}{const} eT* XI\_mem = XI.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{37         eT* YI\_mem = YI.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{const} uword NG = XG.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{40   \textcolor{keyword}{const} uword NI = XI.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   uword best\_j = 0;}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keywordflow}{for}(uword i=0; i<NI; ++i)}
+\DoxyCodeLine{45     \{}
+\DoxyCodeLine{46     eT best\_err = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{47     }
+\DoxyCodeLine{48     \textcolor{keyword}{const} eT XI\_val = XI\_mem[i];}
+\DoxyCodeLine{49     }
+\DoxyCodeLine{50     \textcolor{keywordflow}{if}((XI\_val < XG\_min) || (XI\_val > XG\_max))}
+\DoxyCodeLine{51       \{}
+\DoxyCodeLine{52       YI\_mem[i] = extrap\_val;}
+\DoxyCodeLine{53       \}}
+\DoxyCodeLine{54     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{55       \{}
+\DoxyCodeLine{56       \textcolor{comment}{// XG and XI are guaranteed to be sorted in ascending manner,}}
+\DoxyCodeLine{57       \textcolor{comment}{// so start searching XG from last known optimum position }}
+\DoxyCodeLine{58       }
+\DoxyCodeLine{59       \textcolor{keywordflow}{for}(uword j=best\_j; j<NG; ++j)}
+\DoxyCodeLine{60         \{}
+\DoxyCodeLine{61         \textcolor{keyword}{const} eT tmp = XG\_mem[j] -\/ XI\_val;}
+\DoxyCodeLine{62         \textcolor{keyword}{const} eT err = (tmp >= eT(0)) ? tmp : -\/tmp;}
+\DoxyCodeLine{63         }
+\DoxyCodeLine{64         \textcolor{keywordflow}{if}(err >= best\_err)}
+\DoxyCodeLine{65           \{}
+\DoxyCodeLine{66           \textcolor{comment}{// error is going up, so we have found the optimum position}}
+\DoxyCodeLine{67           \textcolor{keywordflow}{break};}
+\DoxyCodeLine{68           \}}
+\DoxyCodeLine{69         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{70           \{}
+\DoxyCodeLine{71           best\_err = err;}
+\DoxyCodeLine{72           best\_j   = j;   \textcolor{comment}{// remember the optimum position}}
+\DoxyCodeLine{73           \}}
+\DoxyCodeLine{74         \}}
+\DoxyCodeLine{75       }
+\DoxyCodeLine{76       YI\_mem[i] = YG\_mem[best\_j];}
+\DoxyCodeLine{77       \}}
+\DoxyCodeLine{78     \}}
+\DoxyCodeLine{79   \}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{84 \textcolor{keyword}{inline}}
+\DoxyCodeLine{85 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{86 interp1\_helper\_linear(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& XG, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& YG, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& XI, \mbox{\hyperlink{classMat}{Mat<eT>}}\& YI, \textcolor{keyword}{const} eT extrap\_val)}
+\DoxyCodeLine{87   \{}
+\DoxyCodeLine{88   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90   \textcolor{keyword}{const} eT XG\_min = XG.min();}
+\DoxyCodeLine{91   \textcolor{keyword}{const} eT XG\_max = XG.max();}
+\DoxyCodeLine{92   }
+\DoxyCodeLine{93   YI.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(XI);}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   \textcolor{keyword}{const} eT* XG\_mem = XG.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{96   \textcolor{keyword}{const} eT* YG\_mem = YG.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{97   \textcolor{keyword}{const} eT* XI\_mem = XI.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{98         eT* YI\_mem = YI.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \textcolor{keyword}{const} uword NG = XG.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{101   \textcolor{keyword}{const} uword NI = XI.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{102   }
+\DoxyCodeLine{103   uword a\_best\_j = 0;}
+\DoxyCodeLine{104   uword b\_best\_j = 0;}
+\DoxyCodeLine{105   }
+\DoxyCodeLine{106   \textcolor{keywordflow}{for}(uword i=0; i<NI; ++i)}
+\DoxyCodeLine{107     \{}
+\DoxyCodeLine{108     \textcolor{keyword}{const} eT XI\_val = XI\_mem[i];}
+\DoxyCodeLine{109     }
+\DoxyCodeLine{110     \textcolor{keywordflow}{if}((XI\_val < XG\_min) || (XI\_val > XG\_max))}
+\DoxyCodeLine{111       \{}
+\DoxyCodeLine{112       YI\_mem[i] = extrap\_val;}
+\DoxyCodeLine{113       \}}
+\DoxyCodeLine{114     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{115       \{}
+\DoxyCodeLine{116       \textcolor{comment}{// XG and XI are guaranteed to be sorted in ascending manner,}}
+\DoxyCodeLine{117       \textcolor{comment}{// so start searching XG from last known optimum position }}
+\DoxyCodeLine{118       }
+\DoxyCodeLine{119       eT a\_best\_err = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{120       eT b\_best\_err = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{121       }
+\DoxyCodeLine{122       \textcolor{keywordflow}{for}(uword j=a\_best\_j; j<NG; ++j)}
+\DoxyCodeLine{123         \{}
+\DoxyCodeLine{124         \textcolor{keyword}{const} eT tmp = XG\_mem[j] -\/ XI\_val;}
+\DoxyCodeLine{125         \textcolor{keyword}{const} eT err = (tmp >= eT(0)) ? tmp : -\/tmp;}
+\DoxyCodeLine{126         }
+\DoxyCodeLine{127         \textcolor{keywordflow}{if}(err >= a\_best\_err)}
+\DoxyCodeLine{128           \{}
+\DoxyCodeLine{129           \textcolor{keywordflow}{break};}
+\DoxyCodeLine{130           \}}
+\DoxyCodeLine{131         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{132           \{}
+\DoxyCodeLine{133           a\_best\_err = err;}
+\DoxyCodeLine{134           a\_best\_j   = j;}
+\DoxyCodeLine{135           \}}
+\DoxyCodeLine{136         \}}
+\DoxyCodeLine{137       }
+\DoxyCodeLine{138       \textcolor{keywordflow}{if}( (XG\_mem[a\_best\_j] -\/ XI\_val) <= eT(0) )}
+\DoxyCodeLine{139         \{}
+\DoxyCodeLine{140         \textcolor{comment}{// a\_best\_j is to the left of the interpolated position}}
+\DoxyCodeLine{141         }
+\DoxyCodeLine{142         b\_best\_j = ( (a\_best\_j+1) < NG) ? (a\_best\_j+1) : a\_best\_j; }
+\DoxyCodeLine{143         \}}
+\DoxyCodeLine{144       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{145         \{}
+\DoxyCodeLine{146         \textcolor{comment}{// a\_best\_j is to the right of the interpolated position}}
+\DoxyCodeLine{147         }
+\DoxyCodeLine{148         b\_best\_j = (a\_best\_j >= 1) ? (a\_best\_j-\/1) : a\_best\_j; }
+\DoxyCodeLine{149         \}}
+\DoxyCodeLine{150       }
+\DoxyCodeLine{151       b\_best\_err = std::abs( XG\_mem[b\_best\_j] -\/ XI\_val );}
+\DoxyCodeLine{152       }
+\DoxyCodeLine{153       \textcolor{keywordflow}{if}(a\_best\_j > b\_best\_j)}
+\DoxyCodeLine{154         \{}
+\DoxyCodeLine{155         std::swap(a\_best\_j,   b\_best\_j  );}
+\DoxyCodeLine{156         std::swap(a\_best\_err, b\_best\_err);}
+\DoxyCodeLine{157         \}}
+\DoxyCodeLine{158       }
+\DoxyCodeLine{159       \textcolor{keyword}{const} eT weight = (a\_best\_err > eT(0)) ? (a\_best\_err / (a\_best\_err + b\_best\_err)) : eT(0);}
+\DoxyCodeLine{160       }
+\DoxyCodeLine{161       YI\_mem[i] = (eT(1) -\/ weight)*YG\_mem[a\_best\_j] + (weight)*YG\_mem[b\_best\_j];}
+\DoxyCodeLine{162       \}}
+\DoxyCodeLine{163     \}}
+\DoxyCodeLine{164   \}}
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{169 \textcolor{keyword}{inline}}
+\DoxyCodeLine{170 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{171 interp1\_helper(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& Y, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& XI, \mbox{\hyperlink{classMat}{Mat<eT>}}\& YI, \textcolor{keyword}{const} uword sig, \textcolor{keyword}{const} eT extrap\_val)}
+\DoxyCodeLine{172   \{}
+\DoxyCodeLine{173   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{174   }
+\DoxyCodeLine{175   arma\_debug\_check( ((X.is\_vec() == \textcolor{keyword}{false}) || (Y.is\_vec() == \textcolor{keyword}{false}) || (XI.\mbox{\hyperlink{group__Mat_ga87639faacb2a4bfd8cbc80d23b993edf}{is\_vec}}() == \textcolor{keyword}{false})), \textcolor{stringliteral}{"{}interp1(): currently only vectors are supported"{}} );}
+\DoxyCodeLine{176   }
+\DoxyCodeLine{177   arma\_debug\_check( (X.n\_elem != Y.n\_elem), \textcolor{stringliteral}{"{}interp1(): X and Y must have the same number of elements"{}} );}
+\DoxyCodeLine{178   }
+\DoxyCodeLine{179   arma\_debug\_check( (X.n\_elem < 2), \textcolor{stringliteral}{"{}interp1(): X must have at least two unique elements"{}} );}
+\DoxyCodeLine{180   }
+\DoxyCodeLine{181   \textcolor{comment}{// sig = 10: nearest neighbour}}
+\DoxyCodeLine{182   \textcolor{comment}{// sig = 11: nearest neighbour, assume monotonic increase in X and XI}}
+\DoxyCodeLine{183   \textcolor{comment}{// }}
+\DoxyCodeLine{184   \textcolor{comment}{// sig = 20: linear}}
+\DoxyCodeLine{185   \textcolor{comment}{// sig = 21: linear, assume monotonic increase in X and XI}}
+\DoxyCodeLine{186   }
+\DoxyCodeLine{187   \textcolor{keywordflow}{if}(sig == 11)  \{ interp1\_helper\_nearest(X, Y, XI, YI, extrap\_val); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{188   \textcolor{keywordflow}{if}(sig == 21)  \{ interp1\_helper\_linear (X, Y, XI, YI, extrap\_val); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{189   }
+\DoxyCodeLine{190   \mbox{\hyperlink{classCol}{uvec}} X\_indices;}
+\DoxyCodeLine{191   }
+\DoxyCodeLine{192   \textcolor{keywordflow}{try} \{ X\_indices = find\_unique(X,\textcolor{keyword}{false}); \} \textcolor{keywordflow}{catch}(...) \{ \}}
+\DoxyCodeLine{193   }
+\DoxyCodeLine{194   \textcolor{comment}{// NOTE: find\_unique(X,false) provides indices of elements sorted in ascending order}}
+\DoxyCodeLine{195   \textcolor{comment}{// NOTE: find\_unique(X,false) will reset X\_indices if X has NaN}}
+\DoxyCodeLine{196   }
+\DoxyCodeLine{197   \textcolor{keyword}{const} uword N\_subset = X\_indices.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{198   }
+\DoxyCodeLine{199   arma\_debug\_check( (N\_subset < 2), \textcolor{stringliteral}{"{}interp1(): X must have at least two unique elements"{}} );}
+\DoxyCodeLine{200   }
+\DoxyCodeLine{201   \mbox{\hyperlink{classMat}{Mat<eT>}} X\_sanitised(N\_subset, 1, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{202   \mbox{\hyperlink{classMat}{Mat<eT>}} Y\_sanitised(N\_subset, 1, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{203   }
+\DoxyCodeLine{204   eT* X\_sanitised\_mem = X\_sanitised.memptr();}
+\DoxyCodeLine{205   eT* Y\_sanitised\_mem = Y\_sanitised.memptr();}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   \textcolor{keyword}{const} eT* X\_mem = X.memptr();}
+\DoxyCodeLine{208   \textcolor{keyword}{const} eT* Y\_mem = Y.memptr();}
+\DoxyCodeLine{209   }
+\DoxyCodeLine{210   \textcolor{keyword}{const} uword* X\_indices\_mem = X\_indices.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   \textcolor{keywordflow}{for}(uword i=0; i<N\_subset; ++i)}
+\DoxyCodeLine{213     \{}
+\DoxyCodeLine{214     \textcolor{keyword}{const} uword j = X\_indices\_mem[i];}
+\DoxyCodeLine{215     }
+\DoxyCodeLine{216     X\_sanitised\_mem[i] = X\_mem[j];}
+\DoxyCodeLine{217     Y\_sanitised\_mem[i] = Y\_mem[j];}
+\DoxyCodeLine{218     \}}
+\DoxyCodeLine{219   }
+\DoxyCodeLine{220   }
+\DoxyCodeLine{221   \mbox{\hyperlink{classMat}{Mat<eT>}} XI\_tmp;}
+\DoxyCodeLine{222   \mbox{\hyperlink{classCol}{uvec}}    XI\_indices;}
+\DoxyCodeLine{223   }
+\DoxyCodeLine{224   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} XI\_is\_sorted = XI.is\_sorted();}
+\DoxyCodeLine{225   }
+\DoxyCodeLine{226   \textcolor{keywordflow}{if}(XI\_is\_sorted == \textcolor{keyword}{false})}
+\DoxyCodeLine{227     \{}
+\DoxyCodeLine{228     XI\_indices = sort\_index(XI);}
+\DoxyCodeLine{229     }
+\DoxyCodeLine{230     \textcolor{keyword}{const} uword N = XI.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{231     }
+\DoxyCodeLine{232     XI\_tmp.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(XI);}
+\DoxyCodeLine{233     }
+\DoxyCodeLine{234     \textcolor{keyword}{const} uword* XI\_indices\_mem = XI\_indices.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{235     }
+\DoxyCodeLine{236     \textcolor{keyword}{const} eT* XI\_mem     = XI.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{237           eT* XI\_tmp\_mem = XI\_tmp.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{238     }
+\DoxyCodeLine{239     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{240       \{}
+\DoxyCodeLine{241       XI\_tmp\_mem[i] = XI\_mem[ XI\_indices\_mem[i] ];}
+\DoxyCodeLine{242       \}}
+\DoxyCodeLine{243     \}}
+\DoxyCodeLine{244   }
+\DoxyCodeLine{245   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& XI\_sorted = (XI\_is\_sorted) ? XI : XI\_tmp;}
+\DoxyCodeLine{246   }
+\DoxyCodeLine{247   }
+\DoxyCodeLine{248        \textcolor{keywordflow}{if}(sig == 10)  \{ interp1\_helper\_nearest(X\_sanitised, Y\_sanitised, XI\_sorted, YI, extrap\_val); \}}
+\DoxyCodeLine{249   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(sig == 20)  \{ interp1\_helper\_linear (X\_sanitised, Y\_sanitised, XI\_sorted, YI, extrap\_val); \}}
+\DoxyCodeLine{250   }
+\DoxyCodeLine{251   }
+\DoxyCodeLine{252   \textcolor{keywordflow}{if}( (XI\_is\_sorted == \textcolor{keyword}{false}) \&\& (YI.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}} > 0) )}
+\DoxyCodeLine{253     \{}
+\DoxyCodeLine{254     \mbox{\hyperlink{classMat}{Mat<eT>}} YI\_unsorted;}
+\DoxyCodeLine{255     }
+\DoxyCodeLine{256     YI\_unsorted.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(YI);}
+\DoxyCodeLine{257     }
+\DoxyCodeLine{258     \textcolor{keyword}{const} eT* YI\_mem          = YI.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{259           eT* YI\_unsorted\_mem = YI\_unsorted.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{260     }
+\DoxyCodeLine{261     \textcolor{keyword}{const} uword  N              = XI\_sorted.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{262     \textcolor{keyword}{const} uword* XI\_indices\_mem = XI\_indices.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{263     }
+\DoxyCodeLine{264     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{265       \{}
+\DoxyCodeLine{266       YI\_unsorted\_mem[ XI\_indices\_mem[i] ] = YI\_mem[i];}
+\DoxyCodeLine{267       \}}
+\DoxyCodeLine{268     }
+\DoxyCodeLine{269     YI.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(YI\_unsorted);}
+\DoxyCodeLine{270     \}}
+\DoxyCodeLine{271   \}}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{276 \textcolor{keyword}{inline}}
+\DoxyCodeLine{277 \textcolor{keyword}{typename}}
+\DoxyCodeLine{278 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{279   <}
+\DoxyCodeLine{280   \mbox{\hyperlink{structis__real}{is\_real<typename T1::elem\_type>::value}},}
+\DoxyCodeLine{281   \textcolor{keywordtype}{void}}
+\DoxyCodeLine{282   >::result}
+\DoxyCodeLine{283 interp1}
+\DoxyCodeLine{284   (}
+\DoxyCodeLine{285   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X,}
+\DoxyCodeLine{286   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& Y,}
+\DoxyCodeLine{287   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T3>}}\& XI,}
+\DoxyCodeLine{288          \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&     YI,}
+\DoxyCodeLine{289   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*                             method     = \textcolor{stringliteral}{"{}linear"{}},}
+\DoxyCodeLine{290   \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type            extrap\_val = \mbox{\hyperlink{classDatum}{Datum<typename T1::elem\_type>::nan}}}
+\DoxyCodeLine{291   )}
+\DoxyCodeLine{292   \{}
+\DoxyCodeLine{293   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{294   }
+\DoxyCodeLine{295   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{296   }
+\DoxyCodeLine{297   uword sig = 0;}
+\DoxyCodeLine{298   }
+\DoxyCodeLine{299   \textcolor{keywordflow}{if}(method    != \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{300   \textcolor{keywordflow}{if}(method[0] != \textcolor{keywordtype}{char}(0))}
+\DoxyCodeLine{301   \textcolor{keywordflow}{if}(method[1] != \textcolor{keywordtype}{char}(0))}
+\DoxyCodeLine{302     \{}
+\DoxyCodeLine{303     \textcolor{keyword}{const} \textcolor{keywordtype}{char} c1 = method[0];}
+\DoxyCodeLine{304     \textcolor{keyword}{const} \textcolor{keywordtype}{char} c2 = method[1];}
+\DoxyCodeLine{305     }
+\DoxyCodeLine{306          \textcolor{keywordflow}{if}(c1 == \textcolor{charliteral}{'n'})  \{ sig = 10; \}  \textcolor{comment}{// nearest neighbour}}
+\DoxyCodeLine{307     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(c1 == \textcolor{charliteral}{'l'})  \{ sig = 20; \}  \textcolor{comment}{// linear}}
+\DoxyCodeLine{308     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{309       \{}
+\DoxyCodeLine{310       \textcolor{keywordflow}{if}( (c1 == \textcolor{charliteral}{'*'}) \&\& (c2 == \textcolor{charliteral}{'n'}) )  \{ sig = 11; \}  \textcolor{comment}{// nearest neighour, assume monotonic increase in X and XI}}
+\DoxyCodeLine{311       \textcolor{keywordflow}{if}( (c1 == \textcolor{charliteral}{'*'}) \&\& (c2 == \textcolor{charliteral}{'l'}) )  \{ sig = 21; \}  \textcolor{comment}{// linear, assume monotonic increase in X and XI}}
+\DoxyCodeLine{312       \}}
+\DoxyCodeLine{313     \}}
+\DoxyCodeLine{314   }
+\DoxyCodeLine{315   arma\_debug\_check( (sig == 0), \textcolor{stringliteral}{"{}interp1(): unsupported interpolation type"{}} ); }
+\DoxyCodeLine{316   }
+\DoxyCodeLine{317   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}}  X\_tmp( X.get\_ref());}
+\DoxyCodeLine{318   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T2>}}  Y\_tmp( Y.get\_ref());}
+\DoxyCodeLine{319   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T3>}} XI\_tmp(XI.get\_ref());}
+\DoxyCodeLine{320   }
+\DoxyCodeLine{321   \textcolor{keywordflow}{if}( X\_tmp.is\_alias(YI) || Y\_tmp.is\_alias(YI) || XI\_tmp.is\_alias(YI) )}
+\DoxyCodeLine{322     \{}
+\DoxyCodeLine{323     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{324     }
+\DoxyCodeLine{325     interp1\_helper(X\_tmp.M, Y\_tmp.M, XI\_tmp.M, tmp, sig, extrap\_val);}
+\DoxyCodeLine{326     }
+\DoxyCodeLine{327     YI.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{328     \}}
+\DoxyCodeLine{329   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{330     \{}
+\DoxyCodeLine{331     interp1\_helper(X\_tmp.M, Y\_tmp.M, XI\_tmp.M, YI, sig, extrap\_val);}
+\DoxyCodeLine{332     \}}
+\DoxyCodeLine{333   \}}
+\DoxyCodeLine{334 }
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336 }
+
+\end{DoxyCode}

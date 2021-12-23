@@ -1,0 +1,120 @@
+\hypertarget{op__find__bones_8hpp_source}{}\doxysection{op\+\_\+find\+\_\+bones.\+hpp}
+\label{op__find__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_find\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_find\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classop__find}{op\_find}}}
+\DoxyCodeLine{24   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__col}{traits\_op\_col}}}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   \textcolor{keyword}{public}:}
+\DoxyCodeLine{27   }
+\DoxyCodeLine{28   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{29   \textcolor{keyword}{inline} \textcolor{keyword}{static} uword}
+\DoxyCodeLine{30   helper}
+\DoxyCodeLine{31     (}
+\DoxyCodeLine{32     \mbox{\hyperlink{classMat}{Mat<uword>}}\& indices,}
+\DoxyCodeLine{33     \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T1>}}\& X}
+\DoxyCodeLine{34     );}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type>}
+\DoxyCodeLine{37   \textcolor{keyword}{inline} \textcolor{keyword}{static} uword}
+\DoxyCodeLine{38   helper}
+\DoxyCodeLine{39     (}
+\DoxyCodeLine{40     \mbox{\hyperlink{classMat}{Mat<uword>}}\& indices,}
+\DoxyCodeLine{41     \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_type>}}\& X,}
+\DoxyCodeLine{42     \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__op__rel__only}{arma\_op\_rel\_only<op\_type>::result}}* junk1 = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{43     \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk2 = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{44     );}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type>}
+\DoxyCodeLine{47   \textcolor{keyword}{inline} \textcolor{keyword}{static} uword}
+\DoxyCodeLine{48   helper}
+\DoxyCodeLine{49     (}
+\DoxyCodeLine{50     \mbox{\hyperlink{classMat}{Mat<uword>}}\& indices,}
+\DoxyCodeLine{51     \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_type>}}\& X,}
+\DoxyCodeLine{52     \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__op__rel__only}{arma\_op\_rel\_only<op\_type>::result}}* junk1 = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{53     \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk2 = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{54     );}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type>}
+\DoxyCodeLine{57   \textcolor{keyword}{inline} \textcolor{keyword}{static} uword}
+\DoxyCodeLine{58   helper}
+\DoxyCodeLine{59     (}
+\DoxyCodeLine{60     \mbox{\hyperlink{classMat}{Mat<uword>}}\& indices,}
+\DoxyCodeLine{61     \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_type>}}\& X,}
+\DoxyCodeLine{62     \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__glue__rel__only}{arma\_glue\_rel\_only<glue\_type>::result}}* junk1 = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{63     \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk2 = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{64     \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T2::elem\_type>::result* junk3 = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{65     );}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_type>}
+\DoxyCodeLine{68   \textcolor{keyword}{inline} \textcolor{keyword}{static} uword}
+\DoxyCodeLine{69   helper}
+\DoxyCodeLine{70     (}
+\DoxyCodeLine{71     \mbox{\hyperlink{classMat}{Mat<uword>}}\& indices,}
+\DoxyCodeLine{72     \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_type>}}\& X,}
+\DoxyCodeLine{73     \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__glue__rel__only}{arma\_glue\_rel\_only<glue\_type>::result}}* junk1 = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{74     \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk2 = \textcolor{keyword}{nullptr},}
+\DoxyCodeLine{75     \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T2::elem\_type>::result}}* junk3 = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{76     );}
+\DoxyCodeLine{77   }
+\DoxyCodeLine{78   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{79   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<uword>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find>}}\& X);}
+\DoxyCodeLine{80   \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 \textcolor{keyword}{class }\mbox{\hyperlink{classop__find__simple}{op\_find\_simple}}}
+\DoxyCodeLine{85   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__col}{traits\_op\_col}}}
+\DoxyCodeLine{86   \{}
+\DoxyCodeLine{87   \textcolor{keyword}{public}:}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{90   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<uword>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find\_simple>}}\& X);}
+\DoxyCodeLine{91   \};}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{keyword}{class }\mbox{\hyperlink{classop__find__finite}{op\_find\_finite}}}
+\DoxyCodeLine{96   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__col}{traits\_op\_col}}}
+\DoxyCodeLine{97   \{}
+\DoxyCodeLine{98   \textcolor{keyword}{public}:}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{101   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<uword>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find\_finite>}}\& X);}
+\DoxyCodeLine{102   \};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{class }\mbox{\hyperlink{classop__find__nonfinite}{op\_find\_nonfinite}}}
+\DoxyCodeLine{107   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__col}{traits\_op\_col}}}
+\DoxyCodeLine{108   \{}
+\DoxyCodeLine{109   \textcolor{keyword}{public}:}
+\DoxyCodeLine{110   }
+\DoxyCodeLine{111   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{112   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<uword>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find\_nonfinite>}}\& X);}
+\DoxyCodeLine{113   \};}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 }
+
+\end{DoxyCode}

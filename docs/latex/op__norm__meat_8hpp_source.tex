@@ -1,0 +1,918 @@
+\hypertarget{op__norm__meat_8hpp_source}{}\doxysection{op\+\_\+norm\+\_\+meat.\+hpp}
+\label{op__norm__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_norm\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_norm\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 arma\_hot}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keyword}{typename} T1::pod\_type}
+\DoxyCodeLine{26 op\_norm::vec\_norm\_1(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   arma\_ignore(junk);}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_direct\_mem = (\mbox{\hyperlink{structis__Mat}{is\_Mat<typename Proxy<T1>::stored\_type}}>::value) || (\mbox{\hyperlink{structis__subview__col}{is\_subview\_col}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value) || (arma\_config::openmp \&\& \mbox{\hyperlink{classProxy}{Proxy<T1>::use\_mp}});}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keywordflow}{if}(use\_direct\_mem)}
+\DoxyCodeLine{34     \{}
+\DoxyCodeLine{35     \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<typename Proxy<T1>::stored\_type}}> tmp(P.Q);}
+\DoxyCodeLine{36     }
+\DoxyCodeLine{37     \textcolor{keywordflow}{return} op\_norm::vec\_norm\_1\_direct\_std(tmp.M);}
+\DoxyCodeLine{38     \}}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   T acc = T(0);}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{45     \{}
+\DoxyCodeLine{46     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = P.get\_ea();}
+\DoxyCodeLine{47     }
+\DoxyCodeLine{48     \textcolor{keyword}{const} uword N = P.get\_n\_elem();}
+\DoxyCodeLine{49     }
+\DoxyCodeLine{50     T acc1 = T(0);}
+\DoxyCodeLine{51     T acc2 = T(0);}
+\DoxyCodeLine{52     }
+\DoxyCodeLine{53     uword i,j;}
+\DoxyCodeLine{54     \textcolor{keywordflow}{for}(i=0, j=1; j<N; i+=2, j+=2)}
+\DoxyCodeLine{55       \{}
+\DoxyCodeLine{56       acc1 += std::abs(\mbox{\hyperlink{structA}{A}}[i]);}
+\DoxyCodeLine{57       acc2 += std::abs(\mbox{\hyperlink{structA}{A}}[j]);}
+\DoxyCodeLine{58       \}}
+\DoxyCodeLine{59     }
+\DoxyCodeLine{60     \textcolor{keywordflow}{if}(i < N)}
+\DoxyCodeLine{61       \{}
+\DoxyCodeLine{62       acc1 += std::abs(\mbox{\hyperlink{structA}{A}}[i]);}
+\DoxyCodeLine{63       \}}
+\DoxyCodeLine{64     }
+\DoxyCodeLine{65     acc = acc1 + acc2;}
+\DoxyCodeLine{66     \}}
+\DoxyCodeLine{67   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{68     \{}
+\DoxyCodeLine{69     \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{70     \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{71     }
+\DoxyCodeLine{72     \textcolor{keywordflow}{if}(n\_rows == 1)}
+\DoxyCodeLine{73       \{}
+\DoxyCodeLine{74       \textcolor{keywordflow}{for}(uword col=0; col<n\_cols; ++col)}
+\DoxyCodeLine{75         \{}
+\DoxyCodeLine{76         acc += std::abs(P.at(0,col));}
+\DoxyCodeLine{77         \}}
+\DoxyCodeLine{78       \}}
+\DoxyCodeLine{79     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{80       \{}
+\DoxyCodeLine{81       T acc1 = T(0);}
+\DoxyCodeLine{82       T acc2 = T(0);}
+\DoxyCodeLine{83       }
+\DoxyCodeLine{84       \textcolor{keywordflow}{for}(uword col=0; col<n\_cols; ++col)}
+\DoxyCodeLine{85         \{}
+\DoxyCodeLine{86         uword i,j;}
+\DoxyCodeLine{87         }
+\DoxyCodeLine{88         \textcolor{keywordflow}{for}(i=0, j=1; j<n\_rows; i+=2, j+=2)}
+\DoxyCodeLine{89           \{}
+\DoxyCodeLine{90           acc1 += std::abs(P.at(i,col));}
+\DoxyCodeLine{91           acc2 += std::abs(P.at(j,col));}
+\DoxyCodeLine{92           \}}
+\DoxyCodeLine{93         }
+\DoxyCodeLine{94         \textcolor{keywordflow}{if}(i < n\_rows)}
+\DoxyCodeLine{95           \{}
+\DoxyCodeLine{96           acc1 += std::abs(P.at(i,col));}
+\DoxyCodeLine{97           \}}
+\DoxyCodeLine{98         \}}
+\DoxyCodeLine{99       }
+\DoxyCodeLine{100       acc = acc1 + acc2;}
+\DoxyCodeLine{101       \}}
+\DoxyCodeLine{102     \}}
+\DoxyCodeLine{103   }
+\DoxyCodeLine{104   \textcolor{keywordflow}{return} acc;}
+\DoxyCodeLine{105   \}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{110 arma\_hot}
+\DoxyCodeLine{111 \textcolor{keyword}{inline}}
+\DoxyCodeLine{112 \textcolor{keyword}{typename} T1::pod\_type}
+\DoxyCodeLine{113 op\_norm::vec\_norm\_1(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk)}
+\DoxyCodeLine{114   \{}
+\DoxyCodeLine{115   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{116   arma\_ignore(junk);}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{119   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{120   }
+\DoxyCodeLine{121   T acc = T(0);}
+\DoxyCodeLine{122   }
+\DoxyCodeLine{123   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{124     \{}
+\DoxyCodeLine{125     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = P.get\_ea();}
+\DoxyCodeLine{126     }
+\DoxyCodeLine{127     \textcolor{keyword}{const} uword N = P.get\_n\_elem();}
+\DoxyCodeLine{128     }
+\DoxyCodeLine{129     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{130       \{}
+\DoxyCodeLine{131       \textcolor{keyword}{const} std::complex<T>\& X = \mbox{\hyperlink{structA}{A}}[i];}
+\DoxyCodeLine{132       }
+\DoxyCodeLine{133       \textcolor{keyword}{const} T a = X.real();}
+\DoxyCodeLine{134       \textcolor{keyword}{const} T b = X.imag();}
+\DoxyCodeLine{135       }
+\DoxyCodeLine{136       acc += std::sqrt( (a*a) + (b*b) );}
+\DoxyCodeLine{137       \}}
+\DoxyCodeLine{138     \}}
+\DoxyCodeLine{139   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{140     \{}
+\DoxyCodeLine{141     \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{142     \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{143     }
+\DoxyCodeLine{144     \textcolor{keywordflow}{if}(n\_rows == 1)}
+\DoxyCodeLine{145       \{}
+\DoxyCodeLine{146       \textcolor{keywordflow}{for}(uword col=0; col<n\_cols; ++col)}
+\DoxyCodeLine{147         \{}
+\DoxyCodeLine{148         \textcolor{keyword}{const} std::complex<T>\& X = P.at(0,col);}
+\DoxyCodeLine{149         }
+\DoxyCodeLine{150         \textcolor{keyword}{const} T a = X.real();}
+\DoxyCodeLine{151         \textcolor{keyword}{const} T b = X.imag();}
+\DoxyCodeLine{152         }
+\DoxyCodeLine{153         acc += std::sqrt( (a*a) + (b*b) );}
+\DoxyCodeLine{154         \}}
+\DoxyCodeLine{155       \}}
+\DoxyCodeLine{156     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{157       \{}
+\DoxyCodeLine{158       \textcolor{keywordflow}{for}(uword col=0; col<n\_cols; ++col)}
+\DoxyCodeLine{159       \textcolor{keywordflow}{for}(uword row=0; row<n\_rows; ++row)}
+\DoxyCodeLine{160         \{}
+\DoxyCodeLine{161         \textcolor{keyword}{const} std::complex<T>\& X = P.at(row,col);}
+\DoxyCodeLine{162         }
+\DoxyCodeLine{163         \textcolor{keyword}{const} T a = X.real();}
+\DoxyCodeLine{164         \textcolor{keyword}{const} T b = X.imag();}
+\DoxyCodeLine{165         }
+\DoxyCodeLine{166         acc += std::sqrt( (a*a) + (b*b) );}
+\DoxyCodeLine{167         \}}
+\DoxyCodeLine{168       \}}
+\DoxyCodeLine{169     \}}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   \textcolor{keywordflow}{if}( (acc != T(0)) \&\& arma\_isfinite(acc) )}
+\DoxyCodeLine{172     \{}
+\DoxyCodeLine{173     \textcolor{keywordflow}{return} acc;}
+\DoxyCodeLine{174     \}}
+\DoxyCodeLine{175   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{176     \{}
+\DoxyCodeLine{177     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_norm::vec\_norm\_1(): detected possible underflow or overflow"{}});}
+\DoxyCodeLine{178     }
+\DoxyCodeLine{179     \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<typename Proxy<T1>::stored\_type}}> R(P.Q);}
+\DoxyCodeLine{180     }
+\DoxyCodeLine{181     \textcolor{keyword}{const} uword N     = R.M.n\_elem;}
+\DoxyCodeLine{182     \textcolor{keyword}{const} eT*   R\_mem = R.M.memptr();}
+\DoxyCodeLine{183     }
+\DoxyCodeLine{184     T max\_val = priv::most\_neg<T>();}
+\DoxyCodeLine{185     }
+\DoxyCodeLine{186     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{187       \{}
+\DoxyCodeLine{188       \textcolor{keyword}{const} std::complex<T>\& X = R\_mem[i];}
+\DoxyCodeLine{189       }
+\DoxyCodeLine{190       \textcolor{keyword}{const} T a = std::abs(X.real());}
+\DoxyCodeLine{191       \textcolor{keyword}{const} T b = std::abs(X.imag());}
+\DoxyCodeLine{192       }
+\DoxyCodeLine{193       \textcolor{keywordflow}{if}(a > max\_val)  \{ max\_val = a; \}}
+\DoxyCodeLine{194       \textcolor{keywordflow}{if}(b > max\_val)  \{ max\_val = b; \}}
+\DoxyCodeLine{195       \}}
+\DoxyCodeLine{196     }
+\DoxyCodeLine{197     \textcolor{keywordflow}{if}(max\_val == T(0))  \{ \textcolor{keywordflow}{return} T(0); \}}
+\DoxyCodeLine{198     }
+\DoxyCodeLine{199     T alt\_acc = T(0);}
+\DoxyCodeLine{200     }
+\DoxyCodeLine{201     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{202       \{}
+\DoxyCodeLine{203       \textcolor{keyword}{const} std::complex<T>\& X = R\_mem[i];}
+\DoxyCodeLine{204       }
+\DoxyCodeLine{205       \textcolor{keyword}{const} T a = X.real() / max\_val;}
+\DoxyCodeLine{206       \textcolor{keyword}{const} T b = X.imag() / max\_val;}
+\DoxyCodeLine{207       }
+\DoxyCodeLine{208       alt\_acc += std::sqrt( (a*a) + (b*b) );}
+\DoxyCodeLine{209       \}}
+\DoxyCodeLine{210     }
+\DoxyCodeLine{211     \textcolor{keywordflow}{return} ( alt\_acc * max\_val );}
+\DoxyCodeLine{212     \}}
+\DoxyCodeLine{213   \}}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{218 arma\_hot}
+\DoxyCodeLine{219 \textcolor{keyword}{inline}}
+\DoxyCodeLine{220 eT}
+\DoxyCodeLine{221 op\_norm::vec\_norm\_1\_direct\_std(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)}
+\DoxyCodeLine{222   \{}
+\DoxyCodeLine{223   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{224   }
+\DoxyCodeLine{225   \textcolor{keyword}{const} uword N = X.n\_elem;}
+\DoxyCodeLine{226   \textcolor{keyword}{const} eT*   \mbox{\hyperlink{structA}{A}} = X.memptr();}
+\DoxyCodeLine{227   }
+\DoxyCodeLine{228   \textcolor{keywordflow}{if}(N < uword(32))}
+\DoxyCodeLine{229     \{}
+\DoxyCodeLine{230     \textcolor{keywordflow}{return} op\_norm::vec\_norm\_1\_direct\_mem(N,\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{231     \}}
+\DoxyCodeLine{232   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{233     \{}
+\DoxyCodeLine{234 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_ATLAS)}}
+\DoxyCodeLine{235       \{}
+\DoxyCodeLine{236       \textcolor{keywordflow}{return} atlas::cblas\_asum(N,\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{237       \}}
+\DoxyCodeLine{238 \textcolor{preprocessor}{    \#elif defined(ARMA\_USE\_BLAS)}}
+\DoxyCodeLine{239       \{}
+\DoxyCodeLine{240       \textcolor{keywordflow}{return} blas::asum(N,\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{241       \}}
+\DoxyCodeLine{242 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{243       \{}
+\DoxyCodeLine{244       \textcolor{keywordflow}{return} op\_norm::vec\_norm\_1\_direct\_mem(N,\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{245       \}}
+\DoxyCodeLine{246 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{247     \}}
+\DoxyCodeLine{248   \}}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{253 arma\_hot}
+\DoxyCodeLine{254 \textcolor{keyword}{inline}}
+\DoxyCodeLine{255 eT}
+\DoxyCodeLine{256 op\_norm::vec\_norm\_1\_direct\_mem(\textcolor{keyword}{const} uword N, \textcolor{keyword}{const} eT* \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{257   \{}
+\DoxyCodeLine{258   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{259   }
+\DoxyCodeLine{260 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS) || (defined(\_\_FINITE\_MATH\_ONLY\_\_) \&\& (\_\_FINITE\_MATH\_ONLY\_\_ > 0))}}
+\DoxyCodeLine{261     \{}
+\DoxyCodeLine{262     eT acc1 = eT(0);}
+\DoxyCodeLine{263     }
+\DoxyCodeLine{264     \textcolor{keywordflow}{if}(memory::is\_aligned(\mbox{\hyperlink{structA}{A}}))}
+\DoxyCodeLine{265       \{}
+\DoxyCodeLine{266       memory::mark\_as\_aligned(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{267       }
+\DoxyCodeLine{268       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ acc1 += std::abs(\mbox{\hyperlink{structA}{A}}[i]); \}}
+\DoxyCodeLine{269       \}}
+\DoxyCodeLine{270     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{271       \{}
+\DoxyCodeLine{272       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ acc1 += std::abs(\mbox{\hyperlink{structA}{A}}[i]); \}}
+\DoxyCodeLine{273       \}}
+\DoxyCodeLine{274     }
+\DoxyCodeLine{275     \textcolor{keywordflow}{return} acc1;}
+\DoxyCodeLine{276     \}}
+\DoxyCodeLine{277 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{278     \{}
+\DoxyCodeLine{279     eT acc1 = eT(0);}
+\DoxyCodeLine{280     eT acc2 = eT(0);}
+\DoxyCodeLine{281     }
+\DoxyCodeLine{282     uword j;}
+\DoxyCodeLine{283     }
+\DoxyCodeLine{284     \textcolor{keywordflow}{for}(j=1; j<N; j+=2)}
+\DoxyCodeLine{285       \{}
+\DoxyCodeLine{286       \textcolor{keyword}{const} eT tmp\_i = (*A);  \mbox{\hyperlink{structA}{A}}++;}
+\DoxyCodeLine{287       \textcolor{keyword}{const} eT tmp\_j = (*A);  \mbox{\hyperlink{structA}{A}}++;}
+\DoxyCodeLine{288       }
+\DoxyCodeLine{289       acc1 += std::abs(tmp\_i);}
+\DoxyCodeLine{290       acc2 += std::abs(tmp\_j);}
+\DoxyCodeLine{291       \}}
+\DoxyCodeLine{292     }
+\DoxyCodeLine{293     \textcolor{keywordflow}{if}((j-\/1) < N)}
+\DoxyCodeLine{294       \{}
+\DoxyCodeLine{295       acc1 += std::abs(*\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{296       \}}
+\DoxyCodeLine{297     }
+\DoxyCodeLine{298     \textcolor{keywordflow}{return} (acc1 + acc2);}
+\DoxyCodeLine{299     \}}
+\DoxyCodeLine{300 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{301   \}}
+\DoxyCodeLine{302 }
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304 }
+\DoxyCodeLine{305 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{306 arma\_hot}
+\DoxyCodeLine{307 \textcolor{keyword}{inline}}
+\DoxyCodeLine{308 \textcolor{keyword}{typename} T1::pod\_type}
+\DoxyCodeLine{309 op\_norm::vec\_norm\_2(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk)}
+\DoxyCodeLine{310   \{}
+\DoxyCodeLine{311   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{312   arma\_ignore(junk);}
+\DoxyCodeLine{313   }
+\DoxyCodeLine{314   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_direct\_mem = (\mbox{\hyperlink{structis__Mat}{is\_Mat<typename Proxy<T1>::stored\_type}}>::value) || (\mbox{\hyperlink{structis__subview__col}{is\_subview\_col}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value) || (arma\_config::openmp \&\& \mbox{\hyperlink{classProxy}{Proxy<T1>::use\_mp}});}
+\DoxyCodeLine{315   }
+\DoxyCodeLine{316   \textcolor{keywordflow}{if}(use\_direct\_mem)}
+\DoxyCodeLine{317     \{}
+\DoxyCodeLine{318     \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<typename Proxy<T1>::stored\_type}}> tmp(P.Q);}
+\DoxyCodeLine{319     }
+\DoxyCodeLine{320     \textcolor{keywordflow}{return} op\_norm::vec\_norm\_2\_direct\_std(tmp.M);}
+\DoxyCodeLine{321     \}}
+\DoxyCodeLine{322   }
+\DoxyCodeLine{323   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{324   }
+\DoxyCodeLine{325   T acc = T(0);}
+\DoxyCodeLine{326   }
+\DoxyCodeLine{327   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{328     \{}
+\DoxyCodeLine{329     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = P.get\_ea();}
+\DoxyCodeLine{330     }
+\DoxyCodeLine{331     \textcolor{keyword}{const} uword N = P.get\_n\_elem();}
+\DoxyCodeLine{332     }
+\DoxyCodeLine{333     T acc1 = T(0);}
+\DoxyCodeLine{334     T acc2 = T(0);}
+\DoxyCodeLine{335     }
+\DoxyCodeLine{336     uword i,j;}
+\DoxyCodeLine{337     }
+\DoxyCodeLine{338     \textcolor{keywordflow}{for}(i=0, j=1; j<N; i+=2, j+=2)}
+\DoxyCodeLine{339       \{}
+\DoxyCodeLine{340       \textcolor{keyword}{const} T tmp\_i = \mbox{\hyperlink{structA}{A}}[i];}
+\DoxyCodeLine{341       \textcolor{keyword}{const} T tmp\_j = \mbox{\hyperlink{structA}{A}}[j];}
+\DoxyCodeLine{342       }
+\DoxyCodeLine{343       acc1 += tmp\_i * tmp\_i;}
+\DoxyCodeLine{344       acc2 += tmp\_j * tmp\_j;}
+\DoxyCodeLine{345       \}}
+\DoxyCodeLine{346     }
+\DoxyCodeLine{347     \textcolor{keywordflow}{if}(i < N)}
+\DoxyCodeLine{348       \{}
+\DoxyCodeLine{349       \textcolor{keyword}{const} T tmp\_i = \mbox{\hyperlink{structA}{A}}[i];}
+\DoxyCodeLine{350       }
+\DoxyCodeLine{351       acc1 += tmp\_i * tmp\_i;}
+\DoxyCodeLine{352       \}}
+\DoxyCodeLine{353     }
+\DoxyCodeLine{354     acc = acc1 + acc2;}
+\DoxyCodeLine{355     \}}
+\DoxyCodeLine{356   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{357     \{}
+\DoxyCodeLine{358     \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{359     \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{360     }
+\DoxyCodeLine{361     \textcolor{keywordflow}{if}(n\_rows == 1)}
+\DoxyCodeLine{362       \{}
+\DoxyCodeLine{363       \textcolor{keywordflow}{for}(uword col=0; col<n\_cols; ++col)}
+\DoxyCodeLine{364         \{}
+\DoxyCodeLine{365         \textcolor{keyword}{const} T tmp = P.at(0,col);}
+\DoxyCodeLine{366         }
+\DoxyCodeLine{367         acc += tmp * tmp;}
+\DoxyCodeLine{368         \}}
+\DoxyCodeLine{369       \}}
+\DoxyCodeLine{370     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{371       \{}
+\DoxyCodeLine{372       \textcolor{keywordflow}{for}(uword col=0; col<n\_cols; ++col)}
+\DoxyCodeLine{373         \{}
+\DoxyCodeLine{374         uword i,j;}
+\DoxyCodeLine{375         \textcolor{keywordflow}{for}(i=0, j=1; j<n\_rows; i+=2, j+=2)}
+\DoxyCodeLine{376           \{}
+\DoxyCodeLine{377           \textcolor{keyword}{const} T tmp\_i = P.at(i,col);}
+\DoxyCodeLine{378           \textcolor{keyword}{const} T tmp\_j = P.at(j,col);}
+\DoxyCodeLine{379           }
+\DoxyCodeLine{380           acc += tmp\_i * tmp\_i;}
+\DoxyCodeLine{381           acc += tmp\_j * tmp\_j;}
+\DoxyCodeLine{382           \}}
+\DoxyCodeLine{383         }
+\DoxyCodeLine{384         \textcolor{keywordflow}{if}(i < n\_rows)}
+\DoxyCodeLine{385           \{}
+\DoxyCodeLine{386           \textcolor{keyword}{const} T tmp\_i = P.at(i,col);}
+\DoxyCodeLine{387           }
+\DoxyCodeLine{388           acc += tmp\_i * tmp\_i;}
+\DoxyCodeLine{389           \}}
+\DoxyCodeLine{390         \}}
+\DoxyCodeLine{391       \}}
+\DoxyCodeLine{392     \}}
+\DoxyCodeLine{393   }
+\DoxyCodeLine{394   }
+\DoxyCodeLine{395   \textcolor{keyword}{const} T sqrt\_acc = std::sqrt(acc);}
+\DoxyCodeLine{396   }
+\DoxyCodeLine{397   \textcolor{keywordflow}{if}( (sqrt\_acc != T(0)) \&\& arma\_isfinite(sqrt\_acc) )}
+\DoxyCodeLine{398     \{}
+\DoxyCodeLine{399     \textcolor{keywordflow}{return} sqrt\_acc;}
+\DoxyCodeLine{400     \}}
+\DoxyCodeLine{401   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{402     \{}
+\DoxyCodeLine{403     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_norm::vec\_norm\_2(): detected possible underflow or overflow"{}});}
+\DoxyCodeLine{404     }
+\DoxyCodeLine{405     \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<typename Proxy<T1>::stored\_type}}> tmp(P.Q);}
+\DoxyCodeLine{406     }
+\DoxyCodeLine{407     \textcolor{keywordflow}{return} op\_norm::vec\_norm\_2\_direct\_robust(tmp.M);}
+\DoxyCodeLine{408     \}}
+\DoxyCodeLine{409   \}}
+\DoxyCodeLine{410 }
+\DoxyCodeLine{411 }
+\DoxyCodeLine{412 }
+\DoxyCodeLine{413 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{414 arma\_hot}
+\DoxyCodeLine{415 \textcolor{keyword}{inline}}
+\DoxyCodeLine{416 \textcolor{keyword}{typename} T1::pod\_type}
+\DoxyCodeLine{417 op\_norm::vec\_norm\_2(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk)}
+\DoxyCodeLine{418   \{}
+\DoxyCodeLine{419   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{420   arma\_ignore(junk);}
+\DoxyCodeLine{421   }
+\DoxyCodeLine{422   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{423   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{424   }
+\DoxyCodeLine{425   T acc = T(0);}
+\DoxyCodeLine{426   }
+\DoxyCodeLine{427   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{428     \{}
+\DoxyCodeLine{429     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = P.get\_ea();}
+\DoxyCodeLine{430     }
+\DoxyCodeLine{431     \textcolor{keyword}{const} uword N = P.get\_n\_elem();}
+\DoxyCodeLine{432     }
+\DoxyCodeLine{433     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{434       \{}
+\DoxyCodeLine{435       \textcolor{keyword}{const} std::complex<T>\& X = \mbox{\hyperlink{structA}{A}}[i];}
+\DoxyCodeLine{436       }
+\DoxyCodeLine{437       \textcolor{keyword}{const} T a = X.real();}
+\DoxyCodeLine{438       \textcolor{keyword}{const} T b = X.imag();}
+\DoxyCodeLine{439       }
+\DoxyCodeLine{440       acc += (a*a) + (b*b);}
+\DoxyCodeLine{441       \}}
+\DoxyCodeLine{442     \}}
+\DoxyCodeLine{443   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{444     \{}
+\DoxyCodeLine{445     \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{446     \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{447     }
+\DoxyCodeLine{448     \textcolor{keywordflow}{if}(n\_rows == 1)}
+\DoxyCodeLine{449       \{}
+\DoxyCodeLine{450       \textcolor{keywordflow}{for}(uword col=0; col<n\_cols; ++col)}
+\DoxyCodeLine{451         \{}
+\DoxyCodeLine{452         \textcolor{keyword}{const} std::complex<T>\& X = P.at(0,col);}
+\DoxyCodeLine{453         }
+\DoxyCodeLine{454         \textcolor{keyword}{const} T a = X.real();}
+\DoxyCodeLine{455         \textcolor{keyword}{const} T b = X.imag();}
+\DoxyCodeLine{456         }
+\DoxyCodeLine{457         acc += (a*a) + (b*b);}
+\DoxyCodeLine{458         \}}
+\DoxyCodeLine{459       \}}
+\DoxyCodeLine{460     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{461       \{}
+\DoxyCodeLine{462       \textcolor{keywordflow}{for}(uword col=0; col<n\_cols; ++col)}
+\DoxyCodeLine{463       \textcolor{keywordflow}{for}(uword row=0; row<n\_rows; ++row)}
+\DoxyCodeLine{464         \{}
+\DoxyCodeLine{465         \textcolor{keyword}{const} std::complex<T>\& X = P.at(row,col);}
+\DoxyCodeLine{466         }
+\DoxyCodeLine{467         \textcolor{keyword}{const} T a = X.real();}
+\DoxyCodeLine{468         \textcolor{keyword}{const} T b = X.imag();}
+\DoxyCodeLine{469         }
+\DoxyCodeLine{470         acc += (a*a) + (b*b);}
+\DoxyCodeLine{471         \}}
+\DoxyCodeLine{472       \}}
+\DoxyCodeLine{473     \}}
+\DoxyCodeLine{474   }
+\DoxyCodeLine{475   \textcolor{keyword}{const} T sqrt\_acc = std::sqrt(acc);}
+\DoxyCodeLine{476   }
+\DoxyCodeLine{477   \textcolor{keywordflow}{if}( (sqrt\_acc != T(0)) \&\& arma\_isfinite(sqrt\_acc) )}
+\DoxyCodeLine{478     \{}
+\DoxyCodeLine{479     \textcolor{keywordflow}{return} sqrt\_acc;}
+\DoxyCodeLine{480     \}}
+\DoxyCodeLine{481   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{482     \{}
+\DoxyCodeLine{483     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_norm::vec\_norm\_2(): detected possible underflow or overflow"{}});}
+\DoxyCodeLine{484     }
+\DoxyCodeLine{485     \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<typename Proxy<T1>::stored\_type}}> R(P.Q);}
+\DoxyCodeLine{486     }
+\DoxyCodeLine{487     \textcolor{keyword}{const} uword N     = R.M.n\_elem;}
+\DoxyCodeLine{488     \textcolor{keyword}{const} eT*   R\_mem = R.M.memptr();}
+\DoxyCodeLine{489     }
+\DoxyCodeLine{490     T max\_val = priv::most\_neg<T>();}
+\DoxyCodeLine{491     }
+\DoxyCodeLine{492     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{493       \{}
+\DoxyCodeLine{494       \textcolor{keyword}{const} T val\_i = std::abs(R\_mem[i]);}
+\DoxyCodeLine{495       }
+\DoxyCodeLine{496       \textcolor{keywordflow}{if}(val\_i > max\_val)  \{ max\_val = val\_i; \}}
+\DoxyCodeLine{497       \}}
+\DoxyCodeLine{498     }
+\DoxyCodeLine{499     \textcolor{keywordflow}{if}(max\_val == T(0))  \{ \textcolor{keywordflow}{return} T(0); \}}
+\DoxyCodeLine{500     }
+\DoxyCodeLine{501     T alt\_acc = T(0);}
+\DoxyCodeLine{502     }
+\DoxyCodeLine{503     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{504       \{}
+\DoxyCodeLine{505       \textcolor{keyword}{const} T val\_i = std::abs(R\_mem[i]) / max\_val;}
+\DoxyCodeLine{506       }
+\DoxyCodeLine{507       alt\_acc += val\_i * val\_i;}
+\DoxyCodeLine{508       \}}
+\DoxyCodeLine{509     }
+\DoxyCodeLine{510     \textcolor{keywordflow}{return} ( std::sqrt(alt\_acc) * max\_val ); }
+\DoxyCodeLine{511     \}}
+\DoxyCodeLine{512   \}}
+\DoxyCodeLine{513 }
+\DoxyCodeLine{514 }
+\DoxyCodeLine{515 }
+\DoxyCodeLine{516 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{517 arma\_hot}
+\DoxyCodeLine{518 \textcolor{keyword}{inline}}
+\DoxyCodeLine{519 eT}
+\DoxyCodeLine{520 op\_norm::vec\_norm\_2\_direct\_std(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)}
+\DoxyCodeLine{521   \{}
+\DoxyCodeLine{522   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{523   }
+\DoxyCodeLine{524   \textcolor{keyword}{const} uword N = X.n\_elem;}
+\DoxyCodeLine{525   \textcolor{keyword}{const} eT*   \mbox{\hyperlink{structA}{A}} = X.memptr();}
+\DoxyCodeLine{526   }
+\DoxyCodeLine{527   eT result;}
+\DoxyCodeLine{528   }
+\DoxyCodeLine{529   \textcolor{keywordflow}{if}(N < uword(32))}
+\DoxyCodeLine{530     \{}
+\DoxyCodeLine{531     result = op\_norm::vec\_norm\_2\_direct\_mem(N,\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{532     \}}
+\DoxyCodeLine{533   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{534     \{}
+\DoxyCodeLine{535 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_ATLAS)}}
+\DoxyCodeLine{536       \{}
+\DoxyCodeLine{537       result = atlas::cblas\_nrm2(N,\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{538       \}}
+\DoxyCodeLine{539 \textcolor{preprocessor}{    \#elif defined(ARMA\_USE\_BLAS)}}
+\DoxyCodeLine{540       \{}
+\DoxyCodeLine{541       result = blas::nrm2(N,\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{542       \}}
+\DoxyCodeLine{543 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{544       \{}
+\DoxyCodeLine{545       result = op\_norm::vec\_norm\_2\_direct\_mem(N,\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{546       \}}
+\DoxyCodeLine{547 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{548     \}}
+\DoxyCodeLine{549   }
+\DoxyCodeLine{550   \textcolor{keywordflow}{if}( (result != eT(0)) \&\& arma\_isfinite(result) )}
+\DoxyCodeLine{551     \{}
+\DoxyCodeLine{552     \textcolor{keywordflow}{return} result;}
+\DoxyCodeLine{553     \}}
+\DoxyCodeLine{554   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{555     \{}
+\DoxyCodeLine{556     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_norm::vec\_norm\_2\_direct\_std(): detected possible underflow or overflow"{}});}
+\DoxyCodeLine{557     }
+\DoxyCodeLine{558     \textcolor{keywordflow}{return} op\_norm::vec\_norm\_2\_direct\_robust(X);}
+\DoxyCodeLine{559     \}}
+\DoxyCodeLine{560   \}}
+\DoxyCodeLine{561 }
+\DoxyCodeLine{562 }
+\DoxyCodeLine{563 }
+\DoxyCodeLine{564 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{565 arma\_hot}
+\DoxyCodeLine{566 \textcolor{keyword}{inline}}
+\DoxyCodeLine{567 eT}
+\DoxyCodeLine{568 op\_norm::vec\_norm\_2\_direct\_mem(\textcolor{keyword}{const} uword N, \textcolor{keyword}{const} eT* \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{569   \{}
+\DoxyCodeLine{570   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{571   }
+\DoxyCodeLine{572   eT acc;}
+\DoxyCodeLine{573   }
+\DoxyCodeLine{574 \textcolor{preprocessor}{  \#if defined(ARMA\_SIMPLE\_LOOPS) || (defined(\_\_FINITE\_MATH\_ONLY\_\_) \&\& (\_\_FINITE\_MATH\_ONLY\_\_ > 0))}}
+\DoxyCodeLine{575     \{}
+\DoxyCodeLine{576     eT acc1 = eT(0);}
+\DoxyCodeLine{577     }
+\DoxyCodeLine{578     \textcolor{keywordflow}{if}(memory::is\_aligned(\mbox{\hyperlink{structA}{A}}))}
+\DoxyCodeLine{579       \{}
+\DoxyCodeLine{580       memory::mark\_as\_aligned(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{581       }
+\DoxyCodeLine{582       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ \textcolor{keyword}{const} eT tmp\_i = \mbox{\hyperlink{structA}{A}}[i];  acc1 += tmp\_i * tmp\_i; \}}
+\DoxyCodeLine{583       \}}
+\DoxyCodeLine{584     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{585       \{}
+\DoxyCodeLine{586       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ \textcolor{keyword}{const} eT tmp\_i = \mbox{\hyperlink{structA}{A}}[i];  acc1 += tmp\_i * tmp\_i; \}}
+\DoxyCodeLine{587       \}}
+\DoxyCodeLine{588     }
+\DoxyCodeLine{589     acc = acc1;}
+\DoxyCodeLine{590     \}}
+\DoxyCodeLine{591 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{592     \{}
+\DoxyCodeLine{593     eT acc1 = eT(0);}
+\DoxyCodeLine{594     eT acc2 = eT(0);}
+\DoxyCodeLine{595     }
+\DoxyCodeLine{596     uword j;}
+\DoxyCodeLine{597     }
+\DoxyCodeLine{598     \textcolor{keywordflow}{for}(j=1; j<N; j+=2)}
+\DoxyCodeLine{599       \{}
+\DoxyCodeLine{600       \textcolor{keyword}{const} eT tmp\_i = (*A);  \mbox{\hyperlink{structA}{A}}++;}
+\DoxyCodeLine{601       \textcolor{keyword}{const} eT tmp\_j = (*A);  \mbox{\hyperlink{structA}{A}}++;}
+\DoxyCodeLine{602       }
+\DoxyCodeLine{603       acc1 += tmp\_i * tmp\_i;}
+\DoxyCodeLine{604       acc2 += tmp\_j * tmp\_j;}
+\DoxyCodeLine{605       \}}
+\DoxyCodeLine{606     }
+\DoxyCodeLine{607     \textcolor{keywordflow}{if}((j-\/1) < N)}
+\DoxyCodeLine{608       \{}
+\DoxyCodeLine{609       \textcolor{keyword}{const} eT tmp\_i = (*A);}
+\DoxyCodeLine{610       }
+\DoxyCodeLine{611       acc1 += tmp\_i * tmp\_i;}
+\DoxyCodeLine{612       \}}
+\DoxyCodeLine{613     }
+\DoxyCodeLine{614     acc = acc1 + acc2;}
+\DoxyCodeLine{615     \}}
+\DoxyCodeLine{616 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{617   }
+\DoxyCodeLine{618   \textcolor{keywordflow}{return} std::sqrt(acc);}
+\DoxyCodeLine{619   \}}
+\DoxyCodeLine{620 }
+\DoxyCodeLine{621 }
+\DoxyCodeLine{622 }
+\DoxyCodeLine{623 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{624 arma\_hot}
+\DoxyCodeLine{625 \textcolor{keyword}{inline}}
+\DoxyCodeLine{626 eT}
+\DoxyCodeLine{627 op\_norm::vec\_norm\_2\_direct\_robust(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)}
+\DoxyCodeLine{628   \{}
+\DoxyCodeLine{629   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{630   }
+\DoxyCodeLine{631   \textcolor{keyword}{const} uword N = X.n\_elem;}
+\DoxyCodeLine{632   \textcolor{keyword}{const} eT*   \mbox{\hyperlink{structA}{A}} = X.memptr();}
+\DoxyCodeLine{633   }
+\DoxyCodeLine{634   eT max\_val = priv::most\_neg<eT>();}
+\DoxyCodeLine{635   }
+\DoxyCodeLine{636   uword j;}
+\DoxyCodeLine{637   }
+\DoxyCodeLine{638   \textcolor{keywordflow}{for}(j=1; j<N; j+=2)}
+\DoxyCodeLine{639     \{}
+\DoxyCodeLine{640     eT val\_i = (*A);  \mbox{\hyperlink{structA}{A}}++;}
+\DoxyCodeLine{641     eT val\_j = (*A);  \mbox{\hyperlink{structA}{A}}++;}
+\DoxyCodeLine{642     }
+\DoxyCodeLine{643     val\_i = std::abs(val\_i);}
+\DoxyCodeLine{644     val\_j = std::abs(val\_j);}
+\DoxyCodeLine{645     }
+\DoxyCodeLine{646     \textcolor{keywordflow}{if}(val\_i > max\_val)  \{ max\_val = val\_i; \}}
+\DoxyCodeLine{647     \textcolor{keywordflow}{if}(val\_j > max\_val)  \{ max\_val = val\_j; \}}
+\DoxyCodeLine{648     \}}
+\DoxyCodeLine{649   }
+\DoxyCodeLine{650   \textcolor{keywordflow}{if}((j-\/1) < N)}
+\DoxyCodeLine{651     \{}
+\DoxyCodeLine{652     \textcolor{keyword}{const} eT val\_i = std::abs(*\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{653     }
+\DoxyCodeLine{654     \textcolor{keywordflow}{if}(val\_i > max\_val)  \{ max\_val = val\_i; \}}
+\DoxyCodeLine{655     \}}
+\DoxyCodeLine{656   }
+\DoxyCodeLine{657   \textcolor{keywordflow}{if}(max\_val == eT(0))  \{ \textcolor{keywordflow}{return} eT(0); \}}
+\DoxyCodeLine{658   }
+\DoxyCodeLine{659   \textcolor{keyword}{const} eT* \mbox{\hyperlink{structB}{B}} = X.memptr();}
+\DoxyCodeLine{660   }
+\DoxyCodeLine{661   eT acc1 = eT(0);}
+\DoxyCodeLine{662   eT acc2 = eT(0);}
+\DoxyCodeLine{663   }
+\DoxyCodeLine{664   \textcolor{keywordflow}{for}(j=1; j<N; j+=2)}
+\DoxyCodeLine{665     \{}
+\DoxyCodeLine{666     eT val\_i = (*B);  \mbox{\hyperlink{structB}{B}}++;}
+\DoxyCodeLine{667     eT val\_j = (*B);  \mbox{\hyperlink{structB}{B}}++;}
+\DoxyCodeLine{668     }
+\DoxyCodeLine{669     val\_i /= max\_val;}
+\DoxyCodeLine{670     val\_j /= max\_val;}
+\DoxyCodeLine{671     }
+\DoxyCodeLine{672     acc1 += val\_i * val\_i;}
+\DoxyCodeLine{673     acc2 += val\_j * val\_j;}
+\DoxyCodeLine{674     \}}
+\DoxyCodeLine{675   }
+\DoxyCodeLine{676   \textcolor{keywordflow}{if}((j-\/1) < N)}
+\DoxyCodeLine{677     \{}
+\DoxyCodeLine{678     \textcolor{keyword}{const} eT val\_i = (*B) / max\_val;}
+\DoxyCodeLine{679     }
+\DoxyCodeLine{680     acc1 += val\_i * val\_i;}
+\DoxyCodeLine{681     \}}
+\DoxyCodeLine{682   }
+\DoxyCodeLine{683   \textcolor{keywordflow}{return} ( std::sqrt(acc1 + acc2) * max\_val ); }
+\DoxyCodeLine{684   \}}
+\DoxyCodeLine{685 }
+\DoxyCodeLine{686 }
+\DoxyCodeLine{687 }
+\DoxyCodeLine{688 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{689 arma\_hot}
+\DoxyCodeLine{690 \textcolor{keyword}{inline}}
+\DoxyCodeLine{691 \textcolor{keyword}{typename} T1::pod\_type}
+\DoxyCodeLine{692 op\_norm::vec\_norm\_k(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} \textcolor{keywordtype}{int} k)}
+\DoxyCodeLine{693   \{}
+\DoxyCodeLine{694   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{695   }
+\DoxyCodeLine{696   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{697   }
+\DoxyCodeLine{698   T acc = T(0);}
+\DoxyCodeLine{699   }
+\DoxyCodeLine{700   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{701     \{}
+\DoxyCodeLine{702     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = P.get\_ea();}
+\DoxyCodeLine{703     }
+\DoxyCodeLine{704     \textcolor{keyword}{const} uword N = P.get\_n\_elem();}
+\DoxyCodeLine{705     }
+\DoxyCodeLine{706     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{707       \{}
+\DoxyCodeLine{708       acc += std::pow(std::abs(\mbox{\hyperlink{structA}{A}}[i]), k);}
+\DoxyCodeLine{709       \}}
+\DoxyCodeLine{710     \}}
+\DoxyCodeLine{711   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{712     \{}
+\DoxyCodeLine{713     \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{714     \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{715     }
+\DoxyCodeLine{716     \textcolor{keywordflow}{if}(n\_rows != 1)}
+\DoxyCodeLine{717       \{}
+\DoxyCodeLine{718       \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{719       \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{720         \{}
+\DoxyCodeLine{721         acc += std::pow(std::abs(P.at(row,col)), k);}
+\DoxyCodeLine{722         \}}
+\DoxyCodeLine{723       \}}
+\DoxyCodeLine{724     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{725       \{}
+\DoxyCodeLine{726       \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{727         \{}
+\DoxyCodeLine{728         acc += std::pow(std::abs(P.at(0,col)), k);}
+\DoxyCodeLine{729         \}}
+\DoxyCodeLine{730       \}}
+\DoxyCodeLine{731     \}}
+\DoxyCodeLine{732   }
+\DoxyCodeLine{733   \textcolor{keywordflow}{return} std::pow(acc, T(1)/T(k));}
+\DoxyCodeLine{734   \}}
+\DoxyCodeLine{735 }
+\DoxyCodeLine{736 }
+\DoxyCodeLine{737 }
+\DoxyCodeLine{738 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{739 arma\_hot}
+\DoxyCodeLine{740 \textcolor{keyword}{inline}}
+\DoxyCodeLine{741 \textcolor{keyword}{typename} T1::pod\_type}
+\DoxyCodeLine{742 op\_norm::vec\_norm\_max(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P)}
+\DoxyCodeLine{743   \{}
+\DoxyCodeLine{744   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{745   }
+\DoxyCodeLine{746   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{747   }
+\DoxyCodeLine{748   \textcolor{keyword}{const} uword N = P.get\_n\_elem();}
+\DoxyCodeLine{749   }
+\DoxyCodeLine{750   T max\_val = (N != 1) ? priv::most\_neg<T>() : std::abs(P[0]);}
+\DoxyCodeLine{751   }
+\DoxyCodeLine{752   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{753     \{}
+\DoxyCodeLine{754     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = P.get\_ea();}
+\DoxyCodeLine{755     }
+\DoxyCodeLine{756     uword i,j;}
+\DoxyCodeLine{757     \textcolor{keywordflow}{for}(i=0, j=1; j<N; i+=2, j+=2)}
+\DoxyCodeLine{758       \{}
+\DoxyCodeLine{759       \textcolor{keyword}{const} T tmp\_i = std::abs(\mbox{\hyperlink{structA}{A}}[i]);}
+\DoxyCodeLine{760       \textcolor{keyword}{const} T tmp\_j = std::abs(\mbox{\hyperlink{structA}{A}}[j]);}
+\DoxyCodeLine{761       }
+\DoxyCodeLine{762       \textcolor{keywordflow}{if}(max\_val < tmp\_i) \{ max\_val = tmp\_i; \}}
+\DoxyCodeLine{763       \textcolor{keywordflow}{if}(max\_val < tmp\_j) \{ max\_val = tmp\_j; \}}
+\DoxyCodeLine{764       \}}
+\DoxyCodeLine{765     }
+\DoxyCodeLine{766     \textcolor{keywordflow}{if}(i < N)}
+\DoxyCodeLine{767       \{}
+\DoxyCodeLine{768       \textcolor{keyword}{const} T tmp\_i = std::abs(\mbox{\hyperlink{structA}{A}}[i]);}
+\DoxyCodeLine{769       }
+\DoxyCodeLine{770       \textcolor{keywordflow}{if}(max\_val < tmp\_i) \{ max\_val = tmp\_i; \}}
+\DoxyCodeLine{771       \}}
+\DoxyCodeLine{772     \}}
+\DoxyCodeLine{773   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{774     \{}
+\DoxyCodeLine{775     \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{776     \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{777     }
+\DoxyCodeLine{778     \textcolor{keywordflow}{if}(n\_rows != 1)}
+\DoxyCodeLine{779       \{}
+\DoxyCodeLine{780       \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{781       \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{782         \{}
+\DoxyCodeLine{783         \textcolor{keyword}{const} T tmp = std::abs(P.at(row,col));}
+\DoxyCodeLine{784         }
+\DoxyCodeLine{785         \textcolor{keywordflow}{if}(max\_val < tmp) \{ max\_val = tmp; \}}
+\DoxyCodeLine{786         \}}
+\DoxyCodeLine{787       \}}
+\DoxyCodeLine{788     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{789       \{}
+\DoxyCodeLine{790       \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{791         \{}
+\DoxyCodeLine{792         \textcolor{keyword}{const} T tmp = std::abs(P.at(0,col));}
+\DoxyCodeLine{793         }
+\DoxyCodeLine{794         \textcolor{keywordflow}{if}(max\_val < tmp) \{ max\_val = tmp; \}}
+\DoxyCodeLine{795         \}}
+\DoxyCodeLine{796       \}}
+\DoxyCodeLine{797     \}}
+\DoxyCodeLine{798   }
+\DoxyCodeLine{799   \textcolor{keywordflow}{return} max\_val;}
+\DoxyCodeLine{800   \}}
+\DoxyCodeLine{801 }
+\DoxyCodeLine{802 }
+\DoxyCodeLine{803 }
+\DoxyCodeLine{804 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{805 arma\_hot}
+\DoxyCodeLine{806 \textcolor{keyword}{inline}}
+\DoxyCodeLine{807 \textcolor{keyword}{typename} T1::pod\_type}
+\DoxyCodeLine{808 op\_norm::vec\_norm\_min(\textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P)}
+\DoxyCodeLine{809   \{}
+\DoxyCodeLine{810   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{811   }
+\DoxyCodeLine{812   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{813   }
+\DoxyCodeLine{814   \textcolor{keyword}{const} uword N = P.get\_n\_elem();}
+\DoxyCodeLine{815   }
+\DoxyCodeLine{816   T min\_val = (N != 1) ? priv::most\_pos<T>() : std::abs(P[0]);}
+\DoxyCodeLine{817   }
+\DoxyCodeLine{818   \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{819     \{}
+\DoxyCodeLine{820     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = P.get\_ea();}
+\DoxyCodeLine{821     }
+\DoxyCodeLine{822     uword i,j;}
+\DoxyCodeLine{823     \textcolor{keywordflow}{for}(i=0, j=1; j<N; i+=2, j+=2)}
+\DoxyCodeLine{824       \{}
+\DoxyCodeLine{825       \textcolor{keyword}{const} T tmp\_i = std::abs(\mbox{\hyperlink{structA}{A}}[i]);}
+\DoxyCodeLine{826       \textcolor{keyword}{const} T tmp\_j = std::abs(\mbox{\hyperlink{structA}{A}}[j]);}
+\DoxyCodeLine{827       }
+\DoxyCodeLine{828       \textcolor{keywordflow}{if}(min\_val > tmp\_i) \{ min\_val = tmp\_i; \}}
+\DoxyCodeLine{829       \textcolor{keywordflow}{if}(min\_val > tmp\_j) \{ min\_val = tmp\_j; \}}
+\DoxyCodeLine{830       \}}
+\DoxyCodeLine{831     }
+\DoxyCodeLine{832     \textcolor{keywordflow}{if}(i < N)}
+\DoxyCodeLine{833       \{}
+\DoxyCodeLine{834       \textcolor{keyword}{const} T tmp\_i = std::abs(\mbox{\hyperlink{structA}{A}}[i]);}
+\DoxyCodeLine{835       }
+\DoxyCodeLine{836       \textcolor{keywordflow}{if}(min\_val > tmp\_i) \{ min\_val = tmp\_i; \}}
+\DoxyCodeLine{837       \}}
+\DoxyCodeLine{838     \}}
+\DoxyCodeLine{839   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{840     \{}
+\DoxyCodeLine{841     \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{842     \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{843     }
+\DoxyCodeLine{844     \textcolor{keywordflow}{if}(n\_rows != 1)}
+\DoxyCodeLine{845       \{}
+\DoxyCodeLine{846       \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{847       \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{848         \{}
+\DoxyCodeLine{849         \textcolor{keyword}{const} T tmp = std::abs(P.at(row,col));}
+\DoxyCodeLine{850         }
+\DoxyCodeLine{851         \textcolor{keywordflow}{if}(min\_val > tmp) \{ min\_val = tmp; \}}
+\DoxyCodeLine{852         \}}
+\DoxyCodeLine{853       \}}
+\DoxyCodeLine{854     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{855       \{}
+\DoxyCodeLine{856       \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{857         \{}
+\DoxyCodeLine{858         \textcolor{keyword}{const} T tmp = std::abs(P.at(0,col));}
+\DoxyCodeLine{859         }
+\DoxyCodeLine{860         \textcolor{keywordflow}{if}(min\_val > tmp) \{ min\_val = tmp; \}}
+\DoxyCodeLine{861         \}}
+\DoxyCodeLine{862       \}}
+\DoxyCodeLine{863     \}}
+\DoxyCodeLine{864   }
+\DoxyCodeLine{865   \textcolor{keywordflow}{return} min\_val;}
+\DoxyCodeLine{866   \}}
+\DoxyCodeLine{867 }
+\DoxyCodeLine{868 }
+\DoxyCodeLine{869 }
+\DoxyCodeLine{870 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{871 \textcolor{keyword}{inline}}
+\DoxyCodeLine{872 \textcolor{keyword}{typename} get\_pod\_type<eT>::result}
+\DoxyCodeLine{873 op\_norm::mat\_norm\_1(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)}
+\DoxyCodeLine{874   \{}
+\DoxyCodeLine{875   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{876   }
+\DoxyCodeLine{877   \textcolor{comment}{// TODO: this can be sped up with a dedicated implementation}}
+\DoxyCodeLine{878   \textcolor{keywordflow}{return} as\_scalar( \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}( \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(abs(X), 0), 1) );}
+\DoxyCodeLine{879   \}}
+\DoxyCodeLine{880 }
+\DoxyCodeLine{881 }
+\DoxyCodeLine{882 }
+\DoxyCodeLine{883 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{884 \textcolor{keyword}{inline}}
+\DoxyCodeLine{885 \textcolor{keyword}{typename} get\_pod\_type<eT>::result}
+\DoxyCodeLine{886 op\_norm::mat\_norm\_2(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)}
+\DoxyCodeLine{887   \{}
+\DoxyCodeLine{888   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{889   }
+\DoxyCodeLine{890   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{891   }
+\DoxyCodeLine{892   \textcolor{keywordflow}{if}(X.is\_finite() == \textcolor{keyword}{false})  \{ arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}norm(): given matrix has non-\/finite elements"{}}); \}}
+\DoxyCodeLine{893   }
+\DoxyCodeLine{894   \mbox{\hyperlink{classCol}{Col<T>}} S;}
+\DoxyCodeLine{895   svd(S, X);}
+\DoxyCodeLine{896   }
+\DoxyCodeLine{897   \textcolor{keywordflow}{return} (S.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}} > 0) ? S[0] : T(0);}
+\DoxyCodeLine{898   \}}
+\DoxyCodeLine{899 }
+\DoxyCodeLine{900 }
+\DoxyCodeLine{901 }
+\DoxyCodeLine{902 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{903 \textcolor{keyword}{inline}}
+\DoxyCodeLine{904 \textcolor{keyword}{typename} get\_pod\_type<eT>::result}
+\DoxyCodeLine{905 op\_norm::mat\_norm\_inf(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)}
+\DoxyCodeLine{906   \{}
+\DoxyCodeLine{907   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{908   }
+\DoxyCodeLine{909   \textcolor{comment}{// TODO: this can be sped up with a dedicated implementation}}
+\DoxyCodeLine{910   \textcolor{keywordflow}{return} as\_scalar( \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}( \mbox{\hyperlink{group__fn__sum_ga8f9d3c2ecfb1e59023eaa83ebd5b14af}{sum}}(abs(X), 1), 0) );}
+\DoxyCodeLine{911   \}}
+\DoxyCodeLine{912 }
+\DoxyCodeLine{913 }
+\DoxyCodeLine{914 }
+
+\end{DoxyCode}

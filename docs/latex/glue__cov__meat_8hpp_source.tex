@@ -1,0 +1,70 @@
+\hypertarget{glue__cov__meat_8hpp_source}{}\doxysection{glue\+\_\+cov\+\_\+meat.\+hpp}
+\label{glue__cov__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_cov\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_cov\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 glue\_cov::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_cov>}}\& X)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keyword}{const} uword norm\_type = X.aux\_uword;}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}} UA(X.A);}
+\DoxyCodeLine{34   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T2>}} UB(X.B);}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = UA.M;}
+\DoxyCodeLine{37   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}} = UB.M;}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& AA = (\mbox{\hyperlink{structA}{A}}.n\_rows == 1)}
+\DoxyCodeLine{40                       ? \mbox{\hyperlink{classMat}{Mat<eT>}}(\textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(\mbox{\hyperlink{structA}{A}}.memptr()), \mbox{\hyperlink{structA}{A}}.n\_cols, \mbox{\hyperlink{structA}{A}}.n\_rows, \textcolor{keyword}{false}, \textcolor{keyword}{false})}
+\DoxyCodeLine{41                       : \mbox{\hyperlink{classMat}{Mat<eT>}}(\textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(\mbox{\hyperlink{structA}{A}}.memptr()), \mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols, \textcolor{keyword}{false}, \textcolor{keyword}{false});}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& BB = (\mbox{\hyperlink{structB}{B}}.n\_rows == 1)}
+\DoxyCodeLine{44                       ? \mbox{\hyperlink{classMat}{Mat<eT>}}(\textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(\mbox{\hyperlink{structB}{B}}.memptr()), \mbox{\hyperlink{structB}{B}}.n\_cols, \mbox{\hyperlink{structB}{B}}.n\_rows, \textcolor{keyword}{false}, \textcolor{keyword}{false})}
+\DoxyCodeLine{45                       : \mbox{\hyperlink{classMat}{Mat<eT>}}(\textcolor{keyword}{const\_cast<}eT*\textcolor{keyword}{>}(\mbox{\hyperlink{structB}{B}}.memptr()), \mbox{\hyperlink{structB}{B}}.n\_rows, \mbox{\hyperlink{structB}{B}}.n\_cols, \textcolor{keyword}{false}, \textcolor{keyword}{false});}
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   arma\_debug\_assert\_mul\_size(AA, BB, \textcolor{keyword}{true}, \textcolor{keyword}{false}, \textcolor{stringliteral}{"{}cov()"{}});}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structA}{A}}.n\_elem == 0) || (\mbox{\hyperlink{structB}{B}}.n\_elem == 0) )}
+\DoxyCodeLine{50     \{}
+\DoxyCodeLine{51     out.reset();}
+\DoxyCodeLine{52     \textcolor{keywordflow}{return};}
+\DoxyCodeLine{53     \}}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   \textcolor{keyword}{const} uword N        = AA.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{56   \textcolor{keyword}{const} eT    norm\_val = (norm\_type == 0) ? ( (N > 1) ? eT(N-\/1) : eT(1) ) : eT(N);}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} tmp1 = AA.each\_row() -\/ mean(AA,0);}
+\DoxyCodeLine{59   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} tmp2 = BB.each\_row() -\/ mean(BB,0);}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{61   out = tmp1.t() * tmp2;}
+\DoxyCodeLine{62   out /= norm\_val;}
+\DoxyCodeLine{63   \}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+
+\end{DoxyCode}

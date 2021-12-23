@@ -1,0 +1,389 @@
+\hypertarget{fn__find_8hpp_source}{}\doxysection{fn\+\_\+find.\+hpp}
+\label{fn__find_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_find.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_find.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keyword}{typename}}
+\DoxyCodeLine{26 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{27   <}
+\DoxyCodeLine{28   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}},}
+\DoxyCodeLine{29   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find\_simple>}}}
+\DoxyCodeLine{30   >::result}
+\DoxyCodeLine{31 find(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{32   \{}
+\DoxyCodeLine{33   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find\_simple>}}(X);}
+\DoxyCodeLine{36   \}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{41 arma\_warn\_unused}
+\DoxyCodeLine{42 \textcolor{keyword}{inline}}
+\DoxyCodeLine{43 \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find>}}}
+\DoxyCodeLine{44 find(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\& X, \textcolor{keyword}{const} uword k, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* direction = \textcolor{stringliteral}{"{}first"{}})}
+\DoxyCodeLine{45   \{}
+\DoxyCodeLine{46   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{keyword}{const} \textcolor{keywordtype}{char} sig = (direction != \textcolor{keyword}{nullptr}) ? direction[0] : \textcolor{keywordtype}{char}(0);}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   arma\_debug\_check}
+\DoxyCodeLine{51     (}
+\DoxyCodeLine{52     ( (sig != \textcolor{charliteral}{'f'}) \&\& (sig != \textcolor{charliteral}{'F'}) \&\& (sig != \textcolor{charliteral}{'l'}) \&\& (sig != \textcolor{charliteral}{'L'}) ),}
+\DoxyCodeLine{53     \textcolor{stringliteral}{"{}find(): direction must be \(\backslash\)"{}first\(\backslash\)"{} or \(\backslash\)"{}last\(\backslash\)"{}"{}}}
+\DoxyCodeLine{54     );}
+\DoxyCodeLine{55   }
+\DoxyCodeLine{56   \textcolor{keyword}{const} uword \mbox{\hyperlink{classtype}{type}} = ( (sig == \textcolor{charliteral}{'f'}) || (sig == \textcolor{charliteral}{'F'}) ) ? 0 : 1;}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find>}}(X.get\_ref(), k, \mbox{\hyperlink{classtype}{type}});}
+\DoxyCodeLine{59   \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{comment}{//}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{68 arma\_warn\_unused}
+\DoxyCodeLine{69 \textcolor{keyword}{inline}}
+\DoxyCodeLine{70 \mbox{\hyperlink{classCol}{uvec}}}
+\DoxyCodeLine{71 find(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{72   \{}
+\DoxyCodeLine{73   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{74   }
+\DoxyCodeLine{75   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<T1>}} tmp(X.get\_ref());}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} R( \textcolor{keyword}{const\_cast<} eT* \textcolor{keyword}{>}(tmp.M.memptr()), tmp.M.n\_elem, 1, \textcolor{keyword}{false} );}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   \textcolor{keywordflow}{return} find(R);}
+\DoxyCodeLine{82   \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{87 arma\_warn\_unused}
+\DoxyCodeLine{88 \textcolor{keyword}{inline}}
+\DoxyCodeLine{89 \mbox{\hyperlink{classCol}{uvec}}}
+\DoxyCodeLine{90 find(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X, \textcolor{keyword}{const} uword k, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* direction = \textcolor{stringliteral}{"{}first"{}})}
+\DoxyCodeLine{91   \{}
+\DoxyCodeLine{92   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{93   }
+\DoxyCodeLine{94   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{95   }
+\DoxyCodeLine{96   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<T1>}} tmp(X.get\_ref());}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} R( \textcolor{keyword}{const\_cast<} eT* \textcolor{keyword}{>}(tmp.M.memptr()), tmp.M.n\_elem, 1, \textcolor{keyword}{false} );}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \textcolor{keywordflow}{return} find(R, k, direction);}
+\DoxyCodeLine{101   \}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_rel\_type>}
+\DoxyCodeLine{106 arma\_warn\_unused}
+\DoxyCodeLine{107 \textcolor{keyword}{inline}}
+\DoxyCodeLine{108 \mbox{\hyperlink{classCol}{uvec}}}
+\DoxyCodeLine{109 find(\textcolor{keyword}{const} \mbox{\hyperlink{classmtOpCube}{mtOpCube<uword, T1, op\_rel\_type>}}\& X, \textcolor{keyword}{const} uword k = 0, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* direction = \textcolor{stringliteral}{"{}first"{}})}
+\DoxyCodeLine{110   \{}
+\DoxyCodeLine{111   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{114   }
+\DoxyCodeLine{115   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<T1>}} tmp(X.m);}
+\DoxyCodeLine{116   }
+\DoxyCodeLine{117   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} R( \textcolor{keyword}{const\_cast<} eT* \textcolor{keyword}{>}(tmp.M.memptr()), tmp.M.n\_elem, 1, \textcolor{keyword}{false} );}
+\DoxyCodeLine{118   }
+\DoxyCodeLine{119   \textcolor{keywordflow}{return} find( \mbox{\hyperlink{classmtOp}{mtOp}}<uword, \mbox{\hyperlink{classMat}{Mat<eT>}}, op\_rel\_type>(R, X.aux), k, direction );}
+\DoxyCodeLine{120   \}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} glue\_rel\_type>}
+\DoxyCodeLine{125 arma\_warn\_unused}
+\DoxyCodeLine{126 \textcolor{keyword}{inline}}
+\DoxyCodeLine{127 \mbox{\hyperlink{classCol}{uvec}}}
+\DoxyCodeLine{128 find(\textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube<uword, T1, T2, glue\_rel\_type>}}\& X, \textcolor{keyword}{const} uword k = 0, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* direction = \textcolor{stringliteral}{"{}first"{}})}
+\DoxyCodeLine{129   \{}
+\DoxyCodeLine{130   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{131   }
+\DoxyCodeLine{132   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT1;}
+\DoxyCodeLine{133   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eT2;}
+\DoxyCodeLine{134   }
+\DoxyCodeLine{135   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<T1>}} tmp1(X.A);}
+\DoxyCodeLine{136   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<T2>}} tmp2(X.B);}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   arma\_debug\_assert\_same\_size( tmp1.M, tmp2.M, \textcolor{stringliteral}{"{}relational operator"{}} );}
+\DoxyCodeLine{139   }
+\DoxyCodeLine{140   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT1>}} R1( \textcolor{keyword}{const\_cast<} eT1* \textcolor{keyword}{>}(tmp1.M.memptr()), tmp1.M.n\_elem, 1, \textcolor{keyword}{false} );}
+\DoxyCodeLine{141   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT2>}} R2( \textcolor{keyword}{const\_cast<} eT2* \textcolor{keyword}{>}(tmp2.M.memptr()), tmp2.M.n\_elem, 1, \textcolor{keyword}{false} );}
+\DoxyCodeLine{142   }
+\DoxyCodeLine{143   \textcolor{keywordflow}{return} find( \mbox{\hyperlink{classmtGlue}{mtGlue}}<uword, \mbox{\hyperlink{classMat}{Mat<eT1>}}, \mbox{\hyperlink{classMat}{Mat<eT2>}}, glue\_rel\_type>(R1, R2), k, direction );}
+\DoxyCodeLine{144   \}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 \textcolor{comment}{//}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{153 arma\_warn\_unused}
+\DoxyCodeLine{154 \textcolor{keyword}{inline}}
+\DoxyCodeLine{155 \mbox{\hyperlink{classCol}{Col<uword>}}}
+\DoxyCodeLine{156 find(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X, \textcolor{keyword}{const} uword k = 0)}
+\DoxyCodeLine{157   \{}
+\DoxyCodeLine{158   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{163   \textcolor{keyword}{const} uword n\_nz   = P.get\_n\_nonzero();}
+\DoxyCodeLine{164   }
+\DoxyCodeLine{165   \mbox{\hyperlink{classMat}{Mat<uword>}} tmp(n\_nz, 1, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{166   }
+\DoxyCodeLine{167   uword* tmp\_mem = tmp.memptr();}
+\DoxyCodeLine{168   }
+\DoxyCodeLine{169   \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::const\_iterator\_type}} it = P.begin();}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   \textcolor{keywordflow}{for}(uword i=0; i<n\_nz; ++i)}
+\DoxyCodeLine{172     \{}
+\DoxyCodeLine{173     \textcolor{keyword}{const} uword index = it.row() + it.col()*n\_rows;}
+\DoxyCodeLine{174     }
+\DoxyCodeLine{175     tmp\_mem[i] = index;}
+\DoxyCodeLine{176     }
+\DoxyCodeLine{177     ++it;}
+\DoxyCodeLine{178     \}}
+\DoxyCodeLine{179   }
+\DoxyCodeLine{180   \mbox{\hyperlink{classCol}{Col<uword>}} out;}
+\DoxyCodeLine{181   }
+\DoxyCodeLine{182   \textcolor{keyword}{const} uword count = (k == 0) ? uword(n\_nz) : uword( (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(n\_nz, k) );}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   out.steal\_mem\_col(tmp, count);}
+\DoxyCodeLine{185   }
+\DoxyCodeLine{186   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{187   \}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{192 arma\_warn\_unused}
+\DoxyCodeLine{193 \textcolor{keyword}{inline}}
+\DoxyCodeLine{194 \mbox{\hyperlink{classCol}{Col<uword>}}}
+\DoxyCodeLine{195 find(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X, \textcolor{keyword}{const} uword k, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* direction)}
+\DoxyCodeLine{196   \{}
+\DoxyCodeLine{197   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{198   }
+\DoxyCodeLine{199   arma\_ignore(X);}
+\DoxyCodeLine{200   arma\_ignore(k);}
+\DoxyCodeLine{201   arma\_ignore(direction);}
+\DoxyCodeLine{202   }
+\DoxyCodeLine{203   \mbox{\hyperlink{group__debug_ga458beb676810b1e43df9f0668359e76f}{arma\_check}}(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}find(SpBase,k,direction): not implemented yet"{}});  \textcolor{comment}{// TODO}}
+\DoxyCodeLine{204   }
+\DoxyCodeLine{205   \mbox{\hyperlink{classCol}{Col<uword>}} out;}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{208   \}}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 \textcolor{comment}{//}}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{217 arma\_warn\_unused}
+\DoxyCodeLine{218 \textcolor{keyword}{inline}}
+\DoxyCodeLine{219 \textcolor{keyword}{typename}}
+\DoxyCodeLine{220 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{221   <}
+\DoxyCodeLine{222   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}},}
+\DoxyCodeLine{223   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find\_finite>}}}
+\DoxyCodeLine{224   >::result}
+\DoxyCodeLine{225 find\_finite(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{226   \{}
+\DoxyCodeLine{227   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{228   }
+\DoxyCodeLine{229   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find\_finite>}}(X);}
+\DoxyCodeLine{230   \}}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{235 arma\_warn\_unused}
+\DoxyCodeLine{236 \textcolor{keyword}{inline}}
+\DoxyCodeLine{237 \textcolor{keyword}{typename}}
+\DoxyCodeLine{238 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{239   <}
+\DoxyCodeLine{240   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}},}
+\DoxyCodeLine{241   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find\_nonfinite>}}}
+\DoxyCodeLine{242   >::result}
+\DoxyCodeLine{243 find\_nonfinite(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{244   \{}
+\DoxyCodeLine{245   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{246   }
+\DoxyCodeLine{247   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_find\_nonfinite>}}(X);}
+\DoxyCodeLine{248   \}}
+\DoxyCodeLine{249 }
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252 \textcolor{comment}{//}}
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{257 arma\_warn\_unused}
+\DoxyCodeLine{258 \textcolor{keyword}{inline}}
+\DoxyCodeLine{259 \mbox{\hyperlink{classCol}{uvec}}}
+\DoxyCodeLine{260 find\_finite(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{261   \{}
+\DoxyCodeLine{262   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{263   }
+\DoxyCodeLine{264   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{265   }
+\DoxyCodeLine{266   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<T1>}} tmp(X.get\_ref());}
+\DoxyCodeLine{267   }
+\DoxyCodeLine{268   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} R( \textcolor{keyword}{const\_cast<} eT* \textcolor{keyword}{>}(tmp.M.memptr()), tmp.M.n\_elem, 1, \textcolor{keyword}{false} );}
+\DoxyCodeLine{269   }
+\DoxyCodeLine{270   \textcolor{keywordflow}{return} find\_finite(R);}
+\DoxyCodeLine{271   \}}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{276 arma\_warn\_unused}
+\DoxyCodeLine{277 \textcolor{keyword}{inline}}
+\DoxyCodeLine{278 \mbox{\hyperlink{classCol}{uvec}}}
+\DoxyCodeLine{279 find\_nonfinite(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{280   \{}
+\DoxyCodeLine{281   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{282   }
+\DoxyCodeLine{283   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{284   }
+\DoxyCodeLine{285   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<T1>}} tmp(X.get\_ref());}
+\DoxyCodeLine{286   }
+\DoxyCodeLine{287   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} R( \textcolor{keyword}{const\_cast<} eT* \textcolor{keyword}{>}(tmp.M.memptr()), tmp.M.n\_elem, 1, \textcolor{keyword}{false} );}
+\DoxyCodeLine{288   }
+\DoxyCodeLine{289   \textcolor{keywordflow}{return} find\_nonfinite(R);}
+\DoxyCodeLine{290   \}}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292 }
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294 \textcolor{comment}{//}}
+\DoxyCodeLine{295 }
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297 }
+\DoxyCodeLine{298 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{299 arma\_warn\_unused}
+\DoxyCodeLine{300 \textcolor{keyword}{inline}}
+\DoxyCodeLine{301 \mbox{\hyperlink{classCol}{Col<uword>}}}
+\DoxyCodeLine{302 find\_finite(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{303   \{}
+\DoxyCodeLine{304   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{305   }
+\DoxyCodeLine{306   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{307   }
+\DoxyCodeLine{308   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{309   \textcolor{keyword}{const} uword n\_nz   = P.get\_n\_nonzero();}
+\DoxyCodeLine{310   }
+\DoxyCodeLine{311   \mbox{\hyperlink{classMat}{Mat<uword>}} tmp(n\_nz, 1, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{312   }
+\DoxyCodeLine{313   uword* tmp\_mem = tmp.memptr();}
+\DoxyCodeLine{314   }
+\DoxyCodeLine{315   \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::const\_iterator\_type}} it = P.begin();}
+\DoxyCodeLine{316   }
+\DoxyCodeLine{317   uword count = 0;}
+\DoxyCodeLine{318   }
+\DoxyCodeLine{319   \textcolor{keywordflow}{for}(uword i=0; i<n\_nz; ++i)}
+\DoxyCodeLine{320     \{}
+\DoxyCodeLine{321     \textcolor{keywordflow}{if}(arma\_isfinite(*it))}
+\DoxyCodeLine{322       \{}
+\DoxyCodeLine{323       \textcolor{keyword}{const} uword index = it.row() + it.col()*n\_rows;}
+\DoxyCodeLine{324       }
+\DoxyCodeLine{325       tmp\_mem[count] = index;}
+\DoxyCodeLine{326       }
+\DoxyCodeLine{327       ++count;}
+\DoxyCodeLine{328       \}}
+\DoxyCodeLine{329     }
+\DoxyCodeLine{330     ++it;}
+\DoxyCodeLine{331     \}}
+\DoxyCodeLine{332   }
+\DoxyCodeLine{333   \mbox{\hyperlink{classCol}{Col<uword>}} out;}
+\DoxyCodeLine{334   }
+\DoxyCodeLine{335   \textcolor{keywordflow}{if}(count > 0)  \{ out.steal\_mem\_col(tmp, count); \}}
+\DoxyCodeLine{336   }
+\DoxyCodeLine{337   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{338   \}}
+\DoxyCodeLine{339 }
+\DoxyCodeLine{340 }
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{343 arma\_warn\_unused}
+\DoxyCodeLine{344 \textcolor{keyword}{inline}}
+\DoxyCodeLine{345 \mbox{\hyperlink{classCol}{Col<uword>}}}
+\DoxyCodeLine{346 find\_nonfinite(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X)}
+\DoxyCodeLine{347   \{}
+\DoxyCodeLine{348   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{349   }
+\DoxyCodeLine{350   \textcolor{keyword}{const} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>}} P(X.get\_ref());}
+\DoxyCodeLine{351   }
+\DoxyCodeLine{352   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{353   \textcolor{keyword}{const} uword n\_nz   = P.get\_n\_nonzero();}
+\DoxyCodeLine{354   }
+\DoxyCodeLine{355   \mbox{\hyperlink{classMat}{Mat<uword>}} tmp(n\_nz, 1, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{356   }
+\DoxyCodeLine{357   uword* tmp\_mem = tmp.memptr();}
+\DoxyCodeLine{358   }
+\DoxyCodeLine{359   \textcolor{keyword}{typename} \mbox{\hyperlink{classSpProxy}{SpProxy<T1>::const\_iterator\_type}} it = P.begin();}
+\DoxyCodeLine{360   }
+\DoxyCodeLine{361   uword count = 0;}
+\DoxyCodeLine{362   }
+\DoxyCodeLine{363   \textcolor{keywordflow}{for}(uword i=0; i<n\_nz; ++i)}
+\DoxyCodeLine{364     \{}
+\DoxyCodeLine{365     \textcolor{keywordflow}{if}(arma\_isfinite(*it) == \textcolor{keyword}{false})}
+\DoxyCodeLine{366       \{}
+\DoxyCodeLine{367       \textcolor{keyword}{const} uword index = it.row() + it.col()*n\_rows;}
+\DoxyCodeLine{368       }
+\DoxyCodeLine{369       tmp\_mem[count] = index;}
+\DoxyCodeLine{370       }
+\DoxyCodeLine{371       ++count;}
+\DoxyCodeLine{372       \}}
+\DoxyCodeLine{373     }
+\DoxyCodeLine{374     ++it;}
+\DoxyCodeLine{375     \}}
+\DoxyCodeLine{376   }
+\DoxyCodeLine{377   \mbox{\hyperlink{classCol}{Col<uword>}} out;}
+\DoxyCodeLine{378   }
+\DoxyCodeLine{379   \textcolor{keywordflow}{if}(count > 0)  \{ out.steal\_mem\_col(tmp, count); \}}
+\DoxyCodeLine{380   }
+\DoxyCodeLine{381   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{382   \}}
+\DoxyCodeLine{383 }
+\DoxyCodeLine{384 }
+\DoxyCodeLine{385 }
+
+\end{DoxyCode}

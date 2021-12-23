@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>BanditPAM: /Users/motiwari/Desktop/BanditPAM/src/kmedoids_pywrapper.cpp File Reference</title>
+<title>BanditPAM: /Users/motiwari/Desktop/BanditPAM/src/python_bindings/kmedoids_pywrapper.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,61 +62,49 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_2089f1c86a5c695e25bdd8ee7b7d2080.html">python_bindings</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">kmedoids_pywrapper.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;carma&gt;</code><br />
+<div class="textblock"><code>#include &lt;pybind11/pybind11.h&gt;</code><br />
+<code>#include &lt;pybind11/numpy.h&gt;</code><br />
+<code>#include &lt;carma&gt;</code><br />
 <code>#include &lt;armadillo&gt;</code><br />
 <code>#include &quot;kmedoids_algorithm.hpp&quot;</code><br />
 <code>#include &quot;kmedoids_pywrapper.hpp&quot;</code><br />
-<code>#include &lt;pybind11/pybind11.h&gt;</code><br />
-<code>#include &lt;pybind11/numpy.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for kmedoids_pywrapper.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="kmedoids__pywrapper_8cpp__incl.png" border="0" usemap="#a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2kmedoids__pywrapper_8cpp" alt=""/></div>
-<map name="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2kmedoids__pywrapper_8cpp" id="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2kmedoids__pywrapper_8cpp">
-<area shape="rect" title=" " alt="" coords="273,5,446,61"/>
-<area shape="rect" title=" " alt="" coords="191,184,250,211"/>
-<area shape="rect" title=" " alt="" coords="5,259,81,285"/>
-<area shape="rect" href="kmedoids__algorithm_8hpp_source.html" title=" " alt="" coords="325,184,492,211"/>
-<area shape="rect" href="kmedoids__pywrapper_8hpp_source.html" title=" " alt="" coords="335,109,509,136"/>
-<area shape="rect" title=" " alt="" coords="516,184,659,211"/>
-<area shape="rect" title=" " alt="" coords="683,184,812,211"/>
-<area shape="rect" title=" " alt="" coords="106,259,165,285"/>
-<area shape="rect" title=" " alt="" coords="189,259,255,285"/>
-<area shape="rect" title=" " alt="" coords="280,259,353,285"/>
-<area shape="rect" title=" " alt="" coords="377,259,440,285"/>
-<area shape="rect" title=" " alt="" coords="465,259,523,285"/>
-<area shape="rect" title=" " alt="" coords="547,259,598,285"/>
-<area shape="rect" title=" " alt="" coords="623,259,701,285"/>
-<area shape="rect" title=" " alt="" coords="725,259,841,285"/>
-<area shape="rect" title=" " alt="" coords="865,259,920,285"/>
-<area shape="rect" title=" " alt="" coords="945,259,1003,285"/>
+<div class="center"><img src="kmedoids__pywrapper_8cpp__incl.png" border="0" usemap="#a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2python__bindings_2kmedoids__pywrapper_8cpp" alt=""/></div>
+<map name="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2python__bindings_2kmedoids__pywrapper_8cpp" id="a_2Users_2motiwari_2Desktop_2BanditPAM_2src_2python__bindings_2kmedoids__pywrapper_8cpp">
+<area shape="rect" title=" " alt="" coords="240,5,473,61"/>
+<area shape="rect" title=" " alt="" coords="5,184,148,211"/>
+<area shape="rect" title=" " alt="" coords="172,184,301,211"/>
+<area shape="rect" title=" " alt="" coords="326,184,385,211"/>
+<area shape="rect" title=" " alt="" coords="852,259,928,285"/>
+<area shape="rect" href="kmedoids__algorithm_8hpp_source.html" title=" " alt="" coords="460,184,627,211"/>
+<area shape="rect" href="kmedoids__pywrapper_8hpp_source.html" title=" " alt="" coords="333,109,506,136"/>
+<area shape="rect" title=" " alt="" coords="686,259,745,285"/>
+<area shape="rect" title=" " alt="" coords="769,259,827,285"/>
+<area shape="rect" title=" " alt="" coords="178,259,245,285"/>
+<area shape="rect" title=" " alt="" coords="269,259,343,285"/>
+<area shape="rect" title=" " alt="" coords="367,259,418,285"/>
+<area shape="rect" title=" " alt="" coords="443,259,521,285"/>
+<area shape="rect" title=" " alt="" coords="545,259,661,285"/>
+<area shape="rect" title=" " alt="" coords="99,259,153,285"/>
 </map>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a6df1d22fb5f09eccc23b9f399670cfd7"><td class="memItemLeft" align="right" valign="top"><a id="a6df1d22fb5f09eccc23b9f399670cfd7" name="a6df1d22fb5f09eccc23b9f399670cfd7"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>STRINGIFY</b>(x)&#160;&#160;&#160;#x</td></tr>
-<tr class="separator:a6df1d22fb5f09eccc23b9f399670cfd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04bd637263ccb57f7e038856e2a51531"><td class="memItemLeft" align="right" valign="top"><a id="a04bd637263ccb57f7e038856e2a51531" name="a04bd637263ccb57f7e038856e2a51531"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>MACRO_STRINGIFY</b>(x)&#160;&#160;&#160;STRINGIFY(x)</td></tr>
-<tr class="separator:a04bd637263ccb57f7e038856e2a51531"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5560ecc481be83d23eb47b26293e52d9"><td class="memItemLeft" align="right" valign="top"><a id="a5560ecc481be83d23eb47b26293e52d9" name="a5560ecc481be83d23eb47b26293e52d9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PYBIND11_MODULE</b> (banditpam, m)</td></tr>
-<tr class="separator:a5560ecc481be83d23eb47b26293e52d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0efca762e8c063b40a3bcf7093bf19c1"><td class="memItemLeft" align="right" valign="top"><a id="a0efca762e8c063b40a3bcf7093bf19c1" name="a0efca762e8c063b40a3bcf7093bf19c1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>km::PYBIND11_MODULE</b> (banditpam, m)</td></tr>
+<tr class="separator:a0efca762e8c063b40a3bcf7093bf19c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section date"><dt>Date</dt><dd>2020-06-10</dd></dl>

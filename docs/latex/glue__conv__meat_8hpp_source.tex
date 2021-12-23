@@ -1,0 +1,335 @@
+\hypertarget{glue__conv__meat_8hpp_source}{}\doxysection{glue\+\_\+conv\+\_\+meat.\+hpp}
+\label{glue__conv__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_conv\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_conv\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{comment}{// TODO: this implementation of conv() is rudimentary; replace with faster version}}
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{26 glue\_conv::apply(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} A\_is\_col)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& h = (\mbox{\hyperlink{structA}{A}}.n\_elem <= \mbox{\hyperlink{structB}{B}}.n\_elem) ? \mbox{\hyperlink{structA}{A}} : \mbox{\hyperlink{structB}{B}};}
+\DoxyCodeLine{31   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& x = (\mbox{\hyperlink{structA}{A}}.n\_elem <= \mbox{\hyperlink{structB}{B}}.n\_elem) ? \mbox{\hyperlink{structB}{B}} : \mbox{\hyperlink{structA}{A}};}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{const} uword   h\_n\_elem    = h.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{34   \textcolor{keyword}{const} uword   h\_n\_elem\_m1 = h\_n\_elem -\/ 1;}
+\DoxyCodeLine{35   \textcolor{keyword}{const} uword   x\_n\_elem    = x.n\_elem;}
+\DoxyCodeLine{36   \textcolor{keyword}{const} uword out\_n\_elem    = ((h\_n\_elem + x\_n\_elem) > 0) ? (h\_n\_elem + x\_n\_elem -\/ 1) : uword(0);}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keywordflow}{if}( (h\_n\_elem == 0) || (x\_n\_elem == 0) )  \{ out.zeros(); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   }
+\DoxyCodeLine{41   \mbox{\hyperlink{classCol}{Col<eT>}} hh(h\_n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());  \textcolor{comment}{// flipped version of h}}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   \textcolor{keyword}{const} eT*   h\_mem =  h.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{44         eT*  hh\_mem = hh.memptr();}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keywordflow}{for}(uword i=0; i < h\_n\_elem; ++i)}
+\DoxyCodeLine{47     \{}
+\DoxyCodeLine{48     hh\_mem[h\_n\_elem\_m1-\/i] = h\_mem[i];}
+\DoxyCodeLine{49     \}}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \mbox{\hyperlink{classCol}{Col<eT>}} xx( (x\_n\_elem + 2*h\_n\_elem\_m1), \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}() );  \textcolor{comment}{// zero padded version of x}}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keyword}{const} eT*  x\_mem =  x.memptr();}
+\DoxyCodeLine{55         eT* xx\_mem = xx.memptr();}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   arrayops::copy( \&(xx\_mem[h\_n\_elem\_m1]), x\_mem, x\_n\_elem );}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   }
+\DoxyCodeLine{60   (A\_is\_col) ? out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(out\_n\_elem, 1) : out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(1, out\_n\_elem);}
+\DoxyCodeLine{61   }
+\DoxyCodeLine{62   eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{keywordflow}{for}(uword i=0; i < out\_n\_elem; ++i)}
+\DoxyCodeLine{65     \{}
+\DoxyCodeLine{66     \textcolor{comment}{// out\_mem[i] = dot( hh, xx.subvec(i, (i + h\_n\_elem\_m1)) );}}
+\DoxyCodeLine{67     }
+\DoxyCodeLine{68     out\_mem[i] = \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{op\_dot::direct\_dot}}( h\_n\_elem, hh\_mem, \&(xx\_mem[i]) );}
+\DoxyCodeLine{69     \}}
+\DoxyCodeLine{70   \}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{comment}{// // alternative implementation of 1d convolution}}
+\DoxyCodeLine{75 \textcolor{comment}{// template<typename eT>}}
+\DoxyCodeLine{76 \textcolor{comment}{// inline}}
+\DoxyCodeLine{77 \textcolor{comment}{// void}}
+\DoxyCodeLine{78 \textcolor{comment}{// glue\_conv::apply(Mat<eT>\& out, const Mat<eT>\& A, const Mat<eT>\& B, const bool A\_is\_col)}}
+\DoxyCodeLine{79 \textcolor{comment}{//   \{}}
+\DoxyCodeLine{80 \textcolor{comment}{//   arma\_extra\_debug\_sigprint();}}
+\DoxyCodeLine{81 \textcolor{comment}{//   }}
+\DoxyCodeLine{82 \textcolor{comment}{//   const Mat<eT>\& h = (A.n\_elem <= B.n\_elem) ? A : B;}}
+\DoxyCodeLine{83 \textcolor{comment}{//   const Mat<eT>\& x = (A.n\_elem <= B.n\_elem) ? B : A;}}
+\DoxyCodeLine{84 \textcolor{comment}{//   }}
+\DoxyCodeLine{85 \textcolor{comment}{//   const uword   h\_n\_elem    = h.n\_elem;}}
+\DoxyCodeLine{86 \textcolor{comment}{//   const uword   h\_n\_elem\_m1 = h\_n\_elem -\/ 1;}}
+\DoxyCodeLine{87 \textcolor{comment}{//   const uword   x\_n\_elem    = x.n\_elem;}}
+\DoxyCodeLine{88 \textcolor{comment}{//   const uword out\_n\_elem    = ((h\_n\_elem + x\_n\_elem) > 0) ? (h\_n\_elem + x\_n\_elem -\/ 1) : uword(0);}}
+\DoxyCodeLine{89 \textcolor{comment}{//   }}
+\DoxyCodeLine{90 \textcolor{comment}{//   if( (h\_n\_elem == 0) || (x\_n\_elem == 0) )  \{ out.zeros(); return; \}}}
+\DoxyCodeLine{91 \textcolor{comment}{//   }}
+\DoxyCodeLine{92 \textcolor{comment}{//   }}
+\DoxyCodeLine{93 \textcolor{comment}{//   Col<eT> hh(h\_n\_elem, arma\_nozeros\_indicator());  // flipped version of h}}
+\DoxyCodeLine{94 \textcolor{comment}{//   }}
+\DoxyCodeLine{95 \textcolor{comment}{//   const eT*   h\_mem =  h.memptr();}}
+\DoxyCodeLine{96 \textcolor{comment}{//         eT*  hh\_mem = hh.memptr();}}
+\DoxyCodeLine{97 \textcolor{comment}{//   }}
+\DoxyCodeLine{98 \textcolor{comment}{//   for(uword i=0; i < h\_n\_elem; ++i)}}
+\DoxyCodeLine{99 \textcolor{comment}{//     \{}}
+\DoxyCodeLine{100 \textcolor{comment}{//     hh\_mem[h\_n\_elem\_m1-\/i] = h\_mem[i];}}
+\DoxyCodeLine{101 \textcolor{comment}{//     \}}}
+\DoxyCodeLine{102 \textcolor{comment}{//   }}
+\DoxyCodeLine{103 \textcolor{comment}{//   // construct HH matrix, with the column containing shifted versions of hh;}}
+\DoxyCodeLine{104 \textcolor{comment}{//   // upper limit for number of zeros is about 50\%; may not be optimal}}
+\DoxyCodeLine{105 \textcolor{comment}{//   const uword N\_copies = (std::min)(uword(10), h\_n\_elem); }}
+\DoxyCodeLine{106 \textcolor{comment}{//   }}
+\DoxyCodeLine{107 \textcolor{comment}{//   const uword HH\_n\_rows = h\_n\_elem + (N\_copies-\/1);}}
+\DoxyCodeLine{108 \textcolor{comment}{//   }}
+\DoxyCodeLine{109 \textcolor{comment}{//   Mat<eT> HH(HH\_n\_rows, N\_copies, arma\_zeros\_indicator());}}
+\DoxyCodeLine{110 \textcolor{comment}{//   }}
+\DoxyCodeLine{111 \textcolor{comment}{//   for(uword i=0; i<N\_copies; ++i)}}
+\DoxyCodeLine{112 \textcolor{comment}{//     \{}}
+\DoxyCodeLine{113 \textcolor{comment}{//     arrayops::copy(HH.colptr(i) + i, hh.memptr(), h\_n\_elem);}}
+\DoxyCodeLine{114 \textcolor{comment}{//     \}}}
+\DoxyCodeLine{115 \textcolor{comment}{//   }}
+\DoxyCodeLine{116 \textcolor{comment}{//   }}
+\DoxyCodeLine{117 \textcolor{comment}{//   }}
+\DoxyCodeLine{118 \textcolor{comment}{//   Col<eT> xx( (x\_n\_elem + 2*h\_n\_elem\_m1), arma\_zeros\_indicator() );  // zero padded version of x}}
+\DoxyCodeLine{119 \textcolor{comment}{//   }}
+\DoxyCodeLine{120 \textcolor{comment}{//   const eT*  x\_mem =  x.memptr();}}
+\DoxyCodeLine{121 \textcolor{comment}{//         eT* xx\_mem = xx.memptr();}}
+\DoxyCodeLine{122 \textcolor{comment}{//   }}
+\DoxyCodeLine{123 \textcolor{comment}{//   arrayops::copy( \&(xx\_mem[h\_n\_elem\_m1]), x\_mem, x\_n\_elem );}}
+\DoxyCodeLine{124 \textcolor{comment}{//   }}
+\DoxyCodeLine{125 \textcolor{comment}{//   }}
+\DoxyCodeLine{126 \textcolor{comment}{//   (A\_is\_col) ? out.set\_size(out\_n\_elem, 1) : out.set\_size(1, out\_n\_elem);}}
+\DoxyCodeLine{127 \textcolor{comment}{//   }}
+\DoxyCodeLine{128 \textcolor{comment}{//   eT* out\_mem = out.memptr();}}
+\DoxyCodeLine{129 \textcolor{comment}{//   }}
+\DoxyCodeLine{130 \textcolor{comment}{//   uword last\_i      = 0;}}
+\DoxyCodeLine{131 \textcolor{comment}{//   bool  last\_i\_done = false;}}
+\DoxyCodeLine{132 \textcolor{comment}{//   }}
+\DoxyCodeLine{133 \textcolor{comment}{//   for(uword i=0; i < xx.n\_elem; i += N\_copies)}}
+\DoxyCodeLine{134 \textcolor{comment}{//     \{}}
+\DoxyCodeLine{135 \textcolor{comment}{//     if( ((i + HH\_n\_rows) <= xx.n\_elem) \&\& ((i + N\_copies) <= out\_n\_elem) ) }}
+\DoxyCodeLine{136 \textcolor{comment}{//       \{}}
+\DoxyCodeLine{137 \textcolor{comment}{//       const Row<eT> xx\_sub(xx\_mem + i, HH\_n\_rows, false, true);}}
+\DoxyCodeLine{138 \textcolor{comment}{//       }}
+\DoxyCodeLine{139 \textcolor{comment}{//       Row<eT> out\_sub(out\_mem + i, N\_copies, false, true);}}
+\DoxyCodeLine{140 \textcolor{comment}{//       }}
+\DoxyCodeLine{141 \textcolor{comment}{//       out\_sub = xx\_sub * HH;}}
+\DoxyCodeLine{142 \textcolor{comment}{//       }}
+\DoxyCodeLine{143 \textcolor{comment}{//       last\_i\_done = true;}}
+\DoxyCodeLine{144 \textcolor{comment}{//       \}}}
+\DoxyCodeLine{145 \textcolor{comment}{//     else}}
+\DoxyCodeLine{146 \textcolor{comment}{//       \{}}
+\DoxyCodeLine{147 \textcolor{comment}{//       last\_i = i;}}
+\DoxyCodeLine{148 \textcolor{comment}{//       last\_i\_done = false;}}
+\DoxyCodeLine{149 \textcolor{comment}{//       break;}}
+\DoxyCodeLine{150 \textcolor{comment}{//       \}}}
+\DoxyCodeLine{151 \textcolor{comment}{//     \}}}
+\DoxyCodeLine{152 \textcolor{comment}{//   }}
+\DoxyCodeLine{153 \textcolor{comment}{//   if(last\_i\_done == false)}}
+\DoxyCodeLine{154 \textcolor{comment}{//     \{}}
+\DoxyCodeLine{155 \textcolor{comment}{//     for(uword i=last\_i; i < out\_n\_elem; ++i)}}
+\DoxyCodeLine{156 \textcolor{comment}{//       \{}}
+\DoxyCodeLine{157 \textcolor{comment}{//       // out\_mem[i] = dot( hh, xx.subvec(i, (i + h\_n\_elem\_m1)) );}}
+\DoxyCodeLine{158 \textcolor{comment}{//       }}
+\DoxyCodeLine{159 \textcolor{comment}{//       out\_mem[i] = op\_dot::direct\_dot( h\_n\_elem, hh\_mem, \&(xx\_mem[i]) );}}
+\DoxyCodeLine{160 \textcolor{comment}{//       \}}}
+\DoxyCodeLine{161 \textcolor{comment}{//     \}}}
+\DoxyCodeLine{162 \textcolor{comment}{//   \}}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{167 \textcolor{keyword}{inline}}
+\DoxyCodeLine{168 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{169 glue\_conv::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_conv>}}\& expr)}
+\DoxyCodeLine{170   \{}
+\DoxyCodeLine{171   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{172   }
+\DoxyCodeLine{173   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{174   }
+\DoxyCodeLine{175   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} UA(expr.\mbox{\hyperlink{classGlue_a22423031a9f05101ad23dfd897c6f1ab}{A}});}
+\DoxyCodeLine{176   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T2>}} UB(expr.\mbox{\hyperlink{classGlue_a1b3a6b5891d84915448f3084e66476c6}{B}});}
+\DoxyCodeLine{177   }
+\DoxyCodeLine{178   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = UA.M;}
+\DoxyCodeLine{179   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}} = UB.M;}
+\DoxyCodeLine{180   }
+\DoxyCodeLine{181   arma\_debug\_check}
+\DoxyCodeLine{182     (}
+\DoxyCodeLine{183     ( ((\mbox{\hyperlink{structA}{A}}.is\_vec() == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structA}{A}}.is\_empty() == \textcolor{keyword}{false})) || ((\mbox{\hyperlink{structB}{B}}.is\_vec() == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structB}{B}}.is\_empty() == \textcolor{keyword}{false})) ),}
+\DoxyCodeLine{184     \textcolor{stringliteral}{"{}conv(): given object must be a vector"{}}}
+\DoxyCodeLine{185     );}
+\DoxyCodeLine{186   }
+\DoxyCodeLine{187   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} A\_is\_col = ((T1::is\_col) || (\mbox{\hyperlink{structA}{A}}.n\_cols == 1));}
+\DoxyCodeLine{188   }
+\DoxyCodeLine{189   \textcolor{keyword}{const} uword mode = expr.\mbox{\hyperlink{classGlue_a4f3211f4584d498b0563c3ac2ee4e256}{aux\_uword}};}
+\DoxyCodeLine{190   }
+\DoxyCodeLine{191   \textcolor{keywordflow}{if}(mode == 0)  \textcolor{comment}{// full convolution}}
+\DoxyCodeLine{192     \{}
+\DoxyCodeLine{193     glue\_conv::apply(out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, A\_is\_col);}
+\DoxyCodeLine{194     \}}
+\DoxyCodeLine{195   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{196   \textcolor{keywordflow}{if}(mode == 1)  \textcolor{comment}{// same size as A}}
+\DoxyCodeLine{197     \{}
+\DoxyCodeLine{198     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{199     }
+\DoxyCodeLine{200     glue\_conv::apply(tmp, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, A\_is\_col);}
+\DoxyCodeLine{201     }
+\DoxyCodeLine{202     \textcolor{keywordflow}{if}( (tmp.\mbox{\hyperlink{group__Mat_ga3008049216e02308ff665862f451a7ff}{is\_empty}}() == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structA}{A}}.is\_empty() == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structB}{B}}.is\_empty() == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{203       \{}
+\DoxyCodeLine{204       \textcolor{keyword}{const} uword start = uword( std::floor( \textcolor{keywordtype}{double}(\mbox{\hyperlink{structB}{B}}.n\_elem) / \textcolor{keywordtype}{double}(2) ) );}
+\DoxyCodeLine{205       }
+\DoxyCodeLine{206       out = (A\_is\_col) ? tmp(start, 0, arma::size(\mbox{\hyperlink{structA}{A}})) : tmp(0, start, arma::size(\mbox{\hyperlink{structA}{A}}));}
+\DoxyCodeLine{207       \}}
+\DoxyCodeLine{208     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{209       \{}
+\DoxyCodeLine{210       out.zeros( arma::size(\mbox{\hyperlink{structA}{A}}) );}
+\DoxyCodeLine{211       \}}
+\DoxyCodeLine{212     \}}
+\DoxyCodeLine{213   \}}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 }
+\DoxyCodeLine{218 }
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 \textcolor{comment}{// TODO: this implementation of conv2() is rudimentary; replace with faster version}}
+\DoxyCodeLine{222 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{223 \textcolor{keyword}{inline}}
+\DoxyCodeLine{224 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{225 glue\_conv2::apply(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}})}
+\DoxyCodeLine{226   \{}
+\DoxyCodeLine{227   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{228   }
+\DoxyCodeLine{229   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& G = (\mbox{\hyperlink{structA}{A}}.n\_elem <= \mbox{\hyperlink{structB}{B}}.n\_elem) ? \mbox{\hyperlink{structA}{A}} : \mbox{\hyperlink{structB}{B}};   \textcolor{comment}{// unflipped filter coefficients}}
+\DoxyCodeLine{230   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& W = (\mbox{\hyperlink{structA}{A}}.n\_elem <= \mbox{\hyperlink{structB}{B}}.n\_elem) ? \mbox{\hyperlink{structB}{B}} : \mbox{\hyperlink{structA}{A}};   \textcolor{comment}{// original 2D image}}
+\DoxyCodeLine{231   }
+\DoxyCodeLine{232   \textcolor{keyword}{const} uword out\_n\_rows = ((W.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} + G.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}) > 0) ? (W.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} + G.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} -\/ 1) : uword(0);}
+\DoxyCodeLine{233   \textcolor{keyword}{const} uword out\_n\_cols = ((W.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}} + G.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}) > 0) ? (W.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}} + G.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}} -\/ 1) : uword(0);}
+\DoxyCodeLine{234   }
+\DoxyCodeLine{235   \textcolor{keywordflow}{if}(G.\mbox{\hyperlink{group__Mat_ga3008049216e02308ff665862f451a7ff}{is\_empty}}() || W.\mbox{\hyperlink{group__Mat_ga3008049216e02308ff665862f451a7ff}{is\_empty}}())  \{ out.zeros(); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{236   }
+\DoxyCodeLine{237   }
+\DoxyCodeLine{238   \mbox{\hyperlink{classMat}{Mat<eT>}} H(G.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}}, G.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());  \textcolor{comment}{// flipped filter coefficients}}
+\DoxyCodeLine{239   }
+\DoxyCodeLine{240   \textcolor{keyword}{const} uword H\_n\_rows = H.n\_rows;}
+\DoxyCodeLine{241   \textcolor{keyword}{const} uword H\_n\_cols = H.n\_cols;}
+\DoxyCodeLine{242   }
+\DoxyCodeLine{243   \textcolor{keyword}{const} uword H\_n\_rows\_m1 = H\_n\_rows -\/ 1;}
+\DoxyCodeLine{244   \textcolor{keyword}{const} uword H\_n\_cols\_m1 = H\_n\_cols -\/ 1;}
+\DoxyCodeLine{245   }
+\DoxyCodeLine{246   \textcolor{keywordflow}{for}(uword col=0; col < H\_n\_cols; ++col)}
+\DoxyCodeLine{247     \{}
+\DoxyCodeLine{248           eT* H\_colptr = H.colptr(H\_n\_cols\_m1 -\/ col);}
+\DoxyCodeLine{249     \textcolor{keyword}{const} eT* G\_colptr = G.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(col);}
+\DoxyCodeLine{250     }
+\DoxyCodeLine{251     \textcolor{keywordflow}{for}(uword row=0; row < H\_n\_rows; ++row)}
+\DoxyCodeLine{252       \{}
+\DoxyCodeLine{253       H\_colptr[H\_n\_rows\_m1 -\/ row] = G\_colptr[row];}
+\DoxyCodeLine{254       \}}
+\DoxyCodeLine{255     \}}
+\DoxyCodeLine{256   }
+\DoxyCodeLine{257   }
+\DoxyCodeLine{258   \mbox{\hyperlink{classMat}{Mat<eT>}} X( (W.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} + 2*H\_n\_rows\_m1), (W.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}} + 2*H\_n\_cols\_m1), \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}() );}
+\DoxyCodeLine{259   }
+\DoxyCodeLine{260   X( H\_n\_rows\_m1, H\_n\_cols\_m1, arma::size(W) ) = W;  \textcolor{comment}{// zero padded version of 2D image}}
+\DoxyCodeLine{261   }
+\DoxyCodeLine{262   }
+\DoxyCodeLine{263   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}( out\_n\_rows, out\_n\_cols );}
+\DoxyCodeLine{264   }
+\DoxyCodeLine{265   \textcolor{keywordflow}{for}(uword col=0; col < out\_n\_cols; ++col)}
+\DoxyCodeLine{266     \{}
+\DoxyCodeLine{267     eT* out\_colptr = out.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(col);}
+\DoxyCodeLine{268     }
+\DoxyCodeLine{269     \textcolor{keywordflow}{for}(uword row=0; row < out\_n\_rows; ++row)}
+\DoxyCodeLine{270       \{}
+\DoxyCodeLine{271       \textcolor{comment}{// out.at(row, col) = accu( H \% X(row, col, size(H)) );}}
+\DoxyCodeLine{272       }
+\DoxyCodeLine{273       eT acc = eT(0);}
+\DoxyCodeLine{274       }
+\DoxyCodeLine{275       \textcolor{keywordflow}{for}(uword H\_col = 0; H\_col < H\_n\_cols; ++H\_col)}
+\DoxyCodeLine{276         \{}
+\DoxyCodeLine{277         \textcolor{keyword}{const} eT* X\_colptr = X.colptr(col + H\_col);}
+\DoxyCodeLine{278         }
+\DoxyCodeLine{279         acc += \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{op\_dot::direct\_dot}}( H\_n\_rows, H.colptr(H\_col), \&(X\_colptr[row]) );}
+\DoxyCodeLine{280         \}}
+\DoxyCodeLine{281       }
+\DoxyCodeLine{282       out\_colptr[row] = acc;}
+\DoxyCodeLine{283       \}}
+\DoxyCodeLine{284     \}}
+\DoxyCodeLine{285   \}}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288 }
+\DoxyCodeLine{289 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{290 \textcolor{keyword}{inline}}
+\DoxyCodeLine{291 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{292 glue\_conv2::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_conv2>}}\& expr)}
+\DoxyCodeLine{293   \{}
+\DoxyCodeLine{294   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{295   }
+\DoxyCodeLine{296   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{297   }
+\DoxyCodeLine{298   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} UA(expr.\mbox{\hyperlink{classGlue_a22423031a9f05101ad23dfd897c6f1ab}{A}});}
+\DoxyCodeLine{299   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T2>}} UB(expr.\mbox{\hyperlink{classGlue_a1b3a6b5891d84915448f3084e66476c6}{B}});}
+\DoxyCodeLine{300   }
+\DoxyCodeLine{301   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = UA.M;}
+\DoxyCodeLine{302   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structB}{B}} = UB.M;}
+\DoxyCodeLine{303   }
+\DoxyCodeLine{304   \textcolor{keyword}{const} uword mode = expr.\mbox{\hyperlink{classGlue_a4f3211f4584d498b0563c3ac2ee4e256}{aux\_uword}};}
+\DoxyCodeLine{305   }
+\DoxyCodeLine{306   \textcolor{keywordflow}{if}(mode == 0)  \textcolor{comment}{// full convolution}}
+\DoxyCodeLine{307     \{}
+\DoxyCodeLine{308     glue\_conv2::apply(out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{309     \}}
+\DoxyCodeLine{310   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{311   \textcolor{keywordflow}{if}(mode == 1)  \textcolor{comment}{// same size as A}}
+\DoxyCodeLine{312     \{}
+\DoxyCodeLine{313     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{314     }
+\DoxyCodeLine{315     glue\_conv2::apply(tmp, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{316     }
+\DoxyCodeLine{317     \textcolor{keywordflow}{if}( (tmp.\mbox{\hyperlink{group__Mat_ga3008049216e02308ff665862f451a7ff}{is\_empty}}() == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structA}{A}}.is\_empty() == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structB}{B}}.is\_empty() == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{318       \{}
+\DoxyCodeLine{319       \textcolor{keyword}{const} uword start\_row = uword( std::floor( \textcolor{keywordtype}{double}(\mbox{\hyperlink{structB}{B}}.n\_rows) / \textcolor{keywordtype}{double}(2) ) );}
+\DoxyCodeLine{320       \textcolor{keyword}{const} uword start\_col = uword( std::floor( \textcolor{keywordtype}{double}(\mbox{\hyperlink{structB}{B}}.n\_cols) / \textcolor{keywordtype}{double}(2) ) );}
+\DoxyCodeLine{321       }
+\DoxyCodeLine{322       out = tmp(start\_row, start\_col, arma::size(\mbox{\hyperlink{structA}{A}}));}
+\DoxyCodeLine{323       \}}
+\DoxyCodeLine{324     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{325       \{}
+\DoxyCodeLine{326       out.zeros( arma::size(\mbox{\hyperlink{structA}{A}}) );}
+\DoxyCodeLine{327       \}}
+\DoxyCodeLine{328     \}}
+\DoxyCodeLine{329   \}}
+\DoxyCodeLine{330 }
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 }
+
+\end{DoxyCode}

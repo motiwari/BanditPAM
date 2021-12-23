@@ -1,0 +1,47 @@
+\hypertarget{CubeToMatOp__bones_8hpp_source}{}\doxysection{Cube\+To\+Mat\+Op\+\_\+bones.\+hpp}
+\label{CubeToMatOp__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/CubeToMatOp\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/CubeToMatOp\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} op\_type>}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp}} : \textcolor{keyword}{public} \mbox{\hyperlink{structBase}{Base}}< typename T1::elem\_type, CubeToMatOp<T1, op\_type> >}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   }
+\DoxyCodeLine{27   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type                   elem\_type;}
+\DoxyCodeLine{28   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result pod\_type;}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{inline} \textcolor{keyword}{explicit} \mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp}}(\textcolor{keyword}{const} T1\& in\_m);}
+\DoxyCodeLine{31   \textcolor{keyword}{inline}          \mbox{\hyperlink{classCubeToMatOp}{CubeToMatOp}}(\textcolor{keyword}{const} T1\& in\_m, \textcolor{keyword}{const} elem\_type in\_aux);}
+\DoxyCodeLine{32   \textcolor{keyword}{inline}         \mbox{\hyperlink{classCubeToMatOp}{\string~CubeToMatOp}}();}
+\DoxyCodeLine{33   }
+\DoxyCodeLine{34   arma\_aligned \textcolor{keyword}{const} T1\&       \mbox{\hyperlink{classCubeToMatOp_aaee8cba5abf6b8a82dc5eb09f2ec7e6a}{m}};            }
+\DoxyCodeLine{35   arma\_aligned       elem\_type \mbox{\hyperlink{classCubeToMatOp_ade62760acd830631b83a9f2b9de8c759}{aux}};          }
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_row  = op\_type::template traits<T1>::is\_row;}
+\DoxyCodeLine{38   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_col  = op\_type::template traits<T1>::is\_col;}
+\DoxyCodeLine{39   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_xvec = op\_type::template traits<T1>::is\_xvec;}
+\DoxyCodeLine{40   \};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+
+\end{DoxyCode}

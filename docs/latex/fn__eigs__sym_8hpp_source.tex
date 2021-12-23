@@ -1,0 +1,285 @@
+\hypertarget{fn__eigs__sym_8hpp_source}{}\doxysection{fn\+\_\+eigs\+\_\+sym.\+hpp}
+\label{fn__eigs__sym_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_eigs\_sym.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_eigs\_sym.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_real<typename T1::elem\_type>::value}}, \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type>}} >::result}
+\DoxyCodeLine{26 \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}}
+\DoxyCodeLine{27   (}
+\DoxyCodeLine{28   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{29   \textcolor{keyword}{const} uword                              n\_eigvals,}
+\DoxyCodeLine{30   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*                              form = \textcolor{stringliteral}{"{}lm"{}},}
+\DoxyCodeLine{31   \textcolor{keyword}{const} \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}                          opts = \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}()}
+\DoxyCodeLine{32   )}
+\DoxyCodeLine{33   \{}
+\DoxyCodeLine{34   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{35   }
+\DoxyCodeLine{36   \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}} eigvec;}
+\DoxyCodeLine{37   \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type >}} eigval;}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   sp\_auxlib::form\_type form\_val = sp\_auxlib::interpret\_form\_str(form);}
+\DoxyCodeLine{40   }
+\DoxyCodeLine{41   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__sp__auxlib_gad0daf84ba83e8b02f113f57428271fa7}{sp\_auxlib::eigs\_sym}}(eigval, eigvec, X, n\_eigvals, form\_val, opts);}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{44     \{}
+\DoxyCodeLine{45     eigval.soft\_reset();}
+\DoxyCodeLine{46     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}eigs\_sym(): decomposition failed"{}});}
+\DoxyCodeLine{47     \}}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keywordflow}{return} eigval;}
+\DoxyCodeLine{50   \}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 }
+\DoxyCodeLine{55 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{56 arma\_deprecated}
+\DoxyCodeLine{57 \textcolor{keyword}{inline}}
+\DoxyCodeLine{58 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_real<typename T1::elem\_type>::value}}, \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type>}} >::result}
+\DoxyCodeLine{59 \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}}
+\DoxyCodeLine{60   (}
+\DoxyCodeLine{61   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{62   \textcolor{keyword}{const} uword                              n\_eigvals,}
+\DoxyCodeLine{63   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*                              form,}
+\DoxyCodeLine{64   \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type             tol}
+\DoxyCodeLine{65   )}
+\DoxyCodeLine{66   \{}
+\DoxyCodeLine{67   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   \mbox{\hyperlink{structeigs__opts}{eigs\_opts}} opts;}
+\DoxyCodeLine{70   opts.tol = tol;}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}(X, n\_eigvals, form, opts);}
+\DoxyCodeLine{73   \}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{78 arma\_warn\_unused}
+\DoxyCodeLine{79 \textcolor{keyword}{inline}}
+\DoxyCodeLine{80 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_real<typename T1::elem\_type>::value}}, \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type>}} >::result}
+\DoxyCodeLine{81 \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}}
+\DoxyCodeLine{82   (}
+\DoxyCodeLine{83   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{84   \textcolor{keyword}{const} uword                              n\_eigvals,}
+\DoxyCodeLine{85   \textcolor{keyword}{const} \textcolor{keywordtype}{double}                             sigma,}
+\DoxyCodeLine{86   \textcolor{keyword}{const} \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}                          opts = \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}()}
+\DoxyCodeLine{87   )}
+\DoxyCodeLine{88   \{}
+\DoxyCodeLine{89   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{90   }
+\DoxyCodeLine{91   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{92   }
+\DoxyCodeLine{93   \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}} eigvec;}
+\DoxyCodeLine{94   \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type >}} eigval;}
+\DoxyCodeLine{95   }
+\DoxyCodeLine{96   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__sp__auxlib_gad0daf84ba83e8b02f113f57428271fa7}{sp\_auxlib::eigs\_sym}}(eigval, eigvec, X, n\_eigvals, T(sigma), opts);}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{99     \{}
+\DoxyCodeLine{100     eigval.soft\_reset();}
+\DoxyCodeLine{101     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}eigs\_sym(): decomposition failed"{}});}
+\DoxyCodeLine{102     \}}
+\DoxyCodeLine{103   }
+\DoxyCodeLine{104   \textcolor{keywordflow}{return} eigval;}
+\DoxyCodeLine{105   \}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 }
+\DoxyCodeLine{110 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{111 \textcolor{keyword}{inline}}
+\DoxyCodeLine{112 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_real<typename T1::elem\_type>::value}}, \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{113 \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}}
+\DoxyCodeLine{114   (}
+\DoxyCodeLine{115            \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type >}}\&    eigval,}
+\DoxyCodeLine{116   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{117   \textcolor{keyword}{const} uword                              n\_eigvals,}
+\DoxyCodeLine{118   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*                              form = \textcolor{stringliteral}{"{}lm"{}},}
+\DoxyCodeLine{119   \textcolor{keyword}{const} \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}                          opts = \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}()}
+\DoxyCodeLine{120   )}
+\DoxyCodeLine{121   \{}
+\DoxyCodeLine{122   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{123   }
+\DoxyCodeLine{124   \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}} eigvec;}
+\DoxyCodeLine{125   }
+\DoxyCodeLine{126   sp\_auxlib::form\_type form\_val = sp\_auxlib::interpret\_form\_str(form);}
+\DoxyCodeLine{127   }
+\DoxyCodeLine{128   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__sp__auxlib_gad0daf84ba83e8b02f113f57428271fa7}{sp\_auxlib::eigs\_sym}}(eigval, eigvec, X, n\_eigvals, form\_val, opts);}
+\DoxyCodeLine{129   }
+\DoxyCodeLine{130   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{131     \{}
+\DoxyCodeLine{132     eigval.soft\_reset();}
+\DoxyCodeLine{133     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}eigs\_sym(): decomposition failed"{}});}
+\DoxyCodeLine{134     \}}
+\DoxyCodeLine{135   }
+\DoxyCodeLine{136   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{137   \}}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140 }
+\DoxyCodeLine{142 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{143 arma\_deprecated}
+\DoxyCodeLine{144 \textcolor{keyword}{inline}}
+\DoxyCodeLine{145 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_real<typename T1::elem\_type>::value}}, \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{146 \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}}
+\DoxyCodeLine{147   (}
+\DoxyCodeLine{148            \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type >}}\&    eigval,}
+\DoxyCodeLine{149   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{150   \textcolor{keyword}{const} uword                              n\_eigvals,}
+\DoxyCodeLine{151   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*                              form,}
+\DoxyCodeLine{152   \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type             tol}
+\DoxyCodeLine{153   )}
+\DoxyCodeLine{154   \{}
+\DoxyCodeLine{155   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{156   }
+\DoxyCodeLine{157   \mbox{\hyperlink{structeigs__opts}{eigs\_opts}} opts;}
+\DoxyCodeLine{158   opts.tol = tol;}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}(eigval, X, n\_eigvals, form, opts);}
+\DoxyCodeLine{161   \}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{166 \textcolor{keyword}{inline}}
+\DoxyCodeLine{167 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_real<typename T1::elem\_type>::value}}, \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{168 \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}}
+\DoxyCodeLine{169   (}
+\DoxyCodeLine{170            \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type >}}\&    eigval,}
+\DoxyCodeLine{171   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{172   \textcolor{keyword}{const} uword                              n\_eigvals,}
+\DoxyCodeLine{173   \textcolor{keyword}{const} \textcolor{keywordtype}{double}                             sigma,}
+\DoxyCodeLine{174   \textcolor{keyword}{const} \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}                          opts = \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}()}
+\DoxyCodeLine{175   )}
+\DoxyCodeLine{176   \{}
+\DoxyCodeLine{177   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{178   }
+\DoxyCodeLine{179   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{180   }
+\DoxyCodeLine{181   \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}} eigvec;}
+\DoxyCodeLine{182   }
+\DoxyCodeLine{183   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__sp__auxlib_gad0daf84ba83e8b02f113f57428271fa7}{sp\_auxlib::eigs\_sym}}(eigval, eigvec, X, n\_eigvals, T(sigma), opts);}
+\DoxyCodeLine{184   }
+\DoxyCodeLine{185   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{186     \{}
+\DoxyCodeLine{187     eigval.soft\_reset();}
+\DoxyCodeLine{188     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}eigs\_sym(): decomposition failed"{}});}
+\DoxyCodeLine{189     \}}
+\DoxyCodeLine{190   }
+\DoxyCodeLine{191   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{192   \}}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 }
+\DoxyCodeLine{197 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{198 \textcolor{keyword}{inline}}
+\DoxyCodeLine{199 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_real<typename T1::elem\_type>::value}}, \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{200 \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}}
+\DoxyCodeLine{201   (}
+\DoxyCodeLine{202            \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type >}}\&    eigval,}
+\DoxyCodeLine{203            \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    eigvec,}
+\DoxyCodeLine{204   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{205   \textcolor{keyword}{const} uword                              n\_eigvals,}
+\DoxyCodeLine{206   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*                              form = \textcolor{stringliteral}{"{}lm"{}},}
+\DoxyCodeLine{207   \textcolor{keyword}{const} \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}                          opts = \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}()}
+\DoxyCodeLine{208   )}
+\DoxyCodeLine{209   \{}
+\DoxyCodeLine{210   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   arma\_debug\_check( void\_ptr(\&eigval) == void\_ptr(\&eigvec), \textcolor{stringliteral}{"{}eigs\_sym(): parameter 'eigval' is an alias of parameter 'eigvec'"{}} );}
+\DoxyCodeLine{213   }
+\DoxyCodeLine{214   sp\_auxlib::form\_type form\_val = sp\_auxlib::interpret\_form\_str(form);}
+\DoxyCodeLine{215   }
+\DoxyCodeLine{216   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__sp__auxlib_gad0daf84ba83e8b02f113f57428271fa7}{sp\_auxlib::eigs\_sym}}(eigval, eigvec, X, n\_eigvals, form\_val, opts);}
+\DoxyCodeLine{217   }
+\DoxyCodeLine{218   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{219     \{}
+\DoxyCodeLine{220     eigval.soft\_reset();}
+\DoxyCodeLine{221     eigvec.soft\_reset();}
+\DoxyCodeLine{222     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}eigs\_sym(): decomposition failed"{}});}
+\DoxyCodeLine{223     \}}
+\DoxyCodeLine{224   }
+\DoxyCodeLine{225   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{226   \}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229 }
+\DoxyCodeLine{231 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{232 arma\_deprecated}
+\DoxyCodeLine{233 \textcolor{keyword}{inline}}
+\DoxyCodeLine{234 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_real<typename T1::elem\_type>::value}}, \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{235 \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}}
+\DoxyCodeLine{236   (}
+\DoxyCodeLine{237            \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type >}}\&    eigval,}
+\DoxyCodeLine{238            \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    eigvec,}
+\DoxyCodeLine{239   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{240   \textcolor{keyword}{const} uword                              n\_eigvals,}
+\DoxyCodeLine{241   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*                              form,}
+\DoxyCodeLine{242   \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type             tol}
+\DoxyCodeLine{243   )}
+\DoxyCodeLine{244   \{}
+\DoxyCodeLine{245   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{246   }
+\DoxyCodeLine{247   \mbox{\hyperlink{structeigs__opts}{eigs\_opts}} opts;}
+\DoxyCodeLine{248   opts.tol = tol;}
+\DoxyCodeLine{249   }
+\DoxyCodeLine{250   \textcolor{keywordflow}{return} \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}(eigval, eigvec, X, n\_eigvals, form, opts);}
+\DoxyCodeLine{251   \}}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{256 \textcolor{keyword}{inline}}
+\DoxyCodeLine{257 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_real<typename T1::elem\_type>::value}}, \textcolor{keywordtype}{bool} >::result}
+\DoxyCodeLine{258 \mbox{\hyperlink{group__fn__eigs__sym_ga405f5c456c5060fec9c6bc9298cba29a}{eigs\_sym}}}
+\DoxyCodeLine{259   (}
+\DoxyCodeLine{260            \mbox{\hyperlink{classCol}{Col<typename T1::pod\_type >}}\&    eigval,}
+\DoxyCodeLine{261            \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&    eigvec,}
+\DoxyCodeLine{262   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type,T1>}}\& X,}
+\DoxyCodeLine{263   \textcolor{keyword}{const} uword                              n\_eigvals,}
+\DoxyCodeLine{264   \textcolor{keyword}{const} \textcolor{keywordtype}{double}                             sigma,}
+\DoxyCodeLine{265   \textcolor{keyword}{const} \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}                          opts = \mbox{\hyperlink{structeigs__opts}{eigs\_opts}}()}
+\DoxyCodeLine{266   )}
+\DoxyCodeLine{267   \{}
+\DoxyCodeLine{268   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{269   }
+\DoxyCodeLine{270   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type T;}
+\DoxyCodeLine{271   }
+\DoxyCodeLine{272   arma\_debug\_check( void\_ptr(\&eigval) == void\_ptr(\&eigvec), \textcolor{stringliteral}{"{}eigs\_sym(): parameter 'eigval' is an alias of parameter 'eigvec'"{}} );}
+\DoxyCodeLine{273   }
+\DoxyCodeLine{274   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__sp__auxlib_gad0daf84ba83e8b02f113f57428271fa7}{sp\_auxlib::eigs\_sym}}(eigval, eigvec, X, n\_eigvals, T(sigma), opts);}
+\DoxyCodeLine{275   }
+\DoxyCodeLine{276   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{277     \{}
+\DoxyCodeLine{278     eigval.soft\_reset();}
+\DoxyCodeLine{279     eigvec.soft\_reset();}
+\DoxyCodeLine{280     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}eigs\_sym(): decomposition failed"{}});}
+\DoxyCodeLine{281     \}}
+\DoxyCodeLine{282   }
+\DoxyCodeLine{283   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{284   \}}
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287 }
+
+\end{DoxyCode}

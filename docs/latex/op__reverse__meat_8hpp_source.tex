@@ -1,0 +1,105 @@
+\hypertarget{op__reverse__meat_8hpp_source}{}\doxysection{op\+\_\+reverse\+\_\+meat.\+hpp}
+\label{op__reverse__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_reverse\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_reverse\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 op\_reverse::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_reverse>}}\& in)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{const} uword dim = in.\mbox{\hyperlink{classOp_a197cb9330fe0d72c976d6223514c4bd6}{aux\_uword\_a}};}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   arma\_debug\_check( (dim > 1), \textcolor{stringliteral}{"{}reverse(): parameter 'dim' must be 0 or 1"{}} );}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}});}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Mat}{is\_Mat}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value || P.is\_alias(out))}
+\DoxyCodeLine{36     \{}
+\DoxyCodeLine{37     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<typename Proxy<T1>::stored\_type}}> U(P.Q);}
+\DoxyCodeLine{38     }
+\DoxyCodeLine{39     \textcolor{keywordflow}{if}(dim == 0)}
+\DoxyCodeLine{40       \{}
+\DoxyCodeLine{41       op\_flipud::apply\_direct(out, U.M);}
+\DoxyCodeLine{42       \}}
+\DoxyCodeLine{43     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{44     \textcolor{keywordflow}{if}(dim == 1)}
+\DoxyCodeLine{45       \{}
+\DoxyCodeLine{46       op\_fliplr::apply\_direct(out, U.M);}
+\DoxyCodeLine{47       \}}
+\DoxyCodeLine{48     \}}
+\DoxyCodeLine{49   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{50     \{}
+\DoxyCodeLine{51     \textcolor{keywordflow}{if}(dim == 0)}
+\DoxyCodeLine{52       \{}
+\DoxyCodeLine{53       op\_flipud::apply\_proxy\_noalias(out, P);}
+\DoxyCodeLine{54       \}}
+\DoxyCodeLine{55     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{56     \textcolor{keywordflow}{if}(dim == 1)}
+\DoxyCodeLine{57       \{}
+\DoxyCodeLine{58       op\_fliplr::apply\_proxy\_noalias(out, P);}
+\DoxyCodeLine{59       \}}
+\DoxyCodeLine{60     \}}
+\DoxyCodeLine{61   \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{66 \textcolor{keyword}{inline}}
+\DoxyCodeLine{67 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{68 op\_reverse\_vec::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_reverse\_vec>}}\& in)}
+\DoxyCodeLine{69   \{}
+\DoxyCodeLine{70   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}});}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Mat}{is\_Mat}}<\textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::stored\_type}}>::value || P.is\_alias(out))}
+\DoxyCodeLine{75     \{}
+\DoxyCodeLine{76     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<typename Proxy<T1>::stored\_type}}> U(P.Q);}
+\DoxyCodeLine{77     }
+\DoxyCodeLine{78     \textcolor{keywordflow}{if}((T1::is\_xvec) ? \textcolor{keywordtype}{bool}(U.M.is\_rowvec()) : \textcolor{keywordtype}{bool}(T1::is\_row))}
+\DoxyCodeLine{79       \{}
+\DoxyCodeLine{80       op\_fliplr::apply\_direct(out, U.M);}
+\DoxyCodeLine{81       \}}
+\DoxyCodeLine{82     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{83       \{}
+\DoxyCodeLine{84       op\_flipud::apply\_direct(out, U.M);}
+\DoxyCodeLine{85       \}}
+\DoxyCodeLine{86     \}}
+\DoxyCodeLine{87   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{88     \{}
+\DoxyCodeLine{89     \textcolor{keywordflow}{if}((T1::is\_xvec) ? \textcolor{keywordtype}{bool}(P.get\_n\_rows() == 1) : \textcolor{keywordtype}{bool}(T1::is\_row))}
+\DoxyCodeLine{90       \{}
+\DoxyCodeLine{91       op\_fliplr::apply\_proxy\_noalias(out, P);}
+\DoxyCodeLine{92       \}}
+\DoxyCodeLine{93     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{94       \{}
+\DoxyCodeLine{95       op\_flipud::apply\_proxy\_noalias(out, P);}
+\DoxyCodeLine{96       \}}
+\DoxyCodeLine{97     \}}
+\DoxyCodeLine{98   \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 }
+
+\end{DoxyCode}

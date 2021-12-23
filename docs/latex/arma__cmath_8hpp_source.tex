@@ -1,0 +1,379 @@
+\hypertarget{arma__cmath_8hpp_source}{}\doxysection{arma\+\_\+cmath.\+hpp}
+\label{arma__cmath_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arma\_cmath.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arma\_cmath.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{comment}{//}}
+\DoxyCodeLine{24 \textcolor{comment}{// wrappers for isfinite}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{28 \textcolor{keyword}{inline}}
+\DoxyCodeLine{29 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{30 arma\_isfinite(eT)}
+\DoxyCodeLine{31   \{}
+\DoxyCodeLine{32   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{33   \}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{38 \textcolor{keyword}{inline}}
+\DoxyCodeLine{39 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{40 arma\_isfinite(\textcolor{keywordtype}{float} x)}
+\DoxyCodeLine{41   \{}
+\DoxyCodeLine{42   \textcolor{keywordflow}{return} std::isfinite(x);}
+\DoxyCodeLine{43   \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{48 \textcolor{keyword}{inline}}
+\DoxyCodeLine{49 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{50 arma\_isfinite(\textcolor{keywordtype}{double} x)}
+\DoxyCodeLine{51   \{}
+\DoxyCodeLine{52   \textcolor{keywordflow}{return} std::isfinite(x);}
+\DoxyCodeLine{53   \}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{58 \textcolor{keyword}{inline}}
+\DoxyCodeLine{59 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{60 arma\_isfinite(\textcolor{keyword}{const} std::complex<T>\& x)}
+\DoxyCodeLine{61   \{}
+\DoxyCodeLine{62   \textcolor{keywordflow}{return} ( arma\_isfinite(x.real()) \&\& arma\_isfinite(x.imag()) );}
+\DoxyCodeLine{63   \}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{comment}{//}}
+\DoxyCodeLine{68 \textcolor{comment}{// wrappers for isinf}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{72 \textcolor{keyword}{inline}}
+\DoxyCodeLine{73 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{74 arma\_isinf(eT)}
+\DoxyCodeLine{75   \{}
+\DoxyCodeLine{76   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{77   \}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{82 \textcolor{keyword}{inline}}
+\DoxyCodeLine{83 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{84 arma\_isinf(\textcolor{keywordtype}{float} x)}
+\DoxyCodeLine{85   \{}
+\DoxyCodeLine{86   \textcolor{keywordflow}{return} std::isinf(x);}
+\DoxyCodeLine{87   \}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{92 \textcolor{keyword}{inline}}
+\DoxyCodeLine{93 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{94 arma\_isinf(\textcolor{keywordtype}{double} x)}
+\DoxyCodeLine{95   \{}
+\DoxyCodeLine{96   \textcolor{keywordflow}{return} std::isinf(x);}
+\DoxyCodeLine{97   \}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{102 \textcolor{keyword}{inline}}
+\DoxyCodeLine{103 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{104 arma\_isinf(\textcolor{keyword}{const} std::complex<T>\& x)}
+\DoxyCodeLine{105   \{}
+\DoxyCodeLine{106   \textcolor{keywordflow}{return} ( arma\_isinf(x.real()) || arma\_isinf(x.imag()) );}
+\DoxyCodeLine{107   \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{comment}{//}}
+\DoxyCodeLine{112 \textcolor{comment}{// wrappers for isnan}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{116 \textcolor{keyword}{inline}}
+\DoxyCodeLine{117 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{118 arma\_isnan(eT val)}
+\DoxyCodeLine{119   \{}
+\DoxyCodeLine{120   arma\_ignore(val);}
+\DoxyCodeLine{121     }
+\DoxyCodeLine{122   \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{123   \}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{128 \textcolor{keyword}{inline}}
+\DoxyCodeLine{129 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{130 arma\_isnan(\textcolor{keywordtype}{float} x)}
+\DoxyCodeLine{131   \{}
+\DoxyCodeLine{132   \textcolor{keywordflow}{return} std::isnan(x);}
+\DoxyCodeLine{133   \}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{138 \textcolor{keyword}{inline}}
+\DoxyCodeLine{139 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{140 arma\_isnan(\textcolor{keywordtype}{double} x)}
+\DoxyCodeLine{141   \{}
+\DoxyCodeLine{142   \textcolor{keywordflow}{return} std::isnan(x);}
+\DoxyCodeLine{143   \}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{148 \textcolor{keyword}{inline}}
+\DoxyCodeLine{149 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{150 arma\_isnan(\textcolor{keyword}{const} std::complex<T>\& x)}
+\DoxyCodeLine{151   \{}
+\DoxyCodeLine{152   \textcolor{keywordflow}{return} ( arma\_isnan(x.real()) || arma\_isnan(x.imag()) );}
+\DoxyCodeLine{153   \}}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157 \textcolor{comment}{//}}
+\DoxyCodeLine{158 \textcolor{comment}{// implementation of arma\_sign()}}
+\DoxyCodeLine{159 }
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{162 \textcolor{keyword}{constexpr}}
+\DoxyCodeLine{163 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__unsigned__integral__only}{arma\_unsigned\_integral\_only<eT>::result}}}
+\DoxyCodeLine{164 arma\_sign(\textcolor{keyword}{const} eT x)}
+\DoxyCodeLine{165   \{}
+\DoxyCodeLine{166   \textcolor{keywordflow}{return} (x > eT(0)) ? eT(+1) : eT(0);}
+\DoxyCodeLine{167   \}}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{172 \textcolor{keyword}{constexpr}}
+\DoxyCodeLine{173 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__signed__integral__only}{arma\_signed\_integral\_only<eT>::result}}}
+\DoxyCodeLine{174 arma\_sign(\textcolor{keyword}{const} eT x)}
+\DoxyCodeLine{175   \{}
+\DoxyCodeLine{176   \textcolor{keywordflow}{return} (x > eT(0)) ? eT(+1) : ( (x < eT(0)) ? eT(-\/1) : eT(0) );}
+\DoxyCodeLine{177   \}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{182 \textcolor{keyword}{constexpr}}
+\DoxyCodeLine{183 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__only}{arma\_real\_only<eT>::result}}}
+\DoxyCodeLine{184 arma\_sign(\textcolor{keyword}{const} eT x)}
+\DoxyCodeLine{185   \{}
+\DoxyCodeLine{186   \textcolor{keywordflow}{return} (x > eT(0)) ? eT(+1) : ( (x < eT(0)) ? eT(-\/1) : ((x == eT(0)) ? eT(0) : x) );}
+\DoxyCodeLine{187   \}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{192 \textcolor{keyword}{inline}}
+\DoxyCodeLine{193 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<eT>::result}}}
+\DoxyCodeLine{194 arma\_sign(\textcolor{keyword}{const} eT\& x)}
+\DoxyCodeLine{195   \{}
+\DoxyCodeLine{196   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} eT::value\_type T;}
+\DoxyCodeLine{197   }
+\DoxyCodeLine{198   \textcolor{keyword}{const} T abs\_x = std::abs(x);}
+\DoxyCodeLine{199   }
+\DoxyCodeLine{200   \textcolor{keywordflow}{return} (abs\_x != T(0)) ? (x / abs\_x) : x;}
+\DoxyCodeLine{201   \}}
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205 \textcolor{comment}{//}}
+\DoxyCodeLine{206 \textcolor{comment}{// wrappers for hypot(x, y) = sqrt(x\string^2 + y\string^2)}}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{210 \textcolor{keyword}{inline}}
+\DoxyCodeLine{211 eT}
+\DoxyCodeLine{212 arma\_hypot(\textcolor{keyword}{const} eT x, \textcolor{keyword}{const} eT y)}
+\DoxyCodeLine{213   \{}
+\DoxyCodeLine{214   arma\_ignore(x);}
+\DoxyCodeLine{215   arma\_ignore(y);}
+\DoxyCodeLine{216   }
+\DoxyCodeLine{217   arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}arma\_hypot(): not implemented for integer or complex element types"{}});}
+\DoxyCodeLine{218   }
+\DoxyCodeLine{219   \textcolor{keywordflow}{return} eT(0);}
+\DoxyCodeLine{220   \}}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{225 \textcolor{keyword}{inline}}
+\DoxyCodeLine{226 \textcolor{keywordtype}{float}}
+\DoxyCodeLine{227 arma\_hypot(\textcolor{keyword}{const} \textcolor{keywordtype}{float} x, \textcolor{keyword}{const} \textcolor{keywordtype}{float} y)}
+\DoxyCodeLine{228   \{}
+\DoxyCodeLine{229   \textcolor{keywordflow}{return} std::hypot(x, y);}
+\DoxyCodeLine{230   \}}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{235 \textcolor{keyword}{inline}}
+\DoxyCodeLine{236 \textcolor{keywordtype}{double}}
+\DoxyCodeLine{237 arma\_hypot(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x, \textcolor{keyword}{const} \textcolor{keywordtype}{double} y)}
+\DoxyCodeLine{238   \{}
+\DoxyCodeLine{239   \textcolor{keywordflow}{return} std::hypot(x, y);}
+\DoxyCodeLine{240   \}}
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 \textcolor{comment}{//}}
+\DoxyCodeLine{245 \textcolor{comment}{// implementation of arma\_sinc()}}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 }
+\DoxyCodeLine{248 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{249 \textcolor{keyword}{inline}}
+\DoxyCodeLine{250 eT}
+\DoxyCodeLine{251 arma\_sinc\_generic(\textcolor{keyword}{const} eT x)}
+\DoxyCodeLine{252   \{}
+\DoxyCodeLine{253   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} get\_pod\_type<eT>::result T;}
+\DoxyCodeLine{254   }
+\DoxyCodeLine{255   \textcolor{keyword}{const} eT tmp = \mbox{\hyperlink{classDatum}{Datum<T>::pi}} * x;}
+\DoxyCodeLine{256   }
+\DoxyCodeLine{257   \textcolor{keywordflow}{return} (tmp == eT(0)) ? eT(1) : eT( std::sin(tmp) / tmp );}
+\DoxyCodeLine{258   \}}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260 }
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{263 \textcolor{keyword}{inline}}
+\DoxyCodeLine{264 eT}
+\DoxyCodeLine{265 arma\_sinc(\textcolor{keyword}{const} eT x)}
+\DoxyCodeLine{266   \{}
+\DoxyCodeLine{267   \textcolor{keywordflow}{return} eT( arma\_sinc\_generic( \textcolor{keywordtype}{double}(x) ) );}
+\DoxyCodeLine{268   \}}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271 }
+\DoxyCodeLine{272 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{273 \textcolor{keyword}{inline}}
+\DoxyCodeLine{274 \textcolor{keywordtype}{float}}
+\DoxyCodeLine{275 arma\_sinc(\textcolor{keyword}{const} \textcolor{keywordtype}{float} x)}
+\DoxyCodeLine{276   \{}
+\DoxyCodeLine{277   \textcolor{keywordflow}{return} arma\_sinc\_generic(x);}
+\DoxyCodeLine{278   \}}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280 }
+\DoxyCodeLine{281 }
+\DoxyCodeLine{282 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{283 \textcolor{keyword}{inline}}
+\DoxyCodeLine{284 \textcolor{keywordtype}{double}}
+\DoxyCodeLine{285 arma\_sinc(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x)}
+\DoxyCodeLine{286   \{}
+\DoxyCodeLine{287   \textcolor{keywordflow}{return} arma\_sinc\_generic(x);}
+\DoxyCodeLine{288   \}}
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290 }
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{293 \textcolor{keyword}{inline}}
+\DoxyCodeLine{294 std::complex<T>}
+\DoxyCodeLine{295 arma\_sinc(\textcolor{keyword}{const} std::complex<T>\& x)}
+\DoxyCodeLine{296   \{}
+\DoxyCodeLine{297   \textcolor{keywordflow}{return} arma\_sinc\_generic(x);}
+\DoxyCodeLine{298   \}}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300 }
+\DoxyCodeLine{301 }
+\DoxyCodeLine{302 \textcolor{comment}{//}}
+\DoxyCodeLine{303 \textcolor{comment}{// wrappers for arg()}}
+\DoxyCodeLine{304 }
+\DoxyCodeLine{305 }
+\DoxyCodeLine{306 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{307 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__arg}{arma\_arg}}}
+\DoxyCodeLine{308   \{}
+\DoxyCodeLine{309   \textcolor{keyword}{static}}
+\DoxyCodeLine{310   \textcolor{keyword}{inline}}
+\DoxyCodeLine{311   eT}
+\DoxyCodeLine{312   eval(\textcolor{keyword}{const} eT x)}
+\DoxyCodeLine{313     \{}
+\DoxyCodeLine{314     \textcolor{keywordflow}{return} eT( std::arg(x) );}
+\DoxyCodeLine{315     \}}
+\DoxyCodeLine{316   \};}
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318 }
+\DoxyCodeLine{319 }
+\DoxyCodeLine{320 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{321 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__arg}{arma\_arg}}<float>}
+\DoxyCodeLine{322   \{}
+\DoxyCodeLine{323   \textcolor{keyword}{static}}
+\DoxyCodeLine{324   \textcolor{keyword}{inline}}
+\DoxyCodeLine{325   \textcolor{keywordtype}{float}}
+\DoxyCodeLine{326   eval(\textcolor{keyword}{const} \textcolor{keywordtype}{float} x)}
+\DoxyCodeLine{327     \{}
+\DoxyCodeLine{328     \textcolor{keywordflow}{return} std::arg(x);}
+\DoxyCodeLine{329     \}}
+\DoxyCodeLine{330   \};}
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333 }
+\DoxyCodeLine{334 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{335 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__arg}{arma\_arg}}<double>}
+\DoxyCodeLine{336   \{}
+\DoxyCodeLine{337   \textcolor{keyword}{static}}
+\DoxyCodeLine{338   \textcolor{keyword}{inline}}
+\DoxyCodeLine{339   \textcolor{keywordtype}{double}}
+\DoxyCodeLine{340   eval(\textcolor{keyword}{const} \textcolor{keywordtype}{double} x)}
+\DoxyCodeLine{341     \{}
+\DoxyCodeLine{342     \textcolor{keywordflow}{return} std::arg(x);}
+\DoxyCodeLine{343     \}}
+\DoxyCodeLine{344   \};}
+\DoxyCodeLine{345 }
+\DoxyCodeLine{346 }
+\DoxyCodeLine{347 }
+\DoxyCodeLine{348 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{349 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__arg}{arma\_arg}}< std::complex<float> >}
+\DoxyCodeLine{350   \{}
+\DoxyCodeLine{351   \textcolor{keyword}{static}}
+\DoxyCodeLine{352   \textcolor{keyword}{inline}}
+\DoxyCodeLine{353   \textcolor{keywordtype}{float}}
+\DoxyCodeLine{354   eval(\textcolor{keyword}{const} std::complex<float>\& x)}
+\DoxyCodeLine{355     \{}
+\DoxyCodeLine{356     \textcolor{keywordflow}{return} std::arg(x);}
+\DoxyCodeLine{357     \}}
+\DoxyCodeLine{358   \};}
+\DoxyCodeLine{359 }
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361 }
+\DoxyCodeLine{362 \textcolor{keyword}{template}<>}
+\DoxyCodeLine{363 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__arg}{arma\_arg}}< std::complex<double> >}
+\DoxyCodeLine{364   \{}
+\DoxyCodeLine{365   \textcolor{keyword}{static}}
+\DoxyCodeLine{366   \textcolor{keyword}{inline}}
+\DoxyCodeLine{367   \textcolor{keywordtype}{double}}
+\DoxyCodeLine{368   eval(\textcolor{keyword}{const} std::complex<double>\& x)}
+\DoxyCodeLine{369     \{}
+\DoxyCodeLine{370     \textcolor{keywordflow}{return} std::arg(x);}
+\DoxyCodeLine{371     \}}
+\DoxyCodeLine{372   \};}
+\DoxyCodeLine{373 }
+\DoxyCodeLine{374 }
+\DoxyCodeLine{375 }
+
+\end{DoxyCode}

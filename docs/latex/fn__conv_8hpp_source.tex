@@ -1,0 +1,74 @@
+\hypertarget{fn__conv_8hpp_source}{}\doxysection{fn\+\_\+conv.\+hpp}
+\label{fn__conv_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_conv.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_conv.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{25 arma\_warn\_unused}
+\DoxyCodeLine{26 \textcolor{keyword}{inline}}
+\DoxyCodeLine{27 \textcolor{keyword}{typename}}
+\DoxyCodeLine{28 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{29   <}
+\DoxyCodeLine{30   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{31   \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_conv>}}}
+\DoxyCodeLine{32   >::result}
+\DoxyCodeLine{33 \mbox{\hyperlink{group__fn__conv_ga7a3b99407de8a2eea442f7d8fabb1142}{conv}}(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* shape = \textcolor{stringliteral}{"{}full"{}})}
+\DoxyCodeLine{34   \{}
+\DoxyCodeLine{35   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{36   }
+\DoxyCodeLine{37   \textcolor{keyword}{const} \textcolor{keywordtype}{char} sig = (shape != \textcolor{keyword}{nullptr}) ? shape[0] : \textcolor{keywordtype}{char}(0);}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   arma\_debug\_check( ((sig != \textcolor{charliteral}{'f'}) \&\& (sig != \textcolor{charliteral}{'s'})), \textcolor{stringliteral}{"{}conv(): unsupported value of 'shape' parameter"{}} );}
+\DoxyCodeLine{40   }
+\DoxyCodeLine{41   \textcolor{keyword}{const} uword mode = (sig == \textcolor{charliteral}{'s'}) ? uword(1) : uword(0);}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_conv>}}(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, mode);}
+\DoxyCodeLine{44   \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{49 arma\_warn\_unused}
+\DoxyCodeLine{50 \textcolor{keyword}{inline}}
+\DoxyCodeLine{51 \textcolor{keyword}{typename}}
+\DoxyCodeLine{52 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{53   <}
+\DoxyCodeLine{54   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{55   \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_conv2>}}}
+\DoxyCodeLine{56   >::result}
+\DoxyCodeLine{57 conv2(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}}, \textcolor{keyword}{const} \textcolor{keywordtype}{char}* shape = \textcolor{stringliteral}{"{}full"{}})}
+\DoxyCodeLine{58   \{}
+\DoxyCodeLine{59   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{61   \textcolor{keyword}{const} \textcolor{keywordtype}{char} sig = (shape != \textcolor{keyword}{nullptr}) ? shape[0] : \textcolor{keywordtype}{char}(0);}
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   arma\_debug\_check( ((sig != \textcolor{charliteral}{'f'}) \&\& (sig != \textcolor{charliteral}{'s'})), \textcolor{stringliteral}{"{}conv2(): unsupported value of 'shape' parameter"{}} );}
+\DoxyCodeLine{64   }
+\DoxyCodeLine{65   \textcolor{keyword}{const} uword mode = (sig == \textcolor{charliteral}{'s'}) ? uword(1) : uword(0);}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_conv2>}}(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, mode);}
+\DoxyCodeLine{68   \}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 }
+
+\end{DoxyCode}

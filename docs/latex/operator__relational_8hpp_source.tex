@@ -1,0 +1,484 @@
+\hypertarget{operator__relational_8hpp_source}{}\doxysection{operator\+\_\+relational.\+hpp}
+\label{operator__relational_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/operator\_relational.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/operator\_relational.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{comment}{// <  : lt}}
+\DoxyCodeLine{22 \textcolor{comment}{// >  : gt}}
+\DoxyCodeLine{23 \textcolor{comment}{// <= : lteq}}
+\DoxyCodeLine{24 \textcolor{comment}{// >= : gteq}}
+\DoxyCodeLine{25 \textcolor{comment}{// == : eq}}
+\DoxyCodeLine{26 \textcolor{comment}{// != : noteq}}
+\DoxyCodeLine{27 \textcolor{comment}{// \&\& : and}}
+\DoxyCodeLine{28 \textcolor{comment}{// || : or}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{32 \textcolor{keyword}{inline}}
+\DoxyCodeLine{33 \textcolor{keyword}{typename}}
+\DoxyCodeLine{34 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{35   <}
+\DoxyCodeLine{36   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T2::elem\_type>::no}})),}
+\DoxyCodeLine{37   \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_lt>}}}
+\DoxyCodeLine{38   >::result}
+\DoxyCodeLine{39 \textcolor{keyword}{operator}<}
+\DoxyCodeLine{40 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{41   \{}
+\DoxyCodeLine{42   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_lt>}}( X, Y );}
+\DoxyCodeLine{45   \}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{50 \textcolor{keyword}{inline}}
+\DoxyCodeLine{51 \textcolor{keyword}{typename}}
+\DoxyCodeLine{52 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{53   <}
+\DoxyCodeLine{54   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T2::elem\_type>::no}})),}
+\DoxyCodeLine{55   \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_gt>}}}
+\DoxyCodeLine{56   >::result}
+\DoxyCodeLine{57 \textcolor{keyword}{operator}>}
+\DoxyCodeLine{58 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{59   \{}
+\DoxyCodeLine{60   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{61   }
+\DoxyCodeLine{62   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_gt>}}( X, Y );}
+\DoxyCodeLine{63   \}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{68 \textcolor{keyword}{inline}}
+\DoxyCodeLine{69 \textcolor{keyword}{typename}}
+\DoxyCodeLine{70 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{71   <}
+\DoxyCodeLine{72   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T2::elem\_type>::no}})),}
+\DoxyCodeLine{73   \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_lteq>}}}
+\DoxyCodeLine{74   >::result}
+\DoxyCodeLine{75 \textcolor{keyword}{operator}<=}
+\DoxyCodeLine{76 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{77   \{}
+\DoxyCodeLine{78   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{79   }
+\DoxyCodeLine{80   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_lteq>}}( X, Y );}
+\DoxyCodeLine{81   \}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{86 \textcolor{keyword}{inline}}
+\DoxyCodeLine{87 \textcolor{keyword}{typename}}
+\DoxyCodeLine{88 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{89   <}
+\DoxyCodeLine{90   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T2::elem\_type>::no}})),}
+\DoxyCodeLine{91   \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_gteq>}}}
+\DoxyCodeLine{92   >::result}
+\DoxyCodeLine{93 \textcolor{keyword}{operator}>=}
+\DoxyCodeLine{94 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{95   \{}
+\DoxyCodeLine{96   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{97   }
+\DoxyCodeLine{98   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_gteq>}}( X, Y );}
+\DoxyCodeLine{99   \}}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{104 \textcolor{keyword}{inline}}
+\DoxyCodeLine{105 \textcolor{keyword}{typename}}
+\DoxyCodeLine{106 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{107   <}
+\DoxyCodeLine{108   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}}),}
+\DoxyCodeLine{109   \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_eq>}}}
+\DoxyCodeLine{110   >::result}
+\DoxyCodeLine{111 \textcolor{keyword}{operator}==}
+\DoxyCodeLine{112 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{113   \{}
+\DoxyCodeLine{114   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_eq>}}( X, Y );}
+\DoxyCodeLine{117   \}}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{122 \textcolor{keyword}{inline}}
+\DoxyCodeLine{123 \textcolor{keyword}{typename}}
+\DoxyCodeLine{124 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{125   <}
+\DoxyCodeLine{126   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}}),}
+\DoxyCodeLine{127   \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_noteq>}}}
+\DoxyCodeLine{128   >::result}
+\DoxyCodeLine{129 \textcolor{keyword}{operator}!=}
+\DoxyCodeLine{130 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{131   \{}
+\DoxyCodeLine{132   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{133   }
+\DoxyCodeLine{134   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_noteq>}}( X, Y );}
+\DoxyCodeLine{135   \}}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{140 \textcolor{keyword}{inline}}
+\DoxyCodeLine{141 \textcolor{keyword}{typename}}
+\DoxyCodeLine{142 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{143   <}
+\DoxyCodeLine{144   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T2::elem\_type>::no}})),}
+\DoxyCodeLine{145   \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_and>}}}
+\DoxyCodeLine{146   >::result}
+\DoxyCodeLine{147 \textcolor{keyword}{operator}\&\&}
+\DoxyCodeLine{148 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{149   \{}
+\DoxyCodeLine{150   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{151   }
+\DoxyCodeLine{152   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_and>}}( X, Y );}
+\DoxyCodeLine{153   \}}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{158 \textcolor{keyword}{inline}}
+\DoxyCodeLine{159 \textcolor{keyword}{typename}}
+\DoxyCodeLine{160 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{161   <}
+\DoxyCodeLine{162   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T2::elem\_type>::no}})),}
+\DoxyCodeLine{163   \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_or>}}}
+\DoxyCodeLine{164   >::result}
+\DoxyCodeLine{165 \textcolor{keyword}{operator}||}
+\DoxyCodeLine{166 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{167   \{}
+\DoxyCodeLine{168   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{169   }
+\DoxyCodeLine{170   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtGlue}{mtGlue<uword, T1, T2, glue\_rel\_or>}}( X, Y );}
+\DoxyCodeLine{171   \}}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 \textcolor{comment}{//}}
+\DoxyCodeLine{176 \textcolor{comment}{//}}
+\DoxyCodeLine{177 \textcolor{comment}{//}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{182 \textcolor{keyword}{inline}}
+\DoxyCodeLine{183 \textcolor{keyword}{typename}}
+\DoxyCodeLine{184 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{185   <}
+\DoxyCodeLine{186   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}})),}
+\DoxyCodeLine{187   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_lt\_pre>}}}
+\DoxyCodeLine{188   >::result}
+\DoxyCodeLine{189 \textcolor{keyword}{operator}<}
+\DoxyCodeLine{190 (\textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val, \textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{191   \{}
+\DoxyCodeLine{192   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{193   }
+\DoxyCodeLine{194   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_lt\_pre>}}(X, val);}
+\DoxyCodeLine{195   \}}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{200 \textcolor{keyword}{inline}}
+\DoxyCodeLine{201 \textcolor{keyword}{typename}}
+\DoxyCodeLine{202 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{203   <}
+\DoxyCodeLine{204   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}})),}
+\DoxyCodeLine{205   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_lt\_post>}}}
+\DoxyCodeLine{206   >::result}
+\DoxyCodeLine{207 \textcolor{keyword}{operator}<}
+\DoxyCodeLine{208 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val)}
+\DoxyCodeLine{209   \{}
+\DoxyCodeLine{210   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_lt\_post>}}(X, val);}
+\DoxyCodeLine{213   \}}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216 }
+\DoxyCodeLine{217 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{218 \textcolor{keyword}{inline}}
+\DoxyCodeLine{219 \textcolor{keyword}{typename}}
+\DoxyCodeLine{220 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{221   <}
+\DoxyCodeLine{222   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}})),}
+\DoxyCodeLine{223   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_gt\_pre>}}}
+\DoxyCodeLine{224   >::result}
+\DoxyCodeLine{225 \textcolor{keyword}{operator}>}
+\DoxyCodeLine{226 (\textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val, \textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{227   \{}
+\DoxyCodeLine{228   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{229   }
+\DoxyCodeLine{230   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_gt\_pre>}}(X, val);}
+\DoxyCodeLine{231   \}}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233 }
+\DoxyCodeLine{234 }
+\DoxyCodeLine{235 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{236 \textcolor{keyword}{inline}}
+\DoxyCodeLine{237 \textcolor{keyword}{typename}}
+\DoxyCodeLine{238 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{239   <}
+\DoxyCodeLine{240   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}})),}
+\DoxyCodeLine{241   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_gt\_post>}}}
+\DoxyCodeLine{242   >::result}
+\DoxyCodeLine{243 \textcolor{keyword}{operator}>}
+\DoxyCodeLine{244 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val)}
+\DoxyCodeLine{245   \{}
+\DoxyCodeLine{246   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{247   }
+\DoxyCodeLine{248   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_gt\_post>}}(X, val);}
+\DoxyCodeLine{249   \}}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251 }
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{254 \textcolor{keyword}{inline}}
+\DoxyCodeLine{255 \textcolor{keyword}{typename}}
+\DoxyCodeLine{256 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{257   <}
+\DoxyCodeLine{258   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}})),}
+\DoxyCodeLine{259   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_lteq\_pre>}}}
+\DoxyCodeLine{260   >::result}
+\DoxyCodeLine{261 \textcolor{keyword}{operator}<=}
+\DoxyCodeLine{262 (\textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val, \textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{263   \{}
+\DoxyCodeLine{264   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{265   }
+\DoxyCodeLine{266   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_lteq\_pre>}}(X, val);}
+\DoxyCodeLine{267   \}}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{272 \textcolor{keyword}{inline}}
+\DoxyCodeLine{273 \textcolor{keyword}{typename}}
+\DoxyCodeLine{274 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{275   <}
+\DoxyCodeLine{276   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}})),}
+\DoxyCodeLine{277   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_lteq\_post>}}}
+\DoxyCodeLine{278   >::result}
+\DoxyCodeLine{279 \textcolor{keyword}{operator}<=}
+\DoxyCodeLine{280 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val)}
+\DoxyCodeLine{281   \{}
+\DoxyCodeLine{282   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{283   }
+\DoxyCodeLine{284   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_lteq\_post>}}(X, val);}
+\DoxyCodeLine{285   \}}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288 }
+\DoxyCodeLine{289 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{290 \textcolor{keyword}{inline}}
+\DoxyCodeLine{291 \textcolor{keyword}{typename}}
+\DoxyCodeLine{292 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{293   <}
+\DoxyCodeLine{294   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}})),}
+\DoxyCodeLine{295   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_gteq\_pre>}}}
+\DoxyCodeLine{296   >::result}
+\DoxyCodeLine{297 \textcolor{keyword}{operator}>=}
+\DoxyCodeLine{298 (\textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val, \textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{299   \{}
+\DoxyCodeLine{300   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{301   }
+\DoxyCodeLine{302   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_gteq\_pre>}}(X, val);}
+\DoxyCodeLine{303   \}}
+\DoxyCodeLine{304 }
+\DoxyCodeLine{305 }
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{308 \textcolor{keyword}{inline}}
+\DoxyCodeLine{309 \textcolor{keyword}{typename}}
+\DoxyCodeLine{310 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{311   <}
+\DoxyCodeLine{312   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}})),}
+\DoxyCodeLine{313   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_gteq\_post>}}}
+\DoxyCodeLine{314   >::result}
+\DoxyCodeLine{315 \textcolor{keyword}{operator}>=}
+\DoxyCodeLine{316 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val)}
+\DoxyCodeLine{317   \{}
+\DoxyCodeLine{318   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{319   }
+\DoxyCodeLine{320   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_gteq\_post>}}(X, val);}
+\DoxyCodeLine{321   \}}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323 }
+\DoxyCodeLine{324 }
+\DoxyCodeLine{325 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{326 \textcolor{keyword}{inline}}
+\DoxyCodeLine{327 \textcolor{keyword}{typename}}
+\DoxyCodeLine{328 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{329   <}
+\DoxyCodeLine{330   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}},}
+\DoxyCodeLine{331   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_eq>}}}
+\DoxyCodeLine{332   >::result}
+\DoxyCodeLine{333 \textcolor{keyword}{operator}==}
+\DoxyCodeLine{334 (\textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val, \textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{335   \{}
+\DoxyCodeLine{336   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{337   }
+\DoxyCodeLine{338   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_eq>}}(X, val);}
+\DoxyCodeLine{339   \}}
+\DoxyCodeLine{340 }
+\DoxyCodeLine{341 }
+\DoxyCodeLine{342 }
+\DoxyCodeLine{343 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{344 \textcolor{keyword}{inline}}
+\DoxyCodeLine{345 \textcolor{keyword}{typename}}
+\DoxyCodeLine{346 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{347   <}
+\DoxyCodeLine{348   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}},}
+\DoxyCodeLine{349   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_eq>}}}
+\DoxyCodeLine{350   >::result}
+\DoxyCodeLine{351 \textcolor{keyword}{operator}==}
+\DoxyCodeLine{352 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val)}
+\DoxyCodeLine{353   \{}
+\DoxyCodeLine{354   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{355   }
+\DoxyCodeLine{356   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_eq>}}(X, val);}
+\DoxyCodeLine{357   \}}
+\DoxyCodeLine{358 }
+\DoxyCodeLine{359 }
+\DoxyCodeLine{360 }
+\DoxyCodeLine{361 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{362 \textcolor{keyword}{inline}}
+\DoxyCodeLine{363 \textcolor{keyword}{typename}}
+\DoxyCodeLine{364 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{365   <}
+\DoxyCodeLine{366   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}},}
+\DoxyCodeLine{367   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_noteq>}}}
+\DoxyCodeLine{368   >::result}
+\DoxyCodeLine{369 \textcolor{keyword}{operator}!=}
+\DoxyCodeLine{370 (\textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val, \textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{371   \{}
+\DoxyCodeLine{372   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{373   }
+\DoxyCodeLine{374   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_noteq>}}(X, val);}
+\DoxyCodeLine{375   \}}
+\DoxyCodeLine{376 }
+\DoxyCodeLine{377 }
+\DoxyCodeLine{378 }
+\DoxyCodeLine{379 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{380 \textcolor{keyword}{inline}}
+\DoxyCodeLine{381 \textcolor{keyword}{typename}}
+\DoxyCodeLine{382 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{383   <}
+\DoxyCodeLine{384   \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}},}
+\DoxyCodeLine{385   \textcolor{keyword}{const} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_noteq>}}}
+\DoxyCodeLine{386   >::result}
+\DoxyCodeLine{387 \textcolor{keyword}{operator}!=}
+\DoxyCodeLine{388 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} \textcolor{keyword}{typename} T1::elem\_type val)}
+\DoxyCodeLine{389   \{}
+\DoxyCodeLine{390   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{391   }
+\DoxyCodeLine{392   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtOp}{mtOp<uword, T1, op\_rel\_noteq>}}(X, val);}
+\DoxyCodeLine{393   \}}
+\DoxyCodeLine{394 }
+\DoxyCodeLine{395 }
+\DoxyCodeLine{396 }
+\DoxyCodeLine{397 \textcolor{comment}{//}}
+\DoxyCodeLine{398 }
+\DoxyCodeLine{399 }
+\DoxyCodeLine{400 }
+\DoxyCodeLine{401 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{402 \textcolor{keyword}{inline}}
+\DoxyCodeLine{403 \textcolor{keyword}{typename}}
+\DoxyCodeLine{404 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{405   <}
+\DoxyCodeLine{406   (\mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T2>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T2::elem\_type>::no}})),}
+\DoxyCodeLine{407   \textcolor{keyword}{const} \mbox{\hyperlink{classmtSpGlue}{mtSpGlue<uword, T1, T2, spglue\_rel\_lt>}}}
+\DoxyCodeLine{408   >::result}
+\DoxyCodeLine{409 \textcolor{keyword}{operator}<}
+\DoxyCodeLine{410 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{411   \{}
+\DoxyCodeLine{412   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{413   }
+\DoxyCodeLine{414   \textcolor{comment}{// TODO: ensure T1::elem\_type and T2::elem\_type are the same}}
+\DoxyCodeLine{415   }
+\DoxyCodeLine{416   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtSpGlue}{mtSpGlue<uword, T1, T2, spglue\_rel\_lt>}}( X, Y );}
+\DoxyCodeLine{417   \}}
+\DoxyCodeLine{418 }
+\DoxyCodeLine{419 }
+\DoxyCodeLine{420 }
+\DoxyCodeLine{421 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{422 \textcolor{keyword}{inline}}
+\DoxyCodeLine{423 \textcolor{keyword}{typename}}
+\DoxyCodeLine{424 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{425   <}
+\DoxyCodeLine{426   (\mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T2>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T2::elem\_type>::no}})),}
+\DoxyCodeLine{427   \textcolor{keyword}{const} \mbox{\hyperlink{classmtSpGlue}{mtSpGlue<uword, T1, T2, spglue\_rel\_gt>}}}
+\DoxyCodeLine{428   >::result}
+\DoxyCodeLine{429 \textcolor{keyword}{operator}>}
+\DoxyCodeLine{430 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{431   \{}
+\DoxyCodeLine{432   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{433   }
+\DoxyCodeLine{434   \textcolor{comment}{// TODO: ensure T1::elem\_type and T2::elem\_type are the same}}
+\DoxyCodeLine{435   }
+\DoxyCodeLine{436   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtSpGlue}{mtSpGlue<uword, T1, T2, spglue\_rel\_gt>}}( X, Y );}
+\DoxyCodeLine{437   \}}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{439 }
+\DoxyCodeLine{440 }
+\DoxyCodeLine{441 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{442 \textcolor{keyword}{inline}}
+\DoxyCodeLine{443 \textcolor{keyword}{typename}}
+\DoxyCodeLine{444 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{445   <}
+\DoxyCodeLine{446   (\mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T2>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T2::elem\_type>::no}})),}
+\DoxyCodeLine{447   \textcolor{keyword}{const} \mbox{\hyperlink{classmtSpGlue}{mtSpGlue<uword, T1, T2, spglue\_rel\_and>}}}
+\DoxyCodeLine{448   >::result}
+\DoxyCodeLine{449 \textcolor{keyword}{operator}\&\&}
+\DoxyCodeLine{450 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{451   \{}
+\DoxyCodeLine{452   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{453   }
+\DoxyCodeLine{454   \textcolor{comment}{// TODO: ensure T1::elem\_type and T2::elem\_type are the same}}
+\DoxyCodeLine{455   }
+\DoxyCodeLine{456   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtSpGlue}{mtSpGlue<uword, T1, T2, spglue\_rel\_and>}}( X, Y );}
+\DoxyCodeLine{457   \}}
+\DoxyCodeLine{458 }
+\DoxyCodeLine{459 }
+\DoxyCodeLine{460 }
+\DoxyCodeLine{461 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{462 \textcolor{keyword}{inline}}
+\DoxyCodeLine{463 \textcolor{keyword}{typename}}
+\DoxyCodeLine{464 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{465   <}
+\DoxyCodeLine{466   (\mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T2>::value}} \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T1::elem\_type>::no}}) \&\& (\mbox{\hyperlink{structis__cx}{is\_cx<typename T2::elem\_type>::no}})),}
+\DoxyCodeLine{467   \textcolor{keyword}{const} \mbox{\hyperlink{classmtSpGlue}{mtSpGlue<uword, T1, T2, spglue\_rel\_or>}}}
+\DoxyCodeLine{468   >::result}
+\DoxyCodeLine{469 \textcolor{keyword}{operator}||}
+\DoxyCodeLine{470 (\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y)}
+\DoxyCodeLine{471   \{}
+\DoxyCodeLine{472   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{473   }
+\DoxyCodeLine{474   \textcolor{comment}{// TODO: ensure T1::elem\_type and T2::elem\_type are the same}}
+\DoxyCodeLine{475   }
+\DoxyCodeLine{476   \textcolor{keywordflow}{return} \mbox{\hyperlink{classmtSpGlue}{mtSpGlue<uword, T1, T2, spglue\_rel\_or>}}( X, Y );}
+\DoxyCodeLine{477   \}}
+\DoxyCodeLine{478 }
+\DoxyCodeLine{479 }
+\DoxyCodeLine{480 }
+
+\end{DoxyCode}

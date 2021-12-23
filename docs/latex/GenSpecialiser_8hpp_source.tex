@@ -1,0 +1,59 @@
+\hypertarget{GenSpecialiser_8hpp_source}{}\doxysection{Gen\+Specialiser.\+hpp}
+\label{GenSpecialiser_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/GenSpecialiser.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/GenSpecialiser.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keywordtype}{bool} is\_gen\_zeros, \textcolor{keywordtype}{bool} is\_gen\_ones, \textcolor{keywordtype}{bool} is\_gen\_randu, \textcolor{keywordtype}{bool} is\_gen\_randn>}
+\DoxyCodeLine{22 \textcolor{keyword}{struct }\mbox{\hyperlink{structGenSpecialiser}{GenSpecialiser}}}
+\DoxyCodeLine{23   \{}
+\DoxyCodeLine{24   arma\_inline elem\_type generate()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} elem\_type(); \}}
+\DoxyCodeLine{25   \};}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type>}
+\DoxyCodeLine{29 \textcolor{keyword}{struct }\mbox{\hyperlink{structGenSpecialiser}{GenSpecialiser}}<elem\_type, true, false, false, false>}
+\DoxyCodeLine{30   \{}
+\DoxyCodeLine{31   arma\_inline elem\_type generate()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} elem\_type(0); \}}
+\DoxyCodeLine{32   \};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type>}
+\DoxyCodeLine{36 \textcolor{keyword}{struct }\mbox{\hyperlink{structGenSpecialiser}{GenSpecialiser}}<elem\_type, false, true, false, false>}
+\DoxyCodeLine{37   \{}
+\DoxyCodeLine{38   arma\_inline elem\_type generate()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} elem\_type(1); \}}
+\DoxyCodeLine{39   \};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type>}
+\DoxyCodeLine{43 \textcolor{keyword}{struct }\mbox{\hyperlink{structGenSpecialiser}{GenSpecialiser}}<elem\_type, false, false, true, false>}
+\DoxyCodeLine{44   \{}
+\DoxyCodeLine{45   arma\_inline elem\_type generate()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} elem\_type(\mbox{\hyperlink{structarma__rng_1_1randu}{arma\_rng::randu<elem\_type>}}()); \}}
+\DoxyCodeLine{46   \};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type>}
+\DoxyCodeLine{50 \textcolor{keyword}{struct }\mbox{\hyperlink{structGenSpecialiser}{GenSpecialiser}}<elem\_type, false, false, false, true>}
+\DoxyCodeLine{51   \{}
+\DoxyCodeLine{52   arma\_inline elem\_type generate()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} elem\_type(\mbox{\hyperlink{structarma__rng_1_1randn}{arma\_rng::randn<elem\_type>}}()); \}}
+\DoxyCodeLine{53   \};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+
+\end{DoxyCode}

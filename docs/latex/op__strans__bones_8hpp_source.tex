@@ -1,0 +1,85 @@
+\hypertarget{op__strans__bones_8hpp_source}{}\doxysection{op\+\_\+strans\+\_\+bones.\+hpp}
+\label{op__strans__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_strans\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_strans\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classop__strans}{op\_strans}}}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   }
+\DoxyCodeLine{27   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{28   \textcolor{keyword}{struct }\mbox{\hyperlink{structop__strans_1_1traits}{traits}}}
+\DoxyCodeLine{29     \{}
+\DoxyCodeLine{30     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_row  = T1::is\_col;  \textcolor{comment}{// deliberately swapped}}
+\DoxyCodeLine{31     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_col  = T1::is\_row;}
+\DoxyCodeLine{32     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_xvec = T1::is\_xvec;}
+\DoxyCodeLine{33     \};}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keyword}{template}<const \textcolor{keywordtype}{bool} do\_flip, const uword row, const uword col>}
+\DoxyCodeLine{36   \textcolor{keyword}{struct }\mbox{\hyperlink{structop__strans_1_1pos}{pos}}}
+\DoxyCodeLine{37     \{}
+\DoxyCodeLine{38     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword n2 = (do\_flip == \textcolor{keyword}{false}) ? (row + col*2) : (col + row*2);}
+\DoxyCodeLine{39     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword n3 = (do\_flip == \textcolor{keyword}{false}) ? (row + col*3) : (col + row*3);}
+\DoxyCodeLine{40     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword n4 = (do\_flip == \textcolor{keyword}{false}) ? (row + col*4) : (col + row*4);}
+\DoxyCodeLine{41     \};}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} TA>}
+\DoxyCodeLine{44   arma\_cold \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__op__strans_gac7cc2cfa347e5d0f44d5a022148648d6}{apply\_mat\_noalias\_tinysq}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} TA\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{47   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} block\_worker(eT* Y, \textcolor{keyword}{const} eT* X, \textcolor{keyword}{const} uword X\_n\_rows, \textcolor{keyword}{const} uword Y\_n\_rows, \textcolor{keyword}{const} uword n\_rows, \textcolor{keyword}{const} uword n\_cols);}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{50   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_mat\_noalias\_large(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} TA>}
+\DoxyCodeLine{53   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{group__op__strans_gafd56208012c4a9b31acbeaf21cfa63cc}{apply\_mat\_noalias}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} TA\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{56   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_mat\_inplace(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out);}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} TA>}
+\DoxyCodeLine{59   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_mat(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} TA\& \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{61   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{62   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_proxy(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} T1\& X);}
+\DoxyCodeLine{63   }
+\DoxyCodeLine{64   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{65   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_direct(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} T1\& X);}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{68   arma\_hot \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_strans>}}\& in);}
+\DoxyCodeLine{69   \};}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{keyword}{class }\mbox{\hyperlink{classop__strans__cube}{op\_strans\_cube}}}
+\DoxyCodeLine{74   \{}
+\DoxyCodeLine{75   \textcolor{keyword}{public}:}
+\DoxyCodeLine{76   }
+\DoxyCodeLine{77   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{78   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_noalias(\mbox{\hyperlink{classCube}{Cube<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& X);}
+\DoxyCodeLine{79   \};}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+
+\end{DoxyCode}

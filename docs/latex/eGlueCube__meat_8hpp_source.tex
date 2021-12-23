@@ -1,0 +1,154 @@
+\hypertarget{eGlueCube__meat_8hpp_source}{}\doxysection{e\+Glue\+Cube\+\_\+meat.\+hpp}
+\label{eGlueCube__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/eGlueCube\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/eGlueCube\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{23 arma\_inline}
+\DoxyCodeLine{24 \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_type>::\string~eGlueCube}}()}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{27   \}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{32 arma\_inline}
+\DoxyCodeLine{33 \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_type>::eGlueCube}}(\textcolor{keyword}{const} T1\& in\_A, \textcolor{keyword}{const} T2\& in\_B)}
+\DoxyCodeLine{34   : P1(in\_A)}
+\DoxyCodeLine{35   , P2(in\_B)}
+\DoxyCodeLine{36   \{}
+\DoxyCodeLine{37   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   arma\_debug\_assert\_same\_size}
+\DoxyCodeLine{40     (}
+\DoxyCodeLine{41     P1.get\_n\_rows(), P1.get\_n\_cols(), P1.get\_n\_slices(),}
+\DoxyCodeLine{42     P2.get\_n\_rows(), P2.get\_n\_cols(), P2.get\_n\_slices(), }
+\DoxyCodeLine{43     eglue\_type::text()}
+\DoxyCodeLine{44     );}
+\DoxyCodeLine{45   \}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{50 arma\_inline}
+\DoxyCodeLine{51 uword}
+\DoxyCodeLine{52 \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_type>::get\_n\_rows}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{53 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{54   \textcolor{keywordflow}{return} P1.get\_n\_rows();}
+\DoxyCodeLine{55   \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{60 arma\_inline}
+\DoxyCodeLine{61 uword}
+\DoxyCodeLine{62 \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_type>::get\_n\_cols}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{63 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{64   \textcolor{keywordflow}{return} P1.get\_n\_cols();}
+\DoxyCodeLine{65   \}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{70 arma\_inline}
+\DoxyCodeLine{71 uword}
+\DoxyCodeLine{72 \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_type>::get\_n\_slices}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{73 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{74   \textcolor{keywordflow}{return} P1.get\_n\_slices();}
+\DoxyCodeLine{75   \}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{80 arma\_inline}
+\DoxyCodeLine{81 uword}
+\DoxyCodeLine{82 \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_type>::get\_n\_elem\_slice}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{83 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{84   \textcolor{keywordflow}{return} P1.get\_n\_elem\_slice();}
+\DoxyCodeLine{85   \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{90 arma\_inline}
+\DoxyCodeLine{91 uword}
+\DoxyCodeLine{92 \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_type>::get\_n\_elem}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{93 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{94   \textcolor{keywordflow}{return} P1.get\_n\_elem();}
+\DoxyCodeLine{95   \}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{100 arma\_inline}
+\DoxyCodeLine{101 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{102 \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_type>::operator[] }}(\textcolor{keyword}{const} uword i)\textcolor{keyword}{ const}}
+\DoxyCodeLine{103 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{104   \textcolor{comment}{// the optimiser will keep only one return statement}}
+\DoxyCodeLine{105   }
+\DoxyCodeLine{106   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{107   }
+\DoxyCodeLine{108        \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_plus >::yes}}) \{ \textcolor{keywordflow}{return} P1[i] + P2[i]; \}}
+\DoxyCodeLine{109   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_minus>::yes}}) \{ \textcolor{keywordflow}{return} P1[i] -\/ P2[i]; \}}
+\DoxyCodeLine{110   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_div  >::yes}}) \{ \textcolor{keywordflow}{return} P1[i] / P2[i]; \}}
+\DoxyCodeLine{111   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_schur>::yes}}) \{ \textcolor{keywordflow}{return} P1[i] * P2[i]; \}}
+\DoxyCodeLine{112   \textcolor{keywordflow}{else} \textcolor{keywordflow}{return} eT(0);}
+\DoxyCodeLine{113   \}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{117 arma\_inline}
+\DoxyCodeLine{118 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{119 \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_type>::at}}(\textcolor{keyword}{const} uword row, \textcolor{keyword}{const} uword col, \textcolor{keyword}{const} uword \mbox{\hyperlink{classslice}{slice}})\textcolor{keyword}{ const}}
+\DoxyCodeLine{120 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{121   \textcolor{comment}{// the optimiser will keep only one return statement}}
+\DoxyCodeLine{122   }
+\DoxyCodeLine{123   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{124   }
+\DoxyCodeLine{125        \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_plus >::yes}}) \{ \textcolor{keywordflow}{return} P1.at(row,col,\mbox{\hyperlink{classslice}{slice}}) + P2.at(row,col,\mbox{\hyperlink{classslice}{slice}}); \}}
+\DoxyCodeLine{126   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_minus>::yes}}) \{ \textcolor{keywordflow}{return} P1.at(row,col,\mbox{\hyperlink{classslice}{slice}}) -\/ P2.at(row,col,\mbox{\hyperlink{classslice}{slice}}); \}}
+\DoxyCodeLine{127   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_div  >::yes}}) \{ \textcolor{keywordflow}{return} P1.at(row,col,\mbox{\hyperlink{classslice}{slice}}) / P2.at(row,col,\mbox{\hyperlink{classslice}{slice}}); \}}
+\DoxyCodeLine{128   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_schur>::yes}}) \{ \textcolor{keywordflow}{return} P1.at(row,col,\mbox{\hyperlink{classslice}{slice}}) * P2.at(row,col,\mbox{\hyperlink{classslice}{slice}}); \}}
+\DoxyCodeLine{129   \textcolor{keywordflow}{else} \textcolor{keywordflow}{return} eT(0);}
+\DoxyCodeLine{130   \}}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} eglue\_type>}
+\DoxyCodeLine{135 arma\_inline}
+\DoxyCodeLine{136 \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{137 \mbox{\hyperlink{classeGlueCube}{eGlueCube<T1,T2,eglue\_type>::at\_alt}}(\textcolor{keyword}{const} uword i)\textcolor{keyword}{ const}}
+\DoxyCodeLine{138 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{139   \textcolor{comment}{// the optimiser will keep only one return statement}}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{142   }
+\DoxyCodeLine{143        \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_plus >::yes}}) \{ \textcolor{keywordflow}{return} P1.at\_alt(i) + P2.at\_alt(i); \}}
+\DoxyCodeLine{144   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_minus>::yes}}) \{ \textcolor{keywordflow}{return} P1.at\_alt(i) -\/ P2.at\_alt(i); \}}
+\DoxyCodeLine{145   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_div  >::yes}}) \{ \textcolor{keywordflow}{return} P1.at\_alt(i) / P2.at\_alt(i); \}}
+\DoxyCodeLine{146   \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__same__type}{is\_same\_type<eglue\_type, eglue\_schur>::yes}}) \{ \textcolor{keywordflow}{return} P1.at\_alt(i) * P2.at\_alt(i); \}}
+\DoxyCodeLine{147   \textcolor{keywordflow}{else} \textcolor{keywordflow}{return} eT(0);}
+\DoxyCodeLine{148   \}}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 }
+
+\end{DoxyCode}

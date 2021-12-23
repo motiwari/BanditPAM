@@ -1,0 +1,314 @@
+\hypertarget{newarp__UpperHessenbergQR__meat_8hpp_source}{}\doxysection{newarp\+\_\+\+Upper\+Hessenberg\+QR\+\_\+meat.\+hpp}
+\label{newarp__UpperHessenbergQR__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_UpperHessenbergQR\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/newarp\_UpperHessenbergQR\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }newarp}
+\DoxyCodeLine{18 \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{22 \textcolor{keyword}{inline}}
+\DoxyCodeLine{23 \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_a88bbc26cfa1b758051ff867c345af725}{UpperHessenbergQR<eT>::UpperHessenbergQR}}()}
+\DoxyCodeLine{24   : n(0)}
+\DoxyCodeLine{25   , computed(false)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   \}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{33 \textcolor{keyword}{inline}}
+\DoxyCodeLine{34 \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_a88bbc26cfa1b758051ff867c345af725}{UpperHessenbergQR<eT>::UpperHessenbergQR}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& mat\_obj)}
+\DoxyCodeLine{35   : n(mat\_obj.n\_rows)}
+\DoxyCodeLine{36   , mat\_T(n, n)}
+\DoxyCodeLine{37   , rot\_cos(n -\/ 1)}
+\DoxyCodeLine{38   , rot\_sin(n -\/ 1)}
+\DoxyCodeLine{39   , computed(false)}
+\DoxyCodeLine{40   \{}
+\DoxyCodeLine{41   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{42   }
+\DoxyCodeLine{43   \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_ad5d6e3792e0b6a7185b0438a2dfb4bbb}{compute}}(mat\_obj);}
+\DoxyCodeLine{44   \}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{49 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{50 \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_ad5d6e3792e0b6a7185b0438a2dfb4bbb}{UpperHessenbergQR<eT>::compute}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& mat\_obj)}
+\DoxyCodeLine{51   \{}
+\DoxyCodeLine{52   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   n = mat\_obj.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{55   mat\_T.set\_size(n, n);}
+\DoxyCodeLine{56   rot\_cos.set\_size(n -\/ 1);}
+\DoxyCodeLine{57   rot\_sin.set\_size(n -\/ 1);}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   \textcolor{comment}{// Make a copy of mat\_obj}}
+\DoxyCodeLine{60   mat\_T = mat\_obj;}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62   eT xi, xj, r, c, s, eps = std::numeric\_limits<eT>::epsilon();}
+\DoxyCodeLine{63   eT *ptr;}
+\DoxyCodeLine{64   \textcolor{keywordflow}{for}(uword i = 0; i < n -\/ 1; i++)}
+\DoxyCodeLine{65     \{}
+\DoxyCodeLine{66     \textcolor{comment}{// Make sure mat\_T is upper Hessenberg}}
+\DoxyCodeLine{67     \textcolor{comment}{// Zero the elements below mat\_T(i + 1, i)}}
+\DoxyCodeLine{68     \textcolor{keywordflow}{if}(i < n -\/ 2) \{ mat\_T(\mbox{\hyperlink{classspan}{span}}(i + 2, n -\/ 1), i).zeros(); \}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70     xi = mat\_T(i,     i);  \textcolor{comment}{// mat\_T(i, i)}}
+\DoxyCodeLine{71     xj = mat\_T(i + 1, i);  \textcolor{comment}{// mat\_T(i + 1, i)}}
+\DoxyCodeLine{72     r = arma\_hypot(xi, xj);}
+\DoxyCodeLine{73     \textcolor{keywordflow}{if}(r <= eps)}
+\DoxyCodeLine{74       \{}
+\DoxyCodeLine{75       r = 0;}
+\DoxyCodeLine{76       rot\_cos(i) = c = 1;}
+\DoxyCodeLine{77       rot\_sin(i) = s = 0;}
+\DoxyCodeLine{78       \}}
+\DoxyCodeLine{79     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{80       \{}
+\DoxyCodeLine{81       rot\_cos(i) = c = xi / r;}
+\DoxyCodeLine{82       rot\_sin(i) = s = -\/xj / r;}
+\DoxyCodeLine{83       \}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85     \textcolor{comment}{// For a complete QR decomposition,}}
+\DoxyCodeLine{86     \textcolor{comment}{// we first obtain the rotation matrix}}
+\DoxyCodeLine{87     \textcolor{comment}{// G = [ cos  sin]}}
+\DoxyCodeLine{88     \textcolor{comment}{//     [-\/sin  cos]}}
+\DoxyCodeLine{89     \textcolor{comment}{// and then do T[i:(i + 1), i:(n -\/ 1)] = G' * T[i:(i + 1), i:(n -\/ 1)]}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91     \textcolor{comment}{// mat\_T.submat(i, i, i + 1, n -\/ 1) = Gt * mat\_T.submat(i, i, i + 1, n -\/ 1);}}
+\DoxyCodeLine{92     mat\_T(i,     i) = r;    \textcolor{comment}{// mat\_T(i, i)     => r}}
+\DoxyCodeLine{93     mat\_T(i + 1, i) = 0;    \textcolor{comment}{// mat\_T(i + 1, i) => 0}}
+\DoxyCodeLine{94     ptr = \&mat\_T(i, i + 1); \textcolor{comment}{// mat\_T(i, k), k = i+1, i+2, ..., n-\/1}}
+\DoxyCodeLine{95     \textcolor{keywordflow}{for}(uword j = i + 1; j < n; j++, ptr += n)}
+\DoxyCodeLine{96       \{}
+\DoxyCodeLine{97       eT tmp = ptr[0];}
+\DoxyCodeLine{98       ptr[0] = c * tmp -\/ s * ptr[1];}
+\DoxyCodeLine{99       ptr[1] = s * tmp + c * ptr[1];}
+\DoxyCodeLine{100       \}}
+\DoxyCodeLine{101     \}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103   computed = \textcolor{keyword}{true};}
+\DoxyCodeLine{104   \}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{109 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{110 \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_ae81c26c752ec4e6d20703a3cf1116b57}{UpperHessenbergQR<eT>::matrix\_RQ}}()}
+\DoxyCodeLine{111   \{}
+\DoxyCodeLine{112   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{113   }
+\DoxyCodeLine{114   arma\_debug\_check( (computed == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}newarp::UpperHessenbergQR::matrix\_RQ(): need to call compute() first"{}} );}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116   \textcolor{comment}{// Make a copy of the R matrix}}
+\DoxyCodeLine{117   \mbox{\hyperlink{classMat}{Mat<eT>}} RQ = trimatu(mat\_T);}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119   \textcolor{keywordflow}{for}(uword i = 0; i < n -\/ 1; i++)}
+\DoxyCodeLine{120     \{}
+\DoxyCodeLine{121     \textcolor{comment}{// RQ[, i:(i + 1)] = RQ[, i:(i + 1)] * Gi}}
+\DoxyCodeLine{122     \textcolor{comment}{// Gi = [ cos[i]  sin[i]]}}
+\DoxyCodeLine{123     \textcolor{comment}{//      [-\/sin[i]  cos[i]]}}
+\DoxyCodeLine{124     \textcolor{keyword}{const} eT c = rot\_cos(i);}
+\DoxyCodeLine{125     \textcolor{keyword}{const} eT s = rot\_sin(i);}
+\DoxyCodeLine{126     eT *Yi, *Yi1;}
+\DoxyCodeLine{127     Yi  = RQ.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(i);}
+\DoxyCodeLine{128     Yi1 = RQ.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(i + 1);}
+\DoxyCodeLine{129     \textcolor{keywordflow}{for}(uword j = 0; j < i + 2; j++)}
+\DoxyCodeLine{130       \{}
+\DoxyCodeLine{131       eT tmp = Yi[j];}
+\DoxyCodeLine{132       Yi[j]  = c * tmp -\/ s * Yi1[j];}
+\DoxyCodeLine{133       Yi1[j] = s * tmp + c * Yi1[j];}
+\DoxyCodeLine{134       \}}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136     \textcolor{comment}{/* Yi = RQ(span(0, i + 1), i);}}
+\DoxyCodeLine{137 \textcolor{comment}{    RQ(span(0, i + 1), i)     = (*c) * Yi -\/ (*s) * RQ(span(0, i + 1), i + 1);}}
+\DoxyCodeLine{138 \textcolor{comment}{    RQ(span(0, i + 1), i + 1) = (*s) * Yi + (*c) * RQ(span(0, i + 1), i + 1); */}}
+\DoxyCodeLine{139     \}}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141   \textcolor{keywordflow}{return} RQ;}
+\DoxyCodeLine{142   \}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{147 \textcolor{keyword}{inline}}
+\DoxyCodeLine{148 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{149 \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR_ae59f56ba96543afa24b759ffa5935ce8}{UpperHessenbergQR<eT>::apply\_YQ}}(\mbox{\hyperlink{classMat}{Mat<eT>}}\& Y)}
+\DoxyCodeLine{150   \{}
+\DoxyCodeLine{151   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{152   }
+\DoxyCodeLine{153   arma\_debug\_check( (computed == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}newarp::UpperHessenbergQR::apply\_YQ(): need to call compute() first"{}} );}
+\DoxyCodeLine{154 }
+\DoxyCodeLine{155   eT *Y\_col\_i, *Y\_col\_i1;}
+\DoxyCodeLine{156   uword nrow = Y.n\_rows;}
+\DoxyCodeLine{157   \textcolor{keywordflow}{for}(uword i = 0; i < n -\/ 1; i++)}
+\DoxyCodeLine{158     \{}
+\DoxyCodeLine{159     \textcolor{keyword}{const} eT c = rot\_cos(i);}
+\DoxyCodeLine{160     \textcolor{keyword}{const} eT s = rot\_sin(i);}
+\DoxyCodeLine{161     Y\_col\_i  = Y.colptr(i);}
+\DoxyCodeLine{162     Y\_col\_i1 = Y.colptr(i + 1);}
+\DoxyCodeLine{163     \textcolor{keywordflow}{for}(uword j = 0; j < nrow; j++)}
+\DoxyCodeLine{164       \{}
+\DoxyCodeLine{165       eT tmp = Y\_col\_i[j];}
+\DoxyCodeLine{166       Y\_col\_i[j]  = c * tmp -\/ s * Y\_col\_i1[j];}
+\DoxyCodeLine{167       Y\_col\_i1[j] = s * tmp + c * Y\_col\_i1[j];}
+\DoxyCodeLine{168       \}}
+\DoxyCodeLine{169     \}}
+\DoxyCodeLine{170   \}}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{175 \textcolor{keyword}{inline}}
+\DoxyCodeLine{176 \mbox{\hyperlink{classnewarp_1_1TridiagQR_a34a2289abde6540afc8f7c1588068111}{TridiagQR<eT>::TridiagQR}}()}
+\DoxyCodeLine{177   : \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR}{UpperHessenbergQR}}<eT>()}
+\DoxyCodeLine{178   \{}
+\DoxyCodeLine{179   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{180   \}}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{185 \textcolor{keyword}{inline}}
+\DoxyCodeLine{186 \mbox{\hyperlink{classnewarp_1_1TridiagQR_a34a2289abde6540afc8f7c1588068111}{TridiagQR<eT>::TridiagQR}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& mat\_obj)}
+\DoxyCodeLine{187   : \mbox{\hyperlink{classnewarp_1_1UpperHessenbergQR}{UpperHessenbergQR}}<eT>()}
+\DoxyCodeLine{188   \{}
+\DoxyCodeLine{189   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{190   }
+\DoxyCodeLine{191   this-\/>\mbox{\hyperlink{classnewarp_1_1TridiagQR_a424d445c3ab83b71d97151bd487ae6fa}{compute}}(mat\_obj);}
+\DoxyCodeLine{192   \}}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{197 \textcolor{keyword}{inline}}
+\DoxyCodeLine{198 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{199 \mbox{\hyperlink{classnewarp_1_1TridiagQR_a424d445c3ab83b71d97151bd487ae6fa}{TridiagQR<eT>::compute}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& mat\_obj)}
+\DoxyCodeLine{200   \{}
+\DoxyCodeLine{201   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{202   }
+\DoxyCodeLine{203   this-\/>n = mat\_obj.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{204   this-\/>mat\_T.set\_size(this-\/>n, this-\/>n);}
+\DoxyCodeLine{205   this-\/>rot\_cos.set\_size(this-\/>n -\/ 1);}
+\DoxyCodeLine{206   this-\/>rot\_sin.set\_size(this-\/>n -\/ 1);}
+\DoxyCodeLine{207 }
+\DoxyCodeLine{208   this-\/>mat\_T.zeros();}
+\DoxyCodeLine{209   this-\/>mat\_T.diag()   = mat\_obj.\mbox{\hyperlink{group__Mat_ga8ab6c07980e1d4c1d90eb3eb7850a2a4}{diag}}();}
+\DoxyCodeLine{210   this-\/>mat\_T.diag(1)  = mat\_obj.\mbox{\hyperlink{group__Mat_ga8ab6c07980e1d4c1d90eb3eb7850a2a4}{diag}}(-\/1);}
+\DoxyCodeLine{211   this-\/>mat\_T.diag(-\/1) = mat\_obj.\mbox{\hyperlink{group__Mat_ga8ab6c07980e1d4c1d90eb3eb7850a2a4}{diag}}(-\/1);}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213   eT xi, xj, r, c, s, tmp, eps = std::numeric\_limits<eT>::epsilon();}
+\DoxyCodeLine{214   eT *ptr; \textcolor{comment}{// A number of pointers to avoid repeated address calculation}}
+\DoxyCodeLine{215   \textcolor{keywordflow}{for}(uword i = 0; i < this-\/>n -\/ 1; i++)}
+\DoxyCodeLine{216     \{}
+\DoxyCodeLine{217     xi = this-\/>mat\_T(i,     i);  \textcolor{comment}{// mat\_T(i, i)}}
+\DoxyCodeLine{218     xj = this-\/>mat\_T(i + 1, i);  \textcolor{comment}{// mat\_T(i + 1, i)}}
+\DoxyCodeLine{219     r = arma\_hypot(xi, xj);}
+\DoxyCodeLine{220     \textcolor{keywordflow}{if}(r <= eps)}
+\DoxyCodeLine{221       \{}
+\DoxyCodeLine{222       r = 0;}
+\DoxyCodeLine{223       this-\/>rot\_cos(i) = c = 1;}
+\DoxyCodeLine{224       this-\/>rot\_sin(i) = s = 0;}
+\DoxyCodeLine{225       \}}
+\DoxyCodeLine{226     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{227       \{}
+\DoxyCodeLine{228       this-\/>rot\_cos(i) = c = xi / r;}
+\DoxyCodeLine{229       this-\/>rot\_sin(i) = s = -\/xj / r;}
+\DoxyCodeLine{230       \}}
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232     \textcolor{comment}{// For a complete QR decomposition,}}
+\DoxyCodeLine{233     \textcolor{comment}{// we first obtain the rotation matrix}}
+\DoxyCodeLine{234     \textcolor{comment}{// G = [ cos  sin]}}
+\DoxyCodeLine{235     \textcolor{comment}{//     [-\/sin  cos]}}
+\DoxyCodeLine{236     \textcolor{comment}{// and then do T[i:(i + 1), i:(i + 2)] = G' * T[i:(i + 1), i:(i + 2)]}}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238     \textcolor{comment}{// Update T[i, i] and T[i + 1, i]}}
+\DoxyCodeLine{239     \textcolor{comment}{// The updated value of T[i, i] is known to be r}}
+\DoxyCodeLine{240     \textcolor{comment}{// The updated value of T[i + 1, i] is known to be 0}}
+\DoxyCodeLine{241     this-\/>mat\_T(i,     i) = r;}
+\DoxyCodeLine{242     this-\/>mat\_T(i + 1, i) = 0;}
+\DoxyCodeLine{243     \textcolor{comment}{// Update T[i, i + 1] and T[i + 1, i + 1]}}
+\DoxyCodeLine{244     \textcolor{comment}{// ptr[0] == T[i, i + 1]}}
+\DoxyCodeLine{245     \textcolor{comment}{// ptr[1] == T[i + 1, i + 1]}}
+\DoxyCodeLine{246     ptr = \&(this-\/>mat\_T(i, i + 1));}
+\DoxyCodeLine{247     tmp = *ptr;}
+\DoxyCodeLine{248     ptr[0] = c * tmp -\/ s * ptr[1];}
+\DoxyCodeLine{249     ptr[1] = s * tmp + c * ptr[1];}
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251     \textcolor{keywordflow}{if}(i < this-\/>n -\/ 2)}
+\DoxyCodeLine{252       \{}
+\DoxyCodeLine{253       \textcolor{comment}{// Update T[i, i + 2] and T[i + 1, i + 2]}}
+\DoxyCodeLine{254       \textcolor{comment}{// ptr[0] == T[i, i + 2] == 0}}
+\DoxyCodeLine{255       \textcolor{comment}{// ptr[1] == T[i + 1, i + 2]}}
+\DoxyCodeLine{256       ptr = \&(this-\/>mat\_T(i, i + 2));}
+\DoxyCodeLine{257       ptr[0] = -\/s * ptr[1];}
+\DoxyCodeLine{258       ptr[1] *= c;}
+\DoxyCodeLine{259       \}}
+\DoxyCodeLine{260     \}}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262   this-\/>computed = \textcolor{keyword}{true};}
+\DoxyCodeLine{263   \}}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 }
+\DoxyCodeLine{267 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{268 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{269 \mbox{\hyperlink{classnewarp_1_1TridiagQR_acb80319d767602eb77af0b93a6f415e0}{TridiagQR<eT>::matrix\_RQ}}()}
+\DoxyCodeLine{270   \{}
+\DoxyCodeLine{271   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{272   }
+\DoxyCodeLine{273   arma\_debug\_check( (this-\/>computed == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}newarp::TridiagQR::matrix\_RQ(): need to call compute() first"{}} );}
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275   \textcolor{comment}{// Make a copy of the R matrix}}
+\DoxyCodeLine{276   \mbox{\hyperlink{classMat}{Mat<eT>}} RQ(this-\/>n, this-\/>n, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{277   RQ.\mbox{\hyperlink{group__Mat_ga8ab6c07980e1d4c1d90eb3eb7850a2a4}{diag}}() = this-\/>mat\_T.diag();}
+\DoxyCodeLine{278   RQ.\mbox{\hyperlink{group__Mat_ga8ab6c07980e1d4c1d90eb3eb7850a2a4}{diag}}(1) = this-\/>mat\_T.diag(1);}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280   \textcolor{comment}{// [m11  m12] will point to RQ[i:(i+1), i:(i+1)]}}
+\DoxyCodeLine{281   \textcolor{comment}{// [m21  m22]}}
+\DoxyCodeLine{282   eT *m11 = RQ.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), *m12, *m21, *m22, tmp;}
+\DoxyCodeLine{283   \textcolor{keywordflow}{for}(uword i = 0; i < this-\/>n -\/ 1; i++)}
+\DoxyCodeLine{284     \{}
+\DoxyCodeLine{285     \textcolor{keyword}{const} eT c = this-\/>rot\_cos(i);}
+\DoxyCodeLine{286     \textcolor{keyword}{const} eT s = this-\/>rot\_sin(i);}
+\DoxyCodeLine{287     m21 = m11 + 1;}
+\DoxyCodeLine{288     m12 = m11 + this-\/>n;}
+\DoxyCodeLine{289     m22 = m12 + 1;}
+\DoxyCodeLine{290     tmp = *m21;}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292     \textcolor{comment}{// Update diagonal and the below-\/subdiagonal}}
+\DoxyCodeLine{293     *m11 = c * (*m11) -\/ s * (*m12);}
+\DoxyCodeLine{294     *m21 = c * tmp    -\/ s * (*m22);}
+\DoxyCodeLine{295     *m22 = s * tmp    + c * (*m22);}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297     \textcolor{comment}{// Move m11 to RQ[i+1, i+1]}}
+\DoxyCodeLine{298     m11  = m22;}
+\DoxyCodeLine{299     \}}
+\DoxyCodeLine{300 }
+\DoxyCodeLine{301   \textcolor{comment}{// Copy the below-\/subdiagonal to above-\/subdiagonal}}
+\DoxyCodeLine{302   RQ.\mbox{\hyperlink{group__Mat_ga8ab6c07980e1d4c1d90eb3eb7850a2a4}{diag}}(1) = RQ.\mbox{\hyperlink{group__Mat_ga8ab6c07980e1d4c1d90eb3eb7850a2a4}{diag}}(-\/1);}
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304   \textcolor{keywordflow}{return} RQ;}
+\DoxyCodeLine{305   \}}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307 }
+\DoxyCodeLine{308 \}  \textcolor{comment}{// namespace newarp}}
+
+\end{DoxyCode}

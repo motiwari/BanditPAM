@@ -1,0 +1,82 @@
+\hypertarget{def__superlu_8hpp_source}{}\doxysection{def\+\_\+superlu.\+hpp}
+\label{def__superlu_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/def\_superlu.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/def\_superlu.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#if defined(ARMA\_USE\_SUPERLU)}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}}}
+\DoxyCodeLine{19   \{}
+\DoxyCodeLine{20   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(sgssv)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{21   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(dgssv)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{22   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(cgssv)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{23   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(zgssv)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{24   }
+\DoxyCodeLine{25   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(sgssvx)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{char}*,  \textcolor{keywordtype}{float}*,  \textcolor{keywordtype}{float}*, superlu::SuperMatrix*, superlu::SuperMatrix*, \textcolor{keywordtype}{void}*, int, superlu::SuperMatrix*, superlu::SuperMatrix*,  \textcolor{keywordtype}{float}*,  \textcolor{keywordtype}{float}*,  \textcolor{keywordtype}{float}*,  \textcolor{keywordtype}{float}*, superlu::GlobalLU\_t*, superlu::mem\_usage\_t*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{26   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(dgssvx)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{char}*, \textcolor{keywordtype}{double}*, \textcolor{keywordtype}{double}*, superlu::SuperMatrix*, superlu::SuperMatrix*, \textcolor{keywordtype}{void}*, int, superlu::SuperMatrix*, superlu::SuperMatrix*, \textcolor{keywordtype}{double}*, \textcolor{keywordtype}{double}*, \textcolor{keywordtype}{double}*, \textcolor{keywordtype}{double}*, superlu::GlobalLU\_t*, superlu::mem\_usage\_t*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{27   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(cgssvx)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{char}*,  \textcolor{keywordtype}{float}*,  \textcolor{keywordtype}{float}*, superlu::SuperMatrix*, superlu::SuperMatrix*, \textcolor{keywordtype}{void}*, int, superlu::SuperMatrix*, superlu::SuperMatrix*,  \textcolor{keywordtype}{float}*,  \textcolor{keywordtype}{float}*,  \textcolor{keywordtype}{float}*,  \textcolor{keywordtype}{float}*, superlu::GlobalLU\_t*, superlu::mem\_usage\_t*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{28   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(zgssvx)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{char}*, \textcolor{keywordtype}{double}*, \textcolor{keywordtype}{double}*, superlu::SuperMatrix*, superlu::SuperMatrix*, \textcolor{keywordtype}{void}*, int, superlu::SuperMatrix*, superlu::SuperMatrix*, \textcolor{keywordtype}{double}*, \textcolor{keywordtype}{double}*, \textcolor{keywordtype}{double}*, \textcolor{keywordtype}{double}*, superlu::GlobalLU\_t*, superlu::mem\_usage\_t*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(sgstrf)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, int, int, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{void}*, int, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::GlobalLU\_t*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{31   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(dgstrf)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, int, int, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{void}*, int, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::GlobalLU\_t*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{32   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(cgstrf)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, int, int, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{void}*, int, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::GlobalLU\_t*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{33   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(zgstrf)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, int, int, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{void}*, int, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperMatrix*, superlu::GlobalLU\_t*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(sgstrs)(superlu::trans\_t, superlu::SuperMatrix*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{36   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(dgstrs)(superlu::trans\_t, superlu::SuperMatrix*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{37   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(cgstrs)(superlu::trans\_t, superlu::SuperMatrix*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{38   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(zgstrs)(superlu::trans\_t, superlu::SuperMatrix*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*, superlu::SuperLUStat\_t*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{39   }
+\DoxyCodeLine{40   \textcolor{keyword}{extern} \textcolor{keywordtype}{float}  arma\_wrapper(slangs)(\textcolor{keywordtype}{char}* norm, superlu::SuperMatrix* \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{41   \textcolor{keyword}{extern} \textcolor{keywordtype}{double} arma\_wrapper(dlangs)(\textcolor{keywordtype}{char}* norm, superlu::SuperMatrix* \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{42   \textcolor{keyword}{extern} \textcolor{keywordtype}{float}  arma\_wrapper(clangs)(\textcolor{keywordtype}{char}* norm, superlu::SuperMatrix* \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{43   \textcolor{keyword}{extern} \textcolor{keywordtype}{double} arma\_wrapper(zlangs)(\textcolor{keywordtype}{char}* norm, superlu::SuperMatrix* \mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{44   }
+\DoxyCodeLine{45   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(sgscon)(\textcolor{keywordtype}{char}* norm, superlu::SuperMatrix* L, superlu::SuperMatrix* U,  \textcolor{keywordtype}{float} anorm,  \textcolor{keywordtype}{float}* rcond, superlu::SuperLUStat\_t* stat, \textcolor{keywordtype}{int}* info);}
+\DoxyCodeLine{46   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(dgscon)(\textcolor{keywordtype}{char}* norm, superlu::SuperMatrix* L, superlu::SuperMatrix* U, \textcolor{keywordtype}{double} anorm, \textcolor{keywordtype}{double}* rcond, superlu::SuperLUStat\_t* stat, \textcolor{keywordtype}{int}* info);}
+\DoxyCodeLine{47   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(cgscon)(\textcolor{keywordtype}{char}* norm, superlu::SuperMatrix* L, superlu::SuperMatrix* U,  \textcolor{keywordtype}{float} anorm,  \textcolor{keywordtype}{float}* rcond, superlu::SuperLUStat\_t* stat, \textcolor{keywordtype}{int}* info);}
+\DoxyCodeLine{48   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(zgscon)(\textcolor{keywordtype}{char}* norm, superlu::SuperMatrix* L, superlu::SuperMatrix* U, \textcolor{keywordtype}{double} anorm, \textcolor{keywordtype}{double}* rcond, superlu::SuperLUStat\_t* stat, \textcolor{keywordtype}{int}* info);}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(StatInit)(superlu::SuperLUStat\_t*);}
+\DoxyCodeLine{51   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(StatFree)(superlu::SuperLUStat\_t*);}
+\DoxyCodeLine{52   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(set\_default\_options)(superlu::superlu\_options\_t*);}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(get\_perm\_c)(int, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*);}
+\DoxyCodeLine{55   \textcolor{keyword}{extern}  \textcolor{keywordtype}{int} arma\_wrapper(sp\_ienv)(int);}
+\DoxyCodeLine{56   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(sp\_preorder)(superlu::superlu\_options\_t*, superlu::SuperMatrix*, \textcolor{keywordtype}{int}*, \textcolor{keywordtype}{int}*, superlu::SuperMatrix*);}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(Destroy\_SuperNode\_Matrix)(superlu::SuperMatrix*);}
+\DoxyCodeLine{59   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(Destroy\_CompCol\_Matrix)(superlu::SuperMatrix*);}
+\DoxyCodeLine{60   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(Destroy\_CompCol\_Permuted)(superlu::SuperMatrix*);}
+\DoxyCodeLine{61   \textcolor{keyword}{extern} \textcolor{keywordtype}{void} arma\_wrapper(Destroy\_SuperMatrix\_Store)(superlu::SuperMatrix*);}
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   \textcolor{comment}{// We also need superlu\_malloc() and superlu\_free().}}
+\DoxyCodeLine{64   \textcolor{comment}{// When using the original SuperLU code directly, you (the user) may}}
+\DoxyCodeLine{65   \textcolor{comment}{// define USER\_MALLOC and USER\_FREE, but the joke is on you because}}
+\DoxyCodeLine{66   \textcolor{comment}{// if you are linking against SuperLU and not compiling from scratch,}}
+\DoxyCodeLine{67   \textcolor{comment}{// it won't actually make a difference anyway!  If you've compiled}}
+\DoxyCodeLine{68   \textcolor{comment}{// SuperLU against a custom USER\_MALLOC and USER\_FREE, you're probably up}}
+\DoxyCodeLine{69   \textcolor{comment}{// shit creek about a thousand different ways before you even get to this}}
+\DoxyCodeLine{70   \textcolor{comment}{// code, so, don't do that!}}
+\DoxyCodeLine{71   }
+\DoxyCodeLine{72   \textcolor{keyword}{extern} \textcolor{keywordtype}{void}* arma\_wrapper(superlu\_malloc)(size\_t);}
+\DoxyCodeLine{73   \textcolor{keyword}{extern} \textcolor{keywordtype}{void}  arma\_wrapper(superlu\_free)(\textcolor{keywordtype}{void}*);}
+\DoxyCodeLine{74   \}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,270 @@
+\hypertarget{glue__max__meat_8hpp_source}{}\doxysection{glue\+\_\+max\+\_\+meat.\+hpp}
+\label{glue__max__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_max\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_max\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{26 glue\_max::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_max>}}\& X)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{31   }
+\DoxyCodeLine{32   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} PA(X.A);}
+\DoxyCodeLine{33   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}} PB(X.B);}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keywordflow}{if}( (PA.is\_alias(out) \&\& PA.has\_subview) || (PB.is\_alias(out) \&\& PB.has\_subview) )}
+\DoxyCodeLine{36     \{}
+\DoxyCodeLine{37     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{38     }
+\DoxyCodeLine{39     glue\_max::apply(tmp, PA, PB);}
+\DoxyCodeLine{40     }
+\DoxyCodeLine{41     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{42     \}}
+\DoxyCodeLine{43   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{44     \{}
+\DoxyCodeLine{45     glue\_max::apply(out, PA, PB);}
+\DoxyCodeLine{46     \}}
+\DoxyCodeLine{47   \}}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{52 \textcolor{keyword}{inline}}
+\DoxyCodeLine{53 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{54 glue\_max::apply(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& PA, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}}\& PB)}
+\DoxyCodeLine{55   \{}
+\DoxyCodeLine{56   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   \textcolor{keyword}{const} uword n\_rows = PA.get\_n\_rows();}
+\DoxyCodeLine{59   \textcolor{keyword}{const} uword n\_cols = PA.get\_n\_cols();}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{61   arma\_debug\_assert\_same\_size(n\_rows, n\_cols, PB.get\_n\_rows(), PB.get\_n\_cols(), \textcolor{stringliteral}{"{}element-\/wise maximum"{}});}
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_rows, n\_cols);}
+\DoxyCodeLine{64   }
+\DoxyCodeLine{65   eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{66   }
+\DoxyCodeLine{67   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{classProxy}{Proxy<T2>::use\_at}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{68     \{}
+\DoxyCodeLine{69     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = PA.get\_ea();}
+\DoxyCodeLine{70     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T2>::ea\_type}} \mbox{\hyperlink{structB}{B}} = PB.get\_ea();}
+\DoxyCodeLine{71     }
+\DoxyCodeLine{72     \textcolor{keyword}{const} uword N = PA.get\_n\_elem();}
+\DoxyCodeLine{73     }
+\DoxyCodeLine{74     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{75       \{}
+\DoxyCodeLine{76       out\_mem[i] = (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})(\mbox{\hyperlink{structA}{A}}[i], \mbox{\hyperlink{structB}{B}}[i]);}
+\DoxyCodeLine{77       \}}
+\DoxyCodeLine{78     \}}
+\DoxyCodeLine{79   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{80     \{}
+\DoxyCodeLine{81     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{82     \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{83       \{}
+\DoxyCodeLine{84       *out\_mem = (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})( PA.at(row,col), PB.at(row,col) );}
+\DoxyCodeLine{85       }
+\DoxyCodeLine{86       ++out\_mem;}
+\DoxyCodeLine{87       \}}
+\DoxyCodeLine{88     \}}
+\DoxyCodeLine{89   \}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{94 \textcolor{keyword}{inline}}
+\DoxyCodeLine{95 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{96 glue\_max::apply(\mbox{\hyperlink{classMat}{Mat}}< std::complex<T> >\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& PA, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}}\& PB)}
+\DoxyCodeLine{97   \{}
+\DoxyCodeLine{98   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{99   }
+\DoxyCodeLine{100   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT;}
+\DoxyCodeLine{101   }
+\DoxyCodeLine{102   \textcolor{keyword}{const} uword n\_rows = PA.get\_n\_rows();}
+\DoxyCodeLine{103   \textcolor{keyword}{const} uword n\_cols = PA.get\_n\_cols();}
+\DoxyCodeLine{104   }
+\DoxyCodeLine{105   arma\_debug\_assert\_same\_size(n\_rows, n\_cols, PB.get\_n\_rows(), PB.get\_n\_cols(), \textcolor{stringliteral}{"{}element-\/wise maximum"{}});}
+\DoxyCodeLine{106   }
+\DoxyCodeLine{107   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(n\_rows, n\_cols);}
+\DoxyCodeLine{108   }
+\DoxyCodeLine{109   eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{110   }
+\DoxyCodeLine{111   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{classProxy}{Proxy<T2>::use\_at}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{112     \{}
+\DoxyCodeLine{113     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = PA.get\_ea();}
+\DoxyCodeLine{114     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T2>::ea\_type}} \mbox{\hyperlink{structB}{B}} = PB.get\_ea();}
+\DoxyCodeLine{115     }
+\DoxyCodeLine{116     \textcolor{keyword}{const} uword N = PA.get\_n\_elem();}
+\DoxyCodeLine{117     }
+\DoxyCodeLine{118     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{119       \{}
+\DoxyCodeLine{120       \textcolor{keyword}{const} eT A\_val = \mbox{\hyperlink{structA}{A}}[i];}
+\DoxyCodeLine{121       \textcolor{keyword}{const} eT B\_val = \mbox{\hyperlink{structB}{B}}[i];}
+\DoxyCodeLine{122       }
+\DoxyCodeLine{123       out\_mem[i] = ( std::abs(A\_val) > std::abs(B\_val) ) ? A\_val : B\_val;}
+\DoxyCodeLine{124       \}}
+\DoxyCodeLine{125     \}}
+\DoxyCodeLine{126   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{127     \{}
+\DoxyCodeLine{128     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{129     \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{130       \{}
+\DoxyCodeLine{131       \textcolor{keyword}{const} eT A\_val = PA.at(row,col);}
+\DoxyCodeLine{132       \textcolor{keyword}{const} eT B\_val = PB.at(row,col);}
+\DoxyCodeLine{133       }
+\DoxyCodeLine{134       *out\_mem = ( std::abs(A\_val) > std::abs(B\_val) ) ? A\_val : B\_val;}
+\DoxyCodeLine{135       }
+\DoxyCodeLine{136       ++out\_mem;}
+\DoxyCodeLine{137       \}}
+\DoxyCodeLine{138     \}}
+\DoxyCodeLine{139   \}}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{144 \textcolor{keyword}{inline}}
+\DoxyCodeLine{145 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{146 glue\_max::apply(\mbox{\hyperlink{classCube}{Cube<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_max>}}\& X)}
+\DoxyCodeLine{147   \{}
+\DoxyCodeLine{148   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{149   }
+\DoxyCodeLine{150   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{151   }
+\DoxyCodeLine{152   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} PA(X.A);}
+\DoxyCodeLine{153   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>}} PB(X.B);}
+\DoxyCodeLine{154   }
+\DoxyCodeLine{155   \textcolor{keywordflow}{if}( (PA.is\_alias(out) \&\& PA.has\_subview) || (PB.is\_alias(out) \&\& PB.has\_subview) )}
+\DoxyCodeLine{156     \{}
+\DoxyCodeLine{157     \mbox{\hyperlink{classCube}{Cube<eT>}} tmp;}
+\DoxyCodeLine{158     }
+\DoxyCodeLine{159     glue\_max::apply(tmp, PA, PB);}
+\DoxyCodeLine{160     }
+\DoxyCodeLine{161     out.\mbox{\hyperlink{group__Cube_ga70006d5a49f67d35d4ae10cb6c5a681f}{steal\_mem}}(tmp);}
+\DoxyCodeLine{162     \}}
+\DoxyCodeLine{163   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{164     \{}
+\DoxyCodeLine{165     glue\_max::apply(out, PA, PB);}
+\DoxyCodeLine{166     \}}
+\DoxyCodeLine{167   \}}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{172 \textcolor{keyword}{inline}}
+\DoxyCodeLine{173 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{174 glue\_max::apply(\mbox{\hyperlink{classCube}{Cube<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& PA, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>}}\& PB)}
+\DoxyCodeLine{175   \{}
+\DoxyCodeLine{176   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{177   }
+\DoxyCodeLine{178   \textcolor{keyword}{const} uword n\_rows   = PA.get\_n\_rows();}
+\DoxyCodeLine{179   \textcolor{keyword}{const} uword n\_cols   = PA.get\_n\_cols();}
+\DoxyCodeLine{180   \textcolor{keyword}{const} uword n\_slices = PA.get\_n\_slices();}
+\DoxyCodeLine{181   }
+\DoxyCodeLine{182   arma\_debug\_assert\_same\_size(n\_rows, n\_cols, n\_slices, PB.get\_n\_rows(), PB.get\_n\_cols(), PB.get\_n\_slices(), \textcolor{stringliteral}{"{}element-\/wise maximum"{}});}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   out.\mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{185   }
+\DoxyCodeLine{186   eT* out\_mem = out.\mbox{\hyperlink{group__Cube_ga5b00237224a8e3bfb05728de7c962f85}{memptr}}();}
+\DoxyCodeLine{187   }
+\DoxyCodeLine{188   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::use\_at}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{189     \{}
+\DoxyCodeLine{190     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = PA.get\_ea();}
+\DoxyCodeLine{191     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::ea\_type}} \mbox{\hyperlink{structB}{B}} = PB.get\_ea();}
+\DoxyCodeLine{192     }
+\DoxyCodeLine{193     \textcolor{keyword}{const} uword N = PA.get\_n\_elem();}
+\DoxyCodeLine{194     }
+\DoxyCodeLine{195     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{196       \{}
+\DoxyCodeLine{197       out\_mem[i] = (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})(\mbox{\hyperlink{structA}{A}}[i], \mbox{\hyperlink{structB}{B}}[i]);}
+\DoxyCodeLine{198       \}}
+\DoxyCodeLine{199     \}}
+\DoxyCodeLine{200   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{201     \{}
+\DoxyCodeLine{202     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{203     \textcolor{keywordflow}{for}(uword   col=0;   col < n\_cols;   ++col  )}
+\DoxyCodeLine{204     \textcolor{keywordflow}{for}(uword   row=0;   row < n\_rows;   ++row  )}
+\DoxyCodeLine{205       \{}
+\DoxyCodeLine{206       *out\_mem = (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})( PA.at(row,col,\mbox{\hyperlink{classslice}{slice}}), PB.at(row,col,\mbox{\hyperlink{classslice}{slice}}) );}
+\DoxyCodeLine{207       }
+\DoxyCodeLine{208       ++out\_mem;}
+\DoxyCodeLine{209       \}}
+\DoxyCodeLine{210     \}}
+\DoxyCodeLine{211   \}}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T, \textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{216 \textcolor{keyword}{inline}}
+\DoxyCodeLine{217 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{218 glue\_max::apply(\mbox{\hyperlink{classCube}{Cube}}< std::complex<T> >\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}}\& PA, \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>}}\& PB)}
+\DoxyCodeLine{219   \{}
+\DoxyCodeLine{220   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT;}
+\DoxyCodeLine{223   }
+\DoxyCodeLine{224   \textcolor{keyword}{const} uword n\_rows   = PA.get\_n\_rows();}
+\DoxyCodeLine{225   \textcolor{keyword}{const} uword n\_cols   = PA.get\_n\_cols();}
+\DoxyCodeLine{226   \textcolor{keyword}{const} uword n\_slices = PA.get\_n\_slices();}
+\DoxyCodeLine{227   }
+\DoxyCodeLine{228   arma\_debug\_assert\_same\_size(n\_rows, n\_cols, n\_slices, PB.get\_n\_rows(), PB.get\_n\_cols(), PB.get\_n\_slices(), \textcolor{stringliteral}{"{}element-\/wise maximum"{}});}
+\DoxyCodeLine{229   }
+\DoxyCodeLine{230   out.\mbox{\hyperlink{group__Cube_ga0d461586030945472fe66f7364882771}{set\_size}}(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{231   }
+\DoxyCodeLine{232   eT* out\_mem = out.\mbox{\hyperlink{group__Cube_ga5b00237224a8e3bfb05728de7c962f85}{memptr}}();}
+\DoxyCodeLine{233   }
+\DoxyCodeLine{234   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::use\_at}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{235     \{}
+\DoxyCodeLine{236     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} \mbox{\hyperlink{structA}{A}} = PA.get\_ea();}
+\DoxyCodeLine{237     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::ea\_type}} \mbox{\hyperlink{structB}{B}} = PB.get\_ea();}
+\DoxyCodeLine{238     }
+\DoxyCodeLine{239     \textcolor{keyword}{const} uword N = PA.get\_n\_elem();}
+\DoxyCodeLine{240     }
+\DoxyCodeLine{241     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{242       \{}
+\DoxyCodeLine{243       \textcolor{keyword}{const} eT A\_val = \mbox{\hyperlink{structA}{A}}[i];}
+\DoxyCodeLine{244       \textcolor{keyword}{const} eT B\_val = \mbox{\hyperlink{structB}{B}}[i];}
+\DoxyCodeLine{245       }
+\DoxyCodeLine{246       out\_mem[i] = ( std::abs(A\_val) > std::abs(B\_val) ) ? A\_val : B\_val;}
+\DoxyCodeLine{247       \}}
+\DoxyCodeLine{248     \}}
+\DoxyCodeLine{249   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{250     \{}
+\DoxyCodeLine{251     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}}=0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{252     \textcolor{keywordflow}{for}(uword   col=0;   col < n\_cols;   ++col  )}
+\DoxyCodeLine{253     \textcolor{keywordflow}{for}(uword   row=0;   row < n\_rows;   ++row  )}
+\DoxyCodeLine{254       \{}
+\DoxyCodeLine{255       \textcolor{keyword}{const} eT A\_val = PA.at(row,col,\mbox{\hyperlink{classslice}{slice}});}
+\DoxyCodeLine{256       \textcolor{keyword}{const} eT B\_val = PB.at(row,col,\mbox{\hyperlink{classslice}{slice}});}
+\DoxyCodeLine{257       }
+\DoxyCodeLine{258       *out\_mem = ( std::abs(A\_val) > std::abs(B\_val) ) ? A\_val : B\_val;}
+\DoxyCodeLine{259       }
+\DoxyCodeLine{260       ++out\_mem;}
+\DoxyCodeLine{261       \}}
+\DoxyCodeLine{262     \}}
+\DoxyCodeLine{263   \}}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 }
+
+\end{DoxyCode}

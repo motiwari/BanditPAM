@@ -1,0 +1,243 @@
+\hypertarget{op__sort__meat_8hpp_source}{}\doxysection{op\+\_\+sort\+\_\+meat.\+hpp}
+\label{op__sort__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_sort\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_sort\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline} }
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 op\_sort::direct\_sort(eT* X, \textcolor{keyword}{const} uword n\_elem, \textcolor{keyword}{const} uword sort\_type)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keywordflow}{if}(sort\_type == 0)}
+\DoxyCodeLine{30     \{}
+\DoxyCodeLine{31     \mbox{\hyperlink{structarma__lt__comparator}{arma\_lt\_comparator<eT>}} comparator;}
+\DoxyCodeLine{32     }
+\DoxyCodeLine{33     std::sort(\&X[0], \&X[n\_elem], comparator);}
+\DoxyCodeLine{34     \}}
+\DoxyCodeLine{35   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{36     \{}
+\DoxyCodeLine{37     \mbox{\hyperlink{structarma__gt__comparator}{arma\_gt\_comparator<eT>}} comparator;}
+\DoxyCodeLine{38     }
+\DoxyCodeLine{39     std::sort(\&X[0], \&X[n\_elem], comparator);}
+\DoxyCodeLine{40     \}}
+\DoxyCodeLine{41   \}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{46 \textcolor{keyword}{inline} }
+\DoxyCodeLine{47 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{48 op\_sort::direct\_sort\_ascending(eT* X, \textcolor{keyword}{const} uword n\_elem)}
+\DoxyCodeLine{49   \{}
+\DoxyCodeLine{50   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \mbox{\hyperlink{structarma__lt__comparator}{arma\_lt\_comparator<eT>}} comparator;}
+\DoxyCodeLine{53     }
+\DoxyCodeLine{54   std::sort(\&X[0], \&X[n\_elem], comparator);}
+\DoxyCodeLine{55   \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{60 \textcolor{keyword}{inline} }
+\DoxyCodeLine{61 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{62 op\_sort::copy\_row(eT* X, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} uword row)}
+\DoxyCodeLine{63   \{}
+\DoxyCodeLine{64   \textcolor{keyword}{const} uword N = \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{65   }
+\DoxyCodeLine{66   uword i,j;}
+\DoxyCodeLine{67   }
+\DoxyCodeLine{68   \textcolor{keywordflow}{for}(i=0, j=1; j<N; i+=2, j+=2)}
+\DoxyCodeLine{69     \{}
+\DoxyCodeLine{70     X[i] = \mbox{\hyperlink{structA}{A}}.at(row,i);}
+\DoxyCodeLine{71     X[j] = \mbox{\hyperlink{structA}{A}}.at(row,j);}
+\DoxyCodeLine{72     \}}
+\DoxyCodeLine{73   }
+\DoxyCodeLine{74   \textcolor{keywordflow}{if}(i < N)}
+\DoxyCodeLine{75     \{}
+\DoxyCodeLine{76     X[i] = \mbox{\hyperlink{structA}{A}}.at(row,i);}
+\DoxyCodeLine{77     \}}
+\DoxyCodeLine{78   \}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{83 \textcolor{keyword}{inline} }
+\DoxyCodeLine{84 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{85 op\_sort::copy\_row(\mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}}, \textcolor{keyword}{const} eT* X, \textcolor{keyword}{const} uword row)}
+\DoxyCodeLine{86   \{}
+\DoxyCodeLine{87   \textcolor{keyword}{const} uword N = \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89   uword i,j;}
+\DoxyCodeLine{90   }
+\DoxyCodeLine{91   \textcolor{keywordflow}{for}(i=0, j=1; j<N; i+=2, j+=2)}
+\DoxyCodeLine{92     \{}
+\DoxyCodeLine{93     \mbox{\hyperlink{structA}{A}}.at(row,i) = X[i]; }
+\DoxyCodeLine{94     \mbox{\hyperlink{structA}{A}}.at(row,j) = X[j];}
+\DoxyCodeLine{95     \}}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \textcolor{keywordflow}{if}(i < N)}
+\DoxyCodeLine{98     \{}
+\DoxyCodeLine{99     \mbox{\hyperlink{structA}{A}}.at(row,i) = X[i];}
+\DoxyCodeLine{100     \}}
+\DoxyCodeLine{101   \}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{106 \textcolor{keyword}{inline}}
+\DoxyCodeLine{107 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{108 op\_sort::apply\_noalias(\mbox{\hyperlink{classMat}{Mat<eT>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword sort\_type, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{109   \{}
+\DoxyCodeLine{110   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   \textcolor{keywordflow}{if}((X.n\_rows * X.n\_cols) <= 1)  \{ out = X; \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{113   }
+\DoxyCodeLine{114   \textcolor{keywordflow}{if}(dim == 0)  \textcolor{comment}{// sort the contents of each column}}
+\DoxyCodeLine{115     \{}
+\DoxyCodeLine{116     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_sort::apply(): dim = 0"{}});}
+\DoxyCodeLine{117     }
+\DoxyCodeLine{118     out = X;}
+\DoxyCodeLine{119     }
+\DoxyCodeLine{120     \textcolor{keyword}{const} uword n\_rows = out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{121     \textcolor{keyword}{const} uword n\_cols = out.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{122       }
+\DoxyCodeLine{123     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{124       \{}
+\DoxyCodeLine{125       op\_sort::direct\_sort( out.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(col), n\_rows, sort\_type );}
+\DoxyCodeLine{126       \}}
+\DoxyCodeLine{127     \}}
+\DoxyCodeLine{128   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{129   \textcolor{keywordflow}{if}(dim == 1)  \textcolor{comment}{// sort the contents of each row}}
+\DoxyCodeLine{130     \{}
+\DoxyCodeLine{131     \textcolor{keywordflow}{if}(X.n\_rows == 1)  \textcolor{comment}{// a row vector}}
+\DoxyCodeLine{132       \{}
+\DoxyCodeLine{133       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_sort::apply(): dim = 1, vector specific"{}});}
+\DoxyCodeLine{134       }
+\DoxyCodeLine{135       out = X;}
+\DoxyCodeLine{136       op\_sort::direct\_sort(out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}(), out.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}}, sort\_type);}
+\DoxyCodeLine{137       \}}
+\DoxyCodeLine{138     \textcolor{keywordflow}{else}  \textcolor{comment}{// not a row vector}}
+\DoxyCodeLine{139       \{}
+\DoxyCodeLine{140       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}op\_sort::apply(): dim = 1, generic"{}});}
+\DoxyCodeLine{141       }
+\DoxyCodeLine{142       out.\mbox{\hyperlink{group__Mat_ga9b739350523229ea160719b1ef106f96}{copy\_size}}(X);}
+\DoxyCodeLine{143       }
+\DoxyCodeLine{144       \textcolor{keyword}{const} uword n\_rows = out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{145       \textcolor{keyword}{const} uword n\_cols = out.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{146       }
+\DoxyCodeLine{147       \mbox{\hyperlink{classpodarray}{podarray<eT>}} tmp\_array(n\_cols);}
+\DoxyCodeLine{148       }
+\DoxyCodeLine{149       \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{150         \{}
+\DoxyCodeLine{151         op\_sort::copy\_row(tmp\_array.memptr(), X, row);}
+\DoxyCodeLine{152         }
+\DoxyCodeLine{153         op\_sort::direct\_sort( tmp\_array.memptr(), n\_cols, sort\_type );}
+\DoxyCodeLine{154         }
+\DoxyCodeLine{155         op\_sort::copy\_row(out, tmp\_array.memptr(), row);}
+\DoxyCodeLine{156         \}}
+\DoxyCodeLine{157       \}}
+\DoxyCodeLine{158     \}}
+\DoxyCodeLine{159   \}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{164 \textcolor{keyword}{inline}}
+\DoxyCodeLine{165 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{166 op\_sort::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_sort>}}\& in)}
+\DoxyCodeLine{167   \{}
+\DoxyCodeLine{168   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{169   }
+\DoxyCodeLine{170   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{171   }
+\DoxyCodeLine{172   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} U(in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}});}
+\DoxyCodeLine{173   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\&     X = U.M;}
+\DoxyCodeLine{174   }
+\DoxyCodeLine{175   \textcolor{keyword}{const} uword sort\_type = in.\mbox{\hyperlink{classOp_a197cb9330fe0d72c976d6223514c4bd6}{aux\_uword\_a}};}
+\DoxyCodeLine{176   \textcolor{keyword}{const} uword dim       = in.\mbox{\hyperlink{classOp_a489b7adb11aa809f594055a640713133}{aux\_uword\_b}};}
+\DoxyCodeLine{177   }
+\DoxyCodeLine{178   arma\_debug\_check( (sort\_type > 1), \textcolor{stringliteral}{"{}sort(): parameter 'sort\_type' must be 0 or 1"{}} );}
+\DoxyCodeLine{179   arma\_debug\_check( (dim > 1),       \textcolor{stringliteral}{"{}sort(): parameter 'dim' must be 0 or 1"{}}       );}
+\DoxyCodeLine{180   arma\_debug\_check( (X.has\_nan()),   \textcolor{stringliteral}{"{}sort(): detected NaN"{}}                         );}
+\DoxyCodeLine{181   }
+\DoxyCodeLine{182   \textcolor{keywordflow}{if}(U.is\_alias(out))}
+\DoxyCodeLine{183     \{}
+\DoxyCodeLine{184     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{185     }
+\DoxyCodeLine{186     op\_sort::apply\_noalias(tmp, X, sort\_type, dim);}
+\DoxyCodeLine{187     }
+\DoxyCodeLine{188     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{189     \}}
+\DoxyCodeLine{190   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{191     \{}
+\DoxyCodeLine{192     op\_sort::apply\_noalias(out, X, sort\_type, dim);}
+\DoxyCodeLine{193     \}}
+\DoxyCodeLine{194   \}}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{199 \textcolor{keyword}{inline}}
+\DoxyCodeLine{200 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{201 op\_sort\_vec::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1,op\_sort\_vec>}}\& in)}
+\DoxyCodeLine{202   \{}
+\DoxyCodeLine{203   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{204   }
+\DoxyCodeLine{205   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{206   }
+\DoxyCodeLine{207   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}}   U(in.\mbox{\hyperlink{classOp_af7ab7221b6e233cdd38b9f9b69f301ce}{m}});  \textcolor{comment}{// not using quasi\_unwrap, to ensure there is no aliasing with subviews}}
+\DoxyCodeLine{208   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = U.M;}
+\DoxyCodeLine{209   }
+\DoxyCodeLine{210   \textcolor{keyword}{const} uword sort\_type = in.\mbox{\hyperlink{classOp_a197cb9330fe0d72c976d6223514c4bd6}{aux\_uword\_a}};}
+\DoxyCodeLine{211   }
+\DoxyCodeLine{212   arma\_debug\_check( (sort\_type > 1), \textcolor{stringliteral}{"{}sort(): parameter 'sort\_type' must be 0 or 1"{}} );}
+\DoxyCodeLine{213   arma\_debug\_check( (X.has\_nan()),   \textcolor{stringliteral}{"{}sort(): detected NaN"{}}                         );}
+\DoxyCodeLine{214   }
+\DoxyCodeLine{215   out = X;  \textcolor{comment}{// not checking for aliasing, to allow inplace sorting of vectors}}
+\DoxyCodeLine{216   }
+\DoxyCodeLine{217   \textcolor{keywordflow}{if}(out.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}} <= 1)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{218   }
+\DoxyCodeLine{219   eT* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{220   }
+\DoxyCodeLine{221   eT* start\_ptr =  out\_mem;}
+\DoxyCodeLine{222   eT* endp1\_ptr = \&out\_mem[out.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}}];}
+\DoxyCodeLine{223   }
+\DoxyCodeLine{224   \textcolor{keywordflow}{if}(sort\_type == 0)}
+\DoxyCodeLine{225     \{}
+\DoxyCodeLine{226     \mbox{\hyperlink{structarma__lt__comparator}{arma\_lt\_comparator<eT>}} comparator;}
+\DoxyCodeLine{227     }
+\DoxyCodeLine{228     std::sort(start\_ptr, endp1\_ptr, comparator);}
+\DoxyCodeLine{229     \}}
+\DoxyCodeLine{230   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{231     \{}
+\DoxyCodeLine{232     \mbox{\hyperlink{structarma__gt__comparator}{arma\_gt\_comparator<eT>}} comparator;}
+\DoxyCodeLine{233     }
+\DoxyCodeLine{234     std::sort(start\_ptr, endp1\_ptr, comparator);}
+\DoxyCodeLine{235     \}}
+\DoxyCodeLine{236   \}}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 }
+
+\end{DoxyCode}

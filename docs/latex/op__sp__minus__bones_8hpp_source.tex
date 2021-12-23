@@ -1,0 +1,73 @@
+\hypertarget{op__sp__minus__bones_8hpp_source}{}\doxysection{op\+\_\+sp\+\_\+minus\+\_\+bones.\+hpp}
+\label{op__sp__minus__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_sp\_minus\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_sp\_minus\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{comment}{// Subtract a sparse object from a scalar; the output will be a dense object.}}
+\DoxyCodeLine{23 \textcolor{keyword}{class }\mbox{\hyperlink{classop__sp__minus__pre}{op\_sp\_minus\_pre}}}
+\DoxyCodeLine{24   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__passthru}{traits\_op\_passthru}}}
+\DoxyCodeLine{25   \{}
+\DoxyCodeLine{26   \textcolor{keyword}{public}:}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{29   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1,op\_sp\_minus\_pre>}}\& in);}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31   \textcolor{comment}{// force apply into sparse matrix}}
+\DoxyCodeLine{32   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{33   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classSpMat}{SpMat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1,op\_sp\_minus\_pre>}}\& in);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \textcolor{comment}{// used for the optimization of sparse \% (scalar -\/ sparse)}}
+\DoxyCodeLine{36   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{37   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inside\_schur(\mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& out, \textcolor{keyword}{const} T2\& x, \textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T3, op\_sp\_minus\_pre>}}\& y);}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{comment}{// used for the optimization of sparse / (scalar -\/ sparse)}}
+\DoxyCodeLine{40   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{41   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inside\_div(\mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& out, \textcolor{keyword}{const} T2\& x, \textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T3, op\_sp\_minus\_pre>}}\& y);}
+\DoxyCodeLine{42   \};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{comment}{// Subtract a scalar from a sparse object; the output will be a dense object.}}
+\DoxyCodeLine{47 \textcolor{keyword}{class }\mbox{\hyperlink{classop__sp__minus__post}{op\_sp\_minus\_post}}}
+\DoxyCodeLine{48   : \textcolor{keyword}{public} \mbox{\hyperlink{structtraits__op__passthru}{traits\_op\_passthru}}}
+\DoxyCodeLine{49   \{}
+\DoxyCodeLine{50   \textcolor{keyword}{public}:}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{53   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1,op\_sp\_minus\_post>}}\& in);}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \textcolor{comment}{// force apply into sparse matrix}}
+\DoxyCodeLine{56   \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{57   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply(\mbox{\hyperlink{classSpMat}{SpMat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T1,op\_sp\_minus\_post>}}\& in);}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   \textcolor{comment}{// used for the optimization of sparse \% (sparse -\/ scalar)}}
+\DoxyCodeLine{60   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{61   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inside\_schur(\mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& out, \textcolor{keyword}{const} T2\& x, \textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T3, op\_sp\_minus\_post>}}\& y);}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{comment}{// used for the optimization of sparse / (sparse -\/ scalar)}}
+\DoxyCodeLine{64   \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{65   \textcolor{keyword}{inline} \textcolor{keyword}{static} \textcolor{keywordtype}{void} apply\_inside\_div(\mbox{\hyperlink{classSpMat}{SpMat<eT>}}\& out, \textcolor{keyword}{const} T2\& x, \textcolor{keyword}{const} \mbox{\hyperlink{classSpToDOp}{SpToDOp<T3, op\_sp\_minus\_post>}}\& y);}
+\DoxyCodeLine{66   \};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+
+\end{DoxyCode}

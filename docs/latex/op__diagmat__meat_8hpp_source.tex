@@ -1,0 +1,768 @@
+\hypertarget{op__diagmat__meat_8hpp_source}{}\doxysection{op\+\_\+diagmat\+\_\+meat.\+hpp}
+\label{op__diagmat__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_diagmat\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/op\_diagmat\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{25 op\_diagmat::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_diagmat>}}\& X)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   \textcolor{keywordflow}{if}(\mbox{\hyperlink{structis__Mat}{is\_Mat<T1>::value}})}
+\DoxyCodeLine{32     \{}
+\DoxyCodeLine{33     \textcolor{comment}{// allow detection of in-\/place operation}}
+\DoxyCodeLine{34     }
+\DoxyCodeLine{35     \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}}   U(X.m);}
+\DoxyCodeLine{36     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& \mbox{\hyperlink{structA}{A}} = U.M;}
+\DoxyCodeLine{37     }
+\DoxyCodeLine{38     \textcolor{keywordflow}{if}(\&out != \&\mbox{\hyperlink{structA}{A}})  \textcolor{comment}{// no aliasing}}
+\DoxyCodeLine{39       \{}
+\DoxyCodeLine{40       \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy< Mat<eT>}} > P(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{41       }
+\DoxyCodeLine{42       op\_diagmat::apply(out, P);}
+\DoxyCodeLine{43       \}}
+\DoxyCodeLine{44     \textcolor{keywordflow}{else}  \textcolor{comment}{// we have aliasing}}
+\DoxyCodeLine{45       \{}
+\DoxyCodeLine{46       \textcolor{keyword}{const} uword n\_rows = out.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{47       \textcolor{keyword}{const} uword n\_cols = out.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{48       }
+\DoxyCodeLine{49       \textcolor{keywordflow}{if}((n\_rows == 1) || (n\_cols == 1))  \textcolor{comment}{// create diagonal matrix from vector}}
+\DoxyCodeLine{50         \{}
+\DoxyCodeLine{51         \textcolor{keyword}{const} eT*   out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{52         \textcolor{keyword}{const} uword N       = out.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{53         }
+\DoxyCodeLine{54         \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(N,N, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{55         }
+\DoxyCodeLine{56         \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ tmp.at(i,i) = out\_mem[i]; \}}
+\DoxyCodeLine{57         }
+\DoxyCodeLine{58         out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{59         \}}
+\DoxyCodeLine{60       \textcolor{keywordflow}{else}  \textcolor{comment}{// create diagonal matrix from matrix}}
+\DoxyCodeLine{61         \{}
+\DoxyCodeLine{62         \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(n\_rows, n\_cols);}
+\DoxyCodeLine{63         }
+\DoxyCodeLine{64         \textcolor{keywordflow}{for}(uword i=0; i < n\_cols; ++i)}
+\DoxyCodeLine{65           \{}
+\DoxyCodeLine{66           \textcolor{keywordflow}{if}(i < N)}
+\DoxyCodeLine{67             \{}
+\DoxyCodeLine{68             eT\& out\_ii = out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i);}
+\DoxyCodeLine{69             }
+\DoxyCodeLine{70             \textcolor{keyword}{const} eT val = out\_ii;}
+\DoxyCodeLine{71             }
+\DoxyCodeLine{72             arrayops::fill\_zeros(out.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(i), n\_rows);}
+\DoxyCodeLine{73             }
+\DoxyCodeLine{74             out\_ii = val;}
+\DoxyCodeLine{75             \}}
+\DoxyCodeLine{76           \textcolor{keywordflow}{else}}
+\DoxyCodeLine{77             \{}
+\DoxyCodeLine{78             arrayops::fill\_zeros(out.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(i), n\_rows);}
+\DoxyCodeLine{79             \}}
+\DoxyCodeLine{80           \}}
+\DoxyCodeLine{81         \}}
+\DoxyCodeLine{82       \}}
+\DoxyCodeLine{83     \}}
+\DoxyCodeLine{84   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{85     \{}
+\DoxyCodeLine{86     \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.m);}
+\DoxyCodeLine{87     }
+\DoxyCodeLine{88     \textcolor{keywordflow}{if}(P.is\_alias(out))}
+\DoxyCodeLine{89       \{}
+\DoxyCodeLine{90       \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{91       }
+\DoxyCodeLine{92       op\_diagmat::apply(tmp, P);}
+\DoxyCodeLine{93       }
+\DoxyCodeLine{94       out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{95       \}}
+\DoxyCodeLine{96     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{97       \{}
+\DoxyCodeLine{98       op\_diagmat::apply(out, P);}
+\DoxyCodeLine{99       \}}
+\DoxyCodeLine{100     \}}
+\DoxyCodeLine{101   \}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{106 \textcolor{keyword}{inline}}
+\DoxyCodeLine{107 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{108 op\_diagmat::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P)}
+\DoxyCodeLine{109   \{}
+\DoxyCodeLine{110   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{111   }
+\DoxyCodeLine{112   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{113   \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{114   \textcolor{keyword}{const} uword n\_elem = P.get\_n\_elem();}
+\DoxyCodeLine{115   }
+\DoxyCodeLine{116   \textcolor{keywordflow}{if}(n\_elem == 0)  \{ out.reset(); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{117   }
+\DoxyCodeLine{118   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} P\_is\_vec = (T1::is\_row) || (T1::is\_col) || (n\_rows == 1) || (n\_cols == 1);}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   \textcolor{keywordflow}{if}(P\_is\_vec)}
+\DoxyCodeLine{121     \{}
+\DoxyCodeLine{122     out.zeros(n\_elem, n\_elem);}
+\DoxyCodeLine{123     }
+\DoxyCodeLine{124     \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{125       \{}
+\DoxyCodeLine{126       \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{127       }
+\DoxyCodeLine{128       \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)  \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = Pea[i]; \}}
+\DoxyCodeLine{129       \}}
+\DoxyCodeLine{130     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{131       \{}
+\DoxyCodeLine{132       \textcolor{keywordflow}{if}(n\_rows == 1)}
+\DoxyCodeLine{133         \{}
+\DoxyCodeLine{134         \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)  \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = P.at(0,i); \}}
+\DoxyCodeLine{135         \}}
+\DoxyCodeLine{136       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{137         \{}
+\DoxyCodeLine{138         \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)  \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = P.at(i,0); \}}
+\DoxyCodeLine{139         \}}
+\DoxyCodeLine{140       \}}
+\DoxyCodeLine{141     \}}
+\DoxyCodeLine{142   \textcolor{keywordflow}{else}  \textcolor{comment}{// P represents a matrix }}
+\DoxyCodeLine{143     \{}
+\DoxyCodeLine{144     out.zeros(n\_rows, n\_cols);}
+\DoxyCodeLine{145     }
+\DoxyCodeLine{146     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(n\_rows, n\_cols);}
+\DoxyCodeLine{147     }
+\DoxyCodeLine{148     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = P.at(i,i); \}}
+\DoxyCodeLine{149     \}}
+\DoxyCodeLine{150   \}}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{155 \textcolor{keyword}{inline}}
+\DoxyCodeLine{156 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{157 op\_diagmat::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op}}< \mbox{\hyperlink{classGlue}{Glue<T1,T2,glue\_times>}}, \mbox{\hyperlink{classop__diagmat}{op\_diagmat}}>\& X)}
+\DoxyCodeLine{158   \{}
+\DoxyCodeLine{159   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{160   }
+\DoxyCodeLine{161   op\_diagmat::apply\_times(out, X.m.A, X.m.B);}
+\DoxyCodeLine{162   \}}
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 }
+\DoxyCodeLine{166 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{167 \textcolor{keyword}{inline}}
+\DoxyCodeLine{168 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{169 op\_diagmat::apply\_times(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& actual\_out, \textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y, \textcolor{keyword}{const} \textcolor{keyword}{typename} arma\_not\_cx<typename T1::elem\_type>::result* junk)}
+\DoxyCodeLine{170   \{}
+\DoxyCodeLine{171   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{172   arma\_ignore(junk);}
+\DoxyCodeLine{173   }
+\DoxyCodeLine{174   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{175   }
+\DoxyCodeLine{176   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>}} UA(X);}
+\DoxyCodeLine{177   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>}} UB(Y);}
+\DoxyCodeLine{178   }
+\DoxyCodeLine{179   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::stored\_type}}\& \mbox{\hyperlink{structA}{A}} = UA.M;}
+\DoxyCodeLine{180   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::stored\_type}}\& \mbox{\hyperlink{structB}{B}} = UB.M;}
+\DoxyCodeLine{181   }
+\DoxyCodeLine{182   arma\_debug\_assert\_trans\_mul\_size< partial\_unwrap<T1>::do\_trans, \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} >(\mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols, \mbox{\hyperlink{structB}{B}}.n\_rows, \mbox{\hyperlink{structB}{B}}.n\_cols, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha = \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}};}
+\DoxyCodeLine{185   \textcolor{keyword}{const} eT       alpha = use\_alpha ? (UA.get\_val() * UB.get\_val()) : eT(0);}
+\DoxyCodeLine{186   }
+\DoxyCodeLine{187   \textcolor{keyword}{const} uword A\_n\_rows = \mbox{\hyperlink{structA}{A}}.n\_rows;}
+\DoxyCodeLine{188   \textcolor{keyword}{const} uword A\_n\_cols = \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190   \textcolor{keyword}{const} uword B\_n\_rows = \mbox{\hyperlink{structB}{B}}.n\_rows;}
+\DoxyCodeLine{191   \textcolor{keyword}{const} uword B\_n\_cols = \mbox{\hyperlink{structB}{B}}.n\_cols;}
+\DoxyCodeLine{192   }
+\DoxyCodeLine{193   \textcolor{comment}{// check if the multiplication results in a vector}}
+\DoxyCodeLine{194   }
+\DoxyCodeLine{195   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{196     \{}
+\DoxyCodeLine{197     \textcolor{keywordflow}{if}((A\_n\_rows == 1) || (B\_n\_cols == 1))}
+\DoxyCodeLine{198       \{}
+\DoxyCodeLine{199       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = false; trans\_B = false; vector result"{}});}
+\DoxyCodeLine{200       }
+\DoxyCodeLine{201       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} C     = \mbox{\hyperlink{structA}{A}}*\mbox{\hyperlink{structB}{B}};}
+\DoxyCodeLine{202       \textcolor{keyword}{const} eT*     C\_mem = C.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{203       \textcolor{keyword}{const} uword   N     = C.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{204       }
+\DoxyCodeLine{205       actual\_out.zeros(N,N);}
+\DoxyCodeLine{206       }
+\DoxyCodeLine{207       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ actual\_out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = (use\_alpha) ? eT(alpha * C\_mem[i]) : eT(C\_mem[i]); \}}
+\DoxyCodeLine{208       }
+\DoxyCodeLine{209       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{210       \}}
+\DoxyCodeLine{211     \}}
+\DoxyCodeLine{212   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{213   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{true} ) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{214     \{}
+\DoxyCodeLine{215     \textcolor{keywordflow}{if}((A\_n\_cols == 1) || (B\_n\_cols == 1))}
+\DoxyCodeLine{216       \{}
+\DoxyCodeLine{217       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = true; trans\_B = false; vector result"{}});}
+\DoxyCodeLine{218       }
+\DoxyCodeLine{219       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} C     = trans(\mbox{\hyperlink{structA}{A}})*\mbox{\hyperlink{structB}{B}};}
+\DoxyCodeLine{220       \textcolor{keyword}{const} eT*     C\_mem = C.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{221       \textcolor{keyword}{const} uword   N     = C.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{222       }
+\DoxyCodeLine{223       actual\_out.zeros(N,N);}
+\DoxyCodeLine{224       }
+\DoxyCodeLine{225       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ actual\_out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = (use\_alpha) ? eT(alpha * C\_mem[i]) : eT(C\_mem[i]); \}}
+\DoxyCodeLine{226       }
+\DoxyCodeLine{227       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{228       \}}
+\DoxyCodeLine{229     \}}
+\DoxyCodeLine{230   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{231   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{true} ) )}
+\DoxyCodeLine{232     \{}
+\DoxyCodeLine{233     \textcolor{keywordflow}{if}((A\_n\_rows == 1) || (B\_n\_rows == 1))}
+\DoxyCodeLine{234       \{}
+\DoxyCodeLine{235       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = false; trans\_B = true; vector result"{}});}
+\DoxyCodeLine{236       }
+\DoxyCodeLine{237       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} C     = \mbox{\hyperlink{structA}{A}}*trans(\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{238       \textcolor{keyword}{const} eT*     C\_mem = C.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{239       \textcolor{keyword}{const} uword   N     = C.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{240       }
+\DoxyCodeLine{241       actual\_out.zeros(N,N);}
+\DoxyCodeLine{242       }
+\DoxyCodeLine{243       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ actual\_out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = (use\_alpha) ? eT(alpha * C\_mem[i]) : eT(C\_mem[i]); \}}
+\DoxyCodeLine{244       }
+\DoxyCodeLine{245       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{246       \}}
+\DoxyCodeLine{247     \}}
+\DoxyCodeLine{248   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{249   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{true} ) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{true} ) )}
+\DoxyCodeLine{250     \{}
+\DoxyCodeLine{251     \textcolor{keywordflow}{if}((A\_n\_cols == 1) || (B\_n\_rows == 1))}
+\DoxyCodeLine{252       \{}
+\DoxyCodeLine{253       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = true; trans\_B = true; vector result"{}});}
+\DoxyCodeLine{254       }
+\DoxyCodeLine{255       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} C     = trans(\mbox{\hyperlink{structA}{A}})*trans(\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{256       \textcolor{keyword}{const} eT*     C\_mem = C.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{257       \textcolor{keyword}{const} uword   N     = C.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{258       }
+\DoxyCodeLine{259       actual\_out.zeros(N,N);}
+\DoxyCodeLine{260       }
+\DoxyCodeLine{261       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ actual\_out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = (use\_alpha) ? eT(alpha * C\_mem[i]) : eT(C\_mem[i]); \}}
+\DoxyCodeLine{262       }
+\DoxyCodeLine{263       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{264       \}}
+\DoxyCodeLine{265     \}}
+\DoxyCodeLine{266   }
+\DoxyCodeLine{267   \textcolor{comment}{// if we got to this point, the multiplication results in a matrix}}
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_alias = (UA.is\_alias(actual\_out) || UB.is\_alias(actual\_out));}
+\DoxyCodeLine{270   }
+\DoxyCodeLine{271   \mbox{\hyperlink{classMat}{Mat<eT>}}  tmp;}
+\DoxyCodeLine{272   \mbox{\hyperlink{classMat}{Mat<eT>}}\& out = (is\_alias) ? tmp : actual\_out;}
+\DoxyCodeLine{273   }
+\DoxyCodeLine{274   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{275     \{}
+\DoxyCodeLine{276     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = false; trans\_B = false; matrix result"{}});}
+\DoxyCodeLine{277     }
+\DoxyCodeLine{278     out.zeros(A\_n\_rows, B\_n\_cols);}
+\DoxyCodeLine{279     }
+\DoxyCodeLine{280     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(A\_n\_rows, B\_n\_cols);}
+\DoxyCodeLine{281     }
+\DoxyCodeLine{282     \textcolor{keywordflow}{for}(uword k=0; k < N; ++k)}
+\DoxyCodeLine{283       \{}
+\DoxyCodeLine{284       eT acc1 = eT(0);}
+\DoxyCodeLine{285       eT acc2 = eT(0);}
+\DoxyCodeLine{286       }
+\DoxyCodeLine{287       \textcolor{keyword}{const} eT* B\_colptr = \mbox{\hyperlink{structB}{B}}.colptr(k);}
+\DoxyCodeLine{288       }
+\DoxyCodeLine{289       \textcolor{comment}{// condition: A\_n\_cols = B\_n\_rows}}
+\DoxyCodeLine{290       }
+\DoxyCodeLine{291       uword j;}
+\DoxyCodeLine{292       }
+\DoxyCodeLine{293       \textcolor{keywordflow}{for}(j=1; j < A\_n\_cols; j+=2)}
+\DoxyCodeLine{294         \{}
+\DoxyCodeLine{295         \textcolor{keyword}{const} uword i = (j-\/1);}
+\DoxyCodeLine{296         }
+\DoxyCodeLine{297         \textcolor{keyword}{const} eT tmp\_i = B\_colptr[i];}
+\DoxyCodeLine{298         \textcolor{keyword}{const} eT tmp\_j = B\_colptr[j];}
+\DoxyCodeLine{299         }
+\DoxyCodeLine{300         acc1 += \mbox{\hyperlink{structA}{A}}.at(k, i) * tmp\_i;}
+\DoxyCodeLine{301         acc2 += \mbox{\hyperlink{structA}{A}}.at(k, j) * tmp\_j;}
+\DoxyCodeLine{302         \}}
+\DoxyCodeLine{303       }
+\DoxyCodeLine{304       \textcolor{keyword}{const} uword i = (j-\/1);}
+\DoxyCodeLine{305       }
+\DoxyCodeLine{306       \textcolor{keywordflow}{if}(i < A\_n\_cols)}
+\DoxyCodeLine{307         \{}
+\DoxyCodeLine{308         acc1 += \mbox{\hyperlink{structA}{A}}.at(k, i) * B\_colptr[i];}
+\DoxyCodeLine{309         \}}
+\DoxyCodeLine{310       }
+\DoxyCodeLine{311       \textcolor{keyword}{const} eT acc = acc1 + acc2;}
+\DoxyCodeLine{312       }
+\DoxyCodeLine{313       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(k,k) = (use\_alpha) ? eT(alpha * acc) : eT(acc);}
+\DoxyCodeLine{314       \}}
+\DoxyCodeLine{315     \}}
+\DoxyCodeLine{316   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{317   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{true} ) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{318     \{}
+\DoxyCodeLine{319     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = true; trans\_B = false; matrix result"{}});}
+\DoxyCodeLine{320     }
+\DoxyCodeLine{321     out.zeros(A\_n\_cols, B\_n\_cols);}
+\DoxyCodeLine{322     }
+\DoxyCodeLine{323     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(A\_n\_cols, B\_n\_cols);}
+\DoxyCodeLine{324     }
+\DoxyCodeLine{325     \textcolor{keywordflow}{for}(uword k=0; k < N; ++k)}
+\DoxyCodeLine{326       \{}
+\DoxyCodeLine{327       \textcolor{keyword}{const} eT* A\_colptr = \mbox{\hyperlink{structA}{A}}.colptr(k);}
+\DoxyCodeLine{328       \textcolor{keyword}{const} eT* B\_colptr = \mbox{\hyperlink{structB}{B}}.colptr(k);}
+\DoxyCodeLine{329       }
+\DoxyCodeLine{330       \textcolor{comment}{// condition: A\_n\_rows = B\_n\_rows}}
+\DoxyCodeLine{331       }
+\DoxyCodeLine{332       \textcolor{keyword}{const} eT acc = \mbox{\hyperlink{group__op__dot_gafcc9d4848f5791b21d9a4c755baa6440}{op\_dot::direct\_dot}}(A\_n\_rows, A\_colptr, B\_colptr);}
+\DoxyCodeLine{333       }
+\DoxyCodeLine{334       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(k,k) = (use\_alpha) ? eT(alpha * acc) : eT(acc);}
+\DoxyCodeLine{335       \}}
+\DoxyCodeLine{336     \}}
+\DoxyCodeLine{337   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{338   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{true} ) )}
+\DoxyCodeLine{339     \{}
+\DoxyCodeLine{340     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = false; trans\_B = true; matrix result"{}});}
+\DoxyCodeLine{341     }
+\DoxyCodeLine{342     out.zeros(A\_n\_rows, B\_n\_rows);}
+\DoxyCodeLine{343     }
+\DoxyCodeLine{344     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(A\_n\_rows, B\_n\_rows);}
+\DoxyCodeLine{345     }
+\DoxyCodeLine{346     \textcolor{keywordflow}{for}(uword k=0; k < N; ++k)}
+\DoxyCodeLine{347       \{}
+\DoxyCodeLine{348       eT acc = eT(0);}
+\DoxyCodeLine{349       }
+\DoxyCodeLine{350       \textcolor{comment}{// condition: A\_n\_cols = B\_n\_cols}}
+\DoxyCodeLine{351       }
+\DoxyCodeLine{352       \textcolor{keywordflow}{for}(uword i=0; i < A\_n\_cols; ++i)}
+\DoxyCodeLine{353         \{}
+\DoxyCodeLine{354         acc += \mbox{\hyperlink{structA}{A}}.at(k,i) * \mbox{\hyperlink{structB}{B}}.at(k,i);}
+\DoxyCodeLine{355         \}}
+\DoxyCodeLine{356       }
+\DoxyCodeLine{357       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(k,k) = (use\_alpha) ? eT(alpha * acc) : eT(acc);}
+\DoxyCodeLine{358       \}}
+\DoxyCodeLine{359     \}}
+\DoxyCodeLine{360   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{361   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{true} ) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{true} ) )}
+\DoxyCodeLine{362     \{}
+\DoxyCodeLine{363     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = true; trans\_B = true; matrix result"{}});}
+\DoxyCodeLine{364     }
+\DoxyCodeLine{365     out.zeros(A\_n\_cols, B\_n\_rows);}
+\DoxyCodeLine{366     }
+\DoxyCodeLine{367     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(A\_n\_cols, B\_n\_rows);}
+\DoxyCodeLine{368     }
+\DoxyCodeLine{369     \textcolor{keywordflow}{for}(uword k=0; k < N; ++k)}
+\DoxyCodeLine{370       \{}
+\DoxyCodeLine{371       eT acc = eT(0);}
+\DoxyCodeLine{372       }
+\DoxyCodeLine{373       \textcolor{keyword}{const} eT* A\_colptr = \mbox{\hyperlink{structA}{A}}.colptr(k);}
+\DoxyCodeLine{374       }
+\DoxyCodeLine{375       \textcolor{comment}{// condition: A\_n\_rows = B\_n\_cols}}
+\DoxyCodeLine{376       }
+\DoxyCodeLine{377       \textcolor{keywordflow}{for}(uword i=0; i < A\_n\_rows; ++i)}
+\DoxyCodeLine{378         \{}
+\DoxyCodeLine{379         acc += A\_colptr[i] * \mbox{\hyperlink{structB}{B}}.at(k,i);}
+\DoxyCodeLine{380         \}}
+\DoxyCodeLine{381       }
+\DoxyCodeLine{382       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(k,k) = (use\_alpha) ? eT(alpha * acc) : eT(acc);}
+\DoxyCodeLine{383       \}}
+\DoxyCodeLine{384     \}}
+\DoxyCodeLine{385   }
+\DoxyCodeLine{386   \textcolor{keywordflow}{if}(is\_alias)  \{ actual\_out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp); \}}
+\DoxyCodeLine{387   \}}
+\DoxyCodeLine{388 }
+\DoxyCodeLine{389 }
+\DoxyCodeLine{390 }
+\DoxyCodeLine{391 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{392 \textcolor{keyword}{inline}}
+\DoxyCodeLine{393 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{394 op\_diagmat::apply\_times(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& actual\_out, \textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} T2\& Y, \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__cx__only}{arma\_cx\_only<typename T1::elem\_type>::result}}* junk)}
+\DoxyCodeLine{395   \{}
+\DoxyCodeLine{396   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{397   arma\_ignore(junk);}
+\DoxyCodeLine{398   }
+\DoxyCodeLine{399   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{400   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{401   }
+\DoxyCodeLine{402   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>}} UA(X);}
+\DoxyCodeLine{403   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>}} UB(Y);}
+\DoxyCodeLine{404   }
+\DoxyCodeLine{405   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::stored\_type}}\& \mbox{\hyperlink{structA}{A}} = UA.M;}
+\DoxyCodeLine{406   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::stored\_type}}\& \mbox{\hyperlink{structB}{B}} = UB.M;}
+\DoxyCodeLine{407   }
+\DoxyCodeLine{408   arma\_debug\_assert\_trans\_mul\_size< partial\_unwrap<T1>::do\_trans, \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} >(\mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols, \mbox{\hyperlink{structB}{B}}.n\_rows, \mbox{\hyperlink{structB}{B}}.n\_cols, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{409   }
+\DoxyCodeLine{410   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_alpha = \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}};}
+\DoxyCodeLine{411   \textcolor{keyword}{const} eT       alpha = use\_alpha ? (UA.get\_val() * UB.get\_val()) : eT(0);}
+\DoxyCodeLine{412   }
+\DoxyCodeLine{413   \textcolor{keyword}{const} uword A\_n\_rows = \mbox{\hyperlink{structA}{A}}.n\_rows;}
+\DoxyCodeLine{414   \textcolor{keyword}{const} uword A\_n\_cols = \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{415   }
+\DoxyCodeLine{416   \textcolor{keyword}{const} uword B\_n\_rows = \mbox{\hyperlink{structB}{B}}.n\_rows;}
+\DoxyCodeLine{417   \textcolor{keyword}{const} uword B\_n\_cols = \mbox{\hyperlink{structB}{B}}.n\_cols;}
+\DoxyCodeLine{418   }
+\DoxyCodeLine{419   \textcolor{comment}{// check if the multiplication results in a vector}}
+\DoxyCodeLine{420   }
+\DoxyCodeLine{421   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{422     \{}
+\DoxyCodeLine{423     \textcolor{keywordflow}{if}((A\_n\_rows == 1) || (B\_n\_cols == 1))}
+\DoxyCodeLine{424       \{}
+\DoxyCodeLine{425       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = false; trans\_B = false; vector result"{}});}
+\DoxyCodeLine{426       }
+\DoxyCodeLine{427       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} C     = \mbox{\hyperlink{structA}{A}}*\mbox{\hyperlink{structB}{B}};}
+\DoxyCodeLine{428       \textcolor{keyword}{const} eT*     C\_mem = C.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{429       \textcolor{keyword}{const} uword   N     = C.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{430       }
+\DoxyCodeLine{431       actual\_out.zeros(N,N);}
+\DoxyCodeLine{432       }
+\DoxyCodeLine{433       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ actual\_out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = (use\_alpha) ? eT(alpha * C\_mem[i]) : eT(C\_mem[i]); \}}
+\DoxyCodeLine{434       }
+\DoxyCodeLine{435       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{436       \}}
+\DoxyCodeLine{437     \}}
+\DoxyCodeLine{438   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{439   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{true} ) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{440     \{}
+\DoxyCodeLine{441     \textcolor{keywordflow}{if}((A\_n\_cols == 1) || (B\_n\_cols == 1))}
+\DoxyCodeLine{442       \{}
+\DoxyCodeLine{443       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = true; trans\_B = false; vector result"{}});}
+\DoxyCodeLine{444       }
+\DoxyCodeLine{445       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} C     = trans(\mbox{\hyperlink{structA}{A}})*\mbox{\hyperlink{structB}{B}};}
+\DoxyCodeLine{446       \textcolor{keyword}{const} eT*     C\_mem = C.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{447       \textcolor{keyword}{const} uword   N     = C.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{448       }
+\DoxyCodeLine{449       actual\_out.zeros(N,N);}
+\DoxyCodeLine{450       }
+\DoxyCodeLine{451       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ actual\_out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = (use\_alpha) ? eT(alpha * C\_mem[i]) : eT(C\_mem[i]); \}}
+\DoxyCodeLine{452       }
+\DoxyCodeLine{453       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{454       \}}
+\DoxyCodeLine{455     \}}
+\DoxyCodeLine{456   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{457   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{true} ) )}
+\DoxyCodeLine{458     \{}
+\DoxyCodeLine{459     \textcolor{keywordflow}{if}((A\_n\_rows == 1) || (B\_n\_rows == 1))}
+\DoxyCodeLine{460       \{}
+\DoxyCodeLine{461       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = false; trans\_B = true; vector result"{}});}
+\DoxyCodeLine{462       }
+\DoxyCodeLine{463       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} C     = \mbox{\hyperlink{structA}{A}}*trans(\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{464       \textcolor{keyword}{const} eT*     C\_mem = C.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{465       \textcolor{keyword}{const} uword   N     = C.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{466       }
+\DoxyCodeLine{467       actual\_out.zeros(N,N);}
+\DoxyCodeLine{468       }
+\DoxyCodeLine{469       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ actual\_out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = (use\_alpha) ? eT(alpha * C\_mem[i]) : eT(C\_mem[i]); \}}
+\DoxyCodeLine{470       }
+\DoxyCodeLine{471       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{472       \}}
+\DoxyCodeLine{473     \}}
+\DoxyCodeLine{474   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{475   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{true} ) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{true} ) )}
+\DoxyCodeLine{476     \{}
+\DoxyCodeLine{477     \textcolor{keywordflow}{if}((A\_n\_cols == 1) || (B\_n\_rows == 1))}
+\DoxyCodeLine{478       \{}
+\DoxyCodeLine{479       arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = true; trans\_B = true; vector result"{}});}
+\DoxyCodeLine{480       }
+\DoxyCodeLine{481       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}} C     = trans(\mbox{\hyperlink{structA}{A}})*trans(\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{482       \textcolor{keyword}{const} eT*     C\_mem = C.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{483       \textcolor{keyword}{const} uword   N     = C.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}};}
+\DoxyCodeLine{484       }
+\DoxyCodeLine{485       actual\_out.zeros(N,N);}
+\DoxyCodeLine{486       }
+\DoxyCodeLine{487       \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)  \{ actual\_out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(i,i) = (use\_alpha) ? eT(alpha * C\_mem[i]) : eT(C\_mem[i]); \}}
+\DoxyCodeLine{488       }
+\DoxyCodeLine{489       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{490       \}}
+\DoxyCodeLine{491     \}}
+\DoxyCodeLine{492   }
+\DoxyCodeLine{493   \textcolor{comment}{// if we got to this point, the multiplication results in a matrix}}
+\DoxyCodeLine{494 }
+\DoxyCodeLine{495   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} is\_alias = (UA.is\_alias(actual\_out) || UB.is\_alias(actual\_out));}
+\DoxyCodeLine{496   }
+\DoxyCodeLine{497   \mbox{\hyperlink{classMat}{Mat<eT>}}  tmp;}
+\DoxyCodeLine{498   \mbox{\hyperlink{classMat}{Mat<eT>}}\& out = (is\_alias) ? tmp : actual\_out;}
+\DoxyCodeLine{499   }
+\DoxyCodeLine{500   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{501     \{}
+\DoxyCodeLine{502     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = false; trans\_B = false; matrix result"{}});}
+\DoxyCodeLine{503     }
+\DoxyCodeLine{504     out.zeros(A\_n\_rows, B\_n\_cols);}
+\DoxyCodeLine{505     }
+\DoxyCodeLine{506     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(A\_n\_rows, B\_n\_cols);}
+\DoxyCodeLine{507     }
+\DoxyCodeLine{508     \textcolor{keywordflow}{for}(uword k=0; k < N; ++k)}
+\DoxyCodeLine{509       \{}
+\DoxyCodeLine{510       T acc\_real = T(0);}
+\DoxyCodeLine{511       T acc\_imag = T(0);}
+\DoxyCodeLine{512       }
+\DoxyCodeLine{513       \textcolor{keyword}{const} eT* B\_colptr = \mbox{\hyperlink{structB}{B}}.colptr(k);}
+\DoxyCodeLine{514       }
+\DoxyCodeLine{515       \textcolor{comment}{// condition: A\_n\_cols = B\_n\_rows}}
+\DoxyCodeLine{516       }
+\DoxyCodeLine{517       \textcolor{keywordflow}{for}(uword i=0; i < A\_n\_cols; ++i)}
+\DoxyCodeLine{518         \{}
+\DoxyCodeLine{519         \textcolor{comment}{// acc += A.at(k, i) * B\_colptr[i];}}
+\DoxyCodeLine{520         }
+\DoxyCodeLine{521         \textcolor{keyword}{const} std::complex<T>\& xx = \mbox{\hyperlink{structA}{A}}.at(k, i);}
+\DoxyCodeLine{522         \textcolor{keyword}{const} std::complex<T>\& yy = B\_colptr[i];}
+\DoxyCodeLine{523         }
+\DoxyCodeLine{524         \textcolor{keyword}{const} T a = xx.real();}
+\DoxyCodeLine{525         \textcolor{keyword}{const} T b = xx.imag();}
+\DoxyCodeLine{526         }
+\DoxyCodeLine{527         \textcolor{keyword}{const} T c = yy.real();}
+\DoxyCodeLine{528         \textcolor{keyword}{const} T d = yy.imag();}
+\DoxyCodeLine{529         }
+\DoxyCodeLine{530         acc\_real += (a*c) -\/ (b*d);}
+\DoxyCodeLine{531         acc\_imag += (a*d) + (b*c);}
+\DoxyCodeLine{532         \}}
+\DoxyCodeLine{533       }
+\DoxyCodeLine{534       \textcolor{keyword}{const} eT acc = std::complex<T>(acc\_real, acc\_imag);}
+\DoxyCodeLine{535       }
+\DoxyCodeLine{536       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(k,k) = (use\_alpha) ? eT(alpha * acc) : eT(acc);}
+\DoxyCodeLine{537       \}}
+\DoxyCodeLine{538     \}}
+\DoxyCodeLine{539   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{540   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{true}) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{false}) )}
+\DoxyCodeLine{541     \{}
+\DoxyCodeLine{542     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = true; trans\_B = false; matrix result"{}});}
+\DoxyCodeLine{543     }
+\DoxyCodeLine{544     out.zeros(A\_n\_cols, B\_n\_cols);}
+\DoxyCodeLine{545     }
+\DoxyCodeLine{546     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(A\_n\_cols, B\_n\_cols);}
+\DoxyCodeLine{547     }
+\DoxyCodeLine{548     \textcolor{keywordflow}{for}(uword k=0; k < N; ++k)}
+\DoxyCodeLine{549       \{}
+\DoxyCodeLine{550       T acc\_real = T(0);}
+\DoxyCodeLine{551       T acc\_imag = T(0);}
+\DoxyCodeLine{552       }
+\DoxyCodeLine{553       \textcolor{keyword}{const} eT* A\_colptr = \mbox{\hyperlink{structA}{A}}.colptr(k);}
+\DoxyCodeLine{554       \textcolor{keyword}{const} eT* B\_colptr = \mbox{\hyperlink{structB}{B}}.colptr(k);}
+\DoxyCodeLine{555       }
+\DoxyCodeLine{556       \textcolor{comment}{// condition: A\_n\_rows = B\_n\_rows}}
+\DoxyCodeLine{557       }
+\DoxyCodeLine{558       \textcolor{keywordflow}{for}(uword i=0; i < A\_n\_rows; ++i)}
+\DoxyCodeLine{559         \{}
+\DoxyCodeLine{560         \textcolor{comment}{// acc += std::conj(A\_colptr[i]) * B\_colptr[i];}}
+\DoxyCodeLine{561         }
+\DoxyCodeLine{562         \textcolor{keyword}{const} std::complex<T>\& xx = A\_colptr[i];}
+\DoxyCodeLine{563         \textcolor{keyword}{const} std::complex<T>\& yy = B\_colptr[i];}
+\DoxyCodeLine{564         }
+\DoxyCodeLine{565         \textcolor{keyword}{const} T a = xx.real();}
+\DoxyCodeLine{566         \textcolor{keyword}{const} T b = xx.imag();}
+\DoxyCodeLine{567         }
+\DoxyCodeLine{568         \textcolor{keyword}{const} T c = yy.real();}
+\DoxyCodeLine{569         \textcolor{keyword}{const} T d = yy.imag();}
+\DoxyCodeLine{570         }
+\DoxyCodeLine{571         \textcolor{comment}{// take into account the complex conjugate of xx}}
+\DoxyCodeLine{572         }
+\DoxyCodeLine{573         acc\_real += (a*c) + (b*d);}
+\DoxyCodeLine{574         acc\_imag += (a*d) -\/ (b*c);}
+\DoxyCodeLine{575         \}}
+\DoxyCodeLine{576       }
+\DoxyCodeLine{577       \textcolor{keyword}{const} eT acc = std::complex<T>(acc\_real, acc\_imag);}
+\DoxyCodeLine{578       }
+\DoxyCodeLine{579       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(k,k) = (use\_alpha) ? eT(alpha * acc) : eT(acc);}
+\DoxyCodeLine{580       \}}
+\DoxyCodeLine{581     \}}
+\DoxyCodeLine{582   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{583   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{584     \{}
+\DoxyCodeLine{585     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = false; trans\_B = true; matrix result"{}});}
+\DoxyCodeLine{586     }
+\DoxyCodeLine{587     out.zeros(A\_n\_rows, B\_n\_rows);}
+\DoxyCodeLine{588     }
+\DoxyCodeLine{589     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(A\_n\_rows, B\_n\_rows);}
+\DoxyCodeLine{590     }
+\DoxyCodeLine{591     \textcolor{keywordflow}{for}(uword k=0; k < N; ++k)}
+\DoxyCodeLine{592       \{}
+\DoxyCodeLine{593       T acc\_real = T(0);}
+\DoxyCodeLine{594       T acc\_imag = T(0);}
+\DoxyCodeLine{595       }
+\DoxyCodeLine{596       \textcolor{comment}{// condition: A\_n\_cols = B\_n\_cols}}
+\DoxyCodeLine{597       }
+\DoxyCodeLine{598       \textcolor{keywordflow}{for}(uword i=0; i < A\_n\_cols; ++i)}
+\DoxyCodeLine{599         \{}
+\DoxyCodeLine{600         \textcolor{comment}{// acc += A.at(k,i) * std::conj(B.at(k,i));}}
+\DoxyCodeLine{601         }
+\DoxyCodeLine{602         \textcolor{keyword}{const} std::complex<T>\& xx = \mbox{\hyperlink{structA}{A}}.at(k, i);}
+\DoxyCodeLine{603         \textcolor{keyword}{const} std::complex<T>\& yy = \mbox{\hyperlink{structB}{B}}.at(k, i);}
+\DoxyCodeLine{604         }
+\DoxyCodeLine{605         \textcolor{keyword}{const} T a = xx.real();}
+\DoxyCodeLine{606         \textcolor{keyword}{const} T b = xx.imag();}
+\DoxyCodeLine{607         }
+\DoxyCodeLine{608         \textcolor{keyword}{const} T c =  yy.real();}
+\DoxyCodeLine{609         \textcolor{keyword}{const} T d = -\/yy.imag();  \textcolor{comment}{// take the conjugate}}
+\DoxyCodeLine{610         }
+\DoxyCodeLine{611         acc\_real += (a*c) -\/ (b*d);}
+\DoxyCodeLine{612         acc\_imag += (a*d) + (b*c);}
+\DoxyCodeLine{613         \}}
+\DoxyCodeLine{614       }
+\DoxyCodeLine{615       \textcolor{keyword}{const} eT acc = std::complex<T>(acc\_real, acc\_imag);}
+\DoxyCodeLine{616       }
+\DoxyCodeLine{617       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(k,k) = (use\_alpha) ? eT(alpha * acc) : eT(acc);}
+\DoxyCodeLine{618       \}}
+\DoxyCodeLine{619     \}}
+\DoxyCodeLine{620   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{621   \textcolor{keywordflow}{if}( (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}} == \textcolor{keyword}{true}) \&\& (\mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}} == \textcolor{keyword}{true}) )}
+\DoxyCodeLine{622     \{}
+\DoxyCodeLine{623     arma\_extra\_debug\_print(\textcolor{stringliteral}{"{}trans\_A = true; trans\_B = true; matrix result"{}});}
+\DoxyCodeLine{624     }
+\DoxyCodeLine{625     out.zeros(A\_n\_cols, B\_n\_rows);}
+\DoxyCodeLine{626     }
+\DoxyCodeLine{627     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(A\_n\_cols, B\_n\_rows);}
+\DoxyCodeLine{628     }
+\DoxyCodeLine{629     \textcolor{keywordflow}{for}(uword k=0; k < N; ++k)}
+\DoxyCodeLine{630       \{}
+\DoxyCodeLine{631       T acc\_real = T(0);}
+\DoxyCodeLine{632       T acc\_imag = T(0);}
+\DoxyCodeLine{633       }
+\DoxyCodeLine{634       \textcolor{keyword}{const} eT* A\_colptr = \mbox{\hyperlink{structA}{A}}.colptr(k);}
+\DoxyCodeLine{635       }
+\DoxyCodeLine{636       \textcolor{comment}{// condition: A\_n\_rows = B\_n\_cols}}
+\DoxyCodeLine{637       }
+\DoxyCodeLine{638       \textcolor{keywordflow}{for}(uword i=0; i < A\_n\_rows; ++i)}
+\DoxyCodeLine{639         \{}
+\DoxyCodeLine{640         \textcolor{comment}{// acc += std::conj(A\_colptr[i]) * std::conj(B.at(k,i));}}
+\DoxyCodeLine{641         }
+\DoxyCodeLine{642         \textcolor{keyword}{const} std::complex<T>\& xx = A\_colptr[i];}
+\DoxyCodeLine{643         \textcolor{keyword}{const} std::complex<T>\& yy = \mbox{\hyperlink{structB}{B}}.at(k, i);}
+\DoxyCodeLine{644         }
+\DoxyCodeLine{645         \textcolor{keyword}{const} T a =  xx.real();}
+\DoxyCodeLine{646         \textcolor{keyword}{const} T b = -\/xx.imag();  \textcolor{comment}{// take the conjugate}}
+\DoxyCodeLine{647         }
+\DoxyCodeLine{648         \textcolor{keyword}{const} T c =  yy.real();}
+\DoxyCodeLine{649         \textcolor{keyword}{const} T d = -\/yy.imag();  \textcolor{comment}{// take the conjugate}}
+\DoxyCodeLine{650         }
+\DoxyCodeLine{651         acc\_real += (a*c) -\/ (b*d);}
+\DoxyCodeLine{652         acc\_imag += (a*d) + (b*c);}
+\DoxyCodeLine{653         \}}
+\DoxyCodeLine{654       }
+\DoxyCodeLine{655       \textcolor{keyword}{const} eT acc = std::complex<T>(acc\_real, acc\_imag);}
+\DoxyCodeLine{656       }
+\DoxyCodeLine{657       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(k,k) = (use\_alpha) ? eT(alpha * acc) : eT(acc);}
+\DoxyCodeLine{658       \}}
+\DoxyCodeLine{659     \}}
+\DoxyCodeLine{660   }
+\DoxyCodeLine{661   \textcolor{keywordflow}{if}(is\_alias)  \{ actual\_out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp); \}}
+\DoxyCodeLine{662   \}}
+\DoxyCodeLine{663 }
+\DoxyCodeLine{664 }
+\DoxyCodeLine{665 }
+\DoxyCodeLine{666 \textcolor{comment}{//}}
+\DoxyCodeLine{667 \textcolor{comment}{//}}
+\DoxyCodeLine{668 \textcolor{comment}{//}}
+\DoxyCodeLine{669 }
+\DoxyCodeLine{670 }
+\DoxyCodeLine{671 }
+\DoxyCodeLine{672 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{673 \textcolor{keyword}{inline}}
+\DoxyCodeLine{674 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{675 op\_diagmat2::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_diagmat2>}}\& X)}
+\DoxyCodeLine{676   \{}
+\DoxyCodeLine{677   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{678   }
+\DoxyCodeLine{679   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{680   }
+\DoxyCodeLine{681   \textcolor{keyword}{const} uword row\_offset = X.aux\_uword\_a;}
+\DoxyCodeLine{682   \textcolor{keyword}{const} uword col\_offset = X.aux\_uword\_b;}
+\DoxyCodeLine{683   }
+\DoxyCodeLine{684   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} P(X.m);}
+\DoxyCodeLine{685   }
+\DoxyCodeLine{686   \textcolor{keywordflow}{if}(P.is\_alias(out))}
+\DoxyCodeLine{687     \{}
+\DoxyCodeLine{688     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp;}
+\DoxyCodeLine{689     }
+\DoxyCodeLine{690     op\_diagmat2::apply(tmp, P, row\_offset, col\_offset);}
+\DoxyCodeLine{691     }
+\DoxyCodeLine{692     out.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{693     \}}
+\DoxyCodeLine{694   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{695     \{}
+\DoxyCodeLine{696     op\_diagmat2::apply(out, P, row\_offset, col\_offset);}
+\DoxyCodeLine{697     \}}
+\DoxyCodeLine{698   \}}
+\DoxyCodeLine{699 }
+\DoxyCodeLine{700 }
+\DoxyCodeLine{701 }
+\DoxyCodeLine{702 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{703 \textcolor{keyword}{inline}}
+\DoxyCodeLine{704 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{705 op\_diagmat2::apply(\mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}}\& P, \textcolor{keyword}{const} uword row\_offset, \textcolor{keyword}{const} uword col\_offset)}
+\DoxyCodeLine{706   \{}
+\DoxyCodeLine{707   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{708   }
+\DoxyCodeLine{709   \textcolor{keyword}{const} uword n\_rows = P.get\_n\_rows();}
+\DoxyCodeLine{710   \textcolor{keyword}{const} uword n\_cols = P.get\_n\_cols();}
+\DoxyCodeLine{711   \textcolor{keyword}{const} uword n\_elem = P.get\_n\_elem();}
+\DoxyCodeLine{712   }
+\DoxyCodeLine{713   \textcolor{keywordflow}{if}(n\_elem == 0)  \{ out.reset(); \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{714   }
+\DoxyCodeLine{715   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} P\_is\_vec = (T1::is\_row) || (T1::is\_col) || (n\_rows == 1) || (n\_cols == 1);}
+\DoxyCodeLine{716   }
+\DoxyCodeLine{717   \textcolor{keywordflow}{if}(P\_is\_vec)}
+\DoxyCodeLine{718     \{}
+\DoxyCodeLine{719     \textcolor{keyword}{const} uword n\_pad = (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})(row\_offset, col\_offset);}
+\DoxyCodeLine{720     }
+\DoxyCodeLine{721     out.zeros(n\_elem + n\_pad, n\_elem + n\_pad);}
+\DoxyCodeLine{722     }
+\DoxyCodeLine{723     \textcolor{keywordflow}{if}(\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} == \textcolor{keyword}{false})}
+\DoxyCodeLine{724       \{}
+\DoxyCodeLine{725       \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} Pea = P.get\_ea();}
+\DoxyCodeLine{726       }
+\DoxyCodeLine{727       \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)  \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_offset + i, col\_offset + i) = Pea[i]; \}}
+\DoxyCodeLine{728       \}}
+\DoxyCodeLine{729     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{730       \{}
+\DoxyCodeLine{731       \textcolor{keywordflow}{if}(n\_rows == 1)}
+\DoxyCodeLine{732         \{}
+\DoxyCodeLine{733         \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)  \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_offset + i, col\_offset + i) = P.at(0,i); \}}
+\DoxyCodeLine{734         \}}
+\DoxyCodeLine{735       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{736         \{}
+\DoxyCodeLine{737         \textcolor{keywordflow}{for}(uword i=0; i < n\_elem; ++i)  \{ out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row\_offset + i, col\_offset + i) = P.at(i,0); \}}
+\DoxyCodeLine{738         \}}
+\DoxyCodeLine{739       \}}
+\DoxyCodeLine{740     \}}
+\DoxyCodeLine{741   \textcolor{keywordflow}{else}  \textcolor{comment}{// P represents a matrix }}
+\DoxyCodeLine{742     \{}
+\DoxyCodeLine{743     arma\_debug\_check\_bounds}
+\DoxyCodeLine{744       (}
+\DoxyCodeLine{745       ((row\_offset > 0) \&\& (row\_offset >= n\_rows)) || ((col\_offset > 0) \&\& (col\_offset >= n\_cols)),}
+\DoxyCodeLine{746       \textcolor{stringliteral}{"{}diagmat(): requested diagonal out of bounds"{}}}
+\DoxyCodeLine{747       );}
+\DoxyCodeLine{748     }
+\DoxyCodeLine{749     out.zeros(n\_rows, n\_cols);}
+\DoxyCodeLine{750     }
+\DoxyCodeLine{751     \textcolor{keyword}{const} uword N = (\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::min}})(n\_rows -\/ row\_offset, n\_cols -\/ col\_offset);}
+\DoxyCodeLine{752     }
+\DoxyCodeLine{753     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{754       \{}
+\DoxyCodeLine{755       \textcolor{keyword}{const} uword row = i + row\_offset;}
+\DoxyCodeLine{756       \textcolor{keyword}{const} uword col = i + col\_offset;}
+\DoxyCodeLine{757       }
+\DoxyCodeLine{758       out.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(row,col) = P.at(row,col);}
+\DoxyCodeLine{759       \}}
+\DoxyCodeLine{760     \}}
+\DoxyCodeLine{761   \}}
+\DoxyCodeLine{762 }
+\DoxyCodeLine{763 }
+\DoxyCodeLine{764 }
+
+\end{DoxyCode}

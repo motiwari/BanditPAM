@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['plot_5fbounds',['plot_bounds',['../namespaceplot__bounds.html',1,'']]]
+  ['carma_5fexamples_0',['carma_examples',['../namespacecarma__examples.html',1,'']]]
 ];

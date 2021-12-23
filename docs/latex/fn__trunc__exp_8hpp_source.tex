@@ -1,0 +1,94 @@
+\hypertarget{fn__trunc__exp_8hpp_source}{}\doxysection{fn\+\_\+trunc\+\_\+exp.\+hpp}
+\label{fn__trunc__exp_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_trunc\_exp.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_trunc\_exp.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keyword}{static}}
+\DoxyCodeLine{26 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__real__only}{arma\_real\_only<eT>::result}}}
+\DoxyCodeLine{27 trunc\_exp(\textcolor{keyword}{const} eT x)}
+\DoxyCodeLine{28   \{}
+\DoxyCodeLine{29   \textcolor{keywordflow}{if}(std::numeric\_limits<eT>::is\_iec559 \&\& (x >= \mbox{\hyperlink{classDatum}{Datum<eT>::log\_max}} ))}
+\DoxyCodeLine{30     \{}
+\DoxyCodeLine{31     \textcolor{keywordflow}{return} \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::numeric\_limits<eT>::max}}();}
+\DoxyCodeLine{32     \}}
+\DoxyCodeLine{33   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{34     \{}
+\DoxyCodeLine{35     \textcolor{keywordflow}{return} std::exp(x);}
+\DoxyCodeLine{36     \}}
+\DoxyCodeLine{37   \}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{42 arma\_warn\_unused}
+\DoxyCodeLine{43 \textcolor{keyword}{inline}}
+\DoxyCodeLine{44 \textcolor{keyword}{static}}
+\DoxyCodeLine{45 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__integral__only}{arma\_integral\_only<eT>::result}}}
+\DoxyCodeLine{46 trunc\_exp(\textcolor{keyword}{const} eT x)}
+\DoxyCodeLine{47   \{}
+\DoxyCodeLine{48   \textcolor{keywordflow}{return} eT( trunc\_exp( \textcolor{keywordtype}{double}(x) ) );}
+\DoxyCodeLine{49   \}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{54 arma\_warn\_unused}
+\DoxyCodeLine{55 \textcolor{keyword}{inline}}
+\DoxyCodeLine{56 \textcolor{keyword}{static}}
+\DoxyCodeLine{57 std::complex<T>}
+\DoxyCodeLine{58 trunc\_exp(\textcolor{keyword}{const} std::complex<T>\& x)}
+\DoxyCodeLine{59   \{}
+\DoxyCodeLine{60   \textcolor{keywordflow}{return} std::polar( trunc\_exp( x.real() ), x.imag() );}
+\DoxyCodeLine{61   \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{66 arma\_warn\_unused}
+\DoxyCodeLine{67 arma\_inline}
+\DoxyCodeLine{68 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_trunc\_exp>}} >::result}
+\DoxyCodeLine{69 trunc\_exp(\textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{70   \{}
+\DoxyCodeLine{71   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{72   }
+\DoxyCodeLine{73   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOp}{eOp<T1, eop\_trunc\_exp>}}(\mbox{\hyperlink{structA}{A}});}
+\DoxyCodeLine{74   \}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{79 arma\_warn\_unused}
+\DoxyCodeLine{80 arma\_inline}
+\DoxyCodeLine{81 \textcolor{keyword}{const} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_trunc\_exp>}}}
+\DoxyCodeLine{82 trunc\_exp(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type,T1>}}\& \mbox{\hyperlink{structA}{A}})}
+\DoxyCodeLine{83   \{}
+\DoxyCodeLine{84   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{85   }
+\DoxyCodeLine{86   \textcolor{keywordflow}{return} \mbox{\hyperlink{classeOpCube}{eOpCube<T1, eop\_trunc\_exp>}}(\mbox{\hyperlink{structA}{A}}.get\_ref());}
+\DoxyCodeLine{87   \}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 }
+
+\end{DoxyCode}

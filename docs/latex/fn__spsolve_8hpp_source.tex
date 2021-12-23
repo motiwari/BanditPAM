@@ -1,0 +1,188 @@
+\hypertarget{fn__spsolve_8hpp_source}{}\doxysection{fn\+\_\+spsolve.\+hpp}
+\label{fn__spsolve_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_spsolve.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_spsolve.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{26 \mbox{\hyperlink{group__fn__spsolve_ga30c88fd439aa8500194eac3ff359a1bf}{spsolve\_helper}}}
+\DoxyCodeLine{27   (}
+\DoxyCodeLine{28            \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&     out,}
+\DoxyCodeLine{29   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type, T1>}}\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{30   \textcolor{keyword}{const}   \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& \mbox{\hyperlink{structB}{B}},}
+\DoxyCodeLine{31   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*                          solver,}
+\DoxyCodeLine{32   \textcolor{keyword}{const} \mbox{\hyperlink{structspsolve__opts__base}{spsolve\_opts\_base}}\&             settings,}
+\DoxyCodeLine{33   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{34   )}
+\DoxyCodeLine{35   \{}
+\DoxyCodeLine{36   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{37   arma\_ignore(junk);}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::pod\_type   T;}
+\DoxyCodeLine{40   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keyword}{const} \textcolor{keywordtype}{char} sig = (solver != \textcolor{keyword}{nullptr}) ? solver[0] : \textcolor{keywordtype}{char}(0);}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   arma\_debug\_check( ((sig != \textcolor{charliteral}{'l'}) \&\& (sig != \textcolor{charliteral}{'s'})), \textcolor{stringliteral}{"{}spsolve(): unknown solver"{}} );}
+\DoxyCodeLine{45   }
+\DoxyCodeLine{46   T rcond = T(0);}
+\DoxyCodeLine{47   }
+\DoxyCodeLine{48   \textcolor{keywordtype}{bool} status = \textcolor{keyword}{false};}
+\DoxyCodeLine{49   }
+\DoxyCodeLine{50   \mbox{\hyperlink{structsuperlu__opts}{superlu\_opts}} superlu\_opts\_default;}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \textcolor{comment}{// if(is\_float <T>::value)  \{ superlu\_opts\_default.refine = superlu\_opts::REF\_SINGLE; \}}}
+\DoxyCodeLine{53   \textcolor{comment}{// if(is\_double<T>::value)  \{ superlu\_opts\_default.refine = superlu\_opts::REF\_DOUBLE; \}}}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   \textcolor{keyword}{const} \mbox{\hyperlink{structsuperlu__opts}{superlu\_opts}}\& opts = (settings.id == 1) ? \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const }\mbox{\hyperlink{structsuperlu__opts}{superlu\_opts}}\&\textcolor{keyword}{>}(settings) : superlu\_opts\_default;}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   arma\_debug\_check( ( (opts.pivot\_thresh < \textcolor{keywordtype}{double}(0)) || (opts.pivot\_thresh > \textcolor{keywordtype}{double}(1)) ), \textcolor{stringliteral}{"{}spsolve(): pivot\_thresh must be in the [0,1] interval"{}} );}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   \textcolor{keywordflow}{if}(sig == \textcolor{charliteral}{'s'})  \textcolor{comment}{// SuperLU solver}}
+\DoxyCodeLine{60     \{}
+\DoxyCodeLine{61     \textcolor{keywordflow}{if}( (opts.equilibrate == \textcolor{keyword}{false}) \&\& (opts.refine == superlu\_opts::REF\_NONE) )}
+\DoxyCodeLine{62       \{}
+\DoxyCodeLine{63       status = sp\_auxlib::spsolve\_simple(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), opts);}
+\DoxyCodeLine{64       \}}
+\DoxyCodeLine{65     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{66       \{}
+\DoxyCodeLine{67       status = sp\_auxlib::spsolve\_refine(out, rcond, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), opts);}
+\DoxyCodeLine{68       \}}
+\DoxyCodeLine{69     \}}
+\DoxyCodeLine{70   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{71   \textcolor{keywordflow}{if}(sig == \textcolor{charliteral}{'l'})  \textcolor{comment}{// brutal LAPACK solver}}
+\DoxyCodeLine{72     \{}
+\DoxyCodeLine{73     \textcolor{keywordflow}{if}( (settings.id != 0) \&\& ((opts.symmetric) || (opts.pivot\_thresh != \textcolor{keywordtype}{double}(1))) )}
+\DoxyCodeLine{74       \{}
+\DoxyCodeLine{75       arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}spsolve(): ignoring settings not applicable to LAPACK based solver"{}});}
+\DoxyCodeLine{76       \}}
+\DoxyCodeLine{77     }
+\DoxyCodeLine{78     \mbox{\hyperlink{classMat}{Mat<eT>}} AA;}
+\DoxyCodeLine{79     }
+\DoxyCodeLine{80     \textcolor{keywordtype}{bool} conversion\_ok = \textcolor{keyword}{false};}
+\DoxyCodeLine{81     }
+\DoxyCodeLine{82     \textcolor{keywordflow}{try}}
+\DoxyCodeLine{83       \{}
+\DoxyCodeLine{84       \mbox{\hyperlink{classMat}{Mat<eT>}} tmp(\mbox{\hyperlink{structA}{A}}.get\_ref());  \textcolor{comment}{// conversion from sparse to dense can throw std::bad\_alloc}}
+\DoxyCodeLine{85       }
+\DoxyCodeLine{86       AA.\mbox{\hyperlink{group__Mat_gaff06a75771f96605f7cc4f8c6b3fceb7}{steal\_mem}}(tmp);}
+\DoxyCodeLine{87       }
+\DoxyCodeLine{88       conversion\_ok = \textcolor{keyword}{true};}
+\DoxyCodeLine{89       \}}
+\DoxyCodeLine{90     \textcolor{keywordflow}{catch}(...)}
+\DoxyCodeLine{91       \{}
+\DoxyCodeLine{92       arma\_debug\_warn\_level(1, \textcolor{stringliteral}{"{}spsolve(): not enough memory to use LAPACK based solver"{}});}
+\DoxyCodeLine{93       \}}
+\DoxyCodeLine{94     }
+\DoxyCodeLine{95     \textcolor{keywordflow}{if}(conversion\_ok)}
+\DoxyCodeLine{96       \{}
+\DoxyCodeLine{97       arma\_debug\_check( (AA.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} != AA.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}), \textcolor{stringliteral}{"{}spsolve(): matrix A must be square sized"{}} );}
+\DoxyCodeLine{98       }
+\DoxyCodeLine{99       uword flags = solve\_opts::flag\_none;}
+\DoxyCodeLine{100       }
+\DoxyCodeLine{101       \textcolor{keywordflow}{if}(opts.refine      != superlu\_opts::REF\_NONE)  \{ flags |= solve\_opts::flag\_refine;      \}}
+\DoxyCodeLine{102       \textcolor{keywordflow}{if}(opts.equilibrate == \textcolor{keyword}{true}                  )  \{ flags |= solve\_opts::flag\_equilibrate; \}}
+\DoxyCodeLine{103       \textcolor{keywordflow}{if}(opts.allow\_ugly  == \textcolor{keyword}{true}                  )  \{ flags |= solve\_opts::flag\_allow\_ugly;  \}}
+\DoxyCodeLine{104       }
+\DoxyCodeLine{105       status = glue\_solve\_gen::apply(out, AA, \mbox{\hyperlink{structB}{B}}.get\_ref(), flags);}
+\DoxyCodeLine{106       \}}
+\DoxyCodeLine{107     \}}
+\DoxyCodeLine{108   }
+\DoxyCodeLine{109   }
+\DoxyCodeLine{110   \textcolor{keywordflow}{if}( (status == \textcolor{keyword}{false}) \&\& (rcond > T(0)) )}
+\DoxyCodeLine{111     \{}
+\DoxyCodeLine{112     arma\_debug\_warn\_level(2, \textcolor{stringliteral}{"{}spsolve(): system is singular (rcond: "{}}, rcond, \textcolor{stringliteral}{"{})"{}});}
+\DoxyCodeLine{113     \}}
+\DoxyCodeLine{114   }
+\DoxyCodeLine{115   \textcolor{keywordflow}{if}( (status == \textcolor{keyword}{true}) \&\& (rcond > T(0)) \&\& (rcond < auxlib::epsilon\_lapack(out)) )}
+\DoxyCodeLine{116     \{}
+\DoxyCodeLine{117     arma\_debug\_warn\_level(2, \textcolor{stringliteral}{"{}solve(): solution computed, but system is singular to working precision (rcond: "{}}, rcond, \textcolor{stringliteral}{"{})"{}});}
+\DoxyCodeLine{118     \}}
+\DoxyCodeLine{119   }
+\DoxyCodeLine{120   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{121   \}}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{126 \textcolor{keyword}{inline}}
+\DoxyCodeLine{127 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{128 spsolve}
+\DoxyCodeLine{129   (}
+\DoxyCodeLine{130            \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&     out,}
+\DoxyCodeLine{131   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type, T1>}}\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{132   \textcolor{keyword}{const}   \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& \mbox{\hyperlink{structB}{B}},}
+\DoxyCodeLine{133   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*                          solver   = \textcolor{stringliteral}{"{}superlu"{}},}
+\DoxyCodeLine{134   \textcolor{keyword}{const} \mbox{\hyperlink{structspsolve__opts__base}{spsolve\_opts\_base}}\&             settings = \mbox{\hyperlink{structspsolve__opts__none}{spsolve\_opts\_none}}(),}
+\DoxyCodeLine{135   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{136   )}
+\DoxyCodeLine{137   \{}
+\DoxyCodeLine{138   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{139   arma\_ignore(junk);}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__fn__spsolve_ga30c88fd439aa8500194eac3ff359a1bf}{spsolve\_helper}}(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), solver, settings);}
+\DoxyCodeLine{142   }
+\DoxyCodeLine{143   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{144     \{}
+\DoxyCodeLine{145     out.soft\_reset();}
+\DoxyCodeLine{146     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}spsolve(): solution not found"{}});}
+\DoxyCodeLine{147     \}}
+\DoxyCodeLine{148   }
+\DoxyCodeLine{149   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{150   \}}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153 }
+\DoxyCodeLine{154 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{155 arma\_warn\_unused}
+\DoxyCodeLine{156 \textcolor{keyword}{inline}}
+\DoxyCodeLine{157 \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}}
+\DoxyCodeLine{158 spsolve}
+\DoxyCodeLine{159   (}
+\DoxyCodeLine{160   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<typename T1::elem\_type, T1>}}\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{161   \textcolor{keyword}{const}   \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type, T2>}}\& \mbox{\hyperlink{structB}{B}},}
+\DoxyCodeLine{162   \textcolor{keyword}{const} \textcolor{keywordtype}{char}*                          solver   = \textcolor{stringliteral}{"{}superlu"{}},}
+\DoxyCodeLine{163   \textcolor{keyword}{const} \mbox{\hyperlink{structspsolve__opts__base}{spsolve\_opts\_base}}\&             settings = \mbox{\hyperlink{structspsolve__opts__none}{spsolve\_opts\_none}}(),}
+\DoxyCodeLine{164   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__blas__type__only}{arma\_blas\_type\_only<typename T1::elem\_type>::result}}* junk = \textcolor{keyword}{nullptr}}
+\DoxyCodeLine{165   )}
+\DoxyCodeLine{166   \{}
+\DoxyCodeLine{167   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{168   arma\_ignore(junk);}
+\DoxyCodeLine{169   }
+\DoxyCodeLine{170   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT;}
+\DoxyCodeLine{171   }
+\DoxyCodeLine{172   \mbox{\hyperlink{classMat}{Mat<eT>}} out;}
+\DoxyCodeLine{173   }
+\DoxyCodeLine{174   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = \mbox{\hyperlink{group__fn__spsolve_ga30c88fd439aa8500194eac3ff359a1bf}{spsolve\_helper}}(out, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), solver, settings);}
+\DoxyCodeLine{175   }
+\DoxyCodeLine{176   \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})}
+\DoxyCodeLine{177     \{}
+\DoxyCodeLine{178     out.soft\_reset();}
+\DoxyCodeLine{179     arma\_stop\_runtime\_error(\textcolor{stringliteral}{"{}spsolve(): solution not found"{}});}
+\DoxyCodeLine{180     \}}
+\DoxyCodeLine{181   }
+\DoxyCodeLine{182   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{183   \}}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 }
+
+\end{DoxyCode}

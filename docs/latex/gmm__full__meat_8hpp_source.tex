@@ -1,0 +1,2733 @@
+\hypertarget{gmm__full__meat_8hpp_source}{}\doxysection{gmm\+\_\+full\+\_\+meat.\+hpp}
+\label{gmm__full__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/gmm\_full\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/gmm\_full\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }gmm\_priv}
+\DoxyCodeLine{22 \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{26 \textcolor{keyword}{inline}}
+\DoxyCodeLine{27 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::\string~gmm\_full}}()}
+\DoxyCodeLine{28   \{}
+\DoxyCodeLine{29   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{30   }
+\DoxyCodeLine{31   arma\_type\_check(( (\mbox{\hyperlink{structis__same__type}{is\_same\_type<eT,float>::value}} == \textcolor{keyword}{false}) \&\& (\mbox{\hyperlink{structis__same__type}{is\_same\_type<eT,double>::value}} == \textcolor{keyword}{false}) ));}
+\DoxyCodeLine{32   \}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{37 \textcolor{keyword}{inline}}
+\DoxyCodeLine{38 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::gmm\_full}}()}
+\DoxyCodeLine{39   \{}
+\DoxyCodeLine{40   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{41   \}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{46 \textcolor{keyword}{inline}}
+\DoxyCodeLine{47 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::gmm\_full}}(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>}}\& x)}
+\DoxyCodeLine{48   \{}
+\DoxyCodeLine{49   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{50   }
+\DoxyCodeLine{51   init(x);}
+\DoxyCodeLine{52   \}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{57 \textcolor{keyword}{inline}}
+\DoxyCodeLine{58 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>}}\&}
+\DoxyCodeLine{59 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>}}\& x)}
+\DoxyCodeLine{60   \{}
+\DoxyCodeLine{61   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   init(x);}
+\DoxyCodeLine{64   }
+\DoxyCodeLine{65   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{66   \}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{71 \textcolor{keyword}{inline}}
+\DoxyCodeLine{72 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::gmm\_full}}(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__diag}{gmm\_diag<eT>}}\& x)}
+\DoxyCodeLine{73   \{}
+\DoxyCodeLine{74   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{75   }
+\DoxyCodeLine{76   init(x);}
+\DoxyCodeLine{77   \}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{82 \textcolor{keyword}{inline}}
+\DoxyCodeLine{83 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>}}\&}
+\DoxyCodeLine{84 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__diag}{gmm\_diag<eT>}}\& x)}
+\DoxyCodeLine{85   \{}
+\DoxyCodeLine{86   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{87   }
+\DoxyCodeLine{88   init(x);}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{91   \}}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{96 \textcolor{keyword}{inline}}
+\DoxyCodeLine{97 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::gmm\_full}}(\textcolor{keyword}{const} uword in\_n\_dims, \textcolor{keyword}{const} uword in\_n\_gaus)}
+\DoxyCodeLine{98   \{}
+\DoxyCodeLine{99   arma\_extra\_debug\_sigprint\_this(\textcolor{keyword}{this});}
+\DoxyCodeLine{100   }
+\DoxyCodeLine{101   init(in\_n\_dims, in\_n\_gaus);}
+\DoxyCodeLine{102   \}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{107 \textcolor{keyword}{inline}}
+\DoxyCodeLine{108 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{109 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::reset}}()}
+\DoxyCodeLine{110   \{}
+\DoxyCodeLine{111   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{112   }
+\DoxyCodeLine{113   init(0, 0);}
+\DoxyCodeLine{114   \}}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{119 \textcolor{keyword}{inline}}
+\DoxyCodeLine{120 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{121 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::reset}}(\textcolor{keyword}{const} uword in\_n\_dims, \textcolor{keyword}{const} uword in\_n\_gaus)}
+\DoxyCodeLine{122   \{}
+\DoxyCodeLine{123   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{124   }
+\DoxyCodeLine{125   init(in\_n\_dims, in\_n\_gaus);}
+\DoxyCodeLine{126   \}}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{131 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2, \textcolor{keyword}{typename} T3>}
+\DoxyCodeLine{132 \textcolor{keyword}{inline}}
+\DoxyCodeLine{133 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{134 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::set\_params}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& in\_means\_expr, \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T2>}}\& in\_fcovs\_expr, \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T3>}}\& in\_hefts\_expr)}
+\DoxyCodeLine{135   \{}
+\DoxyCodeLine{136   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap     <T1>}} tmp1(in\_means\_expr.get\_ref());}
+\DoxyCodeLine{139   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<T2>}} tmp2(in\_fcovs\_expr.get\_ref());}
+\DoxyCodeLine{140   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap     <T3>}} tmp3(in\_hefts\_expr.get\_ref());}
+\DoxyCodeLine{141   }
+\DoxyCodeLine{142   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat <eT>}}\& in\_means = tmp1.M;}
+\DoxyCodeLine{143   \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& in\_fcovs = tmp2.M;}
+\DoxyCodeLine{144   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat <eT>}}\& in\_hefts = tmp3.M;}
+\DoxyCodeLine{145   }
+\DoxyCodeLine{146   arma\_debug\_check}
+\DoxyCodeLine{147     (}
+\DoxyCodeLine{148     (in\_means.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}} != in\_fcovs.\mbox{\hyperlink{classCube_a9b6ae66090ee092173190a85c0c3e5dd}{n\_slices}}) || (in\_means.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} != in\_fcovs.\mbox{\hyperlink{classCube_af2375467da364bb326010c46050fab2a}{n\_rows}}) || (in\_fcovs.\mbox{\hyperlink{classCube_af2375467da364bb326010c46050fab2a}{n\_rows}} != in\_fcovs.\mbox{\hyperlink{classCube_a59704a57c131771a28faa0ffc71004a9}{n\_cols}}) || (in\_hefts.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}} != in\_means.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}}) || (in\_hefts.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} != 1),}
+\DoxyCodeLine{149     \textcolor{stringliteral}{"{}gmm\_full::set\_params(): given parameters have inconsistent and/or wrong sizes"{}}}
+\DoxyCodeLine{150     );}
+\DoxyCodeLine{151   }
+\DoxyCodeLine{152   arma\_debug\_check( (in\_means.\mbox{\hyperlink{group__Mat_gad78d4808815d1521085b8eeee1c2aab4}{is\_finite}}() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}gmm\_full::set\_params(): given means have non-\/finite values"{}} );}
+\DoxyCodeLine{153   arma\_debug\_check( (in\_fcovs.\mbox{\hyperlink{group__Cube_ga66fb4cd5b9dcb5173054bb4b42825c67}{is\_finite}}() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}gmm\_full::set\_params(): given fcovs have non-\/finite values"{}} );}
+\DoxyCodeLine{154   arma\_debug\_check( (in\_hefts.\mbox{\hyperlink{group__Mat_gad78d4808815d1521085b8eeee1c2aab4}{is\_finite}}() == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}gmm\_full::set\_params(): given hefts have non-\/finite values"{}} );}
+\DoxyCodeLine{155   }
+\DoxyCodeLine{156   \textcolor{keywordflow}{for}(uword g=0; g < in\_fcovs.\mbox{\hyperlink{classCube_a9b6ae66090ee092173190a85c0c3e5dd}{n\_slices}}; ++g)}
+\DoxyCodeLine{157     \{}
+\DoxyCodeLine{158     arma\_debug\_check( (\mbox{\hyperlink{group__fn__any_gac40fe1298ebcc7b720fa3ea03f410b06}{any}}(\mbox{\hyperlink{group__fn__diagvec_ga473c403fd440af30a7668c1ac9c5b6cd}{diagvec}}(in\_fcovs.\mbox{\hyperlink{group__Cube_gaa096114dbf2eefcaed52f92da5064697}{slice}}(g)) <= eT(0))), \textcolor{stringliteral}{"{}gmm\_full::set\_params(): given fcovs have negative or zero values on diagonals"{}} );}
+\DoxyCodeLine{159     \}}
+\DoxyCodeLine{160   }
+\DoxyCodeLine{161   arma\_debug\_check( (\mbox{\hyperlink{group__fn__any_gac40fe1298ebcc7b720fa3ea03f410b06}{any}}(vectorise(in\_hefts) <  eT(0))), \textcolor{stringliteral}{"{}gmm\_full::set\_params(): given hefts have negative values"{}} );}
+\DoxyCodeLine{162   }
+\DoxyCodeLine{163   \textcolor{keyword}{const} eT s = \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(in\_hefts);}
+\DoxyCodeLine{164   }
+\DoxyCodeLine{165   arma\_debug\_check( ((s < (eT(1) -\/ eT(0.001))) || (s > (eT(1) + eT(0.001)))), \textcolor{stringliteral}{"{}gmm\_full::set\_params(): sum of given hefts is not 1"{}} );}
+\DoxyCodeLine{166   }
+\DoxyCodeLine{167   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means) = in\_means;}
+\DoxyCodeLine{168   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(fcovs) = in\_fcovs;}
+\DoxyCodeLine{169   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts) = in\_hefts;}
+\DoxyCodeLine{170   }
+\DoxyCodeLine{171   init\_constants();}
+\DoxyCodeLine{172   \}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{177 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{178 \textcolor{keyword}{inline}}
+\DoxyCodeLine{179 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{180 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::set\_means}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& in\_means\_expr)}
+\DoxyCodeLine{181   \{}
+\DoxyCodeLine{182   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{183   }
+\DoxyCodeLine{184   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}} tmp(in\_means\_expr.get\_ref());}
+\DoxyCodeLine{185   }
+\DoxyCodeLine{186   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& in\_means = tmp.M;}
+\DoxyCodeLine{187   }
+\DoxyCodeLine{188   arma\_debug\_check( (arma::size(in\_means) != arma::size(means)), \textcolor{stringliteral}{"{}gmm\_full::set\_means(): given means have incompatible size"{}} );}
+\DoxyCodeLine{189   arma\_debug\_check( (in\_means.\mbox{\hyperlink{group__Mat_gad78d4808815d1521085b8eeee1c2aab4}{is\_finite}}() == \textcolor{keyword}{false}),             \textcolor{stringliteral}{"{}gmm\_full::set\_means(): given means have non-\/finite values"{}} );}
+\DoxyCodeLine{190   }
+\DoxyCodeLine{191   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means) = in\_means;}
+\DoxyCodeLine{192   \}}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{197 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{198 \textcolor{keyword}{inline}}
+\DoxyCodeLine{199 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{200 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::set\_fcovs}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<eT,T1>}}\& in\_fcovs\_expr)}
+\DoxyCodeLine{201   \{}
+\DoxyCodeLine{202   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{203   }
+\DoxyCodeLine{204   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap__cube}{unwrap\_cube<T1>}} tmp(in\_fcovs\_expr.get\_ref());}
+\DoxyCodeLine{205   }
+\DoxyCodeLine{206   \textcolor{keyword}{const} \mbox{\hyperlink{classCube}{Cube<eT>}}\& in\_fcovs = tmp.M;}
+\DoxyCodeLine{207   }
+\DoxyCodeLine{208   arma\_debug\_check( (arma::size(in\_fcovs) != arma::size(fcovs)), \textcolor{stringliteral}{"{}gmm\_full::set\_fcovs(): given fcovs have incompatible size"{}} );}
+\DoxyCodeLine{209   arma\_debug\_check( (in\_fcovs.\mbox{\hyperlink{group__Cube_ga66fb4cd5b9dcb5173054bb4b42825c67}{is\_finite}}() == \textcolor{keyword}{false}),             \textcolor{stringliteral}{"{}gmm\_full::set\_fcovs(): given fcovs have non-\/finite values"{}} );}
+\DoxyCodeLine{210   }
+\DoxyCodeLine{211   \textcolor{keywordflow}{for}(uword i=0; i < in\_fcovs.\mbox{\hyperlink{classCube_a9b6ae66090ee092173190a85c0c3e5dd}{n\_slices}}; ++i)}
+\DoxyCodeLine{212     \{}
+\DoxyCodeLine{213     arma\_debug\_check( (\mbox{\hyperlink{group__fn__any_gac40fe1298ebcc7b720fa3ea03f410b06}{any}}(\mbox{\hyperlink{group__fn__diagvec_ga473c403fd440af30a7668c1ac9c5b6cd}{diagvec}}(in\_fcovs.\mbox{\hyperlink{group__Cube_gaa096114dbf2eefcaed52f92da5064697}{slice}}(i)) <= eT(0))), \textcolor{stringliteral}{"{}gmm\_full::set\_fcovs(): given fcovs have negative or zero values on diagonals"{}} );}
+\DoxyCodeLine{214     \}}
+\DoxyCodeLine{215   }
+\DoxyCodeLine{216   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(fcovs) = in\_fcovs;}
+\DoxyCodeLine{217   }
+\DoxyCodeLine{218   init\_constants();}
+\DoxyCodeLine{219   \}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{224 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{225 \textcolor{keyword}{inline}}
+\DoxyCodeLine{226 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{227 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::set\_hefts}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& in\_hefts\_expr)}
+\DoxyCodeLine{228   \{}
+\DoxyCodeLine{229   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{230   }
+\DoxyCodeLine{231   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}} tmp(in\_hefts\_expr.get\_ref());}
+\DoxyCodeLine{232   }
+\DoxyCodeLine{233   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& in\_hefts = tmp.M;}
+\DoxyCodeLine{234   }
+\DoxyCodeLine{235   arma\_debug\_check( (arma::size(in\_hefts) != arma::size(hefts)), \textcolor{stringliteral}{"{}gmm\_full::set\_hefts(): given hefts have incompatible size"{}} );}
+\DoxyCodeLine{236   arma\_debug\_check( (in\_hefts.\mbox{\hyperlink{group__Mat_gad78d4808815d1521085b8eeee1c2aab4}{is\_finite}}() == \textcolor{keyword}{false}),             \textcolor{stringliteral}{"{}gmm\_full::set\_hefts(): given hefts have non-\/finite values"{}} );}
+\DoxyCodeLine{237   arma\_debug\_check( (\mbox{\hyperlink{group__fn__any_gac40fe1298ebcc7b720fa3ea03f410b06}{any}}(vectorise(in\_hefts) <  eT(0))),         \textcolor{stringliteral}{"{}gmm\_full::set\_hefts(): given hefts have negative values"{}}   );}
+\DoxyCodeLine{238   }
+\DoxyCodeLine{239   \textcolor{keyword}{const} eT s = \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(in\_hefts);}
+\DoxyCodeLine{240   }
+\DoxyCodeLine{241   arma\_debug\_check( ((s < (eT(1) -\/ eT(0.001))) || (s > (eT(1) + eT(0.001)))), \textcolor{stringliteral}{"{}gmm\_full::set\_hefts(): sum of given hefts is not 1"{}} );}
+\DoxyCodeLine{242   }
+\DoxyCodeLine{243   \textcolor{comment}{// make sure all hefts are positive and non-\/zero}}
+\DoxyCodeLine{244   }
+\DoxyCodeLine{245   \textcolor{keyword}{const} eT* in\_hefts\_mem = in\_hefts.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{246         eT*    hefts\_mem = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts).memptr();}
+\DoxyCodeLine{247   }
+\DoxyCodeLine{248   \textcolor{keywordflow}{for}(uword i=0; i < hefts.n\_elem; ++i)}
+\DoxyCodeLine{249     \{}
+\DoxyCodeLine{250     hefts\_mem[i] = (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})( in\_hefts\_mem[i], \mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::numeric\_limits<eT>::min}}() );}
+\DoxyCodeLine{251     \}}
+\DoxyCodeLine{252   }
+\DoxyCodeLine{253   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts) /= \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(hefts);}
+\DoxyCodeLine{254   }
+\DoxyCodeLine{255   log\_hefts = log(hefts);}
+\DoxyCodeLine{256   \}}
+\DoxyCodeLine{257 }
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{261 \textcolor{keyword}{inline}}
+\DoxyCodeLine{262 uword}
+\DoxyCodeLine{263 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::n\_dims}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{264 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{265   \textcolor{keywordflow}{return} means.n\_rows;}
+\DoxyCodeLine{266   \}}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268 }
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{271 \textcolor{keyword}{inline}}
+\DoxyCodeLine{272 uword}
+\DoxyCodeLine{273 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::n\_gaus}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{274 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{275   \textcolor{keywordflow}{return} means.n\_cols;}
+\DoxyCodeLine{276   \}}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{278 }
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{281 \textcolor{keyword}{inline}}
+\DoxyCodeLine{282 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{283 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::load}}(\textcolor{keyword}{const} std::string \mbox{\hyperlink{structname}{name}})}
+\DoxyCodeLine{284   \{}
+\DoxyCodeLine{285   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{286   }
+\DoxyCodeLine{287   \mbox{\hyperlink{classfield}{field< Mat<eT>}} > storage;}
+\DoxyCodeLine{288   }
+\DoxyCodeLine{289   \textcolor{keywordtype}{bool} status = storage.load(\mbox{\hyperlink{structname}{name}}, \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}});}
+\DoxyCodeLine{290   }
+\DoxyCodeLine{291   \textcolor{keywordflow}{if}( (status == \textcolor{keyword}{false}) || (storage.\mbox{\hyperlink{classfield_ab81d4115f84d73a4118dedf0194b3e3c}{n\_elem}} < 2) )}
+\DoxyCodeLine{292     \{}
+\DoxyCodeLine{293     reset();}
+\DoxyCodeLine{294     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}gmm\_full::load(): problem with loading or incompatible format"{}});}
+\DoxyCodeLine{295     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{296     \}}
+\DoxyCodeLine{297   }
+\DoxyCodeLine{298   uword count = 0;}
+\DoxyCodeLine{299   }
+\DoxyCodeLine{300   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& storage\_means = storage(count);  ++count;}
+\DoxyCodeLine{301   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& storage\_hefts = storage(count);  ++count;}
+\DoxyCodeLine{302   }
+\DoxyCodeLine{303   \textcolor{keyword}{const} uword N\_dims = storage\_means.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{304   \textcolor{keyword}{const} uword N\_gaus = storage\_means.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{305   }
+\DoxyCodeLine{306   \textcolor{keywordflow}{if}( (storage.\mbox{\hyperlink{classfield_ab81d4115f84d73a4118dedf0194b3e3c}{n\_elem}} != (N\_gaus + 2)) || (storage\_hefts.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} != 1) || (storage\_hefts.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}} != N\_gaus) )}
+\DoxyCodeLine{307     \{}
+\DoxyCodeLine{308     reset();}
+\DoxyCodeLine{309     arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}gmm\_full::load(): incompatible format"{}});}
+\DoxyCodeLine{310     \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{311     \}}
+\DoxyCodeLine{312   }
+\DoxyCodeLine{313   reset(N\_dims, N\_gaus);}
+\DoxyCodeLine{314   }
+\DoxyCodeLine{315   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means) = storage\_means;}
+\DoxyCodeLine{316   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts) = storage\_hefts;}
+\DoxyCodeLine{317   }
+\DoxyCodeLine{318   \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{319     \{}
+\DoxyCodeLine{320     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& storage\_fcov = storage(count);  ++count;}
+\DoxyCodeLine{321     }
+\DoxyCodeLine{322     \textcolor{keywordflow}{if}( (storage\_fcov.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}} != N\_dims) || (storage\_fcov.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}} != N\_dims) )}
+\DoxyCodeLine{323       \{}
+\DoxyCodeLine{324       reset();}
+\DoxyCodeLine{325       arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}gmm\_full::load(): incompatible format"{}});}
+\DoxyCodeLine{326       \textcolor{keywordflow}{return} \textcolor{keyword}{false};}
+\DoxyCodeLine{327       \}}
+\DoxyCodeLine{328     }
+\DoxyCodeLine{329     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(fcovs).slice(g) = storage\_fcov;}
+\DoxyCodeLine{330     \}}
+\DoxyCodeLine{331   }
+\DoxyCodeLine{332   init\_constants();}
+\DoxyCodeLine{333   }
+\DoxyCodeLine{334   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{335   \}}
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337 }
+\DoxyCodeLine{338 }
+\DoxyCodeLine{339 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{340 \textcolor{keyword}{inline}}
+\DoxyCodeLine{341 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{342 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::save}}(\textcolor{keyword}{const} std::string \mbox{\hyperlink{structname}{name}})\textcolor{keyword}{ const}}
+\DoxyCodeLine{343 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{344   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{345   }
+\DoxyCodeLine{346   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{347   }
+\DoxyCodeLine{348   \mbox{\hyperlink{classfield}{field< Mat<eT>}} > storage(2 + N\_gaus);}
+\DoxyCodeLine{349   }
+\DoxyCodeLine{350   uword count = 0;}
+\DoxyCodeLine{351   }
+\DoxyCodeLine{352   storage(count) = means;  ++count;}
+\DoxyCodeLine{353   storage(count) = hefts;  ++count;}
+\DoxyCodeLine{354   }
+\DoxyCodeLine{355   \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{356     \{}
+\DoxyCodeLine{357     storage(count) = fcovs.\mbox{\hyperlink{group__field_ga9cf318c64ee92633227605e788c0ede1}{slice}}(g);  ++count;}
+\DoxyCodeLine{358     \}}
+\DoxyCodeLine{359   }
+\DoxyCodeLine{360   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = storage.save(\mbox{\hyperlink{structname}{name}}, \mbox{\hyperlink{group__diskio_gga0de594dadb1bc493ecc618520a2d260eab4ea3228fa70b58ac40bc995f57431b9}{arma\_binary}});}
+\DoxyCodeLine{361   }
+\DoxyCodeLine{362   \textcolor{keywordflow}{return} status;}
+\DoxyCodeLine{363   \}}
+\DoxyCodeLine{364 }
+\DoxyCodeLine{365 }
+\DoxyCodeLine{366 }
+\DoxyCodeLine{367 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{368 \textcolor{keyword}{inline}}
+\DoxyCodeLine{369 \mbox{\hyperlink{classCol}{Col<eT>}}}
+\DoxyCodeLine{370 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::generate}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{371 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{372   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{373   }
+\DoxyCodeLine{374   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{375   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{376   }
+\DoxyCodeLine{377   \mbox{\hyperlink{classCol}{Col<eT>}} out( (N\_gaus > 0) ? N\_dims : uword(0), \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}() );}
+\DoxyCodeLine{378   \mbox{\hyperlink{classCol}{Col<eT>}} tmp( (N\_gaus > 0) ? N\_dims : uword(0), fill::randn              );}
+\DoxyCodeLine{379   }
+\DoxyCodeLine{380   \textcolor{keywordflow}{if}(N\_gaus > 0)}
+\DoxyCodeLine{381     \{}
+\DoxyCodeLine{382     \textcolor{keyword}{const} \textcolor{keywordtype}{double} val = randu<double>();}
+\DoxyCodeLine{383     }
+\DoxyCodeLine{384     \textcolor{keywordtype}{double} csum    = double(0);}
+\DoxyCodeLine{385     uword  gaus\_id = 0;}
+\DoxyCodeLine{386     }
+\DoxyCodeLine{387     \textcolor{keywordflow}{for}(uword j=0; j < N\_gaus; ++j)}
+\DoxyCodeLine{388       \{}
+\DoxyCodeLine{389       csum += hefts[j];}
+\DoxyCodeLine{390       }
+\DoxyCodeLine{391       \textcolor{keywordflow}{if}(val <= csum)  \{ gaus\_id = j; \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{392       \}}
+\DoxyCodeLine{393     }
+\DoxyCodeLine{394     out  = chol\_fcovs.slice(gaus\_id) * tmp;}
+\DoxyCodeLine{395     out += means.col(gaus\_id);}
+\DoxyCodeLine{396     \}}
+\DoxyCodeLine{397   }
+\DoxyCodeLine{398   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{399   \}}
+\DoxyCodeLine{400 }
+\DoxyCodeLine{401 }
+\DoxyCodeLine{402 }
+\DoxyCodeLine{403 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{404 \textcolor{keyword}{inline}}
+\DoxyCodeLine{405 \mbox{\hyperlink{classMat}{Mat<eT>}}}
+\DoxyCodeLine{406 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::generate}}(\textcolor{keyword}{const} uword N\_vec)\textcolor{keyword}{ const}}
+\DoxyCodeLine{407 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{408   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{409   }
+\DoxyCodeLine{410   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{411   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{412   }
+\DoxyCodeLine{413   \mbox{\hyperlink{classMat}{Mat<eT>}} out( ( (N\_gaus > 0) ? N\_dims : uword(0) ), N\_vec, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}() );}
+\DoxyCodeLine{414   \mbox{\hyperlink{classMat}{Mat<eT>}} tmp( ( (N\_gaus > 0) ? N\_dims : uword(0) ), N\_vec, fill::randn              );}
+\DoxyCodeLine{415   }
+\DoxyCodeLine{416   \textcolor{keywordflow}{if}(N\_gaus > 0)}
+\DoxyCodeLine{417     \{}
+\DoxyCodeLine{418     \textcolor{keyword}{const} eT* hefts\_mem = hefts.memptr();}
+\DoxyCodeLine{419     }
+\DoxyCodeLine{420     \textcolor{keywordflow}{for}(uword i=0; i < N\_vec; ++i)}
+\DoxyCodeLine{421       \{}
+\DoxyCodeLine{422       \textcolor{keyword}{const} \textcolor{keywordtype}{double} val = randu<double>();}
+\DoxyCodeLine{423       }
+\DoxyCodeLine{424       \textcolor{keywordtype}{double} csum    = double(0);}
+\DoxyCodeLine{425       uword  gaus\_id = 0;}
+\DoxyCodeLine{426       }
+\DoxyCodeLine{427       \textcolor{keywordflow}{for}(uword j=0; j < N\_gaus; ++j)}
+\DoxyCodeLine{428         \{}
+\DoxyCodeLine{429         csum += hefts\_mem[j];}
+\DoxyCodeLine{430         }
+\DoxyCodeLine{431         \textcolor{keywordflow}{if}(val <= csum)  \{ gaus\_id = j; \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{432         \}}
+\DoxyCodeLine{433       }
+\DoxyCodeLine{434       \mbox{\hyperlink{classCol}{Col<eT>}} out\_vec(out.colptr(i), N\_dims, \textcolor{keyword}{false}, \textcolor{keyword}{true});}
+\DoxyCodeLine{435       \mbox{\hyperlink{classCol}{Col<eT>}} tmp\_vec(tmp.colptr(i), N\_dims, \textcolor{keyword}{false}, \textcolor{keyword}{true});}
+\DoxyCodeLine{436       }
+\DoxyCodeLine{437       out\_vec  = chol\_fcovs.slice(gaus\_id) * tmp\_vec;}
+\DoxyCodeLine{438       out\_vec += means.col(gaus\_id);}
+\DoxyCodeLine{439       \}}
+\DoxyCodeLine{440     \}}
+\DoxyCodeLine{441   }
+\DoxyCodeLine{442   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{443   \}}
+\DoxyCodeLine{444 }
+\DoxyCodeLine{445 }
+\DoxyCodeLine{446 }
+\DoxyCodeLine{447 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{448 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{449 \textcolor{keyword}{inline}}
+\DoxyCodeLine{450 eT}
+\DoxyCodeLine{451 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::log\_p}}(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} gmm\_empty\_arg\& junk1, \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{true}))>::result* junk2)\textcolor{keyword}{ const}}
+\DoxyCodeLine{452 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{453   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{454   arma\_ignore(junk1);}
+\DoxyCodeLine{455   arma\_ignore(junk2);}
+\DoxyCodeLine{456   }
+\DoxyCodeLine{457   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{458   }
+\DoxyCodeLine{459   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} U(expr);}
+\DoxyCodeLine{460   }
+\DoxyCodeLine{461   arma\_debug\_check( (U.M.n\_rows != N\_dims), \textcolor{stringliteral}{"{}gmm\_full::log\_p(): incompatible dimensions"{}} );}
+\DoxyCodeLine{462   }
+\DoxyCodeLine{463   \textcolor{keywordflow}{return} internal\_scalar\_log\_p( U.M.memptr() );}
+\DoxyCodeLine{464   \}}
+\DoxyCodeLine{465 }
+\DoxyCodeLine{466 }
+\DoxyCodeLine{467 }
+\DoxyCodeLine{468 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{469 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{470 \textcolor{keyword}{inline}}
+\DoxyCodeLine{471 eT}
+\DoxyCodeLine{472 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::log\_p}}(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} uword gaus\_id, \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{true}))>::result* junk2)\textcolor{keyword}{ const}}
+\DoxyCodeLine{473 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{474   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{475   arma\_ignore(junk2);}
+\DoxyCodeLine{476   }
+\DoxyCodeLine{477   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{478   }
+\DoxyCodeLine{479   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} U(expr);}
+\DoxyCodeLine{480   }
+\DoxyCodeLine{481   arma\_debug\_check( (U.M.n\_rows != N\_dims),    \textcolor{stringliteral}{"{}gmm\_full::log\_p(): incompatible dimensions"{}}            );}
+\DoxyCodeLine{482   arma\_debug\_check( (gaus\_id >= means.n\_cols), \textcolor{stringliteral}{"{}gmm\_full::log\_p(): specified gaussian is out of range"{}} );}
+\DoxyCodeLine{483   }
+\DoxyCodeLine{484   \textcolor{keywordflow}{return} internal\_scalar\_log\_p( U.M.memptr(), gaus\_id );}
+\DoxyCodeLine{485   \}}
+\DoxyCodeLine{486 }
+\DoxyCodeLine{487 }
+\DoxyCodeLine{488 }
+\DoxyCodeLine{489 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{490 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{491 \textcolor{keyword}{inline}}
+\DoxyCodeLine{492 \mbox{\hyperlink{classRow}{Row<eT>}}}
+\DoxyCodeLine{493 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::log\_p}}(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} gmm\_empty\_arg\& junk1, \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{false}))>::result* junk2)\textcolor{keyword}{ const}}
+\DoxyCodeLine{494 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{495   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{496   arma\_ignore(junk1);}
+\DoxyCodeLine{497   arma\_ignore(junk2);}
+\DoxyCodeLine{498   }
+\DoxyCodeLine{499   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp(expr);}
+\DoxyCodeLine{500   }
+\DoxyCodeLine{501   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp.M;}
+\DoxyCodeLine{502   }
+\DoxyCodeLine{503   \textcolor{keywordflow}{return} internal\_vec\_log\_p(X);}
+\DoxyCodeLine{504   \}}
+\DoxyCodeLine{505 }
+\DoxyCodeLine{506 }
+\DoxyCodeLine{507 }
+\DoxyCodeLine{508 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{509 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{510 \textcolor{keyword}{inline}}
+\DoxyCodeLine{511 \mbox{\hyperlink{classRow}{Row<eT>}}}
+\DoxyCodeLine{512 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::log\_p}}(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} uword gaus\_id, \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{false}))>::result* junk2)\textcolor{keyword}{ const}}
+\DoxyCodeLine{513 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{514   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{515   arma\_ignore(junk2);}
+\DoxyCodeLine{516   }
+\DoxyCodeLine{517   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp(expr);}
+\DoxyCodeLine{518   }
+\DoxyCodeLine{519   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp.M;}
+\DoxyCodeLine{520   }
+\DoxyCodeLine{521   \textcolor{keywordflow}{return} internal\_vec\_log\_p(X, gaus\_id);}
+\DoxyCodeLine{522   \}}
+\DoxyCodeLine{523 }
+\DoxyCodeLine{524 }
+\DoxyCodeLine{525 }
+\DoxyCodeLine{526 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{527 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{528 \textcolor{keyword}{inline}}
+\DoxyCodeLine{529 eT}
+\DoxyCodeLine{530 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::sum\_log\_p}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr)\textcolor{keyword}{ const}}
+\DoxyCodeLine{531 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{532   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{533   }
+\DoxyCodeLine{534   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp(expr.get\_ref());}
+\DoxyCodeLine{535   }
+\DoxyCodeLine{536   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp.M;}
+\DoxyCodeLine{537   }
+\DoxyCodeLine{538   \textcolor{keywordflow}{return} internal\_sum\_log\_p(X);}
+\DoxyCodeLine{539   \}}
+\DoxyCodeLine{540 }
+\DoxyCodeLine{541 }
+\DoxyCodeLine{542 }
+\DoxyCodeLine{543 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{544 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{545 \textcolor{keyword}{inline}}
+\DoxyCodeLine{546 eT}
+\DoxyCodeLine{547 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::sum\_log\_p}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr, \textcolor{keyword}{const} uword gaus\_id)\textcolor{keyword}{ const}}
+\DoxyCodeLine{548 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{549   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{550   }
+\DoxyCodeLine{551   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp(expr.get\_ref());}
+\DoxyCodeLine{552   }
+\DoxyCodeLine{553   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp.M;}
+\DoxyCodeLine{554   }
+\DoxyCodeLine{555   \textcolor{keywordflow}{return} internal\_sum\_log\_p(X, gaus\_id);}
+\DoxyCodeLine{556   \}}
+\DoxyCodeLine{557 }
+\DoxyCodeLine{558 }
+\DoxyCodeLine{559 }
+\DoxyCodeLine{560 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{561 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{562 \textcolor{keyword}{inline}}
+\DoxyCodeLine{563 eT}
+\DoxyCodeLine{564 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::avg\_log\_p}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr)\textcolor{keyword}{ const}}
+\DoxyCodeLine{565 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{566   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{567   }
+\DoxyCodeLine{568   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp(expr.get\_ref());}
+\DoxyCodeLine{569   }
+\DoxyCodeLine{570   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp.M;}
+\DoxyCodeLine{571   }
+\DoxyCodeLine{572   \textcolor{keywordflow}{return} internal\_avg\_log\_p(X);}
+\DoxyCodeLine{573   \}}
+\DoxyCodeLine{574 }
+\DoxyCodeLine{575 }
+\DoxyCodeLine{576 }
+\DoxyCodeLine{577 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{578 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{579 \textcolor{keyword}{inline}}
+\DoxyCodeLine{580 eT}
+\DoxyCodeLine{581 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::avg\_log\_p}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr, \textcolor{keyword}{const} uword gaus\_id)\textcolor{keyword}{ const}}
+\DoxyCodeLine{582 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{583   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{584   }
+\DoxyCodeLine{585   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp(expr.get\_ref());}
+\DoxyCodeLine{586   }
+\DoxyCodeLine{587   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp.M;}
+\DoxyCodeLine{588   }
+\DoxyCodeLine{589   \textcolor{keywordflow}{return} internal\_avg\_log\_p(X, gaus\_id);}
+\DoxyCodeLine{590   \}}
+\DoxyCodeLine{591 }
+\DoxyCodeLine{592 }
+\DoxyCodeLine{593 }
+\DoxyCodeLine{594 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{595 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{596 \textcolor{keyword}{inline}}
+\DoxyCodeLine{597 uword}
+\DoxyCodeLine{598 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::assign}}(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist, \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{true}))>::result* junk)\textcolor{keyword}{ const}}
+\DoxyCodeLine{599 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{600   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{601   arma\_ignore(junk);}
+\DoxyCodeLine{602   }
+\DoxyCodeLine{603   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp(expr);}
+\DoxyCodeLine{604   }
+\DoxyCodeLine{605   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp.M;}
+\DoxyCodeLine{606   }
+\DoxyCodeLine{607   \textcolor{keywordflow}{return} internal\_scalar\_assign(X, dist);}
+\DoxyCodeLine{608   \}}
+\DoxyCodeLine{609 }
+\DoxyCodeLine{610 }
+\DoxyCodeLine{611 }
+\DoxyCodeLine{612 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{613 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{614 \textcolor{keyword}{inline}}
+\DoxyCodeLine{615 \mbox{\hyperlink{classRow}{urowvec}}}
+\DoxyCodeLine{616 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::assign}}(\textcolor{keyword}{const} T1\& expr, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist, \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if}{enable\_if}}<((\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}}) \&\& (\mbox{\hyperlink{structresolves__to__colvector}{resolves\_to\_colvector<T1>::value}} == \textcolor{keyword}{false}))>::result* junk)\textcolor{keyword}{ const}}
+\DoxyCodeLine{617 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{618   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{619   arma\_ignore(junk);}
+\DoxyCodeLine{620   }
+\DoxyCodeLine{621   \mbox{\hyperlink{classRow}{urowvec}} out;}
+\DoxyCodeLine{622   }
+\DoxyCodeLine{623   \textcolor{keyword}{const} \mbox{\hyperlink{structquasi__unwrap}{quasi\_unwrap<T1>}} tmp(expr);}
+\DoxyCodeLine{624   }
+\DoxyCodeLine{625   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp.M;}
+\DoxyCodeLine{626   }
+\DoxyCodeLine{627   internal\_vec\_assign(out, X, dist);}
+\DoxyCodeLine{628   }
+\DoxyCodeLine{629   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{630   \}}
+\DoxyCodeLine{631 }
+\DoxyCodeLine{632 }
+\DoxyCodeLine{633 }
+\DoxyCodeLine{634 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{635 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{636 \textcolor{keyword}{inline}}
+\DoxyCodeLine{637 \mbox{\hyperlink{classRow}{urowvec}}}
+\DoxyCodeLine{638 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::raw\_hist}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode)\textcolor{keyword}{ const}}
+\DoxyCodeLine{639 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{640   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{641   }
+\DoxyCodeLine{642   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}}   tmp(expr.get\_ref());}
+\DoxyCodeLine{643   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp.M;}
+\DoxyCodeLine{644   }
+\DoxyCodeLine{645   arma\_debug\_check( (X.n\_rows != means.n\_rows), \textcolor{stringliteral}{"{}gmm\_full::raw\_hist(): incompatible dimensions"{}} );}
+\DoxyCodeLine{646   }
+\DoxyCodeLine{647   arma\_debug\_check( ((dist\_mode != eucl\_dist) \&\& (dist\_mode != prob\_dist)), \textcolor{stringliteral}{"{}gmm\_full::raw\_hist(): unsupported distance mode"{}} );}
+\DoxyCodeLine{648   }
+\DoxyCodeLine{649   \mbox{\hyperlink{classRow}{urowvec}} hist;}
+\DoxyCodeLine{650   }
+\DoxyCodeLine{651   internal\_raw\_hist(hist, X, dist\_mode);}
+\DoxyCodeLine{652   }
+\DoxyCodeLine{653   \textcolor{keywordflow}{return} hist;}
+\DoxyCodeLine{654   \}}
+\DoxyCodeLine{655 }
+\DoxyCodeLine{656 }
+\DoxyCodeLine{657 }
+\DoxyCodeLine{658 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{659 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{660 \textcolor{keyword}{inline}}
+\DoxyCodeLine{661 \mbox{\hyperlink{classRow}{Row<eT>}}}
+\DoxyCodeLine{662 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::norm\_hist}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& expr, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode)\textcolor{keyword}{ const}}
+\DoxyCodeLine{663 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{664   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{665   }
+\DoxyCodeLine{666   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}}   tmp(expr.get\_ref());}
+\DoxyCodeLine{667   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp.M;}
+\DoxyCodeLine{668   }
+\DoxyCodeLine{669   arma\_debug\_check( (X.n\_rows != means.n\_rows), \textcolor{stringliteral}{"{}gmm\_full::norm\_hist(): incompatible dimensions"{}} );}
+\DoxyCodeLine{670   }
+\DoxyCodeLine{671   arma\_debug\_check( ((dist\_mode != eucl\_dist) \&\& (dist\_mode != prob\_dist)), \textcolor{stringliteral}{"{}gmm\_full::norm\_hist(): unsupported distance mode"{}} );}
+\DoxyCodeLine{672   }
+\DoxyCodeLine{673   \mbox{\hyperlink{classRow}{urowvec}} hist;}
+\DoxyCodeLine{674   }
+\DoxyCodeLine{675   internal\_raw\_hist(hist, X, dist\_mode);}
+\DoxyCodeLine{676   }
+\DoxyCodeLine{677   \textcolor{keyword}{const} uword  hist\_n\_elem = hist.n\_elem;}
+\DoxyCodeLine{678   \textcolor{keyword}{const} uword* hist\_mem    = hist.memptr();}
+\DoxyCodeLine{679   }
+\DoxyCodeLine{680   eT acc = eT(0);}
+\DoxyCodeLine{681   \textcolor{keywordflow}{for}(uword i=0; i<hist\_n\_elem; ++i)  \{ acc += eT(hist\_mem[i]); \}}
+\DoxyCodeLine{682   }
+\DoxyCodeLine{683   \textcolor{keywordflow}{if}(acc == eT(0))  \{ acc = eT(1); \}}
+\DoxyCodeLine{684   }
+\DoxyCodeLine{685   \mbox{\hyperlink{classRow}{Row<eT>}} out(hist\_n\_elem, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{686   }
+\DoxyCodeLine{687   eT* out\_mem = out.memptr();}
+\DoxyCodeLine{688   }
+\DoxyCodeLine{689   \textcolor{keywordflow}{for}(uword i=0; i<hist\_n\_elem; ++i)  \{ out\_mem[i] = eT(hist\_mem[i]) / acc; \}}
+\DoxyCodeLine{690   }
+\DoxyCodeLine{691   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{692   \}}
+\DoxyCodeLine{693 }
+\DoxyCodeLine{694 }
+\DoxyCodeLine{695 }
+\DoxyCodeLine{696 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{697 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{698 \textcolor{keyword}{inline}}
+\DoxyCodeLine{699 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{700 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::learn}}}
+\DoxyCodeLine{701   (}
+\DoxyCodeLine{702   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\&   data,}
+\DoxyCodeLine{703   \textcolor{keyword}{const} uword          N\_gaus,}
+\DoxyCodeLine{704   \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode,}
+\DoxyCodeLine{705   \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}\& seed\_mode,}
+\DoxyCodeLine{706   \textcolor{keyword}{const} uword          km\_iter,}
+\DoxyCodeLine{707   \textcolor{keyword}{const} uword          em\_iter,}
+\DoxyCodeLine{708   \textcolor{keyword}{const} eT             var\_floor,}
+\DoxyCodeLine{709   \textcolor{keyword}{const} \textcolor{keywordtype}{bool}           print\_mode}
+\DoxyCodeLine{710   )}
+\DoxyCodeLine{711   \{}
+\DoxyCodeLine{712   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{713   }
+\DoxyCodeLine{714   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} dist\_mode\_ok = (dist\_mode == eucl\_dist) || (dist\_mode == maha\_dist);}
+\DoxyCodeLine{715   }
+\DoxyCodeLine{716   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} seed\_mode\_ok = \(\backslash\)}
+\DoxyCodeLine{717        (seed\_mode == keep\_existing)}
+\DoxyCodeLine{718     || (seed\_mode == static\_subset)}
+\DoxyCodeLine{719     || (seed\_mode == static\_spread)}
+\DoxyCodeLine{720     || (seed\_mode == random\_subset)}
+\DoxyCodeLine{721     || (seed\_mode == random\_spread);}
+\DoxyCodeLine{722   }
+\DoxyCodeLine{723   arma\_debug\_check( (dist\_mode\_ok == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}gmm\_full::learn(): dist\_mode must be eucl\_dist or maha\_dist"{}} );}
+\DoxyCodeLine{724   arma\_debug\_check( (seed\_mode\_ok == \textcolor{keyword}{false}), \textcolor{stringliteral}{"{}gmm\_full::learn(): unknown seed\_mode"{}}                        );}
+\DoxyCodeLine{725   arma\_debug\_check( (var\_floor < eT(0)    ), \textcolor{stringliteral}{"{}gmm\_full::learn(): variance floor is negative"{}}               );}
+\DoxyCodeLine{726   }
+\DoxyCodeLine{727   \textcolor{keyword}{const} \mbox{\hyperlink{structunwrap}{unwrap<T1>}}   tmp\_X(data.get\_ref());}
+\DoxyCodeLine{728   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X = tmp\_X.M;}
+\DoxyCodeLine{729   }
+\DoxyCodeLine{730   \textcolor{keywordflow}{if}(X.is\_empty()          )  \{ arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}gmm\_full::learn(): given matrix is empty"{}}             ); \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{731   \textcolor{keywordflow}{if}(X.is\_finite() == \textcolor{keyword}{false})  \{ arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}gmm\_full::learn(): given matrix has non-\/finite values"{}}); \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{732   }
+\DoxyCodeLine{733   \textcolor{keywordflow}{if}(N\_gaus == 0)  \{ reset(); \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{734   }
+\DoxyCodeLine{735   \textcolor{keywordflow}{if}(dist\_mode == maha\_dist)}
+\DoxyCodeLine{736     \{}
+\DoxyCodeLine{737     mah\_aux = var(X,1,1);}
+\DoxyCodeLine{738     }
+\DoxyCodeLine{739     \textcolor{keyword}{const} uword mah\_aux\_n\_elem = mah\_aux.n\_elem;}
+\DoxyCodeLine{740           eT*   mah\_aux\_mem    = mah\_aux.memptr();}
+\DoxyCodeLine{741     }
+\DoxyCodeLine{742     \textcolor{keywordflow}{for}(uword i=0; i < mah\_aux\_n\_elem; ++i)}
+\DoxyCodeLine{743       \{}
+\DoxyCodeLine{744       \textcolor{keyword}{const} eT val = mah\_aux\_mem[i];}
+\DoxyCodeLine{745       }
+\DoxyCodeLine{746       mah\_aux\_mem[i] = ((val != eT(0)) \&\& arma\_isfinite(val)) ? eT(1) / val : eT(1);}
+\DoxyCodeLine{747       \}}
+\DoxyCodeLine{748     \}}
+\DoxyCodeLine{749   }
+\DoxyCodeLine{750   }
+\DoxyCodeLine{751   \textcolor{comment}{// copy current model, in case of failure by k-\/means and/or EM}}
+\DoxyCodeLine{752   }
+\DoxyCodeLine{753   \textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>}} orig = (*this);}
+\DoxyCodeLine{754   }
+\DoxyCodeLine{755   }
+\DoxyCodeLine{756   \textcolor{comment}{// initial means}}
+\DoxyCodeLine{757   }
+\DoxyCodeLine{758   \textcolor{keywordflow}{if}(seed\_mode == keep\_existing)}
+\DoxyCodeLine{759     \{}
+\DoxyCodeLine{760     \textcolor{keywordflow}{if}(means.is\_empty()        )  \{ arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}gmm\_full::learn(): no existing means"{}}      ); \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{761     \textcolor{keywordflow}{if}(X.n\_rows != means.n\_rows)  \{ arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}gmm\_full::learn(): dimensionality mismatch"{}}); \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{762     }
+\DoxyCodeLine{763     \textcolor{comment}{// TODO: also check for number of vectors?}}
+\DoxyCodeLine{764     \}}
+\DoxyCodeLine{765   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{766     \{}
+\DoxyCodeLine{767     \textcolor{keywordflow}{if}(X.n\_cols < N\_gaus)  \{ arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}gmm\_full::learn(): number of vectors is less than number of gaussians"{}}); \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{768     }
+\DoxyCodeLine{769     reset(X.n\_rows, N\_gaus);}
+\DoxyCodeLine{770     }
+\DoxyCodeLine{771     \textcolor{keywordflow}{if}(print\_mode)  \{ get\_cout\_stream() << \textcolor{stringliteral}{"{}gmm\_full::learn(): generating initial means\(\backslash\)n"{}}; get\_cout\_stream().flush(); \}}
+\DoxyCodeLine{772     }
+\DoxyCodeLine{773          \textcolor{keywordflow}{if}(dist\_mode == eucl\_dist)  \{ generate\_initial\_means<1>(X, seed\_mode); \}}
+\DoxyCodeLine{774     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(dist\_mode == maha\_dist)  \{ generate\_initial\_means<2>(X, seed\_mode); \}}
+\DoxyCodeLine{775     \}}
+\DoxyCodeLine{776   }
+\DoxyCodeLine{777   }
+\DoxyCodeLine{778   \textcolor{comment}{// k-\/means}}
+\DoxyCodeLine{779   }
+\DoxyCodeLine{780   \textcolor{keywordflow}{if}(km\_iter > 0)}
+\DoxyCodeLine{781     \{}
+\DoxyCodeLine{782     \textcolor{keyword}{const} \mbox{\hyperlink{classarma__ostream__state}{arma\_ostream\_state}} stream\_state(get\_cout\_stream());}
+\DoxyCodeLine{783     }
+\DoxyCodeLine{784     \textcolor{keywordtype}{bool} status = \textcolor{keyword}{false};}
+\DoxyCodeLine{785     }
+\DoxyCodeLine{786          \textcolor{keywordflow}{if}(dist\_mode == eucl\_dist)  \{ status = km\_iterate<1>(X, km\_iter, print\_mode); \}}
+\DoxyCodeLine{787     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(dist\_mode == maha\_dist)  \{ status = km\_iterate<2>(X, km\_iter, print\_mode); \}}
+\DoxyCodeLine{788     }
+\DoxyCodeLine{789     stream\_state.restore(get\_cout\_stream());}
+\DoxyCodeLine{790     }
+\DoxyCodeLine{791     \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})  \{ arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}gmm\_full::learn(): k-\/means algorithm failed; not enough data, or too many gaussians requested"{}}); init(orig); \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{792     \}}
+\DoxyCodeLine{793   }
+\DoxyCodeLine{794   }
+\DoxyCodeLine{795   \textcolor{comment}{// initial fcovs}}
+\DoxyCodeLine{796   }
+\DoxyCodeLine{797   \textcolor{keyword}{const} eT var\_floor\_actual = (eT(var\_floor) > eT(0)) ? eT(var\_floor) : \mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::numeric\_limits<eT>::min}}();}
+\DoxyCodeLine{798   }
+\DoxyCodeLine{799   \textcolor{keywordflow}{if}(seed\_mode != keep\_existing)}
+\DoxyCodeLine{800     \{}
+\DoxyCodeLine{801     \textcolor{keywordflow}{if}(print\_mode)  \{ get\_cout\_stream() << \textcolor{stringliteral}{"{}gmm\_full::learn(): generating initial covariances\(\backslash\)n"{}}; get\_cout\_stream().flush(); \}}
+\DoxyCodeLine{802     }
+\DoxyCodeLine{803          \textcolor{keywordflow}{if}(dist\_mode == eucl\_dist)  \{ generate\_initial\_params<1>(X, var\_floor\_actual); \}}
+\DoxyCodeLine{804     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(dist\_mode == maha\_dist)  \{ generate\_initial\_params<2>(X, var\_floor\_actual); \}}
+\DoxyCodeLine{805     \}}
+\DoxyCodeLine{806   }
+\DoxyCodeLine{807   }
+\DoxyCodeLine{808   \textcolor{comment}{// EM algorithm}}
+\DoxyCodeLine{809   }
+\DoxyCodeLine{810   \textcolor{keywordflow}{if}(em\_iter > 0)}
+\DoxyCodeLine{811     \{}
+\DoxyCodeLine{812     \textcolor{keyword}{const} \mbox{\hyperlink{classarma__ostream__state}{arma\_ostream\_state}} stream\_state(get\_cout\_stream());}
+\DoxyCodeLine{813     }
+\DoxyCodeLine{814     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} status = em\_iterate(X, em\_iter, var\_floor\_actual, print\_mode);}
+\DoxyCodeLine{815     }
+\DoxyCodeLine{816     stream\_state.restore(get\_cout\_stream());}
+\DoxyCodeLine{817     }
+\DoxyCodeLine{818     \textcolor{keywordflow}{if}(status == \textcolor{keyword}{false})  \{ arma\_debug\_warn\_level(3, \textcolor{stringliteral}{"{}gmm\_full::learn(): EM algorithm failed"{}}); init(orig); \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{819     \}}
+\DoxyCodeLine{820   }
+\DoxyCodeLine{821   mah\_aux.reset();}
+\DoxyCodeLine{822   }
+\DoxyCodeLine{823   init\_constants();}
+\DoxyCodeLine{824   }
+\DoxyCodeLine{825   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{826   \}}
+\DoxyCodeLine{827 }
+\DoxyCodeLine{828 }
+\DoxyCodeLine{829 }
+\DoxyCodeLine{830 \textcolor{comment}{//}}
+\DoxyCodeLine{831 \textcolor{comment}{//}}
+\DoxyCodeLine{832 \textcolor{comment}{//}}
+\DoxyCodeLine{833 }
+\DoxyCodeLine{834 }
+\DoxyCodeLine{835 }
+\DoxyCodeLine{836 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{837 \textcolor{keyword}{inline}}
+\DoxyCodeLine{838 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{839 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::init}}(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>}}\& x)}
+\DoxyCodeLine{840   \{}
+\DoxyCodeLine{841   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{842   }
+\DoxyCodeLine{843   \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>}}\& t = *\textcolor{keyword}{this};}
+\DoxyCodeLine{844   }
+\DoxyCodeLine{845   \textcolor{keywordflow}{if}(\&t != \&x)}
+\DoxyCodeLine{846     \{}
+\DoxyCodeLine{847     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(t.means) = x.means;}
+\DoxyCodeLine{848     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(t.fcovs) = x.fcovs;}
+\DoxyCodeLine{849     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(t.hefts) = x.hefts;}
+\DoxyCodeLine{850     }
+\DoxyCodeLine{851     init\_constants();}
+\DoxyCodeLine{852     \}}
+\DoxyCodeLine{853   \}}
+\DoxyCodeLine{854 }
+\DoxyCodeLine{855 }
+\DoxyCodeLine{856 }
+\DoxyCodeLine{857 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{858 \textcolor{keyword}{inline}}
+\DoxyCodeLine{859 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{860 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::init}}(\textcolor{keyword}{const} \mbox{\hyperlink{classgmm__priv_1_1gmm__diag}{gmm\_diag<eT>}}\& x)}
+\DoxyCodeLine{861   \{}
+\DoxyCodeLine{862   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{863   }
+\DoxyCodeLine{864   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts) = x.hefts;}
+\DoxyCodeLine{865   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means) = x.means;}
+\DoxyCodeLine{866   }
+\DoxyCodeLine{867   \textcolor{keyword}{const} uword N\_dims = x.means.n\_rows;}
+\DoxyCodeLine{868   \textcolor{keyword}{const} uword N\_gaus = x.means.n\_cols;}
+\DoxyCodeLine{869   }
+\DoxyCodeLine{870   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(fcovs).zeros(N\_dims,N\_dims,N\_gaus);}
+\DoxyCodeLine{871   }
+\DoxyCodeLine{872   \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{873     \{}
+\DoxyCodeLine{874     \mbox{\hyperlink{classMat}{Mat<eT>}}\& fcov = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(fcovs).slice(g);}
+\DoxyCodeLine{875     }
+\DoxyCodeLine{876     \textcolor{keyword}{const} eT* dcov\_mem = x.dcovs.colptr(g);}
+\DoxyCodeLine{877     }
+\DoxyCodeLine{878     \textcolor{keywordflow}{for}(uword d=0; d < N\_dims; ++d)}
+\DoxyCodeLine{879       \{}
+\DoxyCodeLine{880       fcov.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(d,d) = dcov\_mem[d];}
+\DoxyCodeLine{881       \}}
+\DoxyCodeLine{882     \}}
+\DoxyCodeLine{883   }
+\DoxyCodeLine{884   init\_constants();}
+\DoxyCodeLine{885   \}}
+\DoxyCodeLine{886 }
+\DoxyCodeLine{887 }
+\DoxyCodeLine{888 }
+\DoxyCodeLine{889 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{890 \textcolor{keyword}{inline}}
+\DoxyCodeLine{891 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{892 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::init}}(\textcolor{keyword}{const} uword in\_n\_dims, \textcolor{keyword}{const} uword in\_n\_gaus)}
+\DoxyCodeLine{893   \{}
+\DoxyCodeLine{894   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{895   }
+\DoxyCodeLine{896   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means).zeros(in\_n\_dims, in\_n\_gaus);}
+\DoxyCodeLine{897   }
+\DoxyCodeLine{898   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(fcovs).zeros(in\_n\_dims, in\_n\_dims, in\_n\_gaus);}
+\DoxyCodeLine{899   }
+\DoxyCodeLine{900   \textcolor{keywordflow}{for}(uword g=0; g < in\_n\_gaus; ++g)}
+\DoxyCodeLine{901     \{}
+\DoxyCodeLine{902     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(fcovs).slice(g).diag().ones();}
+\DoxyCodeLine{903     \}}
+\DoxyCodeLine{904   }
+\DoxyCodeLine{905   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts).set\_size(in\_n\_gaus);}
+\DoxyCodeLine{906   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts).fill(eT(1) / eT(in\_n\_gaus));}
+\DoxyCodeLine{907   }
+\DoxyCodeLine{908   init\_constants();}
+\DoxyCodeLine{909   \}}
+\DoxyCodeLine{910 }
+\DoxyCodeLine{911 }
+\DoxyCodeLine{912 }
+\DoxyCodeLine{913 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{914 \textcolor{keyword}{inline}}
+\DoxyCodeLine{915 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{916 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::init\_constants}}(\textcolor{keyword}{const} \textcolor{keywordtype}{bool} calc\_chol)}
+\DoxyCodeLine{917   \{}
+\DoxyCodeLine{918   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{919   }
+\DoxyCodeLine{920   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{921   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{922   }
+\DoxyCodeLine{923   \textcolor{keyword}{const} eT tmp = (eT(N\_dims)/eT(2)) * std::log(eT(2) * \mbox{\hyperlink{classDatum}{Datum<eT>::pi}});}
+\DoxyCodeLine{924   }
+\DoxyCodeLine{925   \textcolor{comment}{//}}
+\DoxyCodeLine{926   }
+\DoxyCodeLine{927   inv\_fcovs.copy\_size(fcovs);}
+\DoxyCodeLine{928   log\_det\_etc.set\_size(N\_gaus);}
+\DoxyCodeLine{929   }
+\DoxyCodeLine{930   \mbox{\hyperlink{classMat}{Mat<eT>}} tmp\_inv;}
+\DoxyCodeLine{931   }
+\DoxyCodeLine{932   \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{933     \{}
+\DoxyCodeLine{934     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\&     fcov =      fcovs.slice(g);}
+\DoxyCodeLine{935           \mbox{\hyperlink{classMat}{Mat<eT>}}\& inv\_fcov =  inv\_fcovs.slice(g);}
+\DoxyCodeLine{936     }
+\DoxyCodeLine{937   \textcolor{comment}{//const bool inv\_ok = auxlib::inv(tmp\_inv, fcov);}}
+\DoxyCodeLine{938     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} inv\_ok = auxlib::inv\_sympd(tmp\_inv, fcov);}
+\DoxyCodeLine{939     }
+\DoxyCodeLine{940     eT log\_det\_val  = eT(0);}
+\DoxyCodeLine{941     eT log\_det\_sign = eT(0);}
+\DoxyCodeLine{942     }
+\DoxyCodeLine{943     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} log\_det\_status = \mbox{\hyperlink{group__fn__log__det_gad3e63c713e6a1712b8c82337be5ec577}{log\_det}}(log\_det\_val, log\_det\_sign, fcov);}
+\DoxyCodeLine{944     }
+\DoxyCodeLine{945     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} log\_det\_ok = ( log\_det\_status \&\& (arma\_isfinite(log\_det\_val)) \&\& (log\_det\_sign > eT(0)) );}
+\DoxyCodeLine{946     }
+\DoxyCodeLine{947     \textcolor{keywordflow}{if}(inv\_ok \&\& log\_det\_ok)}
+\DoxyCodeLine{948       \{}
+\DoxyCodeLine{949       inv\_fcov = tmp\_inv;}
+\DoxyCodeLine{950       \}}
+\DoxyCodeLine{951     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{952       \{}
+\DoxyCodeLine{953       \textcolor{comment}{// last resort: treat the covariance matrix as diagonal}}
+\DoxyCodeLine{954       }
+\DoxyCodeLine{955       inv\_fcov.zeros();}
+\DoxyCodeLine{956       }
+\DoxyCodeLine{957       log\_det\_val = eT(0);}
+\DoxyCodeLine{958       }
+\DoxyCodeLine{959       \textcolor{keywordflow}{for}(uword d=0; d < N\_dims; ++d)}
+\DoxyCodeLine{960         \{}
+\DoxyCodeLine{961         \textcolor{keyword}{const} eT sanitised\_val = (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})( eT(fcov.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(d,d)), eT(\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::numeric\_limits<eT>::min}}()) );}
+\DoxyCodeLine{962         }
+\DoxyCodeLine{963         inv\_fcov.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(d,d) = eT(1) / sanitised\_val;}
+\DoxyCodeLine{964         }
+\DoxyCodeLine{965         log\_det\_val += std::log(sanitised\_val);}
+\DoxyCodeLine{966         \}}
+\DoxyCodeLine{967       \}}
+\DoxyCodeLine{968     }
+\DoxyCodeLine{969     log\_det\_etc[g] = eT(-\/1) * ( tmp + eT(0.5) * log\_det\_val );}
+\DoxyCodeLine{970     \}}
+\DoxyCodeLine{971   }
+\DoxyCodeLine{972   \textcolor{comment}{//}}
+\DoxyCodeLine{973   }
+\DoxyCodeLine{974   eT* hefts\_mem = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts).memptr();}
+\DoxyCodeLine{975   }
+\DoxyCodeLine{976   \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{977     \{}
+\DoxyCodeLine{978     hefts\_mem[g] = (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})( hefts\_mem[g], \mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::numeric\_limits<eT>::min}}() );}
+\DoxyCodeLine{979     \}}
+\DoxyCodeLine{980   }
+\DoxyCodeLine{981   log\_hefts = log(hefts);}
+\DoxyCodeLine{982   }
+\DoxyCodeLine{983   }
+\DoxyCodeLine{984   \textcolor{keywordflow}{if}(calc\_chol)}
+\DoxyCodeLine{985     \{}
+\DoxyCodeLine{986     chol\_fcovs.copy\_size(fcovs);}
+\DoxyCodeLine{987     }
+\DoxyCodeLine{988     \mbox{\hyperlink{classMat}{Mat<eT>}} tmp\_chol;}
+\DoxyCodeLine{989     }
+\DoxyCodeLine{990     \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{991       \{}
+\DoxyCodeLine{992       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& fcov      =      fcovs.slice(g);}
+\DoxyCodeLine{993             \mbox{\hyperlink{classMat}{Mat<eT>}}\& chol\_fcov = chol\_fcovs.slice(g);}
+\DoxyCodeLine{994       }
+\DoxyCodeLine{995       \textcolor{keyword}{const} uword chol\_layout = 1;  \textcolor{comment}{// indicates "{}lower"{}}}
+\DoxyCodeLine{996       }
+\DoxyCodeLine{997       \textcolor{keyword}{const} \textcolor{keywordtype}{bool} chol\_ok = op\_chol::apply\_direct(tmp\_chol, fcov, chol\_layout);}
+\DoxyCodeLine{998       }
+\DoxyCodeLine{999       \textcolor{keywordflow}{if}(chol\_ok)}
+\DoxyCodeLine{1000         \{}
+\DoxyCodeLine{1001         chol\_fcov = tmp\_chol;}
+\DoxyCodeLine{1002         \}}
+\DoxyCodeLine{1003       \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1004         \{}
+\DoxyCodeLine{1005         \textcolor{comment}{// last resort: treat the covariance matrix as diagonal}}
+\DoxyCodeLine{1006         }
+\DoxyCodeLine{1007         chol\_fcov.zeros();}
+\DoxyCodeLine{1008         }
+\DoxyCodeLine{1009         \textcolor{keywordflow}{for}(uword d=0; d < N\_dims; ++d)}
+\DoxyCodeLine{1010           \{}
+\DoxyCodeLine{1011           \textcolor{keyword}{const} eT sanitised\_val = (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})( eT(fcov.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(d,d)), eT(\mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::numeric\_limits<eT>::min}}()) );}
+\DoxyCodeLine{1012           }
+\DoxyCodeLine{1013           chol\_fcov.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(d,d) = std::sqrt(sanitised\_val);}
+\DoxyCodeLine{1014           \}}
+\DoxyCodeLine{1015         \}}
+\DoxyCodeLine{1016       \}}
+\DoxyCodeLine{1017     \}}
+\DoxyCodeLine{1018   \}}
+\DoxyCodeLine{1019 }
+\DoxyCodeLine{1020 }
+\DoxyCodeLine{1021 }
+\DoxyCodeLine{1022 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1023 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1024 \mbox{\hyperlink{classMat}{umat}}}
+\DoxyCodeLine{1025 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_gen\_boundaries}}(\textcolor{keyword}{const} uword N)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1026 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1027   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1028   }
+\DoxyCodeLine{1029 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1030     \textcolor{keyword}{const} uword n\_threads\_avail = uword(omp\_get\_max\_threads());}
+\DoxyCodeLine{1031     \textcolor{keyword}{const} uword n\_threads       = (n\_threads\_avail > 0) ? ( (n\_threads\_avail <= N) ? n\_threads\_avail : 1 ) : 1;}
+\DoxyCodeLine{1032 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1033     \textcolor{keyword}{static} \textcolor{keyword}{constexpr} uword n\_threads = 1;}
+\DoxyCodeLine{1034 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1035   }
+\DoxyCodeLine{1036   \textcolor{comment}{// get\_cout\_stream() << "{}gmm\_full::internal\_gen\_boundaries(): n\_threads: "{} << n\_threads << '\(\backslash\)n';}}
+\DoxyCodeLine{1037   }
+\DoxyCodeLine{1038   \mbox{\hyperlink{classMat}{umat}} boundaries(2, n\_threads, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{1039   }
+\DoxyCodeLine{1040   \textcolor{keywordflow}{if}(N > 0)}
+\DoxyCodeLine{1041     \{}
+\DoxyCodeLine{1042     \textcolor{keyword}{const} uword chunk\_size = N / n\_threads;}
+\DoxyCodeLine{1043     }
+\DoxyCodeLine{1044     uword count = 0;}
+\DoxyCodeLine{1045     }
+\DoxyCodeLine{1046     \textcolor{keywordflow}{for}(uword t=0; t<n\_threads; t++)}
+\DoxyCodeLine{1047       \{}
+\DoxyCodeLine{1048       boundaries.at(0,t) = count;}
+\DoxyCodeLine{1049       }
+\DoxyCodeLine{1050       count += chunk\_size;}
+\DoxyCodeLine{1051       }
+\DoxyCodeLine{1052       boundaries.at(1,t) = count-\/1;}
+\DoxyCodeLine{1053       \}}
+\DoxyCodeLine{1054     }
+\DoxyCodeLine{1055     boundaries.at(1,n\_threads-\/1) = N -\/ 1;}
+\DoxyCodeLine{1056     \}}
+\DoxyCodeLine{1057   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1058     \{}
+\DoxyCodeLine{1059     boundaries.zeros();}
+\DoxyCodeLine{1060     \}}
+\DoxyCodeLine{1061   }
+\DoxyCodeLine{1062   \textcolor{comment}{// get\_cout\_stream() << "{}gmm\_full::internal\_gen\_boundaries(): boundaries: "{} << '\(\backslash\)n' << boundaries << '\(\backslash\)n';}}
+\DoxyCodeLine{1063   }
+\DoxyCodeLine{1064   \textcolor{keywordflow}{return} boundaries;}
+\DoxyCodeLine{1065   \}}
+\DoxyCodeLine{1066 }
+\DoxyCodeLine{1067 }
+\DoxyCodeLine{1068 }
+\DoxyCodeLine{1069 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1070 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1071 eT}
+\DoxyCodeLine{1072 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_scalar\_log\_p}}(\textcolor{keyword}{const} eT* x)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1073 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1074   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1075   }
+\DoxyCodeLine{1076   \textcolor{keyword}{const} eT* log\_hefts\_mem = log\_hefts.mem;}
+\DoxyCodeLine{1077   }
+\DoxyCodeLine{1078   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{1079   }
+\DoxyCodeLine{1080   \textcolor{keywordflow}{if}(N\_gaus > 0)}
+\DoxyCodeLine{1081     \{}
+\DoxyCodeLine{1082     eT log\_sum = internal\_scalar\_log\_p(x, 0) + log\_hefts\_mem[0];}
+\DoxyCodeLine{1083     }
+\DoxyCodeLine{1084     \textcolor{keywordflow}{for}(uword g=1; g < N\_gaus; ++g)}
+\DoxyCodeLine{1085       \{}
+\DoxyCodeLine{1086       \textcolor{keyword}{const} eT log\_val = internal\_scalar\_log\_p(x, g) + log\_hefts\_mem[g];}
+\DoxyCodeLine{1087       }
+\DoxyCodeLine{1088       log\_sum = log\_add\_exp(log\_sum, log\_val);}
+\DoxyCodeLine{1089       \}}
+\DoxyCodeLine{1090     }
+\DoxyCodeLine{1091     \textcolor{keywordflow}{return} log\_sum;}
+\DoxyCodeLine{1092     \}}
+\DoxyCodeLine{1093   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1094     \{}
+\DoxyCodeLine{1095     \textcolor{keywordflow}{return} -\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1096     \}}
+\DoxyCodeLine{1097   \}}
+\DoxyCodeLine{1098 }
+\DoxyCodeLine{1099 }
+\DoxyCodeLine{1100 }
+\DoxyCodeLine{1101 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1102 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1103 eT}
+\DoxyCodeLine{1104 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_scalar\_log\_p}}(\textcolor{keyword}{const} eT* x, \textcolor{keyword}{const} uword g)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1105 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1106   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1107   }
+\DoxyCodeLine{1108   \textcolor{keyword}{const} uword N\_dims   = means.n\_rows;}
+\DoxyCodeLine{1109   \textcolor{keyword}{const} eT*   mean\_mem = means.colptr(g);}
+\DoxyCodeLine{1110   }
+\DoxyCodeLine{1111   eT outer\_acc = eT(0);}
+\DoxyCodeLine{1112   }
+\DoxyCodeLine{1113   \textcolor{keyword}{const} eT* inv\_fcov\_coldata = inv\_fcovs.slice(g).memptr();}
+\DoxyCodeLine{1114   }
+\DoxyCodeLine{1115   \textcolor{keywordflow}{for}(uword i=0; i < N\_dims; ++i)}
+\DoxyCodeLine{1116     \{}
+\DoxyCodeLine{1117     eT inner\_acc = eT(0);}
+\DoxyCodeLine{1118     }
+\DoxyCodeLine{1119     \textcolor{keywordflow}{for}(uword j=0; j < N\_dims; ++j)}
+\DoxyCodeLine{1120       \{}
+\DoxyCodeLine{1121       inner\_acc += (x[j] -\/ mean\_mem[j]) * inv\_fcov\_coldata[j];}
+\DoxyCodeLine{1122       \}}
+\DoxyCodeLine{1123     }
+\DoxyCodeLine{1124     inv\_fcov\_coldata += N\_dims;}
+\DoxyCodeLine{1125     }
+\DoxyCodeLine{1126     outer\_acc += inner\_acc * (x[i] -\/ mean\_mem[i]);}
+\DoxyCodeLine{1127     \}}
+\DoxyCodeLine{1128   }
+\DoxyCodeLine{1129   \textcolor{keywordflow}{return} eT(-\/0.5)*outer\_acc + log\_det\_etc.mem[g];}
+\DoxyCodeLine{1130   \}}
+\DoxyCodeLine{1131 }
+\DoxyCodeLine{1132 }
+\DoxyCodeLine{1133 }
+\DoxyCodeLine{1134 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1135 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1136 \mbox{\hyperlink{classRow}{Row<eT>}}}
+\DoxyCodeLine{1137 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_vec\_log\_p}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1138 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1139   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1140   }
+\DoxyCodeLine{1141   \textcolor{keyword}{const} uword N\_dims    = means.n\_rows;}
+\DoxyCodeLine{1142   \textcolor{keyword}{const} uword N\_samples = X.n\_cols;}
+\DoxyCodeLine{1143   }
+\DoxyCodeLine{1144   arma\_debug\_check( (X.n\_rows != N\_dims), \textcolor{stringliteral}{"{}gmm\_full::log\_p(): incompatible dimensions"{}} );}
+\DoxyCodeLine{1145   }
+\DoxyCodeLine{1146   \mbox{\hyperlink{classRow}{Row<eT>}} out(N\_samples, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{1147   }
+\DoxyCodeLine{1148   \textcolor{keywordflow}{if}(N\_samples > 0)}
+\DoxyCodeLine{1149     \{}
+\DoxyCodeLine{1150 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1151       \{}
+\DoxyCodeLine{1152       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(N\_samples);}
+\DoxyCodeLine{1153       }
+\DoxyCodeLine{1154       \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{1155       }
+\DoxyCodeLine{1156 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1157       \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1158         \{}
+\DoxyCodeLine{1159         \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{1160         \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{1161         }
+\DoxyCodeLine{1162         eT* out\_mem = out.memptr();}
+\DoxyCodeLine{1163         }
+\DoxyCodeLine{1164         \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{1165           \{}
+\DoxyCodeLine{1166           out\_mem[i] = internal\_scalar\_log\_p( X.colptr(i) );}
+\DoxyCodeLine{1167           \}}
+\DoxyCodeLine{1168         \}}
+\DoxyCodeLine{1169       \}}
+\DoxyCodeLine{1170 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{1171       \{}
+\DoxyCodeLine{1172       eT* out\_mem = out.memptr();}
+\DoxyCodeLine{1173       }
+\DoxyCodeLine{1174       \textcolor{keywordflow}{for}(uword i=0; i < N\_samples; ++i)}
+\DoxyCodeLine{1175         \{}
+\DoxyCodeLine{1176         out\_mem[i] = internal\_scalar\_log\_p( X.colptr(i) );}
+\DoxyCodeLine{1177         \}}
+\DoxyCodeLine{1178       \}}
+\DoxyCodeLine{1179 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{1180     \}}
+\DoxyCodeLine{1181   }
+\DoxyCodeLine{1182   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{1183   \}}
+\DoxyCodeLine{1184 }
+\DoxyCodeLine{1185 }
+\DoxyCodeLine{1186 }
+\DoxyCodeLine{1187 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1188 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1189 \mbox{\hyperlink{classRow}{Row<eT>}}}
+\DoxyCodeLine{1190 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_vec\_log\_p}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword gaus\_id)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1191 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1192   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1193   }
+\DoxyCodeLine{1194   \textcolor{keyword}{const} uword N\_dims    = means.n\_rows;}
+\DoxyCodeLine{1195   \textcolor{keyword}{const} uword N\_samples = X.n\_cols;}
+\DoxyCodeLine{1196   }
+\DoxyCodeLine{1197   arma\_debug\_check( (X.n\_rows != N\_dims),       \textcolor{stringliteral}{"{}gmm\_full::log\_p(): incompatible dimensions"{}}            );}
+\DoxyCodeLine{1198   arma\_debug\_check( (gaus\_id  >= means.n\_cols), \textcolor{stringliteral}{"{}gmm\_full::log\_p(): specified gaussian is out of range"{}} );}
+\DoxyCodeLine{1199   }
+\DoxyCodeLine{1200   \mbox{\hyperlink{classRow}{Row<eT>}} out(N\_samples, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{1201   }
+\DoxyCodeLine{1202   \textcolor{keywordflow}{if}(N\_samples > 0)}
+\DoxyCodeLine{1203     \{}
+\DoxyCodeLine{1204 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1205       \{}
+\DoxyCodeLine{1206       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(N\_samples);}
+\DoxyCodeLine{1207       }
+\DoxyCodeLine{1208       \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{1209       }
+\DoxyCodeLine{1210 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1211       \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1212         \{}
+\DoxyCodeLine{1213         \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{1214         \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{1215         }
+\DoxyCodeLine{1216         eT* out\_mem = out.memptr();}
+\DoxyCodeLine{1217         }
+\DoxyCodeLine{1218         \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{1219           \{}
+\DoxyCodeLine{1220           out\_mem[i] = internal\_scalar\_log\_p( X.colptr(i), gaus\_id );}
+\DoxyCodeLine{1221           \}}
+\DoxyCodeLine{1222         \}}
+\DoxyCodeLine{1223       \}}
+\DoxyCodeLine{1224 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{1225       \{}
+\DoxyCodeLine{1226       eT* out\_mem = out.memptr();}
+\DoxyCodeLine{1227       }
+\DoxyCodeLine{1228       \textcolor{keywordflow}{for}(uword i=0; i < N\_samples; ++i)}
+\DoxyCodeLine{1229         \{}
+\DoxyCodeLine{1230         out\_mem[i] = internal\_scalar\_log\_p( X.colptr(i), gaus\_id );}
+\DoxyCodeLine{1231         \}}
+\DoxyCodeLine{1232       \}}
+\DoxyCodeLine{1233 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{1234     \}}
+\DoxyCodeLine{1235   }
+\DoxyCodeLine{1236   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{1237   \}}
+\DoxyCodeLine{1238 }
+\DoxyCodeLine{1239 }
+\DoxyCodeLine{1240 }
+\DoxyCodeLine{1241 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1242 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1243 eT}
+\DoxyCodeLine{1244 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_sum\_log\_p}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1245 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1246   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1247   }
+\DoxyCodeLine{1248   arma\_debug\_check( (X.n\_rows != means.n\_rows), \textcolor{stringliteral}{"{}gmm\_full::sum\_log\_p(): incompatible dimensions"{}} );}
+\DoxyCodeLine{1249     }
+\DoxyCodeLine{1250   \textcolor{keyword}{const} uword N = X.n\_cols;}
+\DoxyCodeLine{1251   }
+\DoxyCodeLine{1252   \textcolor{keywordflow}{if}(N == 0)  \{ \textcolor{keywordflow}{return} (-\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}}); \}}
+\DoxyCodeLine{1253   }
+\DoxyCodeLine{1254   }
+\DoxyCodeLine{1255 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1256     \{}
+\DoxyCodeLine{1257     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(N);}
+\DoxyCodeLine{1258     }
+\DoxyCodeLine{1259     \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{1260     }
+\DoxyCodeLine{1261     \mbox{\hyperlink{classCol}{Col<eT>}} t\_accs(n\_threads, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{1262     }
+\DoxyCodeLine{1263 \textcolor{preprocessor}{    \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1264     \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1265       \{}
+\DoxyCodeLine{1266       \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{1267       \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{1268       }
+\DoxyCodeLine{1269       eT t\_acc = eT(0);}
+\DoxyCodeLine{1270       }
+\DoxyCodeLine{1271       \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{1272         \{}
+\DoxyCodeLine{1273         t\_acc += internal\_scalar\_log\_p( X.colptr(i) );}
+\DoxyCodeLine{1274         \}}
+\DoxyCodeLine{1275       }
+\DoxyCodeLine{1276       t\_accs[t] = t\_acc;}
+\DoxyCodeLine{1277       \}}
+\DoxyCodeLine{1278     }
+\DoxyCodeLine{1279     \textcolor{keywordflow}{return} eT(\mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(t\_accs));}
+\DoxyCodeLine{1280     \}}
+\DoxyCodeLine{1281 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1282     \{}
+\DoxyCodeLine{1283     eT acc = eT(0);}
+\DoxyCodeLine{1284     }
+\DoxyCodeLine{1285     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{1286       \{}
+\DoxyCodeLine{1287       acc += internal\_scalar\_log\_p( X.colptr(i) );}
+\DoxyCodeLine{1288       \}}
+\DoxyCodeLine{1289     }
+\DoxyCodeLine{1290     \textcolor{keywordflow}{return} acc;}
+\DoxyCodeLine{1291     \}}
+\DoxyCodeLine{1292 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1293   \}}
+\DoxyCodeLine{1294 }
+\DoxyCodeLine{1295 }
+\DoxyCodeLine{1296 }
+\DoxyCodeLine{1297 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1298 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1299 eT}
+\DoxyCodeLine{1300 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_sum\_log\_p}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword gaus\_id)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1301 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1302   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1303   }
+\DoxyCodeLine{1304   arma\_debug\_check( (X.n\_rows != means.n\_rows), \textcolor{stringliteral}{"{}gmm\_full::sum\_log\_p(): incompatible dimensions"{}}            );}
+\DoxyCodeLine{1305   arma\_debug\_check( (gaus\_id  >= means.n\_cols), \textcolor{stringliteral}{"{}gmm\_full::sum\_log\_p(): specified gaussian is out of range"{}} );}
+\DoxyCodeLine{1306     }
+\DoxyCodeLine{1307   \textcolor{keyword}{const} uword N = X.n\_cols;}
+\DoxyCodeLine{1308   }
+\DoxyCodeLine{1309   \textcolor{keywordflow}{if}(N == 0)  \{ \textcolor{keywordflow}{return} (-\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}}); \}}
+\DoxyCodeLine{1310   }
+\DoxyCodeLine{1311   }
+\DoxyCodeLine{1312 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1313     \{}
+\DoxyCodeLine{1314     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(N);}
+\DoxyCodeLine{1315     }
+\DoxyCodeLine{1316     \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{1317     }
+\DoxyCodeLine{1318     \mbox{\hyperlink{classCol}{Col<eT>}} t\_accs(n\_threads, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{1319     }
+\DoxyCodeLine{1320 \textcolor{preprocessor}{    \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1321     \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1322       \{}
+\DoxyCodeLine{1323       \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{1324       \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{1325       }
+\DoxyCodeLine{1326       eT t\_acc = eT(0);}
+\DoxyCodeLine{1327       }
+\DoxyCodeLine{1328       \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{1329         \{}
+\DoxyCodeLine{1330         t\_acc += internal\_scalar\_log\_p( X.colptr(i), gaus\_id );}
+\DoxyCodeLine{1331         \}}
+\DoxyCodeLine{1332       }
+\DoxyCodeLine{1333       t\_accs[t] = t\_acc;}
+\DoxyCodeLine{1334       \}}
+\DoxyCodeLine{1335     }
+\DoxyCodeLine{1336     \textcolor{keywordflow}{return} eT(\mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(t\_accs));}
+\DoxyCodeLine{1337     \}}
+\DoxyCodeLine{1338 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1339     \{}
+\DoxyCodeLine{1340     eT acc = eT(0);}
+\DoxyCodeLine{1341     }
+\DoxyCodeLine{1342     \textcolor{keywordflow}{for}(uword i=0; i<N; ++i)}
+\DoxyCodeLine{1343       \{}
+\DoxyCodeLine{1344       acc += internal\_scalar\_log\_p( X.colptr(i), gaus\_id );}
+\DoxyCodeLine{1345       \}}
+\DoxyCodeLine{1346     }
+\DoxyCodeLine{1347     \textcolor{keywordflow}{return} acc;}
+\DoxyCodeLine{1348     \}}
+\DoxyCodeLine{1349 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1350   \}}
+\DoxyCodeLine{1351 }
+\DoxyCodeLine{1352 }
+\DoxyCodeLine{1353 }
+\DoxyCodeLine{1354 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1355 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1356 eT}
+\DoxyCodeLine{1357 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_avg\_log\_p}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1358 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1359   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1360   }
+\DoxyCodeLine{1361   \textcolor{keyword}{const} uword N\_dims    = means.n\_rows;}
+\DoxyCodeLine{1362   \textcolor{keyword}{const} uword N\_samples = X.n\_cols;}
+\DoxyCodeLine{1363   }
+\DoxyCodeLine{1364   arma\_debug\_check( (X.n\_rows != N\_dims), \textcolor{stringliteral}{"{}gmm\_full::avg\_log\_p(): incompatible dimensions"{}} );}
+\DoxyCodeLine{1365   }
+\DoxyCodeLine{1366   \textcolor{keywordflow}{if}(N\_samples == 0)  \{ \textcolor{keywordflow}{return} (-\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}}); \}}
+\DoxyCodeLine{1367   }
+\DoxyCodeLine{1368   }
+\DoxyCodeLine{1369 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1370     \{}
+\DoxyCodeLine{1371     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(N\_samples);}
+\DoxyCodeLine{1372     }
+\DoxyCodeLine{1373     \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{1374     }
+\DoxyCodeLine{1375     \mbox{\hyperlink{classfield}{field< running\_mean\_scalar<eT>}} > t\_running\_means(n\_threads);}
+\DoxyCodeLine{1376     }
+\DoxyCodeLine{1377     }
+\DoxyCodeLine{1378 \textcolor{preprocessor}{    \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1379     \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1380       \{}
+\DoxyCodeLine{1381       \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{1382       \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{1383       }
+\DoxyCodeLine{1384       running\_mean\_scalar<eT>\& current\_running\_mean = t\_running\_means[t];}
+\DoxyCodeLine{1385       }
+\DoxyCodeLine{1386       \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{1387         \{}
+\DoxyCodeLine{1388         current\_running\_mean( internal\_scalar\_log\_p( X.colptr(i) ) );}
+\DoxyCodeLine{1389         \}}
+\DoxyCodeLine{1390       \}}
+\DoxyCodeLine{1391     }
+\DoxyCodeLine{1392     }
+\DoxyCodeLine{1393     eT avg = eT(0);}
+\DoxyCodeLine{1394     }
+\DoxyCodeLine{1395     \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1396       \{}
+\DoxyCodeLine{1397       running\_mean\_scalar<eT>\& current\_running\_mean = t\_running\_means[t];}
+\DoxyCodeLine{1398       }
+\DoxyCodeLine{1399       \textcolor{keyword}{const} eT w = eT(current\_running\_mean.count()) / eT(N\_samples);}
+\DoxyCodeLine{1400       }
+\DoxyCodeLine{1401       avg += w * current\_running\_mean.mean();}
+\DoxyCodeLine{1402       \}}
+\DoxyCodeLine{1403     }
+\DoxyCodeLine{1404     \textcolor{keywordflow}{return} avg;}
+\DoxyCodeLine{1405     \}}
+\DoxyCodeLine{1406 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1407     \{}
+\DoxyCodeLine{1408     running\_mean\_scalar<eT> running\_mean;}
+\DoxyCodeLine{1409     }
+\DoxyCodeLine{1410     \textcolor{keywordflow}{for}(uword i=0; i < N\_samples; ++i)}
+\DoxyCodeLine{1411       \{}
+\DoxyCodeLine{1412       running\_mean( internal\_scalar\_log\_p( X.colptr(i) ) );}
+\DoxyCodeLine{1413       \}}
+\DoxyCodeLine{1414     }
+\DoxyCodeLine{1415     \textcolor{keywordflow}{return} running\_mean.mean();}
+\DoxyCodeLine{1416     \}}
+\DoxyCodeLine{1417 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1418   \}}
+\DoxyCodeLine{1419 }
+\DoxyCodeLine{1420 }
+\DoxyCodeLine{1421 }
+\DoxyCodeLine{1422 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1423 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1424 eT}
+\DoxyCodeLine{1425 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_avg\_log\_p}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword gaus\_id)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1426 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1427   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1428   }
+\DoxyCodeLine{1429   \textcolor{keyword}{const} uword N\_dims    = means.n\_rows;}
+\DoxyCodeLine{1430   \textcolor{keyword}{const} uword N\_samples = X.n\_cols;}
+\DoxyCodeLine{1431   }
+\DoxyCodeLine{1432   arma\_debug\_check( (X.n\_rows != N\_dims),       \textcolor{stringliteral}{"{}gmm\_full::avg\_log\_p(): incompatible dimensions"{}}            );}
+\DoxyCodeLine{1433   arma\_debug\_check( (gaus\_id  >= means.n\_cols), \textcolor{stringliteral}{"{}gmm\_full::avg\_log\_p(): specified gaussian is out of range"{}} );}
+\DoxyCodeLine{1434   }
+\DoxyCodeLine{1435   \textcolor{keywordflow}{if}(N\_samples == 0)  \{ \textcolor{keywordflow}{return} (-\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}}); \}}
+\DoxyCodeLine{1436   }
+\DoxyCodeLine{1437   }
+\DoxyCodeLine{1438 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1439     \{}
+\DoxyCodeLine{1440     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(N\_samples);}
+\DoxyCodeLine{1441     }
+\DoxyCodeLine{1442     \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{1443     }
+\DoxyCodeLine{1444     \mbox{\hyperlink{classfield}{field< running\_mean\_scalar<eT>}} > t\_running\_means(n\_threads);}
+\DoxyCodeLine{1445     }
+\DoxyCodeLine{1446     }
+\DoxyCodeLine{1447 \textcolor{preprocessor}{    \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1448     \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1449       \{}
+\DoxyCodeLine{1450       \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{1451       \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{1452       }
+\DoxyCodeLine{1453       running\_mean\_scalar<eT>\& current\_running\_mean = t\_running\_means[t];}
+\DoxyCodeLine{1454       }
+\DoxyCodeLine{1455       \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{1456         \{}
+\DoxyCodeLine{1457         current\_running\_mean( internal\_scalar\_log\_p( X.colptr(i), gaus\_id) );}
+\DoxyCodeLine{1458         \}}
+\DoxyCodeLine{1459       \}}
+\DoxyCodeLine{1460     }
+\DoxyCodeLine{1461     }
+\DoxyCodeLine{1462     eT avg = eT(0);}
+\DoxyCodeLine{1463     }
+\DoxyCodeLine{1464     \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1465       \{}
+\DoxyCodeLine{1466       running\_mean\_scalar<eT>\& current\_running\_mean = t\_running\_means[t];}
+\DoxyCodeLine{1467       }
+\DoxyCodeLine{1468       \textcolor{keyword}{const} eT w = eT(current\_running\_mean.count()) / eT(N\_samples);}
+\DoxyCodeLine{1469       }
+\DoxyCodeLine{1470       avg += w * current\_running\_mean.mean();}
+\DoxyCodeLine{1471       \}}
+\DoxyCodeLine{1472     }
+\DoxyCodeLine{1473     \textcolor{keywordflow}{return} avg;}
+\DoxyCodeLine{1474     \}}
+\DoxyCodeLine{1475 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1476     \{}
+\DoxyCodeLine{1477     running\_mean\_scalar<eT> running\_mean;}
+\DoxyCodeLine{1478     }
+\DoxyCodeLine{1479     \textcolor{keywordflow}{for}(uword i=0; i<N\_samples; ++i)}
+\DoxyCodeLine{1480       \{}
+\DoxyCodeLine{1481       running\_mean( internal\_scalar\_log\_p( X.colptr(i), gaus\_id ) );}
+\DoxyCodeLine{1482       \}}
+\DoxyCodeLine{1483     }
+\DoxyCodeLine{1484     \textcolor{keywordflow}{return} running\_mean.mean();}
+\DoxyCodeLine{1485     \}}
+\DoxyCodeLine{1486 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1487   \}}
+\DoxyCodeLine{1488 }
+\DoxyCodeLine{1489 }
+\DoxyCodeLine{1490 }
+\DoxyCodeLine{1491 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1492 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1493 uword}
+\DoxyCodeLine{1494 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_scalar\_assign}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1495 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1496   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1497   }
+\DoxyCodeLine{1498   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{1499   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{1500   }
+\DoxyCodeLine{1501   arma\_debug\_check( (X.n\_rows != N\_dims), \textcolor{stringliteral}{"{}gmm\_full::assign(): incompatible dimensions"{}} );}
+\DoxyCodeLine{1502   arma\_debug\_check( (N\_gaus == 0),        \textcolor{stringliteral}{"{}gmm\_full::assign(): model has no means"{}}      );}
+\DoxyCodeLine{1503   }
+\DoxyCodeLine{1504   \textcolor{keyword}{const} eT* X\_mem = X.colptr(0);}
+\DoxyCodeLine{1505   }
+\DoxyCodeLine{1506   \textcolor{keywordflow}{if}(dist\_mode == eucl\_dist)}
+\DoxyCodeLine{1507     \{}
+\DoxyCodeLine{1508     eT    best\_dist = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1509     uword best\_g    = 0;}
+\DoxyCodeLine{1510     }
+\DoxyCodeLine{1511     \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{1512       \{}
+\DoxyCodeLine{1513       \textcolor{keyword}{const} eT tmp\_dist = distance<eT,1>::eval(N\_dims, X\_mem, means.colptr(g), X\_mem);}
+\DoxyCodeLine{1514       }
+\DoxyCodeLine{1515       \textcolor{keywordflow}{if}(tmp\_dist <= best\_dist)}
+\DoxyCodeLine{1516         \{}
+\DoxyCodeLine{1517         best\_dist = tmp\_dist;}
+\DoxyCodeLine{1518         best\_g    = g;}
+\DoxyCodeLine{1519         \}}
+\DoxyCodeLine{1520       \}}
+\DoxyCodeLine{1521     }
+\DoxyCodeLine{1522     \textcolor{keywordflow}{return} best\_g;}
+\DoxyCodeLine{1523     \}}
+\DoxyCodeLine{1524   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1525   \textcolor{keywordflow}{if}(dist\_mode == prob\_dist)}
+\DoxyCodeLine{1526     \{}
+\DoxyCodeLine{1527     \textcolor{keyword}{const} eT* log\_hefts\_mem = log\_hefts.memptr();}
+\DoxyCodeLine{1528     }
+\DoxyCodeLine{1529     eT    best\_p = -\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1530     uword best\_g = 0;}
+\DoxyCodeLine{1531     }
+\DoxyCodeLine{1532     \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{1533       \{}
+\DoxyCodeLine{1534       \textcolor{keyword}{const} eT tmp\_p = internal\_scalar\_log\_p(X\_mem, g) + log\_hefts\_mem[g];}
+\DoxyCodeLine{1535       }
+\DoxyCodeLine{1536       \textcolor{keywordflow}{if}(tmp\_p >= best\_p)}
+\DoxyCodeLine{1537         \{}
+\DoxyCodeLine{1538         best\_p = tmp\_p;}
+\DoxyCodeLine{1539         best\_g = g;}
+\DoxyCodeLine{1540         \}}
+\DoxyCodeLine{1541       \}}
+\DoxyCodeLine{1542     }
+\DoxyCodeLine{1543     \textcolor{keywordflow}{return} best\_g;}
+\DoxyCodeLine{1544     \}}
+\DoxyCodeLine{1545   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1546     \{}
+\DoxyCodeLine{1547     arma\_debug\_check(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}gmm\_full::assign(): unsupported distance mode"{}});}
+\DoxyCodeLine{1548     \}}
+\DoxyCodeLine{1549   }
+\DoxyCodeLine{1550   \textcolor{keywordflow}{return} uword(0);}
+\DoxyCodeLine{1551   \}}
+\DoxyCodeLine{1552 }
+\DoxyCodeLine{1553 }
+\DoxyCodeLine{1554 }
+\DoxyCodeLine{1555 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1556 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1557 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1558 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_vec\_assign}}(\mbox{\hyperlink{classRow}{urowvec}}\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1559 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1560   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1561   }
+\DoxyCodeLine{1562   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{1563   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{1564   }
+\DoxyCodeLine{1565   arma\_debug\_check( (X.n\_rows != N\_dims), \textcolor{stringliteral}{"{}gmm\_full::assign(): incompatible dimensions"{}} );}
+\DoxyCodeLine{1566   }
+\DoxyCodeLine{1567   \textcolor{keyword}{const} uword X\_n\_cols = (N\_gaus > 0) ? X.n\_cols : 0;}
+\DoxyCodeLine{1568   }
+\DoxyCodeLine{1569   out.\mbox{\hyperlink{group__Mat_ga750c2d7d0bd0cf7b88e17a24db252438}{set\_size}}(1,X\_n\_cols);}
+\DoxyCodeLine{1570   }
+\DoxyCodeLine{1571   uword* out\_mem = out.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{1572   }
+\DoxyCodeLine{1573   \textcolor{keywordflow}{if}(dist\_mode == eucl\_dist)}
+\DoxyCodeLine{1574     \{}
+\DoxyCodeLine{1575 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1576       \{}
+\DoxyCodeLine{1577 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1578       \textcolor{keywordflow}{for}(uword i=0; i<X\_n\_cols; ++i)}
+\DoxyCodeLine{1579         \{}
+\DoxyCodeLine{1580         \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{1581          }
+\DoxyCodeLine{1582         eT    best\_dist = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1583         uword best\_g    = 0;}
+\DoxyCodeLine{1584         }
+\DoxyCodeLine{1585         \textcolor{keywordflow}{for}(uword g=0; g<N\_gaus; ++g)}
+\DoxyCodeLine{1586           \{}
+\DoxyCodeLine{1587           \textcolor{keyword}{const} eT tmp\_dist = distance<eT,1>::eval(N\_dims, X\_colptr, means.colptr(g), X\_colptr);}
+\DoxyCodeLine{1588           }
+\DoxyCodeLine{1589           \textcolor{keywordflow}{if}(tmp\_dist <= best\_dist)  \{ best\_dist = tmp\_dist; best\_g = g; \}}
+\DoxyCodeLine{1590           \}}
+\DoxyCodeLine{1591         }
+\DoxyCodeLine{1592         out\_mem[i] = best\_g;}
+\DoxyCodeLine{1593         \}}
+\DoxyCodeLine{1594       \}}
+\DoxyCodeLine{1595 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{1596       \{}
+\DoxyCodeLine{1597       \textcolor{keywordflow}{for}(uword i=0; i<X\_n\_cols; ++i)}
+\DoxyCodeLine{1598         \{}
+\DoxyCodeLine{1599         \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{1600          }
+\DoxyCodeLine{1601         eT    best\_dist = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1602         uword best\_g    = 0;}
+\DoxyCodeLine{1603         }
+\DoxyCodeLine{1604         \textcolor{keywordflow}{for}(uword g=0; g<N\_gaus; ++g)}
+\DoxyCodeLine{1605           \{}
+\DoxyCodeLine{1606           \textcolor{keyword}{const} eT tmp\_dist = distance<eT,1>::eval(N\_dims, X\_colptr, means.colptr(g), X\_colptr);}
+\DoxyCodeLine{1607           }
+\DoxyCodeLine{1608           \textcolor{keywordflow}{if}(tmp\_dist <= best\_dist)  \{ best\_dist = tmp\_dist; best\_g = g; \}}
+\DoxyCodeLine{1609           \}}
+\DoxyCodeLine{1610         }
+\DoxyCodeLine{1611         out\_mem[i] = best\_g;}
+\DoxyCodeLine{1612         \}}
+\DoxyCodeLine{1613       \}}
+\DoxyCodeLine{1614 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{1615     \}}
+\DoxyCodeLine{1616   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1617   \textcolor{keywordflow}{if}(dist\_mode == prob\_dist)}
+\DoxyCodeLine{1618     \{}
+\DoxyCodeLine{1619 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1620       \{}
+\DoxyCodeLine{1621       \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(X\_n\_cols);}
+\DoxyCodeLine{1622       }
+\DoxyCodeLine{1623       \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{1624       }
+\DoxyCodeLine{1625       \textcolor{keyword}{const} eT* log\_hefts\_mem = log\_hefts.memptr();}
+\DoxyCodeLine{1626       }
+\DoxyCodeLine{1627 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1628       \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1629         \{}
+\DoxyCodeLine{1630         \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{1631         \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{1632         }
+\DoxyCodeLine{1633         \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{1634           \{}
+\DoxyCodeLine{1635           \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{1636            }
+\DoxyCodeLine{1637           eT    best\_p = -\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1638           uword best\_g = 0;}
+\DoxyCodeLine{1639           }
+\DoxyCodeLine{1640           \textcolor{keywordflow}{for}(uword g=0; g<N\_gaus; ++g)}
+\DoxyCodeLine{1641             \{}
+\DoxyCodeLine{1642             \textcolor{keyword}{const} eT tmp\_p = internal\_scalar\_log\_p(X\_colptr, g) + log\_hefts\_mem[g];}
+\DoxyCodeLine{1643             }
+\DoxyCodeLine{1644             \textcolor{keywordflow}{if}(tmp\_p >= best\_p)  \{ best\_p = tmp\_p; best\_g = g; \}}
+\DoxyCodeLine{1645             \}}
+\DoxyCodeLine{1646           }
+\DoxyCodeLine{1647           out\_mem[i] = best\_g;}
+\DoxyCodeLine{1648           \}}
+\DoxyCodeLine{1649         \}}
+\DoxyCodeLine{1650       \}}
+\DoxyCodeLine{1651 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{1652       \{}
+\DoxyCodeLine{1653       \textcolor{keyword}{const} eT* log\_hefts\_mem = log\_hefts.memptr();}
+\DoxyCodeLine{1654       }
+\DoxyCodeLine{1655       \textcolor{keywordflow}{for}(uword i=0; i<X\_n\_cols; ++i)}
+\DoxyCodeLine{1656         \{}
+\DoxyCodeLine{1657         \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{1658          }
+\DoxyCodeLine{1659         eT    best\_p = -\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1660         uword best\_g = 0;}
+\DoxyCodeLine{1661         }
+\DoxyCodeLine{1662         \textcolor{keywordflow}{for}(uword g=0; g<N\_gaus; ++g)}
+\DoxyCodeLine{1663           \{}
+\DoxyCodeLine{1664           \textcolor{keyword}{const} eT tmp\_p = internal\_scalar\_log\_p(X\_colptr, g) + log\_hefts\_mem[g];}
+\DoxyCodeLine{1665           }
+\DoxyCodeLine{1666           \textcolor{keywordflow}{if}(tmp\_p >= best\_p)  \{ best\_p = tmp\_p; best\_g = g; \}}
+\DoxyCodeLine{1667           \}}
+\DoxyCodeLine{1668         }
+\DoxyCodeLine{1669         out\_mem[i] = best\_g;}
+\DoxyCodeLine{1670         \}}
+\DoxyCodeLine{1671       \}}
+\DoxyCodeLine{1672 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{1673     \}}
+\DoxyCodeLine{1674   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1675     \{}
+\DoxyCodeLine{1676     arma\_debug\_check(\textcolor{keyword}{true}, \textcolor{stringliteral}{"{}gmm\_full::assign(): unsupported distance mode"{}});}
+\DoxyCodeLine{1677     \}}
+\DoxyCodeLine{1678   \}}
+\DoxyCodeLine{1679 }
+\DoxyCodeLine{1680 }
+\DoxyCodeLine{1681 }
+\DoxyCodeLine{1682 }
+\DoxyCodeLine{1683 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1684 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1685 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1686 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::internal\_raw\_hist}}(\mbox{\hyperlink{classRow}{urowvec}}\& hist, \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__dist__mode}{gmm\_dist\_mode}}\& dist\_mode)\textcolor{keyword}{ const}}
+\DoxyCodeLine{1687 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{1688   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1689   }
+\DoxyCodeLine{1690   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{1691   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{1692   }
+\DoxyCodeLine{1693   \textcolor{keyword}{const} uword X\_n\_cols = X.n\_cols;}
+\DoxyCodeLine{1694   }
+\DoxyCodeLine{1695   hist.zeros(N\_gaus);}
+\DoxyCodeLine{1696   }
+\DoxyCodeLine{1697   \textcolor{keywordflow}{if}(N\_gaus == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{1698   }
+\DoxyCodeLine{1699 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1700     \{}
+\DoxyCodeLine{1701     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(X\_n\_cols);}
+\DoxyCodeLine{1702     }
+\DoxyCodeLine{1703     \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{1704     }
+\DoxyCodeLine{1705     \mbox{\hyperlink{classfield}{field<urowvec>}} thread\_hist(n\_threads);}
+\DoxyCodeLine{1706     }
+\DoxyCodeLine{1707     \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)  \{ thread\_hist(t).zeros(N\_gaus); \}}
+\DoxyCodeLine{1708     }
+\DoxyCodeLine{1709     }
+\DoxyCodeLine{1710     \textcolor{keywordflow}{if}(dist\_mode == eucl\_dist)}
+\DoxyCodeLine{1711       \{}
+\DoxyCodeLine{1712 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1713       \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1714         \{}
+\DoxyCodeLine{1715         uword* thread\_hist\_mem = thread\_hist(t).memptr();}
+\DoxyCodeLine{1716         }
+\DoxyCodeLine{1717         \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{1718         \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{1719         }
+\DoxyCodeLine{1720         \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{1721           \{}
+\DoxyCodeLine{1722           \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{1723            }
+\DoxyCodeLine{1724           eT    best\_dist = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1725           uword best\_g    = 0;}
+\DoxyCodeLine{1726           }
+\DoxyCodeLine{1727           \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{1728             \{}
+\DoxyCodeLine{1729             \textcolor{keyword}{const} eT tmp\_dist = distance<eT,1>::eval(N\_dims, X\_colptr, means.colptr(g), X\_colptr);}
+\DoxyCodeLine{1730             }
+\DoxyCodeLine{1731             \textcolor{keywordflow}{if}(tmp\_dist <= best\_dist)  \{ best\_dist = tmp\_dist; best\_g = g; \}}
+\DoxyCodeLine{1732             \}}
+\DoxyCodeLine{1733           }
+\DoxyCodeLine{1734           thread\_hist\_mem[best\_g]++;}
+\DoxyCodeLine{1735           \}}
+\DoxyCodeLine{1736         \}}
+\DoxyCodeLine{1737       \}}
+\DoxyCodeLine{1738     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1739     \textcolor{keywordflow}{if}(dist\_mode == prob\_dist)}
+\DoxyCodeLine{1740       \{}
+\DoxyCodeLine{1741       \textcolor{keyword}{const} eT* log\_hefts\_mem = log\_hefts.memptr();}
+\DoxyCodeLine{1742       }
+\DoxyCodeLine{1743 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1744       \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1745         \{}
+\DoxyCodeLine{1746         uword* thread\_hist\_mem = thread\_hist(t).memptr();}
+\DoxyCodeLine{1747         }
+\DoxyCodeLine{1748         \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{1749         \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{1750         }
+\DoxyCodeLine{1751         \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{1752           \{}
+\DoxyCodeLine{1753           \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{1754             }
+\DoxyCodeLine{1755           eT    best\_p = -\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1756           uword best\_g = 0;}
+\DoxyCodeLine{1757           }
+\DoxyCodeLine{1758           \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{1759             \{}
+\DoxyCodeLine{1760             \textcolor{keyword}{const} eT tmp\_p = internal\_scalar\_log\_p(X\_colptr, g) + log\_hefts\_mem[g];}
+\DoxyCodeLine{1761             }
+\DoxyCodeLine{1762             \textcolor{keywordflow}{if}(tmp\_p >= best\_p)  \{ best\_p = tmp\_p; best\_g = g; \}}
+\DoxyCodeLine{1763             \}}
+\DoxyCodeLine{1764           }
+\DoxyCodeLine{1765           thread\_hist\_mem[best\_g]++;}
+\DoxyCodeLine{1766           \}}
+\DoxyCodeLine{1767         \}}
+\DoxyCodeLine{1768       \}}
+\DoxyCodeLine{1769     }
+\DoxyCodeLine{1770     \textcolor{comment}{// reduction}}
+\DoxyCodeLine{1771     \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1772       \{}
+\DoxyCodeLine{1773       hist += thread\_hist(t);}
+\DoxyCodeLine{1774       \}}
+\DoxyCodeLine{1775     \}}
+\DoxyCodeLine{1776 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{1777     \{}
+\DoxyCodeLine{1778     uword* hist\_mem = hist.memptr();}
+\DoxyCodeLine{1779     }
+\DoxyCodeLine{1780     \textcolor{keywordflow}{if}(dist\_mode == eucl\_dist)}
+\DoxyCodeLine{1781       \{}
+\DoxyCodeLine{1782       \textcolor{keywordflow}{for}(uword i=0; i<X\_n\_cols; ++i)}
+\DoxyCodeLine{1783         \{}
+\DoxyCodeLine{1784         \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{1785          }
+\DoxyCodeLine{1786         eT    best\_dist = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1787         uword best\_g    = 0;}
+\DoxyCodeLine{1788         }
+\DoxyCodeLine{1789         \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{1790           \{}
+\DoxyCodeLine{1791           \textcolor{keyword}{const} eT tmp\_dist = distance<eT,1>::eval(N\_dims, X\_colptr, means.colptr(g), X\_colptr);}
+\DoxyCodeLine{1792           }
+\DoxyCodeLine{1793           \textcolor{keywordflow}{if}(tmp\_dist <= best\_dist)  \{ best\_dist = tmp\_dist; best\_g = g; \}}
+\DoxyCodeLine{1794           \}}
+\DoxyCodeLine{1795         }
+\DoxyCodeLine{1796         hist\_mem[best\_g]++;}
+\DoxyCodeLine{1797         \}}
+\DoxyCodeLine{1798       \}}
+\DoxyCodeLine{1799     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1800     \textcolor{keywordflow}{if}(dist\_mode == prob\_dist)}
+\DoxyCodeLine{1801       \{}
+\DoxyCodeLine{1802       \textcolor{keyword}{const} eT* log\_hefts\_mem = log\_hefts.memptr();}
+\DoxyCodeLine{1803       }
+\DoxyCodeLine{1804       \textcolor{keywordflow}{for}(uword i=0; i<X\_n\_cols; ++i)}
+\DoxyCodeLine{1805         \{}
+\DoxyCodeLine{1806         \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{1807           }
+\DoxyCodeLine{1808         eT    best\_p = -\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1809         uword best\_g = 0;}
+\DoxyCodeLine{1810         }
+\DoxyCodeLine{1811         \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{1812           \{}
+\DoxyCodeLine{1813           \textcolor{keyword}{const} eT tmp\_p = internal\_scalar\_log\_p(X\_colptr, g) + log\_hefts\_mem[g];}
+\DoxyCodeLine{1814           }
+\DoxyCodeLine{1815           \textcolor{keywordflow}{if}(tmp\_p >= best\_p)  \{ best\_p = tmp\_p; best\_g = g; \}}
+\DoxyCodeLine{1816           \}}
+\DoxyCodeLine{1817         }
+\DoxyCodeLine{1818         hist\_mem[best\_g]++;}
+\DoxyCodeLine{1819         \}}
+\DoxyCodeLine{1820       \}}
+\DoxyCodeLine{1821     \}}
+\DoxyCodeLine{1822 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{1823   \}}
+\DoxyCodeLine{1824 }
+\DoxyCodeLine{1825 }
+\DoxyCodeLine{1826 }
+\DoxyCodeLine{1827 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1828 \textcolor{keyword}{template}<uword dist\_\textcolor{keywordtype}{id}>}
+\DoxyCodeLine{1829 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1830 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1831 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::generate\_initial\_means}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} \mbox{\hyperlink{structgmm__seed__mode}{gmm\_seed\_mode}}\& seed\_mode)}
+\DoxyCodeLine{1832   \{}
+\DoxyCodeLine{1833   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1834   }
+\DoxyCodeLine{1835   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{1836   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{1837   }
+\DoxyCodeLine{1838   \textcolor{keywordflow}{if}( (seed\_mode == static\_subset) || (seed\_mode == random\_subset) )}
+\DoxyCodeLine{1839     \{}
+\DoxyCodeLine{1840     \mbox{\hyperlink{classCol}{uvec}} initial\_indices;}
+\DoxyCodeLine{1841     }
+\DoxyCodeLine{1842          \textcolor{keywordflow}{if}(seed\_mode == static\_subset)  \{ initial\_indices = linspace<uvec>(0, X.n\_cols-\/1, N\_gaus); \}}
+\DoxyCodeLine{1843     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(seed\_mode == random\_subset)  \{ initial\_indices = randperm<uvec>(X.n\_cols, N\_gaus);      \}}
+\DoxyCodeLine{1844     }
+\DoxyCodeLine{1845     \textcolor{comment}{// initial\_indices.print("{}initial\_indices:"{});}}
+\DoxyCodeLine{1846     }
+\DoxyCodeLine{1847     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means) = X.cols(initial\_indices);}
+\DoxyCodeLine{1848     \}}
+\DoxyCodeLine{1849   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{1850   \textcolor{keywordflow}{if}( (seed\_mode == static\_spread) || (seed\_mode == random\_spread) )}
+\DoxyCodeLine{1851     \{}
+\DoxyCodeLine{1852     \textcolor{comment}{// going through all of the samples can be extremely time consuming;}}
+\DoxyCodeLine{1853     \textcolor{comment}{// instead, if there are enough samples, randomly choose samples with probability 0.1}}
+\DoxyCodeLine{1854     }
+\DoxyCodeLine{1855     \textcolor{keyword}{const} \textcolor{keywordtype}{bool}  use\_sampling = ((X.n\_cols/uword(100)) > N\_gaus);}
+\DoxyCodeLine{1856     \textcolor{keyword}{const} uword step         = (use\_sampling) ? uword(10) : uword(1);}
+\DoxyCodeLine{1857     }
+\DoxyCodeLine{1858     uword start\_index = 0;}
+\DoxyCodeLine{1859     }
+\DoxyCodeLine{1860          \textcolor{keywordflow}{if}(seed\_mode == static\_spread)  \{ start\_index = X.n\_cols / 2;                                         \}}
+\DoxyCodeLine{1861     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(seed\_mode == random\_spread)  \{ start\_index = as\_scalar(randi<uvec>(1, \mbox{\hyperlink{classdistr__param}{distr\_param}}(0,X.n\_cols-\/1))); \}}
+\DoxyCodeLine{1862     }
+\DoxyCodeLine{1863     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means).col(0) = X.unsafe\_col(start\_index);}
+\DoxyCodeLine{1864     }
+\DoxyCodeLine{1865     \textcolor{keyword}{const} eT* mah\_aux\_mem = mah\_aux.memptr();}
+\DoxyCodeLine{1866     }
+\DoxyCodeLine{1867     \mbox{\hyperlink{classrunning__stat}{running\_stat<double>}} rs;}
+\DoxyCodeLine{1868     }
+\DoxyCodeLine{1869     \textcolor{keywordflow}{for}(uword g=1; g < N\_gaus; ++g)}
+\DoxyCodeLine{1870       \{}
+\DoxyCodeLine{1871       eT    max\_dist = eT(0);}
+\DoxyCodeLine{1872       uword best\_i   = uword(0);}
+\DoxyCodeLine{1873       uword start\_i  = uword(0);}
+\DoxyCodeLine{1874       }
+\DoxyCodeLine{1875       \textcolor{keywordflow}{if}(use\_sampling)}
+\DoxyCodeLine{1876         \{}
+\DoxyCodeLine{1877         uword start\_i\_proposed = uword(0);}
+\DoxyCodeLine{1878         }
+\DoxyCodeLine{1879         \textcolor{keywordflow}{if}(seed\_mode == static\_spread)  \{ start\_i\_proposed = g \% uword(10);                               \}}
+\DoxyCodeLine{1880         \textcolor{keywordflow}{if}(seed\_mode == random\_spread)  \{ start\_i\_proposed = as\_scalar(randi<uvec>(1, \mbox{\hyperlink{classdistr__param}{distr\_param}}(0,9))); \}}
+\DoxyCodeLine{1881         }
+\DoxyCodeLine{1882         \textcolor{keywordflow}{if}(start\_i\_proposed < X.n\_cols)  \{ start\_i = start\_i\_proposed; \}}
+\DoxyCodeLine{1883         \}}
+\DoxyCodeLine{1884       }
+\DoxyCodeLine{1885       }
+\DoxyCodeLine{1886       \textcolor{keywordflow}{for}(uword i=start\_i; i < X.n\_cols; i += step)}
+\DoxyCodeLine{1887         \{}
+\DoxyCodeLine{1888         rs.\mbox{\hyperlink{group__running__stat_gab5299a8b23735c18f080c64cbce6863b}{reset}}();}
+\DoxyCodeLine{1889         }
+\DoxyCodeLine{1890         \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{1891         }
+\DoxyCodeLine{1892         \textcolor{keywordtype}{bool} ignore\_i = \textcolor{keyword}{false};}
+\DoxyCodeLine{1893         }
+\DoxyCodeLine{1894         \textcolor{comment}{// find the average distance between sample i and the means so far}}
+\DoxyCodeLine{1895         \textcolor{keywordflow}{for}(uword h = 0; h < g; ++h)}
+\DoxyCodeLine{1896           \{}
+\DoxyCodeLine{1897           \textcolor{keyword}{const} eT dist = distance<eT,dist\_id>::eval(N\_dims, X\_colptr, means.colptr(h), mah\_aux\_mem);}
+\DoxyCodeLine{1898           }
+\DoxyCodeLine{1899           \textcolor{comment}{// ignore sample already selected as a mean}}
+\DoxyCodeLine{1900           \textcolor{keywordflow}{if}(dist == eT(0))  \{ ignore\_i = \textcolor{keyword}{true}; \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{1901           \textcolor{keywordflow}{else}               \{ rs(dist);               \}}
+\DoxyCodeLine{1902           \}}
+\DoxyCodeLine{1903         }
+\DoxyCodeLine{1904         \textcolor{keywordflow}{if}( (rs.\mbox{\hyperlink{group__running__stat_ga3a67c2c60ce02164f91c4174b51fc61b}{mean}}() >= max\_dist) \&\& (ignore\_i == \textcolor{keyword}{false}))}
+\DoxyCodeLine{1905           \{}
+\DoxyCodeLine{1906           max\_dist = eT(rs.\mbox{\hyperlink{group__running__stat_ga3a67c2c60ce02164f91c4174b51fc61b}{mean}}()); best\_i = i;}
+\DoxyCodeLine{1907           \}}
+\DoxyCodeLine{1908         \}}
+\DoxyCodeLine{1909       }
+\DoxyCodeLine{1910       \textcolor{comment}{// set the mean to the sample that is the furthest away from the means so far}}
+\DoxyCodeLine{1911       \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means).col(g) = X.unsafe\_col(best\_i);}
+\DoxyCodeLine{1912       \}}
+\DoxyCodeLine{1913     \}}
+\DoxyCodeLine{1914   }
+\DoxyCodeLine{1915   \textcolor{comment}{// get\_cout\_stream() << "{}generate\_initial\_means():"{} << '\(\backslash\)n';}}
+\DoxyCodeLine{1916   \textcolor{comment}{// means.print();}}
+\DoxyCodeLine{1917   \}}
+\DoxyCodeLine{1918 }
+\DoxyCodeLine{1919 }
+\DoxyCodeLine{1920 }
+\DoxyCodeLine{1921 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{1922 \textcolor{keyword}{template}<uword dist\_\textcolor{keywordtype}{id}>}
+\DoxyCodeLine{1923 \textcolor{keyword}{inline}}
+\DoxyCodeLine{1924 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{1925 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::generate\_initial\_params}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} eT var\_floor)}
+\DoxyCodeLine{1926   \{}
+\DoxyCodeLine{1927   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{1928   }
+\DoxyCodeLine{1929   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{1930   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{1931   }
+\DoxyCodeLine{1932   \textcolor{keyword}{const} eT* mah\_aux\_mem = mah\_aux.memptr();}
+\DoxyCodeLine{1933   }
+\DoxyCodeLine{1934   \textcolor{keyword}{const} uword X\_n\_cols = X.n\_cols;}
+\DoxyCodeLine{1935   }
+\DoxyCodeLine{1936   \textcolor{keywordflow}{if}(X\_n\_cols == 0)  \{ \textcolor{keywordflow}{return}; \}}
+\DoxyCodeLine{1937   }
+\DoxyCodeLine{1938   \textcolor{comment}{// as the covariances are calculated via accumulators,}}
+\DoxyCodeLine{1939   \textcolor{comment}{// the means also need to be calculated via accumulators to ensure numerical consistency}}
+\DoxyCodeLine{1940   }
+\DoxyCodeLine{1941   \mbox{\hyperlink{classMat}{Mat<eT>}} acc\_means(N\_dims, N\_gaus);}
+\DoxyCodeLine{1942   \mbox{\hyperlink{classMat}{Mat<eT>}} acc\_dcovs(N\_dims, N\_gaus);}
+\DoxyCodeLine{1943   }
+\DoxyCodeLine{1944   \mbox{\hyperlink{classRow}{Row<uword>}} acc\_hefts(N\_gaus, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{1945   }
+\DoxyCodeLine{1946   uword* acc\_hefts\_mem = acc\_hefts.memptr();}
+\DoxyCodeLine{1947   }
+\DoxyCodeLine{1948 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{1949     \{}
+\DoxyCodeLine{1950     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(X\_n\_cols);}
+\DoxyCodeLine{1951     }
+\DoxyCodeLine{1952     \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{1953     }
+\DoxyCodeLine{1954     \mbox{\hyperlink{classfield}{field< Mat<eT>}}    > t\_acc\_means(n\_threads);}
+\DoxyCodeLine{1955     \mbox{\hyperlink{classfield}{field< Mat<eT>}}    > t\_acc\_dcovs(n\_threads);}
+\DoxyCodeLine{1956     \mbox{\hyperlink{classfield}{field< Row<uword>}} > t\_acc\_hefts(n\_threads);}
+\DoxyCodeLine{1957     }
+\DoxyCodeLine{1958     \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1959       \{}
+\DoxyCodeLine{1960       t\_acc\_means(t).zeros(N\_dims, N\_gaus);}
+\DoxyCodeLine{1961       t\_acc\_dcovs(t).zeros(N\_dims, N\_gaus);}
+\DoxyCodeLine{1962       t\_acc\_hefts(t).zeros(N\_gaus);}
+\DoxyCodeLine{1963       \}}
+\DoxyCodeLine{1964     }
+\DoxyCodeLine{1965 \textcolor{preprocessor}{    \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{1966     \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{1967       \{}
+\DoxyCodeLine{1968       uword* t\_acc\_hefts\_mem = t\_acc\_hefts(t).memptr();}
+\DoxyCodeLine{1969       }
+\DoxyCodeLine{1970       \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{1971       \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{1972       }
+\DoxyCodeLine{1973       \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{1974         \{}
+\DoxyCodeLine{1975         \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{1976         }
+\DoxyCodeLine{1977         eT     min\_dist = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{1978         uword  best\_g   = 0;}
+\DoxyCodeLine{1979         }
+\DoxyCodeLine{1980         \textcolor{keywordflow}{for}(uword g=0; g<N\_gaus; ++g)}
+\DoxyCodeLine{1981           \{}
+\DoxyCodeLine{1982           \textcolor{keyword}{const} eT dist = distance<eT,dist\_id>::eval(N\_dims, X\_colptr, means.colptr(g), mah\_aux\_mem);}
+\DoxyCodeLine{1983           }
+\DoxyCodeLine{1984           \textcolor{keywordflow}{if}(dist < min\_dist)  \{ min\_dist = dist;  best\_g = g; \}}
+\DoxyCodeLine{1985           \}}
+\DoxyCodeLine{1986         }
+\DoxyCodeLine{1987         eT* t\_acc\_mean = t\_acc\_means(t).colptr(best\_g);}
+\DoxyCodeLine{1988         eT* t\_acc\_dcov = t\_acc\_dcovs(t).colptr(best\_g);}
+\DoxyCodeLine{1989         }
+\DoxyCodeLine{1990         \textcolor{keywordflow}{for}(uword d=0; d<N\_dims; ++d)}
+\DoxyCodeLine{1991           \{}
+\DoxyCodeLine{1992           \textcolor{keyword}{const} eT x\_d = X\_colptr[d];}
+\DoxyCodeLine{1993           }
+\DoxyCodeLine{1994           t\_acc\_mean[d] += x\_d;}
+\DoxyCodeLine{1995           t\_acc\_dcov[d] += x\_d*x\_d;}
+\DoxyCodeLine{1996           \}}
+\DoxyCodeLine{1997         }
+\DoxyCodeLine{1998         t\_acc\_hefts\_mem[best\_g]++;}
+\DoxyCodeLine{1999         \}}
+\DoxyCodeLine{2000       \}}
+\DoxyCodeLine{2001     }
+\DoxyCodeLine{2002     \textcolor{comment}{// reduction}}
+\DoxyCodeLine{2003     acc\_means = t\_acc\_means(0);}
+\DoxyCodeLine{2004     acc\_dcovs = t\_acc\_dcovs(0);}
+\DoxyCodeLine{2005     acc\_hefts = t\_acc\_hefts(0);}
+\DoxyCodeLine{2006     }
+\DoxyCodeLine{2007     \textcolor{keywordflow}{for}(uword t=1; t < n\_threads; ++t)}
+\DoxyCodeLine{2008       \{}
+\DoxyCodeLine{2009       acc\_means += t\_acc\_means(t);}
+\DoxyCodeLine{2010       acc\_dcovs += t\_acc\_dcovs(t);}
+\DoxyCodeLine{2011       acc\_hefts += t\_acc\_hefts(t);}
+\DoxyCodeLine{2012       \}}
+\DoxyCodeLine{2013     \}}
+\DoxyCodeLine{2014 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{2015     \{}
+\DoxyCodeLine{2016     \textcolor{keywordflow}{for}(uword i=0; i<X\_n\_cols; ++i)}
+\DoxyCodeLine{2017       \{}
+\DoxyCodeLine{2018       \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{2019       }
+\DoxyCodeLine{2020       eT     min\_dist = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{2021       uword  best\_g   = 0;}
+\DoxyCodeLine{2022       }
+\DoxyCodeLine{2023       \textcolor{keywordflow}{for}(uword g=0; g<N\_gaus; ++g)}
+\DoxyCodeLine{2024         \{}
+\DoxyCodeLine{2025         \textcolor{keyword}{const} eT dist = distance<eT,dist\_id>::eval(N\_dims, X\_colptr, means.colptr(g), mah\_aux\_mem);}
+\DoxyCodeLine{2026         }
+\DoxyCodeLine{2027         \textcolor{keywordflow}{if}(dist < min\_dist)  \{ min\_dist = dist;  best\_g = g; \}}
+\DoxyCodeLine{2028         \}}
+\DoxyCodeLine{2029       }
+\DoxyCodeLine{2030       eT* acc\_mean = acc\_means.colptr(best\_g);}
+\DoxyCodeLine{2031       eT* acc\_dcov = acc\_dcovs.colptr(best\_g);}
+\DoxyCodeLine{2032       }
+\DoxyCodeLine{2033       \textcolor{keywordflow}{for}(uword d=0; d<N\_dims; ++d)}
+\DoxyCodeLine{2034         \{}
+\DoxyCodeLine{2035         \textcolor{keyword}{const} eT x\_d = X\_colptr[d];}
+\DoxyCodeLine{2036         }
+\DoxyCodeLine{2037         acc\_mean[d] += x\_d;}
+\DoxyCodeLine{2038         acc\_dcov[d] += x\_d*x\_d;}
+\DoxyCodeLine{2039         \}}
+\DoxyCodeLine{2040       }
+\DoxyCodeLine{2041       acc\_hefts\_mem[best\_g]++;}
+\DoxyCodeLine{2042       \}}
+\DoxyCodeLine{2043     \}}
+\DoxyCodeLine{2044 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{2045   }
+\DoxyCodeLine{2046   eT* hefts\_mem = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts).memptr();}
+\DoxyCodeLine{2047   }
+\DoxyCodeLine{2048   \textcolor{keywordflow}{for}(uword g=0; g<N\_gaus; ++g)}
+\DoxyCodeLine{2049     \{}
+\DoxyCodeLine{2050     \textcolor{keyword}{const} eT*   acc\_mean = acc\_means.colptr(g);}
+\DoxyCodeLine{2051     \textcolor{keyword}{const} eT*   acc\_dcov = acc\_dcovs.colptr(g);}
+\DoxyCodeLine{2052     \textcolor{keyword}{const} uword acc\_heft = acc\_hefts\_mem[g];}
+\DoxyCodeLine{2053     }
+\DoxyCodeLine{2054     eT* mean = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means).colptr(g);}
+\DoxyCodeLine{2055     }
+\DoxyCodeLine{2056     \mbox{\hyperlink{classMat}{Mat<eT>}}\& fcov = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(fcovs).slice(g);}
+\DoxyCodeLine{2057     fcov.zeros();}
+\DoxyCodeLine{2058     }
+\DoxyCodeLine{2059     \textcolor{keywordflow}{for}(uword d=0; d<N\_dims; ++d)}
+\DoxyCodeLine{2060       \{}
+\DoxyCodeLine{2061       \textcolor{keyword}{const} eT tmp = acc\_mean[d] / eT(acc\_heft);}
+\DoxyCodeLine{2062       }
+\DoxyCodeLine{2063       mean[d]      = (acc\_heft >= 1) ? tmp : eT(0);}
+\DoxyCodeLine{2064       fcov.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(d,d) = (acc\_heft >= 2) ? eT((acc\_dcov[d] / eT(acc\_heft)) -\/ (tmp*tmp)) : eT(var\_floor);}
+\DoxyCodeLine{2065       \}}
+\DoxyCodeLine{2066     }
+\DoxyCodeLine{2067     hefts\_mem[g] = eT(acc\_heft) / eT(X\_n\_cols);}
+\DoxyCodeLine{2068     \}}
+\DoxyCodeLine{2069   }
+\DoxyCodeLine{2070   em\_fix\_params(var\_floor);}
+\DoxyCodeLine{2071   \}}
+\DoxyCodeLine{2072 }
+\DoxyCodeLine{2073 }
+\DoxyCodeLine{2074 }
+\DoxyCodeLine{2076 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{2077 \textcolor{keyword}{template}<uword dist\_\textcolor{keywordtype}{id}>}
+\DoxyCodeLine{2078 \textcolor{keyword}{inline}}
+\DoxyCodeLine{2079 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{2080 \mbox{\hyperlink{classgmm__priv_1_1gmm__full_a09aca8a1f5e087ed1e8fa2d930f99aa0}{gmm\_full<eT>::km\_iterate}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword max\_iter, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} verbose)}
+\DoxyCodeLine{2081   \{}
+\DoxyCodeLine{2082   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{2083   }
+\DoxyCodeLine{2084   \textcolor{keywordflow}{if}(verbose)}
+\DoxyCodeLine{2085     \{}
+\DoxyCodeLine{2086     get\_cout\_stream().unsetf(ios::showbase);}
+\DoxyCodeLine{2087     get\_cout\_stream().unsetf(ios::uppercase);}
+\DoxyCodeLine{2088     get\_cout\_stream().unsetf(ios::showpos);}
+\DoxyCodeLine{2089     get\_cout\_stream().unsetf(ios::scientific);}
+\DoxyCodeLine{2090     }
+\DoxyCodeLine{2091     get\_cout\_stream().setf(ios::right);}
+\DoxyCodeLine{2092     get\_cout\_stream().setf(ios::fixed);}
+\DoxyCodeLine{2093     \}}
+\DoxyCodeLine{2094   }
+\DoxyCodeLine{2095   \textcolor{keyword}{const} uword X\_n\_cols = X.n\_cols;}
+\DoxyCodeLine{2096   }
+\DoxyCodeLine{2097   \textcolor{keywordflow}{if}(X\_n\_cols == 0)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{2098   }
+\DoxyCodeLine{2099   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{2100   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{2101   }
+\DoxyCodeLine{2102   \textcolor{keyword}{const} eT* mah\_aux\_mem = mah\_aux.memptr();}
+\DoxyCodeLine{2103   }
+\DoxyCodeLine{2104   \mbox{\hyperlink{classMat}{Mat<eT>}}    acc\_means(N\_dims, N\_gaus, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{2105   \mbox{\hyperlink{classRow}{Row<uword>}} acc\_hefts(        N\_gaus, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{2106   \mbox{\hyperlink{classRow}{Row<uword>}} last\_indx(        N\_gaus, \mbox{\hyperlink{structarma__zeros__indicator}{arma\_zeros\_indicator}}());}
+\DoxyCodeLine{2107   }
+\DoxyCodeLine{2108   \mbox{\hyperlink{classMat}{Mat<eT>}} new\_means = means;}
+\DoxyCodeLine{2109   \mbox{\hyperlink{classMat}{Mat<eT>}} old\_means = means;}
+\DoxyCodeLine{2110   }
+\DoxyCodeLine{2111   \mbox{\hyperlink{classgmm__priv_1_1running__mean__scalar}{running\_mean\_scalar<eT>}} rs\_delta;}
+\DoxyCodeLine{2112   }
+\DoxyCodeLine{2113 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{2114     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(X\_n\_cols);}
+\DoxyCodeLine{2115     \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{2116     }
+\DoxyCodeLine{2117     \mbox{\hyperlink{classfield}{field< Mat<eT>}}    > t\_acc\_means(n\_threads);}
+\DoxyCodeLine{2118     \mbox{\hyperlink{classfield}{field< Row<uword>}} > t\_acc\_hefts(n\_threads);}
+\DoxyCodeLine{2119     \mbox{\hyperlink{classfield}{field< Row<uword>}} > t\_last\_indx(n\_threads);}
+\DoxyCodeLine{2120 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{2121     \textcolor{keyword}{const} uword n\_threads = 1;}
+\DoxyCodeLine{2122 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{2123   }
+\DoxyCodeLine{2124   \textcolor{keywordflow}{if}(verbose)  \{ get\_cout\_stream() << \textcolor{stringliteral}{"{}gmm\_full::learn(): k-\/means: n\_threads: "{}} << n\_threads << \textcolor{charliteral}{'\(\backslash\)n'};  get\_cout\_stream().flush(); \}}
+\DoxyCodeLine{2125   }
+\DoxyCodeLine{2126   \textcolor{keywordflow}{for}(uword iter=1; iter <= max\_iter; ++iter)}
+\DoxyCodeLine{2127     \{}
+\DoxyCodeLine{2128 \textcolor{preprocessor}{    \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{2129       \{}
+\DoxyCodeLine{2130       \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{2131         \{}
+\DoxyCodeLine{2132         t\_acc\_means(t).zeros(N\_dims, N\_gaus);}
+\DoxyCodeLine{2133         t\_acc\_hefts(t).zeros(N\_gaus);}
+\DoxyCodeLine{2134         t\_last\_indx(t).zeros(N\_gaus);}
+\DoxyCodeLine{2135         \}}
+\DoxyCodeLine{2136       }
+\DoxyCodeLine{2137 \textcolor{preprocessor}{      \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{2138       \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{2139         \{}
+\DoxyCodeLine{2140         \mbox{\hyperlink{classMat}{Mat<eT>}}\& t\_acc\_means\_t   = t\_acc\_means(t);}
+\DoxyCodeLine{2141         uword*   t\_acc\_hefts\_mem = t\_acc\_hefts(t).memptr();}
+\DoxyCodeLine{2142         uword*   t\_last\_indx\_mem = t\_last\_indx(t).memptr();}
+\DoxyCodeLine{2143         }
+\DoxyCodeLine{2144         \textcolor{keyword}{const} uword start\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t);}
+\DoxyCodeLine{2145         \textcolor{keyword}{const} uword   end\_index = boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t);}
+\DoxyCodeLine{2146         }
+\DoxyCodeLine{2147         \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; ++i)}
+\DoxyCodeLine{2148           \{}
+\DoxyCodeLine{2149           \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{2150           }
+\DoxyCodeLine{2151           eT     min\_dist = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{2152           uword  best\_g   = 0;}
+\DoxyCodeLine{2153           }
+\DoxyCodeLine{2154           \textcolor{keywordflow}{for}(uword g=0; g<N\_gaus; ++g)}
+\DoxyCodeLine{2155             \{}
+\DoxyCodeLine{2156             \textcolor{keyword}{const} eT dist = \mbox{\hyperlink{structgmm__priv_1_1distance}{distance<eT,dist\_id>::eval}}(N\_dims, X\_colptr, old\_means.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(g), mah\_aux\_mem);}
+\DoxyCodeLine{2157             }
+\DoxyCodeLine{2158             \textcolor{keywordflow}{if}(dist < min\_dist)  \{ min\_dist = dist;  best\_g = g; \}}
+\DoxyCodeLine{2159             \}}
+\DoxyCodeLine{2160           }
+\DoxyCodeLine{2161           eT* t\_acc\_mean = t\_acc\_means\_t.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(best\_g);}
+\DoxyCodeLine{2162           }
+\DoxyCodeLine{2163           \textcolor{keywordflow}{for}(uword d=0; d<N\_dims; ++d)  \{ t\_acc\_mean[d] += X\_colptr[d]; \}}
+\DoxyCodeLine{2164           }
+\DoxyCodeLine{2165           t\_acc\_hefts\_mem[best\_g]++;}
+\DoxyCodeLine{2166           t\_last\_indx\_mem[best\_g] = i;}
+\DoxyCodeLine{2167           \}}
+\DoxyCodeLine{2168         \}}
+\DoxyCodeLine{2169       }
+\DoxyCodeLine{2170       \textcolor{comment}{// reduction}}
+\DoxyCodeLine{2171       }
+\DoxyCodeLine{2172       acc\_means = t\_acc\_means(0);}
+\DoxyCodeLine{2173       acc\_hefts = t\_acc\_hefts(0);}
+\DoxyCodeLine{2174       }
+\DoxyCodeLine{2175       \textcolor{keywordflow}{for}(uword t=1; t < n\_threads; ++t)}
+\DoxyCodeLine{2176         \{}
+\DoxyCodeLine{2177         acc\_means += t\_acc\_means(t);}
+\DoxyCodeLine{2178         acc\_hefts += t\_acc\_hefts(t);}
+\DoxyCodeLine{2179         \}}
+\DoxyCodeLine{2180       }
+\DoxyCodeLine{2181       \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus;    ++g)}
+\DoxyCodeLine{2182       \textcolor{keywordflow}{for}(uword t=0; t < n\_threads; ++t)}
+\DoxyCodeLine{2183         \{}
+\DoxyCodeLine{2184         \textcolor{keywordflow}{if}( t\_acc\_hefts(t)(g) >= 1 )  \{ last\_indx(g) = t\_last\_indx(t)(g); \}}
+\DoxyCodeLine{2185         \}}
+\DoxyCodeLine{2186       \}}
+\DoxyCodeLine{2187 \textcolor{preprocessor}{    \#else}}
+\DoxyCodeLine{2188       \{}
+\DoxyCodeLine{2189       uword* acc\_hefts\_mem = acc\_hefts.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{2190       uword* last\_indx\_mem = last\_indx.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{2191       }
+\DoxyCodeLine{2192       \textcolor{keywordflow}{for}(uword i=0; i < X\_n\_cols; ++i)}
+\DoxyCodeLine{2193         \{}
+\DoxyCodeLine{2194         \textcolor{keyword}{const} eT* X\_colptr = X.colptr(i);}
+\DoxyCodeLine{2195         }
+\DoxyCodeLine{2196         eT     min\_dist = \mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{2197         uword  best\_g   = 0;}
+\DoxyCodeLine{2198         }
+\DoxyCodeLine{2199         \textcolor{keywordflow}{for}(uword g=0; g<N\_gaus; ++g)}
+\DoxyCodeLine{2200           \{}
+\DoxyCodeLine{2201           \textcolor{keyword}{const} eT dist = \mbox{\hyperlink{structgmm__priv_1_1distance}{distance<eT,dist\_id>::eval}}(N\_dims, X\_colptr, old\_means.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(g), mah\_aux\_mem);}
+\DoxyCodeLine{2202           }
+\DoxyCodeLine{2203           \textcolor{keywordflow}{if}(dist < min\_dist)  \{ min\_dist = dist;  best\_g = g; \}}
+\DoxyCodeLine{2204           \}}
+\DoxyCodeLine{2205         }
+\DoxyCodeLine{2206         eT* acc\_mean = acc\_means.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(best\_g);}
+\DoxyCodeLine{2207         }
+\DoxyCodeLine{2208         \textcolor{keywordflow}{for}(uword d=0; d<N\_dims; ++d)  \{ acc\_mean[d] += X\_colptr[d]; \}}
+\DoxyCodeLine{2209         }
+\DoxyCodeLine{2210         acc\_hefts\_mem[best\_g]++;}
+\DoxyCodeLine{2211         last\_indx\_mem[best\_g] = i;}
+\DoxyCodeLine{2212         \}}
+\DoxyCodeLine{2213       \}}
+\DoxyCodeLine{2214 \textcolor{preprocessor}{    \#endif}}
+\DoxyCodeLine{2215     }
+\DoxyCodeLine{2216     \textcolor{comment}{// generate new means}}
+\DoxyCodeLine{2217     }
+\DoxyCodeLine{2218     uword* acc\_hefts\_mem = acc\_hefts.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{2219     }
+\DoxyCodeLine{2220     \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{2221       \{}
+\DoxyCodeLine{2222       \textcolor{keyword}{const} eT*   acc\_mean = acc\_means.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(g);}
+\DoxyCodeLine{2223       \textcolor{keyword}{const} uword acc\_heft = acc\_hefts\_mem[g];}
+\DoxyCodeLine{2224       }
+\DoxyCodeLine{2225       eT* new\_mean = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(new\_means).colptr(g);}
+\DoxyCodeLine{2226   }
+\DoxyCodeLine{2227       \textcolor{keywordflow}{for}(uword d=0; d<N\_dims; ++d)}
+\DoxyCodeLine{2228         \{}
+\DoxyCodeLine{2229         new\_mean[d] = (acc\_heft >= 1) ? (acc\_mean[d] / eT(acc\_heft)) : eT(0);}
+\DoxyCodeLine{2230         \}}
+\DoxyCodeLine{2231       \}}
+\DoxyCodeLine{2232     }
+\DoxyCodeLine{2233     }
+\DoxyCodeLine{2234     \textcolor{comment}{// heuristics to resurrect dead means}}
+\DoxyCodeLine{2235     }
+\DoxyCodeLine{2236     \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{uvec}} dead\_gs = find(acc\_hefts == uword(0));}
+\DoxyCodeLine{2237     }
+\DoxyCodeLine{2238     \textcolor{keywordflow}{if}(dead\_gs.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}} > 0)}
+\DoxyCodeLine{2239       \{}
+\DoxyCodeLine{2240       \textcolor{keywordflow}{if}(verbose)  \{ get\_cout\_stream() << \textcolor{stringliteral}{"{}gmm\_full::learn(): k-\/means: recovering from dead means\(\backslash\)n"{}}; get\_cout\_stream().flush(); \}}
+\DoxyCodeLine{2241       }
+\DoxyCodeLine{2242       uword* last\_indx\_mem = last\_indx.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{2243     }
+\DoxyCodeLine{2244       \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{uvec}} live\_gs = sort( find(acc\_hefts >= uword(2)), \textcolor{stringliteral}{"{}descend"{}} );}
+\DoxyCodeLine{2245       }
+\DoxyCodeLine{2246       \textcolor{keywordflow}{if}(live\_gs.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}} == 0)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{2247       }
+\DoxyCodeLine{2248       uword live\_gs\_count  = 0;}
+\DoxyCodeLine{2249       }
+\DoxyCodeLine{2250       \textcolor{keywordflow}{for}(uword dead\_gs\_count = 0; dead\_gs\_count < dead\_gs.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}}; ++dead\_gs\_count)}
+\DoxyCodeLine{2251         \{}
+\DoxyCodeLine{2252         \textcolor{keyword}{const} uword dead\_g\_id = dead\_gs(dead\_gs\_count);}
+\DoxyCodeLine{2253         }
+\DoxyCodeLine{2254         uword proposed\_i = 0;}
+\DoxyCodeLine{2255         }
+\DoxyCodeLine{2256         \textcolor{keywordflow}{if}(live\_gs\_count < live\_gs.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}})}
+\DoxyCodeLine{2257           \{}
+\DoxyCodeLine{2258           \textcolor{keyword}{const} uword live\_g\_id = live\_gs(live\_gs\_count);  ++live\_gs\_count;}
+\DoxyCodeLine{2259           }
+\DoxyCodeLine{2260           \textcolor{keywordflow}{if}(live\_g\_id == dead\_g\_id)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{2261           }
+\DoxyCodeLine{2262           \textcolor{comment}{// recover by using a sample from a known good mean}}
+\DoxyCodeLine{2263           proposed\_i = last\_indx\_mem[live\_g\_id];}
+\DoxyCodeLine{2264           \}}
+\DoxyCodeLine{2265         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{2266           \{}
+\DoxyCodeLine{2267           \textcolor{comment}{// recover by using a randomly seleced sample (last resort)}}
+\DoxyCodeLine{2268           proposed\_i = as\_scalar(randi<uvec>(1, \mbox{\hyperlink{classdistr__param}{distr\_param}}(0,X\_n\_cols-\/1)));}
+\DoxyCodeLine{2269           \}}
+\DoxyCodeLine{2270         }
+\DoxyCodeLine{2271         \textcolor{keywordflow}{if}(proposed\_i >= X\_n\_cols)  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{2272         }
+\DoxyCodeLine{2273         new\_means.\mbox{\hyperlink{group__Mat_gab68ba7bbceb5544bbd0f6f00dfe6b328}{col}}(dead\_g\_id) = X.col(proposed\_i);}
+\DoxyCodeLine{2274         \}}
+\DoxyCodeLine{2275       \}}
+\DoxyCodeLine{2276 }
+\DoxyCodeLine{2277     rs\_delta.reset();}
+\DoxyCodeLine{2278     }
+\DoxyCodeLine{2279     \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{2280       \{}
+\DoxyCodeLine{2281       rs\_delta( \mbox{\hyperlink{structgmm__priv_1_1distance}{distance<eT,dist\_id>::eval}}(N\_dims, old\_means.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(g), new\_means.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(g), mah\_aux\_mem) );}
+\DoxyCodeLine{2282       \}}
+\DoxyCodeLine{2283     }
+\DoxyCodeLine{2284     \textcolor{keywordflow}{if}(verbose)}
+\DoxyCodeLine{2285       \{}
+\DoxyCodeLine{2286       get\_cout\_stream() << \textcolor{stringliteral}{"{}gmm\_full::learn(): k-\/means: iteration: "{}};}
+\DoxyCodeLine{2287       get\_cout\_stream().unsetf(ios::scientific);}
+\DoxyCodeLine{2288       get\_cout\_stream().setf(ios::fixed);}
+\DoxyCodeLine{2289       get\_cout\_stream().width(std::streamsize(4));}
+\DoxyCodeLine{2290       get\_cout\_stream() << iter;}
+\DoxyCodeLine{2291       get\_cout\_stream() << \textcolor{stringliteral}{"{}   delta: "{}};}
+\DoxyCodeLine{2292       get\_cout\_stream().unsetf(ios::fixed);}
+\DoxyCodeLine{2293       \textcolor{comment}{//get\_cout\_stream().setf(ios::scientific);}}
+\DoxyCodeLine{2294       get\_cout\_stream() << rs\_delta.mean() << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{2295       get\_cout\_stream().flush();}
+\DoxyCodeLine{2296       \}}
+\DoxyCodeLine{2297     }
+\DoxyCodeLine{2298     arma::swap(old\_means, new\_means);}
+\DoxyCodeLine{2299     }
+\DoxyCodeLine{2300     \textcolor{keywordflow}{if}(rs\_delta.mean() <= \mbox{\hyperlink{classDatum}{Datum<eT>::eps}})  \{ \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{2301     \}}
+\DoxyCodeLine{2302   }
+\DoxyCodeLine{2303   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means) = old\_means;}
+\DoxyCodeLine{2304   }
+\DoxyCodeLine{2305   \textcolor{keywordflow}{if}(means.is\_finite() == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{2306   }
+\DoxyCodeLine{2307   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{2308   \}}
+\DoxyCodeLine{2309 }
+\DoxyCodeLine{2310 }
+\DoxyCodeLine{2311 }
+\DoxyCodeLine{2313 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{2314 \textcolor{keyword}{inline}}
+\DoxyCodeLine{2315 \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{2316 \mbox{\hyperlink{classgmm__priv_1_1gmm__full_a5b3c9267f6ffb6d48cb4bb5e278d12ed}{gmm\_full<eT>::em\_iterate}}(\textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& X, \textcolor{keyword}{const} uword max\_iter, \textcolor{keyword}{const} eT var\_floor, \textcolor{keyword}{const} \textcolor{keywordtype}{bool} verbose)}
+\DoxyCodeLine{2317   \{}
+\DoxyCodeLine{2318   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{2319   }
+\DoxyCodeLine{2320   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{2321   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{2322   }
+\DoxyCodeLine{2323   \textcolor{keywordflow}{if}(verbose)}
+\DoxyCodeLine{2324     \{}
+\DoxyCodeLine{2325     get\_cout\_stream().unsetf(ios::showbase);}
+\DoxyCodeLine{2326     get\_cout\_stream().unsetf(ios::uppercase);}
+\DoxyCodeLine{2327     get\_cout\_stream().unsetf(ios::showpos);}
+\DoxyCodeLine{2328     get\_cout\_stream().unsetf(ios::scientific);}
+\DoxyCodeLine{2329     }
+\DoxyCodeLine{2330     get\_cout\_stream().setf(ios::right);}
+\DoxyCodeLine{2331     get\_cout\_stream().setf(ios::fixed);}
+\DoxyCodeLine{2332     \}}
+\DoxyCodeLine{2333   }
+\DoxyCodeLine{2334   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}} boundaries = internal\_gen\_boundaries(X.n\_cols);}
+\DoxyCodeLine{2335   }
+\DoxyCodeLine{2336   \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{2337   }
+\DoxyCodeLine{2338   \mbox{\hyperlink{classfield}{field<  Mat<eT>}} > t\_acc\_means(n\_threads); }
+\DoxyCodeLine{2339   \mbox{\hyperlink{classfield}{field< Cube<eT>}} > t\_acc\_fcovs(n\_threads);}
+\DoxyCodeLine{2340   }
+\DoxyCodeLine{2341   \mbox{\hyperlink{classfield}{field< Col<eT>}} > t\_acc\_norm\_lhoods(n\_threads);}
+\DoxyCodeLine{2342   \mbox{\hyperlink{classfield}{field< Col<eT>}} > t\_gaus\_log\_lhoods(n\_threads);}
+\DoxyCodeLine{2343   }
+\DoxyCodeLine{2344   \mbox{\hyperlink{classCol}{Col<eT>}}          t\_progress\_log\_lhood(n\_threads, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{2345   }
+\DoxyCodeLine{2346   \textcolor{keywordflow}{for}(uword t=0; t<n\_threads; t++)}
+\DoxyCodeLine{2347     \{}
+\DoxyCodeLine{2348     t\_acc\_means[t].\mbox{\hyperlink{group__field_ga0d8cc9b33d72bd17c62f4492f0459ec8}{set\_size}}(N\_dims, N\_gaus);}
+\DoxyCodeLine{2349     t\_acc\_fcovs[t].\mbox{\hyperlink{group__field_ga0d8cc9b33d72bd17c62f4492f0459ec8}{set\_size}}(N\_dims, N\_dims, N\_gaus);}
+\DoxyCodeLine{2350     }
+\DoxyCodeLine{2351     t\_acc\_norm\_lhoods[t].\mbox{\hyperlink{group__field_ga0d8cc9b33d72bd17c62f4492f0459ec8}{set\_size}}(N\_gaus);}
+\DoxyCodeLine{2352     t\_gaus\_log\_lhoods[t].\mbox{\hyperlink{group__field_ga0d8cc9b33d72bd17c62f4492f0459ec8}{set\_size}}(N\_gaus);}
+\DoxyCodeLine{2353     \}}
+\DoxyCodeLine{2354   }
+\DoxyCodeLine{2355   }
+\DoxyCodeLine{2356   \textcolor{keywordflow}{if}(verbose)}
+\DoxyCodeLine{2357     \{}
+\DoxyCodeLine{2358     get\_cout\_stream() << \textcolor{stringliteral}{"{}gmm\_full::learn(): EM: n\_threads: "{}} << n\_threads  << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{2359     \}}
+\DoxyCodeLine{2360   }
+\DoxyCodeLine{2361   eT old\_avg\_log\_p = -\/\mbox{\hyperlink{classDatum}{Datum<eT>::inf}};}
+\DoxyCodeLine{2362   }
+\DoxyCodeLine{2363   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} calc\_chol = \textcolor{keyword}{false};}
+\DoxyCodeLine{2364   }
+\DoxyCodeLine{2365   \textcolor{keywordflow}{for}(uword iter=1; iter <= max\_iter; ++iter)}
+\DoxyCodeLine{2366     \{}
+\DoxyCodeLine{2367     init\_constants(calc\_chol);}
+\DoxyCodeLine{2368     }
+\DoxyCodeLine{2369     em\_update\_params(X, boundaries, t\_acc\_means, t\_acc\_fcovs, t\_acc\_norm\_lhoods, t\_gaus\_log\_lhoods, t\_progress\_log\_lhood, var\_floor);}
+\DoxyCodeLine{2370     }
+\DoxyCodeLine{2371     em\_fix\_params(var\_floor);}
+\DoxyCodeLine{2372     }
+\DoxyCodeLine{2373     \textcolor{keyword}{const} eT new\_avg\_log\_p = \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(t\_progress\_log\_lhood) / eT(t\_progress\_log\_lhood.\mbox{\hyperlink{classMat_a89f0d40af94b6521edd06645a0d68fd4}{n\_elem}});}
+\DoxyCodeLine{2374     }
+\DoxyCodeLine{2375     \textcolor{keywordflow}{if}(verbose)}
+\DoxyCodeLine{2376       \{}
+\DoxyCodeLine{2377       get\_cout\_stream() << \textcolor{stringliteral}{"{}gmm\_full::learn(): EM: iteration: "{}};}
+\DoxyCodeLine{2378       get\_cout\_stream().unsetf(ios::scientific);}
+\DoxyCodeLine{2379       get\_cout\_stream().setf(ios::fixed);}
+\DoxyCodeLine{2380       get\_cout\_stream().width(std::streamsize(4));}
+\DoxyCodeLine{2381       get\_cout\_stream() << iter;}
+\DoxyCodeLine{2382       get\_cout\_stream() << \textcolor{stringliteral}{"{}   avg\_log\_p: "{}};}
+\DoxyCodeLine{2383       get\_cout\_stream().unsetf(ios::fixed);}
+\DoxyCodeLine{2384       \textcolor{comment}{//get\_cout\_stream().setf(ios::scientific);}}
+\DoxyCodeLine{2385       get\_cout\_stream() << new\_avg\_log\_p << \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{2386       get\_cout\_stream().flush();}
+\DoxyCodeLine{2387       \}}
+\DoxyCodeLine{2388     }
+\DoxyCodeLine{2389     \textcolor{keywordflow}{if}(arma\_isfinite(new\_avg\_log\_p) == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{2390     }
+\DoxyCodeLine{2391     \textcolor{keywordflow}{if}(std::abs(old\_avg\_log\_p -\/ new\_avg\_log\_p) <= \mbox{\hyperlink{classDatum}{Datum<eT>::eps}})  \{ \textcolor{keywordflow}{break}; \}}
+\DoxyCodeLine{2392     }
+\DoxyCodeLine{2393     }
+\DoxyCodeLine{2394     old\_avg\_log\_p = new\_avg\_log\_p;}
+\DoxyCodeLine{2395     \}}
+\DoxyCodeLine{2396   }
+\DoxyCodeLine{2397   }
+\DoxyCodeLine{2398   \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{2399     \{}
+\DoxyCodeLine{2400     \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\& fcov = fcovs.slice(g);}
+\DoxyCodeLine{2401     }
+\DoxyCodeLine{2402     \textcolor{keywordflow}{if}(\mbox{\hyperlink{group__fn__any_gac40fe1298ebcc7b720fa3ea03f410b06}{any}}(vectorise(fcov.\mbox{\hyperlink{group__Mat_ga8ab6c07980e1d4c1d90eb3eb7850a2a4}{diag}}()) <= eT(0)))  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{2403     \}}
+\DoxyCodeLine{2404   }
+\DoxyCodeLine{2405   \textcolor{keywordflow}{if}(means.is\_finite() == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{2406   \textcolor{keywordflow}{if}(fcovs.is\_finite() == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{2407   \textcolor{keywordflow}{if}(hefts.is\_finite() == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{return} \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{2408   }
+\DoxyCodeLine{2409   \textcolor{keywordflow}{return} \textcolor{keyword}{true};}
+\DoxyCodeLine{2410   \}}
+\DoxyCodeLine{2411 }
+\DoxyCodeLine{2412 }
+\DoxyCodeLine{2413 }
+\DoxyCodeLine{2414 }
+\DoxyCodeLine{2415 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{2416 \textcolor{keyword}{inline}}
+\DoxyCodeLine{2417 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{2418 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::em\_update\_params}}}
+\DoxyCodeLine{2419   (}
+\DoxyCodeLine{2420   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{Mat<eT>}}\&           X,}
+\DoxyCodeLine{2421   \textcolor{keyword}{const} \mbox{\hyperlink{classMat}{umat}}\&              boundaries,}
+\DoxyCodeLine{2422         \mbox{\hyperlink{classfield}{field}}<  \mbox{\hyperlink{classMat}{Mat<eT>}} >\& t\_acc\_means,}
+\DoxyCodeLine{2423         \mbox{\hyperlink{classfield}{field}}< \mbox{\hyperlink{classCube}{Cube<eT>}} >\& t\_acc\_fcovs,}
+\DoxyCodeLine{2424         \mbox{\hyperlink{classfield}{field}}<  \mbox{\hyperlink{classCol}{Col<eT>}} >\& t\_acc\_norm\_lhoods,}
+\DoxyCodeLine{2425         \mbox{\hyperlink{classfield}{field}}<  \mbox{\hyperlink{classCol}{Col<eT>}} >\& t\_gaus\_log\_lhoods,}
+\DoxyCodeLine{2426         \mbox{\hyperlink{classCol}{Col<eT>}}\&           t\_progress\_log\_lhood,}
+\DoxyCodeLine{2427   \textcolor{keyword}{const} eT                 var\_floor}
+\DoxyCodeLine{2428   )}
+\DoxyCodeLine{2429   \{}
+\DoxyCodeLine{2430   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{2431   }
+\DoxyCodeLine{2432   \textcolor{keyword}{const} uword n\_threads = boundaries.\mbox{\hyperlink{classMat_ae4f28b81d1d7ace8ae86d0787f2fd367}{n\_cols}};}
+\DoxyCodeLine{2433   }
+\DoxyCodeLine{2434   }
+\DoxyCodeLine{2435   \textcolor{comment}{// em\_generate\_acc() is the "{}map"{} operation, which produces partial accumulators for means, diagonal covariances and hefts}}
+\DoxyCodeLine{2436     }
+\DoxyCodeLine{2437 \textcolor{preprocessor}{  \#if defined(ARMA\_USE\_OPENMP)}}
+\DoxyCodeLine{2438     \{}
+\DoxyCodeLine{2439 \textcolor{preprocessor}{    \#pragma omp parallel for schedule(static)}}
+\DoxyCodeLine{2440     \textcolor{keywordflow}{for}(uword t=0; t<n\_threads; t++)}
+\DoxyCodeLine{2441       \{}
+\DoxyCodeLine{2442        \mbox{\hyperlink{classMat}{Mat<eT>}}\& acc\_means          = t\_acc\_means[t];}
+\DoxyCodeLine{2443       \mbox{\hyperlink{classCube}{Cube<eT>}}\& acc\_fcovs          = t\_acc\_fcovs[t];}
+\DoxyCodeLine{2444        \mbox{\hyperlink{classCol}{Col<eT>}}\& acc\_norm\_lhoods    = t\_acc\_norm\_lhoods[t];}
+\DoxyCodeLine{2445        \mbox{\hyperlink{classCol}{Col<eT>}}\& gaus\_log\_lhoods    = t\_gaus\_log\_lhoods[t];}
+\DoxyCodeLine{2446        eT\&      progress\_log\_lhood = t\_progress\_log\_lhood[t];}
+\DoxyCodeLine{2447       }
+\DoxyCodeLine{2448       em\_generate\_acc(X, boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,t), boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,t), acc\_means, acc\_fcovs, acc\_norm\_lhoods, gaus\_log\_lhoods, progress\_log\_lhood);}
+\DoxyCodeLine{2449       \}}
+\DoxyCodeLine{2450     \}}
+\DoxyCodeLine{2451 \textcolor{preprocessor}{  \#else}}
+\DoxyCodeLine{2452     \{}
+\DoxyCodeLine{2453     em\_generate\_acc(X, boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(0,0), boundaries.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(1,0), t\_acc\_means[0], t\_acc\_fcovs[0], t\_acc\_norm\_lhoods[0], t\_gaus\_log\_lhoods[0], t\_progress\_log\_lhood[0]);}
+\DoxyCodeLine{2454     \}}
+\DoxyCodeLine{2455 \textcolor{preprocessor}{  \#endif}}
+\DoxyCodeLine{2456   }
+\DoxyCodeLine{2457   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{2458   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{2459   }
+\DoxyCodeLine{2460    \mbox{\hyperlink{classMat}{Mat<eT>}}\& final\_acc\_means = t\_acc\_means[0];}
+\DoxyCodeLine{2461   \mbox{\hyperlink{classCube}{Cube<eT>}}\& final\_acc\_fcovs = t\_acc\_fcovs[0];}
+\DoxyCodeLine{2462   }
+\DoxyCodeLine{2463   \mbox{\hyperlink{classCol}{Col<eT>}}\& final\_acc\_norm\_lhoods = t\_acc\_norm\_lhoods[0];}
+\DoxyCodeLine{2464   }
+\DoxyCodeLine{2465   }
+\DoxyCodeLine{2466   \textcolor{comment}{// the "{}reduce"{} operation, which combines the partial accumulators produced by the separate threads}}
+\DoxyCodeLine{2467   }
+\DoxyCodeLine{2468   \textcolor{keywordflow}{for}(uword t=1; t<n\_threads; t++)}
+\DoxyCodeLine{2469     \{}
+\DoxyCodeLine{2470     final\_acc\_means += t\_acc\_means[t];}
+\DoxyCodeLine{2471     final\_acc\_fcovs += t\_acc\_fcovs[t];}
+\DoxyCodeLine{2472     }
+\DoxyCodeLine{2473     final\_acc\_norm\_lhoods += t\_acc\_norm\_lhoods[t];}
+\DoxyCodeLine{2474     \}}
+\DoxyCodeLine{2475   }
+\DoxyCodeLine{2476   }
+\DoxyCodeLine{2477   eT* hefts\_mem = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts).memptr();}
+\DoxyCodeLine{2478   }
+\DoxyCodeLine{2479   \mbox{\hyperlink{classMat}{Mat<eT>}} mean\_outer(N\_dims, N\_dims, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{2480   }
+\DoxyCodeLine{2481   }
+\DoxyCodeLine{2483   \textcolor{comment}{//for(uword g=0; g < N\_gaus; ++g)}}
+\DoxyCodeLine{2484   \textcolor{comment}{//  \{}}
+\DoxyCodeLine{2485   \textcolor{comment}{//  const eT acc\_norm\_lhood = (std::max)( final\_acc\_norm\_lhoods[g], std::numeric\_limits<eT>::min() );}}
+\DoxyCodeLine{2486   \textcolor{comment}{//    }}
+\DoxyCodeLine{2487   \textcolor{comment}{//    hefts\_mem[g] = acc\_norm\_lhood / eT(X.n\_cols);}}
+\DoxyCodeLine{2488   \textcolor{comment}{//    }}
+\DoxyCodeLine{2489   \textcolor{comment}{//    eT*     mean\_mem = access::rw(means).colptr(g);}}
+\DoxyCodeLine{2490   \textcolor{comment}{//    eT* acc\_mean\_mem = final\_acc\_means.colptr(g);}}
+\DoxyCodeLine{2491   \textcolor{comment}{//    }}
+\DoxyCodeLine{2492   \textcolor{comment}{//    for(uword d=0; d < N\_dims; ++d)}}
+\DoxyCodeLine{2493   \textcolor{comment}{//      \{}}
+\DoxyCodeLine{2494   \textcolor{comment}{//      mean\_mem[d] = acc\_mean\_mem[d] / acc\_norm\_lhood;}}
+\DoxyCodeLine{2495   \textcolor{comment}{//      \}}}
+\DoxyCodeLine{2496   \textcolor{comment}{//    }}
+\DoxyCodeLine{2497   \textcolor{comment}{//    const Col<eT> mean(mean\_mem, N\_dims, false, true);}}
+\DoxyCodeLine{2498   \textcolor{comment}{//    }}
+\DoxyCodeLine{2499   \textcolor{comment}{//    mean\_outer = mean * mean.t();}}
+\DoxyCodeLine{2500   \textcolor{comment}{//    }}
+\DoxyCodeLine{2501   \textcolor{comment}{//    Mat<eT>\&     fcov = access::rw(fcovs).slice(g);}}
+\DoxyCodeLine{2502   \textcolor{comment}{//    Mat<eT>\& acc\_fcov = final\_acc\_fcovs.slice(g);}}
+\DoxyCodeLine{2503   \textcolor{comment}{//    }}
+\DoxyCodeLine{2504   \textcolor{comment}{//    fcov = acc\_fcov / acc\_norm\_lhood -\/ mean\_outer;}}
+\DoxyCodeLine{2505   \textcolor{comment}{//    \}}}
+\DoxyCodeLine{2506   }
+\DoxyCodeLine{2507   }
+\DoxyCodeLine{2508   \textcolor{comment}{// conditionally update each component; if only a subset of the hefts was updated, em\_fix\_params() will sanitise them}}
+\DoxyCodeLine{2509   \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{2510     \{}
+\DoxyCodeLine{2511     \textcolor{keyword}{const} eT acc\_norm\_lhood = (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})( final\_acc\_norm\_lhoods[g], \mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::numeric\_limits<eT>::min}}() );}
+\DoxyCodeLine{2512     }
+\DoxyCodeLine{2513     \textcolor{keywordflow}{if}(arma\_isfinite(acc\_norm\_lhood) == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{continue}; \}}
+\DoxyCodeLine{2514     }
+\DoxyCodeLine{2515     eT* acc\_mean\_mem = final\_acc\_means.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(g);}
+\DoxyCodeLine{2516     }
+\DoxyCodeLine{2517     \textcolor{keywordflow}{for}(uword d=0; d < N\_dims; ++d)}
+\DoxyCodeLine{2518       \{}
+\DoxyCodeLine{2519       acc\_mean\_mem[d] /= acc\_norm\_lhood;}
+\DoxyCodeLine{2520       \}}
+\DoxyCodeLine{2521     }
+\DoxyCodeLine{2522     \textcolor{keyword}{const} \mbox{\hyperlink{classCol}{Col<eT>}} new\_mean(acc\_mean\_mem, N\_dims, \textcolor{keyword}{false}, \textcolor{keyword}{true});}
+\DoxyCodeLine{2523     }
+\DoxyCodeLine{2524     mean\_outer = new\_mean * new\_mean.t();}
+\DoxyCodeLine{2525     }
+\DoxyCodeLine{2526     \mbox{\hyperlink{classMat}{Mat<eT>}}\& acc\_fcov = final\_acc\_fcovs.\mbox{\hyperlink{group__Cube_gaa096114dbf2eefcaed52f92da5064697}{slice}}(g);}
+\DoxyCodeLine{2527     }
+\DoxyCodeLine{2528     acc\_fcov /= acc\_norm\_lhood;}
+\DoxyCodeLine{2529     acc\_fcov -\/= mean\_outer;}
+\DoxyCodeLine{2530     }
+\DoxyCodeLine{2531     \textcolor{keywordflow}{for}(uword d=0; d < N\_dims; ++d)}
+\DoxyCodeLine{2532       \{}
+\DoxyCodeLine{2533       eT\& val = acc\_fcov.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(d,d);}
+\DoxyCodeLine{2534       }
+\DoxyCodeLine{2535       \textcolor{keywordflow}{if}(val < var\_floor)  \{ val = var\_floor; \}}
+\DoxyCodeLine{2536       \}}
+\DoxyCodeLine{2537     }
+\DoxyCodeLine{2538     \textcolor{keywordflow}{if}(acc\_fcov.\mbox{\hyperlink{group__Mat_gad78d4808815d1521085b8eeee1c2aab4}{is\_finite}}() == \textcolor{keyword}{false})  \{ \textcolor{keywordflow}{continue}; \}}
+\DoxyCodeLine{2539     }
+\DoxyCodeLine{2540     eT log\_det\_val  = eT(0);}
+\DoxyCodeLine{2541     eT log\_det\_sign = eT(0);}
+\DoxyCodeLine{2542     }
+\DoxyCodeLine{2543     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} log\_det\_status = \mbox{\hyperlink{group__fn__log__det_gad3e63c713e6a1712b8c82337be5ec577}{log\_det}}(log\_det\_val, log\_det\_sign, acc\_fcov);}
+\DoxyCodeLine{2544     }
+\DoxyCodeLine{2545     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} log\_det\_ok = ( log\_det\_status \&\& (arma\_isfinite(log\_det\_val)) \&\& (log\_det\_sign > eT(0)) );}
+\DoxyCodeLine{2546     }
+\DoxyCodeLine{2547     \textcolor{keyword}{const} \textcolor{keywordtype}{bool} inv\_ok = (log\_det\_ok) ? \textcolor{keywordtype}{bool}(auxlib::inv\_sympd(mean\_outer, acc\_fcov)) : \textcolor{keywordtype}{bool}(\textcolor{keyword}{false});  \textcolor{comment}{// mean\_outer is used as a junk matrix}}
+\DoxyCodeLine{2548     }
+\DoxyCodeLine{2549     \textcolor{keywordflow}{if}(log\_det\_ok \&\& inv\_ok)}
+\DoxyCodeLine{2550       \{}
+\DoxyCodeLine{2551       hefts\_mem[g] = acc\_norm\_lhood / eT(X.n\_cols);}
+\DoxyCodeLine{2552       }
+\DoxyCodeLine{2553       eT* mean\_mem = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(means).colptr(g);}
+\DoxyCodeLine{2554       }
+\DoxyCodeLine{2555       \textcolor{keywordflow}{for}(uword d=0; d < N\_dims; ++d)}
+\DoxyCodeLine{2556         \{}
+\DoxyCodeLine{2557         mean\_mem[d] = acc\_mean\_mem[d];}
+\DoxyCodeLine{2558         \}}
+\DoxyCodeLine{2559       }
+\DoxyCodeLine{2560       \mbox{\hyperlink{classMat}{Mat<eT>}}\& fcov = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(fcovs).slice(g);}
+\DoxyCodeLine{2561       }
+\DoxyCodeLine{2562       fcov = acc\_fcov;}
+\DoxyCodeLine{2563       \}}
+\DoxyCodeLine{2564     \}}
+\DoxyCodeLine{2565   \}}
+\DoxyCodeLine{2566 }
+\DoxyCodeLine{2567 }
+\DoxyCodeLine{2568 }
+\DoxyCodeLine{2569 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{2570 \textcolor{keyword}{inline}}
+\DoxyCodeLine{2571 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{2572 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::em\_generate\_acc}}}
+\DoxyCodeLine{2573   (}
+\DoxyCodeLine{2574   \textcolor{keyword}{const}  \mbox{\hyperlink{classMat}{Mat<eT>}}\& X,}
+\DoxyCodeLine{2575   \textcolor{keyword}{const}  uword    start\_index,}
+\DoxyCodeLine{2576   \textcolor{keyword}{const}  uword      end\_index,}
+\DoxyCodeLine{2577          \mbox{\hyperlink{classMat}{Mat<eT>}}\& acc\_means,}
+\DoxyCodeLine{2578         \mbox{\hyperlink{classCube}{Cube<eT>}}\& acc\_fcovs,}
+\DoxyCodeLine{2579          \mbox{\hyperlink{classCol}{Col<eT>}}\& acc\_norm\_lhoods,}
+\DoxyCodeLine{2580          \mbox{\hyperlink{classCol}{Col<eT>}}\& gaus\_log\_lhoods,}
+\DoxyCodeLine{2581          eT\&      progress\_log\_lhood}
+\DoxyCodeLine{2582   )\textcolor{keyword}{}}
+\DoxyCodeLine{2583 \textcolor{keyword}{  const}}
+\DoxyCodeLine{2584 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{2585   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{2586   }
+\DoxyCodeLine{2587   progress\_log\_lhood = eT(0);}
+\DoxyCodeLine{2588   }
+\DoxyCodeLine{2589   acc\_means.zeros();}
+\DoxyCodeLine{2590   acc\_fcovs.zeros();}
+\DoxyCodeLine{2591   }
+\DoxyCodeLine{2592   acc\_norm\_lhoods.zeros();}
+\DoxyCodeLine{2593   gaus\_log\_lhoods.zeros();}
+\DoxyCodeLine{2594   }
+\DoxyCodeLine{2595   \textcolor{keyword}{const} uword N\_dims = means.\mbox{\hyperlink{classMat_a751755caeae1d831a1c27049740e7360}{n\_rows}};}
+\DoxyCodeLine{2596   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{2597   }
+\DoxyCodeLine{2598   \textcolor{keyword}{const} eT* log\_hefts\_mem       = log\_hefts.memptr();}
+\DoxyCodeLine{2599         eT* gaus\_log\_lhoods\_mem = gaus\_log\_lhoods.\mbox{\hyperlink{group__Mat_gad5b1b46a9288e04128aa11c99cc2b444}{memptr}}();}
+\DoxyCodeLine{2600   }
+\DoxyCodeLine{2601   }
+\DoxyCodeLine{2602   \textcolor{keywordflow}{for}(uword i=start\_index; i <= end\_index; i++)}
+\DoxyCodeLine{2603     \{}
+\DoxyCodeLine{2604     \textcolor{keyword}{const} eT* x = X.colptr(i);}
+\DoxyCodeLine{2605     }
+\DoxyCodeLine{2606     \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{2607       \{}
+\DoxyCodeLine{2608       gaus\_log\_lhoods\_mem[g] = internal\_scalar\_log\_p(x, g) + log\_hefts\_mem[g];}
+\DoxyCodeLine{2609       \}}
+\DoxyCodeLine{2610     }
+\DoxyCodeLine{2611     eT log\_lhood\_sum = gaus\_log\_lhoods\_mem[0];}
+\DoxyCodeLine{2612     }
+\DoxyCodeLine{2613     \textcolor{keywordflow}{for}(uword g=1; g < N\_gaus; ++g)}
+\DoxyCodeLine{2614       \{}
+\DoxyCodeLine{2615       log\_lhood\_sum = log\_add\_exp(log\_lhood\_sum, gaus\_log\_lhoods\_mem[g]);}
+\DoxyCodeLine{2616       \}}
+\DoxyCodeLine{2617     }
+\DoxyCodeLine{2618     progress\_log\_lhood += log\_lhood\_sum;}
+\DoxyCodeLine{2619     }
+\DoxyCodeLine{2620     \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{2621       \{}
+\DoxyCodeLine{2622       \textcolor{keyword}{const} eT norm\_lhood = std::exp(gaus\_log\_lhoods\_mem[g] -\/ log\_lhood\_sum);}
+\DoxyCodeLine{2623       }
+\DoxyCodeLine{2624       acc\_norm\_lhoods[g] += norm\_lhood;}
+\DoxyCodeLine{2625       }
+\DoxyCodeLine{2626       eT* acc\_mean\_mem = acc\_means.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(g);}
+\DoxyCodeLine{2627       }
+\DoxyCodeLine{2628       \textcolor{keywordflow}{for}(uword d=0; d < N\_dims; ++d)}
+\DoxyCodeLine{2629         \{}
+\DoxyCodeLine{2630         acc\_mean\_mem[d] += x[d] * norm\_lhood;}
+\DoxyCodeLine{2631         \}}
+\DoxyCodeLine{2632       }
+\DoxyCodeLine{2633       \mbox{\hyperlink{classMat}{Mat<eT>}}\& acc\_fcov = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(acc\_fcovs).slice(g);}
+\DoxyCodeLine{2634       }
+\DoxyCodeLine{2635       \textcolor{comment}{// specialised version of acc\_fcov += norm\_lhood * (xx * xx.t());}}
+\DoxyCodeLine{2636       }
+\DoxyCodeLine{2637       \textcolor{keywordflow}{for}(uword d=0; d < N\_dims; ++d)}
+\DoxyCodeLine{2638         \{}
+\DoxyCodeLine{2639         \textcolor{keyword}{const} uword dp1 = d+1;}
+\DoxyCodeLine{2640         }
+\DoxyCodeLine{2641         \textcolor{keyword}{const} eT xd = x[d];}
+\DoxyCodeLine{2642         }
+\DoxyCodeLine{2643         eT* acc\_fcov\_col\_d = acc\_fcov.\mbox{\hyperlink{group__Mat_gad6a294c2ed4726f7b4b95e750ddfeb7a}{colptr}}(d) + d;}
+\DoxyCodeLine{2644         eT* acc\_fcov\_row\_d = \&(acc\_fcov.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(d,dp1));}
+\DoxyCodeLine{2645         }
+\DoxyCodeLine{2646         (*acc\_fcov\_col\_d) += norm\_lhood * (xd * xd);  acc\_fcov\_col\_d++;}
+\DoxyCodeLine{2647         }
+\DoxyCodeLine{2648         \textcolor{keywordflow}{for}(uword e=dp1; e < N\_dims; ++e)}
+\DoxyCodeLine{2649           \{}
+\DoxyCodeLine{2650           \textcolor{keyword}{const} eT val = norm\_lhood * (xd * x[e]);}
+\DoxyCodeLine{2651           }
+\DoxyCodeLine{2652           (*acc\_fcov\_col\_d) += val;  acc\_fcov\_col\_d++;}
+\DoxyCodeLine{2653           (*acc\_fcov\_row\_d) += val;  acc\_fcov\_row\_d += N\_dims;}
+\DoxyCodeLine{2654           \}}
+\DoxyCodeLine{2655         \}}
+\DoxyCodeLine{2656       \}}
+\DoxyCodeLine{2657     \}}
+\DoxyCodeLine{2658   }
+\DoxyCodeLine{2659   progress\_log\_lhood /= eT((end\_index -\/ start\_index) + 1);}
+\DoxyCodeLine{2660   \}}
+\DoxyCodeLine{2661 }
+\DoxyCodeLine{2662 }
+\DoxyCodeLine{2663 }
+\DoxyCodeLine{2664 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{2665 \textcolor{keyword}{inline}}
+\DoxyCodeLine{2666 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{2667 \mbox{\hyperlink{classgmm__priv_1_1gmm__full}{gmm\_full<eT>::em\_fix\_params}}(\textcolor{keyword}{const} eT var\_floor)}
+\DoxyCodeLine{2668   \{}
+\DoxyCodeLine{2669   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{2670   }
+\DoxyCodeLine{2671   \textcolor{keyword}{const} uword N\_dims = means.n\_rows;}
+\DoxyCodeLine{2672   \textcolor{keyword}{const} uword N\_gaus = means.n\_cols;}
+\DoxyCodeLine{2673   }
+\DoxyCodeLine{2674   \textcolor{keyword}{const} eT var\_ceiling = \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::numeric\_limits<eT>::max}}();}
+\DoxyCodeLine{2675   }
+\DoxyCodeLine{2676   \textcolor{keywordflow}{for}(uword g=0; g < N\_gaus; ++g)}
+\DoxyCodeLine{2677     \{}
+\DoxyCodeLine{2678     \mbox{\hyperlink{classMat}{Mat<eT>}}\& fcov = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(fcovs).slice(g);}
+\DoxyCodeLine{2679     }
+\DoxyCodeLine{2680     \textcolor{keywordflow}{for}(uword d=0; d < N\_dims; ++d)}
+\DoxyCodeLine{2681       \{}
+\DoxyCodeLine{2682       eT\& var\_val = fcov.\mbox{\hyperlink{group__Mat_ga62c874c45807d7853afd231ae9f512d7}{at}}(d,d);}
+\DoxyCodeLine{2683       }
+\DoxyCodeLine{2684            \textcolor{keywordflow}{if}(var\_val < var\_floor  )  \{ var\_val = var\_floor;   \}}
+\DoxyCodeLine{2685       \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(var\_val > var\_ceiling)  \{ var\_val = var\_ceiling; \}}
+\DoxyCodeLine{2686       \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(arma\_isnan(var\_val)  )  \{ var\_val = eT(1);       \}}
+\DoxyCodeLine{2687       \}}
+\DoxyCodeLine{2688     \}}
+\DoxyCodeLine{2689   }
+\DoxyCodeLine{2690   }
+\DoxyCodeLine{2691   eT* hefts\_mem = \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts).memptr();}
+\DoxyCodeLine{2692   }
+\DoxyCodeLine{2693   \textcolor{keywordflow}{for}(uword g1=0; g1 < N\_gaus; ++g1)}
+\DoxyCodeLine{2694     \{}
+\DoxyCodeLine{2695     \textcolor{keywordflow}{if}(hefts\_mem[g1] > eT(0))}
+\DoxyCodeLine{2696       \{}
+\DoxyCodeLine{2697       \textcolor{keyword}{const} eT* means\_colptr\_g1 = means.colptr(g1);}
+\DoxyCodeLine{2698       }
+\DoxyCodeLine{2699       \textcolor{keywordflow}{for}(uword g2=(g1+1); g2 < N\_gaus; ++g2)}
+\DoxyCodeLine{2700         \{}
+\DoxyCodeLine{2701         \textcolor{keywordflow}{if}( (hefts\_mem[g2] > eT(0)) \&\& (std::abs(hefts\_mem[g1] -\/ hefts\_mem[g2]) <= std::numeric\_limits<eT>::epsilon()) )}
+\DoxyCodeLine{2702           \{}
+\DoxyCodeLine{2703           \textcolor{keyword}{const} eT dist = distance<eT,1>::eval(N\_dims, means\_colptr\_g1, means.colptr(g2), means\_colptr\_g1);}
+\DoxyCodeLine{2704           }
+\DoxyCodeLine{2705           \textcolor{keywordflow}{if}(dist == eT(0)) \{ hefts\_mem[g2] = eT(0); \}}
+\DoxyCodeLine{2706           \}}
+\DoxyCodeLine{2707         \}}
+\DoxyCodeLine{2708       \}}
+\DoxyCodeLine{2709     \}}
+\DoxyCodeLine{2710   }
+\DoxyCodeLine{2711   \textcolor{keyword}{const} eT heft\_floor   = \mbox{\hyperlink{group__fn__min_gac69a480b4c714f7ecbb0620aaa757c8a}{std::numeric\_limits<eT>::min}}();}
+\DoxyCodeLine{2712   \textcolor{keyword}{const} eT heft\_initial = eT(1) / eT(N\_gaus);}
+\DoxyCodeLine{2713   }
+\DoxyCodeLine{2714   \textcolor{keywordflow}{for}(uword i=0; i < N\_gaus; ++i)}
+\DoxyCodeLine{2715     \{}
+\DoxyCodeLine{2716     eT\& heft\_val = hefts\_mem[i];}
+\DoxyCodeLine{2717     }
+\DoxyCodeLine{2718          \textcolor{keywordflow}{if}(heft\_val < heft\_floor)  \{ heft\_val = heft\_floor;   \}}
+\DoxyCodeLine{2719     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(heft\_val > eT(1)     )  \{ heft\_val = eT(1);        \}}
+\DoxyCodeLine{2720     \textcolor{keywordflow}{else} \textcolor{keywordflow}{if}(arma\_isnan(heft\_val) )  \{ heft\_val = heft\_initial; \}}
+\DoxyCodeLine{2721     \}}
+\DoxyCodeLine{2722   }
+\DoxyCodeLine{2723   \textcolor{keyword}{const} eT heft\_sum = \mbox{\hyperlink{group__fn__accu_ga010aa66ecb6b417277db3e21cc10f6e6}{accu}}(hefts);}
+\DoxyCodeLine{2724   }
+\DoxyCodeLine{2725   \textcolor{keywordflow}{if}((heft\_sum < (eT(1) -\/ \mbox{\hyperlink{classDatum}{Datum<eT>::eps}})) || (heft\_sum > (eT(1) + \mbox{\hyperlink{classDatum}{Datum<eT>::eps}})))  \{ \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(hefts) /= heft\_sum; \}}
+\DoxyCodeLine{2726   \}}
+\DoxyCodeLine{2727 }
+\DoxyCodeLine{2728 }
+\DoxyCodeLine{2729 }
+\DoxyCodeLine{2730 \} \textcolor{comment}{// namespace gmm\_priv}}
+\DoxyCodeLine{2731 }
+\DoxyCodeLine{2732 }
+
+\end{DoxyCode}

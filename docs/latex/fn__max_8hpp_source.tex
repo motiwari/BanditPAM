@@ -1,0 +1,275 @@
+\hypertarget{fn__max_8hpp_source}{}\doxysection{fn\+\_\+max.\+hpp}
+\label{fn__max_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_max.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_max.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{22 arma\_warn\_unused}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structresolves__to__vector}{resolves\_to\_vector<T1>::yes}}, \textcolor{keyword}{typename} T1::elem\_type >::result}
+\DoxyCodeLine{25 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   }
+\DoxyCodeLine{29   \textcolor{keywordflow}{return} op\_max::max(X);}
+\DoxyCodeLine{30   \}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{35 arma\_warn\_unused}
+\DoxyCodeLine{36 arma\_inline}
+\DoxyCodeLine{37 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structresolves__to__vector}{resolves\_to\_vector<T1>::no}}, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_max>}} >::result}
+\DoxyCodeLine{38 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{39   \{}
+\DoxyCodeLine{40   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{41   }
+\DoxyCodeLine{42   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_max>}}(X, 0, 0);}
+\DoxyCodeLine{43   \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{48 arma\_warn\_unused}
+\DoxyCodeLine{49 arma\_inline}
+\DoxyCodeLine{50 \textcolor{keyword}{typename} \mbox{\hyperlink{structenable__if2}{enable\_if2< is\_arma\_type<T1>::value}}, \textcolor{keyword}{const} \mbox{\hyperlink{classOp}{Op<T1, op\_max>}} >::result}
+\DoxyCodeLine{51 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{52   \{}
+\DoxyCodeLine{53   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{54   }
+\DoxyCodeLine{55   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOp}{Op<T1, op\_max>}}(X, dim, 0);}
+\DoxyCodeLine{56   \}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{61 arma\_warn\_unused}
+\DoxyCodeLine{62 arma\_inline}
+\DoxyCodeLine{63 \textcolor{keyword}{typename} \mbox{\hyperlink{structarma__scalar__only}{arma\_scalar\_only<T>::result}}}
+\DoxyCodeLine{64 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(\textcolor{keyword}{const} T\& x)}
+\DoxyCodeLine{65   \{}
+\DoxyCodeLine{66   \textcolor{keywordflow}{return} x;}
+\DoxyCodeLine{67   \}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{72 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{73 arma\_warn\_unused}
+\DoxyCodeLine{74 arma\_inline}
+\DoxyCodeLine{75 \textcolor{keyword}{typename}}
+\DoxyCodeLine{76 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{77   <}
+\DoxyCodeLine{78   ( \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}} ),}
+\DoxyCodeLine{79   \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_max>}}}
+\DoxyCodeLine{80   >::result}
+\DoxyCodeLine{81 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}}
+\DoxyCodeLine{82   (}
+\DoxyCodeLine{83   \textcolor{keyword}{const} T1\& X,}
+\DoxyCodeLine{84   \textcolor{keyword}{const} T2\& Y}
+\DoxyCodeLine{85   )}
+\DoxyCodeLine{86   \{}
+\DoxyCodeLine{87   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{88   }
+\DoxyCodeLine{89   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_max>}}(X, Y);}
+\DoxyCodeLine{90   \}}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{95 arma\_warn\_unused}
+\DoxyCodeLine{96 arma\_inline}
+\DoxyCodeLine{97 \textcolor{keyword}{const} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_max>}}}
+\DoxyCodeLine{98 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}}
+\DoxyCodeLine{99   (}
+\DoxyCodeLine{100   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& X,}
+\DoxyCodeLine{101   \textcolor{keyword}{const} uword dim = 0}
+\DoxyCodeLine{102   )}
+\DoxyCodeLine{103   \{}
+\DoxyCodeLine{104   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{105   }
+\DoxyCodeLine{106   \textcolor{keywordflow}{return} \mbox{\hyperlink{classOpCube}{OpCube<T1, op\_max>}}(X.get\_ref(), dim, 0);}
+\DoxyCodeLine{107   \}}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{112 arma\_warn\_unused}
+\DoxyCodeLine{113 arma\_inline}
+\DoxyCodeLine{114 \textcolor{keyword}{const} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_max>}}}
+\DoxyCodeLine{115 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}}
+\DoxyCodeLine{116   (}
+\DoxyCodeLine{117   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T1>}}\& X,}
+\DoxyCodeLine{118   \textcolor{keyword}{const} \mbox{\hyperlink{structBaseCube}{BaseCube<typename T1::elem\_type, T2>}}\& Y}
+\DoxyCodeLine{119   )}
+\DoxyCodeLine{120   \{}
+\DoxyCodeLine{121   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{122   }
+\DoxyCodeLine{123   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlueCube}{GlueCube<T1, T2, glue\_max>}}(X.get\_ref(), Y.get\_ref());}
+\DoxyCodeLine{124   \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{129 arma\_warn\_unused}
+\DoxyCodeLine{130 \textcolor{keyword}{inline}}
+\DoxyCodeLine{131 \textcolor{keyword}{typename}}
+\DoxyCodeLine{132 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{133   <}
+\DoxyCodeLine{134   \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} \&\& \mbox{\hyperlink{structresolves__to__sparse__vector}{resolves\_to\_sparse\_vector<T1>::yes}},}
+\DoxyCodeLine{135   \textcolor{keyword}{typename} T1::elem\_type}
+\DoxyCodeLine{136   >::result}
+\DoxyCodeLine{137 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(\textcolor{keyword}{const} T1\& x)}
+\DoxyCodeLine{138   \{}
+\DoxyCodeLine{139   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{140   }
+\DoxyCodeLine{141   \textcolor{keywordflow}{return} spop\_max::vector\_max(x);}
+\DoxyCodeLine{142   \}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{147 arma\_warn\_unused}
+\DoxyCodeLine{148 \textcolor{keyword}{inline}}
+\DoxyCodeLine{149 \textcolor{keyword}{typename}}
+\DoxyCodeLine{150 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{151   <}
+\DoxyCodeLine{152   \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} \&\& \mbox{\hyperlink{structresolves__to__sparse__vector}{resolves\_to\_sparse\_vector<T1>::no}},}
+\DoxyCodeLine{153   \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_max>}}}
+\DoxyCodeLine{154   >::result}
+\DoxyCodeLine{155 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(\textcolor{keyword}{const} T1\& X)}
+\DoxyCodeLine{156   \{}
+\DoxyCodeLine{157   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{158   }
+\DoxyCodeLine{159   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_max>}}(X, 0, 0);}
+\DoxyCodeLine{160   \}}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163 }
+\DoxyCodeLine{164 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{165 arma\_warn\_unused}
+\DoxyCodeLine{166 \textcolor{keyword}{inline}}
+\DoxyCodeLine{167 \textcolor{keyword}{typename}}
+\DoxyCodeLine{168 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{169   <}
+\DoxyCodeLine{170   \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}},}
+\DoxyCodeLine{171   \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_max>}}}
+\DoxyCodeLine{172   >::result}
+\DoxyCodeLine{173 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(\textcolor{keyword}{const} T1\& X, \textcolor{keyword}{const} uword dim)}
+\DoxyCodeLine{174   \{}
+\DoxyCodeLine{175   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{176   }
+\DoxyCodeLine{177   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<T1, spop\_max>}}(X, dim, 0);}
+\DoxyCodeLine{178   \}}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182 \textcolor{comment}{// elementwise sparse max}}
+\DoxyCodeLine{183 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{184 arma\_warn\_unused}
+\DoxyCodeLine{185 \textcolor{keyword}{inline}}
+\DoxyCodeLine{186 \textcolor{keyword}{typename}}
+\DoxyCodeLine{187 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{188   <}
+\DoxyCodeLine{189   (\mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{190   \textcolor{keyword}{const} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_max>}}}
+\DoxyCodeLine{191   >::result}
+\DoxyCodeLine{192 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(\textcolor{keyword}{const} T1\& x, \textcolor{keyword}{const} T2\& y)}
+\DoxyCodeLine{193   \{}
+\DoxyCodeLine{194   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpGlue}{SpGlue<T1, T2, spglue\_max>}}(x, y);}
+\DoxyCodeLine{197   \}}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 }
+\DoxyCodeLine{202 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{203 \textcolor{keyword}{inline}}
+\DoxyCodeLine{204 \textcolor{keyword}{typename}}
+\DoxyCodeLine{205 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{206   <}
+\DoxyCodeLine{207   (\mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{208   \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}}
+\DoxyCodeLine{209   >::result}
+\DoxyCodeLine{210 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}}
+\DoxyCodeLine{211   (}
+\DoxyCodeLine{212   \textcolor{keyword}{const} T1\& x,}
+\DoxyCodeLine{213   \textcolor{keyword}{const} T2\& y}
+\DoxyCodeLine{214   )}
+\DoxyCodeLine{215   \{}
+\DoxyCodeLine{216   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{217   }
+\DoxyCodeLine{218   \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}} out;}
+\DoxyCodeLine{219   }
+\DoxyCodeLine{220   spglue\_max::dense\_sparse\_max(out, x, y);}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{223   \}}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226 }
+\DoxyCodeLine{228 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{229 \textcolor{keyword}{inline}}
+\DoxyCodeLine{230 \textcolor{keyword}{typename}}
+\DoxyCodeLine{231 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{232   <}
+\DoxyCodeLine{233   (\mbox{\hyperlink{structis__arma__sparse__type}{is\_arma\_sparse\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}}),}
+\DoxyCodeLine{234   \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}}
+\DoxyCodeLine{235   >::result}
+\DoxyCodeLine{236 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}}
+\DoxyCodeLine{237   (}
+\DoxyCodeLine{238   \textcolor{keyword}{const} T1\& x,}
+\DoxyCodeLine{239   \textcolor{keyword}{const} T2\& y}
+\DoxyCodeLine{240   )}
+\DoxyCodeLine{241   \{}
+\DoxyCodeLine{242   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{243   }
+\DoxyCodeLine{244   \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}} out;}
+\DoxyCodeLine{245   }
+\DoxyCodeLine{246   \textcolor{comment}{// Just call the other order (these operations are commutative)}}
+\DoxyCodeLine{247   \textcolor{comment}{// TODO: if there is a matrix size mismatch, the debug assert will print the matrix sizes in wrong order}}
+\DoxyCodeLine{248   spglue\_max::dense\_sparse\_max(out, y, x);}
+\DoxyCodeLine{249   }
+\DoxyCodeLine{250   \textcolor{keywordflow}{return} out;}
+\DoxyCodeLine{251   \}}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 }
+\DoxyCodeLine{254 }
+\DoxyCodeLine{255 arma\_warn\_unused}
+\DoxyCodeLine{256 \textcolor{keyword}{inline}}
+\DoxyCodeLine{257 uword}
+\DoxyCodeLine{258 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{259   \{}
+\DoxyCodeLine{260   \textcolor{keywordflow}{return} (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})(s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{261   \}}
+\DoxyCodeLine{262 }
+\DoxyCodeLine{263 }
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265 arma\_warn\_unused}
+\DoxyCodeLine{266 \textcolor{keyword}{inline}}
+\DoxyCodeLine{267 uword}
+\DoxyCodeLine{268 \mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{max}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeCube}{SizeCube}}\& s)}
+\DoxyCodeLine{269   \{}
+\DoxyCodeLine{270   \textcolor{keywordflow}{return} (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})( (\mbox{\hyperlink{group__fn__max_gaf2317ac99c92ae7a239291d01a615893}{std::max}})(s.n\_rows, s.n\_cols), s.n\_slices );}
+\DoxyCodeLine{271   \}}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 }
+
+\end{DoxyCode}

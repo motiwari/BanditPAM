@@ -1,0 +1,431 @@
+\hypertarget{SpCol__meat_8hpp_source}{}\doxysection{Sp\+Col\+\_\+meat.\+hpp}
+\label{SpCol__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/SpCol\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/SpCol\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 \textcolor{keyword}{inline}}
+\DoxyCodeLine{24 \mbox{\hyperlink{classSpCol}{SpCol<eT>::SpCol}}()}
+\DoxyCodeLine{25   : \mbox{\hyperlink{classSpMat}{SpMat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{26   \{}
+\DoxyCodeLine{27   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{28   \}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{33 \textcolor{keyword}{inline}}
+\DoxyCodeLine{34 \mbox{\hyperlink{classSpCol}{SpCol<eT>::SpCol}}(\textcolor{keyword}{const} uword in\_n\_elem)}
+\DoxyCodeLine{35   : \mbox{\hyperlink{classSpMat}{SpMat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), in\_n\_elem, 1, 1)}
+\DoxyCodeLine{36   \{}
+\DoxyCodeLine{37   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{38   \}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{43 \textcolor{keyword}{inline}}
+\DoxyCodeLine{44 \mbox{\hyperlink{classSpCol}{SpCol<eT>::SpCol}}(\textcolor{keyword}{const} uword in\_n\_rows, \textcolor{keyword}{const} uword in\_n\_cols)}
+\DoxyCodeLine{45   : \mbox{\hyperlink{classSpMat}{SpMat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), in\_n\_rows, in\_n\_cols, 1)}
+\DoxyCodeLine{46   \{}
+\DoxyCodeLine{47   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{48   \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{53 \textcolor{keyword}{inline}}
+\DoxyCodeLine{54 \mbox{\hyperlink{classSpCol}{SpCol<eT>::SpCol}}(\textcolor{keyword}{const} \mbox{\hyperlink{classSizeMat}{SizeMat}}\& s)}
+\DoxyCodeLine{55   : \mbox{\hyperlink{classSpMat}{SpMat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 0, 0, 1)}
+\DoxyCodeLine{56   \{}
+\DoxyCodeLine{57   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   \mbox{\hyperlink{group__SpMat_ga801a4fd571867156ff19f9b14bb0d89b}{SpMat<eT>::init}}(s.n\_rows, s.n\_cols);}
+\DoxyCodeLine{60   \}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{65 \textcolor{keyword}{inline}}
+\DoxyCodeLine{66 \mbox{\hyperlink{classSpCol}{SpCol<eT>::SpCol}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* text)}
+\DoxyCodeLine{67   : \mbox{\hyperlink{classSpMat}{SpMat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{68   \{}
+\DoxyCodeLine{69   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \mbox{\hyperlink{group__SpMat_ga801a4fd571867156ff19f9b14bb0d89b}{SpMat<eT>::init}}(std::string(text));}
+\DoxyCodeLine{72   \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{77 \textcolor{keyword}{inline}}
+\DoxyCodeLine{78 \mbox{\hyperlink{classSpCol}{SpCol<eT>}}\&}
+\DoxyCodeLine{79 \mbox{\hyperlink{classSpCol}{SpCol<eT>::operator=}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* text)}
+\DoxyCodeLine{80   \{}
+\DoxyCodeLine{81   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \mbox{\hyperlink{group__SpMat_ga801a4fd571867156ff19f9b14bb0d89b}{SpMat<eT>::init}}(std::string(text));}
+\DoxyCodeLine{84   }
+\DoxyCodeLine{85   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{86   \}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{91 \textcolor{keyword}{inline}}
+\DoxyCodeLine{92 \mbox{\hyperlink{classSpCol}{SpCol<eT>::SpCol}}(\textcolor{keyword}{const} std::string\& text)}
+\DoxyCodeLine{93   : \mbox{\hyperlink{classSpMat}{SpMat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{94   \{}
+\DoxyCodeLine{95   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97   \mbox{\hyperlink{group__SpMat_ga801a4fd571867156ff19f9b14bb0d89b}{SpMat<eT>::init}}(text);}
+\DoxyCodeLine{98   \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{103 \textcolor{keyword}{inline}}
+\DoxyCodeLine{104 \mbox{\hyperlink{classSpCol}{SpCol<eT>}}\&}
+\DoxyCodeLine{105 \mbox{\hyperlink{classSpCol}{SpCol<eT>::operator=}}(\textcolor{keyword}{const} std::string\& text)}
+\DoxyCodeLine{106   \{}
+\DoxyCodeLine{107   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{108   }
+\DoxyCodeLine{109   \mbox{\hyperlink{group__SpMat_ga801a4fd571867156ff19f9b14bb0d89b}{SpMat<eT>::init}}(text);}
+\DoxyCodeLine{110   }
+\DoxyCodeLine{111   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{112   \}}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{117 \textcolor{keyword}{inline}}
+\DoxyCodeLine{118 \mbox{\hyperlink{classSpCol}{SpCol<eT>}}\&}
+\DoxyCodeLine{119 \mbox{\hyperlink{classSpCol}{SpCol<eT>::operator=}}(\textcolor{keyword}{const} eT val)}
+\DoxyCodeLine{120   \{}
+\DoxyCodeLine{121   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123   \mbox{\hyperlink{classSpMat}{SpMat<eT>::operator=}}(val);}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{126   \}}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{131 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{132 \textcolor{keyword}{inline}}
+\DoxyCodeLine{133 \mbox{\hyperlink{classSpCol}{SpCol<eT>::SpCol}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X)}
+\DoxyCodeLine{134   : \mbox{\hyperlink{classSpMat}{SpMat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{135   \{}
+\DoxyCodeLine{136   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{137   }
+\DoxyCodeLine{138   \mbox{\hyperlink{classSpMat}{SpMat<eT>::operator=}}(X.get\_ref());}
+\DoxyCodeLine{139   \}}
+\DoxyCodeLine{140 }
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{144 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{145 \textcolor{keyword}{inline}}
+\DoxyCodeLine{146 \mbox{\hyperlink{classSpCol}{SpCol<eT>}}\&}
+\DoxyCodeLine{147 \mbox{\hyperlink{classSpCol}{SpCol<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<eT,T1>}}\& X)}
+\DoxyCodeLine{148   \{}
+\DoxyCodeLine{149   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{150   }
+\DoxyCodeLine{151   \mbox{\hyperlink{classSpMat}{SpMat<eT>::operator=}}(X.get\_ref());}
+\DoxyCodeLine{152   }
+\DoxyCodeLine{153   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{154   \}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{159 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{160 \textcolor{keyword}{inline}}
+\DoxyCodeLine{161 \mbox{\hyperlink{classSpCol}{SpCol<eT>::SpCol}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& X)}
+\DoxyCodeLine{162   : \mbox{\hyperlink{classSpMat}{SpMat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{163   \{}
+\DoxyCodeLine{164   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{165   }
+\DoxyCodeLine{166   \mbox{\hyperlink{classSpMat}{SpMat<eT>::operator=}}(X.get\_ref());}
+\DoxyCodeLine{167   \}}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169 }
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{172 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1>}
+\DoxyCodeLine{173 \textcolor{keyword}{inline}}
+\DoxyCodeLine{174 \mbox{\hyperlink{classSpCol}{SpCol<eT>}}\&}
+\DoxyCodeLine{175 \mbox{\hyperlink{classSpCol}{SpCol<eT>::operator=}}(\textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase<eT,T1>}}\& X)}
+\DoxyCodeLine{176   \{}
+\DoxyCodeLine{177   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{178   }
+\DoxyCodeLine{179   \mbox{\hyperlink{classSpMat}{SpMat<eT>::operator=}}(X.get\_ref());}
+\DoxyCodeLine{180   }
+\DoxyCodeLine{181   \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{182   \}}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{187 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{188 \textcolor{keyword}{inline}}
+\DoxyCodeLine{189 \mbox{\hyperlink{classSpCol}{SpCol<eT>::SpCol}}}
+\DoxyCodeLine{190   (}
+\DoxyCodeLine{191   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase}}<\textcolor{keyword}{typename} SpCol<eT>::pod\_type, T1>\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{192   \textcolor{keyword}{const} \mbox{\hyperlink{structSpBase}{SpBase}}<\textcolor{keyword}{typename} SpCol<eT>::pod\_type, T2>\& \mbox{\hyperlink{structB}{B}}}
+\DoxyCodeLine{193   )}
+\DoxyCodeLine{194   : \mbox{\hyperlink{classSpMat}{SpMat}}<eT>(\mbox{\hyperlink{structarma__vec__indicator}{arma\_vec\_indicator}}(), 1)}
+\DoxyCodeLine{195   \{}
+\DoxyCodeLine{196   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{197   }
+\DoxyCodeLine{198   \mbox{\hyperlink{group__SpMat_ga801a4fd571867156ff19f9b14bb0d89b}{SpMat<eT>::init}}(\mbox{\hyperlink{structA}{A}},\mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{199   \}}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 }
+\DoxyCodeLine{203 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{204 \textcolor{keyword}{inline}}
+\DoxyCodeLine{205 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<SpCol<eT>}},\mbox{\hyperlink{classspop__htrans}{spop\_htrans}}>}
+\DoxyCodeLine{206 \mbox{\hyperlink{classSpCol}{SpCol<eT>::t}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{207 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{208   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<SpCol<eT>}},\mbox{\hyperlink{classspop__htrans}{spop\_htrans}}>(*this);}
+\DoxyCodeLine{209   \}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{214 \textcolor{keyword}{inline}}
+\DoxyCodeLine{215 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<SpCol<eT>}},\mbox{\hyperlink{classspop__htrans}{spop\_htrans}}>}
+\DoxyCodeLine{216 \mbox{\hyperlink{classSpCol}{SpCol<eT>::ht}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{217 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{218   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<SpCol<eT>}},\mbox{\hyperlink{classspop__htrans}{spop\_htrans}}>(*this);}
+\DoxyCodeLine{219   \}}
+\DoxyCodeLine{220 }
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222 }
+\DoxyCodeLine{223 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{224 \textcolor{keyword}{inline}}
+\DoxyCodeLine{225 \textcolor{keyword}{const} \mbox{\hyperlink{classSpOp}{SpOp<SpCol<eT>}},\mbox{\hyperlink{classspop__strans}{spop\_strans}}>}
+\DoxyCodeLine{226 \mbox{\hyperlink{classSpCol}{SpCol<eT>::st}}()\textcolor{keyword}{ const}}
+\DoxyCodeLine{227 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{228   \textcolor{keywordflow}{return} \mbox{\hyperlink{classSpOp}{SpOp<SpCol<eT>}},\mbox{\hyperlink{classspop__strans}{spop\_strans}}>(*this);}
+\DoxyCodeLine{229   \}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 }
+\DoxyCodeLine{232 }
+\DoxyCodeLine{234 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{235 \textcolor{keyword}{inline}}
+\DoxyCodeLine{236 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{237 \mbox{\hyperlink{group__SpCol_gaa0ccc15023a675c42df80a673398a229}{SpCol<eT>::shed\_row}}(\textcolor{keyword}{const} uword row\_num)}
+\DoxyCodeLine{238   \{}
+\DoxyCodeLine{239   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{241   arma\_debug\_check\_bounds( row\_num >= \mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_rows}}, \textcolor{stringliteral}{"{}SpCol::shed\_row(): out of bounds"{}} );}
+\DoxyCodeLine{242   }
+\DoxyCodeLine{243   shed\_rows(row\_num, row\_num);}
+\DoxyCodeLine{244   \}}
+\DoxyCodeLine{245 }
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 }
+\DoxyCodeLine{249 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{250 \textcolor{keyword}{inline}}
+\DoxyCodeLine{251 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{252 \mbox{\hyperlink{group__SpCol_ga537740cd157bbcf38f87f5f35a248a48}{SpCol<eT>::shed\_rows}}(\textcolor{keyword}{const} uword in\_row1, \textcolor{keyword}{const} uword in\_row2)}
+\DoxyCodeLine{253   \{}
+\DoxyCodeLine{254   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256   arma\_debug\_check\_bounds}
+\DoxyCodeLine{257     (}
+\DoxyCodeLine{258     (in\_row1 > in\_row2) || (in\_row2 >= \mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_rows}}),}
+\DoxyCodeLine{259     \textcolor{stringliteral}{"{}SpCol::shed\_rows(): indices out of bounds or incorrectly used"{}}}
+\DoxyCodeLine{260     );}
+\DoxyCodeLine{261   }
+\DoxyCodeLine{262   \mbox{\hyperlink{classSpMat}{SpMat<eT>::sync\_csc}}();}
+\DoxyCodeLine{263   }
+\DoxyCodeLine{264   \textcolor{keyword}{const} uword diff = (in\_row2 -\/ in\_row1 + 1);}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266   \textcolor{comment}{// This is easy because everything is in one column.}}
+\DoxyCodeLine{267   uword start = 0, end = 0;}
+\DoxyCodeLine{268   \textcolor{keywordtype}{bool} start\_found = \textcolor{keyword}{false}, end\_found = \textcolor{keyword}{false};}
+\DoxyCodeLine{269   \textcolor{keywordflow}{for}(uword i = 0; i < SpMat<eT>::n\_nonzero; ++i)}
+\DoxyCodeLine{270     \{}
+\DoxyCodeLine{271     \textcolor{comment}{// Start position found?}}
+\DoxyCodeLine{272     \textcolor{keywordflow}{if}(\mbox{\hyperlink{classSpMat}{SpMat<eT>::row\_indices}}[i] >= in\_row1 \&\& !start\_found)}
+\DoxyCodeLine{273       \{}
+\DoxyCodeLine{274       start = i;}
+\DoxyCodeLine{275       start\_found = \textcolor{keyword}{true};}
+\DoxyCodeLine{276       \}}
+\DoxyCodeLine{277 }
+\DoxyCodeLine{278     \textcolor{comment}{// End position found?}}
+\DoxyCodeLine{279     \textcolor{keywordflow}{if}(\mbox{\hyperlink{classSpMat}{SpMat<eT>::row\_indices}}[i] > in\_row2)}
+\DoxyCodeLine{280       \{}
+\DoxyCodeLine{281       end = i;}
+\DoxyCodeLine{282       end\_found = \textcolor{keyword}{true};}
+\DoxyCodeLine{283       \textcolor{keywordflow}{break};}
+\DoxyCodeLine{284       \}}
+\DoxyCodeLine{285     \}}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287   \textcolor{keywordflow}{if}(!end\_found)}
+\DoxyCodeLine{288     \{}
+\DoxyCodeLine{289     end = \mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_nonzero}};}
+\DoxyCodeLine{290     \}}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292   \textcolor{comment}{// Now we can make the copy.}}
+\DoxyCodeLine{293   \textcolor{keywordflow}{if}(start != end)}
+\DoxyCodeLine{294     \{}
+\DoxyCodeLine{295     \textcolor{keyword}{const} uword elem\_diff = end -\/ start;}
+\DoxyCodeLine{296 }
+\DoxyCodeLine{297     eT*    new\_values      = memory::acquire<eT>   (\mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_nonzero}} -\/ elem\_diff);}
+\DoxyCodeLine{298     uword* new\_row\_indices = memory::acquire<uword>(\mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_nonzero}} -\/ elem\_diff);}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300     \textcolor{comment}{// Copy before the section we are dropping (if it exists).}}
+\DoxyCodeLine{301     \textcolor{keywordflow}{if}(start > 0)}
+\DoxyCodeLine{302       \{}
+\DoxyCodeLine{303       arrayops::copy(new\_values, \mbox{\hyperlink{classSpMat}{SpMat<eT>::values}}, start);}
+\DoxyCodeLine{304       arrayops::copy(new\_row\_indices, \mbox{\hyperlink{classSpMat}{SpMat<eT>::row\_indices}}, start);}
+\DoxyCodeLine{305       \}}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307     \textcolor{comment}{// Copy after the section we are dropping (if it exists).}}
+\DoxyCodeLine{308     \textcolor{keywordflow}{if}(end != \mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_nonzero}})}
+\DoxyCodeLine{309       \{}
+\DoxyCodeLine{310       arrayops::copy(new\_values + start, \mbox{\hyperlink{classSpMat}{SpMat<eT>::values}} + end, (\mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_nonzero}} -\/ end));}
+\DoxyCodeLine{311       arrayops::copy(new\_row\_indices + start, \mbox{\hyperlink{classSpMat}{SpMat<eT>::row\_indices}} + end, (\mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_nonzero}} -\/ end));}
+\DoxyCodeLine{312       arrayops::inplace\_minus(new\_row\_indices + start, diff, (\mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_nonzero}} -\/ end));}
+\DoxyCodeLine{313       \}}
+\DoxyCodeLine{314 }
+\DoxyCodeLine{315     memory::release(\mbox{\hyperlink{classSpMat}{SpMat<eT>::values}});}
+\DoxyCodeLine{316     memory::release(\mbox{\hyperlink{classSpMat}{SpMat<eT>::row\_indices}});}
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classSpMat}{SpMat<eT>::values}}) = new\_values;}
+\DoxyCodeLine{319     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classSpMat}{SpMat<eT>::row\_indices}}) = new\_row\_indices;}
+\DoxyCodeLine{320 }
+\DoxyCodeLine{321     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_nonzero}}) -\/= elem\_diff;}
+\DoxyCodeLine{322     \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classSpMat}{SpMat<eT>::col\_ptrs}}[1]) -\/= elem\_diff;}
+\DoxyCodeLine{323     \}}
+\DoxyCodeLine{324 }
+\DoxyCodeLine{325   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_rows}}) -\/= diff;}
+\DoxyCodeLine{326   \mbox{\hyperlink{classaccess_a90cb80857bc3814f3661fe952f7c97c4}{access::rw}}(\mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_elem}}) -\/= diff;}
+\DoxyCodeLine{327   }
+\DoxyCodeLine{328   \mbox{\hyperlink{classSpMat}{SpMat<eT>::invalidate\_cache}}();}
+\DoxyCodeLine{329   \}}
+\DoxyCodeLine{330 }
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333 \textcolor{comment}{// //! insert N rows at the specified row position,}}
+\DoxyCodeLine{334 \textcolor{comment}{// //! optionally setting the elements of the inserted rows to zero}}
+\DoxyCodeLine{335 \textcolor{comment}{// template<typename eT>}}
+\DoxyCodeLine{336 \textcolor{comment}{// inline}}
+\DoxyCodeLine{337 \textcolor{comment}{// void}}
+\DoxyCodeLine{338 \textcolor{comment}{// SpCol<eT>::insert\_rows(const uword row\_num, const uword N, const bool set\_to\_zero)}}
+\DoxyCodeLine{339 \textcolor{comment}{//   \{}}
+\DoxyCodeLine{340 \textcolor{comment}{//   arma\_extra\_debug\_sigprint();}}
+\DoxyCodeLine{341 \textcolor{comment}{// }}
+\DoxyCodeLine{342 \textcolor{comment}{//   arma\_debug\_check(set\_to\_zero == false, "{}SpCol::insert\_rows(): cannot set nonzero values"{});}}
+\DoxyCodeLine{343 \textcolor{comment}{// }}
+\DoxyCodeLine{344 \textcolor{comment}{//   arma\_debug\_check\_bounds((row\_num > SpMat<eT>::n\_rows), "{}SpCol::insert\_rows(): out of bounds"{});}}
+\DoxyCodeLine{345 \textcolor{comment}{// }}
+\DoxyCodeLine{346 \textcolor{comment}{//   for(uword row = 0; row < SpMat<eT>::n\_rows; ++row)}}
+\DoxyCodeLine{347 \textcolor{comment}{//     \{}}
+\DoxyCodeLine{348 \textcolor{comment}{//     if(SpMat<eT>::row\_indices[row] >= row\_num)}}
+\DoxyCodeLine{349 \textcolor{comment}{//       \{}}
+\DoxyCodeLine{350 \textcolor{comment}{//       access::rw(SpMat<eT>::row\_indices[row]) += N;}}
+\DoxyCodeLine{351 \textcolor{comment}{//       \}}}
+\DoxyCodeLine{352 \textcolor{comment}{//     \}}}
+\DoxyCodeLine{353 \textcolor{comment}{// }}
+\DoxyCodeLine{354 \textcolor{comment}{//   access::rw(SpMat<eT>::n\_rows) += N;}}
+\DoxyCodeLine{355 \textcolor{comment}{//   access::rw(SpMat<eT>::n\_elem) += N;}}
+\DoxyCodeLine{356 \textcolor{comment}{//   \}}}
+\DoxyCodeLine{357 }
+\DoxyCodeLine{358 }
+\DoxyCodeLine{359 }
+\DoxyCodeLine{360 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{361 \textcolor{keyword}{inline}}
+\DoxyCodeLine{362 \textcolor{keyword}{typename} \mbox{\hyperlink{classSpMat_1_1iterator}{SpCol<eT>::row\_iterator}}}
+\DoxyCodeLine{363 \mbox{\hyperlink{classSpCol}{SpCol<eT>::begin\_row}}(\textcolor{keyword}{const} uword row\_num)}
+\DoxyCodeLine{364   \{}
+\DoxyCodeLine{365   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{366   }
+\DoxyCodeLine{367   arma\_debug\_check\_bounds( (row\_num >= \mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}SpCol::begin\_row(): index out of bounds"{}} );}
+\DoxyCodeLine{368   }
+\DoxyCodeLine{369   \mbox{\hyperlink{classSpMat}{SpMat<eT>::sync\_csc}}();}
+\DoxyCodeLine{370   }
+\DoxyCodeLine{371   \textcolor{keywordflow}{return} row\_iterator(*\textcolor{keyword}{this}, row\_num, 0);}
+\DoxyCodeLine{372   \}}
+\DoxyCodeLine{373 }
+\DoxyCodeLine{374 }
+\DoxyCodeLine{375 }
+\DoxyCodeLine{376 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{377 \textcolor{keyword}{inline}}
+\DoxyCodeLine{378 \textcolor{keyword}{typename} \mbox{\hyperlink{classSpMat_1_1const__iterator}{SpCol<eT>::const\_row\_iterator}}}
+\DoxyCodeLine{379 \mbox{\hyperlink{classSpCol}{SpCol<eT>::begin\_row}}(\textcolor{keyword}{const} uword row\_num)\textcolor{keyword}{ const}}
+\DoxyCodeLine{380 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{381   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{382   }
+\DoxyCodeLine{383   arma\_debug\_check\_bounds( (row\_num >= \mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}SpCol::begin\_row(): index out of bounds"{}} );}
+\DoxyCodeLine{384   }
+\DoxyCodeLine{385   \mbox{\hyperlink{classSpMat}{SpMat<eT>::sync\_csc}}();}
+\DoxyCodeLine{386   }
+\DoxyCodeLine{387   \textcolor{keywordflow}{return} const\_row\_iterator(*\textcolor{keyword}{this}, row\_num, 0);}
+\DoxyCodeLine{388   \}}
+\DoxyCodeLine{389 }
+\DoxyCodeLine{390 }
+\DoxyCodeLine{391 }
+\DoxyCodeLine{392 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{393 \textcolor{keyword}{inline}}
+\DoxyCodeLine{394 \textcolor{keyword}{typename} \mbox{\hyperlink{classSpMat_1_1iterator}{SpCol<eT>::row\_iterator}}}
+\DoxyCodeLine{395 \mbox{\hyperlink{classSpCol}{SpCol<eT>::end\_row}}(\textcolor{keyword}{const} uword row\_num)}
+\DoxyCodeLine{396   \{}
+\DoxyCodeLine{397   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{398   }
+\DoxyCodeLine{399   arma\_debug\_check\_bounds( (row\_num >= \mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}SpCol::end\_row(): index out of bounds"{}} );}
+\DoxyCodeLine{400   }
+\DoxyCodeLine{401   \mbox{\hyperlink{classSpMat}{SpMat<eT>::sync\_csc}}();}
+\DoxyCodeLine{402   }
+\DoxyCodeLine{403   \textcolor{keywordflow}{return} row\_iterator(*\textcolor{keyword}{this}, row\_num + 1, 0);}
+\DoxyCodeLine{404   \}}
+\DoxyCodeLine{405 }
+\DoxyCodeLine{406 }
+\DoxyCodeLine{407 }
+\DoxyCodeLine{408 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{409 \textcolor{keyword}{inline}}
+\DoxyCodeLine{410 \textcolor{keyword}{typename} \mbox{\hyperlink{classSpMat_1_1const__iterator}{SpCol<eT>::const\_row\_iterator}}}
+\DoxyCodeLine{411 \mbox{\hyperlink{classSpCol}{SpCol<eT>::end\_row}}(\textcolor{keyword}{const} uword row\_num)\textcolor{keyword}{ const}}
+\DoxyCodeLine{412 \textcolor{keyword}{  }\{}
+\DoxyCodeLine{413   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{414   }
+\DoxyCodeLine{415   arma\_debug\_check\_bounds( (row\_num >= \mbox{\hyperlink{classSpMat}{SpMat<eT>::n\_rows}}), \textcolor{stringliteral}{"{}SpCol::end\_row(): index out of bounds"{}} );}
+\DoxyCodeLine{416   }
+\DoxyCodeLine{417   \mbox{\hyperlink{classSpMat}{SpMat<eT>::sync\_csc}}();}
+\DoxyCodeLine{418   }
+\DoxyCodeLine{419   \textcolor{keywordflow}{return} const\_row\_iterator(*\textcolor{keyword}{this}, row\_num + 1, 0);}
+\DoxyCodeLine{420   \}}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422 }
+\DoxyCodeLine{423 }
+\DoxyCodeLine{424 \textcolor{preprocessor}{\#ifdef ARMA\_EXTRA\_SPCOL\_MEAT}}
+\DoxyCodeLine{425 \textcolor{preprocessor}{  \#include ARMA\_INCFILE\_WRAP(ARMA\_EXTRA\_SPCOL\_MEAT)}}
+\DoxyCodeLine{426 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{427 }
+\DoxyCodeLine{428 }
+\DoxyCodeLine{429 }
+
+\end{DoxyCode}

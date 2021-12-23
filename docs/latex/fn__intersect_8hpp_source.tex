@@ -1,0 +1,66 @@
+\hypertarget{fn__intersect_8hpp_source}{}\doxysection{fn\+\_\+intersect.\+hpp}
+\label{fn__intersect_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_intersect.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/fn\_intersect.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{23 arma\_warn\_unused}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keyword}{typename}}
+\DoxyCodeLine{26 \mbox{\hyperlink{structenable__if2}{enable\_if2}}}
+\DoxyCodeLine{27   <}
+\DoxyCodeLine{28   ( \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T1>::value}} \&\& \mbox{\hyperlink{structis__arma__type}{is\_arma\_type<T2>::value}} \&\& \mbox{\hyperlink{structis__same__type}{is\_same\_type<typename T1::elem\_type, typename T2::elem\_type>::value}} ),}
+\DoxyCodeLine{29   \textcolor{keyword}{const} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_intersect>}}}
+\DoxyCodeLine{30   >::result}
+\DoxyCodeLine{31 intersect}
+\DoxyCodeLine{32   (}
+\DoxyCodeLine{33   \textcolor{keyword}{const} T1\& \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{34   \textcolor{keyword}{const} T2\& \mbox{\hyperlink{structB}{B}}}
+\DoxyCodeLine{35   )}
+\DoxyCodeLine{36   \{}
+\DoxyCodeLine{37   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{38   }
+\DoxyCodeLine{39   \textcolor{keywordflow}{return} \mbox{\hyperlink{classGlue}{Glue<T1, T2, glue\_intersect>}}(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}});}
+\DoxyCodeLine{40   \}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{45 \textcolor{keyword}{inline}}
+\DoxyCodeLine{46 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{47 intersect}
+\DoxyCodeLine{48   (}
+\DoxyCodeLine{49   \mbox{\hyperlink{classMat}{Mat<typename T1::elem\_type>}}\&            C,}
+\DoxyCodeLine{50   \mbox{\hyperlink{classCol}{uvec}}\&                                  iA,}
+\DoxyCodeLine{51   \mbox{\hyperlink{classCol}{uvec}}\&                                  iB, }
+\DoxyCodeLine{52   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T1>}}\&  \mbox{\hyperlink{structA}{A}},}
+\DoxyCodeLine{53   \textcolor{keyword}{const} \mbox{\hyperlink{structBase}{Base<typename T1::elem\_type,T2>}}\&  \mbox{\hyperlink{structB}{B}}}
+\DoxyCodeLine{54   )}
+\DoxyCodeLine{55   \{}
+\DoxyCodeLine{56   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{57   }
+\DoxyCodeLine{58   glue\_intersect::apply(C, iA, iB, \mbox{\hyperlink{structA}{A}}.get\_ref(), \mbox{\hyperlink{structB}{B}}.get\_ref(), \textcolor{keyword}{true});  }
+\DoxyCodeLine{59   \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 }
+
+\end{DoxyCode}

@@ -1,0 +1,552 @@
+\hypertarget{glue__mixed__meat_8hpp_source}{}\doxysection{glue\+\_\+mixed\+\_\+meat.\+hpp}
+\label{glue__mixed__meat_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_mixed\_meat.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/glue\_mixed\_meat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{24 \textcolor{keyword}{inline}}
+\DoxyCodeLine{25 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{26 \mbox{\hyperlink{group__glue__mixed_ga61924c506beba28147412594f0769a8c}{glue\_mixed\_times::apply}}(\mbox{\hyperlink{classMat}{Mat}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT>\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT, T1, T2, \mbox{\hyperlink{classglue__mixed__times}{glue\_mixed\_times}}>\& X)}
+\DoxyCodeLine{27   \{}
+\DoxyCodeLine{28   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{29   }
+\DoxyCodeLine{30   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type in\_eT1;}
+\DoxyCodeLine{31   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type in\_eT2;}
+\DoxyCodeLine{32   }
+\DoxyCodeLine{33   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT out\_eT;}
+\DoxyCodeLine{34   }
+\DoxyCodeLine{35   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>}} tmp1(X.A);}
+\DoxyCodeLine{36   \textcolor{keyword}{const} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>}} tmp2(X.B);}
+\DoxyCodeLine{37   }
+\DoxyCodeLine{38   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::stored\_type}}\& \mbox{\hyperlink{structA}{A}} = tmp1.M;}
+\DoxyCodeLine{39   \textcolor{keyword}{const} \textcolor{keyword}{typename} \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::stored\_type}}\& \mbox{\hyperlink{structB}{B}} = tmp2.M;}
+\DoxyCodeLine{40   }
+\DoxyCodeLine{41   \textcolor{keyword}{const} \textcolor{keywordtype}{bool}   use\_alpha = \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_times}} || \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_times}};}
+\DoxyCodeLine{42   \textcolor{keyword}{const} out\_eT     alpha = use\_alpha ? (\mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(tmp1.get\_val()) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<in\_eT1,in\_eT2>::apply}}(tmp2.get\_val())) : out\_eT(0);}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_A = \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T1>::do\_trans}};}
+\DoxyCodeLine{45   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} do\_trans\_B = \mbox{\hyperlink{structpartial__unwrap}{partial\_unwrap<T2>::do\_trans}};}
+\DoxyCodeLine{46   }
+\DoxyCodeLine{47   arma\_debug\_assert\_trans\_mul\_size<do\_trans\_A, do\_trans\_B>(\mbox{\hyperlink{structA}{A}}.n\_rows, \mbox{\hyperlink{structA}{A}}.n\_cols, \mbox{\hyperlink{structB}{B}}.n\_rows, \mbox{\hyperlink{structB}{B}}.n\_cols, \textcolor{stringliteral}{"{}matrix multiplication"{}});}
+\DoxyCodeLine{48   }
+\DoxyCodeLine{49   \textcolor{keyword}{const} uword out\_n\_rows = (do\_trans\_A == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structA}{A}}.n\_rows : \mbox{\hyperlink{structA}{A}}.n\_cols;}
+\DoxyCodeLine{50   \textcolor{keyword}{const} uword out\_n\_cols = (do\_trans\_B == \textcolor{keyword}{false}) ? \mbox{\hyperlink{structB}{B}}.n\_cols : \mbox{\hyperlink{structB}{B}}.n\_rows;}
+\DoxyCodeLine{51   }
+\DoxyCodeLine{52   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} alias = tmp1.is\_alias(out) || tmp2.is\_alias(out);}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   \textcolor{keywordflow}{if}(alias == \textcolor{keyword}{false})}
+\DoxyCodeLine{55     \{}
+\DoxyCodeLine{56     out.set\_size(out\_n\_rows, out\_n\_cols);}
+\DoxyCodeLine{57     }
+\DoxyCodeLine{58     \mbox{\hyperlink{classgemm__mixed_a8f0873dd8d17be60e74d73fbe31b1d1e}{gemm\_mixed<do\_trans\_A, do\_trans\_B, use\_alpha, false>::apply}}(out, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, alpha);}
+\DoxyCodeLine{59     \}}
+\DoxyCodeLine{60   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{61     \{}
+\DoxyCodeLine{62     \mbox{\hyperlink{classMat}{Mat<out\_eT>}} tmp(out\_n\_rows, out\_n\_cols, \mbox{\hyperlink{structarma__nozeros__indicator}{arma\_nozeros\_indicator}}());}
+\DoxyCodeLine{63     }
+\DoxyCodeLine{64     \mbox{\hyperlink{classgemm__mixed_a8f0873dd8d17be60e74d73fbe31b1d1e}{gemm\_mixed<do\_trans\_A, do\_trans\_B, use\_alpha, false>::apply}}(tmp, \mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, alpha);}
+\DoxyCodeLine{65     }
+\DoxyCodeLine{66     out.steal\_mem(tmp);}
+\DoxyCodeLine{67     \}}
+\DoxyCodeLine{68   \}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 }
+\DoxyCodeLine{73 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{74 \textcolor{keyword}{inline}}
+\DoxyCodeLine{75 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{76 \mbox{\hyperlink{group__glue__mixed_gacaa0423fb29eba110a1ddf3c337b3ca6}{glue\_mixed\_plus::apply}}(\mbox{\hyperlink{classMat}{Mat}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT>\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT, T1, T2, \mbox{\hyperlink{classglue__mixed__plus}{glue\_mixed\_plus}}>\& X)}
+\DoxyCodeLine{77   \{}
+\DoxyCodeLine{78   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{79   }
+\DoxyCodeLine{80   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT1;}
+\DoxyCodeLine{81   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eT2;}
+\DoxyCodeLine{82   }
+\DoxyCodeLine{83   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} promote\_type<eT1,eT2>::result out\_eT;}
+\DoxyCodeLine{84   }
+\DoxyCodeLine{85   \mbox{\hyperlink{structpromote__type}{promote\_type<eT1,eT2>::check}}();}
+\DoxyCodeLine{86   }
+\DoxyCodeLine{87   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} \mbox{\hyperlink{structA}{A}}(X.A);}
+\DoxyCodeLine{88   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}} \mbox{\hyperlink{structB}{B}}(X.B);}
+\DoxyCodeLine{89   }
+\DoxyCodeLine{90   arma\_debug\_assert\_same\_size(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, \textcolor{stringliteral}{"{}addition"{}});}
+\DoxyCodeLine{91   }
+\DoxyCodeLine{92   \textcolor{keyword}{const} uword n\_rows = \mbox{\hyperlink{structA}{A}}.get\_n\_rows();}
+\DoxyCodeLine{93   \textcolor{keyword}{const} uword n\_cols = \mbox{\hyperlink{structA}{A}}.get\_n\_cols();}
+\DoxyCodeLine{94   }
+\DoxyCodeLine{95   out.set\_size(n\_rows, n\_cols);}
+\DoxyCodeLine{96   }
+\DoxyCodeLine{97         out\_eT* out\_mem = out.memptr();}
+\DoxyCodeLine{98   \textcolor{keyword}{const} uword   n\_elem  = out.n\_elem;}
+\DoxyCodeLine{99     }
+\DoxyCodeLine{100   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} || \mbox{\hyperlink{classProxy}{Proxy<T2>::use\_at}});}
+\DoxyCodeLine{101   }
+\DoxyCodeLine{102   \textcolor{keywordflow}{if}(use\_at == \textcolor{keyword}{false})}
+\DoxyCodeLine{103     \{}
+\DoxyCodeLine{104     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} AA = \mbox{\hyperlink{structA}{A}}.get\_ea();}
+\DoxyCodeLine{105     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T2>::ea\_type}} BB = \mbox{\hyperlink{structB}{B}}.get\_ea();}
+\DoxyCodeLine{106     }
+\DoxyCodeLine{107     \textcolor{keywordflow}{if}(memory::is\_aligned(out\_mem))}
+\DoxyCodeLine{108       \{}
+\DoxyCodeLine{109       memory::mark\_as\_aligned(out\_mem);}
+\DoxyCodeLine{110       }
+\DoxyCodeLine{111       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{112         \{}
+\DoxyCodeLine{113         out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) + \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{114         \}}
+\DoxyCodeLine{115       \}}
+\DoxyCodeLine{116     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{117       \{}
+\DoxyCodeLine{118       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{119         \{}
+\DoxyCodeLine{120         out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) + \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{121         \}}
+\DoxyCodeLine{122       \}}
+\DoxyCodeLine{123     \}}
+\DoxyCodeLine{124   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{125     \{}
+\DoxyCodeLine{126     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{127     \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{128       \{}
+\DoxyCodeLine{129       (*out\_mem) = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structA}{A}}.at(row,col)) + \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structB}{B}}.at(row,col));}
+\DoxyCodeLine{130       out\_mem++;}
+\DoxyCodeLine{131       \}}
+\DoxyCodeLine{132     \}}
+\DoxyCodeLine{133   \}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 }
+\DoxyCodeLine{138 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{139 \textcolor{keyword}{inline}}
+\DoxyCodeLine{140 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{141 \mbox{\hyperlink{group__glue__mixed_ga238afd0665cdab3f5f0f1da2e987c897}{glue\_mixed\_minus::apply}}(\mbox{\hyperlink{classMat}{Mat}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT>\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT, T1, T2, \mbox{\hyperlink{classglue__mixed__minus}{glue\_mixed\_minus}}>\& X)}
+\DoxyCodeLine{142   \{}
+\DoxyCodeLine{143   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{144   }
+\DoxyCodeLine{145   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT1;}
+\DoxyCodeLine{146   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eT2;}
+\DoxyCodeLine{147   }
+\DoxyCodeLine{148   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} promote\_type<eT1,eT2>::result out\_eT;}
+\DoxyCodeLine{149   }
+\DoxyCodeLine{150   \mbox{\hyperlink{structpromote__type}{promote\_type<eT1,eT2>::check}}();}
+\DoxyCodeLine{151   }
+\DoxyCodeLine{152   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} \mbox{\hyperlink{structA}{A}}(X.A);}
+\DoxyCodeLine{153   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}} \mbox{\hyperlink{structB}{B}}(X.B);}
+\DoxyCodeLine{154   }
+\DoxyCodeLine{155   arma\_debug\_assert\_same\_size(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, \textcolor{stringliteral}{"{}subtraction"{}});}
+\DoxyCodeLine{156   }
+\DoxyCodeLine{157   \textcolor{keyword}{const} uword n\_rows = \mbox{\hyperlink{structA}{A}}.get\_n\_rows();}
+\DoxyCodeLine{158   \textcolor{keyword}{const} uword n\_cols = \mbox{\hyperlink{structA}{A}}.get\_n\_cols();}
+\DoxyCodeLine{159   }
+\DoxyCodeLine{160   out.set\_size(n\_rows, n\_cols);}
+\DoxyCodeLine{161   }
+\DoxyCodeLine{162         out\_eT* out\_mem = out.memptr();}
+\DoxyCodeLine{163   \textcolor{keyword}{const} uword   n\_elem  = out.n\_elem;}
+\DoxyCodeLine{164     }
+\DoxyCodeLine{165   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} || \mbox{\hyperlink{classProxy}{Proxy<T2>::use\_at}});}
+\DoxyCodeLine{166   }
+\DoxyCodeLine{167   \textcolor{keywordflow}{if}(use\_at == \textcolor{keyword}{false})}
+\DoxyCodeLine{168     \{}
+\DoxyCodeLine{169     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} AA = \mbox{\hyperlink{structA}{A}}.get\_ea();}
+\DoxyCodeLine{170     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T2>::ea\_type}} BB = \mbox{\hyperlink{structB}{B}}.get\_ea();}
+\DoxyCodeLine{171     }
+\DoxyCodeLine{172     \textcolor{keywordflow}{if}(memory::is\_aligned(out\_mem))}
+\DoxyCodeLine{173       \{}
+\DoxyCodeLine{174       memory::mark\_as\_aligned(out\_mem);}
+\DoxyCodeLine{175       }
+\DoxyCodeLine{176       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{177         \{}
+\DoxyCodeLine{178         out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) -\/ \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{179         \}}
+\DoxyCodeLine{180       \}}
+\DoxyCodeLine{181     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{182       \{}
+\DoxyCodeLine{183       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{184         \{}
+\DoxyCodeLine{185         out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) -\/ \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{186         \}}
+\DoxyCodeLine{187       \}}
+\DoxyCodeLine{188     \}}
+\DoxyCodeLine{189   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{190     \{}
+\DoxyCodeLine{191     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{192     \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{193       \{}
+\DoxyCodeLine{194       (*out\_mem) = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structA}{A}}.at(row,col)) -\/ \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structB}{B}}.at(row,col));}
+\DoxyCodeLine{195       out\_mem++;}
+\DoxyCodeLine{196       \}}
+\DoxyCodeLine{197     \}}
+\DoxyCodeLine{198   \}}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 }
+\DoxyCodeLine{203 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{204 \textcolor{keyword}{inline}}
+\DoxyCodeLine{205 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{206 \mbox{\hyperlink{group__glue__mixed_gacd534130d6d553412ac19821d531d2e6}{glue\_mixed\_div::apply}}(\mbox{\hyperlink{classMat}{Mat}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT>\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT, T1, T2, \mbox{\hyperlink{classglue__mixed__div}{glue\_mixed\_div}}>\& X)}
+\DoxyCodeLine{207   \{}
+\DoxyCodeLine{208   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{209   }
+\DoxyCodeLine{210   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT1;}
+\DoxyCodeLine{211   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eT2;}
+\DoxyCodeLine{212   }
+\DoxyCodeLine{213   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} promote\_type<eT1,eT2>::result out\_eT;}
+\DoxyCodeLine{214   }
+\DoxyCodeLine{215   \mbox{\hyperlink{structpromote__type}{promote\_type<eT1,eT2>::check}}();}
+\DoxyCodeLine{216   }
+\DoxyCodeLine{217   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} \mbox{\hyperlink{structA}{A}}(X.A);}
+\DoxyCodeLine{218   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}} \mbox{\hyperlink{structB}{B}}(X.B);}
+\DoxyCodeLine{219   }
+\DoxyCodeLine{220   arma\_debug\_assert\_same\_size(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, \textcolor{stringliteral}{"{}element-\/wise division"{}});}
+\DoxyCodeLine{221   }
+\DoxyCodeLine{222   \textcolor{keyword}{const} uword n\_rows = \mbox{\hyperlink{structA}{A}}.get\_n\_rows();}
+\DoxyCodeLine{223   \textcolor{keyword}{const} uword n\_cols = \mbox{\hyperlink{structA}{A}}.get\_n\_cols();}
+\DoxyCodeLine{224   }
+\DoxyCodeLine{225   out.set\_size(n\_rows, n\_cols);}
+\DoxyCodeLine{226   }
+\DoxyCodeLine{227         out\_eT* out\_mem = out.memptr();}
+\DoxyCodeLine{228   \textcolor{keyword}{const} uword   n\_elem  = out.n\_elem;}
+\DoxyCodeLine{229     }
+\DoxyCodeLine{230   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} || \mbox{\hyperlink{classProxy}{Proxy<T2>::use\_at}});}
+\DoxyCodeLine{231   }
+\DoxyCodeLine{232   \textcolor{keywordflow}{if}(use\_at == \textcolor{keyword}{false})}
+\DoxyCodeLine{233     \{}
+\DoxyCodeLine{234     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} AA = \mbox{\hyperlink{structA}{A}}.get\_ea();}
+\DoxyCodeLine{235     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T2>::ea\_type}} BB = \mbox{\hyperlink{structB}{B}}.get\_ea();}
+\DoxyCodeLine{236     }
+\DoxyCodeLine{237     \textcolor{keywordflow}{if}(memory::is\_aligned(out\_mem))}
+\DoxyCodeLine{238       \{}
+\DoxyCodeLine{239       memory::mark\_as\_aligned(out\_mem);}
+\DoxyCodeLine{240       }
+\DoxyCodeLine{241       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{242         \{}
+\DoxyCodeLine{243         out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) / \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{244         \}}
+\DoxyCodeLine{245       \}}
+\DoxyCodeLine{246     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{247       \{}
+\DoxyCodeLine{248       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{249         \{}
+\DoxyCodeLine{250         out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) / \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{251         \}}
+\DoxyCodeLine{252       \}}
+\DoxyCodeLine{253     \}}
+\DoxyCodeLine{254   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{255     \{}
+\DoxyCodeLine{256     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{257     \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{258       \{}
+\DoxyCodeLine{259       (*out\_mem) = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structA}{A}}.at(row,col)) / \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structB}{B}}.at(row,col));}
+\DoxyCodeLine{260       out\_mem++;}
+\DoxyCodeLine{261       \}}
+\DoxyCodeLine{262     \}}
+\DoxyCodeLine{263   \}}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 }
+\DoxyCodeLine{268 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{269 \textcolor{keyword}{inline}}
+\DoxyCodeLine{270 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{271 \mbox{\hyperlink{group__glue__mixed_ga0dbb8a16bc917f9f4d79499a0e28e146}{glue\_mixed\_schur::apply}}(\mbox{\hyperlink{classMat}{Mat}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT>\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlue}{mtGlue}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT, T1, T2, \mbox{\hyperlink{classglue__mixed__schur}{glue\_mixed\_schur}}>\& X)}
+\DoxyCodeLine{272   \{}
+\DoxyCodeLine{273   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{274   }
+\DoxyCodeLine{275   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT1;}
+\DoxyCodeLine{276   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eT2;}
+\DoxyCodeLine{277   }
+\DoxyCodeLine{278   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} promote\_type<eT1,eT2>::result out\_eT;}
+\DoxyCodeLine{279   }
+\DoxyCodeLine{280   \mbox{\hyperlink{structpromote__type}{promote\_type<eT1,eT2>::check}}();}
+\DoxyCodeLine{281   }
+\DoxyCodeLine{282   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T1>}} \mbox{\hyperlink{structA}{A}}(X.A);}
+\DoxyCodeLine{283   \textcolor{keyword}{const} \mbox{\hyperlink{classProxy}{Proxy<T2>}} \mbox{\hyperlink{structB}{B}}(X.B);}
+\DoxyCodeLine{284   }
+\DoxyCodeLine{285   arma\_debug\_assert\_same\_size(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, \textcolor{stringliteral}{"{}element-\/wise multiplication"{}});}
+\DoxyCodeLine{286   }
+\DoxyCodeLine{287   \textcolor{keyword}{const} uword n\_rows = \mbox{\hyperlink{structA}{A}}.get\_n\_rows();}
+\DoxyCodeLine{288   \textcolor{keyword}{const} uword n\_cols = \mbox{\hyperlink{structA}{A}}.get\_n\_cols();}
+\DoxyCodeLine{289   }
+\DoxyCodeLine{290   out.set\_size(n\_rows, n\_cols);}
+\DoxyCodeLine{291   }
+\DoxyCodeLine{292         out\_eT* out\_mem = out.memptr();}
+\DoxyCodeLine{293   \textcolor{keyword}{const} uword   n\_elem  = out.n\_elem;}
+\DoxyCodeLine{294     }
+\DoxyCodeLine{295   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = (\mbox{\hyperlink{classProxy}{Proxy<T1>::use\_at}} || \mbox{\hyperlink{classProxy}{Proxy<T2>::use\_at}});}
+\DoxyCodeLine{296   }
+\DoxyCodeLine{297   \textcolor{keywordflow}{if}(use\_at == \textcolor{keyword}{false})}
+\DoxyCodeLine{298     \{}
+\DoxyCodeLine{299     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T1>::ea\_type}} AA = \mbox{\hyperlink{structA}{A}}.get\_ea();}
+\DoxyCodeLine{300     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxy}{Proxy<T2>::ea\_type}} BB = \mbox{\hyperlink{structB}{B}}.get\_ea();}
+\DoxyCodeLine{301     }
+\DoxyCodeLine{302     \textcolor{keywordflow}{if}(memory::is\_aligned(out\_mem))}
+\DoxyCodeLine{303       \{}
+\DoxyCodeLine{304       memory::mark\_as\_aligned(out\_mem);}
+\DoxyCodeLine{305       }
+\DoxyCodeLine{306       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{307         \{}
+\DoxyCodeLine{308         out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{309         \}}
+\DoxyCodeLine{310       \}}
+\DoxyCodeLine{311     \textcolor{keywordflow}{else}}
+\DoxyCodeLine{312       \{}
+\DoxyCodeLine{313       \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{314         \{}
+\DoxyCodeLine{315         out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{316         \}}
+\DoxyCodeLine{317       \}}
+\DoxyCodeLine{318     \}}
+\DoxyCodeLine{319   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{320     \{}
+\DoxyCodeLine{321     \textcolor{keywordflow}{for}(uword col=0; col < n\_cols; ++col)}
+\DoxyCodeLine{322     \textcolor{keywordflow}{for}(uword row=0; row < n\_rows; ++row)}
+\DoxyCodeLine{323       \{}
+\DoxyCodeLine{324       (*out\_mem) = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structA}{A}}.at(row,col)) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structB}{B}}.at(row,col));}
+\DoxyCodeLine{325       out\_mem++;}
+\DoxyCodeLine{326       \}}
+\DoxyCodeLine{327     \}}
+\DoxyCodeLine{328   \}}
+\DoxyCodeLine{329 }
+\DoxyCodeLine{330 }
+\DoxyCodeLine{331 }
+\DoxyCodeLine{332 \textcolor{comment}{//}}
+\DoxyCodeLine{333 \textcolor{comment}{//}}
+\DoxyCodeLine{334 \textcolor{comment}{//}}
+\DoxyCodeLine{335 }
+\DoxyCodeLine{336 }
+\DoxyCodeLine{337 }
+\DoxyCodeLine{339 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{340 \textcolor{keyword}{inline}}
+\DoxyCodeLine{341 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{342 \mbox{\hyperlink{group__glue__mixed_gacaa0423fb29eba110a1ddf3c337b3ca6}{glue\_mixed\_plus::apply}}(\mbox{\hyperlink{classCube}{Cube}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT>\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT, T1, T2, \mbox{\hyperlink{classglue__mixed__plus}{glue\_mixed\_plus}}>\& X)}
+\DoxyCodeLine{343   \{}
+\DoxyCodeLine{344   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{345   }
+\DoxyCodeLine{346   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT1;}
+\DoxyCodeLine{347   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eT2;}
+\DoxyCodeLine{348   }
+\DoxyCodeLine{349   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} promote\_type<eT1,eT2>::result out\_eT;}
+\DoxyCodeLine{350   }
+\DoxyCodeLine{351   \mbox{\hyperlink{structpromote__type}{promote\_type<eT1,eT2>::check}}();}
+\DoxyCodeLine{352   }
+\DoxyCodeLine{353   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} \mbox{\hyperlink{structA}{A}}(X.A);}
+\DoxyCodeLine{354   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>}} \mbox{\hyperlink{structB}{B}}(X.B);}
+\DoxyCodeLine{355   }
+\DoxyCodeLine{356   arma\_debug\_assert\_same\_size(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, \textcolor{stringliteral}{"{}addition"{}});}
+\DoxyCodeLine{357   }
+\DoxyCodeLine{358   \textcolor{keyword}{const} uword n\_rows   = \mbox{\hyperlink{structA}{A}}.get\_n\_rows();}
+\DoxyCodeLine{359   \textcolor{keyword}{const} uword n\_cols   = \mbox{\hyperlink{structA}{A}}.get\_n\_cols();}
+\DoxyCodeLine{360   \textcolor{keyword}{const} uword n\_slices = \mbox{\hyperlink{structA}{A}}.get\_n\_slices();}
+\DoxyCodeLine{361 }
+\DoxyCodeLine{362   out.set\_size(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{363   }
+\DoxyCodeLine{364         out\_eT* out\_mem = out.memptr();}
+\DoxyCodeLine{365   \textcolor{keyword}{const} uword    n\_elem = out.n\_elem;}
+\DoxyCodeLine{366   }
+\DoxyCodeLine{367   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = (\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} || \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::use\_at}});}
+\DoxyCodeLine{368   }
+\DoxyCodeLine{369   \textcolor{keywordflow}{if}(use\_at == \textcolor{keyword}{false})}
+\DoxyCodeLine{370     \{}
+\DoxyCodeLine{371     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} AA = \mbox{\hyperlink{structA}{A}}.get\_ea();}
+\DoxyCodeLine{372     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::ea\_type}} BB = \mbox{\hyperlink{structB}{B}}.get\_ea();}
+\DoxyCodeLine{373     }
+\DoxyCodeLine{374     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{375       \{}
+\DoxyCodeLine{376       out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) + \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{377       \}}
+\DoxyCodeLine{378     \}}
+\DoxyCodeLine{379   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{380     \{}
+\DoxyCodeLine{381     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}} = 0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{382     \textcolor{keywordflow}{for}(uword col   = 0; col   < n\_cols;   ++col  )}
+\DoxyCodeLine{383     \textcolor{keywordflow}{for}(uword row   = 0; row   < n\_rows;   ++row  )}
+\DoxyCodeLine{384       \{}
+\DoxyCodeLine{385       (*out\_mem) = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structA}{A}}.at(row,col,\mbox{\hyperlink{classslice}{slice}})) + \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structB}{B}}.at(row,col,\mbox{\hyperlink{classslice}{slice}}));}
+\DoxyCodeLine{386       out\_mem++;}
+\DoxyCodeLine{387       \}}
+\DoxyCodeLine{388     \}}
+\DoxyCodeLine{389   \}}
+\DoxyCodeLine{390 }
+\DoxyCodeLine{391 }
+\DoxyCodeLine{392 }
+\DoxyCodeLine{394 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{395 \textcolor{keyword}{inline}}
+\DoxyCodeLine{396 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{397 \mbox{\hyperlink{group__glue__mixed_ga238afd0665cdab3f5f0f1da2e987c897}{glue\_mixed\_minus::apply}}(\mbox{\hyperlink{classCube}{Cube}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT>\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT, T1, T2, \mbox{\hyperlink{classglue__mixed__minus}{glue\_mixed\_minus}}>\& X)}
+\DoxyCodeLine{398   \{}
+\DoxyCodeLine{399   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{400   }
+\DoxyCodeLine{401   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT1;}
+\DoxyCodeLine{402   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eT2;}
+\DoxyCodeLine{403   }
+\DoxyCodeLine{404   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} promote\_type<eT1,eT2>::result out\_eT;}
+\DoxyCodeLine{405   }
+\DoxyCodeLine{406   \mbox{\hyperlink{structpromote__type}{promote\_type<eT1,eT2>::check}}();}
+\DoxyCodeLine{407   }
+\DoxyCodeLine{408   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} \mbox{\hyperlink{structA}{A}}(X.A);}
+\DoxyCodeLine{409   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>}} \mbox{\hyperlink{structB}{B}}(X.B);}
+\DoxyCodeLine{410   }
+\DoxyCodeLine{411   arma\_debug\_assert\_same\_size(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, \textcolor{stringliteral}{"{}subtraction"{}});}
+\DoxyCodeLine{412   }
+\DoxyCodeLine{413   \textcolor{keyword}{const} uword n\_rows   = \mbox{\hyperlink{structA}{A}}.get\_n\_rows();}
+\DoxyCodeLine{414   \textcolor{keyword}{const} uword n\_cols   = \mbox{\hyperlink{structA}{A}}.get\_n\_cols();}
+\DoxyCodeLine{415   \textcolor{keyword}{const} uword n\_slices = \mbox{\hyperlink{structA}{A}}.get\_n\_slices();}
+\DoxyCodeLine{416 }
+\DoxyCodeLine{417   out.set\_size(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{418   }
+\DoxyCodeLine{419         out\_eT* out\_mem = out.memptr();}
+\DoxyCodeLine{420   \textcolor{keyword}{const} uword    n\_elem = out.n\_elem;}
+\DoxyCodeLine{421   }
+\DoxyCodeLine{422   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = (\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} || \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::use\_at}});}
+\DoxyCodeLine{423   }
+\DoxyCodeLine{424   \textcolor{keywordflow}{if}(use\_at == \textcolor{keyword}{false})}
+\DoxyCodeLine{425     \{}
+\DoxyCodeLine{426     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} AA = \mbox{\hyperlink{structA}{A}}.get\_ea();}
+\DoxyCodeLine{427     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::ea\_type}} BB = \mbox{\hyperlink{structB}{B}}.get\_ea();}
+\DoxyCodeLine{428     }
+\DoxyCodeLine{429     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{430       \{}
+\DoxyCodeLine{431       out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) -\/ \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{432       \}}
+\DoxyCodeLine{433     \}}
+\DoxyCodeLine{434   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{435     \{}
+\DoxyCodeLine{436     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}} = 0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{437     \textcolor{keywordflow}{for}(uword col   = 0; col   < n\_cols;   ++col  )}
+\DoxyCodeLine{438     \textcolor{keywordflow}{for}(uword row   = 0; row   < n\_rows;   ++row  )}
+\DoxyCodeLine{439       \{}
+\DoxyCodeLine{440       (*out\_mem) = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structA}{A}}.at(row,col,\mbox{\hyperlink{classslice}{slice}})) -\/ \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structB}{B}}.at(row,col,\mbox{\hyperlink{classslice}{slice}}));}
+\DoxyCodeLine{441       out\_mem++;}
+\DoxyCodeLine{442       \}}
+\DoxyCodeLine{443     \}}
+\DoxyCodeLine{444   \}}
+\DoxyCodeLine{445 }
+\DoxyCodeLine{446 }
+\DoxyCodeLine{447 }
+\DoxyCodeLine{449 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{450 \textcolor{keyword}{inline}}
+\DoxyCodeLine{451 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{452 \mbox{\hyperlink{group__glue__mixed_gacd534130d6d553412ac19821d531d2e6}{glue\_mixed\_div::apply}}(\mbox{\hyperlink{classCube}{Cube}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT>\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT, T1, T2, \mbox{\hyperlink{classglue__mixed__div}{glue\_mixed\_div}}>\& X)}
+\DoxyCodeLine{453   \{}
+\DoxyCodeLine{454   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{455   }
+\DoxyCodeLine{456   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT1;}
+\DoxyCodeLine{457   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eT2;}
+\DoxyCodeLine{458   }
+\DoxyCodeLine{459   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} promote\_type<eT1,eT2>::result out\_eT;}
+\DoxyCodeLine{460   }
+\DoxyCodeLine{461   \mbox{\hyperlink{structpromote__type}{promote\_type<eT1,eT2>::check}}();}
+\DoxyCodeLine{462   }
+\DoxyCodeLine{463   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} \mbox{\hyperlink{structA}{A}}(X.A);}
+\DoxyCodeLine{464   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>}} \mbox{\hyperlink{structB}{B}}(X.B);}
+\DoxyCodeLine{465   }
+\DoxyCodeLine{466   arma\_debug\_assert\_same\_size(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, \textcolor{stringliteral}{"{}element-\/wise division"{}});}
+\DoxyCodeLine{467   }
+\DoxyCodeLine{468   \textcolor{keyword}{const} uword n\_rows   = \mbox{\hyperlink{structA}{A}}.get\_n\_rows();}
+\DoxyCodeLine{469   \textcolor{keyword}{const} uword n\_cols   = \mbox{\hyperlink{structA}{A}}.get\_n\_cols();}
+\DoxyCodeLine{470   \textcolor{keyword}{const} uword n\_slices = \mbox{\hyperlink{structA}{A}}.get\_n\_slices();}
+\DoxyCodeLine{471 }
+\DoxyCodeLine{472   out.set\_size(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{473   }
+\DoxyCodeLine{474         out\_eT* out\_mem = out.memptr();}
+\DoxyCodeLine{475   \textcolor{keyword}{const} uword    n\_elem = out.n\_elem;}
+\DoxyCodeLine{476   }
+\DoxyCodeLine{477   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = (\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} || \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::use\_at}});}
+\DoxyCodeLine{478   }
+\DoxyCodeLine{479   \textcolor{keywordflow}{if}(use\_at == \textcolor{keyword}{false})}
+\DoxyCodeLine{480     \{}
+\DoxyCodeLine{481     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} AA = \mbox{\hyperlink{structA}{A}}.get\_ea();}
+\DoxyCodeLine{482     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::ea\_type}} BB = \mbox{\hyperlink{structB}{B}}.get\_ea();}
+\DoxyCodeLine{483     }
+\DoxyCodeLine{484     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{485       \{}
+\DoxyCodeLine{486       out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) / \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{487       \}}
+\DoxyCodeLine{488     \}}
+\DoxyCodeLine{489   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{490     \{}
+\DoxyCodeLine{491     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}} = 0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{492     \textcolor{keywordflow}{for}(uword col   = 0; col   < n\_cols;   ++col  )}
+\DoxyCodeLine{493     \textcolor{keywordflow}{for}(uword row   = 0; row   < n\_rows;   ++row  )}
+\DoxyCodeLine{494       \{}
+\DoxyCodeLine{495       (*out\_mem) = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structA}{A}}.at(row,col,\mbox{\hyperlink{classslice}{slice}})) / \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structB}{B}}.at(row,col,\mbox{\hyperlink{classslice}{slice}}));}
+\DoxyCodeLine{496       out\_mem++;}
+\DoxyCodeLine{497       \}}
+\DoxyCodeLine{498     \}}
+\DoxyCodeLine{499   \}}
+\DoxyCodeLine{500 }
+\DoxyCodeLine{501 }
+\DoxyCodeLine{502 }
+\DoxyCodeLine{504 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T1, \textcolor{keyword}{typename} T2>}
+\DoxyCodeLine{505 \textcolor{keyword}{inline}}
+\DoxyCodeLine{506 \textcolor{keywordtype}{void}}
+\DoxyCodeLine{507 \mbox{\hyperlink{group__glue__mixed_ga0dbb8a16bc917f9f4d79499a0e28e146}{glue\_mixed\_schur::apply}}(\mbox{\hyperlink{classCube}{Cube}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT>\& out, \textcolor{keyword}{const} \mbox{\hyperlink{classmtGlueCube}{mtGlueCube}}<\textcolor{keyword}{typename} eT\_promoter<T1,T2>::eT, T1, T2, \mbox{\hyperlink{classglue__mixed__schur}{glue\_mixed\_schur}}>\& X)}
+\DoxyCodeLine{508   \{}
+\DoxyCodeLine{509   arma\_extra\_debug\_sigprint();}
+\DoxyCodeLine{510   }
+\DoxyCodeLine{511   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T1::elem\_type eT1;}
+\DoxyCodeLine{512   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} T2::elem\_type eT2;}
+\DoxyCodeLine{513   }
+\DoxyCodeLine{514   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} promote\_type<eT1,eT2>::result out\_eT;}
+\DoxyCodeLine{515   }
+\DoxyCodeLine{516   \mbox{\hyperlink{structpromote__type}{promote\_type<eT1,eT2>::check}}();}
+\DoxyCodeLine{517   }
+\DoxyCodeLine{518   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>}} \mbox{\hyperlink{structA}{A}}(X.A);}
+\DoxyCodeLine{519   \textcolor{keyword}{const} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>}} \mbox{\hyperlink{structB}{B}}(X.B);}
+\DoxyCodeLine{520   }
+\DoxyCodeLine{521   arma\_debug\_assert\_same\_size(\mbox{\hyperlink{structA}{A}}, \mbox{\hyperlink{structB}{B}}, \textcolor{stringliteral}{"{}element-\/wise multiplication"{}});}
+\DoxyCodeLine{522   }
+\DoxyCodeLine{523   \textcolor{keyword}{const} uword n\_rows   = \mbox{\hyperlink{structA}{A}}.get\_n\_rows();}
+\DoxyCodeLine{524   \textcolor{keyword}{const} uword n\_cols   = \mbox{\hyperlink{structA}{A}}.get\_n\_cols();}
+\DoxyCodeLine{525   \textcolor{keyword}{const} uword n\_slices = \mbox{\hyperlink{structA}{A}}.get\_n\_slices();}
+\DoxyCodeLine{526 }
+\DoxyCodeLine{527   out.set\_size(n\_rows, n\_cols, n\_slices);}
+\DoxyCodeLine{528   }
+\DoxyCodeLine{529         out\_eT* out\_mem = out.memptr();}
+\DoxyCodeLine{530   \textcolor{keyword}{const} uword    n\_elem = out.n\_elem;}
+\DoxyCodeLine{531   }
+\DoxyCodeLine{532   \textcolor{keyword}{const} \textcolor{keywordtype}{bool} use\_at = (\mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::use\_at}} || \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::use\_at}});}
+\DoxyCodeLine{533   }
+\DoxyCodeLine{534   \textcolor{keywordflow}{if}(use\_at == \textcolor{keyword}{false})}
+\DoxyCodeLine{535     \{}
+\DoxyCodeLine{536     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T1>::ea\_type}} AA = \mbox{\hyperlink{structA}{A}}.get\_ea();}
+\DoxyCodeLine{537     \textcolor{keyword}{typename} \mbox{\hyperlink{classProxyCube}{ProxyCube<T2>::ea\_type}} BB = \mbox{\hyperlink{structB}{B}}.get\_ea();}
+\DoxyCodeLine{538     }
+\DoxyCodeLine{539     \textcolor{keywordflow}{for}(uword i=0; i<n\_elem; ++i)}
+\DoxyCodeLine{540       \{}
+\DoxyCodeLine{541       out\_mem[i] = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(AA[i]) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(BB[i]);}
+\DoxyCodeLine{542       \}}
+\DoxyCodeLine{543     \}}
+\DoxyCodeLine{544   \textcolor{keywordflow}{else}}
+\DoxyCodeLine{545     \{}
+\DoxyCodeLine{546     \textcolor{keywordflow}{for}(uword \mbox{\hyperlink{classslice}{slice}} = 0; \mbox{\hyperlink{classslice}{slice}} < n\_slices; ++\mbox{\hyperlink{classslice}{slice}})}
+\DoxyCodeLine{547     \textcolor{keywordflow}{for}(uword col   = 0; col   < n\_cols;   ++col  )}
+\DoxyCodeLine{548     \textcolor{keywordflow}{for}(uword row   = 0; row   < n\_rows;   ++row  )}
+\DoxyCodeLine{549       \{}
+\DoxyCodeLine{550       (*out\_mem) = \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structA}{A}}.at(row,col,\mbox{\hyperlink{classslice}{slice}})) * \mbox{\hyperlink{structupgrade__val}{upgrade\_val<eT1,eT2>::apply}}(\mbox{\hyperlink{structB}{B}}.at(row,col,\mbox{\hyperlink{classslice}{slice}}));}
+\DoxyCodeLine{551       out\_mem++;}
+\DoxyCodeLine{552       \}}
+\DoxyCodeLine{553     \}}
+\DoxyCodeLine{554   \}}
+\DoxyCodeLine{555 }
+\DoxyCodeLine{556 }
+\DoxyCodeLine{557 }
+
+\end{DoxyCode}

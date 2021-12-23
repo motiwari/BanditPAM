@@ -1,0 +1,81 @@
+\hypertarget{BaseCube__bones_8hpp_source}{}\doxysection{Base\+Cube\+\_\+bones.\+hpp}
+\label{BaseCube__bones_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/BaseCube\_bones.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/BaseCube\_bones.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{23 \textcolor{keyword}{struct }\mbox{\hyperlink{structBaseCube__eval__Cube}{BaseCube\_eval\_Cube}}}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   arma\_inline \textcolor{keyword}{const} derived\& eval() \textcolor{keyword}{const};}
+\DoxyCodeLine{26   \};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{30 \textcolor{keyword}{struct }\mbox{\hyperlink{structBaseCube__eval__expr}{BaseCube\_eval\_expr}}}
+\DoxyCodeLine{31   \{}
+\DoxyCodeLine{32   arma\_inline \mbox{\hyperlink{classCube}{Cube<elem\_type>}} \mbox{\hyperlink{group__BaseCube_gafe4d70016b33a16e2f263734631f6fd0}{eval}}() \textcolor{keyword}{const};   }
+\DoxyCodeLine{33   \};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived, \textcolor{keywordtype}{bool} condition>}
+\DoxyCodeLine{37 \textcolor{keyword}{struct }\mbox{\hyperlink{structBaseCube__eval}{BaseCube\_eval}} \{\};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{40 \textcolor{keyword}{struct }\mbox{\hyperlink{structBaseCube__eval}{BaseCube\_eval}}<elem\_type, derived, true>  \{ \textcolor{keyword}{typedef} \mbox{\hyperlink{structBaseCube__eval__Cube}{BaseCube\_eval\_Cube<elem\_type, derived>}}  \mbox{\hyperlink{structBaseCube__eval__Cube}{result}}; \};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{43 \textcolor{keyword}{struct }\mbox{\hyperlink{structBaseCube__eval}{BaseCube\_eval}}<elem\_type, derived, false> \{ \textcolor{keyword}{typedef} \mbox{\hyperlink{structBaseCube__eval__expr}{BaseCube\_eval\_expr<elem\_type, derived>}} \mbox{\hyperlink{structBaseCube__eval__expr}{result}}; \};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{48 \textcolor{keyword}{template}<\textcolor{keyword}{typename} elem\_type, \textcolor{keyword}{typename} derived>}
+\DoxyCodeLine{49 \textcolor{keyword}{struct }\mbox{\hyperlink{structBaseCube}{BaseCube}}}
+\DoxyCodeLine{50   : \textcolor{keyword}{public} \mbox{\hyperlink{structBaseCube__eval}{BaseCube\_eval}}<elem\_type, derived, is\_Cube<derived>::value>::result}
+\DoxyCodeLine{51   \{}
+\DoxyCodeLine{52   arma\_inline \textcolor{keyword}{const} derived\& get\_ref() \textcolor{keyword}{const};}
+\DoxyCodeLine{53   }
+\DoxyCodeLine{54   arma\_cold \textcolor{keyword}{inline} \textcolor{keywordtype}{void} print(                           \textcolor{keyword}{const} std::string extra\_text = \textcolor{stringliteral}{"{}"{}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{55   arma\_cold \textcolor{keyword}{inline} \textcolor{keywordtype}{void} print(std::ostream\& user\_stream, \textcolor{keyword}{const} std::string extra\_text = \textcolor{stringliteral}{"{}"{}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{56   }
+\DoxyCodeLine{57   arma\_cold \textcolor{keyword}{inline} \textcolor{keywordtype}{void} raw\_print(                           \textcolor{keyword}{const} std::string extra\_text = \textcolor{stringliteral}{"{}"{}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{58   arma\_cold \textcolor{keyword}{inline} \textcolor{keywordtype}{void} raw\_print(std::ostream\& user\_stream, \textcolor{keyword}{const} std::string extra\_text = \textcolor{stringliteral}{"{}"{}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{59   }
+\DoxyCodeLine{60   arma\_cold \textcolor{keyword}{inline} \textcolor{keywordtype}{void} brief\_print(                           \textcolor{keyword}{const} std::string extra\_text = \textcolor{stringliteral}{"{}"{}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{61   arma\_cold \textcolor{keyword}{inline} \textcolor{keywordtype}{void} brief\_print(std::ostream\& user\_stream, \textcolor{keyword}{const} std::string extra\_text = \textcolor{stringliteral}{"{}"{}}) \textcolor{keyword}{const};}
+\DoxyCodeLine{62   }
+\DoxyCodeLine{63   \textcolor{keyword}{inline} arma\_warn\_unused elem\_type min() \textcolor{keyword}{const};}
+\DoxyCodeLine{64   \textcolor{keyword}{inline} arma\_warn\_unused elem\_type max() \textcolor{keyword}{const};}
+\DoxyCodeLine{65   }
+\DoxyCodeLine{66   \textcolor{keyword}{inline} arma\_warn\_unused uword index\_min() \textcolor{keyword}{const};}
+\DoxyCodeLine{67   \textcolor{keyword}{inline} arma\_warn\_unused uword index\_max() \textcolor{keyword}{const};}
+\DoxyCodeLine{68   }
+\DoxyCodeLine{69   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} is\_zero(\textcolor{keyword}{const} \textcolor{keyword}{typename} get\_pod\_type<elem\_type>::result tol = 0) \textcolor{keyword}{const};}
+\DoxyCodeLine{70   }
+\DoxyCodeLine{71   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} is\_empty()  \textcolor{keyword}{const};}
+\DoxyCodeLine{72   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} is\_finite() \textcolor{keyword}{const};}
+\DoxyCodeLine{73   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} has\_inf()   \textcolor{keyword}{const};}
+\DoxyCodeLine{74   \textcolor{keyword}{inline} arma\_warn\_unused \textcolor{keywordtype}{bool} has\_nan()   \textcolor{keyword}{const};}
+\DoxyCodeLine{75   \};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78 }
+
+\end{DoxyCode}

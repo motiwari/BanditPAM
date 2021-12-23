@@ -1,0 +1,117 @@
+\hypertarget{arma__rel__comparators_8hpp_source}{}\doxysection{arma\+\_\+rel\+\_\+comparators.\+hpp}
+\label{arma__rel__comparators_8hpp_source}\index{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arma\_rel\_comparators.hpp@{/Users/motiwari/Desktop/BanditPAM/headers/carma/extern/armadillo-\/code/include/armadillo\_bits/arma\_rel\_comparators.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// Copyright 2008-\/2016 Conrad Sanderson (http://conradsanderson.id.au)}}
+\DoxyCodeLine{2 \textcolor{comment}{// Copyright 2008-\/2016 National ICT Australia (NICTA)}}
+\DoxyCodeLine{3 \textcolor{comment}{// }}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under the Apache License, Version 2.0 (the "{}License"{});}}
+\DoxyCodeLine{5 \textcolor{comment}{// you may not use this file except in compliance with the License.}}
+\DoxyCodeLine{6 \textcolor{comment}{// You may obtain a copy of the License at}}
+\DoxyCodeLine{7 \textcolor{comment}{// http://www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{8 \textcolor{comment}{// }}
+\DoxyCodeLine{9 \textcolor{comment}{// Unless required by applicable law or agreed to in writing, software}}
+\DoxyCodeLine{10 \textcolor{comment}{// distributed under the License is distributed on an "{}AS IS"{} BASIS,}}
+\DoxyCodeLine{11 \textcolor{comment}{// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.}}
+\DoxyCodeLine{12 \textcolor{comment}{// See the License for the specific language governing permissions and}}
+\DoxyCodeLine{13 \textcolor{comment}{// limitations under the License.}}
+\DoxyCodeLine{14 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{23 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__lt__comparator}{arma\_lt\_comparator}}}
+\DoxyCodeLine{24   \{}
+\DoxyCodeLine{25   arma\_inline \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} eT a, \textcolor{keyword}{const} eT b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (a < b); \}}
+\DoxyCodeLine{26   \};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{31 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__gt__comparator}{arma\_gt\_comparator}}}
+\DoxyCodeLine{32   \{}
+\DoxyCodeLine{33   arma\_inline \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} eT a, \textcolor{keyword}{const} eT b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (a > b); \}}
+\DoxyCodeLine{34   \};}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{39 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__leq__comparator}{arma\_leq\_comparator}}}
+\DoxyCodeLine{40   \{}
+\DoxyCodeLine{41   arma\_inline \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} eT a, \textcolor{keyword}{const} eT b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (a <= b); \}}
+\DoxyCodeLine{42   \};}
+\DoxyCodeLine{43   }
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{template}<\textcolor{keyword}{typename} eT>}
+\DoxyCodeLine{47 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__geq__comparator}{arma\_geq\_comparator}}}
+\DoxyCodeLine{48   \{}
+\DoxyCodeLine{49   arma\_inline \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} eT a, \textcolor{keyword}{const} eT b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (a >= b); \}}
+\DoxyCodeLine{50   \};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{55 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__lt__comparator}{arma\_lt\_comparator}}< std::complex<T> >}
+\DoxyCodeLine{56   \{}
+\DoxyCodeLine{57   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT;}
+\DoxyCodeLine{58   }
+\DoxyCodeLine{59   \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} eT\& a, \textcolor{keyword}{const} eT\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (std::abs(a) < std::abs(b)); \}}
+\DoxyCodeLine{60   }
+\DoxyCodeLine{61   \textcolor{comment}{// inline}}
+\DoxyCodeLine{62   \textcolor{comment}{// bool}}
+\DoxyCodeLine{63   \textcolor{comment}{// operator() (const eT\& a, const eT\& b) const}}
+\DoxyCodeLine{64   \textcolor{comment}{//   \{}}
+\DoxyCodeLine{65   \textcolor{comment}{//   const T abs\_a = std::abs(a);}}
+\DoxyCodeLine{66   \textcolor{comment}{//   const T abs\_b = std::abs(b);}}
+\DoxyCodeLine{67   \textcolor{comment}{//   }}
+\DoxyCodeLine{68   \textcolor{comment}{//   return ( (abs\_a != abs\_b) ? (abs\_a < abs\_b) : (std::arg(a) < std::arg(b)) );}}
+\DoxyCodeLine{69   \textcolor{comment}{//   \}}}
+\DoxyCodeLine{70   \};}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{75 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__gt__comparator}{arma\_gt\_comparator}}< std::complex<T> >}
+\DoxyCodeLine{76   \{}
+\DoxyCodeLine{77   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT;}
+\DoxyCodeLine{78   }
+\DoxyCodeLine{79   \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} eT\& a, \textcolor{keyword}{const} eT\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (std::abs(a) > std::abs(b)); \}}
+\DoxyCodeLine{80   }
+\DoxyCodeLine{81   \textcolor{comment}{// inline}}
+\DoxyCodeLine{82   \textcolor{comment}{// bool}}
+\DoxyCodeLine{83   \textcolor{comment}{// operator() (const eT\& a, const eT\& b) const}}
+\DoxyCodeLine{84   \textcolor{comment}{//   \{}}
+\DoxyCodeLine{85   \textcolor{comment}{//   const T abs\_a = std::abs(a);}}
+\DoxyCodeLine{86   \textcolor{comment}{//   const T abs\_b = std::abs(b);}}
+\DoxyCodeLine{87   \textcolor{comment}{//   }}
+\DoxyCodeLine{88   \textcolor{comment}{//   return ( (abs\_a != abs\_b) ? (abs\_a > abs\_b) : (std::arg(a) > std::arg(b)) );}}
+\DoxyCodeLine{89   \textcolor{comment}{//   \}}}
+\DoxyCodeLine{90   \};}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{95 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__leq__comparator}{arma\_leq\_comparator}}< std::complex<T> >}
+\DoxyCodeLine{96   \{}
+\DoxyCodeLine{97   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT;}
+\DoxyCodeLine{98   }
+\DoxyCodeLine{99   \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} eT\& a, \textcolor{keyword}{const} eT\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (std::abs(a) <= std::abs(b)); \}}
+\DoxyCodeLine{100   \};}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{105 \textcolor{keyword}{struct }\mbox{\hyperlink{structarma__geq__comparator}{arma\_geq\_comparator}}< std::complex<T> >}
+\DoxyCodeLine{106   \{}
+\DoxyCodeLine{107   \textcolor{keyword}{typedef} \textcolor{keyword}{typename} std::complex<T> eT;}
+\DoxyCodeLine{108   }
+\DoxyCodeLine{109   \textcolor{keyword}{inline} \textcolor{keywordtype}{bool} operator() (\textcolor{keyword}{const} eT\& a, \textcolor{keyword}{const} eT\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (std::abs(a) >= std::abs(b)); \}}
+\DoxyCodeLine{110   \};}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+
+\end{DoxyCode}
