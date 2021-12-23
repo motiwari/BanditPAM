@@ -311,89 +311,98 @@ class BuildExt(build_ext):
         build_ext.build_extensions(self)
 
 
-if sys.platform == "linux" or sys.platform == "linux2":
-    include_dirs = [
-        get_pybind_include(),
-        get_numpy_include(),
-        "headers",
-        os.path.join("headers", "algorithms"),
-        os.path.join("headers", "python_bindings"),
-        os.path.join("headers", "carma", "include"),
-        os.path.join("headers", "carma", "include", "carma_bits"),
-        os.path.join("/", "usr", "local", "include"),
+def main():
+    if sys.platform == "linux" or sys.platform == "linux2":
+        include_dirs = [
+            get_pybind_include(),
+            get_numpy_include(),
+            "headers",
+            os.path.join("headers", "algorithms"),
+            os.path.join("headers", "python_bindings"),
+            os.path.join("headers", "carma", "include"),
+            os.path.join("headers", "carma", "include", "carma_bits"),
+            os.path.join("/", "usr", "local", "include"),
+        ]
+
+    else:  # OSX
+        include_dirs = [
+            get_pybind_include(),
+            get_numpy_include(),
+            "headers",
+            os.path.join("headers", "algorithms"),
+            os.path.join("headers", "python_bindings"),
+            os.path.join("headers", "carma", "include"),
+            os.path.join("headers", "carma", "include", "carma"),
+            os.path.join("headers", "carma", "include", "carma", "carma"),
+            os.path.join("/", "usr", "local", "include"),
+        ]
+
+    compiler_name = compiler_check()
+    if compiler_name == "clang":
+        libraries = ["armadillo", "omp"]
+    else:  # gcc
+        libraries = ["armadillo", "gomp"]
+
+    ext_modules = [
+        Extension(
+            "banditpam",
+            [
+                os.path.join("src", "algorithms", "kmedoids_algorithm.cpp"),
+                os.path.join("src", "algorithms", "pam.cpp"),
+                os.path.join("src", "algorithms", "banditpam.cpp"),
+                os.path.join("src", "algorithms", "fastpam1.cpp"),
+                os.path.join("src", "python_bindings",
+                             "kmedoids_pywrapper.cpp"),
+                os.path.join("src", "python_bindings", "fit_python.cpp"),
+                os.path.join("src", "python_bindings", "medoids_python.cpp"),
+                os.path.join("src", "python_bindings",
+                             "build_medoids_python.cpp"),
+                os.path.join("src", "python_bindings", "labels_python.cpp"),
+                os.path.join("src", "python_bindings", "steps_python.cpp"),
+            ],
+            include_dirs=include_dirs,
+            library_dirs=[os.path.join("/", "usr", "local", "lib")],
+            libraries=libraries,
+            language="c++1y",  # TODO: modify this based on cpp_flag(compiler)
+            extra_compile_args=["-static-libstdc++"],
+        )
     ]
 
-else:  # OSX
-    include_dirs = [
-        get_pybind_include(),
-        get_numpy_include(),
-        "headers",
-        os.path.join("headers", "algorithms"),
-        os.path.join("headers", "python_bindings"),
-        os.path.join("headers", "carma", "include"),
-        os.path.join("headers", "carma", "include", "carma"),
-        os.path.join("headers", "carma", "include", "carma", "carma"),
-        os.path.join("/", "usr", "local", "include"),
-    ]
+    with open(os.path.join("docs", "long_desc.rst"), encoding="utf-8") as f:
+        long_description = f.read()
 
-compiler_name = compiler_check()
-if compiler_name == "clang":
-    libraries = ["armadillo", "omp"]
-else:  # gcc
-    libraries = ["armadillo", "gomp"]
-
-ext_modules = [
-    Extension(
-        "banditpam",
-        [
-            os.path.join("src", "algorithms", "kmedoids_algorithm.cpp"),
-            os.path.join("src", "algorithms", "pam.cpp"),
-            os.path.join("src", "algorithms", "banditpam.cpp"),
-            os.path.join("src", "algorithms", "fastpam1.cpp"),
-            os.path.join("src", "python_bindings", "kmedoids_pywrapper.cpp"),
-            os.path.join("src", "python_bindings", "fit_python.cpp"),
-            os.path.join("src", "python_bindings", "medoids_python.cpp"),
-            os.path.join("src", "python_bindings", "build_medoids_python.cpp"),
-            os.path.join("src", "python_bindings", "labels_python.cpp"),
-            os.path.join("src", "python_bindings", "steps_python.cpp"),
+    setup(
+        name="banditpam",
+        version=__version__,
+        author="Mo Tiwari and James Mayclin",
+        maintainer="Mo Tiwari",
+        author_email="motiwari@stanford.edu",
+        url="https://github.com/ThrunGroup/BanditPAM",
+        description="BanditPAM: A state-of-the-art, \
+            high-performance k-medoids algorithm.",
+        long_description=long_description,
+        ext_modules=ext_modules,
+        setup_requires=["pybind11>=2.5.0", "numpy>=1.18"],
+        data_files=[("docs", [os.path.join("docs", "long_desc.rst")])],
+        include_package_data=True,
+        cmdclass={"build_ext": BuildExt},
+        zip_safe=False,
+        classifiers=[
+            "Programming Language :: Python :: 3",
+            "License :: OSI Approved :: MIT License",
+            "Operating System :: OS Independent",
         ],
-        include_dirs=include_dirs,
-        library_dirs=[os.path.join("/", "usr", "local", "lib")],
-        libraries=libraries,
-        language="c++1y",  # TODO: modify this based on cpp_flag(compiler)
-        extra_compile_args=["-static-libstdc++"],
+        headers=[
+            os.path.join("headers", "algorithms",
+                         "kmedoids_algorithm.hpp"),
+            os.path.join("headers", "algorithms", "banditpam.hpp"),
+            os.path.join("headers", "algorithms", "fastpam1.hpp"),
+            os.path.join("headers", "algorithms", "pam.hpp"),
+            os.path.join("headers", "python_bindings",
+                         "kmedoids_pywrapper.hpp"),
+        ],
     )
-]
 
-with open(os.path.join("docs", "long_desc.rst"), encoding="utf-8") as f:
-    long_description = f.read()
 
-setup(
-    name="banditpam",
-    version=__version__,
-    author="Mo Tiwari and James Mayclin",
-    maintainer="Mo Tiwari",
-    author_email="motiwari@stanford.edu",
-    url="https://github.com/ThrunGroup/BanditPAM",
-    description="BanditPAM: A state-of-the-art, \
-        high-performance k-medoids algorithm.",
-    long_description=long_description,
-    ext_modules=ext_modules,
-    setup_requires=["pybind11>=2.5.0", "numpy>=1.18"],
-    data_files=[("docs", [os.path.join("docs", "long_desc.rst")])],
-    include_package_data=True,
-    cmdclass={"build_ext": BuildExt},
-    zip_safe=False,
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
-    headers=[
-        os.path.join("headers", "algorithms", "kmedoids_algorithm.hpp"),
-        os.path.join("headers", "algorithms", "banditpam.hpp"),
-        os.path.join("headers", "algorithms", "fastpam1.hpp"),
-        os.path.join("headers", "algorithms", "pam.hpp"),
-        os.path.join("headers", "python_bindings", "kmedoids_pywrapper.hpp"),
-    ],
-)
+if __name__ == '__main__':
+    main()
