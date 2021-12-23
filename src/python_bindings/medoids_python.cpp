@@ -22,16 +22,16 @@ namespace km {
  *  after KMedoids::fit has been called.
  */
 pybind11::array_t<arma::uword> km::KMedoidsWrapper::getMedoidsFinalPython() {
-    if (KMedoids::getMedoidsFinal().size() > 1) {
-        return carma::row_to_arr<arma::uword>(
-            KMedoids::getMedoidsFinal()).squeeze();
-    } else {
-        return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsFinal());
-    }
+  if (KMedoids::getMedoidsFinal().size() > 1) {
+    return carma::row_to_arr<arma::uword>(
+      KMedoids::getMedoidsFinal()).squeeze();
+  } else {
+    return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsFinal());
+  }
 }
 
 void km::medoids_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-    cls->def_property_readonly("medoids",
+  cls->def_property_readonly("medoids",
     &KMedoidsWrapper::getMedoidsFinalPython);
 }
-}   // namespace km;
+}  // namespace km

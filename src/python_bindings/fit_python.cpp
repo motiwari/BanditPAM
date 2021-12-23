@@ -25,31 +25,31 @@ namespace km {
  * @param k The number of medoids to compute
  */
 void km::KMedoidsWrapper::fitPython(
-                                const pybind11::array_t<double>& inputData,
-                                const std::string& loss,
-                                pybind11::kwargs kw) {
-    // throw an error if the number of medoids is not specified in either
-    // the KMedoids object or the fitPython function
-    try {
-        if (KMedoids::getNMedoids() == 0) {  // Check for 0 as NULL
-            if (kw.size() == 0) {
-                throw pybind11::value_error("Error: must specify number of medoids.");
-            }
-        }
-    } catch (pybind11::value_error &e) {
-        // Throw it again (pybind11 will raise ValueError)
-        // TODO(@motiwari): Make this more informative
-        throw;
+  const pybind11::array_t<double>& inputData,
+  const std::string& loss,
+  pybind11::kwargs kw) {
+  // throw an error if the number of medoids is not specified in either
+  // the KMedoids object or the fitPython function
+  try {
+    if (KMedoids::getNMedoids() == 0) {  // Check for 0 as NULL
+      if (kw.size() == 0) {
+        throw pybind11::value_error("Error: must specify number of medoids.");
+      }
     }
-    // if k is specified here, then
-    // we set the number of medoids as k and override previous value
-    if ((kw.size() != 0) && (kw.contains("k"))) {
-        KMedoids::setNMedoids(pybind11::cast<int>(kw["k"]));
-    }
-    KMedoids::fit(carma::arr_to_mat<double>(inputData), loss);
+  } catch (pybind11::value_error &e) {
+    // Throw it again (pybind11 will raise ValueError)
+    // TODO(@motiwari): Make this more informative
+    throw;
+  }
+  // if k is specified here, then
+  // we set the number of medoids as k and override previous value
+  if ((kw.size() != 0) && (kw.contains("k"))) {
+    KMedoids::setNMedoids(pybind11::cast<int>(kw["k"]));
+  }
+  KMedoids::fit(carma::arr_to_mat<double>(inputData), loss);
 }
 
 void km::fit_python(pybind11::class_<KMedoidsWrapper> *cls) {
-    cls->def("fit", &KMedoidsWrapper::fitPython);
+  cls->def("fit", &KMedoidsWrapper::fitPython);
 }
-}   // namespace km;
+}  // namespace km

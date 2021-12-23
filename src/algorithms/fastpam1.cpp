@@ -89,10 +89,10 @@ void FastPAM1::build_fastpam1(
 
     // update the medoid assignment and best_distance for this datapoint
     for (size_t l = 0; l < N; l++) {
-        double cost = (this->*lossFn)(data, l, (*medoid_indices)(k));
-        if (cost < best_distances(l)) {
-            best_distances(l) = cost;
-        }
+      double cost = (this->*lossFn)(data, l, (*medoid_indices)(k));
+      if (cost < best_distances(l)) {
+        best_distances(l) = cost;
+      }
     }
   }
 }
@@ -137,44 +137,44 @@ void FastPAM1::swap_fastpam1(
 
   // for every point in our dataset, let it serve as a new medoid
   for (size_t i = 0; i < data.n_cols; i++) {
-      double di = best_distances(i);
-      // loss change for making i a medoid
-      delta_td.fill(-di);
-      for (size_t j = 0; j < data.n_cols; j++) {
-          if (j != i) {
-              double dij = (this->*lossFn)(data, i, j);
-              // update loss change for the current
-              if (dij < second_distances(j)) {
-                  delta_td.at((*assignments)(j)) += (dij - best_distances(j));
-              } else {
-                  delta_td.at((*assignments)(j)) +=
-                    (second_distances(j) - best_distances(j));
-              }
-              // reassignment check
-              if (dij < best_distances(j)) {
-                  // update loss change for others
-                  delta_td += (dij -  best_distances(j));
-                  // remove the update for the current
-                  delta_td.at((*assignments)(j)) -= (dij -  best_distances(j));
-              }
-          }
+    double di = best_distances(i);
+    // loss change for making i a medoid
+    delta_td.fill(-di);
+    for (size_t j = 0; j < data.n_cols; j++) {
+      if (j != i) {
+        double dij = (this->*lossFn)(data, i, j);
+        // update loss change for the current
+        if (dij < second_distances(j)) {
+          delta_td.at((*assignments)(j)) += (dij - best_distances(j));
+        } else {
+          delta_td.at((*assignments)(j)) +=
+            (second_distances(j) - best_distances(j));
+        }
+        // reassignment check
+        if (dij < best_distances(j)) {
+          // update loss change for others
+          delta_td += (dij -  best_distances(j));
+          // remove the update for the current
+          delta_td.at((*assignments)(j)) -= (dij -  best_distances(j));
+        }
       }
-      // choose the best medoid-to-swap
-      arma::uword min_medoid = delta_td.index_min();
-      // if the loss change is better than the best loss change
-      // update the best index identified so far
-      if (delta_td.min() < bestChange) {
-          bestChange = delta_td.min();
-          best = i;
-          medoid_to_swap = min_medoid;
-      }
+    }
+    // choose the best medoid-to-swap
+    arma::uword min_medoid = delta_td.index_min();
+    // if the loss change is better than the best loss change
+    // update the best index identified so far
+    if (delta_td.min() < bestChange) {
+      bestChange = delta_td.min();
+      best = i;
+      medoid_to_swap = min_medoid;
+    }
   }
   // update the loss and medoid if the loss is improved
   if (bestChange < 0) {
-      minDistance = arma::sum(best_distances) + bestChange;
-      (*medoid_indices)(medoid_to_swap) = best;
+    minDistance = arma::sum(best_distances) + bestChange;
+    (*medoid_indices)(medoid_to_swap) = best;
   } else {
-      minDistance = arma::sum(best_distances);
+    minDistance = arma::sum(best_distances);
   }
 }
 }  // namespace km

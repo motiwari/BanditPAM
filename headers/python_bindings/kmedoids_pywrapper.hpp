@@ -82,5 +82,5 @@ void build_medoids_python(pybind11::class_<km::KMedoidsWrapper> *);
 void labels_python(pybind11::class_<km::KMedoidsWrapper> *);
 
 void steps_python(pybind11::class_<km::KMedoidsWrapper> *);
-}  //namespace km
+}  // namespace km
 #endif  // HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_

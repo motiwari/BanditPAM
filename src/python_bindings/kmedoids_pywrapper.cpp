@@ -19,9 +19,6 @@
 #include "kmedoids_algorithm.hpp"
 #include "kmedoids_pywrapper.hpp"
 
-#define STRINGIFY(x) #x
-#define MACRO_STRINGIFY(x) STRINGIFY(x)
-
 
 namespace km {
 PYBIND11_MODULE(banditpam, m) {
@@ -52,10 +49,6 @@ PYBIND11_MODULE(banditpam, m) {
   labels_python(&cls);
   steps_python(&cls);
   fit_python(&cls);
-#ifdef VERSION_INFO
-  m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
-#else
-  m.attr("__version__") = "dev";
-#endif
+  m.attr("__version__") = VERSION_INFO;
 }
 }  // namespace km

@@ -69,7 +69,7 @@ double KMedoids::cachedLoss(
     // TODO(@motiwari): Potential race condition with shearing?
     // T1 begins to write to cache and then T2 access in the middle of write?
     if (cache[(m*i) + reindex[j]] == -1) {
-        cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
+      cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
     }
     return cache[m*i + reindex[j]];
   }
@@ -140,24 +140,24 @@ size_t KMedoids::getSteps() {
  */
 void KMedoids::setLossFn(std::string loss) {
   if (std::regex_match(loss, std::regex("L\\d*"))) {
-      loss = loss.substr(1);
+    loss = loss.substr(1);
   }
   try {
     if (loss == "manhattan") {
-        lossFn = &KMedoids::manhattan;
+      lossFn = &KMedoids::manhattan;
     } else if (loss == "cos") {
-        lossFn = &KMedoids::cos;
+      lossFn = &KMedoids::cos;
     } else if (loss == "inf") {
-        lossFn = &KMedoids::LINF;
+      lossFn = &KMedoids::LINF;
     } else if (std::isdigit(loss.at(0))) {
-        lossFn = &KMedoids::LP;
-        lp     = atoi(loss.c_str());
+      lossFn = &KMedoids::LP;
+      lp     = atoi(loss.c_str());
     } else {
-        throw std::invalid_argument("error: unrecognized loss function");
+      throw std::invalid_argument("error: unrecognized loss function");
     }
   } catch (std::invalid_argument& e) {
-      std::cout << e.what() << std::endl;
-    }
+    std::cout << e.what() << std::endl;
+  }
 }
 
 /**
@@ -312,24 +312,22 @@ void KMedoids::calc_best_distances_swap(
   arma::urowvec* assignments) {
   #pragma omp parallel for
   for (size_t i = 0; i < data.n_cols; i++) {
-      double best = std::numeric_limits<double>::infinity();
-      double second = std::numeric_limits<double>::infinity();
-      for (size_t k = 0; k < medoid_indices->n_cols; k++) {
-          double cost = KMedoids::cachedLoss(data, i, (*medoid_indices)(k));
-          if (cost < best) {
-              (*assignments)(i) = k;
-              second = best;
-              best = cost;
-          } else if (cost < second) {
-              second = cost;
-          }
+    double best = std::numeric_limits<double>::infinity();
+    double second = std::numeric_limits<double>::infinity();
+    for (size_t k = 0; k < medoid_indices->n_cols; k++) {
+      double cost = KMedoids::cachedLoss(data, i, (*medoid_indices)(k));
+      if (cost < best) {
+        (*assignments)(i) = k;
+        second = best;
+        best = cost;
+      } else if (cost < second) {
+        second = cost;
       }
-      (*best_distances)(i) = best;
-      (*second_distances)(i) = second;
+    }
+    (*best_distances)(i) = best;
+    (*second_distances)(i) = second;
   }
 }
-
-
 
 /**
  * \brief Calculate loss for medoids
@@ -348,19 +346,19 @@ double KMedoids::calc_loss(
     // TODO(@motiwari): is this parallel loop accumulating properly?
     #pragma omp parallel for
     for (size_t i = 0; i < data.n_cols; i++) {
-        double cost = std::numeric_limits<double>::infinity();
-        for (size_t k = 0; k < n_medoids; k++) {
-            double currCost = KMedoids::cachedLoss(
-              data,
-              i,
-              (*medoid_indices)(k));
-            if (currCost < cost) {
-                cost = currCost;
-            }
+      double cost = std::numeric_limits<double>::infinity();
+      for (size_t k = 0; k < n_medoids; k++) {
+        double currCost = KMedoids::cachedLoss(
+          data,
+          i,
+          (*medoid_indices)(k));
+        if (currCost < cost) {
+          cost = currCost;
         }
-        total += cost;
+      }
+      total += cost;
     }
-    return total;
+  return total;
 }
 
 // Loss and miscellaneous functions
@@ -375,7 +373,7 @@ double KMedoids::calc_loss(
  * @param j Index of second datapoint
  */
 double KMedoids::LP(const arma::mat& data, size_t i, size_t j) const {
-    return arma::norm(data.col(i) - data.col(j), lp);
+  return arma::norm(data.col(i) - data.col(j), lp);
 }
 
 
@@ -390,9 +388,9 @@ double KMedoids::LP(const arma::mat& data, size_t i, size_t j) const {
  * @param j Index of second datapoint
  */
 double KMedoids::cos(const arma::mat& data, size_t i, size_t j) const {
-    return arma::dot(
-      data.col(i),
-      data.col(j)) / (arma::norm(data.col(i))* arma::norm(data.col(j)));
+  return arma::dot(
+    data.col(i),
+    data.col(j)) / (arma::norm(data.col(i))* arma::norm(data.col(j)));
 }
 
 /**
@@ -406,7 +404,7 @@ double KMedoids::cos(const arma::mat& data, size_t i, size_t j) const {
  * @param j Index of second datapoint
  */
 double KMedoids::manhattan(const arma::mat& data, size_t i, size_t j) const {
-    return arma::accu(arma::abs(data.col(i) - data.col(j)));
+  return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
 
 /**
@@ -420,6 +418,6 @@ double KMedoids::manhattan(const arma::mat& data, size_t i, size_t j) const {
  * @param j Index of second datapoint
  */
 double KMedoids::LINF(const arma::mat& data, size_t i, size_t j) const {
-    return arma::max(arma::abs(data.col(i) - data.col(j)));
+  return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
 }  // namespace km

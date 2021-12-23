@@ -84,10 +84,10 @@ void PAM::build_pam(
 
     // update the medoid assignment and best_distance for this datapoint
     for (size_t l = 0; l < N; l++) {
-        double cost = KMedoids::cachedLoss(data, l, (*medoid_indices)(k));
-        if (cost < best_distances(l)) {
-            best_distances(l) = cost;
-        }
+      double cost = KMedoids::cachedLoss(data, l, (*medoid_indices)(k));
+      if (cost < best_distances(l)) {
+        best_distances(l) = cost;
+      }
     }
   }
 }

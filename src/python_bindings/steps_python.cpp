@@ -22,10 +22,10 @@ namespace km {
  *  KMedoids::fit
  */
 int km::KMedoidsWrapper::getStepsPython() {
-    return KMedoids::getSteps();
+  return KMedoids::getSteps();
 }
 
 void km::steps_python(pybind11::class_<KMedoidsWrapper> *cls) {
-    cls->def_property_readonly("steps", &KMedoidsWrapper::getStepsPython);
+  cls->def_property_readonly("steps", &KMedoidsWrapper::getStepsPython);
 }
-}   // namespace km;
+}  // namespace km
