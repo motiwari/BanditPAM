@@ -103,7 +103,7 @@ class KMedoids {
     const arma::mat& data,
     const arma::urowvec* medoidIndices);
 
-  // if you change use_cache, also change use_cache_p
+  // NOTE: if you change use_cache, also change use_cache_p
   double cachedLoss(
     const arma::mat& data,
     const size_t i,
@@ -111,49 +111,69 @@ class KMedoids {
     const bool use_cache = true);
 
   // Loss functions
+  /// If using an L_p loss, the value of p
   size_t lp;
 
-  double LP(const arma::mat& data, size_t i, size_t j) const;
+  double LP(
+    const arma::mat& data,
+    const size_t i,
+    const size_t j) const;
 
-  double LINF(const arma::mat& data, size_t i, size_t j) const;
+  double LINF(const arma::mat& data,
+    const size_t i,
+    const size_t j) const;
 
-  double cos(const arma::mat& data, size_t i, size_t j) const;
+  double cos(const arma::mat& data,
+    const size_t i,
+    const size_t j) const;
 
-  double manhattan(const arma::mat& data, size_t i, size_t j) const;
+  double manhattan(const arma::mat& data,
+    const size_t i,
+    const size_t j) const;
 
   void checkAlgorithm(const std::string& algorithm) const;
 
-  // Constructor params
+  /// Number of medoids to use -- the "k" in k-medoids
   size_t n_medoids;
 
+  /// k-medoids algorithm to use
   std::string algorithm;
 
+  /// Maximum number of SWAP steps to perform
   size_t max_iter;
 
-  // Properties of the KMedoids instance
+  /// Data to be clustered
   arma::mat data;
 
+  /// Cluster assignments of each point
   arma::urowvec labels;
 
+  /// Indices of the medoids after BUILD step
   arma::urowvec medoid_indices_build;
 
+  /// Indices of the medoids after clustering
   arma::urowvec medoid_indices_final;
 
+  /// Function pointer to the loss function to use
   double (KMedoids::*lossFn)(
     const arma::mat& data,
     const size_t i,
     const size_t j)
     const;
 
+  /// Number of SWAP steps performed
   size_t steps;
 
-  // Hyperparameters
+  /// Governs the error rate of each BUILD step in BanditPAM
   size_t buildConfidence;
 
+  /// Governs the error rate of each SWAP step in BanditPAM
   size_t swapConfidence;
 
+  /// Used for floatcomparisons, primarily number of "arms" remaining
   const double precision = 0.001;
 
+  /// Number of points to sample per reference batch
   size_t batchSize = 100;
 };
 }  // namespace km

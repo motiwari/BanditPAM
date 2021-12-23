@@ -377,7 +377,9 @@ double KMedoids::calc_loss(
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::LP(const arma::mat& data, size_t i, size_t j) const {
+double KMedoids::LP(const arma::mat& data,
+  const size_t i,
+  const size_t j) const {
   return arma::norm(data.col(i) - data.col(j), lp);
 }
 
@@ -392,7 +394,9 @@ double KMedoids::LP(const arma::mat& data, size_t i, size_t j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::cos(const arma::mat& data, size_t i, size_t j) const {
+double KMedoids::cos(const arma::mat& data,
+  const size_t i,
+  const size_t j) const {
   return arma::dot(
     data.col(i),
     data.col(j)) / (arma::norm(data.col(i))* arma::norm(data.col(j)));
@@ -408,7 +412,9 @@ double KMedoids::cos(const arma::mat& data, size_t i, size_t j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::manhattan(const arma::mat& data, size_t i, size_t j) const {
+double KMedoids::manhattan(const arma::mat& data,
+  const size_t i,
+  const size_t j) const {
   return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
 
@@ -422,7 +428,10 @@ double KMedoids::manhattan(const arma::mat& data, size_t i, size_t j) const {
  * @param i Index of first datapoint
  * @param j Index of second datapoint
  */
-double KMedoids::LINF(const arma::mat& data, size_t i, size_t j) const {
+double KMedoids::LINF(
+  const arma::mat& data,
+  const size_t i,
+  const size_t j) const {
   return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
 }  // namespace km

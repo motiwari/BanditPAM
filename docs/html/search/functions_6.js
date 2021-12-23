@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['manhattan_0',['manhattan',['../classkm_1_1KMedoids.html#a9f3affb3e61235f7aae5f136ab4dfae5',1,'km::KMedoids']]]
+  ['manhattan_0',['manhattan',['../classkm_1_1KMedoids.html#a22a101f7d20ffb6bc1f1defbb9144842',1,'km::KMedoids']]]
 ];
