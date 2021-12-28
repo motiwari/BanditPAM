@@ -19,14 +19,14 @@ jobs:
           xcode-select --install
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           brew install llvm libomp armadillo
+          cmake --version
       - name: Install CPython from Anaconda # TODO: Need to update CMake?
         run: |
           curl -XGET https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh > Anaconda3-2021.11-MacOSX-x86_64.sh
           sudo chmod 777 Anaconda3-2021.11-MacOSX-x86_64.sh
-          ./Anaconda3-2021.11-MacOSX-x86_64.sh
+          ./Anaconda3-2021.11-MacOSX-x86_64.sh | yes
           conda create -n "$p{{ matrix.python-version }}" python=${{ matrix.python-version }}
           conda activate p${{ matrix.python-version }}
-          cmake --version
       - name: Install Python dependencies 
         run: |
           python -m pip install --upgrade pip
