@@ -213,7 +213,6 @@ class KMedoids {
     const arma::mat& data,
     const arma::urowvec* medoidIndices);
 
-  
   /**
    * @brief A wrapper around the given loss function that caches distances
    * between the given points.
@@ -231,8 +230,7 @@ class KMedoids {
     const arma::mat& data,
     const size_t i,
     const size_t j,
-    const bool use_cache = true); 
-
+    const bool use_cache = true);
 
   /// If using an L_p loss, the value of p
   size_t lp;
