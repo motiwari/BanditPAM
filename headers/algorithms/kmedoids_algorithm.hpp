@@ -35,7 +35,7 @@ class KMedoids {
   ~KMedoids();
 
   /**
-   * @brief Finds medoids for the input data, given loss function
+   * @brief Finds medoids for the input data, given loss function.
    *
    * @param inputData Input data to cluster
    * @param loss The loss function used during medoid computation
@@ -43,117 +43,112 @@ class KMedoids {
   void fit(const arma::mat& inputData, const std::string& loss);
 
   /**
-   * @brief Returns the medoids at the end of the BUILD step
+   * @brief Returns the medoids at the end of the BUILD step.
+   * 
+   * @returns Medoids at the end of the BUILD step
    */
   arma::urowvec getMedoidsBuild() const;
 
   /**
-   * @brief Returns the medoids after all SWAP steps have been run
+   * @brief Returns the medoids after all SWAP steps have been run.
+   * 
+   * @returns Medoids at the end of all SWAP steps
    */
   arma::urowvec getMedoidsFinal() const;
 
   /**
-   * @brief Returns the medoid assignments for each datapoint
-   *
-   * Returns the medoid each input datapoint is assigned to after KMedoids::fit
-   * has been called and the final medoids have been identified
+   * @brief Returns the medoid assignments for each datapoint.
+   * 
+   * @returns Cluster assignment for each point
    */
   arma::urowvec getLabels() const;
 
   /**
-   * @brief Returns the number of swap steps
-   *
-   * Returns the number of SWAP steps completed during the last call to
-   * KMedoids::fit
+   * @brief Returns the number of SWAP steps performed.
+   * 
+   * @returns Number of swap steps performed
    */
   size_t getSteps() const;
 
   /**
-   * @brief Returns the number of medoids
-   *
-   * Returns the number of medoids to be identified during KMedoids::fit
+   * @brief Returns the number of medoids, k.
+   * 
+   * @returns Current value of k, the number of medoids/clusters
    */
   size_t getNMedoids() const;
 
   /**
-   * @brief Sets the number of medoids
-   *
-   * Sets the number of medoids to be identified during KMedoids::fit
+   * @brief Sets the number of medoids, k.
+   * 
+   * @param new_num The new number, k, of medoids to use
    */
   void setNMedoids(size_t new_num);
 
   /**
-   * @brief Returns the algorithm for KMedoids
-   *
-   * Returns the algorithm used for identifying the medoids during KMedoids::fit
+   * @brief Returns the algorithm being used for k-medoids clustering.
+   * 
+   * @returns The name of the algorithm being used
    */
   std::string getAlgorithm() const;
 
   /**
-   * @brief Sets the algorithm for KMedoids
+   * @brief Sets the algorithm being used for k-medoids clustering.
    *
-   * Sets the algorithm used for identifying the medoids during KMedoids::fit
-   *
-   * @param new_alg New algorithm to use
+   * @param new_alg The new algorithm to use: "BanditPAM", "PAM", or "FastPAM1"
    */
   void setAlgorithm(const std::string& new_alg);
 
   /**
-   * @brief Returns the maximum number of iterations for KMedoids
-   *
-   * Returns the maximum number of iterations that can be run during
-   * KMedoids::fit
+   * @brief Returns the maximum number of SWAP steps during clustering.
+   * 
+   * @returns The maximum number of SWAP steps that can be
+   * performed during clustering
    */
   size_t getMaxIter() const;
 
   /**
-   * @brief Sets the maximum number of SWAP steps
+   * @brief Sets the maximum number of SWAP steps during clustering.
+   * 
    * @param new_max New maximum number of iterations to use
    */
   void setMaxIter(size_t new_max);
 
   /**
-   * @brief Returns the constant buildConfidence
-   *
-   * Returns the constant that affects the sensitivity of build confidence bounds
-   * that can be run during KMedoids::fit
+   * @brief Returns the buildConfidence, a parameter that affects the width
+   * of the confidence intervals during the BUILD step.
+   * 
+   * @returns The current value of buildConfidence
    */
   size_t getbuildConfidence() const;
 
   /**
-   * @brief Sets the constant buildConfidence
+   * @brief Sets the buildConfidence, a parameter that affects the width
+   * of the confidence intervals during the BUILD step.
    *
-   * Sets the constant that affects the sensitivity of build confidence bounds
-   * that can be run during KMedoids::fit
-   *
-   *  @param new_buildConfidence New buildConfidence
+   * @param new_buildConfidence The new buildConfidence to use
    */
   void setbuildConfidence(size_t new_buildConfidence);
 
   /**
-   * @brief Returns the constant swapConfidence
-   *
-   * Returns the constant that affects the sensitivity of swap confidence bounds
-   * that can be run during KMedoids::fit
+   * @brief Returns the swapConfidence, a parameter that affects the width
+   * of the confidence intervals during the BUILD step.
+   * 
+   * @returns The current value of swapConfidence
    */
   size_t getswapConfidence() const;
 
   /**
-   * @brief Sets the constant swapConfidence
+   * @brief Sets the swapConfidence, a parameter that affects the width
+   * of the confidence intervals during the BUILD step.
    *
-   * Sets the constant that affects the sensitivity of swap confidence bounds
-   * that can be run during KMedoids::fit
-   *
-   * @param new_swapConfidence New swapConfidence
+   * @param new_swapConfidence The new swapConfidence to use
    */
   void setswapConfidence(size_t new_swapConfidence);
 
   /**
-   * @brief Sets the loss function
+   * @brief Sets the loss function to use during clustering.
    *
-   * Sets the loss function used during KMedoids::fit
-   *
-   * @param loss Loss function to be used e.g. L2
+   * @param loss Loss function to be used e.g. "L2"
    */
   void setLossFn(std::string loss);
 
@@ -180,13 +175,11 @@ class KMedoids {
 
  protected:
   /**
-   * @brief Calculates distances in swap step
+   * @brief Calculates the best and second best distances for each datapoint to
+   * the medoids in the current set of medoids.
    *
-   * Calculates the best and second best distances for each datapoint to one of
-   * the medoids in the current medoid set.
-   *
-   * @param data Transposed input data to find the medoids of
-   * @param medoid_indices Array of medoid indices corresponding to dataset entries
+   * @param data Transposed data to cluster
+   * @param medoidIndices Array of medoid indices corresponding to dataset entries
    * @param best_distances Array of best distances from each point to previous set
    * of medoids
    * @param second_best_distances Array of second smallest distances from each
@@ -201,35 +194,42 @@ class KMedoids {
     arma::urowvec* assignments);
 
   /**
-   * @brief Calculate loss for medoids
-   *
-   * Calculates the loss under the previously identified loss function of the
-   * medoid indices.
-   *
-   * @param data Transposed input data to find the medoids of
-   * @param medoid_indices Indices of the medoids in the dataset.
+   * @brief Calculate the overall loss for the given choice of medoids. 
+   * 
+   * @param data Transposed data to cluster
+   * @param medoidIndices Indices of the medoids in the dataset
    */
   double calc_loss(
     const arma::mat& data,
     const arma::urowvec* medoidIndices);
 
-  // NOTE: if you change use_cache, also change use_cache_p
+  
+  /**
+   * @brief A wrapper around the given loss function that caches distances
+   * between the given points.
+   * 
+   * NOTE: if you change use_cache, also change use_cache_p
+   * 
+   * @param data Transposed data to cluster
+   * @param i Index of first datapoint
+   * @param j Index of second datapoint
+   * @param use_cache Indices of the medoids in the dataset
+   */
   double cachedLoss(
     const arma::mat& data,
     const size_t i,
     const size_t j,
-    const bool use_cache = true);
+    const bool use_cache = true); 
 
-  // Loss functions
+
   /// If using an L_p loss, the value of p
   size_t lp;
 
   /**
-   * @brief LP loss
+   * @brief Computes the Lp distance between the 
+   * datapoints of indices i and j in the dataset
    *
-   * Calculates the LP loss between the datapoints at index i and j of the dataset
-   *
-   * @param data Transposed input data to find the medoids of
+   * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
    */
@@ -239,12 +239,10 @@ class KMedoids {
     const size_t j) const;
 
   /**
-   * @brief L_INFINITY loss
+   * @brief Computes the L-infinity distance between the 
+   * datapoints of indices i and j in the dataset
    *
-   * Calculates the Manhattan loss between the datapoints at index i and j of the
-   * dataset
-   *
-   * @param data Transposed input data to find the medoids of
+   * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
    */
@@ -253,12 +251,10 @@ class KMedoids {
     const size_t j) const;
 
   /**
-   * @brief cos loss
+   * @brief Computes the cosine distance between the 
+   * datapoints of indices i and j in the dataset
    *
-   * Calculates the cosine loss between the datapoints at index i and j of the
-   * dataset
-   *
-   * @param data Transposed input data to find the medoids of
+   * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
    */
@@ -267,12 +263,10 @@ class KMedoids {
     const size_t j) const;
 
   /**
-   * @brief Manhattan loss
+   * @brief Computes the Manhattan distance between the 
+   * datapoints of indices i and j in the dataset
    *
-   * Calculates the Manhattan loss between the datapoints at index i and j of the
-   * dataset
-   *
-   * @param data Transposed input data to find the medoids of
+   * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
    */
@@ -281,11 +275,10 @@ class KMedoids {
     const size_t j) const;
 
   /**
-   *  @brief Checks whether algorithm input is valid
+   * @brief Checks whether algorithm choice is valid. The given 
+   * algorithm must be either "BanditPAM", "PAM", or "FastPAM1". 
    *
-   *  Checks whether the user's selected algorithm is a valid option.
-   *
-   *  @param algorithm Name of the algorithm input by the user.
+   * @param algorithm Name of the k-medoids algorithm to use
    */
   void checkAlgorithm(const std::string& algorithm) const;
 
