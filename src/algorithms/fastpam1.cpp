@@ -17,13 +17,6 @@
 #include <unordered_map>
 
 namespace km {
-/**
- * \brief Runs FastPAM1 algorithm.
- *
- * Run the FastPAM1 algorithm to identify a dataset's medoids.
- *
- * @param input_data Input data to cluster
- */
 void FastPAM1::fit_fastpam1(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
@@ -45,17 +38,6 @@ void FastPAM1::fit_fastpam1(const arma::mat& input_data) {
   steps = iter;
 }
 
-/**
- * \brief Build step for the FastPAM1 algorithm
- *
- * Runs build step for the FastPAM1 algorithm. Loops over all datapoint and
- * checks its distance from every other datapoint in the dataset, then checks if
- * the total cost is less than that of the medoid (if a medoid exists yet).
- *
- * @param data Transposed input data to cluster
- * @param medoid_indices Uninitialized array of medoids that is modified in place
- * as medoids are identified
- */
 void FastPAM1::build_fastpam1(
   const arma::mat& data,
   arma::urowvec* medoid_indices
@@ -97,21 +79,6 @@ void FastPAM1::build_fastpam1(
   }
 }
 
-/**
- * \brief Swap step for the FastPAM1 algorithm
- *
- * Runs swap step for the FastPAM1 algorithm. Loops over all datapoint and
- * compute the loss change when a medoid is replaced by the datapoint. The
- * loss change is stored in an array of size n_medoids and the update is
- * based on an if conditional outside of the loop. The best medoid is chosen
- * according to the best loss change.
- *
- * @param data Transposed input data to cluster
- * @param medoid_indices Array of medoid indices created from the build step
- * that is modified in place as better medoids are identified
- * @param assignments Uninitialized array of indices corresponding to each
- * datapoint assigned the index of the medoid it is closest to
- */
 void FastPAM1::swap_fastpam1(
   const arma::mat& data,
   arma::urowvec* medoid_indices,
@@ -135,10 +102,9 @@ void FastPAM1::swap_fastpam1(
     &second_distances,
     assignments);
 
-  // for every point in our dataset, let it serve as a new medoid
   for (size_t i = 0; i < data.n_cols; i++) {
     double di = best_distances(i);
-    // loss change for making i a medoid
+    // compute loss change for making i a medoid
     delta_td.fill(-di);
     for (size_t j = 0; j < data.n_cols; j++) {
       if (j != i) {
@@ -161,7 +127,7 @@ void FastPAM1::swap_fastpam1(
     }
     // choose the best medoid-to-swap
     arma::uword min_medoid = delta_td.index_min();
-    // if the loss change is better than the best loss change
+    // if the loss change is better than the best loss change,
     // update the best index identified so far
     if (delta_td.min() < bestChange) {
       bestChange = delta_td.min();

@@ -12,12 +12,12 @@
 
 namespace km {
 /**
- *  \brief Contains all necessary BanditPAM functions.
+ * @brief Contains all necessary BanditPAM functions
  */
 class BanditPAM : public km::KMedoids {
  public:
   /**
-   * @brief Runs BanditPAM to identify a dataset's medoids
+   * @brief Runs BanditPAM to identify a dataset's medoids.
    * 
    * @param inputData Input data to cluster
    */
@@ -40,7 +40,7 @@ class BanditPAM : public km::KMedoids {
     const bool use_absolute);
 
   /** 
-   * @brief Estimates the mean reward for each arm in the BUILD steps
+   * @brief Estimates the mean reward for each arm in the BUILD steps.
    * 
    * @param data Transposed input data to cluster
    * @param target Candidate datapoints to consider adding as medoids
@@ -95,7 +95,7 @@ class BanditPAM : public km::KMedoids {
     const arma::urowvec* assignments);
 
   /**
-   * @brief Estimates the mean reward for each arm in SWAP step
+   * @brief Estimates the mean reward for each arm in SWAP step.
    *
    * Estimates the mean reward (or loss) for each arm in the identified targets
    * in the SWAP step and returns a list of the estimated reward.
@@ -134,8 +134,7 @@ class BanditPAM : public km::KMedoids {
   * that is modified in place as better medoids are identified
   * @param medoids Matrix of possible medoids that is updated as the bandit
   * learns which datapoints will be unlikely to be good candidates
-  * @param assignments Uninitialized array of indices corresponding to each
-  * datapoint assigned the index of the medoid it is closest to
+  * @param assignments Array of containing the medoid each point is closest to
   */
   void swap(
     const arma::mat& data,
