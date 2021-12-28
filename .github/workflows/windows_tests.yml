@@ -1,35 +1,38 @@
-name: Build package and run tests
-on: [push, pull_request]
+name: Windows - build package and run tests
+on: [push, pull_request] # This test is currently disabled until we can build Armadillo on Windows
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9"]
+        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install Ubuntu dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev 
-          sudo apt install -y clang-format cppcheck
+      # - name: Install Windows dependencies
+      #   run: |
+      #     cmake --version
+      # - name: Install CPython from Anaconda # TODO: Need to update CMake? # TODO: See https://docs.conda.io/projects/conda/en/latest/user-guide/install/windows.html
+      #   run: |
+      #     curl -XGET https://repo.anaconda.com/archive/Anaconda3-2021.11-Windows-x86_64.exe > Anaconda3-2021.11-Windows-x86_64.exe
+      #     start /wait "" "Anaconda3-latest-Windows-x86_64.exe" /InstallationType=JustMe /AddToPath=1 /RegisterPython=1 /S /D=%UserProfile%\Anaconda3
+      #     conda create -n "$p{{ matrix.python-version }}" python=${{ matrix.python-version }}
+      #     conda activate p${{ matrix.python-version }}
       - name: Install Python dependencies 
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 pytest cpplint
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest
+          pip install -r requirements.txt
       - name: Install Armadillo 10.7.5+
         run: |
           cd ~
           git clone https://gitlab.com/conradsnicta/armadillo-code.git
           cd armadillo-code
-          sudo cmake .
-          sudo make install
+          cmake .
       - name: Install carma
         run: |
           cd ~
@@ -37,18 +40,9 @@ jobs:
           cd carma
           mkdir build
           cd build
-          sudo cmake -DCARMA_INSTALL_LIB=ON ..
-          sudo cmake --build . --config Release --target install
+          cmake -DCARMA_INSTALL_LIB=ON ..
+          cmake --build . --config Release --target install
           cd ~
-      - name: Lint with flake8
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --exclude headers/carma
-      - name: Lint with cpplint
-        run: |
-          cpplint --exclude=headers/carma --exclude=build --filter=-legal/copyright,-build/c++11 --recursive .
       - name: Install BanditPAM package
         run: |
           pip install -vvv -e .
@@ -73,12 +67,12 @@ jobs:
       # - name: Run larger suite of test cases
       #   run : |
       #     pytest tests/test_larger.py 
-      - name: Verify that the C++ executable compiles and runs
-        run : |
-          git clone https://github.com/ThrunGroup/BanditPAM
-          cd BanditPAM
-          mkdir build
-          cd build
-          sudo cmake ..
-          sudo make
-          src/BanditPAM -f ../data/MNIST_1k.csv -k 5
+      # - name: Verify that the C++ executable compiles and runs
+      #   run : |
+      #     git clone https://github.com/ThrunGroup/BanditPAM
+      #     cd BanditPAM
+      #     mkdir build
+      #     cd build
+      #     cmake ..
+      #     make
+      #     src/BanditPAM -f ../data/MNIST_1k.csv -k 5

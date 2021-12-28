@@ -17,7 +17,7 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 ```
 
 # Requirements
-# TL;DR run `pip3 install banditpam` and jump to the [examples](https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
+# TL;DR run `pip install banditpam` and jump to the [examples](https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
 
 If you have any difficulties, please see the [platform-specific guides](https://github.com/ThrunGroup/BanditPAM#platform-specific-installation-guides) and file a Github issue if you have additional trouble.
 
@@ -41,7 +41,7 @@ OR through the source code via
 ```python
 /BanditPAM/: git submodule update --init --recursive
 /BanditPAM/: cd headers/carma
-/BanditPAM/: mkdir build && cd build && cmake .. && make && sudo make install
+/BanditPAM/: mkdir build && cd build && cmake -DCARMA_INSTALL_LIB=ON .. && sudo cmake --build . --config Release --target install
 /BanditPAM/: cd ../../..
 /BanditPAM/: pip install -r requirements.txt
 /BanditPAM/: sudo pip install .
@@ -140,12 +140,13 @@ Building this repository requires four external requirements:
 * [OpenMP](https://www.openmp.org/resources/openmp-compilers-tools/) >= 2.5 (OpenMP is supported by default on most Linux platforms, and can be downloaded through [homebrew](https://brew.sh/) on MacOS)
 * [CARMA](https://github.com/RUrlus/carma) >= 0.6.2
 
-If installing these requirements from source, one can generally use the following procedure to install each requirement from the library's root folder (with CARMA used as an example here):
+If installing these requirements from source, one can generally use the following procedure to install each requirement from the library's root folder (with `armadillo` used as an example here):
 ```
-/BanditPAM$ cd headers/carma
-/BanditPAM/headers/carma$ mkdir build && cd build
-/BanditPAM/headers/carma/build$ cmake .. && make && sudo make install
+/armadillo$ mkdir build && cd build
+/armadillo/build$ cmake .. && make && sudo make install
 ```
+
+Note that `CARMA` has different installation instructions; see the [quickstart](https://github.com/ThrunGroup/BanditPAM#install-the-repo-and-its-dependencies).
 
 ####  Platform-specific installation guides
 Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:

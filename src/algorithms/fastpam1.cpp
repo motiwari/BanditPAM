@@ -17,45 +17,45 @@
 #include <unordered_map>
 
 namespace km {
-void FastPAM1::fitFastPAM1(const arma::mat& inputData) {
+void FastPAM1::fitFastPAM1(const arma::fmat& inputData) {
   data = inputData;
   data = arma::trans(data);
-  arma::urowvec medoid_indices(nMedoids);
-  FastPAM1::buildFastPAM1(data, &medoid_indices);
+  arma::urowvec medoidIndices(nMedoids);
+  FastPAM1::buildFastPAM1(data, &medoidIndices);
   steps = 0;
-  medoidIndicesBuild = medoid_indices;
+  medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
   size_t iter = 0;
   bool medoidChange = true;
   while (iter < maxIter && medoidChange) {
-    auto previous{medoid_indices};
-    FastPAM1::swapFastPAM1(data, &medoid_indices, &assignments);
-    medoidChange = arma::any(medoid_indices != previous);
+    auto previous{medoidIndices};
+    FastPAM1::swapFastPAM1(data, &medoidIndices, &assignments);
+    medoidChange = arma::any(medoidIndices != previous);
     iter++;
   }
-  medoidIndicesFinal = medoid_indices;
+  medoidIndicesFinal = medoidIndices;
   labels = assignments;
   steps = iter;
 }
 
 void FastPAM1::buildFastPAM1(
-  const arma::mat& data,
-  arma::urowvec* medoid_indices
+  const arma::fmat& data,
+  arma::urowvec* medoidIndices
 ) {
   size_t N = data.n_cols;
-  arma::rowvec estimates(N, arma::fill::zeros);
-  arma::rowvec bestDistances(N);
-  bestDistances.fill(std::numeric_limits<double>::infinity());
-  arma::rowvec sigma(N);
+  arma::frowvec estimates(N, arma::fill::zeros);
+  arma::frowvec bestDistances(N);
+  bestDistances.fill(std::numeric_limits<float>::infinity());
+  arma::frowvec sigma(N);
   for (size_t k = 0; k < nMedoids; k++) {
-    double minDistance = std::numeric_limits<double>::infinity();
+    float minDistance = std::numeric_limits<float>::infinity();
     int best = 0;
     // fixes a base datapoint
     for (size_t i = 0; i < data.n_cols; i++) {
-      double total = 0;
+      float total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points
-        double cost = (this->*lossFn)(data, i, j);
+        float cost = (this->*lossFn)(data, i, j);
         // compares this with the cached best distance
         if (bestDistances(j) < cost) {
           cost = bestDistances(j);
@@ -67,11 +67,11 @@ void FastPAM1::buildFastPAM1(
         best = i;
       }
     }
-    (*medoid_indices)(k) = best;
+    (*medoidIndices)(k) = best;
 
     // update the medoid assignment and best_distance for this datapoint
     for (size_t l = 0; l < N; l++) {
-      double cost = (this->*lossFn)(data, l, (*medoid_indices)(k));
+      float cost = (this->*lossFn)(data, l, (*medoidIndices)(k));
       if (cost < bestDistances(l)) {
         bestDistances(l) = cost;
       }
@@ -80,35 +80,35 @@ void FastPAM1::buildFastPAM1(
 }
 
 void FastPAM1::swapFastPAM1(
-  const arma::mat& data,
-  arma::urowvec* medoid_indices,
+  const arma::fmat& data,
+  arma::urowvec* medoidIndices,
   arma::urowvec* assignments
 ) {
-  double bestChange = 0;
-  double minDistance = std::numeric_limits<double>::infinity();
+  float bestChange = 0;
+  float minDistance = std::numeric_limits<float>::infinity();
   size_t best = 0;
   size_t medoid_to_swap = 0;
   size_t N = data.n_cols;
-  arma::mat sigma(nMedoids, N, arma::fill::zeros);
-  arma::rowvec bestDistances(N);
-  arma::rowvec secondBestDistances(N);
-  arma::rowvec delta_td(nMedoids, arma::fill::zeros);
+  arma::fmat sigma(nMedoids, N, arma::fill::zeros);
+  arma::frowvec bestDistances(N);
+  arma::frowvec secondBestDistances(N);
+  arma::frowvec delta_td(nMedoids, arma::fill::zeros);
 
   // calculate quantities needed for swap, bestDistances and sigma
   KMedoids::calcBestDistancesSwap(
     data,
-    medoid_indices,
+    medoidIndices,
     &bestDistances,
     &secondBestDistances,
     assignments);
 
   for (size_t i = 0; i < data.n_cols; i++) {
-    double di = bestDistances(i);
+    float di = bestDistances(i);
     // compute loss change for making i a medoid
     delta_td.fill(-di);
     for (size_t j = 0; j < data.n_cols; j++) {
       if (j != i) {
-        double dij = (this->*lossFn)(data, i, j);
+        float dij = (this->*lossFn)(data, i, j);
         // update loss change for the current
         if (dij < secondBestDistances(j)) {
           delta_td.at((*assignments)(j)) += (dij - bestDistances(j));
@@ -138,7 +138,7 @@ void FastPAM1::swapFastPAM1(
   // update the loss and medoid if the loss is improved
   if (bestChange < 0) {
     minDistance = arma::sum(bestDistances) + bestChange;
-    (*medoid_indices)(medoid_to_swap) = best;
+    (*medoidIndices)(medoid_to_swap) = best;
   } else {
     minDistance = arma::sum(bestDistances);
   }

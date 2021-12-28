@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "2.0.0"
+__version__ = "3.0.0"
 
 
 class get_pybind_include(object):
@@ -280,7 +280,7 @@ class BuildExt(build_ext):
         opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
 
-        opts.append("-Wno-register")
+        # TODO(@motiwari): on Windows, these flags are unrecognized
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
         opts.append("-fopenmp")

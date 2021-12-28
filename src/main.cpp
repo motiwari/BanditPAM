@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
       return ARGUMENT_ERROR_CODE;
     }
 
-    arma::mat data;
+    arma::fmat data;
     data.load(input_name);
     km::KMedoids kmed(
       k,
