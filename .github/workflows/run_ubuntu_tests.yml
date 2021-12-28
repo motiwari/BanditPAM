@@ -1,4 +1,4 @@
-name: Build package and run tests on Ubuntu
+name: Ubuntu - build package and run tests
 on: [push, pull_request]
 jobs:
   build:

@@ -1,4 +1,4 @@
-name: Build package and run tests on MacOS
+name: MacOS - build package and run tests
 on: [push, pull_request]
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install MacOS dependencies
         run: |
-          sudo rm -rf /Library/Developer/CommandLineTool
+          sudo rm -rf /Library/Developer/CommandLineTools
           sudo xcode-select --install
           sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
           sudo brew install llvm lipomp armadillo
