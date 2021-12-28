@@ -1,20 +1,24 @@
 # Installation Tutorial for Windows
 
 The following is a description of the installation process of BanditPAM for Windows. This assumes that:
- - Python 3 is installed.
- - Some form of C++ tools (i.e. gcc, g++) are installed.
- - CMake is installed.
+ 
+## Prerequisites
+Please ensure the following dependencies are installed:
+ - Python 3 is installed
+ - Some form of C++ tools (i.e. gcc, g++) are installed
+ - CMake is installed
 
-## Installation Procedure
-First, it's necessary to install the prerequisites for the package. Please do the following:
  - Ensure the compiler in use has OpenMP support.
  - Follow the installation notes at the [Armadillo install page](http://arma.sourceforge.net/download.html)
- - Run `pip install -r requirements.txt` in the main BanditPAM directory; the core library that is needed is `pybind11`.
+ - Run `pip install -r requirements.txt`
+ 
+## BanditPAM Installation
 
-This should successfully install the requirements needed for BanditPAM, which can then be installed in either of the following ways:
- - Running `pip install BanditPAM`.
- - Running `pip install .` in the home directory.
- - Running `python3 setup.py install` in the home directory.
+BanditPAM can then be installed via one of the following ways:
+1) Running `pip install banditpam`, OR
+2) Running `pip install .` in the home directory (`/BanditPAM`)
 
-## Known Issues
-The following is a list of issues seen when installing BanditPAM. This is updated as further issues are encountered.
+## Known Issues 
+The following is a list of issues seen when installing BanditPAM on Windows. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/
+
+None.
