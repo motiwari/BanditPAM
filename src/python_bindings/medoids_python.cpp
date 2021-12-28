@@ -15,12 +15,6 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-/**
- *  \brief Returns the final medoids
- *
- *  Returns as a numpy array the final medoids at the end of the SWAP step
- *  after KMedoids::fit has been called.
- */
 pybind11::array_t<arma::uword> km::KMedoidsWrapper::getMedoidsFinalPython() {
   if (KMedoids::getMedoidsFinal().size() > 1) {
     return carma::row_to_arr<arma::uword>(

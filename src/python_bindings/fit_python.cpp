@@ -14,16 +14,6 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-/**
- * \brief Python binding for fitting a KMedoids object to the
- *
- * This is the primary function of the KMedoids module: this finds the build and swap
- * medoids for the desired data
- *
- * @param inputData Input data to find the medoids of
- * @param loss The loss function used during medoid computation
- * @param k The number of medoids to compute
- */
 void km::KMedoidsWrapper::fitPython(
   const pybind11::array_t<double>& inputData,
   const std::string& loss,

@@ -15,12 +15,6 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-/**
- *  \brief Returns the number of swap steps
- *
- *  Returns the number of SWAP steps completed during the last call to
- *  KMedoids::fit
- */
 int km::KMedoidsWrapper::getStepsPython() {
   return KMedoids::getSteps();
 }

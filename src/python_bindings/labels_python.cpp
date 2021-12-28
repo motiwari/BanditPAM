@@ -15,12 +15,6 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-/**
- *  \brief Returns the medoid assignments for each datapoint
- *
- *  Returns as a numpy array the medoid each input datapoint is assigned to
- *  after KMedoids::fit is called and the final medoids have been identified
- */
 pybind11::array_t<arma::uword> km::KMedoidsWrapper::getLabelsPython() {
   if (KMedoids::getLabels().size() > 1) {
     return carma::row_to_arr<arma::uword>(KMedoids::getLabels()).squeeze();

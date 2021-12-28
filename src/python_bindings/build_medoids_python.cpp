@@ -15,12 +15,6 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-/**
- *  \brief Returns the build medoids
- *
- *  Returns as a numpy array the build medoids at the end of the BUILD step
- *  after KMedoids::fit has been called.
- */
 pybind11::array_t<arma::uword> km::KMedoidsWrapper::getMedoidsBuildPython() {
   if (KMedoids::getMedoidsBuild().size() > 1) {
     return

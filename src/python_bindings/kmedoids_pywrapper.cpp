@@ -6,11 +6,6 @@
  * allows it to be called in Python.
  *
  */
-
-/* 
- * We perform these imports first because kmedoids_pywrapper is compiled first
- * when building the python package, and carma must be 'include'd before armadillo
-*/
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <carma>
@@ -18,7 +13,6 @@
 
 #include "kmedoids_algorithm.hpp"
 #include "kmedoids_pywrapper.hpp"
-
 
 namespace km {
 PYBIND11_MODULE(banditpam, m) {
