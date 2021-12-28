@@ -89,7 +89,7 @@ import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 
 # Load the 1000-point subset of MNIST and calculate its t-SNE embeddings for visualization:
-X = pd.read_csv('data/MNIST-1k.csv', sep=' ', header=None).to_numpy()
+X = pd.read_csv('data/MNIST_1k.csv', sep=' ', header=None).to_numpy()
 X_tsne = TSNE(n_components=2).fit_transform(X)
 
 # Fit the data with BanditPAM:
@@ -119,9 +119,9 @@ Please note that it is *NOT* necessary to build the C++ executable from source t
 We highly recommend building using Docker. One can download and install Docker by following instructions at the [Docker install page](https://docs.docker.com/get-docker/). Once you have Docker installed and the Docker Daemon is running, run the following commands:
 
 ```
-/BanditPAM$ chmod +x env_setup.sh
-/BanditPAM$ ./env_setup.sh
-/BanditPAM$ ./run_docker.sh
+/BanditPAM/scripts/docker$ chmod +x env_setup.sh
+/BanditPAM/scripts/docker$ ./env_setup.sh
+/BanditPAM/scripts/docker$ ./run_docker.sh
 ```
 
 which will start a Docker instance with the necessary dependencies. Then:
@@ -170,7 +170,7 @@ Once the executable has been built, it can be invoked with:
 For example, if you ran `./env_setup.sh` and downloaded the MNIST dataset, you could run:
 
 ```
-/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10
+/BanditPAM/build/src/BanditPAM -f ../data/MNIST_1k.csv -k 10
 ```
 
 The expected output in the command line will be:
@@ -182,7 +182,7 @@ Medoids: 694,168,306,714,324,959,527,251,800,737
 
 One of the advantages of k-medoids is that it works with arbitrary distance metrics; in fact, your "metric" need not even be a real metric -- it can be negative, asymmetric, and/or not satisfy the triangle inequality or homogeneity. Any pairwise dissimilarity function works with k-medoids!
 
-This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running k-means wouldn't even make sense. We talk about one such setting in the [original paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf).
+This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running k-means wouldn't even make sense. We talk about one such setting in the [full paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf).
 
 The package currently supports a number of distance metrics, including all Lp losses and cosine distance.
 
