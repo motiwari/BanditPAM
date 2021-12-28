@@ -77,11 +77,14 @@ $(function() {
 <div class="line">}</div>
 </div><!-- fragment --><h1>Requirements</h1>
 <h1>TL;DR run <code>pip3 install banditpam</code> and jump to the <a href="https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model">examples</a>.</h1>
-<p >If you have any issues, please see the documents below and file a Github issue if you have additional trouble.</p>
+<p >If you have any difficulties, please see the <a href="https://github.com/ThrunGroup/BanditPAM#platform-specific-installation-guides">platform-specific guides</a> and file a Github issue if you have additional trouble.</p>
+<h2>Further Reading</h2>
 <ul>
-<li><a href="https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md">Installation on MacOS</a></li>
-<li><a href="https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md">Installation on Linux</a></li>
-<li><a href="https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md">Installation on Windows</a></li>
+<li><a href="https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf">Full paper</a></li>
+<li><a href="https://crossminds.ai/video/bandit-pam-almost-linear-time-k-medoids-clustering-via-multi-armed-bandits-5fb88782b0a3f6412973b646/">3-minute summary video</a></li>
+<li><a href="https://ai.stanford.edu/blog/banditpam/">Blog post</a></li>
+<li><a href="https://github.com/ThrunGroup/BanditPAM">Code</a></li>
+<li><a href="https://pypi.org/project/banditpam/">PyPI</a></li>
 </ul>
 <h1>Python Quickstart</h1>
 <h2>Install the repo and its dependencies:</h2>
@@ -158,7 +161,7 @@ $(function() {
 <div class="fragment"><div class="line">/BanditPAM$ mkdir build &amp;&amp; cd build</div>
 <div class="line">/BanditPAM/build$ cmake .. &amp;&amp; make</div>
 </div><!-- fragment --><p >This will create an executable named <code>BanditPAM</code> in <code>BanditPAM/build/src</code>.</p>
-<h3>Option 2: Installing Requirements and Building Directly</h3>
+<h3>Option 2: Installing requirements and building directly</h3>
 <p >Building this repository requires four external requirements:</p><ul>
 <li>Cmake &gt;= 3.17, <a href="https://cmake.org/download/">https://cmake.org/download/</a></li>
 <li>Armadillo &gt;= 10.5.3, <a href="http://arma.sourceforge.net/download.html">http://arma.sourceforge.net/download.html</a></li>
@@ -168,7 +171,8 @@ $(function() {
 <p >If installing these requirements from source, one can generally use the following procedure to install each requirement from the library's root folder (with CARMA used as an example here): </p><div class="fragment"><div class="line">/BanditPAM$ cd headers/carma</div>
 <div class="line">/BanditPAM/headers/carma$ mkdir build &amp;&amp; cd build</div>
 <div class="line">/BanditPAM/headers/carma/build$ cmake .. &amp;&amp; make &amp;&amp; sudo make install</div>
-</div><!-- fragment --><p >Further installation information for MacOS, Linux, and Windows is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:</p>
+</div><!-- fragment --><h4>Platform-specific installation guides</h4>
+<p >Further installation information for MacOS, Linux, and Windows is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:</p>
 <div class="fragment"><div class="line">/BanditPAM$ mkdir build &amp;&amp; cd build</div>
 <div class="line">/BanditPAM/build$ cmake .. &amp;&amp; make</div>
 </div><!-- fragment --><p >This will create an executable named <code>BanditPAM</code> in <code>BanditPAM/build/src</code>.</p>

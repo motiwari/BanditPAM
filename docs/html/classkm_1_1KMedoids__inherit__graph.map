@@ -1,6 +1,6 @@
 <map id="km::KMedoids" name="km::KMedoids">
 <area shape="rect" id="node1" title="Class implementation for running KMedoids methods." alt="" coords="222,5,329,32"/>
-<area shape="rect" id="node2" href="$classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm." alt="" coords="5,80,119,107"/>
+<area shape="rect" id="node2" href="$classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions." alt="" coords="5,80,119,107"/>
 <area shape="rect" id="node3" href="$classkm_1_1FastPAM1.html" title="Class implementation for FastPAM1 algorithm." alt="" coords="143,80,251,107"/>
 <area shape="rect" id="node4" href="$classkm_1_1KMedoidsWrapper.html" title="Python wrapper for KMedoids class." alt="" coords="275,80,433,107"/>
 <area shape="rect" id="node5" href="$classkm_1_1PAM.html" title="Class implementation for PAM algorithm." alt="" coords="457,80,531,107"/>

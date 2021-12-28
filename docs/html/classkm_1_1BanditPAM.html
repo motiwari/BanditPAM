@@ -73,7 +73,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Class implementation for <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a> algorithm.  
+<p>Contains all necessary <a class="el" href="classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions.">BanditPAM</a> functions.  
  <a href="classkm_1_1BanditPAM.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="banditpam_8hpp_source.html">banditpam.hpp</a>&gt;</code></p>
@@ -82,7 +82,7 @@ Inheritance diagram for km::BanditPAM:</div>
 <div class="dyncontent">
 <div class="center"><img src="classkm_1_1BanditPAM__inherit__graph.png" border="0" usemap="#akm_1_1BanditPAM_inherit__map" alt="Inheritance graph"/></div>
 <map name="akm_1_1BanditPAM_inherit__map" id="akm_1_1BanditPAM_inherit__map">
-<area shape="rect" title="Class implementation for BanditPAM algorithm." alt="" coords="5,80,119,107"/>
+<area shape="rect" title="Contains all necessary BanditPAM functions." alt="" coords="5,80,119,107"/>
 <area shape="rect" href="classkm_1_1KMedoids.html" title="Class implementation for running KMedoids methods." alt="" coords="9,5,115,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -90,25 +90,25 @@ Inheritance diagram for km::BanditPAM:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad4a60782fdc651be5936edb43d3f66b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkm_1_1BanditPAM.html#ad4a60782fdc651be5936edb43d3f66b9">fit_bpam</a> (const arma::mat &amp;inputData)</td></tr>
-<tr class="memdesc:ad4a60782fdc651be5936edb43d3f66b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a> algorithm.  <a href="classkm_1_1BanditPAM.html#ad4a60782fdc651be5936edb43d3f66b9">More...</a><br /></td></tr>
+<tr class="memdesc:ad4a60782fdc651be5936edb43d3f66b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs <a class="el" href="classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions.">BanditPAM</a> to identify a dataset's medoids.  <a href="classkm_1_1BanditPAM.html#ad4a60782fdc651be5936edb43d3f66b9">More...</a><br /></td></tr>
 <tr class="separator:ad4a60782fdc651be5936edb43d3f66b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a609be8d509bb04ecd813035080917318"><td class="memItemLeft" align="right" valign="top">arma::rowvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkm_1_1BanditPAM.html#a609be8d509bb04ecd813035080917318">build_sigma</a> (const arma::mat &amp;<a class="el" href="classkm_1_1KMedoids.html#a802d0a1a8ca4d09300b856097128d6b1">data</a>, const arma::rowvec &amp;best_distances, const bool use_absolute)</td></tr>
-<tr class="memdesc:a609be8d509bb04ecd813035080917318"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates confidence intervals in build step.  <a href="classkm_1_1BanditPAM.html#a609be8d509bb04ecd813035080917318">More...</a><br /></td></tr>
+<tr class="memdesc:a609be8d509bb04ecd813035080917318"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empirical estimation of standard deviation of arm returns in the BUILD step.  <a href="classkm_1_1BanditPAM.html#a609be8d509bb04ecd813035080917318">More...</a><br /></td></tr>
 <tr class="separator:a609be8d509bb04ecd813035080917318"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab90f5c74352252ad2cdd339a2b485339"><td class="memItemLeft" align="right" valign="top">arma::rowvec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkm_1_1BanditPAM.html#ab90f5c74352252ad2cdd339a2b485339">build_target</a> (const arma::mat &amp;<a class="el" href="classkm_1_1KMedoids.html#a802d0a1a8ca4d09300b856097128d6b1">data</a>, const arma::uvec *target, const arma::rowvec *best_distances, const bool use_absolute, const size_t exact)</td></tr>
-<tr class="memdesc:ab90f5c74352252ad2cdd339a2b485339"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates the mean reward for each arm in build step.  <a href="classkm_1_1BanditPAM.html#ab90f5c74352252ad2cdd339a2b485339">More...</a><br /></td></tr>
+<tr class="memdesc:ab90f5c74352252ad2cdd339a2b485339"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates the mean reward for each arm in the BUILD steps.  <a href="classkm_1_1BanditPAM.html#ab90f5c74352252ad2cdd339a2b485339">More...</a><br /></td></tr>
 <tr class="separator:ab90f5c74352252ad2cdd339a2b485339"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd370645565037a1fd3aefa7c656f380"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkm_1_1BanditPAM.html#acd370645565037a1fd3aefa7c656f380">build</a> (const arma::mat &amp;<a class="el" href="classkm_1_1KMedoids.html#a802d0a1a8ca4d09300b856097128d6b1">data</a>, arma::urowvec *medoidIndices, arma::mat *medoids)</td></tr>
-<tr class="memdesc:acd370645565037a1fd3aefa7c656f380"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build step for <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a>.  <a href="classkm_1_1BanditPAM.html#acd370645565037a1fd3aefa7c656f380">More...</a><br /></td></tr>
+<tr class="memdesc:acd370645565037a1fd3aefa7c656f380"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the BUILD step of <a class="el" href="classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions.">BanditPAM</a>.  <a href="classkm_1_1BanditPAM.html#acd370645565037a1fd3aefa7c656f380">More...</a><br /></td></tr>
 <tr class="separator:acd370645565037a1fd3aefa7c656f380"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab88c61b54faed44ab4003e7d9a1ec3a1"><td class="memItemLeft" align="right" valign="top">arma::mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkm_1_1BanditPAM.html#ab88c61b54faed44ab4003e7d9a1ec3a1">swap_sigma</a> (const arma::mat &amp;<a class="el" href="classkm_1_1KMedoids.html#a802d0a1a8ca4d09300b856097128d6b1">data</a>, const arma::rowvec *best_distances, const arma::rowvec *second_best_distances, const arma::urowvec *assignments)</td></tr>
-<tr class="memdesc:ab88c61b54faed44ab4003e7d9a1ec3a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates confidence intervals in swap step.  <a href="classkm_1_1BanditPAM.html#ab88c61b54faed44ab4003e7d9a1ec3a1">More...</a><br /></td></tr>
+<tr class="memdesc:ab88c61b54faed44ab4003e7d9a1ec3a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empirical estimation of standard deviation of arm returns in the SWAP step.  <a href="classkm_1_1BanditPAM.html#ab88c61b54faed44ab4003e7d9a1ec3a1">More...</a><br /></td></tr>
 <tr class="separator:ab88c61b54faed44ab4003e7d9a1ec3a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a7cda08db92b4d3e6b505862858db6f"><td class="memItemLeft" align="right" valign="top">arma::vec&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkm_1_1BanditPAM.html#a1a7cda08db92b4d3e6b505862858db6f">swap_target</a> (const arma::mat &amp;<a class="el" href="classkm_1_1KMedoids.html#a802d0a1a8ca4d09300b856097128d6b1">data</a>, const arma::urowvec *medoidIndices, const arma::uvec *targets, const arma::rowvec *best_distances, const arma::rowvec *second_best_distances, const arma::urowvec *assignments, const size_t exact)</td></tr>
-<tr class="memdesc:a1a7cda08db92b4d3e6b505862858db6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates the mean reward for each arm in swap step.  <a href="classkm_1_1BanditPAM.html#a1a7cda08db92b4d3e6b505862858db6f">More...</a><br /></td></tr>
+<tr class="memdesc:a1a7cda08db92b4d3e6b505862858db6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estimates the mean reward for each arm in SWAP step.  <a href="classkm_1_1BanditPAM.html#a1a7cda08db92b4d3e6b505862858db6f">More...</a><br /></td></tr>
 <tr class="separator:a1a7cda08db92b4d3e6b505862858db6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfecbe38c677a125e501beb9f88c0d6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkm_1_1BanditPAM.html#adfecbe38c677a125e501beb9f88c0d6d">swap</a> (const arma::mat &amp;<a class="el" href="classkm_1_1KMedoids.html#a802d0a1a8ca4d09300b856097128d6b1">data</a>, arma::urowvec *medoidIndices, arma::mat *medoids, arma::urowvec *assignments)</td></tr>
-<tr class="memdesc:adfecbe38c677a125e501beb9f88c0d6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swap step for <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a>.  <a href="classkm_1_1BanditPAM.html#adfecbe38c677a125e501beb9f88c0d6d">More...</a><br /></td></tr>
+<tr class="memdesc:adfecbe38c677a125e501beb9f88c0d6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the SWAP step of <a class="el" href="classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions.">BanditPAM</a>.  <a href="classkm_1_1BanditPAM.html#adfecbe38c677a125e501beb9f88c0d6d">More...</a><br /></td></tr>
 <tr class="separator:adfecbe38c677a125e501beb9f88c0d6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classkm_1_1KMedoids"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classkm_1_1KMedoids')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classkm_1_1KMedoids.html">km::KMedoids</a></td></tr>
 <tr class="memitem:a0a09762011e8dfa7b520765c37f5f3e7 inherit pub_methods_classkm_1_1KMedoids"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classkm_1_1KMedoids.html#a0a09762011e8dfa7b520765c37f5f3e7">KMedoids</a> (size_t <a class="el" href="classkm_1_1KMedoids.html#a7d8a592e525c919e2b124085b99b5400">n_medoids</a>=5, const std::string &amp;<a class="el" href="classkm_1_1KMedoids.html#ae444145a3bc114dd28a6c094fcfdf827">algorithm</a>=&quot;BanditPAM&quot;, size_t <a class="el" href="classkm_1_1KMedoids.html#af7c457dbb6c4c836b72624c9720aa8cb">max_iter</a>=1000, size_t <a class="el" href="classkm_1_1KMedoids.html#a068895dab1b234dae0b04c21e935a2cf">buildConfidence</a>=1000, size_t <a class="el" href="classkm_1_1KMedoids.html#a8f29b104f30ae18296d6024d53d899df">swapConfidence</a>=10000)</td></tr>
@@ -265,11 +265,11 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>steps</b></td></tr>
 <tr class="separator:a88969d67d5473d1e9dc4fc333234f9d2 inherit pro_attribs_classkm_1_1KMedoids"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a068895dab1b234dae0b04c21e935a2cf inherit pro_attribs_classkm_1_1KMedoids"><td class="memItemLeft" align="right" valign="top"><a id="a068895dab1b234dae0b04c21e935a2cf" name="a068895dab1b234dae0b04c21e935a2cf"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>buildConfidence</b></td></tr>
-<tr class="memdesc:a068895dab1b234dae0b04c21e935a2cf inherit pro_attribs_classkm_1_1KMedoids"><td class="mdescLeft">&#160;</td><td class="mdescRight">Governs the error rate of each BUILD step in <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a>. <br /></td></tr>
+<tr class="memdesc:a068895dab1b234dae0b04c21e935a2cf inherit pro_attribs_classkm_1_1KMedoids"><td class="mdescLeft">&#160;</td><td class="mdescRight">Governs the error rate of each BUILD step in <a class="el" href="classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions.">BanditPAM</a>. <br /></td></tr>
 <tr class="separator:a068895dab1b234dae0b04c21e935a2cf inherit pro_attribs_classkm_1_1KMedoids"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f29b104f30ae18296d6024d53d899df inherit pro_attribs_classkm_1_1KMedoids"><td class="memItemLeft" align="right" valign="top"><a id="a8f29b104f30ae18296d6024d53d899df" name="a8f29b104f30ae18296d6024d53d899df"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>swapConfidence</b></td></tr>
-<tr class="memdesc:a8f29b104f30ae18296d6024d53d899df inherit pro_attribs_classkm_1_1KMedoids"><td class="mdescLeft">&#160;</td><td class="mdescRight">Governs the error rate of each SWAP step in <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a>. <br /></td></tr>
+<tr class="memdesc:a8f29b104f30ae18296d6024d53d899df inherit pro_attribs_classkm_1_1KMedoids"><td class="mdescLeft">&#160;</td><td class="mdescRight">Governs the error rate of each SWAP step in <a class="el" href="classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions.">BanditPAM</a>. <br /></td></tr>
 <tr class="separator:a8f29b104f30ae18296d6024d53d899df inherit pro_attribs_classkm_1_1KMedoids"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17d0a3d805cc5d3084ff5cf996b530cc inherit pro_attribs_classkm_1_1KMedoids"><td class="memItemLeft" align="right" valign="top"><a id="a17d0a3d805cc5d3084ff5cf996b530cc" name="a17d0a3d805cc5d3084ff5cf996b530cc"></a>
 const double&#160;</td><td class="memItemRight" valign="bottom"><b>precision</b> = 0.001</td></tr>
@@ -281,8 +281,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
 <tr class="separator:a016fb11aaa66ac25b1d072f370a5fab7 inherit pro_attribs_classkm_1_1KMedoids"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Class implementation for <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a> algorithm. </p>
-<p ><a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a> class. Consists of all necessary functions to implement <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a> algorithm. </p>
+<div class="textblock"><p >Contains all necessary <a class="el" href="classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions.">BanditPAM</a> functions. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="acd370645565037a1fd3aefa7c656f380" name="acd370645565037a1fd3aefa7c656f380"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd370645565037a1fd3aefa7c656f380">&#9670;&nbsp;</a></span>build()</h2>
@@ -300,7 +299,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">arma::urowvec *&#160;</td>
-          <td class="paramname"><em>medoid_indices</em>, </td>
+          <td class="paramname"><em>medoidIndices</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -316,13 +315,13 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
       </table>
 </div><div class="memdoc">
 
-<p>Build step for <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a>. </p>
-<p >Runs build step for the <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a> algorithm. Draws batch sizes with replacement from reference set, and uses the estimated reward of the potential medoid solutions on the reference set to update the reward confidence intervals and accordingly narrow the solution set.</p>
+<p>Performs the BUILD step of <a class="el" href="classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions.">BanditPAM</a>. </p>
+<p >Draws batch size reference points with replacement and uses the estimated reward of adding candidate medoids to the set of medoids. Constructs confidence intervals for expected loss when adding each candidate as a medoid, and continues drawing reference points until the best candidate's confidence interval is disjoint from all others.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Transposed input data to find the medoids of </td></tr>
-    <tr><td class="paramname">medoid_indices</td><td>Uninitialized array of medoids that is modified in place as medoids are identified </td></tr>
-    <tr><td class="paramname">medoids</td><td>Matrix of possible medoids that is updated as the bandit learns which datapoints will be unlikely to be good candidates </td></tr>
+    <tr><td class="paramname">data</td><td>Transposed input data to cluster </td></tr>
+    <tr><td class="paramname">medoidIndices</td><td>Array of medoids that is modified in place as medoids are identified </td></tr>
+    <tr><td class="paramname">medoids</td><td>Matrix that contains the coordinates of each medoid </td></tr>
   </table>
   </dd>
 </dl>
@@ -361,13 +360,12 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
       </table>
 </div><div class="memdoc">
 
-<p>Calculates confidence intervals in build step. </p>
-<p >Calculates the confidence intervals about the reward for each arm</p>
+<p>Empirical estimation of standard deviation of arm returns in the BUILD step. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Transposed input data to find the medoids of intervals </td></tr>
-    <tr><td class="paramname">best_distances</td><td>Array of best distances from each point to previous set of medoids </td></tr>
-    <tr><td class="paramname">use_aboslute</td><td>Determines whether the absolute cost is added to the total </td></tr>
+    <tr><td class="paramname">data</td><td>Transposed input data to cluster </td></tr>
+    <tr><td class="paramname">best_distances</td><td>Contains best distances from each point to medoids </td></tr>
+    <tr><td class="paramname">use_aboslute</td><td>Flag to use the absolute distance to each arm instead of improvement over prior loss; necessary for the first BUILD step </td></tr>
   </table>
   </dd>
 </dl>
@@ -418,14 +416,14 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
       </table>
 </div><div class="memdoc">
 
-<p>Estimates the mean reward for each arm in build step. </p>
-<p >Estimates the mean reward (or loss) for each arm in the identified targets in the build step and returns a list of the estimated reward.</p>
+<p>Estimates the mean reward for each arm in the BUILD steps. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Transposed input data to find the medoids of </td></tr>
-    <tr><td class="paramname">target</td><td>Set of target datapoints to be estimated intervals </td></tr>
-    <tr><td class="paramname">best_distances</td><td>Array of best distances from each point to previous set of medoids </td></tr>
-    <tr><td class="paramname">use_absolute</td><td>Determines whether the absolute cost is added to the total </td></tr>
+    <tr><td class="paramname">data</td><td>Transposed input data to cluster </td></tr>
+    <tr><td class="paramname">target</td><td>Candidate datapoints to consider adding as medoids </td></tr>
+    <tr><td class="paramname">best_distances</td><td>Contains best distances from each point to medoids </td></tr>
+    <tr><td class="paramname">use_aboslute</td><td>Flag to use the absolute distance to each arm instead of improvement over prior loss; necessary for the first BUILD step </td></tr>
+    <tr><td class="paramname">exact</td><td>0 if using standard batch size; size of dataset otherwise </td></tr>
   </table>
   </dd>
 </dl>
@@ -442,24 +440,16 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
           <td class="memname">void km::BanditPAM::fit_bpam </td>
           <td>(</td>
           <td class="paramtype">const arma::mat &amp;&#160;</td>
-          <td class="paramname"><em>input_data</em></td><td>)</td>
+          <td class="paramname"><em>inputData</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Runs <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a> algorithm. </p>
-<p >Run the <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a> algorithm to identify a dataset's medoids.</p>
+<p>Runs <a class="el" href="classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions.">BanditPAM</a> to identify a dataset's medoids. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">input_data</td><td>Input data to cluster</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Run the <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a> algorithm to identify a dataset's medoids.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">input_data</td><td>Input data to find the medoids of </td></tr>
+    <tr><td class="paramname">inputData</td><td>Input data to cluster </td></tr>
   </table>
   </dd>
 </dl>
@@ -482,7 +472,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">arma::urowvec *&#160;</td>
-          <td class="paramname"><em>medoid_indices</em>, </td>
+          <td class="paramname"><em>medoidIndices</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -504,12 +494,12 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
       </table>
 </div><div class="memdoc">
 
-<p>Swap step for <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a>. </p>
-<p >Runs Swap step for the <a class="el" href="classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm.">BanditPAM</a> algorithm. Draws batch sizes with replacement from reference set, and uses the estimated reward of the potential medoid solutions on the reference set to update the reward confidence intervals and accordingly narrow the solution set.</p>
+<p>Performs the SWAP step of <a class="el" href="classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions.">BanditPAM</a>. </p>
+<p >Draws batch size reference points with replacement and uses the estimated reward of performing a (medoid, non-medoid) swap. Constructs confidence intervals for expected loss when performing the swap, and continues drawing reference points until the best candidate's confidence interval is disjoint from all others.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Transposed input data to find the medoids of </td></tr>
-    <tr><td class="paramname">medoid_indices</td><td>Array of medoid indices created from the build step that is modified in place as better medoids are identified </td></tr>
+    <tr><td class="paramname">data</td><td>Transposed input data to cluster </td></tr>
+    <tr><td class="paramname">medoidIndices</td><td>Array of medoid indices created from the BUILD step that is modified in place as better medoids are identified </td></tr>
     <tr><td class="paramname">medoids</td><td>Matrix of possible medoids that is updated as the bandit learns which datapoints will be unlikely to be good candidates </td></tr>
     <tr><td class="paramname">assignments</td><td>Uninitialized array of indices corresponding to each datapoint assigned the index of the medoid it is closest to </td></tr>
   </table>
@@ -556,13 +546,12 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
       </table>
 </div><div class="memdoc">
 
-<p>Calculates confidence intervals in swap step. </p>
-<p >Calculates the confidence intervals about the reward for each arm</p>
+<p>Empirical estimation of standard deviation of arm returns in the SWAP step. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Transposed input data to find the medoids of intervals </td></tr>
-    <tr><td class="paramname">best_distances</td><td>Array of best distances from each point to previous set of medoids </td></tr>
-    <tr><td class="paramname">second_best_distances</td><td>Array of second smallest distances from each point to previous set of medoids </td></tr>
+    <tr><td class="paramname">data</td><td>Transposed input data to cluster </td></tr>
+    <tr><td class="paramname">best_distances</td><td>Contains best distances from each point to medoids </td></tr>
+    <tr><td class="paramname">second_best_distances</td><td>Contains second best distances from each point to medoids </td></tr>
     <tr><td class="paramname">assignments</td><td>Assignments of datapoints to their closest medoid </td></tr>
   </table>
   </dd>
@@ -586,7 +575,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const arma::urowvec *&#160;</td>
-          <td class="paramname"><em>medoid_indices</em>, </td>
+          <td class="paramname"><em>medoidIndices</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -626,15 +615,17 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
       </table>
 </div><div class="memdoc">
 
-<p>Estimates the mean reward for each arm in swap step. </p>
-<p >Estimates the mean reward (or loss) for each arm in the identified targets in the swap step and returns a list of the estimated reward.</p>
+<p>Estimates the mean reward for each arm in SWAP step. </p>
+<p >Estimates the mean reward (or loss) for each arm in the identified targets in the SWAP step and returns a list of the estimated reward.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Transposed input data to find the medoids of </td></tr>
-    <tr><td class="paramname">targets</td><td>Set of target datapoints to be estimated intervals </td></tr>
-    <tr><td class="paramname">best_distances</td><td>Array of best distances from each point to previous set of medoids </td></tr>
-    <tr><td class="paramname">second_best_distances</td><td>Array of second smallest distances from each point to previous set of medoids </td></tr>
+    <tr><td class="paramname">data</td><td>Transposed input data to cluster </td></tr>
+    <tr><td class="paramname">medoidIndices</td><td>Array of medoids that is modified in place as medoids are swapped in and out </td></tr>
+    <tr><td class="paramname">targets</td><td>Set of potential swaps to be evaluated </td></tr>
+    <tr><td class="paramname">best_distances</td><td>Contains best distances from each point to medoids </td></tr>
+    <tr><td class="paramname">second_best_distances</td><td>Contains second best distances from each point to medoids </td></tr>
     <tr><td class="paramname">assignments</td><td>Assignments of datapoints to their closest medoid </td></tr>
+    <tr><td class="paramname">exact</td><td>0 if using standard batch size; size of dataset otherwise </td></tr>
   </table>
   </dd>
 </dl>

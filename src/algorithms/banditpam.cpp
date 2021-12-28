@@ -13,13 +13,6 @@
 #include <cmath>
 
 namespace km {
-/**
- * \brief Runs BanditPAM algorithm.
- *
- * Run the BanditPAM algorithm to identify a dataset's medoids.
- *
- * @param input_data Input data to find the medoids of
- */
 void BanditPAM::fit_bpam(const arma::mat& input_data) {
   data = input_data;
   data = arma::trans(data);
@@ -45,29 +38,16 @@ void BanditPAM::fit_bpam(const arma::mat& input_data) {
 
   arma::mat medoids_mat(data.n_rows, n_medoids);
   arma::urowvec medoid_indices(n_medoids);
-  // runs build step
   BanditPAM::build(data, &medoid_indices, &medoids_mat);
   steps = 0;
 
   medoid_indices_build = medoid_indices;
   arma::urowvec assignments(data.n_cols);
-  // runs swap step
   BanditPAM::swap(data, &medoid_indices, &medoids_mat, &assignments);
   medoid_indices_final = medoid_indices;
   labels = assignments;
 }
 
-/**
- * \brief Calculates confidence intervals in build step
- *
- * Calculates the confidence intervals about the reward for each arm
- *
- * @param data Transposed input data to find the medoids of
- * intervals
- * @param best_distances Array of best distances from each point to previous set
- * of medoids
- * @param use_aboslute Determines whether the absolute cost is added to the total
- */
 arma::rowvec BanditPAM::build_sigma(
   const arma::mat& data,
   const arma::rowvec& best_distances,
@@ -91,10 +71,8 @@ arma::rowvec BanditPAM::build_sigma(
 
   arma::vec sample(batchSize);
   arma::rowvec updated_sigma(N);
-  // for each possible swap
   #pragma omp parallel for
   for (size_t i = 0; i < N; i++) {
-    // gather a sample of points
     for (size_t j = 0; j < batchSize; j++) {
       double cost = KMedoids::cachedLoss(data, i, tmp_refs(j));
       if (use_absolute) {
@@ -110,19 +88,6 @@ arma::rowvec BanditPAM::build_sigma(
   return updated_sigma;
 }
 
-/**
- * \brief Estimates the mean reward for each arm in build step
- *
- * Estimates the mean reward (or loss) for each arm in the identified targets
- * in the build step and returns a list of the estimated reward.
- *
- * @param data Transposed input data to find the medoids of
- * @param target Set of target datapoints to be estimated
- *  intervals
- * @param best_distances Array of best distances from each point to previous
- *  set of medoids
- * @param use_absolute Determines whether the absolute cost is added to the total
- */
 arma::rowvec BanditPAM::build_target(
   const arma::mat& data,
   const arma::uvec* target,
@@ -169,20 +134,6 @@ arma::rowvec BanditPAM::build_target(
   return estimates;
 }
 
-/**
- * \brief Build step for BanditPAM
- *
- * Runs build step for the BanditPAM algorithm. Draws batch sizes with replacement
- * from reference set, and uses the estimated reward of the potential medoid
- * solutions on the reference set to update the reward confidence intervals and
- * accordingly narrow the solution set.
- *
- * @param data Transposed input data to find the medoids of
- * @param medoid_indices Uninitialized array of medoids that is modified in place
- * as medoids are identified
- * @param medoids Matrix of possible medoids that is updated as the bandit
- * learns which datapoints will be unlikely to be good candidates
- */
 void BanditPAM::build(
   const arma::mat& data,
   arma::urowvec* medoid_indices,
@@ -275,19 +226,6 @@ void BanditPAM::build(
   }
 }
 
-/**
- * \brief Calculates confidence intervals in swap step
- *
- * Calculates the confidence intervals about the reward for each arm
- *
- * @param data Transposed input data to find the medoids of
- * intervals
- * @param best_distances Array of best distances from each point to previous set
- * of medoids
- * @param second_best_distances Array of second smallest distances from each
- * point to previous set of medoids
- * @param assignments Assignments of datapoints to their closest medoid
- */
 arma::mat BanditPAM::swap_sigma(
   const arma::mat& data,
   const arma::rowvec* best_distances,
@@ -344,21 +282,6 @@ arma::mat BanditPAM::swap_sigma(
   return updated_sigma;
 }
 
-/**
- * \brief Estimates the mean reward for each arm in swap step
- *
- * Estimates the mean reward (or loss) for each arm in the identified targets
- * in the swap step and returns a list of the estimated reward.
- *
- * @param data Transposed input data to find the medoids of
- * @param targets Set of target datapoints to be estimated
- * intervals
- * @param best_distances Array of best distances from each point to previous set
- * of medoids
- * @param second_best_distances Array of second smallest distances from each
- * point to previous set of medoids
- * @param assignments Assignments of datapoints to their closest medoid
- */
 arma::vec BanditPAM::swap_target(
   const arma::mat& data,
   const arma::urowvec* medoid_indices,
@@ -421,22 +344,6 @@ arma::vec BanditPAM::swap_target(
   return estimates;
 }
 
-/**
- * \brief Swap step for BanditPAM
- *
- * Runs Swap step for the BanditPAM algorithm. Draws batch sizes with replacement
- * from reference set, and uses the estimated reward of the potential medoid
- * solutions on the reference set to update the reward confidence intervals and
- * accordingly narrow the solution set.
- *
- * @param data Transposed input data to find the medoids of
- * @param medoid_indices Array of medoid indices created from the build step
- * that is modified in place as better medoids are identified
- * @param medoids Matrix of possible medoids that is updated as the bandit
- * learns which datapoints will be unlikely to be good candidates
- * @param assignments Uninitialized array of indices corresponding to each
- * datapoint assigned the index of the medoid it is closest to
- */
 void BanditPAM::swap(
   const arma::mat& data,
   arma::urowvec* medoid_indices,

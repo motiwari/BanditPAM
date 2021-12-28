@@ -1,6 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" href="$classkm_1_1KMedoids.html" title="Class implementation for running KMedoids methods." alt="" coords="5,81,112,108"/>
-<area shape="rect" id="node2" href="$classkm_1_1BanditPAM.html" title="Class implementation for BanditPAM algorithm." alt="" coords="182,5,295,32"/>
+<area shape="rect" id="node2" href="$classkm_1_1BanditPAM.html" title="Contains all necessary BanditPAM functions." alt="" coords="182,5,295,32"/>
 <area shape="rect" id="node3" href="$classkm_1_1FastPAM1.html" title="Class implementation for FastPAM1 algorithm." alt="" coords="185,56,293,83"/>
 <area shape="rect" id="node4" href="$classkm_1_1KMedoidsWrapper.html" title="Python wrapper for KMedoids class." alt="" coords="160,107,317,133"/>
 <area shape="rect" id="node5" href="$classkm_1_1PAM.html" title="Class implementation for PAM algorithm." alt="" coords="201,157,276,184"/>
