@@ -33,7 +33,6 @@ jobs:
           git clone https://gitlab.com/conradsnicta/armadillo-code.git
           cd armadillo-code
           cmake .
-          make
       - name: Install carma
         run: |
           cd ~
