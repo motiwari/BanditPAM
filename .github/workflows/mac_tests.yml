@@ -13,14 +13,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      # - name: Install MacOS dependencies
-      #   run: |
-      #     # sudo rm -rf /Library/Developer/CommandLineTools
-      #     # xcode-select --install
-      #     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      #     brew install llvm libomp armadillo
-      #     cmake --version
-      - name: Install CPython from Anaconda # TODO: Need to update CMake?
+      - name: Install MacOS dependencies
+        run: |
+          # sudo rm -rf /Library/Developer/CommandLineTools
+          # xcode-select --install
+          # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          brew install llvm libomp armadillo
+      - name: Install CPython from Anaconda
         run: |
           python
           # curl -XGET https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh > Anaconda3-2021.11-MacOSX-x86_64.sh
