@@ -67,4 +67,4 @@ subprocess.call('cp {} ../html/index.html'.format(readme_file), shell=True)
 
 html_extra_path = ['../html']
 
-html_favicon = 'banditpam_favicon.png'
+html_favicon = 'banditpam_favicon.ico'
