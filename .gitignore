@@ -22,5 +22,7 @@ var/
 BanditPAM.egg-info/
 build/
 tmp/
+docs/latex
+docs/html
 banditpam.cpython-38-darwin.so
 .pytest_cache/
