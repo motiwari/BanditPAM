@@ -21,41 +21,41 @@ class BanditPAM : public km::KMedoids {
    * 
    * @param inputData Input data to cluster
    */
-  void fit_bpam(const arma::mat& inputData);
+  void fitBanditPAM(const arma::mat& inputData);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
    * in the BUILD step.
    *
    * @param data Transposed input data to cluster
-   * @param best_distances Contains best distances from each point to medoids
-   * @param use_aboslute Flag to use the absolute distance to each arm instead
+   * @param bestDistances Contains best distances from each point to medoids
+   * @param useAbsolute Flag to use the absolute distance to each arm instead
    * of improvement over prior loss; necessary for the first BUILD step
    * 
    * @returns Estimate of each arm's standard deviation
    */
-  arma::rowvec build_sigma(
+  arma::rowvec buildSigma(
     const arma::mat& data,
-    const arma::rowvec& best_distances,
-    const bool use_absolute);
+    const arma::rowvec& bestDistances,
+    const bool useAbsolute);
 
   /** 
    * @brief Estimates the mean reward for each arm in the BUILD steps.
    * 
    * @param data Transposed input data to cluster
    * @param target Candidate datapoints to consider adding as medoids
-   * @param best_distances Contains best distances from each point to medoids
-   * @param use_aboslute Flag to use the absolute distance to each arm instead
+   * @param bestDistances Contains best distances from each point to medoids
+   * @param useAbsolute Flag to use the absolute distance to each arm instead
    * of improvement over prior loss; necessary for the first BUILD step
    * @param exact 0 if using standard batch size; size of dataset otherwise
    * 
    * @returns Estimate of each arm's change in loss
    */
-  arma::rowvec build_target(
+  arma::rowvec buildTarget(
     const arma::mat& data,
     const arma::uvec* target,
-    const arma::rowvec* best_distances,
-    const bool use_absolute,
+    const arma::rowvec* bestDistances,
+    const bool useAbsolute,
     const size_t exact);
 
   /**
@@ -82,16 +82,16 @@ class BanditPAM : public km::KMedoids {
    * in the SWAP step.
    *
    * @param data Transposed input data to cluster
-   * @param best_distances Contains best distances from each point to medoids
-   * @param second_best_distances Contains second best distances from each point to medoids
+   * @param bestDistances Contains best distances from each point to medoids
+   * @param secondBestDistances Contains second best distances from each point to medoids
    * @param assignments Assignments of datapoints to their closest medoid
    * 
    * @returns Estimate of each arm's standard deviation
    */
-  arma::mat swap_sigma(
+  arma::mat swapSigma(
     const arma::mat& data,
-    const arma::rowvec* best_distances,
-    const arma::rowvec* second_best_distances,
+    const arma::rowvec* bestDistances,
+    const arma::rowvec* secondBestDistances,
     const arma::urowvec* assignments);
 
   /**
@@ -101,19 +101,19 @@ class BanditPAM : public km::KMedoids {
    * @param medoidIndices Array of medoids that is modified in place
    * as medoids are swapped in and out
    * @param targets Set of potential swaps to be evaluated
-   * @param best_distances Contains best distances from each point to medoids
-   * @param second_best_distances Contains second best distances from each point to medoids
+   * @param bestDistances Contains best distances from each point to medoids
+   * @param secondBestDistances Contains second best distances from each point to medoids
    * @param assignments Assignments of datapoints to their closest medoid
    * @param exact 0 if using standard batch size; size of dataset otherwise
    * 
    * @returns Estimate of each arm's change in loss
    */
-  arma::vec swap_target(
+  arma::vec swapTarget(
     const arma::mat& data,
     const arma::urowvec* medoidIndices,
     const arma::uvec* targets,
-    const arma::rowvec* best_distances,
-    const arma::rowvec* second_best_distances,
+    const arma::rowvec* bestDistances,
+    const arma::rowvec* secondBestDistances,
     const arma::urowvec* assignments,
     const size_t exact);
 

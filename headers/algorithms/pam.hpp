@@ -22,7 +22,7 @@ class PAM : public km::KMedoids {
    * 
    * @param inputData Input data to cluster
    */
-  void fit_pam(const arma::mat& inputData);
+  void fitPAM(const arma::mat& inputData);
 
   /**
   * @brief Performs the BUILD step of PAM.
@@ -35,7 +35,7 @@ class PAM : public km::KMedoids {
   * @param medoidIndices Array of medoids that is modified in place
   * as medoids are identified
   */
-  void build_pam(
+  void buildPAM(
     const arma::mat& data,
     arma::urowvec* medoidIndices);
 
@@ -52,7 +52,7 @@ class PAM : public km::KMedoids {
   * that is modified in place as better medoids are identified
   * @param assignments Array of containing the medoid each point is closest to
   */
-  void swap_pam(
+  void swapPAM(
     const arma::mat& data,
     arma::urowvec* medoidIndices,
     arma::urowvec* assignments);

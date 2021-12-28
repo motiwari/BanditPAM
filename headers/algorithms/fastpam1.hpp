@@ -19,9 +19,9 @@ class FastPAM1 : public km::KMedoids {
   /**
    * @brief Runs the FastPAM1 algorithm to identify a dataset's medoids.
    *
-   * @param input_data Input data to cluster
+   * @param inputData Input data to cluster
    */
-  void fit_fastpam1(const arma::mat& input_data);
+  void fitFastPAM1(const arma::mat& inputData);
 
   /**
    * @brief Performs the BUILD step of FastPAM1.
@@ -34,7 +34,7 @@ class FastPAM1 : public km::KMedoids {
    * @param medoid_indices Array of medoids that is modified in place
    * as medoids are identified
    */
-  void build_fastpam1(
+  void buildFastPAM1(
     const arma::mat& data,
     arma::urowvec* medoid_indices);
 
@@ -51,7 +51,7 @@ class FastPAM1 : public km::KMedoids {
    * that is modified in place as better medoids are identified
    * @param assignments Array of containing the medoid each point is closest to
    */
-  void swap_fastpam1(
+  void swapFastPAM1(
     const arma::mat& data,
     arma::urowvec* medoid_indices,
     arma::urowvec* assignments);

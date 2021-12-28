@@ -25,19 +25,19 @@ PYBIND11_MODULE(banditpam, m) {
   cls.def(pybind11::init<int, std::string, int, int, int>(),
           pybind11::arg("n_medoids") = NULL,
           pybind11::arg("algorithm") = "BanditPAM",
-          pybind11::arg("maxIter") = 1000,
-          pybind11::arg("buildConfidence") = 1000,
-          pybind11::arg("swapConfidence") = 10000);
+          pybind11::arg("max_iter") = 1000,
+          pybind11::arg("build_confidence") = 1000,
+          pybind11::arg("swap_confidence") = 10000);
   cls.def_property("n_medoids",
     &KMedoidsWrapper::getNMedoids, &KMedoidsWrapper::setNMedoids);
   cls.def_property("algorithm",
     &KMedoidsWrapper::getAlgorithm, &KMedoidsWrapper::setAlgorithm);
-  cls.def_property("maxIter",
+  cls.def_property("max_iter",
     &KMedoidsWrapper::getMaxIter, &KMedoidsWrapper::setMaxIter);
-  cls.def_property("buildConfidence",
-    &KMedoidsWrapper::getbuildConfidence, &KMedoidsWrapper::setbuildConfidence);
-  cls.def_property("swapConfidence",
-    &KMedoidsWrapper::getswapConfidence, &KMedoidsWrapper::setswapConfidence);
+  cls.def_property("build_confidence",
+    &KMedoidsWrapper::getBuildConfidence, &KMedoidsWrapper::setBuildConfidence);
+  cls.def_property("swap_confidence",
+    &KMedoidsWrapper::getSwapConfidence, &KMedoidsWrapper::setSwapConfidence);
   medoids_python(&cls);
   build_medoids_python(&cls);
   labels_python(&cls);

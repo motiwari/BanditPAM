@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
     size_t k;
     int opt;
     int prev_ind;
-    size_t max_iter = 1000;
+    size_t maxIter = 1000;
     size_t buildConfidence = 1000;
     size_t swapConfidence = 10000;
     std::string loss = "2";
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
     km::KMedoids kmed(
       k,
       "BanditPAM",
-      max_iter,
+      maxIter,
       buildConfidence,
       swapConfidence);
     kmed.fit(data, loss);

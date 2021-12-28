@@ -61,7 +61,7 @@ means = np.array([[0,0], [-5,5], [5,5]])
 X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 
 # Fit the data with BanditPAM:
-kmed = KMedoids(n_medoids = 3, algorithm = "BanditPAM")
+kmed = KMedoids(n_medoids=3, algorithm="BanditPAM")
 kmed.fit(X, 'L2')
 
 print(kmed.labels) # prints cluster assignments [0] * 40 + [1] * 40 + [2] * 40
@@ -90,10 +90,10 @@ from sklearn.manifold import TSNE
 
 # Load the 1000-point subset of MNIST and calculate its t-SNE embeddings for visualization:
 X = pd.read_csv('data/MNIST-1k.csv', sep=' ', header=None).to_numpy()
-X_tsne = TSNE(n_components = 2).fit_transform(X)
+X_tsne = TSNE(n_components=2).fit_transform(X)
 
 # Fit the data with BanditPAM:
-kmed = KMedoids(n_medoids = 10, algorithm = "BanditPAM")
+kmed = KMedoids(n_medoids=10, algorithm="BanditPAM")
 kmed.fit(X, 'L2')
 
 # Visualize the data and the medoids via t-SNE:
@@ -201,11 +201,6 @@ To run the full suite of tests, run in the root directory:
 ```
 
 Alternatively, to run a "smaller" set of tests, from the main repo folder run `python tests/test_smaller.py` or `python tests/test_larger.py` to run a set of longer, more intensive tests.
-
-## Reproducing Figures from the Paper
-
-Note that some figures in the original paper were generated using the Python code at https://github.com/motiwari/BanditPAM-python. That code is not pretty, nor is it maintained. It only exists for reference and for reproducibility of the plots.
-
 ## Credits
 
 Mo Tiwari wrote the original Python implementation of BanditPAM and many features of the C++ implementation. Mo now maintains the C++ implementation.

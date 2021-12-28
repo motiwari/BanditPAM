@@ -18,14 +18,14 @@
 
 namespace km {
 KMedoids::KMedoids(
-  size_t n_medoids,
+  size_t nMedoids,
   const std::string& algorithm,
-  size_t max_iter,
+  size_t maxIter,
   size_t buildConfidence,
   size_t swapConfidence):
-    n_medoids(n_medoids),
+    nMedoids(nMedoids),
     algorithm(algorithm),
-    max_iter(max_iter),
+    maxIter(maxIter),
     buildConfidence(buildConfidence),
     swapConfidence(swapConfidence) {
   KMedoids::checkAlgorithm(algorithm);
@@ -33,29 +33,29 @@ KMedoids::KMedoids(
 
 KMedoids::~KMedoids() {}
 
-void KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
-  batchSize = fmin(input_data.n_rows, batchSize);
+void KMedoids::fit(const arma::mat& inputData, const std::string& loss) {
+  batchSize = fmin(inputData.n_rows, batchSize);
 
-  if (input_data.n_rows == 0) {
+  if (inputData.n_rows == 0) {
     throw std::invalid_argument("Dataset is empty");
   }
 
   KMedoids::setLossFn(loss);
   if (algorithm == "PAM") {
-    static_cast<PAM*>(this)->fit_pam(input_data);
+    static_cast<PAM*>(this)->fitPAM(inputData);
   } else if (algorithm == "BanditPAM") {
-    static_cast<BanditPAM*>(this)->fit_bpam(input_data);
+    static_cast<BanditPAM*>(this)->fitBanditPAM(inputData);
   } else if (algorithm == "FastPAM1") {
-    static_cast<FastPAM1*>(this)->fit_fastpam1(input_data);
+    static_cast<FastPAM1*>(this)->fitFastPAM1(inputData);
   }
 }
 
 arma::urowvec KMedoids::getMedoidsBuild() const {
-  return medoid_indices_build;
+  return medoidIndicesBuild;
 }
 
 arma::urowvec KMedoids::getMedoidsFinal() const {
-  return medoid_indices_final;
+  return medoidIndicesFinal;
 }
 
 arma::urowvec KMedoids::getLabels() const {
@@ -67,53 +67,53 @@ size_t KMedoids::getSteps() const {
 }
 
 size_t KMedoids::getNMedoids() const {
-  return n_medoids;
+  return nMedoids;
 }
 
-void KMedoids::setNMedoids(size_t new_num) {
-  n_medoids = new_num;
+void KMedoids::setNMedoids(size_t newNMedoids) {
+  nMedoids = newNMedoids;
 }
 
 std::string KMedoids::getAlgorithm() const {
   return algorithm;
 }
 
-void KMedoids::setAlgorithm(const std::string& new_alg) {
-  algorithm = new_alg;
+void KMedoids::setAlgorithm(const std::string& newAlgorithm) {
+  algorithm = newAlgorithm;
   KMedoids::checkAlgorithm(algorithm);
 }
 
 size_t KMedoids::getMaxIter() const {
-  return max_iter;
+  return maxIter;
 }
 
-void KMedoids::setMaxIter(size_t new_max) {
-  max_iter = new_max;
+void KMedoids::setMaxIter(size_t newMaxIter) {
+  maxIter = newMaxIter;
 }
 
 
-size_t KMedoids::getbuildConfidence() const {
+size_t KMedoids::getBuildConfidence() const {
   return buildConfidence;
 }
 
-void KMedoids::setbuildConfidence(size_t new_buildConfidence) {
+void KMedoids::setBuildConfidence(size_t newBuildConfidence) {
   if (algorithm != "BanditPAM") {
     // TODO(@motiwari): Better error type
     throw "Cannot set buildConfidence when not using BanditPAM";
   }
-  buildConfidence = new_buildConfidence;
+  buildConfidence = newBuildConfidence;
 }
 
-size_t KMedoids::getswapConfidence() const {
+size_t KMedoids::getSwapConfidence() const {
   return swapConfidence;
 }
 
-void KMedoids::setswapConfidence(size_t new_swapConfidence) {
+void KMedoids::setSwapConfidence(size_t newSwapConfidence) {
   if (algorithm != "BanditPAM") {
     // TODO(@motiwari): Better error type
     throw "Cannot set buildConfidence when not using BanditPAM";
   }
-  swapConfidence = new_swapConfidence;
+  swapConfidence = newSwapConfidence;
 }
 
 void KMedoids::setLossFn(std::string loss) {
@@ -138,11 +138,11 @@ void KMedoids::setLossFn(std::string loss) {
   }
 }
 
-void KMedoids::calc_best_distances_swap(
+void KMedoids::calcBestDistancesSwap(
   const arma::mat& data,
   const arma::urowvec* medoid_indices,
-  arma::rowvec* best_distances,
-  arma::rowvec* second_distances,
+  arma::rowvec* bestDistances,
+  arma::rowvec* secondBestDistances,
   arma::urowvec* assignments) {
   #pragma omp parallel for
   for (size_t i = 0; i < data.n_cols; i++) {
@@ -158,12 +158,12 @@ void KMedoids::calc_best_distances_swap(
         second = cost;
       }
     }
-    (*best_distances)(i) = best;
-    (*second_distances)(i) = second;
+    (*bestDistances)(i) = best;
+    (*secondBestDistances)(i) = second;
   }
 }
 
-double KMedoids::calc_loss(
+double KMedoids::calcLoss(
   const arma::mat& data,
   const arma::urowvec* medoid_indices) {
   double total = 0;
@@ -171,7 +171,7 @@ double KMedoids::calc_loss(
   #pragma omp parallel for
   for (size_t i = 0; i < data.n_cols; i++) {
     double cost = std::numeric_limits<double>::infinity();
-    for (size_t k = 0; k < n_medoids; k++) {
+    for (size_t k = 0; k < nMedoids; k++) {
       double currCost = KMedoids::cachedLoss(data, i, (*medoid_indices)(k));
       if (currCost < cost) {
         cost = currCost;
@@ -186,13 +186,13 @@ double KMedoids::cachedLoss(
   const arma::mat& data,
   const size_t i,
   const size_t j,
-  const bool use_cache) {
-  if (!use_cache) {
+  const bool useCache) {
+  if (!useCache) {
     return (this->*lossFn)(data, i, j);
   }
 
   size_t n = data.n_cols;
-  size_t m = fmin(n, ceil(log10(data.n_cols) * cache_multiplier));
+  size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
 
   // test this is one of the early points in the permutation
   if (reindex.find(j) != reindex.end()) {

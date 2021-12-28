@@ -11,24 +11,23 @@
 #include <unordered_map>
 #include <string>
 
-
 namespace km {
 /**
  * @brief KMedoids class. Creates a KMedoids object that can be used to find the medoids
  * for a particular set of input data.
  *
- * @param n_medoids Number of medoids to use and clusters to create
+ * @param nMedoids Number of medoids to use and clusters to create
  * @param algorithm Algorithm used to find medoids: "BanditPAM", "PAM", or "FastPAM1"
- * @param max_iter The maximum number of SWAP steps the algorithm runs
+ * @param maxIter The maximum number of SWAP steps the algorithm runs
  * @param buildConfidence Parameter that affects the width of BUILD confidence intervals
  * @param swapConfidence Parameter that affects the width of SWAP confidence intervals
  */
 class KMedoids {
  public:
   KMedoids(
-    size_t n_medoids = 5,
+    size_t nMedoids = 5,
     const std::string& algorithm = "BanditPAM",
-    size_t max_iter = 1000,
+    size_t maxIter = 1000,
     size_t buildConfidence = 1000,
     size_t swapConfidence = 10000);
 
@@ -82,9 +81,9 @@ class KMedoids {
   /**
    * @brief Sets the number of medoids, k.
    * 
-   * @param new_num The new number, k, of medoids to use
+   * @param newNMedoids The new number, k, of medoids to use
    */
-  void setNMedoids(size_t new_num);
+  void setNMedoids(size_t newNMedoids);
 
   /**
    * @brief Returns the algorithm being used for k-medoids clustering.
@@ -96,9 +95,9 @@ class KMedoids {
   /**
    * @brief Sets the algorithm being used for k-medoids clustering.
    *
-   * @param new_alg The new algorithm to use: "BanditPAM", "PAM", or "FastPAM1"
+   * @param newAlgorithm The new algorithm to use: "BanditPAM", "PAM", or "FastPAM1"
    */
-  void setAlgorithm(const std::string& new_alg);
+  void setAlgorithm(const std::string& newAlgorithm);
 
   /**
    * @brief Returns the maximum number of SWAP steps during clustering.
@@ -111,9 +110,9 @@ class KMedoids {
   /**
    * @brief Sets the maximum number of SWAP steps during clustering.
    * 
-   * @param new_max New maximum number of iterations to use
+   * @param newMaxIter New maximum number of iterations to use
    */
-  void setMaxIter(size_t new_max);
+  void setMaxIter(size_t newMaxIter);
 
   /**
    * @brief Returns the buildConfidence, a parameter that affects the width
@@ -121,17 +120,17 @@ class KMedoids {
    * 
    * @returns The current value of buildConfidence
    */
-  size_t getbuildConfidence() const;
+  size_t getBuildConfidence() const;
 
   /**
    * @brief Sets the buildConfidence, a parameter that affects the width
    * of the confidence intervals during the BUILD step.
    *
-   * @param new_buildConfidence The new buildConfidence to use
+   * @param newBuildConfidence The new buildConfidence to use
    * 
    * @throws If attempting to set buildConfidence when not using BanditPAM
    */
-  void setbuildConfidence(size_t new_buildConfidence);
+  void setBuildConfidence(size_t newBuildConfidence);
 
   /**
    * @brief Returns the swapConfidence, a parameter that affects the width
@@ -139,17 +138,17 @@ class KMedoids {
    * 
    * @returns The current value of swapConfidence
    */
-  size_t getswapConfidence() const;
+  size_t getSwapConfidence() const;
 
   /**
    * @brief Sets the swapConfidence, a parameter that affects the width
    * of the confidence intervals during the BUILD step.
    *
-   * @param new_swapConfidence The new swapConfidence to use
+   * @param newSwapConfidence The new swapConfidence to use
    * 
    * @throws If attempting to set buildConfidence when not using BanditPAM
    */
-  void setswapConfidence(size_t new_swapConfidence);
+  void setSwapConfidence(size_t newSwapConfidence);
 
   /**
    * @brief Sets the loss function to use during clustering.
@@ -160,8 +159,8 @@ class KMedoids {
    */
   void setLossFn(std::string loss);
 
-  /// The cache will be of size cache_multiplier*nlogn
-  size_t cache_multiplier = 1000;
+  /// The cache will be of size cacheMultiplier*nlogn
+  size_t cacheMultiplier = 1000;
 
   /// The cache which stores pairwise distance computations
   float* cache;
@@ -170,16 +169,16 @@ class KMedoids {
   arma::uvec permutation;
 
   /// The index of our current position in the permutated points
-  size_t permutation_idx;
+  size_t permutationIdx;
 
   /// A map from permutation index of each point to its original index
   std::unordered_map<size_t, size_t> reindex;
 
   /// Used for debugging only to toggle a fixed permutation of points
-  bool use_perm = true;
+  bool usePerm = true;
 
   /// Used for debugging only to toggle use of the cache
-  bool use_cache_p = true;
+  bool useCacheP = true;
 
  protected:
   /**
@@ -188,17 +187,17 @@ class KMedoids {
    *
    * @param data Transposed data to cluster
    * @param medoidIndices Array of medoid indices corresponding to dataset entries
-   * @param best_distances Array of best distances from each point to previous set
+   * @param bestDistances Array of best distances from each point to previous set
    * of medoids
-   * @param second_best_distances Array of second smallest distances from each
+   * @param secondBestDistances Array of second smallest distances from each
    * point to previous set of medoids
    * @param assignments Assignments of datapoints to their closest medoid
    */
-  void calc_best_distances_swap(
+  void calcBestDistancesSwap(
     const arma::mat& data,
     const arma::urowvec* medoidIndices,
-    arma::rowvec* best_distances,
-    arma::rowvec* second_distances,
+    arma::rowvec* bestDistances,
+    arma::rowvec* secondBestDistances,
     arma::urowvec* assignments);
 
   /**
@@ -209,7 +208,7 @@ class KMedoids {
    * 
    * @returns The total (not average) loss
    */
-  double calc_loss(
+  double calcLoss(
     const arma::mat& data,
     const arma::urowvec* medoidIndices);
 
@@ -217,12 +216,12 @@ class KMedoids {
    * @brief A wrapper around the given loss function that caches distances
    * between the given points.
    * 
-   * NOTE: if you change use_cache, also change use_cache_p
+   * NOTE: if you change useCache, also change useCacheP
    * 
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
-   * @param use_cache Indices of the medoids in the dataset
+   * @param useCache Indices of the medoids in the dataset
    * 
    * @returns The distance between points i and j
    */
@@ -230,7 +229,7 @@ class KMedoids {
     const arma::mat& data,
     const size_t i,
     const size_t j,
-    const bool use_cache = true);
+    const bool useCache = true);
 
   /// If using an L_p loss, the value of p
   size_t lp;
@@ -303,13 +302,13 @@ class KMedoids {
   void checkAlgorithm(const std::string& algorithm) const;
 
   /// Number of medoids to use -- the "k" in k-medoids
-  size_t n_medoids;
+  size_t nMedoids;
 
   /// k-medoids algorithm to use
   std::string algorithm;
 
   /// Maximum number of SWAP steps to perform
-  size_t max_iter;
+  size_t maxIter;
 
   /// Data to be clustered
   arma::mat data;
@@ -318,10 +317,10 @@ class KMedoids {
   arma::urowvec labels;
 
   /// Indices of the medoids after BUILD step
-  arma::urowvec medoid_indices_build;
+  arma::urowvec medoidIndicesBuild;
 
   /// Indices of the medoids after clustering
-  arma::urowvec medoid_indices_final;
+  arma::urowvec medoidIndicesFinal;
 
   /// Function pointer to the loss function to use
   double (KMedoids::*lossFn)(
