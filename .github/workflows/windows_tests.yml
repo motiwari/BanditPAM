@@ -1,8 +1,8 @@
-name: MacOS - build package and run tests
+name: Windows - build package and run tests
 on: [push, pull_request]
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
@@ -13,12 +13,12 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install MacOS dependencies
+      - name: Install Windows dependencies
         run: |
           sudo rm -rf /Library/Developer/CommandLineTools
           xcode-select --install
           /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          brew install llvm lipomp armadillo
+          brew install llvm libomp armadillo
       - name: Install CPython from Anaconda # TODO: Need to update CMake?
         run: |
           curl -XGET https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh > Anaconda3-2021.11-MacOSX-x86_64.sh
