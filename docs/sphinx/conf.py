@@ -1,3 +1,6 @@
+import subprocess
+import glob
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -57,9 +60,9 @@ html_static_path = ['_static']
 
 # -- Bridge with Doxygen -------------------------------------------------
 
-import subprocess
 # TODO(@motiwari): Unsafe subprocess call, hacky copy-over of index.html
-subprocess.call('cd .. ; doxygen Doxyfile; cp html/*_README.html html/index.html', shell=True)
+readme_file = glob.glob("../html/*_README.html")[0]
+subprocess.call('cd .. ; \
+    doxygen Doxyfile; cp {} html/index.html'.format(readme_file), shell=True)
 
 html_extra_path = ['../html']
-
