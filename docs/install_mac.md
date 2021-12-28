@@ -1,7 +1,9 @@
 # Installation Tutorial for MacOS
 
+The following is a more detailed description of the installation process of BanditPAM for MacOS.
+
 ## Prerequisites
-The following is a more detailed description of the installation process of BanditPAM for MacOS. Please ensure the following dependencies are installed:
+Please ensure the following dependencies are installed:
  - The most recent version of the Xcode Command Line Tools: via `xcode-select --install`
  - Homebrew: via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
  - LLVM's `clang`: via `brew install llvm`
@@ -25,11 +27,11 @@ For the default Python2 installed on Mac, the `Apple clang` compiler is used; fo
 
 ## BanditPAM Installation
 
-This should successfully install the requirements needed for BanditPAM, which can then be installed via ONE of the following ways:
-1) Running `pip install BanditPAM`, OR
-2) Running `pip install .` in the home directory (`/BanditPAM`).
+BanditPAM can then be installed via one of the following ways:
+1) Running `pip install banditpam`, OR
+2) Running `pip install .` in the home directory (`/BanditPAM`)
 
 ## Known Issues 
-The following is a list of issues seen when installing BanditPAM. This is updated as further issues are encountered. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/
+The following is a list of issues seen when installing BanditPAM on MacOS. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/
 
 None.

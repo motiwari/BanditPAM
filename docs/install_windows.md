@@ -1,6 +1,6 @@
 # Installation Tutorial for Windows
 
-The following is a description of the installation process of BanditPAM for MacOS. This assumes that:
+The following is a description of the installation process of BanditPAM for Windows. This assumes that:
  - Python 3 is installed.
  - Some form of C++ tools (i.e. gcc, g++) are installed.
  - CMake is installed.
