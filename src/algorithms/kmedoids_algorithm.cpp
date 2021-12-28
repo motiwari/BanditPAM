@@ -16,21 +16,7 @@
 #include "pam.hpp"
 #include "banditpam.hpp"
 
-
 namespace km {
-/**
- *  \brief Class implementation for running KMedoids methods.
- *
- *  KMedoids class. Creates a KMedoids object that can be used to find the medoids
- *  for a particular set of input data.
- *
- *  @param n_medoids Number of medoids/clusters to create
- *  @param algorithm Algorithm used to find medoids; options are
- *    "BanditPAM", "PAM", or "FastPAM1"
- *  @param max_iter The maximum number of iterations the algorithm runs for
- *  @param buildConfidence Constant that affects the sensitivity of build confidence bounds
- *  @param swapConfidence Constant that affects the sensitiviy of swap confidence bounds
- */
 KMedoids::KMedoids(
   size_t n_medoids,
   const std::string& algorithm,
@@ -45,100 +31,91 @@ KMedoids::KMedoids(
   KMedoids::checkAlgorithm(algorithm);
 }
 
-/**
- *  \brief Destroys KMedoids object.
- *
- *  Destructor for the KMedoids class.
- */
-KMedoids::~KMedoids() {;}  // TODO(@motiwari): Need semicolons?
+KMedoids::~KMedoids() {}
 
-double KMedoids::cachedLoss(
-  const arma::mat& data,
-  const size_t i,
-  const size_t j,
-  const bool use_cache) {
-  if (!use_cache) {
-    return (this->*lossFn)(data, i, j);
+void KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
+  batchSize = fmin(input_data.n_rows, batchSize);
+
+  if (input_data.n_rows == 0) {
+    throw std::invalid_argument("Dataset is empty");
   }
 
-  size_t n = data.n_cols;
-  size_t m = fmin(n, ceil(log10(data.n_cols) * cache_multiplier));
-
-  // test this is one of the early points in the permutation
-  if (reindex.find(j) != reindex.end()) {
-    // TODO(@motiwari): Potential race condition with shearing?
-    // T1 begins to write to cache and then T2 access in the middle of write?
-    if (cache[(m*i) + reindex[j]] == -1) {
-      cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
-    }
-    return cache[m*i + reindex[j]];
-  }
-  return (this->*lossFn)(data, i, j);
-}
-
-/**
- *  \brief Checks whether algorithm input is valid
- *
- *  Checks whether the user's selected algorithm is a valid option.
- *
- *  @param algorithm Name of the algorithm input by the user.
- */
-void KMedoids::checkAlgorithm(const std::string& algorithm) const {
-  if ((algorithm != "BanditPAM") &&
-      (algorithm != "PAM") &&
-      (algorithm != "FastPAM1")) {
-    // TODO(@motiwari): Better error type
-    throw "unrecognized algorithm";
+  KMedoids::setLossFn(loss);
+  if (algorithm == "PAM") {
+    static_cast<PAM*>(this)->fit_pam(input_data);
+  } else if (algorithm == "BanditPAM") {
+    static_cast<BanditPAM*>(this)->fit_bpam(input_data);
+  } else if (algorithm == "FastPAM1") {
+    static_cast<FastPAM1*>(this)->fit_fastpam1(input_data);
   }
 }
 
-/**
- *  \brief Returns the build medoids
- *
- *  Returns the build medoids at the end of the BUILD step after KMedoids::fit
- *  has been called.
- */
 arma::urowvec KMedoids::getMedoidsBuild() const {
   return medoid_indices_build;
 }
 
-/**
- *  \brief Returns the final medoids
- *
- *  Returns the final medoids at the end of the SWAP step after KMedoids::fit
- *  has been called.
- */
 arma::urowvec KMedoids::getMedoidsFinal() const {
   return medoid_indices_final;
 }
 
-/**
- *  \brief Returns the medoid assignments for each datapoint
- *
- *  Returns the medoid each input datapoint is assigned to after KMedoids::fit
- *  has been called and the final medoids have been identified
- */
 arma::urowvec KMedoids::getLabels() const {
   return labels;
 }
 
-/**
- *  \brief Returns the number of swap steps
- *
- *  Returns the number of SWAP steps completed during the last call to
- *  KMedoids::fit
- */
 size_t KMedoids::getSteps() const {
   return steps;
 }
 
-/**
- *  \brief Sets the loss function
- *
- *  Sets the loss function used during KMedoids::fit
- *
- *  @param loss Loss function to be used e.g. L2
- */
+size_t KMedoids::getNMedoids() const {
+  return n_medoids;
+}
+
+void KMedoids::setNMedoids(size_t new_num) {
+  n_medoids = new_num;
+}
+
+std::string KMedoids::getAlgorithm() const {
+  return algorithm;
+}
+
+void KMedoids::setAlgorithm(const std::string& new_alg) {
+  algorithm = new_alg;
+  KMedoids::checkAlgorithm(algorithm);
+}
+
+size_t KMedoids::getMaxIter() const {
+  return max_iter;
+}
+
+void KMedoids::setMaxIter(size_t new_max) {
+  max_iter = new_max;
+}
+
+
+size_t KMedoids::getbuildConfidence() const {
+  return buildConfidence;
+}
+
+void KMedoids::setbuildConfidence(size_t new_buildConfidence) {
+  if (algorithm != "BanditPAM") {
+    // TODO(@motiwari): Better error type
+    throw "Cannot set buildConfidence when not using BanditPAM";
+  }
+  buildConfidence = new_buildConfidence;
+}
+
+size_t KMedoids::getswapConfidence() const {
+  return swapConfidence;
+}
+
+void KMedoids::setswapConfidence(size_t new_swapConfidence) {
+  if (algorithm != "BanditPAM") {
+    // TODO(@motiwari): Better error type
+    throw "Cannot set buildConfidence when not using BanditPAM";
+  }
+  swapConfidence = new_swapConfidence;
+}
+
 void KMedoids::setLossFn(std::string loss) {
   if (std::regex_match(loss, std::regex("L\\d*"))) {
     loss = loss.substr(1);
@@ -161,158 +138,6 @@ void KMedoids::setLossFn(std::string loss) {
   }
 }
 
-/**
- *  \brief Returns the number of medoids
- *
- *  Returns the number of medoids to be identified during KMedoids::fit
- */
-size_t KMedoids::getNMedoids() const {
-  return n_medoids;
-}
-
-/**
- *  \brief Sets the number of medoids
- *
- *  Sets the number of medoids to be identified during KMedoids::fit
- */
-void KMedoids::setNMedoids(size_t new_num) {
-  n_medoids = new_num;
-}
-
-/**
- *  \brief Returns the algorithm for KMedoids
- *
- *  Returns the algorithm used for identifying the medoids during KMedoids::fit
- */
-std::string KMedoids::getAlgorithm() const {
-  return algorithm;
-}
-
-/**
- *  \brief Sets the algorithm for KMedoids
- *
- *  Sets the algorithm used for identifying the medoids during KMedoids::fit
- *
- *  @param new_alg New algorithm to use
- */
-void KMedoids::setAlgorithm(const std::string& new_alg) {
-  algorithm = new_alg;
-  KMedoids::checkAlgorithm(algorithm);
-}
-
-/**
- *  \brief Returns the maximum number of iterations for KMedoids
- *
- *  Returns the maximum number of iterations that can be run during
- *  KMedoids::fit
- */
-size_t KMedoids::getMaxIter() const {
-  return max_iter;
-}
-
-/**
- *  \brief Sets the maximum number of iterations for KMedoids
- *
- *  Sets the maximum number of iterations that can be run during KMedoids::fit
- *
- *  @param new_max New maximum number of iterations to use
- */
-void KMedoids::setMaxIter(size_t new_max) {
-  max_iter = new_max;
-}
-
-/**
- *  \brief Returns the constant buildConfidence
- *
- *  Returns the constant that affects the sensitivity of build confidence bounds
- *  that can be run during KMedoids::fit
- */
-size_t KMedoids::getbuildConfidence() const {
-  return buildConfidence;
-}
-
-/**
- *  \brief Sets the constant buildConfidence
- *
- *  Sets the constant that affects the sensitivity of build confidence bounds
- *  that can be run during KMedoids::fit
- *
- *  @param new_buildConfidence New buildConfidence
- */
-void KMedoids::setbuildConfidence(size_t new_buildConfidence) {
-  if (algorithm != "BanditPAM") {
-    // TODO(@motiwari): Better error type
-    throw "Cannot set buildConfidence when not using BanditPAM";
-  }
-  buildConfidence = new_buildConfidence;
-}
-
-/**
- *  \brief Returns the constant swapConfidence
- *
- *  Returns the constant that affects the sensitivity of swap confidence bounds
- *  that can be run during KMedoids::fit
- */
-size_t KMedoids::getswapConfidence() const {
-  return swapConfidence;
-}
-
-/**
- *  \brief Sets the constant swapConfidence
- *
- *  Sets the constant that affects the sensitivity of swap confidence bounds
- *  that can be run during KMedoids::fit
- *
- *  @param new_swapConfidence New swapConfidence
- */
-void KMedoids::setswapConfidence(size_t new_swapConfidence) {
-  if (algorithm != "BanditPAM") {
-    // TODO(@motiwari): Better error type
-    throw "Cannot set buildConfidence when not using BanditPAM";
-  }
-  swapConfidence = new_swapConfidence;
-}
-
-/**
- * \brief Finds medoids for the input data under identified loss function
- *
- * Primary function of the KMedoids class. Identifies medoids for input dataset
- * after both the SWAP and BUILD steps
- *
- * @param input_data Input data to find the medoids of
- * @param loss The loss function used during medoid computation
- */
-void KMedoids::fit(const arma::mat& input_data, const std::string& loss) {
-  batchSize = fmin(input_data.n_rows, batchSize);
-
-  if (input_data.n_rows == 0) {
-    throw std::invalid_argument("Dataset is empty");
-  }
-
-  KMedoids::setLossFn(loss);
-  if (algorithm == "PAM") {
-    static_cast<PAM*>(this)->fit_pam(input_data);
-  } else if (algorithm == "BanditPAM") {
-    static_cast<BanditPAM*>(this)->fit_bpam(input_data);
-  } else if (algorithm == "FastPAM1") {
-    static_cast<FastPAM1*>(this)->fit_fastpam1(input_data);
-  }
-}
-
-/**
- * \brief Calculates distances in swap step
- *
- * Calculates the best and second best distances for each datapoint to one of
- * the medoids in the current medoid set.
- *
- * @param data Transposed input data to find the medoids of
- * @param medoid_indices Array of medoid indices corresponding to dataset entries
- * @param best_distances Array of best distances from each point to previous set
- * of medoids
- * @param second_best_distances Array of second smallest distances from each
- * point to previous set of medoids
- * @param assignments Assignments of datapoints to their closest medoid
- */
 void KMedoids::calc_best_distances_swap(
   const arma::mat& data,
   const arma::urowvec* medoid_indices,
@@ -338,15 +163,6 @@ void KMedoids::calc_best_distances_swap(
   }
 }
 
-/**
- * \brief Calculate loss for medoids
- *
- * Calculates the loss under the previously identified loss function of the
- * medoid indices.
- *
- * @param data Transposed input data to find the medoids of
- * @param medoid_indices Indices of the medoids in the dataset.
- */
 double KMedoids::calc_loss(
   const arma::mat& data,
   const arma::urowvec* medoid_indices) {
@@ -366,34 +182,52 @@ double KMedoids::calc_loss(
   return total;
 }
 
-// Loss and miscellaneous functions
+double KMedoids::cachedLoss(
+  const arma::mat& data,
+  const size_t i,
+  const size_t j,
+  const bool use_cache) {
+  if (!use_cache) {
+    return (this->*lossFn)(data, i, j);
+  }
 
-/**
- * \brief LP loss
- *
- * Calculates the LP loss between the datapoints at index i and j of the dataset
- *
- * @param data Transposed input data to find the medoids of
- * @param i Index of first datapoint
- * @param j Index of second datapoint
- */
+  size_t n = data.n_cols;
+  size_t m = fmin(n, ceil(log10(data.n_cols) * cache_multiplier));
+
+  // test this is one of the early points in the permutation
+  if (reindex.find(j) != reindex.end()) {
+    // TODO(@motiwari): Potential race condition with shearing?
+    // T1 begins to write to cache and then T2 access in the middle of write?
+    if (cache[(m*i) + reindex[j]] == -1) {
+      cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
+    }
+    return cache[m*i + reindex[j]];
+  }
+  return (this->*lossFn)(data, i, j);
+}
+
+void KMedoids::checkAlgorithm(const std::string& algorithm) const {
+  if ((algorithm != "BanditPAM") &&
+      (algorithm != "PAM") &&
+      (algorithm != "FastPAM1")) {
+    // TODO(@motiwari): Better error type
+    throw "unrecognized algorithm";
+  }
+}
+
 double KMedoids::LP(const arma::mat& data,
   const size_t i,
   const size_t j) const {
   return arma::norm(data.col(i) - data.col(j), lp);
 }
 
+double KMedoids::LINF(
+  const arma::mat& data,
+  const size_t i,
+  const size_t j) const {
+  return arma::max(arma::abs(data.col(i) - data.col(j)));
+}
 
-/**
- * \brief cos loss
- *
- * Calculates the cosine loss between the datapoints at index i and j of the
- * dataset
- *
- * @param data Transposed input data to find the medoids of
- * @param i Index of first datapoint
- * @param j Index of second datapoint
- */
 double KMedoids::cos(const arma::mat& data,
   const size_t i,
   const size_t j) const {
@@ -402,36 +236,9 @@ double KMedoids::cos(const arma::mat& data,
     data.col(j)) / (arma::norm(data.col(i))* arma::norm(data.col(j)));
 }
 
-/**
- * \brief Manhattan loss
- *
- * Calculates the Manhattan loss between the datapoints at index i and j of the
- * dataset
- *
- * @param data Transposed input data to find the medoids of
- * @param i Index of first datapoint
- * @param j Index of second datapoint
- */
 double KMedoids::manhattan(const arma::mat& data,
   const size_t i,
   const size_t j) const {
   return arma::accu(arma::abs(data.col(i) - data.col(j)));
-}
-
-/**
- * \brief L_INFINITY loss
- *
- * Calculates the Manhattan loss between the datapoints at index i and j of the
- * dataset
- *
- * @param data Transposed input data to find the medoids of
- * @param i Index of first datapoint
- * @param j Index of second datapoint
- */
-double KMedoids::LINF(
-  const arma::mat& data,
-  const size_t i,
-  const size_t j) const {
-  return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
 }  // namespace km

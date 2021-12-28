@@ -17,23 +17,23 @@ namespace km {
 class FastPAM1 : public km::KMedoids {
  public:
   /**
-  * @brief Runs the FastPAM1 algorithm to identify a dataset's medoids.
-  *
-  * @param input_data Input data to cluster
-  */
+   * @brief Runs the FastPAM1 algorithm to identify a dataset's medoids.
+   *
+   * @param input_data Input data to cluster
+   */
   void fit_fastpam1(const arma::mat& input_data);
 
   /**
-  * @brief Performs the BUILD step of FastPAM1.
-  * 
-  * Loops over all datapoint and checks each's distance to every other
-  * datapoint in the dataset, then adds the point with the lowest overall
-  * loss to the set of medoids.
-  *
-  * @param data Transposed input data to cluster
-  * @param medoid_indices Array of medoids that is modified in place
+   * @brief Performs the BUILD step of FastPAM1.
+   * 
+   * Loops over all datapoint and checks each's distance to every other
+   * datapoint in the dataset, then adds the point with the lowest overall
+   * loss to the set of medoids.
+   *
+   * @param data Transposed input data to cluster
+   * @param medoid_indices Array of medoids that is modified in place
    * as medoids are identified
-  */
+   */
   void build_fastpam1(
     const arma::mat& data,
     arma::urowvec* medoid_indices);
