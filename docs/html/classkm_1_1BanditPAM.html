@@ -365,10 +365,11 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
   <table class="params">
     <tr><td class="paramname">data</td><td>Transposed input data to cluster </td></tr>
     <tr><td class="paramname">best_distances</td><td>Contains best distances from each point to medoids </td></tr>
-    <tr><td class="paramname">use_aboslute</td><td>Flag to use the absolute distance to each arm instead of improvement over prior loss; necessary for the first BUILD step </td></tr>
+    <tr><td class="paramname">use_aboslute</td><td>Flag to use the absolute distance to each arm instead of improvement over prior loss; necessary for the first BUILD step</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Estimate of each arm's standard deviation </dd></dl>
 
 </div>
 </div>
@@ -423,10 +424,11 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
     <tr><td class="paramname">target</td><td>Candidate datapoints to consider adding as medoids </td></tr>
     <tr><td class="paramname">best_distances</td><td>Contains best distances from each point to medoids </td></tr>
     <tr><td class="paramname">use_aboslute</td><td>Flag to use the absolute distance to each arm instead of improvement over prior loss; necessary for the first BUILD step </td></tr>
-    <tr><td class="paramname">exact</td><td>0 if using standard batch size; size of dataset otherwise </td></tr>
+    <tr><td class="paramname">exact</td><td>0 if using standard batch size; size of dataset otherwise</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Estimate of each arm's change in loss </dd></dl>
 
 </div>
 </div>
@@ -552,10 +554,11 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
     <tr><td class="paramname">data</td><td>Transposed input data to cluster </td></tr>
     <tr><td class="paramname">best_distances</td><td>Contains best distances from each point to medoids </td></tr>
     <tr><td class="paramname">second_best_distances</td><td>Contains second best distances from each point to medoids </td></tr>
-    <tr><td class="paramname">assignments</td><td>Assignments of datapoints to their closest medoid </td></tr>
+    <tr><td class="paramname">assignments</td><td>Assignments of datapoints to their closest medoid</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Estimate of each arm's standard deviation </dd></dl>
 
 </div>
 </div>
@@ -625,10 +628,11 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>batchSize</b> = 100
     <tr><td class="paramname">best_distances</td><td>Contains best distances from each point to medoids </td></tr>
     <tr><td class="paramname">second_best_distances</td><td>Contains second best distances from each point to medoids </td></tr>
     <tr><td class="paramname">assignments</td><td>Assignments of datapoints to their closest medoid </td></tr>
-    <tr><td class="paramname">exact</td><td>0 if using standard batch size; size of dataset otherwise </td></tr>
+    <tr><td class="paramname">exact</td><td>0 if using standard batch size; size of dataset otherwise</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>Estimate of each arm's change in loss </dd></dl>
 
 </div>
 </div>

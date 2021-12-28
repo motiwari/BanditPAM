@@ -31,6 +31,8 @@ class BanditPAM : public km::KMedoids {
    * @param best_distances Contains best distances from each point to medoids
    * @param use_aboslute Flag to use the absolute distance to each arm instead
    * of improvement over prior loss; necessary for the first BUILD step
+   * 
+   * @returns Estimate of each arm's standard deviation
    */
   arma::rowvec build_sigma(
     const arma::mat& data,
@@ -46,6 +48,8 @@ class BanditPAM : public km::KMedoids {
    * @param use_aboslute Flag to use the absolute distance to each arm instead
    * of improvement over prior loss; necessary for the first BUILD step
    * @param exact 0 if using standard batch size; size of dataset otherwise
+   * 
+   * @returns Estimate of each arm's change in loss
    */
   arma::rowvec build_target(
     const arma::mat& data,
@@ -81,6 +85,8 @@ class BanditPAM : public km::KMedoids {
    * @param best_distances Contains best distances from each point to medoids
    * @param second_best_distances Contains second best distances from each point to medoids
    * @param assignments Assignments of datapoints to their closest medoid
+   * 
+   * @returns Estimate of each arm's standard deviation
    */
   arma::mat swap_sigma(
     const arma::mat& data,
@@ -102,6 +108,8 @@ class BanditPAM : public km::KMedoids {
    * @param second_best_distances Contains second best distances from each point to medoids
    * @param assignments Assignments of datapoints to their closest medoid
    * @param exact 0 if using standard batch size; size of dataset otherwise
+   * 
+   * @returns Estimate of each arm's change in loss
    */
   arma::vec swap_target(
     const arma::mat& data,

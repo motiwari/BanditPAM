@@ -79,9 +79,12 @@ Empirical estimation of standard deviation of arm returns in the BUILD step.
 \hline
 {\em best\+\_\+distances} & Contains best distances from each point to medoids \\
 \hline
-{\em use\+\_\+aboslute} & Flag to use the absolute distance to each arm instead of improvement over prior loss; necessary for the first BUILD step \\
+{\em use\+\_\+aboslute} & Flag to use the absolute distance to each arm instead of improvement over prior loss; necessary for the first BUILD step\\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Estimate of each arm\textquotesingle{}s standard deviation 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classkm_1_1BanditPAM_ab90f5c74352252ad2cdd339a2b485339}\label{classkm_1_1BanditPAM_ab90f5c74352252ad2cdd339a2b485339}} 
 \index{km::BanditPAM@{km::BanditPAM}!build\_target@{build\_target}}
 \index{build\_target@{build\_target}!km::BanditPAM@{km::BanditPAM}}
@@ -102,9 +105,12 @@ Estimates the mean reward for each arm in the BUILD steps.
 \hline
 {\em use\+\_\+aboslute} & Flag to use the absolute distance to each arm instead of improvement over prior loss; necessary for the first BUILD step \\
 \hline
-{\em exact} & 0 if using standard batch size; size of dataset otherwise \\
+{\em exact} & 0 if using standard batch size; size of dataset otherwise\\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Estimate of each arm\textquotesingle{}s change in loss 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classkm_1_1BanditPAM_ad4a60782fdc651be5936edb43d3f66b9}\label{classkm_1_1BanditPAM_ad4a60782fdc651be5936edb43d3f66b9}} 
 \index{km::BanditPAM@{km::BanditPAM}!fit\_bpam@{fit\_bpam}}
 \index{fit\_bpam@{fit\_bpam}!km::BanditPAM@{km::BanditPAM}}
@@ -161,9 +167,12 @@ Empirical estimation of standard deviation of arm returns in the SWAP step.
 \hline
 {\em second\+\_\+best\+\_\+distances} & Contains second best distances from each point to medoids \\
 \hline
-{\em assignments} & Assignments of datapoints to their closest medoid \\
+{\em assignments} & Assignments of datapoints to their closest medoid\\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Estimate of each arm\textquotesingle{}s standard deviation 
+\end{DoxyReturn}
 \mbox{\Hypertarget{classkm_1_1BanditPAM_a1a7cda08db92b4d3e6b505862858db6f}\label{classkm_1_1BanditPAM_a1a7cda08db92b4d3e6b505862858db6f}} 
 \index{km::BanditPAM@{km::BanditPAM}!swap\_target@{swap\_target}}
 \index{swap\_target@{swap\_target}!km::BanditPAM@{km::BanditPAM}}
@@ -190,9 +199,12 @@ Estimates the mean reward (or loss) for each arm in the identified targets in th
 \hline
 {\em assignments} & Assignments of datapoints to their closest medoid \\
 \hline
-{\em exact} & 0 if using standard batch size; size of dataset otherwise \\
+{\em exact} & 0 if using standard batch size; size of dataset otherwise\\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Estimate of each arm\textquotesingle{}s change in loss 
+\end{DoxyReturn}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
