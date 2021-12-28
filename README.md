@@ -19,11 +19,14 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 # Requirements
 # TL;DR run `pip3 install banditpam` and jump to the [examples](https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
 
-If you have any issues, please see the documents below and file a Github issue if you have additional trouble.
+If you have any difficulties, please see the [platform-specific guides]() and file a Github issue if you have additional trouble.
 
-* [Installation on MacOS](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md)
-* [Installation on Linux](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md)
-* [Installation on Windows](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md)
+## Further Reading
+* [Full paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf)
+* [3-minute summary video](https://crossminds.ai/video/bandit-pam-almost-linear-time-k-medoids-clustering-via-multi-armed-bandits-5fb88782b0a3f6412973b646/)
+* [Blog post](https://ai.stanford.edu/blog/banditpam/)
+* [Code](https://github.com/ThrunGroup/BanditPAM)
+* [PyPI](https://pypi.org/project/banditpam/)
 
 # Python Quickstart
 
@@ -130,7 +133,7 @@ which will start a Docker instance with the necessary dependencies. Then:
 
 This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
-### Option 2: Installing Requirements and Building Directly
+### Option 2: Installing requirements and building directly
 Building this repository requires four external requirements:
 * Cmake >= 3.17, https://cmake.org/download/
 * Armadillo >= 10.5.3, http://arma.sourceforge.net/download.html
@@ -144,6 +147,7 @@ If installing these requirements from source, one can generally use the followin
 /BanditPAM/headers/carma/build$ cmake .. && make && sudo make install
 ```
 
+####  Platform-specific installation guides
 Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:
 
 ```
