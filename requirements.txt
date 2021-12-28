@@ -2,3 +2,4 @@ pandas>=0.24.1
 pybind11>=2.5.0
 numpy>=1.16.2
 matplotlib>=3.2.1
+myst-parser>=0.16.0
