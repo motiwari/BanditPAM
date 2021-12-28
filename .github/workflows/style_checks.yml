@@ -1,5 +1,5 @@
 name: Run style checks
-on: [pull_request] #TODO: add push
+on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest

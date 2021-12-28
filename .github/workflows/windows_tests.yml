@@ -1,5 +1,5 @@
 name: Windows - build package and run tests
-on: [push, pull_request]
+on: []
 jobs:
   build:
     runs-on: windows-latest
