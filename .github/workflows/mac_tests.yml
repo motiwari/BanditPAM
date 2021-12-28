@@ -15,9 +15,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install MacOS dependencies
         run: |
-          sudo rm -rf /Library/Developer/CommandLineTools
+          rm -rf /Library/Developer/CommandLineTools
+          echo "HERE1"
           xcode-select --install
+          echo "HERE2"
           sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          echo "HERE3"
           sudo brew install llvm lipomp armadillo
       - name: Install CPython from Anaconda
         run: |
