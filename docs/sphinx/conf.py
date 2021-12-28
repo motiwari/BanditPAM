@@ -65,4 +65,4 @@ subprocess.call('cd .. ; doxygen Doxyfile', shell=True)
 readme_file = glob.glob("../html/*_README.html")[0]
 subprocess.call('cp {} ../html/index.html'.format(readme_file), shell=True)
 
-html_extra_path = ['../html']
+html_extra_path = ['../html', 'html']
