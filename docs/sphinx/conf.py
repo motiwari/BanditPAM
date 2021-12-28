@@ -62,9 +62,7 @@ html_static_path = ['_static']
 
 # TODO(@motiwari): Unsafe subprocess calls, hacky copy-over of index.html
 subprocess.call('cd .. ; doxygen Doxyfile', shell=True) 
-print("Searching for readme file")
 readme_file = glob.glob("../html/*_README.html")[0]
-print("Readme file found:", readme_file)
 subprocess.call('cp {} ../html/index.html'.format(readme_file), shell=True)
 
 html_extra_path = ['../html']
