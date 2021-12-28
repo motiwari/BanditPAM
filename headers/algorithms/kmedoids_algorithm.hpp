@@ -39,6 +39,8 @@ class KMedoids {
    *
    * @param inputData Input data to cluster
    * @param loss The loss function used during medoid computation
+   * 
+   * @throws if the input data is empty.
    */
   void fit(const arma::mat& inputData, const std::string& loss);
 
@@ -126,6 +128,8 @@ class KMedoids {
    * of the confidence intervals during the BUILD step.
    *
    * @param new_buildConfidence The new buildConfidence to use
+   * 
+   * @throws If attempting to set buildConfidence when not using BanditPAM
    */
   void setbuildConfidence(size_t new_buildConfidence);
 
@@ -142,6 +146,8 @@ class KMedoids {
    * of the confidence intervals during the BUILD step.
    *
    * @param new_swapConfidence The new swapConfidence to use
+   * 
+   * @throws If attempting to set buildConfidence when not using BanditPAM
    */
   void setswapConfidence(size_t new_swapConfidence);
 
@@ -149,6 +155,8 @@ class KMedoids {
    * @brief Sets the loss function to use during clustering.
    *
    * @param loss Loss function to be used e.g. "L2"
+   * 
+   * @throws If the loss function is unrecognized
    */
   void setLossFn(std::string loss);
 
@@ -198,6 +206,8 @@ class KMedoids {
    * 
    * @param data Transposed data to cluster
    * @param medoidIndices Indices of the medoids in the dataset
+   * 
+   * @returns The total (not average) loss
    */
   double calc_loss(
     const arma::mat& data,
@@ -214,6 +224,8 @@ class KMedoids {
    * @param i Index of first datapoint
    * @param j Index of second datapoint
    * @param use_cache Indices of the medoids in the dataset
+   * 
+   * @returns The distance between points i and j
    */
   double cachedLoss(
     const arma::mat& data,
@@ -232,6 +244,8 @@ class KMedoids {
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
+   * 
+   * @returns The Lp distance between points i and j
    */
   double LP(
     const arma::mat& data,
@@ -245,6 +259,8 @@ class KMedoids {
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
+   * 
+   * @returns The L-infinity distance between points i and j
    */
   double LINF(const arma::mat& data,
     const size_t i,
@@ -257,6 +273,8 @@ class KMedoids {
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
+   * 
+   * @returns The cosine distance between points i and j
    */
   double cos(const arma::mat& data,
     const size_t i,
@@ -269,6 +287,8 @@ class KMedoids {
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
+   * 
+   * @returns The Manhattan distance between points i and j
    */
   double manhattan(const arma::mat& data,
     const size_t i,
@@ -279,6 +299,8 @@ class KMedoids {
    * algorithm must be either "BanditPAM", "PAM", or "FastPAM1". 
    *
    * @param algorithm Name of the k-medoids algorithm to use
+   * 
+   * @throws If the algorithm is invalid.
    */
   void checkAlgorithm(const std::string& algorithm) const;
 

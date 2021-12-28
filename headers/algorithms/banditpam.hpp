@@ -97,9 +97,6 @@ class BanditPAM : public km::KMedoids {
   /**
    * @brief Estimates the mean reward for each arm in SWAP step.
    *
-   * Estimates the mean reward (or loss) for each arm in the identified targets
-   * in the SWAP step and returns a list of the estimated reward.
-   *
    * @param data Transposed input data to cluster
    * @param medoidIndices Array of medoids that is modified in place
    * as medoids are swapped in and out
