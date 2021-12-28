@@ -5,7 +5,7 @@ The following is a more detailed description of the installation process of Band
 ## Prerequisites
 Please ensure the following dependencies are installed:
  - A package manager like `yum` or `apt`
- - A C++ compiler; we recommend LLVM's `clang`: via the [LLVM installation instructions](https://apt.llvm.org/)
+ - A C++ compiler; we recommend LLVM's `clang`: via the [LLVM installation instructions](https://clang.llvm.org/get_started.html)
  - `CMake`: via the [CMake installation instructions](https://cmake.org/install/)
  - OpenMP: via `sudo apt install libomp-dev` or `sudo yum install libomp-dev`
  - Armadillo: via the [Armadillo installation instructions](http://arma.sourceforge.net/download.html)
