@@ -26,8 +26,8 @@ For the default Python2 installed on Mac, the `Apple clang` compiler is used; fo
 ## BanditPAM Installation
 
 This should successfully install the requirements needed for BanditPAM, which can then be installed via ONE of the following ways:
-1) Running `pip3 install BanditPAM`, OR
-2) Running `pip3 install .` in the home directory (`/BanditPAM`).
+1) Running `pip install BanditPAM`, OR
+2) Running `pip install .` in the home directory (`/BanditPAM`).
 
 ## Known Issues 
 The following is a list of issues seen when installing BanditPAM. This is updated as further issues are encountered. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/

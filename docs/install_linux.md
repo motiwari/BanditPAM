@@ -10,11 +10,11 @@ The following is a description of the installation process of BanditPAM for MacO
 First, it's necessary to install the prerequisites for the package. Please do the following:
  - Run `sudo apt install libomp-dev` or `sudo yum install`.
  - Follow the installation notes at the [Armadillo install page](http://arma.sourceforge.net/download.html)
- - Run `pip3 install -r requirements.txt` in the main BanditPAM directory; the core library that is needed is `pybind11`.
+ - Run `pip install -r requirements.txt` in the main BanditPAM directory; the core library that is needed is `pybind11`.
 
 This should successfully install the requirements needed for BanditPAM, which can then be installed in either of the following ways:
- - Running `pip3 install BanditPAM`.
- - Running `pip3 install .` in the home directory.
+ - Running `pip install BanditPAM`.
+ - Running `pip install .` in the home directory.
  - Running `python3 setup.py install` in the home directory.
 
 ## Known Issues 

@@ -4,7 +4,7 @@ BanditPAM: A state-of-the-art, high-performance k-medoids algorithm
 Quickstart
 ----------
 
-Run `pip3 install banditpam` and then check out the `examples <https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model>`_.
+Run `pip install banditpam` and then check out the `examples <https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model>`_.
 
 
 Introduction
