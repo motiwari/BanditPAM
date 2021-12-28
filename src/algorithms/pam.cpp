@@ -12,7 +12,7 @@
 #include <unordered_map>
 
 namespace km {
-void PAM::fitPAM(const arma::mat& inputData) {
+void PAM::fitPAM(const arma::Mat<float>& inputData) {
   data = inputData;
   data = arma::trans(data);
   arma::urowvec medoid_indices(nMedoids);
@@ -34,19 +34,19 @@ void PAM::fitPAM(const arma::mat& inputData) {
 }
 
 void PAM::buildPAM(
-  const arma::mat& data,
+  const arma::Mat<float>& data,
   arma::urowvec* medoid_indices) {
   size_t N = data.n_cols;
   arma::rowvec estimates(N, arma::fill::zeros);
   arma::rowvec bestDistances(N);
-  bestDistances.fill(std::numeric_limits<double>::infinity());
+  bestDistances.fill(std::numeric_limits<float>::infinity());
   for (size_t k = 0; k < nMedoids; k++) {
-    double minDistance = std::numeric_limits<double>::infinity();
+    float minDistance = std::numeric_limits<float>::infinity();
     size_t best = 0;
     for (size_t i = 0; i < data.n_cols; i++) {
-      double total = 0;
+      float total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
-        double cost = KMedoids::cachedLoss(data, i, j);
+        float cost = KMedoids::cachedLoss(data, i, j);
         // compares this with the cached best distance
         if (bestDistances(j) < cost) {
           cost = bestDistances(j);
@@ -63,7 +63,7 @@ void PAM::buildPAM(
 
     // update the medoid assignment and best_distance for this datapoint
     for (size_t l = 0; l < N; l++) {
-      double cost = KMedoids::cachedLoss(data, l, (*medoid_indices)(k));
+      float cost = KMedoids::cachedLoss(data, l, (*medoid_indices)(k));
       if (cost < bestDistances(l)) {
         bestDistances(l) = cost;
       }
@@ -72,10 +72,10 @@ void PAM::buildPAM(
 }
 
 void PAM::swapPAM(
-  const arma::mat& data,
+  const arma::Mat<float>& data,
   arma::urowvec* medoid_indices,
   arma::urowvec* assignments) {
-  double minDistance = std::numeric_limits<double>::infinity();
+  float minDistance = std::numeric_limits<float>::infinity();
   size_t best = 0;
   size_t medoid_to_swap = 0;
   size_t N = data.n_cols;
@@ -91,10 +91,10 @@ void PAM::swapPAM(
 
   for (size_t k = 0; k < nMedoids; k++) {
     for (size_t i = 0; i < data.n_cols; i++) {
-      double total = 0;
+      float total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // compute distance between base point and every other datapoint
-        double cost = KMedoids::cachedLoss(data, i, j);
+        float cost = KMedoids::cachedLoss(data, i, j);
         // if x_j is NOT assigned to k: compares this with
         //   the cached best distance
         // if x_j is assigned to k: compares this with

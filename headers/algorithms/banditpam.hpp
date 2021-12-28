@@ -21,7 +21,7 @@ class BanditPAM : public km::KMedoids {
    * 
    * @param inputData Input data to cluster
    */
-  void fitBanditPAM(const arma::mat& inputData);
+  void fitBanditPAM(const arma::Mat<float>& inputData);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -35,7 +35,7 @@ class BanditPAM : public km::KMedoids {
    * @returns Estimate of each arm's standard deviation
    */
   arma::rowvec buildSigma(
-    const arma::mat& data,
+    const arma::Mat<float>& data,
     const arma::rowvec& bestDistances,
     const bool useAbsolute);
 
@@ -52,7 +52,7 @@ class BanditPAM : public km::KMedoids {
    * @returns Estimate of each arm's change in loss
    */
   arma::rowvec buildTarget(
-    const arma::mat& data,
+    const arma::Mat<float>& data,
     const arma::uvec* target,
     const arma::rowvec* bestDistances,
     const bool useAbsolute,
@@ -73,9 +73,9 @@ class BanditPAM : public km::KMedoids {
    * @param medoids Matrix that contains the coordinates of each medoid
    */
   void build(
-    const arma::mat& data,
+    const arma::Mat<float>& data,
     arma::urowvec* medoidIndices,
-    arma::mat* medoids);
+    arma::Mat<float>* medoids);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -88,8 +88,8 @@ class BanditPAM : public km::KMedoids {
    * 
    * @returns Estimate of each arm's standard deviation
    */
-  arma::mat swapSigma(
-    const arma::mat& data,
+  arma::Mat<float> swapSigma(
+    const arma::Mat<float>& data,
     const arma::rowvec* bestDistances,
     const arma::rowvec* secondBestDistances,
     const arma::urowvec* assignments);
@@ -108,8 +108,8 @@ class BanditPAM : public km::KMedoids {
    * 
    * @returns Estimate of each arm's change in loss
    */
-  arma::vec swapTarget(
-    const arma::mat& data,
+  arma::Col<float> swapTarget(
+    const arma::Mat<float>& data,
     const arma::urowvec* medoidIndices,
     const arma::uvec* targets,
     const arma::rowvec* bestDistances,
@@ -134,9 +134,9 @@ class BanditPAM : public km::KMedoids {
   * @param assignments Array of containing the medoid each point is closest to
   */
   void swap(
-    const arma::mat& data,
+    const arma::Mat<float>& data,
     arma::urowvec* medoidIndices,
-    arma::mat* medoids,
+    arma::Mat<float>* medoids,
     arma::urowvec* assignments);
 };
 }  // namespace km

@@ -28,7 +28,7 @@ class KMedoidsWrapper : public km::KMedoids {
    * @param k The number of medoids to compute
    */
   void fitPython(
-    const pybind11::array_t<double>& inputData,
+    const pybind11::array_t<float>& inputData,
     const std::string& loss,
     pybind11::kwargs kw);
 

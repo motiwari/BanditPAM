@@ -13,7 +13,7 @@
 #include <cmath>
 
 namespace km {
-void BanditPAM::fitBanditPAM(const arma::mat& inputData) {
+void BanditPAM::fitBanditPAM(const arma::Mat<float>& inputData) {
   data = inputData;
   data = arma::trans(data);
 
@@ -36,7 +36,7 @@ void BanditPAM::fitBanditPAM(const arma::mat& inputData) {
     }
   }
 
-  arma::mat medoids_mat(data.n_rows, nMedoids);
+  arma::Mat<float> medoids_mat(data.n_rows, nMedoids);
   arma::urowvec medoid_indices(nMedoids);
   BanditPAM::build(data, &medoid_indices, &medoids_mat);
   steps = 0;
@@ -49,7 +49,7 @@ void BanditPAM::fitBanditPAM(const arma::mat& inputData) {
 }
 
 arma::rowvec BanditPAM::buildSigma(
-  const arma::mat& data,
+  const arma::Mat<float>& data,
   const arma::rowvec& bestDistances,
   const bool useAbsolute) {
   size_t N = data.n_cols;
@@ -69,12 +69,12 @@ arma::rowvec BanditPAM::buildSigma(
     referencePoints = arma::randperm(N, batchSize);
   }
 
-  arma::vec sample(batchSize);
+  arma::Col<float> sample(batchSize);
   arma::rowvec updated_sigma(N);
   #pragma omp parallel for
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
-      double cost = KMedoids::cachedLoss(data, i, referencePoints(j));
+      float cost = KMedoids::cachedLoss(data, i, referencePoints(j));
       if (useAbsolute) {
         sample(j) = cost;
       } else {
@@ -89,7 +89,7 @@ arma::rowvec BanditPAM::buildSigma(
 }
 
 arma::rowvec BanditPAM::buildTarget(
-  const arma::mat& data,
+  const arma::Mat<float>& data,
   const arma::uvec* target,
   const arma::rowvec* bestDistances,
   const bool useAbsolute,
@@ -118,9 +118,9 @@ arma::rowvec BanditPAM::buildTarget(
 
   #pragma omp parallel for
   for (size_t i = 0; i < target->n_rows; i++) {
-    double total = 0;
+    float total = 0;
     for (size_t j = 0; j < referencePoints.n_rows; j++) {
-      double cost =
+      float cost =
         KMedoids::cachedLoss(data, (*target)(i), referencePoints(j));
       if (useAbsolute) {
         total += cost;
@@ -136,9 +136,9 @@ arma::rowvec BanditPAM::buildTarget(
 }
 
 void BanditPAM::build(
-  const arma::mat& data,
+  const arma::Mat<float>& data,
   arma::urowvec* medoid_indices,
-  arma::mat* medoids) {
+  arma::Mat<float>* medoids) {
   size_t N = data.n_cols;
   arma::rowvec N_mat(N);
   N_mat.fill(N);
@@ -146,7 +146,7 @@ void BanditPAM::build(
   bool useAbsolute = true;
   arma::rowvec estimates(N, arma::fill::zeros);
   arma::rowvec bestDistances(N);
-  bestDistances.fill(std::numeric_limits<double>::infinity());
+  bestDistances.fill(std::numeric_limits<float>::infinity());
   arma::rowvec sigma(N);
   arma::urowvec candidates(N, arma::fill::ones);
   arma::rowvec lcbs(N);
@@ -217,7 +217,7 @@ void BanditPAM::build(
     // don't need to do this on final iteration
     #pragma omp parallel for
     for (size_t i = 0; i < N; i++) {
-        double cost = KMedoids::cachedLoss(data, i, (*medoid_indices)(k));
+        float cost = KMedoids::cachedLoss(data, i, (*medoid_indices)(k));
         if (cost < bestDistances(i)) {
             bestDistances(i) = cost;
         }
@@ -227,14 +227,14 @@ void BanditPAM::build(
   }
 }
 
-arma::mat BanditPAM::swapSigma(
-  const arma::mat& data,
+arma::Mat<float> BanditPAM::swapSigma(
+  const arma::Mat<float>& data,
   const arma::rowvec* bestDistances,
   const arma::rowvec* secondBestDistances,
   const arma::urowvec* assignments) {
   size_t N = data.n_cols;
   size_t K = nMedoids;
-  arma::mat updated_sigma(K, N, arma::fill::zeros);
+  arma::Mat<float> updated_sigma(K, N, arma::fill::zeros);
   arma::uvec referencePoints;
   // TODO(@motiwari): Make this wraparound properly
   // as last batch_size elements are dropped
@@ -251,7 +251,7 @@ arma::mat BanditPAM::swapSigma(
     referencePoints = arma::randperm(N, batchSize);
   }
 
-  arma::vec sample(batchSize);
+  arma::Col<float> sample(batchSize);
   // for each considered swap
   #pragma omp parallel for
   for (size_t i = 0; i < K * N; i++) {
@@ -261,7 +261,7 @@ arma::mat BanditPAM::swapSigma(
 
     // calculate change in loss for some subset of the data
     for (size_t j = 0; j < batchSize; j++) {
-      double cost = KMedoids::cachedLoss(data, n, referencePoints(j));
+      float cost = KMedoids::cachedLoss(data, n, referencePoints(j));
 
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
@@ -283,8 +283,8 @@ arma::mat BanditPAM::swapSigma(
   return updated_sigma;
 }
 
-arma::vec BanditPAM::swapTarget(
-  const arma::mat& data,
+arma::Col<float> BanditPAM::swapTarget(
+  const arma::Mat<float>& data,
   const arma::urowvec* medoid_indices,
   const arma::uvec* targets,
   const arma::rowvec* bestDistances,
@@ -292,7 +292,7 @@ arma::vec BanditPAM::swapTarget(
   const arma::urowvec* assignments,
   const size_t exact = 0) {
   size_t N = data.n_cols;
-  arma::vec estimates(targets->n_rows, arma::fill::zeros);
+  arma::Col<float> estimates(targets->n_rows, arma::fill::zeros);
 
   size_t tmpBatchSize = batchSize;
   if (exact > 0) {
@@ -318,13 +318,13 @@ arma::vec BanditPAM::swapTarget(
   // for each considered swap
   #pragma omp parallel for
   for (size_t i = 0; i < targets->n_rows; i++) {
-    double total = 0;
+    float total = 0;
     // extract data point of swap
     size_t n = (*targets)(i) / medoid_indices->n_cols;
     size_t k = (*targets)(i) % medoid_indices->n_cols;
     // calculate total loss for some subset of the data
     for (size_t j = 0; j < tmpBatchSize; j++) {
-      double cost = KMedoids::cachedLoss(data, n, referencePoints(j));
+      float cost = KMedoids::cachedLoss(data, n, referencePoints(j));
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
           total += cost;
@@ -346,14 +346,14 @@ arma::vec BanditPAM::swapTarget(
 }
 
 void BanditPAM::swap(
-  const arma::mat& data,
+  const arma::Mat<float>& data,
   arma::urowvec* medoid_indices,
-  arma::mat* medoids,
+  arma::Mat<float>* medoids,
   arma::urowvec* assignments) {
   size_t N = data.n_cols;
   size_t p = (N * nMedoids * swapConfidence);
 
-  arma::mat sigma(nMedoids, N, arma::fill::zeros);
+  arma::Mat<float> sigma(nMedoids, N, arma::fill::zeros);
 
   arma::rowvec bestDistances(N);
   arma::rowvec secondBestDistances(N);
@@ -361,9 +361,9 @@ void BanditPAM::swap(
   bool swap_performed = true;
   arma::umat candidates(nMedoids, N, arma::fill::ones);
   arma::umat exactMask(nMedoids, N, arma::fill::zeros);
-  arma::mat estimates(nMedoids, N, arma::fill::zeros);
-  arma::mat lcbs(nMedoids, N);
-  arma::mat ucbs(nMedoids, N);
+  arma::Mat<float> estimates(nMedoids, N, arma::fill::zeros);
+  arma::Mat<float> lcbs(nMedoids, N);
+  arma::Mat<float> ucbs(nMedoids, N);
   arma::umat numSamples(nMedoids, N, arma::fill::zeros);
 
   // continue making swaps while loss is decreasing
@@ -390,7 +390,7 @@ void BanditPAM::swap(
     estimates.fill(0);
     numSamples.fill(0);
 
-    // while there is at least one candidate (double comparison issues)
+    // while there is at least one candidate (float comparison issues)
     while (arma::accu(candidates) > 0.5) {
       calcBestDistancesSwap(
         data,
@@ -406,7 +406,7 @@ void BanditPAM::swap(
       arma::uvec targets = arma::find(compute_exactly);
 
       if (targets.size() > 0) {
-          arma::vec result = swapTarget(
+          arma::Col<float> result = swapTarget(
             data,
             medoid_indices,
             &targets,
@@ -425,7 +425,7 @@ void BanditPAM::swap(
         break;
       }
       targets = arma::find(candidates);
-      arma::vec result = swapTarget(
+      arma::Col<float> result = swapTarget(
         data,
         medoid_indices,
         &targets,
@@ -438,10 +438,10 @@ void BanditPAM::swap(
         (result * batchSize)) /
         (batchSize + numSamples.elem(targets));
       numSamples.elem(targets) += batchSize;
-      arma::vec adjust(targets.n_rows);
+      arma::Col<float> adjust(targets.n_rows);
       adjust.fill(p);
       adjust = arma::log(adjust);
-      arma::vec confBoundDelta = sigma.elem(targets) %
+      arma::Col<float> confBoundDelta = sigma.elem(targets) %
                           arma::sqrt(adjust / numSamples.elem(targets));
 
       ucbs.elem(targets) = estimates.elem(targets) + confBoundDelta;
