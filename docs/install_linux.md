@@ -9,6 +9,7 @@ Please ensure the following dependencies are installed:
  - `CMake`: via the [CMake installation instructions](https://cmake.org/install/)
  - OpenMP: via `sudo apt install libomp-dev` or `sudo yum install libomp-dev`
  - Armadillo: via the [Armadillo installation instructions](http://arma.sourceforge.net/download.html)
+ - CARMA: via the instructions in the [quickstart](https://github.com/ThrunGroup/BanditPAM#install-the-repo-and-its-dependencies)
  - Python3: if not installed, we recommend installing Python3 via [Anaconda](https://www.anaconda.com/products/individual), which is CPython compiled with `clang`
  - `pip` for your Python3 installation: this should be completed if installing via Anaconda above
  - The necessary python packages: via `pip install -r requirements.txt`

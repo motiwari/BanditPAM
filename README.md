@@ -146,7 +146,7 @@ If installing these requirements from source, one can generally use the followin
 /armadillo/build$ cmake .. && make && sudo make install
 ```
 
-Note that `CARMA` has different installation instructions; see the [quickstart](https://github.com/ThrunGroup/BanditPAM#install-the-repo-and-its-dependencies)
+Note that `CARMA` has different installation instructions; see the [quickstart](https://github.com/ThrunGroup/BanditPAM#install-the-repo-and-its-dependencies).
 
 ####  Platform-specific installation guides
 Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:
