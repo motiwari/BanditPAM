@@ -22,6 +22,7 @@ jobs:
       #     cmake --version
       - name: Install CPython from Anaconda # TODO: Need to update CMake?
         run: |
+          python
           curl -XGET https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh > Anaconda3-2021.11-MacOSX-x86_64.sh
           sudo chmod 777 Anaconda3-2021.11-MacOSX-x86_64.sh
           echo "HERE1"
