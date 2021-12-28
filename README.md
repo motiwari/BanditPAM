@@ -1,6 +1,6 @@
 # BanditPAM: Almost Linear-Time *k*-Medoids Clustering
 
-This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://arxiv.org/abs/2006.06856). The code can be called directly from Python or C++.
+This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf). The code can be called directly from Python or C++.
 
 If you use this software, please cite:
 
@@ -19,11 +19,15 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 # Requirements
 # TL;DR run `pip3 install banditpam` and jump to the [examples](https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
 
-If you have any issues, please see the documents below and file a Github issue if you have additional trouble.
+If you have any difficulties, please see the [platform-specific guides](https://github.com/ThrunGroup/BanditPAM#platform-specific-installation-guides) and file a Github issue if you have additional trouble.
 
-* [Installation on MacOS](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md)
-* [Installation on Linux](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_linux.md)
-* [Installation on Windows](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_windows.md)
+## Further Reading
+* [Full paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf)
+* [3-minute summary video](https://crossminds.ai/video/bandit-pam-almost-linear-time-k-medoids-clustering-via-multi-armed-bandits-5fb88782b0a3f6412973b646/)
+* [Blog post](https://ai.stanford.edu/blog/banditpam/)
+* [Code](https://github.com/ThrunGroup/BanditPAM)
+* [PyPI](https://pypi.org/project/banditpam/)
+* [Documentation](https://banditpam.readthedocs.io/en)
 
 # Python Quickstart
 
@@ -57,7 +61,7 @@ means = np.array([[0,0], [-5,5], [5,5]])
 X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 
 # Fit the data with BanditPAM:
-kmed = KMedoids(n_medoids = 3, algorithm = "BanditPAM")
+kmed = KMedoids(n_medoids=3, algorithm="BanditPAM")
 kmed.fit(X, 'L2')
 
 print(kmed.labels) # prints cluster assignments [0] * 40 + [1] * 40 + [2] * 40
@@ -86,10 +90,10 @@ from sklearn.manifold import TSNE
 
 # Load the 1000-point subset of MNIST and calculate its t-SNE embeddings for visualization:
 X = pd.read_csv('data/MNIST-1k.csv', sep=' ', header=None).to_numpy()
-X_tsne = TSNE(n_components = 2).fit_transform(X)
+X_tsne = TSNE(n_components=2).fit_transform(X)
 
 # Fit the data with BanditPAM:
-kmed = KMedoids(n_medoids = 10, algorithm = "BanditPAM")
+kmed = KMedoids(n_medoids=10, algorithm="BanditPAM")
 kmed.fit(X, 'L2')
 
 # Visualize the data and the medoids via t-SNE:
@@ -102,13 +106,9 @@ for p_idx, point in enumerate(X):
 plt.show()
 ```
 
-The corresponding logfile for this run, `mnist_log`, will contain the run's results
-and additional statistics in a format that can be easily read into json.
-
 ## Documentation
 
-Documentation for BanditPAM can be found here: 
-* Doxygen docs: `BanditPAM/docs/html/index.html`
+Documentation for BanditPAM can be found on [read the docs](https://banditpam.readthedocs.io/en)
 
 ## Building the C++ executable from source
 
@@ -133,12 +133,12 @@ which will start a Docker instance with the necessary dependencies. Then:
 
 This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
-### Option 2: Installing Requirements and Building Directly
+### Option 2: Installing requirements and building directly
 Building this repository requires four external requirements:
-* Cmake >= 3.17, https://cmake.org/download/
-* Armadillo >= 10.5.3, http://arma.sourceforge.net/download.html
-* OpenMP >= 2.5, https://www.openmp.org/resources/openmp-compilers-tools/ (OpenMP is supported by default on most Linux platforms, and can be downloaded through homebrew on MacOS. For instructions on installing homebrew, see https://brew.sh/.)
-* CARMA >= 0.3.0, https://github.com/RUrlus/carma (use the commit to which `BanditPAM` points in the `/headers` subdirectory)
+* [CMake](https://cmake.org/download/) >= 3.17
+* [Armadillo](http://arma.sourceforge.net/download.html) >= 10.5.3 
+* [OpenMP](https://www.openmp.org/resources/openmp-compilers-tools/) >= 2.5 (OpenMP is supported by default on most Linux platforms, and can be downloaded through [homebrew](https://brew.sh/) on MacOS)
+* [CARMA](https://github.com/RUrlus/carma) >= 0.6.2
 
 If installing these requirements from source, one can generally use the following procedure to install each requirement from the library's root folder (with CARMA used as an example here):
 ```
@@ -147,6 +147,7 @@ If installing these requirements from source, one can generally use the followin
 /BanditPAM/headers/carma/build$ cmake .. && make && sudo make install
 ```
 
+####  Platform-specific installation guides
 Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:
 
 ```
@@ -160,31 +161,28 @@ This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
 Once the executable has been built, it can be invoked with:
 ```
-/BanditPAM/build/src/BanditPAM -f [path/to/input.csv] -k [number of clusters] -v [verbosity level]
+/BanditPAM/build/src/BanditPAM -f [path/to/input.csv] -k [number of clusters]
 ```
 
 * `-f` is mandatory and specifies the path to the dataset
 * `-k` is mandatory and specifies the number of clusters with which to fit the data
-* `-v` is optional and specifies the verbosity level.
 
 For example, if you ran `./env_setup.sh` and downloaded the MNIST dataset, you could run:
 
 ```
-/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10 -v 1
+/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10
 ```
 
 The expected output in the command line will be:
 ```
 Medoids: 694,168,306,714,324,959,527,251,800,737
 ```
-A file called `KMedoidsLogfile` with detailed logs during the process will also
-be present.
 
 ## Implementing a custom distance metric
 
 One of the advantages of k-medoids is that it works with arbitrary distance metrics; in fact, your "metric" need not even be a real metric -- it can be negative, asymmetric, and/or not satisfy the triangle inequality or homogeneity. Any pairwise dissimilarity function works with k-medoids!
 
-This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running k-means wouldn't even make sense. We talk about one such setting in the [original paper](https://arxiv.org/abs/2006.06856).
+This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running k-means wouldn't even make sense. We talk about one such setting in the [original paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf).
 
 The package currently supports a number of distance metrics, including all Lp losses and cosine distance.
 
@@ -202,12 +200,7 @@ To run the full suite of tests, run in the root directory:
 /BanditPAM$ python -m unittest discover -s tests
 ```
 
-Alternatively, to run a "smaller" set of tests, from the main repo folder run `python tests/test_commit.py` or `python tests/test_push.py` to run a set of longer, more intensive tests.
-
-## Reproducing Figures from the Paper
-
-Note that some figures in the original paper were generated using the Python code at https://github.com/motiwari/BanditPAM-python. That code is not pretty, nor is it maintained. It only exists for reference and for reproducibility of the plots.
-
+Alternatively, to run a "smaller" set of tests, from the main repo folder run `python tests/test_smaller.py` or `python tests/test_larger.py` to run a set of longer, more intensive tests.
 ## Credits
 
 Mo Tiwari wrote the original Python implementation of BanditPAM and many features of the C++ implementation. Mo now maintains the C++ implementation.
