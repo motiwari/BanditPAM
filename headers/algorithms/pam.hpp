@@ -13,47 +13,44 @@
 
 namespace km {
 /**
- *  \brief Class implementation for PAM algorithm.
- *
- *  PAM class. Consists of all necessary functions to implement
- *  PAM algorithm.
- *
+ * @brief Contains all necessary PAM functions
  */
 class PAM : public km::KMedoids {
  public:
-  /*! \brief Runs PAM algorithm.
-  *
-  *  Run the PAM algorithm to identify a dataset's medoids.
-  *
-  *  @param input_data Input data to cluster
-  */
+  /**
+   * @brief Runs PAM to identify a dataset's medoids.
+   * 
+   * @param inputData Input data to cluster
+   */
   void fit_pam(const arma::mat& inputData);
 
-  /*! \brief Build step for the PAM algorithm
+  /**
+  * @brief Performs the BUILD step of PAM.
   *
-  *  Runs build step for the PAM algorithm. Loops over all datapoint and
-  *  checks its distance from every other datapoint in the dataset, then checks if
-  *  the total cost is less than that of the medoid (if a medoid exists yet).
+  * Loops over all datapoint and checks each's distance to every other
+  * datapoint in the dataset, then adds the point with the lowest overall
+  * loss to the set of medoids.
   *
-  *  @param data Transposed input data to cluster
-  *  @param medoid_indices Uninitialized array of medoids that is modified in place
-  *  as medoids are identified
+  * @param data Transposed input data to cluster
+  * @param medoidIndices Array of medoids that is modified in place
+  * as medoids are identified
   */
   void build_pam(
     const arma::mat& data,
     arma::urowvec* medoidIndices);
 
-  /*! \brief Swap step for the PAM algorithm
+  /** 
+  * @brief Performs the SWAP steps of BanditPAM.
+  * 
+  * Loops over all (medoid, non-medoid) pairs and computes the change in loss
+  * when the points are swapped in and out of the medoid set. Then updates
+  * the list of medoids by performing the swap that would lower the overall 
+  * loss the most, provided at least one such swap would reduce the loss.
   *
-  *  Runs build step for the PAM algorithm. Loops over all datapoint and
-  *  checks its distance from every other datapoint in the dataset, then checks if
-  *  the total cost is less than that of the medoid.
-  *
-  *  @param data Transposed input data to find the medoids of
-  *  @param medoid_indices Array of medoid indices created from the build step
-  *  that is modified in place as better medoids are identified
-  *  @param assignments Uninitialized array of indices corresponding to each
-  *  datapoint assigned the index of the medoid it is closest to
+  * @param data Transposed input data to cluster
+  * @param medoidIndices Array of medoid indices created from the BUILD step
+  * that is modified in place as better medoids are identified
+  * @param assignments Array of containing the medoid each point is closest to
   */
   void swap_pam(
     const arma::mat& data,

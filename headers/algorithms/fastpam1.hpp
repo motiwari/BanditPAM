@@ -51,7 +51,8 @@ class FastPAM1 : public km::KMedoids {
    * that is modified in place as better medoids are identified
    * @param assignments Array of containing the medoid each point is closest to
    */
-  void swap_fastpam1(const arma::mat& data,
+  void swap_fastpam1(
+    const arma::mat& data,
     arma::urowvec* medoid_indices,
     arma::urowvec* assignments);
 };
