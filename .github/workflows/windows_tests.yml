@@ -1,5 +1,5 @@
 name: Windows - build package and run tests
-on: []
+on: [push, pull_request] # This test is currently disabled until we can build Armadillo on Windows
 jobs:
   build:
     runs-on: windows-latest
