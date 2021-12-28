@@ -15,7 +15,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install MacOS dependencies
         run: |
-          rm -rf /Library/Developer/CommandLineTools
+          sudo rm -rf /Library/Developer/CommandLineTools
           echo "HERE1"
           xcode-select --install
           echo "HERE2"
