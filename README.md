@@ -27,6 +27,7 @@ If you have any difficulties, please see the [platform-specific guides](https://
 * [Blog post](https://ai.stanford.edu/blog/banditpam/)
 * [Code](https://github.com/ThrunGroup/BanditPAM)
 * [PyPI](https://pypi.org/project/banditpam/)
+* [Documentation](https://banditpam.readthedocs.io/en)
 
 # Python Quickstart
 
@@ -107,8 +108,7 @@ plt.show()
 
 ## Documentation
 
-Documentation for BanditPAM can be found here: 
-* Doxygen docs: `BanditPAM/docs/html/index.html`
+Documentation for BanditPAM can be found on [read the docs](https://banditpam.readthedocs.io/en)
 
 ## Building the C++ executable from source
 
