@@ -1,6 +1,6 @@
 # BanditPAM: Almost Linear-Time *k*-Medoids Clustering
 
-This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://arxiv.org/abs/2006.06856). The code can be called directly from Python or C++.
+This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf). The code can be called directly from Python or C++.
 
 If you use this software, please cite:
 
@@ -135,10 +135,10 @@ This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
 ### Option 2: Installing requirements and building directly
 Building this repository requires four external requirements:
-* Cmake >= 3.17, https://cmake.org/download/
-* Armadillo >= 10.5.3, http://arma.sourceforge.net/download.html
-* OpenMP >= 2.5, https://www.openmp.org/resources/openmp-compilers-tools/ (OpenMP is supported by default on most Linux platforms, and can be downloaded through homebrew on MacOS. For instructions on installing homebrew, see https://brew.sh/.)
-* CARMA >= 0.3.0, https://github.com/RUrlus/carma (use the commit to which `BanditPAM` points in the `/headers` subdirectory)
+* [CMake](https://cmake.org/download/) >= 3.17
+* [Armadillo](http://arma.sourceforge.net/download.html) >= 10.5.3 
+* [OpenMP](https://www.openmp.org/resources/openmp-compilers-tools/) >= 2.5 (OpenMP is supported by default on most Linux platforms, and can be downloaded through [homebrew](https://brew.sh/) on MacOS)
+* [CARMA](https://github.com/RUrlus/carma) >= 0.6.2
 
 If installing these requirements from source, one can generally use the following procedure to install each requirement from the library's root folder (with CARMA used as an example here):
 ```
@@ -170,7 +170,7 @@ Once the executable has been built, it can be invoked with:
 For example, if you ran `./env_setup.sh` and downloaded the MNIST dataset, you could run:
 
 ```
-/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10 -v 1
+/BanditPAM/build/src/BanditPAM -f ../data/MNIST-1k.csv -k 10
 ```
 
 The expected output in the command line will be:
@@ -182,7 +182,7 @@ Medoids: 694,168,306,714,324,959,527,251,800,737
 
 One of the advantages of k-medoids is that it works with arbitrary distance metrics; in fact, your "metric" need not even be a real metric -- it can be negative, asymmetric, and/or not satisfy the triangle inequality or homogeneity. Any pairwise dissimilarity function works with k-medoids!
 
-This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running k-means wouldn't even make sense. We talk about one such setting in the [original paper](https://arxiv.org/abs/2006.06856).
+This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running k-means wouldn't even make sense. We talk about one such setting in the [original paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf).
 
 The package currently supports a number of distance metrics, including all Lp losses and cosine distance.
 
