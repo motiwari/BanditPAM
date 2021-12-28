@@ -7,10 +7,10 @@ Please ensure the following dependencies are installed:
  - The most recent version of the Xcode Command Line Tools: via `xcode-select --install`
  - Homebrew: via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
  - LLVM's `clang`: via `brew install llvm`
+ - The OpenMP and and Armadillo libraries: via `brew install libomp armadillo`
  - Python3: if not installed, we recommend installing Python3 via [Anaconda](https://www.anaconda.com/products/individual), which is CPython compiled with `clang`
  - `pip` for your Python3 installation; this should be completed if installing via Anaconda above
  - The necessary python packages: via `pip install -r requirements.txt`
- - The OpenMP and and Armadillo libraries: via `brew install libomp armadillo`
 
 (NOT RECOMMENDED): Instead of LLVM's `clang`, you can also use another C++ compiler and point your `CC` environment variable to it. Please ensure this is the same compiler used to compile your Python installation if using CPython. If you open a `python` REPL it will show the compiler used during the language installation:
 

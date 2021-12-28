@@ -13,15 +13,20 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install Ubuntu dependencies
+      - name: Install MacOS dependencies
         run: |
-          sudo apt update
-          sudo apt install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev 
-          sudo apt install -y clang-format cppcheck
+          sudo xcode-select --install
+          sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          sudo brew install llvm lipomp armadillo
+      - name: Install CPython from Anaconda
+        run: |
+          curl -XGET https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh > Anaconda3-2021.11-MacOSX-x86_64.sh
+          sudo chmod 777 Anaconda3-2021.11-MacOSX-x86_64.sh
+          ./Anaconda3-2021.11-MacOSX-x86_64.sh
       - name: Install Python dependencies 
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 pytest cpplint
+          pip install pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Install Armadillo 10.7.5+
         run: |
@@ -40,15 +45,6 @@ jobs:
           sudo cmake -DCARMA_INSTALL_LIB=ON ..
           sudo cmake --build . --config Release --target install
           cd ~
-      - name: Lint with flake8
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --exclude headers/carma
-      - name: Lint with cpplint
-        run: |
-          cpplint --exclude=headers/carma --exclude=build --filter=-legal/copyright,-build/c++11 --recursive .
       - name: Install BanditPAM package
         run: |
           pip install -vvv -e .
