@@ -15,17 +15,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install Windows dependencies
         run: |
-          sudo rm -rf /Library/Developer/CommandLineTools
-          xcode-select --install
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          brew install llvm libomp armadillo
-      - name: Install CPython from Anaconda # TODO: Need to update CMake?
+          
+      - name: Install CPython from Anaconda # TODO: Need to update CMake? # TODO: See https://docs.conda.io/projects/conda/en/latest/user-guide/install/windows.html
         run: |
-          curl -XGET https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh > Anaconda3-2021.11-MacOSX-x86_64.sh
-          sudo chmod 777 Anaconda3-2021.11-MacOSX-x86_64.sh
-          ./Anaconda3-2021.11-MacOSX-x86_64.sh
+          wget -O Anaconda3-2021.11-Windows-x86_64.exe https://repo.anaconda.com/archive/Anaconda3-2021.11-Windows-x86_64.exe
+          start /wait "" Anaconda3-latest-Windows-x86_64.exe /InstallationType=JustMe /AddToPath=1 /RegisterPython=1 /S /D=%UserProfile%\Anaconda3
           conda create -n "$p{{ matrix.python-version }}" python=${{ matrix.python-version }}
           conda activate p${{ matrix.python-version }}
+          cmake --version
       - name: Install Python dependencies 
         run: |
           python -m pip install --upgrade pip
