@@ -84,6 +84,7 @@ def cpp_flag(compiler: str):
     """
     compiler_name = compiler_check()
     if compiler_name == 'clang':
+        # TODO(@motiwari): on Windows, these flags are unrecognized
         flags = ["-std=c++17", "-std=c++14", "-std=c++11"]
     else:
         # Assume gcc
@@ -280,7 +281,6 @@ class BuildExt(build_ext):
         opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
 
-        opts.append("-Wno-register")
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
         opts.append("-fopenmp")
