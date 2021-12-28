@@ -21,7 +21,7 @@ class FastPAM1 : public km::KMedoids {
    *
    * @param inputData Input data to cluster
    */
-  void fitFastPAM1(const arma::Mat<float>& inputData);
+  void fitFastPAM1(const arma::fmat& inputData);
 
   /**
    * @brief Performs the BUILD step of FastPAM1.
@@ -31,12 +31,12 @@ class FastPAM1 : public km::KMedoids {
    * loss to the set of medoids.
    *
    * @param data Transposed input data to cluster
-   * @param medoid_indices Array of medoids that is modified in place
+   * @param medoidIndices Array of medoids that is modified in place
    * as medoids are identified
    */
   void buildFastPAM1(
-    const arma::Mat<float>& data,
-    arma::urowvec* medoid_indices);
+    const arma::fmat& data,
+    arma::urowvec* medoidIndices);
 
   /**
    * @brief Performs the SWAP step of FastPAM1.
@@ -47,13 +47,13 @@ class FastPAM1 : public km::KMedoids {
    * loss the most, provided at least one such swap would reduce the loss.
    *
    * @param data Transposed input data to cluster
-   * @param medoid_indices Array of medoid indices created from the BUILD step
+   * @param medoidIndices Array of medoid indices created from the BUILD step
    * that is modified in place as better medoids are identified
    * @param assignments Array of containing the medoid each point is closest to
    */
   void swapFastPAM1(
-    const arma::Mat<float>& data,
-    arma::urowvec* medoid_indices,
+    const arma::fmat& data,
+    arma::urowvec* medoidIndices,
     arma::urowvec* assignments);
 };
 }  // namespace km

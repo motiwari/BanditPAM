@@ -21,7 +21,7 @@ class BanditPAM : public km::KMedoids {
    * 
    * @param inputData Input data to cluster
    */
-  void fitBanditPAM(const arma::Mat<float>& inputData);
+  void fitBanditPAM(const arma::fmat& inputData);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -34,9 +34,9 @@ class BanditPAM : public km::KMedoids {
    * 
    * @returns Estimate of each arm's standard deviation
    */
-  arma::rowvec buildSigma(
-    const arma::Mat<float>& data,
-    const arma::rowvec& bestDistances,
+  arma::frowvec buildSigma(
+    const arma::fmat& data,
+    const arma::frowvec& bestDistances,
     const bool useAbsolute);
 
   /** 
@@ -51,10 +51,10 @@ class BanditPAM : public km::KMedoids {
    * 
    * @returns Estimate of each arm's change in loss
    */
-  arma::rowvec buildTarget(
-    const arma::Mat<float>& data,
+  arma::frowvec buildTarget(
+    const arma::fmat& data,
     const arma::uvec* target,
-    const arma::rowvec* bestDistances,
+    const arma::frowvec* bestDistances,
     const bool useAbsolute,
     const size_t exact);
 
@@ -73,9 +73,9 @@ class BanditPAM : public km::KMedoids {
    * @param medoids Matrix that contains the coordinates of each medoid
    */
   void build(
-    const arma::Mat<float>& data,
+    const arma::fmat& data,
     arma::urowvec* medoidIndices,
-    arma::Mat<float>* medoids);
+    arma::fmat* medoids);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -88,10 +88,10 @@ class BanditPAM : public km::KMedoids {
    * 
    * @returns Estimate of each arm's standard deviation
    */
-  arma::Mat<float> swapSigma(
-    const arma::Mat<float>& data,
-    const arma::rowvec* bestDistances,
-    const arma::rowvec* secondBestDistances,
+  arma::fmat swapSigma(
+    const arma::fmat& data,
+    const arma::frowvec* bestDistances,
+    const arma::frowvec* secondBestDistances,
     const arma::urowvec* assignments);
 
   /**
@@ -108,12 +108,12 @@ class BanditPAM : public km::KMedoids {
    * 
    * @returns Estimate of each arm's change in loss
    */
-  arma::Col<float> swapTarget(
-    const arma::Mat<float>& data,
+  arma::fvec swapTarget(
+    const arma::fmat& data,
     const arma::urowvec* medoidIndices,
     const arma::uvec* targets,
-    const arma::rowvec* bestDistances,
-    const arma::rowvec* secondBestDistances,
+    const arma::frowvec* bestDistances,
+    const arma::frowvec* secondBestDistances,
     const arma::urowvec* assignments,
     const size_t exact);
 
@@ -134,9 +134,9 @@ class BanditPAM : public km::KMedoids {
   * @param assignments Array of containing the medoid each point is closest to
   */
   void swap(
-    const arma::Mat<float>& data,
+    const arma::fmat& data,
     arma::urowvec* medoidIndices,
-    arma::Mat<float>* medoids,
+    arma::fmat* medoids,
     arma::urowvec* assignments);
 };
 }  // namespace km

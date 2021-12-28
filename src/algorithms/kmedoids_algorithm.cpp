@@ -33,7 +33,7 @@ KMedoids::KMedoids(
 
 KMedoids::~KMedoids() {}
 
-void KMedoids::fit(const arma::Mat<float>& inputData, const std::string& loss) {
+void KMedoids::fit(const arma::fmat& inputData, const std::string& loss) {
   batchSize = fmin(inputData.n_rows, batchSize);
 
   if (inputData.n_rows == 0) {
@@ -139,17 +139,17 @@ void KMedoids::setLossFn(std::string loss) {
 }
 
 void KMedoids::calcBestDistancesSwap(
-  const arma::Mat<float>& data,
-  const arma::urowvec* medoid_indices,
-  arma::rowvec* bestDistances,
-  arma::rowvec* secondBestDistances,
+  const arma::fmat& data,
+  const arma::urowvec* medoidIndices,
+  arma::frowvec* bestDistances,
+  arma::frowvec* secondBestDistances,
   arma::urowvec* assignments) {
   #pragma omp parallel for
   for (size_t i = 0; i < data.n_cols; i++) {
     float best = std::numeric_limits<float>::infinity();
     float second = std::numeric_limits<float>::infinity();
-    for (size_t k = 0; k < medoid_indices->n_cols; k++) {
-      float cost = KMedoids::cachedLoss(data, i, (*medoid_indices)(k));
+    for (size_t k = 0; k < medoidIndices->n_cols; k++) {
+      float cost = KMedoids::cachedLoss(data, i, (*medoidIndices)(k));
       if (cost < best) {
         (*assignments)(i) = k;
         second = best;
@@ -164,15 +164,15 @@ void KMedoids::calcBestDistancesSwap(
 }
 
 float KMedoids::calcLoss(
-  const arma::Mat<float>& data,
-  const arma::urowvec* medoid_indices) {
+  const arma::fmat& data,
+  const arma::urowvec* medoidIndices) {
   float total = 0;
   // TODO(@motiwari): is this parallel loop accumulating properly?
   #pragma omp parallel for
   for (size_t i = 0; i < data.n_cols; i++) {
     float cost = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < nMedoids; k++) {
-      float currCost = KMedoids::cachedLoss(data, i, (*medoid_indices)(k));
+      float currCost = KMedoids::cachedLoss(data, i, (*medoidIndices)(k));
       if (currCost < cost) {
         cost = currCost;
       }
@@ -183,7 +183,7 @@ float KMedoids::calcLoss(
 }
 
 float KMedoids::cachedLoss(
-  const arma::Mat<float>& data,
+  const arma::fmat& data,
   const size_t i,
   const size_t j,
   const bool useCache) {
@@ -215,20 +215,20 @@ void KMedoids::checkAlgorithm(const std::string& algorithm) const {
   }
 }
 
-float KMedoids::LP(const arma::Mat<float>& data,
+float KMedoids::LP(const arma::fmat& data,
   const size_t i,
   const size_t j) const {
   return arma::norm(data.col(i) - data.col(j), lp);
 }
 
 float KMedoids::LINF(
-  const arma::Mat<float>& data,
+  const arma::fmat& data,
   const size_t i,
   const size_t j) const {
   return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
 
-float KMedoids::cos(const arma::Mat<float>& data,
+float KMedoids::cos(const arma::fmat& data,
   const size_t i,
   const size_t j) const {
   return arma::dot(
@@ -236,7 +236,7 @@ float KMedoids::cos(const arma::Mat<float>& data,
     data.col(j)) / (arma::norm(data.col(i))* arma::norm(data.col(j)));
 }
 
-float KMedoids::manhattan(const arma::Mat<float>& data,
+float KMedoids::manhattan(const arma::fmat& data,
   const size_t i,
   const size_t j) const {
   return arma::accu(arma::abs(data.col(i) - data.col(j)));

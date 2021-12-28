@@ -41,7 +41,7 @@ class KMedoids {
    * 
    * @throws if the input data is empty.
    */
-  void fit(const arma::Mat<float>& inputData, const std::string& loss);
+  void fit(const arma::fmat& inputData, const std::string& loss);
 
   /**
    * @brief Returns the medoids at the end of the BUILD step.
@@ -194,10 +194,10 @@ class KMedoids {
    * @param assignments Assignments of datapoints to their closest medoid
    */
   void calcBestDistancesSwap(
-    const arma::Mat<float>& data,
+    const arma::fmat& data,
     const arma::urowvec* medoidIndices,
-    arma::rowvec* bestDistances,
-    arma::rowvec* secondBestDistances,
+    arma::frowvec* bestDistances,
+    arma::frowvec* secondBestDistances,
     arma::urowvec* assignments);
 
   /**
@@ -209,7 +209,7 @@ class KMedoids {
    * @returns The total (not average) loss
    */
   float calcLoss(
-    const arma::Mat<float>& data,
+    const arma::fmat& data,
     const arma::urowvec* medoidIndices);
 
   /**
@@ -226,7 +226,7 @@ class KMedoids {
    * @returns The distance between points i and j
    */
   float cachedLoss(
-    const arma::Mat<float>& data,
+    const arma::fmat& data,
     const size_t i,
     const size_t j,
     const bool useCache = true);
@@ -245,7 +245,7 @@ class KMedoids {
    * @returns The Lp distance between points i and j
    */
   float LP(
-    const arma::Mat<float>& data,
+    const arma::fmat& data,
     const size_t i,
     const size_t j) const;
 
@@ -259,7 +259,7 @@ class KMedoids {
    * 
    * @returns The L-infinity distance between points i and j
    */
-  float LINF(const arma::Mat<float>& data,
+  float LINF(const arma::fmat& data,
     const size_t i,
     const size_t j) const;
 
@@ -273,7 +273,7 @@ class KMedoids {
    * 
    * @returns The cosine distance between points i and j
    */
-  float cos(const arma::Mat<float>& data,
+  float cos(const arma::fmat& data,
     const size_t i,
     const size_t j) const;
 
@@ -287,7 +287,7 @@ class KMedoids {
    * 
    * @returns The Manhattan distance between points i and j
    */
-  float manhattan(const arma::Mat<float>& data,
+  float manhattan(const arma::fmat& data,
     const size_t i,
     const size_t j) const;
 
@@ -311,7 +311,7 @@ class KMedoids {
   size_t maxIter;
 
   /// Data to be clustered
-  arma::Mat<float> data;
+  arma::fmat data;
 
   /// Cluster assignments of each point
   arma::urowvec labels;
@@ -324,7 +324,7 @@ class KMedoids {
 
   /// Function pointer to the loss function to use
   float (KMedoids::*lossFn)(
-    const arma::Mat<float>& data,
+    const arma::fmat& data,
     const size_t i,
     const size_t j)
     const;
