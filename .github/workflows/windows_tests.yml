@@ -32,8 +32,8 @@ jobs:
           cd ~
           git clone https://gitlab.com/conradsnicta/armadillo-code.git
           cd armadillo-code
-          sudo cmake .
-          sudo make install
+          cmake .
+          make install
       - name: Install carma
         run: |
           cd ~
@@ -41,8 +41,8 @@ jobs:
           cd carma
           mkdir build
           cd build
-          sudo cmake -DCARMA_INSTALL_LIB=ON ..
-          sudo cmake --build . --config Release --target install
+          cmake -DCARMA_INSTALL_LIB=ON ..
+          cmake --build . --config Release --target install
           cd ~
       - name: Install BanditPAM package
         run: |
@@ -74,6 +74,6 @@ jobs:
           cd BanditPAM
           mkdir build
           cd build
-          sudo cmake ..
-          sudo make
+          cmake ..
+          make
           src/BanditPAM -f ../data/MNIST_1k.csv -k 5
