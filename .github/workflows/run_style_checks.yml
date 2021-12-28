@@ -1,4 +1,4 @@
-name: Build package and run tests
+name: Run style checks
 on: [push, pull_request]
 jobs:
   build:
