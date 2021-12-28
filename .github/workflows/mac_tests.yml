@@ -24,7 +24,7 @@ jobs:
         run: |
           curl -XGET https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh > Anaconda3-2021.11-MacOSX-x86_64.sh
           sudo chmod 777 Anaconda3-2021.11-MacOSX-x86_64.sh
-          yes | ./Anaconda3-2021.11-MacOSX-x86_64.sh
+          yes yes | ./Anaconda3-2021.11-MacOSX-x86_64.sh
           conda create -n "$p{{ matrix.python-version }}" python=${{ matrix.python-version }}
           conda activate p${{ matrix.python-version }}
       - name: Install Python dependencies 

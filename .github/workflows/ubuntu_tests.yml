@@ -1,5 +1,5 @@
 name: Ubuntu - build package and run tests
-on: [push, pull_request]
+on: [pull_request] # TODO: add push
 jobs:
   build:
     runs-on: ubuntu-latest
