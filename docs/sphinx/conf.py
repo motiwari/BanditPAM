@@ -60,9 +60,9 @@ html_static_path = ['_static']
 
 # -- Bridge with Doxygen -------------------------------------------------
 
-# TODO(@motiwari): Unsafe subprocess call, hacky copy-over of index.html
-readme_file = glob.glob("../html/*_README.html")[0]
-subprocess.call('cd .. ; \
-    doxygen Doxyfile; cp {} html/index.html'.format(readme_file), shell=True)
+# TODO(@motiwari): Unsafe subprocess calls, hacky copy-over of index.html
+subprocess.call('cd .. ; doxygen Doxyfile') 
+readme_file = glob.glob("html/*_README.html")[0]
+subprocess.call('cp {} html/index.html'.format(readme_file), shell=True)
 
 html_extra_path = ['../html']
