@@ -4,7 +4,7 @@ The following is a more detailed description of the installation process of Band
 
 ## Prerequisites
 Please ensure the following dependencies are installed:
- - The most recent version of the Xcode Command Line Tools: via `xcode-select --install`
+ - The most recent version of the Xcode Command Line Tools: via `xcode-select --install`. If you get errors about C++ standard library headers not being found, see the [known issues](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md#known-issues)
  - Homebrew: via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
  - LLVM's `clang`: via `brew install llvm`
  - The OpenMP and and Armadillo libraries: via `brew install libomp armadillo`
@@ -35,4 +35,12 @@ BanditPAM can then be installed via one of the following ways:
 ## Known Issues 
 The following is a list of issues seen when installing BanditPAM on MacOS. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/
 
-None.
+- MacOS users may get an error like the one below. If so, you likely need to update your Xcode Tools. Open the XCode app and install the additional software when prompted. If that still does not work, delete your XCode command line tools, re-install them, open the Xcode app and install the additional software when prompted. If that still does not work, restart your computer and try again. [Original Thread](https://github.com/ThrunGroup/BanditPAM/issues/167#issuecomment-1002747153)
+
+```
+/usr/local/opt/llvm/bin/../include/c++/v1/stdlib.h:93:15: fatal error: 'stdlib.h' file not found
+#include_next <stdlib.h>
+              ^~~~~~~~~~
+1 error generated.
+error: command '/usr/local/opt/llvm/bin/clang' failed with exit code 1
+```
