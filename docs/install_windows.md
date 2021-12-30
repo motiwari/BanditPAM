@@ -35,4 +35,4 @@ BanditPAM can then be installed via one of the following ways:
 ## Known Issues 
 The following is a list of issues seen when installing BanditPAM on Windows. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/
 
-None.
+- You may run into an error like `error: ‘class arma::Mat<float>’ has no member named ‘n_alloc’`; this is fundamentally due to an [error in CARMA](https://github.com/RUrlus/carma/pull/98). If this isn't fixed by the time you're reading this, follow the fix described in [this issue](https://github.com/ThrunGroup/BanditPAM/issues/169).
