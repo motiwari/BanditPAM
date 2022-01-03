@@ -36,4 +36,4 @@ BanditPAM can then be installed via one of the following ways:
 ## Known Issues 
 The following is a list of issues seen when installing BanditPAM on Linux. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/
 
-None.
+- Beware that installing `libarmadillo-dev` using `apt` or `yum` may provide an outdated version of `armadillo`, especially if you are running an older version of Linux. In this case, you may need to download the latest stable version of `armadillo` and compile it from source
