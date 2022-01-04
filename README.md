@@ -27,7 +27,7 @@ If you have any difficulties, please see the [platform-specific guides](https://
 * [Blog post](https://ai.stanford.edu/blog/banditpam/)
 * [Code](https://github.com/ThrunGroup/BanditPAM)
 * [PyPI](https://pypi.org/project/banditpam/)
-* [Documentation](https://banditpam.readthedocs.io/en)
+* [Documentation](https://banditpam.readthedocs.io/en/latest)
 
 # Python Quickstart
 
