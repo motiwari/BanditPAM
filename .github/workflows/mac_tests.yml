@@ -40,7 +40,7 @@ jobs:
           cd ~
       - name: Install BanditPAM package
         run: |
-          pip install -vvv -e .
+          pip install --no-use-pep517 -vvv -e .
         env:
           # The default compiler on the Github Ubuntu runners is gcc
           # Would need to make a respective include change for clang 

@@ -1,5 +1,7 @@
 [tool.cibuildwheel]
 
+
+[tool.cibuildwheel.linux]
 # Get dependencies
 before-all = [
     "scripts/docker/cibw_before_all.sh",
