@@ -31,7 +31,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build sdist
-        run: pipx run build --sdist
+        run: python setup.py sdist
 
       - uses: actions/upload-artifact@v2
         with:
