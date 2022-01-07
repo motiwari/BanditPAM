@@ -1,16 +1,6 @@
 [tool.cibuildwheel]
-before-all = """\
-    yum update \
-    && yum install -y SuperLU-devel vim-enhanced openblas-devel lapack-devel arpack-devel git git-all openssl-devel \
-    && export PATH=/usr/local/libexec/git-core:$PATH \
-    && gcc --version \
-    && g++ --version \
-    && cmake --version \
-    && cd /home \
-    && git clone https://gitlab.com/conradsnicta/armadillo-code.git \
-    && git clone https://github.com/RUrlus/carma.git --recursive \
-    && cd /home/armadillo-code \
-    && cmake . \
-    && make install \
-    && cd /home/carma \
-    """
+
+# Get dependencies
+before-all = [
+    "scripts/docker/cibw_before_all.sh",
+]
