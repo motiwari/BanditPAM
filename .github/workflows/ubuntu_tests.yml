@@ -9,24 +9,24 @@ jobs:
         python-version: ["3.6", "3.7", "3.8", "3.9"]
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      
+
       - name: Install Ubuntu dependencies
         run: |
           sudo apt update
           sudo apt install -y build-essential checkinstall libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev 
           sudo apt install -y clang-format cppcheck
-      
+
       - name: Install Python dependencies 
         run: |
           python -m pip install --upgrade pip
           pip install pytest
           pip install -r requirements.txt
-      
+
       - name: Install Armadillo 10.7.5+
         run: |
           cd ~
@@ -34,7 +34,7 @@ jobs:
           cd armadillo-code
           sudo cmake .
           sudo make install
-      
+
       - name: Install carma
         run: |
           cd ~
@@ -45,7 +45,7 @@ jobs:
           sudo cmake -DCARMA_INSTALL_LIB=ON ..
           sudo cmake --build . --config Release --target install
           cd ~
-      
+
       - name: Install BanditPAM package
         run: |
           # The flags are necessary to ignore the pyproject.toml
@@ -55,7 +55,7 @@ jobs:
           # The default compiler on the Github Ubuntu runners is gcc
           # Would need to make a respective include change for clang 
           CPLUS_INCLUDE_PATH: /usr/local/include/carma
-      
+
       - name: Downloading data files for tests
         run: |
           mkdir -p data
@@ -67,15 +67,15 @@ jobs:
           tar -xzvf data/MNIST_10k.tar.gz -C data
           curl -XGET https://motiwari.com/banditpam_data/MNIST_70k.tar.gz > data/MNIST_70k.tar.gz
           tar -xzvf data/MNIST_70k.tar.gz -C data
-      
+
       - name: Run smaller suite of test cases
         run : |
           pytest tests/test_smaller.py 
-      
+
       # - name: Run larger suite of test cases
       #   run : |
       #     pytest tests/test_larger.py 
-      
+
       - name: Verify that the C++ executable compiles and runs
         run : |
           git clone https://github.com/ThrunGroup/BanditPAM
