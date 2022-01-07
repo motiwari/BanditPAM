@@ -1,7 +1,10 @@
-name: Build
-
-on: [push, pull_request]
-
+name: Build wheels and source distribution, and upload to PyPI
+on:
+  push:
+  pull_request:
+  release:
+    types:
+      - published
 jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
@@ -12,13 +15,47 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
-        # to supply options, put them in 'env', like:
-        # env:
-        #   CIBW_SOME_OPTION: value
 
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
+
+  build_sdist:
+    name: Build source distribution (SDist)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Build sdist
+        run: pipx run build --sdist
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: dist/*.tar.gz
+
+  upload_pypi:
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    # RBF: upload to PyPI on every tag starting with 'v'
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+    # publish when a GitHub Release is created:
+    #if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: artifact
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@v1.4.2
+        with:
+          user: __token__
+          password: ${{ secrets.pypi_password }}
+          # RBF: To test on TestPyPI: 
+          repository_url: https://test.pypi.org/legacy/
