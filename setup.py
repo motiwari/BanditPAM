@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.0"
+__version__ = "3.0.1"
 
 
 class get_pybind_include(object):
@@ -191,6 +191,23 @@ def check_linux_package_installation(pkg_name: str):
         )
     return output.decode().strip()
 
+def install_ubuntu_pkgs():
+    # TODO: Remove dangerous os.system() calls
+    # See https://stackoverflow.com/a/51329156
+    os.system('apt update')
+    os.system('apt install -y \
+        build-essential \
+        checkinstall \
+        libreadline-gplv2-dev \
+        libncursesw5-dev \
+        libssl-dev \
+        libsqlite3-dev \
+        libgdbm-dev \
+        libc6-dev \
+        libbz2-dev \
+        libffi-dev \
+        zlib1g-dev'
+        )
 
 def setup_colab():
     # If we're in Google Colab, we need to manually copy over
@@ -203,14 +220,36 @@ def setup_colab():
         in_colab = False
 
     if in_colab:
-        # TODO: Dangerous os.system() call.
+        # TODO: Remove dangerous os.system() calls
         # See https://stackoverflow.com/a/51329156
+        install_ubuntu_pkgs()
         repo_location = os.path.join("/", "content", "BanditPAM")
-        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git' +
+        # Note the space after the git URL to separate the source and target
+        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git ' +
                   repo_location)
         os.system(repo_location +
                   '/scripts/colab_files/colab_install_armadillo.sh')
         os.system('rm -rf ' + repo_location)
+
+
+def setup_paperspace_gradient():
+    # Unfortunately, Paperspace Gradient does not make it easy to tell
+    # whether you're inside a Gradient instance. For this reason, we
+    # determine whether python is running inside a Gradient instance
+    # by checking for a /notebooks directory
+
+    # TODO: Remove dangerous os.system() calls
+    # See https://stackoverflow.com/a/51329156
+
+    in_paperspace_gradient = os.path.exists('/notebooks')
+
+    if in_paperspace_gradient:
+        install_ubuntu_pkgs()
+        os.system('DEBIAN_FRONTEND=noninteractive TZ=America/NewYork \
+            apt install -y tk-dev')
+        os.system('git clone \
+            https://gitlab.com/conradsnicta/armadillo-code.git')
+        os.system('cd armadillo-code && cmake . && make install')
 
 
 def install_check_ubuntu():
@@ -231,6 +270,8 @@ def install_check_ubuntu():
     ]
 
     setup_colab()
+
+    setup_paperspace_gradient()
 
     for dep in dependencies:
         check_linux_package_installation(dep)
