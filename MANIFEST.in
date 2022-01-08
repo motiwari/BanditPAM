@@ -1,0 +1,3 @@
+# We need this for the sdist uploaded to PyPI to include the headers
+graft headers
+include docs/long_desc.rst
