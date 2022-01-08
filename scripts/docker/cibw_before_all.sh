@@ -6,11 +6,8 @@ then
 else
     # We are building on manylinux (CentOS),
     # where the default package manager is yum
-    yum update
 	alias install_pkg="yum install -y"
 fi
-
-install_pkg -y vim-enhanced
 install_pkg -y lapack-devel
 install_pkg -y git git-all
 install_pkg -y openssl-devel
