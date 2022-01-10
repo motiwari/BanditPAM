@@ -1,8 +1,23 @@
 [tool.cibuildwheel]
 
-
 [tool.cibuildwheel.linux]
 # Get dependencies
 before-all = [
     "scripts/docker/cibw_before_all.sh",
 ]
+
+[tool.cibuildwheel.macos]
+# Get dependencies
+before-all = [
+    "scripts/docker/cibw_before_all_macos.sh",
+]
+
+repair-wheel-command = 'DYLD_LIBRARY_PATH=/Users/motiwari/opt/anaconda3/lib:/usr/local/Cellar/armadillo/10.8.0/lib:/usr/local/Cellar/arpack/3.8.0_1/libexec/lib:/usr/local/Cellar/gcc/11.2.0_3/lib/gcc/11:/usr/local/Cellar/hdf5/1.12.1/lib:/usr/local/Cellar/hwloc/2.7.0/lib:/usr/local/Cellar/libevent/2.1.12/lib:/usr/local/Cellar/open-mpi/4.1.2/lib:/usr/local/Cellar/openblas/0.3.19/lib:/usr/local/Cellar/superlu/5.2.2_1/lib:/usr/local/Cellar/szip/2.1.1_1/lib delocate-listdeps {wheel} && DYLD_LIBRARY_PATH=/Users/motiwari/opt/anaconda3/lib:/usr/local/Cellar/armadillo/10.8.0/lib:/usr/local/Cellar/arpack/3.8.0_1/libexec/lib:/usr/local/Cellar/gcc/11.2.0_3/lib/gcc/11:/usr/local/Cellar/hdf5/1.12.1/lib:/usr/local/Cellar/hwloc/2.7.0/lib:/usr/local/Cellar/libevent/2.1.12/lib:/usr/local/Cellar/open-mpi/4.1.2/lib:/usr/local/Cellar/openblas/0.3.19/lib:/usr/local/Cellar/superlu/5.2.2_1/lib:/usr/local/Cellar/szip/2.1.1_1/lib delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}'
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "numpy",
+    "pybind11",
+]
+build-backend = "setuptools.build_meta"
