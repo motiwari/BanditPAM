@@ -37,7 +37,7 @@ jobs:
         with:
           path: |
             dist/*.tar.gz
-            dist/*.zip
+            # dist/*.zip # We can only upload one sdist per release
 
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
