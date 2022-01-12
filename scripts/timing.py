@@ -5,6 +5,8 @@ import time
 import numpy as np
 import banditpam
 
+#banditpam.set_num_threads(1)
+
 X = np.loadtxt('data/MNIST_1k.csv')
 kmed = banditpam.KMedoids(n_medoids=5, algorithm="BanditPAM")
 start = time.time()

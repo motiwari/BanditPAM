@@ -1,7 +1,5 @@
 [tool.cibuildwheel]
 
-build = "*cp39*"
-
 [tool.cibuildwheel.linux]
 # Get dependencies
 before-all = [
@@ -9,6 +7,9 @@ before-all = [
 ]
 
 [tool.cibuildwheel.macos]
+#archs = ["x86_64"]#, "universal2", "arm64"]
+archs = ["universal2"]
+
 # Get dependencies
 before-all = [
     "scripts/docker/cibw_before_all_macos.sh",
