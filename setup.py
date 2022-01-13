@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.3"
+__version__ = "3.0.4"
 
 
 class get_pybind_include(object):
@@ -401,6 +401,7 @@ def main():
                              "build_medoids_python.cpp"),
                 os.path.join("src", "python_bindings", "labels_python.cpp"),
                 os.path.join("src", "python_bindings", "steps_python.cpp"),
+                os.path.join("src", "python_bindings", "loss_python.cpp"),
             ],
             include_dirs=include_dirs,
             library_dirs=[os.path.join("/", "usr", "local", "lib")],
