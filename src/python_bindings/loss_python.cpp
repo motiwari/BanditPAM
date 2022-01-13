@@ -15,11 +15,10 @@
 
 namespace km {
 float km::KMedoidsWrapper::getLossPython() {
-  return KMedoids::calcLoss();
+  return -1.0; // TODO(@motiwari): fix this with averageLoss getter
 }
 
 void loss_python(pybind11::class_<KMedoidsWrapper> *cls) {
   cls->def_property_readonly("average_loss", &KMedoidsWrapper::getLossPython);
-  // cls->def_property_readonly("average_cost", &KMedoidsWrapper::getLossPython);
 }
 }  // namespace km

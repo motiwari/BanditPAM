@@ -76,7 +76,7 @@ void PAM::swapPAM(
   arma::urowvec* assignments) {
   float minDistance = std::numeric_limits<float>::infinity();
   size_t best = 0;
-  size_t medoid_to_swap = 0;
+  size_t medoidToSwap = 0;
   size_t N = data.n_cols;
   arma::frowvec bestDistances(N);
   arma::frowvec secondBestDistances(N);
@@ -114,10 +114,10 @@ void PAM::swapPAM(
       if (total < minDistance) {
         minDistance = total;
         best = i;
-        medoid_to_swap = k;
+        medoidToSwap = k;
       }
     }
   }
-  (*medoidIndices)(medoid_to_swap) = best;
+  (*medoidIndices)(medoidToSwap) = best;
 }
 }  // namespace km

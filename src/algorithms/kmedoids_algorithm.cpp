@@ -116,7 +116,12 @@ void KMedoids::setSwapConfidence(size_t newSwapConfidence) {
 }
 
 void KMedoids::setLossFn(std::string loss) {
+  // TODO (@motiwari): Need to fix this
+  // TODO (@motiwari): Add euclidean
+  // TODO (@motiwari): Lower-case input loss
+  // TODO (@motiwari): Add "getLossFn"
   if (std::regex_match(loss, std::regex("L\\d*"))) {
+    // TODO (@motiwari): Need to fix this
     loss = loss.substr(1);
   }
   try {
@@ -130,7 +135,7 @@ void KMedoids::setLossFn(std::string loss) {
       lossFn = &KMedoids::LP;
       lp     = atoi(loss.c_str());
     } else {
-      throw std::invalid_argument("error: unrecognized loss function");
+      throw std::invalid_argument("Error: unrecognized loss function");
     }
   } catch (std::invalid_argument& e) {
     std::cout << e.what() << std::endl;
@@ -142,7 +147,8 @@ void KMedoids::calcBestDistancesSwap(
   const arma::urowvec* medoidIndices,
   arma::frowvec* bestDistances,
   arma::frowvec* secondBestDistances,
-  arma::urowvec* assignments) {
+  arma::urowvec* assignments,
+  const bool swapPerformed) {
   #pragma omp parallel for
   for (size_t i = 0; i < data.n_cols; i++) {
     float best = std::numeric_limits<float>::infinity();
@@ -159,6 +165,11 @@ void KMedoids::calcBestDistancesSwap(
     }
     (*bestDistances)(i) = best;
     (*secondBestDistances)(i) = second;
+  }
+
+  if (!swapPerformed) {
+    // We have converged; update the final loss
+    averageLoss = arma::sum(bestDistances) / data.n_cols;
   }
 }
 

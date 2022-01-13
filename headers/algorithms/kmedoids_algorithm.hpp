@@ -198,7 +198,8 @@ class KMedoids {
     const arma::urowvec* medoidIndices,
     arma::frowvec* bestDistances,
     arma::frowvec* secondBestDistances,
-    arma::urowvec* assignments);
+    arma::urowvec* assignments,
+    const bool swapPerformed = true);
 
   /**
    * @brief Calculate the average loss for the given choice of medoids. 
@@ -341,6 +342,9 @@ class KMedoids {
 
   /// Used for floatcomparisons, primarily number of "arms" remaining
   const float precision = 0.001;
+
+  /// Contains the average loss at the last step of the algorithm
+  float averageLoss;
 
   /// Number of points to sample per reference batch
   size_t batchSize = 100;

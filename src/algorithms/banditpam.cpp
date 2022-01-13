@@ -153,8 +153,9 @@ void BanditPAM::build(
   arma::frowvec numSamples(N, arma::fill::zeros);
   arma::frowvec exactMask(N, arma::fill::zeros);
 
+  // TODO(@motiwari): #pragma omp parallel for?
   for (size_t k = 0; k < nMedoids; k++) {
-    // instantiate medoids one-by-online
+    // instantiate medoids one-by-one
     permutationIdx = 0;
     size_t step_count = 0;
     candidates.fill(1);
@@ -359,7 +360,7 @@ void BanditPAM::swap(
   arma::frowvec bestDistances(N);
   arma::frowvec secondBestDistances(N);
   size_t iter = 0;
-  bool swap_performed = true;
+  bool swapPerformed = true;
   arma::umat candidates(nMedoids, N, arma::fill::ones);
   arma::umat exactMask(nMedoids, N, arma::fill::zeros);
   arma::fmat estimates(nMedoids, N, arma::fill::zeros);
@@ -367,18 +368,19 @@ void BanditPAM::swap(
   arma::fmat ucbs(nMedoids, N);
   arma::umat numSamples(nMedoids, N, arma::fill::zeros);
 
+  // calculate quantities needed for swap, bestDistances and sigma
+  calcBestDistancesSwap(
+    data,
+    medoidIndices,
+    &bestDistances,
+    &secondBestDistances,
+    assignments,
+    swapPerformed);
+
   // continue making swaps while loss is decreasing
-  while (swap_performed && iter < maxIter) {
+  while (swapPerformed && iter < maxIter) {
     iter++;
     permutationIdx = 0;
-
-    // calculate quantities needed for swap, bestDistances and sigma
-    calcBestDistancesSwap(
-      data,
-      medoidIndices,
-      &bestDistances,
-      &secondBestDistances,
-      assignments);
 
     sigma = swapSigma(
       data,
@@ -393,13 +395,6 @@ void BanditPAM::swap(
 
     // while there is at least one candidate (float comparison issues)
     while (arma::accu(candidates) > 0.5) {
-      calcBestDistancesSwap(
-        data,
-        medoidIndices,
-        &bestDistances,
-        &secondBestDistances,
-        assignments);
-
       // compute exactly if it's been samples more than N times and
       // hasn't been computed exactly already
       arma::umat compute_exactly =
@@ -451,13 +446,13 @@ void BanditPAM::swap(
       targets = arma::find(candidates);
     }
     // now switch medoids
-    arma::uword new_medoid = lcbs.index_min();
+    arma::uword newMedoid = lcbs.index_min();
     // extract medoid of swap
-    size_t k = new_medoid % medoids->n_cols;
+    size_t k = newMedoid % medoids->n_cols;
 
     // extract data point of swap
-    size_t n = new_medoid / medoids->n_cols;
-    swap_performed = (*medoidIndices)(k) != n;
+    size_t n = newMedoid / medoids->n_cols;
+    swapPerformed = (*medoidIndices)(k) != n;
     steps++;
 
     (*medoidIndices)(k) = n;
@@ -467,7 +462,8 @@ void BanditPAM::swap(
       medoidIndices,
       &bestDistances,
       &secondBestDistances,
-      assignments);
+      assignments,
+      swapPerformed);
   }
 }
 }  // namespace km
