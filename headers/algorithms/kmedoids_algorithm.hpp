@@ -201,12 +201,13 @@ class KMedoids {
     arma::urowvec* assignments);
 
   /**
-   * @brief Calculate the overall loss for the given choice of medoids. 
+   * @brief Calculate the average loss for the given choice of medoids. 
    * 
    * @param data Transposed data to cluster
    * @param medoidIndices Indices of the medoids in the dataset
    * 
-   * @returns The total (not average) loss
+   * @returns The average loss, i.e., the average distance from each point to its
+   * nearest medoid
    */
   float calcLoss(
     const arma::fmat& data,

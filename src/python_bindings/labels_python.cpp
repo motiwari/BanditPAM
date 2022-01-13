@@ -4,7 +4,6 @@
  *
  * Defines the function getLabelsPython in KMedoidsWrapper class 
  * which is used in Python bindings.
- * 
  */
 
 #include <pybind11/pybind11.h>

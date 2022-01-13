@@ -4,8 +4,8 @@
  *
  * Creates the Python bindings for the C++ code that
  * allows it to be called in Python.
- *
  */
+
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <carma>
@@ -43,6 +43,7 @@ PYBIND11_MODULE(banditpam, m) {
   labels_python(&cls);
   steps_python(&cls);
   fit_python(&cls);
+  loss_python(&cls);
   m.attr("__version__") = VERSION_INFO;
 }
 }  // namespace km

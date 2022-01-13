@@ -2,8 +2,7 @@
  * @file banditpam.cpp
  * @date 2021-07-25
  *
- * This file contains the primary C++ implementation of the BanditPAM code.
- *
+ * Contains the primary C++ implementation of the BanditPAM code.
  */
 
 #include "banditpam.hpp"

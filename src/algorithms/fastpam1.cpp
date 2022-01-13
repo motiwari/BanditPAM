@@ -2,13 +2,12 @@
  * @file fastpam1.cpp
  * @date 2021-08-03
  *
- * This file contains the primary C++ implementation of the FastPAM1 code follows
+ * Contains the primary C++ implementation of the FastPAM1 code follows
  * from the paper: Erich Schubert and Peter J. Rousseeuw: Faster k-Medoids Clustering:
  * Improving the PAM, CLARA, and CLARANS Algorithms. (https://arxiv.org/pdf/1810.05691.pdf).
  * The original PAM papers are:
  * 1) Leonard Kaufman and Peter J. Rousseeuw: Clustering by means of medoids.
  * 2) Leonard Kaufman and Peter J. Rousseeuw: Partitioning around medoids (program pam).
- *
  */
 
 #include "fastpam1.hpp"

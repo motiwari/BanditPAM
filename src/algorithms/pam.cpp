@@ -2,8 +2,7 @@
  * @file pam.cpp
  * @date 2021-07-25
  *
- * This file contains a C++ implementation of the PAM algorithm.
- *
+ * Contains a C++ implementation of the PAM algorithm.
  */
 
 #include "pam.hpp"

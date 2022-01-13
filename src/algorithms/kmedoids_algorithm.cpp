@@ -2,8 +2,7 @@
  * @file kmedoids_algorithm.cpp
  * @date 2020-06-10
  *
- * This file contains the primary C++ implementation of the BanditPAM code.
- *
+ * Contains the primary C++ implementation of the BanditPAM code.
  */
 
 #include <omp.h>
@@ -179,7 +178,9 @@ float KMedoids::calcLoss(
     }
     total += cost;
   }
-  return total;
+
+  // Returns average distance
+  return total/data.n_cols;
 }
 
 float KMedoids::cachedLoss(
