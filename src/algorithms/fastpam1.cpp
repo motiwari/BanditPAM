@@ -59,7 +59,7 @@ void FastPAM1::buildFastPAM1(
       total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points
-        cost = (this->*lossFn)(data, i, j);
+        cost = KMedoids::cachedLoss(data, i, j);
         // compares this with the cached best distance
         if (bestDistances(j) < cost) {
           cost = bestDistances(j);
@@ -75,7 +75,7 @@ void FastPAM1::buildFastPAM1(
 
     // update the medoid assignment and best_distance for this datapoint
     for (size_t l = 0; l < N; l++) {
-      cost = (this->*lossFn)(data, l, (*medoidIndices)(k));
+      cost = KMedoids::cachedLoss(data, l, (*medoidIndices)(k));
       if (cost < bestDistances(l)) {
         bestDistances(l) = cost;
       }
@@ -119,7 +119,7 @@ void FastPAM1::swapFastPAM1(
     deltaTD.fill(-di);
     for (size_t j = 0; j < data.n_cols; j++) {
       if (j != i) {
-        dij = (this->*lossFn)(data, i, j);
+        dij = KMedoids::cachedLoss(data, i, j);
         // update loss change for the current
         if (dij < secondBestDistances(j)) {
           deltaTD.at((*assignments)(j)) += (dij - bestDistances(j));
