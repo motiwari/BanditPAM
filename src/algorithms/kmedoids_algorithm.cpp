@@ -169,7 +169,7 @@ void KMedoids::calcBestDistancesSwap(
 
   if (!swapPerformed) {
     // We have converged; update the final loss
-    averageLoss = arma::sum(bestDistances) / data.n_cols;
+    averageLoss = arma::accu(*bestDistances) / data.n_cols;
   }
 }
 

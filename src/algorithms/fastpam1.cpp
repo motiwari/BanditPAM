@@ -99,6 +99,7 @@ void FastPAM1::swapFastPAM1(
   bool swapPerformed = true;
   float di = 0;
   float dij = 0;
+  size_t iter = 0;
 
   // calculate quantities needed for swap, bestDistances and sigma
   KMedoids::calcBestDistancesSwap(
