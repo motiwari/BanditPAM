@@ -26,12 +26,25 @@ class SmallerTests(unittest.TestCase):
         """
         for i in range(NUM_SMALL_CASES):
             data = self.mnist_70k.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
+
+            # Test agreement with FastPAM1
             _ = bpam_agrees_pam(
                 k=SMALL_K_SCHEDULE[i % N_SMALL_K],
                 data=data,
                 loss="L2",
                 test_build=True,
                 assert_immediately=True,
+                use_fp=True,
+            )
+
+            # Test agreement with PAM
+            _ = bpam_agrees_pam(
+                k=SMALL_K_SCHEDULE[i % N_SMALL_K],
+                data=data,
+                loss="L2",
+                test_build=True,
+                assert_immediately=True,
+                use_fp=False,
             )
 
     def test_small_scrna(self):
@@ -42,15 +55,28 @@ class SmallerTests(unittest.TestCase):
         count = 0
         for i in range(NUM_SMALL_CASES):
             data = self.scrna.sample(n=SMALL_SAMPLE_SIZE).to_numpy()
+
+            # Test agreement with FastPAM1
             count += bpam_agrees_pam(
                 k=SMALL_K_SCHEDULE[i % N_SMALL_K],
                 data=data,
                 loss="L1",
                 test_build=True,
                 assert_immediately=False,
+                use_fp=True,
+                )
+
+            # Test agreement with PAM
+            count += bpam_agrees_pam(
+                k=SMALL_K_SCHEDULE[i % N_SMALL_K],
+                data=data,
+                loss="L1",
+                test_build=True,
+                assert_immediately=False,
+                use_fp=False,
                 )
         # Occasionally some may fail due to degeneracy in the scRNA dataset
-        self.assertTrue(count >= PROPORTION_PASSING*NUM_SMALL_CASES)
+        self.assertTrue(count >= 2*PROPORTION_PASSING*NUM_SMALL_CASES)
 
     def test_small_mnist_known_cases(self):
         """
