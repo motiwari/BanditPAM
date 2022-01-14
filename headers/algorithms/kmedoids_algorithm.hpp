@@ -29,7 +29,8 @@ class KMedoids {
     const std::string& algorithm = "BanditPAM",
     size_t maxIter = 1000,
     size_t buildConfidence = 1000,
-    size_t swapConfidence = 10000);
+    size_t swapConfidence = 10000,
+    size_t seed = 0);
 
   ~KMedoids();
 
@@ -149,6 +150,20 @@ class KMedoids {
    * @throws If attempting to set buildConfidence when not using BanditPAM
    */
   void setSwapConfidence(size_t newSwapConfidence);
+
+  /**
+   * @brief Sets the random seed for armadillo.
+   *
+   * @param newSeed The new seed value to use
+   */
+  void setSeed(size_t newSeed);
+
+  /**
+   * @brief Gets the value of the last supplied seed used by armadillo
+   *
+   * @param newSeed The new seed value to use
+   */
+  size_t getSeed() const;
 
   /**
    * @brief Sets the loss function to use during clustering.
@@ -364,6 +379,9 @@ class KMedoids {
 
   /// Number of points to sample per reference batch
   size_t batchSize = 100;
+
+  /// The random seed with which to perform the clustering
+  size_t seed = 0;
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_

@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.4a"
+__version__ = "3.0.4a0"
 
 
 class get_pybind_include(object):
@@ -226,7 +226,7 @@ def setup_colab(delete_source=False):
         # See https://stackoverflow.com/a/51329156
         install_ubuntu_pkgs()
 
-        # TODO(@motiwari): Make this a randomly-named directory 
+        # TODO(@motiwari): Make this a randomly-named directory
         # and set delete_source=True always
         repo_location = os.path.join("/", "content", "BanditPAM")
         # Note the space after the git URL to separate the source and target

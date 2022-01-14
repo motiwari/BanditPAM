@@ -21,13 +21,19 @@ KMedoids::KMedoids(
   const std::string& algorithm,
   size_t maxIter,
   size_t buildConfidence,
-  size_t swapConfidence):
+  size_t swapConfidence,
+  size_t seed):
     nMedoids(nMedoids),
     algorithm(algorithm),
     maxIter(maxIter),
     buildConfidence(buildConfidence),
-    swapConfidence(swapConfidence) {
+    swapConfidence(swapConfidence),
+    seed(seed) {
   KMedoids::checkAlgorithm(algorithm);
+
+  // Though we initialize seed from the given parameter,
+  // we need to call setSeed to pass it to arma
+  KMedoids::setSeed(seed);
 }
 
 KMedoids::~KMedoids() {}
@@ -120,6 +126,15 @@ void KMedoids::setSwapConfidence(size_t newSwapConfidence) {
   swapConfidence = newSwapConfidence;
 }
 
+void KMedoids::setSeed(size_t newSeed) const {
+  seed = newSeed;
+  arma_rng::set_seed(value);
+}
+
+size_t KMedoids::getSeed() const {
+  return seed;
+}
+
 void KMedoids::setLossFn(std::string loss) {
   // TODO(@motiwari): On setting this, clear the cache and the average loss,
   // assignments, medoids, etc.
@@ -153,7 +168,7 @@ std::string KMedoids::getLossFn() const {
   } else if (lossFn == &KMedoids::LINF) {
     return "L-infinity";
   } else if (lossFn == &KMedoids::LP) {
-    std::string lossName = "L-" + std::to_string(lp);
+    std::string lossName = "L" + std::to_string(lp);
     return lossName;
   } else {
     throw std::invalid_argument("Error: Loss Function Undefined!");
