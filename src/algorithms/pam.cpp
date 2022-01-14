@@ -3,6 +3,9 @@
  * @date 2021-07-25
  *
  * Contains a C++ implementation of the PAM algorithm.
+ * The original PAM papers are:
+ * 1) Leonard Kaufman and Peter J. Rousseeuw: Clustering by means of medoids.
+ * 2) Leonard Kaufman and Peter J. Rousseeuw: Partitioning around medoids (program pam).
  */
 
 #include "pam.hpp"
@@ -57,7 +60,6 @@ void PAM::buildPAM(
         best = i;
       }
     }
-    // update the medoid index for that of lowest cost
     (*medoidIndices)(k) = best;
 
     // update the medoid assignment and best_distance for this datapoint

@@ -2,13 +2,14 @@ from banditpam import KMedoids
 import numpy as np
 
 
-# TODO(@motiwari): change pam to fp1 everywhere
+# TODO(@motiwari): change pam to pam everywhere
 def bpam_agrees_pam(
     k: int,
     data: np.array,
     loss: str,
     test_build: bool = False,
     assert_immediately: bool = False,
+    use_fp: bool = True,
 ):
     """
     Parameters:
@@ -23,16 +24,18 @@ def bpam_agrees_pam(
     Returns:
         bpam_and_pam_agree: 1 if BanditPAM and PAM agree, 0 otherwise
     """
+    alg_name = "FastPAM1" if use_fp else "PAM"
+
     kmed_bpam = KMedoids(n_medoids=k, algorithm="BanditPAM")
-    kmed_fp1 = KMedoids(n_medoids=k, algorithm="FastPAM1")
+    kmed_pam = KMedoids(n_medoids=k, algorithm=alg_name)
     kmed_bpam.fit(data, loss)
-    kmed_fp1.fit(data, loss)
+    kmed_pam.fit(data, loss)
 
     bpam_build_medoids = sorted(kmed_bpam.build_medoids.tolist())
-    pam_build_medoids = sorted(kmed_fp1.build_medoids.tolist())
+    pam_build_medoids = sorted(kmed_pam.build_medoids.tolist())
 
     bpam_final_medoids = sorted(kmed_bpam.medoids.tolist())
-    pam_final_medoids = sorted(kmed_fp1.medoids.tolist())
+    pam_final_medoids = sorted(kmed_pam.medoids.tolist())
 
     bpam_and_pam_agree = 1 if bpam_final_medoids == pam_final_medoids else 0
     if test_build:
@@ -43,11 +46,11 @@ def bpam_agrees_pam(
                                         "BanditPAM and FastPAM1 disagree!",
                                         "\nBanditPAM build medoids:",
                                         bpam_build_medoids,
-                                        "\nFastPAM1 build medoids:",
+                                        "\n{} build medoids:".format(alg_name),
                                         pam_build_medoids,
                                         "\nBanditPAM final medoids:",
                                         bpam_final_medoids,
-                                        "\nFastPAM1 final medoids",
+                                        "\n{} final medoids:".format(alg_name),
                                         pam_final_medoids,
                                         ]
                                     )

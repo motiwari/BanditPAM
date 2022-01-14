@@ -359,7 +359,6 @@ void BanditPAM::swap(
 
   arma::frowvec bestDistances(N);
   arma::frowvec secondBestDistances(N);
-  size_t iter = 0;
   bool swapPerformed = true;
   arma::umat candidates(nMedoids, N, arma::fill::ones);
   arma::umat exactMask(nMedoids, N, arma::fill::zeros);
@@ -378,8 +377,8 @@ void BanditPAM::swap(
     swapPerformed);
 
   // continue making swaps while loss is decreasing
-  while (swapPerformed && iter < maxIter) {
-    iter++;
+  while (swapPerformed && steps < maxIter) {
+    steps++;
     permutationIdx = 0;
 
     sigma = swapSigma(
@@ -445,7 +444,7 @@ void BanditPAM::swap(
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
       targets = arma::find(candidates);
     }
-    
+
     // Perform the medoid switch
     arma::uword newMedoid = lcbs.index_min();
     // extract old and new medoids of swap

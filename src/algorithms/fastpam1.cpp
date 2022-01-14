@@ -24,17 +24,11 @@ void FastPAM1::fitFastPAM1(const arma::fmat& inputData) {
   steps = 0;
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
-  size_t iter = 0;
-  bool medoidChange = true;
-  while (iter < maxIter && medoidChange) {
-    auto previous{medoidIndices};
-    FastPAM1::swapFastPAM1(data, &medoidIndices, &assignments);
-    medoidChange = arma::any(medoidIndices != previous);
-    iter++;
-  }
+
+  auto previous{medoidIndices};
+  FastPAM1::swapFastPAM1(data, &medoidIndices, &assignments);  
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
-  steps = iter;
 }
 
 void FastPAM1::buildFastPAM1(
@@ -97,7 +91,6 @@ void FastPAM1::swapFastPAM1(
   size_t swapIn = 0;
   size_t medoidToSwap = 0;
   size_t N = data.n_cols;
-  size_t iter = 0;
   bool swapPerformed = true;
   arma::fmat sigma(nMedoids, N, arma::fill::zeros);
   arma::frowvec bestDistances(N);
@@ -116,8 +109,8 @@ void FastPAM1::swapFastPAM1(
   float di = 0;
   float dij = 0;
 
-  while (swapPerformed && iter < maxIter) {
-    iter++;
+  while (swapPerformed && steps < maxIter) {
+    steps++;
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t i = 0; i < data.n_cols; i++) {
       di = bestDistances(i);
