@@ -40,7 +40,7 @@ PYBIND11_MODULE(banditpam, m) {
     &KMedoidsWrapper::getSwapConfidence, &KMedoidsWrapper::setSwapConfidence);
   cls.def_property("loss_function",
     &KMedoidsWrapper::getLossFn, &KMedoidsWrapper::setLossFn);
-  cls.def_property->("seed",
+  cls.def_property("seed",
     &KMedoidsWrapper::setSeed, &KMedoidsWrapper::getSeed);
   medoids_python(&cls);
   build_medoids_python(&cls);

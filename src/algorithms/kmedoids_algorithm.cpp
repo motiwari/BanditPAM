@@ -126,9 +126,9 @@ void KMedoids::setSwapConfidence(size_t newSwapConfidence) {
   swapConfidence = newSwapConfidence;
 }
 
-void KMedoids::setSeed(size_t newSeed) const {
+void KMedoids::setSeed(size_t newSeed) {
   seed = newSeed;
-  arma_rng::set_seed(value);
+  arma::arma_rng::set_seed(seed);
 }
 
 size_t KMedoids::getSeed() const {
