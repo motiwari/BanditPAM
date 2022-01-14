@@ -116,12 +116,12 @@ void KMedoids::setSwapConfidence(size_t newSwapConfidence) {
 }
 
 void KMedoids::setLossFn(std::string loss) {
-  // TODO (@motiwari): Need to fix this
-  // TODO (@motiwari): Add euclidean
-  // TODO (@motiwari): Lower-case input loss
-  // TODO (@motiwari): Add "getLossFn"
+  // TODO(@motiwari): Need to fix this
+  // TODO(@motiwari): Add euclidean
+  // TODO(@motiwari): Lower-case input loss
+  // TODO(@motiwari): Add "getLossFn"
   if (std::regex_match(loss, std::regex("L\\d*"))) {
-    // TODO (@motiwari): Need to fix this
+    // TODO(@motiwari): Need to fix this
     loss = loss.substr(1);
   }
   try {

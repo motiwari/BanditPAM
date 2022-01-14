@@ -191,6 +191,7 @@ def check_linux_package_installation(pkg_name: str):
         )
     return output.decode().strip()
 
+
 def install_ubuntu_pkgs():
     # TODO: Remove dangerous os.system() calls
     # See https://stackoverflow.com/a/51329156
@@ -207,7 +208,8 @@ def install_ubuntu_pkgs():
         libbz2-dev \
         libffi-dev \
         zlib1g-dev'
-        )
+    )  # noqa: E124
+
 
 def setup_colab():
     # If we're in Google Colab, we need to manually copy over

@@ -50,13 +50,15 @@ void FastPAM1::buildFastPAM1(
   int best = 0;
   float total = 0;
   float cost = 0;
-  // TODO (@motiwari): pragma omp parallel for?
+  // TODO(@motiwari): pragma omp parallel for?
   for (size_t k = 0; k < nMedoids; k++) {
     minDistance = std::numeric_limits<float>::infinity();
     best = 0;
     // fixes a base datapoint
+    // TODO(@motiwari): pragma omp parallel for?
     for (size_t i = 0; i < data.n_cols; i++) {
       total = 0;
+      // TODO(@motiwari): pragma omp parallel for?
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points
         cost = KMedoids::cachedLoss(data, i, j);
@@ -74,6 +76,7 @@ void FastPAM1::buildFastPAM1(
     (*medoidIndices)(k) = best;
 
     // update the medoid assignment and best_distance for this datapoint
+    // TODO(@motiwari): pragma omp parallel for?
     for (size_t l = 0; l < N; l++) {
       cost = KMedoids::cachedLoss(data, l, (*medoidIndices)(k));
       if (cost < bestDistances(l)) {
@@ -82,10 +85,6 @@ void FastPAM1::buildFastPAM1(
     }
   }
 }
-
-// TODO: Used cachedLoss everywhere
-// TODO: Add comment about pragma omp parallel for
-// 
 
 void FastPAM1::swapFastPAM1(
   const arma::fmat& data,
@@ -113,10 +112,12 @@ void FastPAM1::swapFastPAM1(
   float di = 0;
   float dij = 0;
 
+  // TODO(@motiwari): pragma omp parallel for?
   for (size_t i = 0; i < data.n_cols; i++) {
     di = bestDistances(i);
     // compute loss change for making i a medoid
     deltaTD.fill(-di);
+    // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < data.n_cols; j++) {
       if (j != i) {
         dij = KMedoids::cachedLoss(data, i, j);
