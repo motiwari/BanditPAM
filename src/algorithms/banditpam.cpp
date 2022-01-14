@@ -455,7 +455,7 @@ void BanditPAM::swap(
 
     if (swapPerformed) {
       (*medoidIndices)(k) = n;
-      medoids->col(k) = data.col((*medoidIndices)(k)); 
+      medoids->col(k) = data.col((*medoidIndices)(k));
     }
     calcBestDistancesSwap(
         data,

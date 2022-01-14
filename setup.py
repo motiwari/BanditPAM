@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.4"
+__version__ = "3.0.4a"
 
 
 class get_pybind_include(object):
@@ -231,7 +231,7 @@ def setup_colab():
                   repo_location)
         os.system(repo_location +
                   '/scripts/colab_files/colab_install_armadillo.sh')
-        os.system('rm -rf ' + repo_location)
+        # os.system('rm -rf ' + repo_location)
 
 
 def setup_paperspace_gradient():
