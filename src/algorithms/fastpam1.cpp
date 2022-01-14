@@ -50,7 +50,7 @@ void FastPAM1::buildFastPAM1(
   int best = 0;
   float total = 0;
   float cost = 0;
-  
+
   // TODO(@motiwari): pragma omp parallel for?
   for (size_t k = 0; k < nMedoids; k++) {
     minDistance = std::numeric_limits<float>::infinity();
@@ -94,9 +94,10 @@ void FastPAM1::swapFastPAM1(
 ) {
   float bestChange = 0;
   float minDistance = std::numeric_limits<float>::infinity();
-  size_t best = 0;
+  size_t swapIn = 0;
   size_t medoidToSwap = 0;
   size_t N = data.n_cols;
+  size_t iter = 0;
   bool swapPerformed = true;
   arma::fmat sigma(nMedoids, N, arma::fill::zeros);
   arma::frowvec bestDistances(N);
@@ -115,55 +116,61 @@ void FastPAM1::swapFastPAM1(
   float di = 0;
   float dij = 0;
 
-  // TODO(@motiwari): pragma omp parallel for?
-  for (size_t i = 0; i < data.n_cols; i++) {
-    di = bestDistances(i);
-    
-    // Consider making point i a medoid.
-    // The total loss then contains at least one term, -di,
-    // because the loss contribution for point i is reduced to 0
-    deltaTD.fill(-di);
+  while (swapPerformed && iter < maxIter) {
+    iter++;
     // TODO(@motiwari): pragma omp parallel for?
-    for (size_t j = 0; j < data.n_cols; j++) {
-      if (j != i) {
-        dij = KMedoids::cachedLoss(data, i, j);
-        if (dij < bestDistances(j)) {
-          // Case 1: point i becomes the closest medoid for point j,
-          // regardless of which medoid j was previously assigned to. deltaTD
-          // will be negative across ALL possible medoid indices m
-          deltaTD += (dij -  bestDistances(j));
-        } else if (dij < secondBestDistances(j)) {
-          // Case 2: i. If point i is closer than the second best
-          // medoid but further than the best medoid (enforced by failing
-          // the condition for the above if condition), point i will 
-          // become the closest medoid only when we remove its associated 
-          // medoid and add point i
-          deltaTD.at((*assignments)(j)) += (dij - bestDistances(j));
-        }  else {
-          // Case 3: dij > secondBestDistances(j). Then the loss for point j
-          // will not change for any medoid swapped out except for its
-          // assignment, in which case it moves to its second nearest medoid
-          deltaTD.at((*assignments)(j)) +=
-            (secondBestDistances(j) - bestDistances(j));
-        } 
+    for (size_t i = 0; i < data.n_cols; i++) {
+      di = bestDistances(i);
+
+      // Consider making point i a medoid.
+      // The total loss then contains at least one term, -di,
+      // because the loss contribution for point i is reduced to 0
+      deltaTD.fill(-di);
+      // TODO(@motiwari): pragma omp parallel for?
+      for (size_t j = 0; j < data.n_cols; j++) {
+        if (j != i) {
+          dij = KMedoids::cachedLoss(data, i, j);
+          if (dij < bestDistances(j)) {
+            // Case 1: point i becomes the closest medoid for point j,
+            // regardless of which medoid j was previously assigned to. deltaTD
+            // will be negative across ALL possible medoid indices m
+            deltaTD += (dij -  bestDistances(j));
+          } else if (dij < secondBestDistances(j)) {
+            // Case 2: i. If point i is closer than the second best
+            // medoid but further than the best medoid (enforced by failing
+            // the condition for the above if condition), point i will
+            // become the closest medoid only when we remove its associated
+            // medoid and add point i
+            deltaTD.at((*assignments)(j)) += (dij - bestDistances(j));
+          }  else {
+            // Case 3: dij > secondBestDistances(j). Then the loss for point j
+            // will not change for any medoid swapped out except for its
+            // assignment, in which case it moves to its second nearest medoid
+            deltaTD.at((*assignments)(j)) +=
+              (secondBestDistances(j) - bestDistances(j));
+          }
+        }
+      }
+
+      // Determine the best medoid to swap out
+      arma::uword swapOut = deltaTD.index_min();
+      // If the loss change is better than the best loss change so far,
+      // Update our running best statistics
+      if (deltaTD.min() < bestChange) {
+        bestChange = deltaTD.min();
+        swapIn = i;
+        medoidToSwap = swapOut;
       }
     }
-    // choose the best medoid-to-swap
-    arma::uword minMedoid = deltaTD.index_min();
-    // if the loss change is better than the best loss change,
-    // update the best index identified so far
-    if (deltaTD.min() < bestChange) {
-      bestChange = deltaTD.min();
-      best = i;
-      medoidToSwap = minMedoid;
+
+    // Update the loss and perform the swap if the loss would be improved
+    if (bestChange < 0) {
+      minDistance = arma::sum(bestDistances) + bestChange;
+      (*medoidIndices)(medoidToSwap) = swapIn;
+    } else {
+      minDistance = arma::sum(bestDistances);
+      swapPerformed = false;
     }
-  }
-  // update the loss and medoid if the loss is improved
-  if (bestChange < 0) {
-    minDistance = arma::sum(bestDistances) + bestChange;
-    (*medoidIndices)(medoidToSwap) = best;
-  } else {
-    minDistance = arma::sum(bestDistances);
   }
 }
 }  // namespace km
