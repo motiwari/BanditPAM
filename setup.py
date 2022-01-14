@@ -211,7 +211,7 @@ def install_ubuntu_pkgs():
     )  # noqa: E124
 
 
-def setup_colab():
+def setup_colab(delete_source=True):
     # If we're in Google Colab, we need to manually copy over
     # the prebuilt armadillo libraries
     # NOTE: This only works for Colab instances with Ubuntu 18.04 Runtimes!
@@ -231,7 +231,8 @@ def setup_colab():
                   repo_location)
         os.system(repo_location +
                   '/scripts/colab_files/colab_install_armadillo.sh')
-        # os.system('rm -rf ' + repo_location)
+        if delete_source:
+            os.system('rm -rf ' + repo_location)
 
 
 def setup_paperspace_gradient():
@@ -271,7 +272,7 @@ def install_check_ubuntu():
         "zlib1g-dev",
     ]
 
-    setup_colab()
+    setup_colab(delete_source=False)
 
     setup_paperspace_gradient()
 

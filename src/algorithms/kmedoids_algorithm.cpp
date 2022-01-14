@@ -38,14 +38,18 @@ void KMedoids::fit(const arma::fmat& inputData, const std::string& loss) {
   if (inputData.n_rows == 0) {
     throw std::invalid_argument("Dataset is empty");
   }
-
-  KMedoids::setLossFn(loss);
-  if (algorithm == "PAM") {
-    static_cast<PAM*>(this)->fitPAM(inputData);
-  } else if (algorithm == "BanditPAM") {
-    static_cast<BanditPAM*>(this)->fitBanditPAM(inputData);
-  } else if (algorithm == "FastPAM1") {
-    static_cast<FastPAM1*>(this)->fitFastPAM1(inputData);
+  try {
+    KMedoids::setLossFn(loss);
+    if (algorithm == "PAM") {
+      static_cast<PAM*>(this)->fitPAM(inputData);
+    } else if (algorithm == "BanditPAM") {
+      static_cast<BanditPAM*>(this)->fitBanditPAM(inputData);
+    } else if (algorithm == "FastPAM1") {
+      static_cast<FastPAM1*>(this)->fitFastPAM1(inputData);
+    }
+  } catch (std::invalid_argument& e) {
+    std::cout << e.what() << std::endl;
+    std::cout << "Error: Clustering did not run." << std::endl;
   }
 }
 
@@ -116,28 +120,26 @@ void KMedoids::setSwapConfidence(size_t newSwapConfidence) {
 }
 
 void KMedoids::setLossFn(std::string loss) {
+  // TODO(@motiwari): On setting this, clear the cache and the average loss,
+  // assignments, medoids, etc.
   std::for_each(loss.begin(), loss.end(), [](char& c){
     c = ::tolower(c);
   });
-  try {
-    // TODO(@motiwari): Change this to a switch
-    if (std::regex_match(loss, std::regex("l\\d*"))) {
-      lossFn = &KMedoids::LP;
-      lp = stoi(loss.substr(1));
-    } else if (loss == "manhattan") {
-      lossFn = &KMedoids::manhattan;
-    } else if (loss == "cos" || loss == "cosine") {
-      lossFn = &KMedoids::cos;
-    } else if (loss == "inf") {
-      lossFn = &KMedoids::LINF;
-    } else if (loss == "euclidean") {
-      lossFn = &KMedoids::LP;
-      lp = 2;
-    } else {
-      throw std::invalid_argument("Error: unrecognized loss function");
-    }
-  } catch (std::invalid_argument& e) {
-    std::cout << e.what() << std::endl;
+  // TODO(@motiwari): Change this to a switch
+  if (std::regex_match(loss, std::regex("l\\d*"))) {
+    lossFn = &KMedoids::LP;
+    lp = stoi(loss.substr(1));
+  } else if (loss == "manhattan") {
+    lossFn = &KMedoids::manhattan;
+  } else if (loss == "cos" || loss == "cosine") {
+    lossFn = &KMedoids::cos;
+  } else if (loss == "inf") {
+    lossFn = &KMedoids::LINF;
+  } else if (loss == "euclidean") {
+    lossFn = &KMedoids::LP;
+    lp = 2;
+  } else {
+    throw std::invalid_argument("Error: unrecognized loss function");
   }
 }
 
