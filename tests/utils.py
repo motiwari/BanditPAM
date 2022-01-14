@@ -1,7 +1,7 @@
 from banditpam import KMedoids
 import numpy as np
 
-
+# TODO(@motiwari): change pam to fp1 everywhere
 def bpam_agrees_pam(
     k: int,
     data: np.array,
@@ -39,14 +39,14 @@ def bpam_agrees_pam(
 
     if assert_immediately:
         error_message = ''.join(map(str, [
-                                        "BanditPAM and PAM disagree!",
+                                        "BanditPAM and FastPAM1 disagree!",
                                         "\nBanditPAM build medoids:",
                                         bpam_build_medoids,
-                                        "\nPAM build medoids:",
+                                        "\FastPAM1 build medoids:",
                                         pam_build_medoids,
                                         "\nBanditPAM final medoids:",
                                         bpam_final_medoids,
-                                        "\nPAM final medoids",
+                                        "\FastPAM1 final medoids",
                                         pam_final_medoids,
                                         ]
                                     )
