@@ -445,25 +445,26 @@ void BanditPAM::swap(
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
       targets = arma::find(candidates);
     }
-    // now switch medoids
+    
+    // Perform the medoid switch
     arma::uword newMedoid = lcbs.index_min();
-    // extract medoid of swap
+    // extract old and new medoids of swap
     size_t k = newMedoid % medoids->n_cols;
-
-    // extract data point of swap
     size_t n = newMedoid / medoids->n_cols;
     swapPerformed = (*medoidIndices)(k) != n;
     steps++;
 
-    (*medoidIndices)(k) = n;
-    medoids->col(k) = data.col((*medoidIndices)(k));
-    calcBestDistancesSwap(
-      data,
-      medoidIndices,
-      &bestDistances,
-      &secondBestDistances,
-      assignments,
-      swapPerformed);
+    if (swapPerformed) {
+      (*medoidIndices)(k) = n;
+      medoids->col(k) = data.col((*medoidIndices)(k));
+      calcBestDistancesSwap(
+        data,
+        medoidIndices,
+        &bestDistances,
+        &secondBestDistances,
+        assignments,
+        swapPerformed);
+    }
   }
 }
 }  // namespace km

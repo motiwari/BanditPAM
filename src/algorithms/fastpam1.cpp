@@ -167,6 +167,13 @@ void FastPAM1::swapFastPAM1(
     if (bestChange < 0) {
       minDistance = arma::sum(bestDistances) + bestChange;
       (*medoidIndices)(medoidToSwap) = swapIn;
+      calcBestDistancesSwap(
+        data,
+        medoidIndices,
+        &bestDistances,
+        &secondBestDistances,
+        assignments,
+        swapPerformed);
     } else {
       minDistance = arma::sum(bestDistances);
       swapPerformed = false;
