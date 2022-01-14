@@ -50,6 +50,7 @@ void KMedoids::fit(const arma::fmat& inputData, const std::string& loss) {
   } catch (std::invalid_argument& e) {
     std::cout << e.what() << std::endl;
     std::cout << "Error: Clustering did not run." << std::endl;
+    throw e;
   }
 }
 
