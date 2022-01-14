@@ -168,8 +168,7 @@ std::string KMedoids::getLossFn() const {
   } else if (lossFn == &KMedoids::LINF) {
     return "L-infinity";
   } else if (lossFn == &KMedoids::LP) {
-    std::string lossName = "L" + std::to_string(lp);
-    return lossName;
+    return "L" + std::to_string(lp);
   } else {
     throw std::invalid_argument("Error: Loss Function Undefined!");
   }

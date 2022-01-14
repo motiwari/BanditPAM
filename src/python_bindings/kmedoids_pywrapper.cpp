@@ -41,7 +41,7 @@ PYBIND11_MODULE(banditpam, m) {
   cls.def_property("loss_function",
     &KMedoidsWrapper::getLossFn, &KMedoidsWrapper::setLossFn);
   cls.def_property("seed",
-    &KMedoidsWrapper::setSeed, &KMedoidsWrapper::getSeed);
+    &KMedoidsWrapper::getSeed, &KMedoidsWrapper::setSeed);
   medoids_python(&cls);
   build_medoids_python(&cls);
   labels_python(&cls);
