@@ -211,7 +211,7 @@ def install_ubuntu_pkgs():
     )  # noqa: E124
 
 
-def setup_colab(delete_source=True):
+def setup_colab(delete_source=False):
     # If we're in Google Colab, we need to manually copy over
     # the prebuilt armadillo libraries
     # NOTE: This only works for Colab instances with Ubuntu 18.04 Runtimes!
@@ -225,6 +225,9 @@ def setup_colab(delete_source=True):
         # TODO: Remove dangerous os.system() calls
         # See https://stackoverflow.com/a/51329156
         install_ubuntu_pkgs()
+
+        # TODO(@motiwari): Make this a randomly-named directory 
+        # and set delete_source=True always
         repo_location = os.path.join("/", "content", "BanditPAM")
         # Note the space after the git URL to separate the source and target
         os.system('git clone https://github.com/ThrunGroup/BanditPAM.git ' +
