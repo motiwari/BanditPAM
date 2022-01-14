@@ -15,7 +15,7 @@
 
 namespace km {
 float km::KMedoidsWrapper::getLossPython() {
-  return -1.0;  // TODO(@motiwari): fix this with averageLoss getter
+  return KMedoids::getAverageLoss();
 }
 
 void loss_python(pybind11::class_<KMedoidsWrapper> *cls) {

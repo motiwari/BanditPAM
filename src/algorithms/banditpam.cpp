@@ -455,15 +455,15 @@ void BanditPAM::swap(
 
     if (swapPerformed) {
       (*medoidIndices)(k) = n;
-      medoids->col(k) = data.col((*medoidIndices)(k));
-      calcBestDistancesSwap(
+      medoids->col(k) = data.col((*medoidIndices)(k)); 
+    }
+    calcBestDistancesSwap(
         data,
         medoidIndices,
         &bestDistances,
         &secondBestDistances,
         assignments,
         swapPerformed);
-    }
   }
 }
 }  // namespace km
