@@ -159,6 +159,22 @@ class KMedoids {
    */
   void setLossFn(std::string loss);
 
+  /**
+   * @brief Gets the loss function currently used by the KMedoids object
+   *
+   * @returns Loss function currently being recognized
+   */
+  std::string getLossFn() const;
+
+  /**
+   * @brief Get the average loss from the prior clustering
+   *
+   * @returns The average clustering loss from the prior clusteringq
+   *
+   * @throws If no clustering has been run yet
+   */
+  float getAverageLoss() const;
+
   /// The cache will be of size cacheMultiplier*nlogn
   size_t cacheMultiplier = 1000;
 
