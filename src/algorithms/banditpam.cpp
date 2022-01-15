@@ -13,8 +13,7 @@
 
 namespace km {
 void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
-  data = inputData;
-  data = arma::trans(data);
+  data = arma::trans(inputData);
 
   if (this->useCacheP) {
     size_t n = data.n_cols;
@@ -23,7 +22,7 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
 
     #pragma omp parallel for
     for (size_t idx = 0; idx < m*n; idx++) {
-      cache[idx] = -1;
+      cache[idx] = -1;  // TODO(@motiwari): need better value here
     }
 
     permutation = arma::randperm(n);

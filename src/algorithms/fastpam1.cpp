@@ -62,7 +62,7 @@ void FastPAM1::buildFastPAM1(
       // TODO(@motiwari): pragma omp parallel for?
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points
-        cost = KMedoids::cachedLoss(data, i, j);
+        cost = (*lossFn)(data, i, j);
         // compares this with the cached best distance
         if (bestDistances(j) < cost) {
           cost = bestDistances(j);
@@ -79,7 +79,7 @@ void FastPAM1::buildFastPAM1(
     // update the medoid assignment and best_distance for this datapoint
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t l = 0; l < N; l++) {
-      cost = KMedoids::cachedLoss(data, l, (*medoidIndices)(k));
+      cost = (*lossFn)(data, l, (*medoidIndices)(k));
       if (cost < bestDistances(l)) {
         bestDistances(l) = cost;
       }
@@ -129,7 +129,7 @@ void FastPAM1::swapFastPAM1(
       // TODO(@motiwari): pragma omp parallel for?
       for (size_t j = 0; j < data.n_cols; j++) {
         if (j != i) {
-          dij = KMedoids::cachedLoss(data, i, j);
+          dij = (*lossFn)(data, i, j);
           if (dij < bestDistances(j)) {
             // Case 1: point i becomes the closest medoid for point j,
             // regardless of which medoid j was previously assigned to. deltaTD

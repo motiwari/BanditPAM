@@ -15,13 +15,13 @@
 
 namespace km {
 void PAM::fitPAM(const arma::fmat& inputData) {
-  data = inputData;
-  data = arma::trans(data);
+  data = arma::trans(inputData);
   arma::urowvec medoidIndices(nMedoids);
   PAM::buildPAM(data, &medoidIndices);
   steps = 0;
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
+
   size_t i = 0;
   bool medoidChange = true;
   while (i < maxIter && medoidChange) {
@@ -31,8 +31,8 @@ void PAM::fitPAM(const arma::fmat& inputData) {
     i++;
   }
   medoidIndicesFinal = medoidIndices;
-  this->labels = assignments;
-  this->steps = i;
+  labels = assignments;
+  steps = i;
 }
 
 void PAM::buildPAM(
@@ -48,7 +48,7 @@ void PAM::buildPAM(
     for (size_t i = 0; i < data.n_cols; i++) {
       float total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
-        float cost = KMedoids::cachedLoss(data, i, j);
+        float cost = (*lossFn)(data, i, j);
         // compares this with the cached best distance
         if (bestDistances(j) < cost) {
           cost = bestDistances(j);
@@ -64,7 +64,7 @@ void PAM::buildPAM(
 
     // update the medoid assignment and best_distance for this datapoint
     for (size_t l = 0; l < N; l++) {
-      float cost = KMedoids::cachedLoss(data, l, (*medoidIndices)(k));
+      float cost = (*lossFn)(data, l, (*medoidIndices)(k));
       if (cost < bestDistances(l)) {
         bestDistances(l) = cost;
       }
@@ -95,7 +95,7 @@ void PAM::swapPAM(
       float total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // compute distance between base point and every other datapoint
-        float cost = KMedoids::cachedLoss(data, i, j);
+        float cost = (*lossFn)(data, i, j);
         // if x_j is NOT assigned to k: compares this with
         //   the cached best distance
         // if x_j is assigned to k: compares this with
