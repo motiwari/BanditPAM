@@ -2,7 +2,7 @@ from banditpam import KMedoids
 import numpy as np
 
 
-# TODO(@motiwari): change pam to pam everywhere
+# TODO(@motiwari): change pam to alg_name everywhere
 def bpam_agrees_pam(
     k: int,
     data: np.array,
