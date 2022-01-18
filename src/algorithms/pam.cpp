@@ -2,8 +2,10 @@
  * @file pam.cpp
  * @date 2021-07-25
  *
- * This file contains a C++ implementation of the PAM algorithm.
- *
+ * Contains a C++ implementation of the PAM algorithm.
+ * The original PAM papers are:
+ * 1) Leonard Kaufman and Peter J. Rousseeuw: Clustering by means of medoids.
+ * 2) Leonard Kaufman and Peter J. Rousseeuw: Partitioning around medoids (program pam).
  */
 
 #include "pam.hpp"
@@ -13,13 +15,13 @@
 
 namespace km {
 void PAM::fitPAM(const arma::fmat& inputData) {
-  data = inputData;
-  data = arma::trans(data);
+  data = arma::trans(inputData);
   arma::urowvec medoidIndices(nMedoids);
   PAM::buildPAM(data, &medoidIndices);
   steps = 0;
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
+
   size_t i = 0;
   bool medoidChange = true;
   while (i < maxIter && medoidChange) {
@@ -29,8 +31,8 @@ void PAM::fitPAM(const arma::fmat& inputData) {
     i++;
   }
   medoidIndicesFinal = medoidIndices;
-  this->labels = assignments;
-  this->steps = i;
+  labels = assignments;
+  steps = i;
 }
 
 void PAM::buildPAM(
@@ -46,7 +48,7 @@ void PAM::buildPAM(
     for (size_t i = 0; i < data.n_cols; i++) {
       float total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
-        float cost = KMedoids::cachedLoss(data, i, j);
+        float cost = (this->*lossFn)(data, i, j);
         // compares this with the cached best distance
         if (bestDistances(j) < cost) {
           cost = bestDistances(j);
@@ -58,12 +60,11 @@ void PAM::buildPAM(
         best = i;
       }
     }
-    // update the medoid index for that of lowest cost
     (*medoidIndices)(k) = best;
 
     // update the medoid assignment and best_distance for this datapoint
     for (size_t l = 0; l < N; l++) {
-      float cost = KMedoids::cachedLoss(data, l, (*medoidIndices)(k));
+      float cost = (this->*lossFn)(data, l, (*medoidIndices)(k));
       if (cost < bestDistances(l)) {
         bestDistances(l) = cost;
       }
@@ -77,7 +78,7 @@ void PAM::swapPAM(
   arma::urowvec* assignments) {
   float minDistance = std::numeric_limits<float>::infinity();
   size_t best = 0;
-  size_t medoid_to_swap = 0;
+  size_t medoidToSwap = 0;
   size_t N = data.n_cols;
   arma::frowvec bestDistances(N);
   arma::frowvec secondBestDistances(N);
@@ -94,7 +95,7 @@ void PAM::swapPAM(
       float total = 0;
       for (size_t j = 0; j < data.n_cols; j++) {
         // compute distance between base point and every other datapoint
-        float cost = KMedoids::cachedLoss(data, i, j);
+        float cost = (this->*lossFn)(data, i, j);
         // if x_j is NOT assigned to k: compares this with
         //   the cached best distance
         // if x_j is assigned to k: compares this with
@@ -115,10 +116,10 @@ void PAM::swapPAM(
       if (total < minDistance) {
         minDistance = total;
         best = i;
-        medoid_to_swap = k;
+        medoidToSwap = k;
       }
     }
   }
-  (*medoidIndices)(medoid_to_swap) = best;
+  (*medoidIndices)(medoidToSwap) = best;
 }
 }  // namespace km

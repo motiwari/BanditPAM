@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.1"
+__version__ = "3.0.2"
 
 
 class get_pybind_include(object):
@@ -191,6 +191,7 @@ def check_linux_package_installation(pkg_name: str):
         )
     return output.decode().strip()
 
+
 def install_ubuntu_pkgs():
     # TODO: Remove dangerous os.system() calls
     # See https://stackoverflow.com/a/51329156
@@ -207,9 +208,10 @@ def install_ubuntu_pkgs():
         libbz2-dev \
         libffi-dev \
         zlib1g-dev'
-        )
+    )  # noqa: E124
 
-def setup_colab():
+
+def setup_colab(delete_source=False):
     # If we're in Google Colab, we need to manually copy over
     # the prebuilt armadillo libraries
     # NOTE: This only works for Colab instances with Ubuntu 18.04 Runtimes!
@@ -223,13 +225,17 @@ def setup_colab():
         # TODO: Remove dangerous os.system() calls
         # See https://stackoverflow.com/a/51329156
         install_ubuntu_pkgs()
+
+        # TODO(@motiwari): Make this a randomly-named directory
+        # and set delete_source=True always
         repo_location = os.path.join("/", "content", "BanditPAM")
         # Note the space after the git URL to separate the source and target
         os.system('git clone https://github.com/ThrunGroup/BanditPAM.git ' +
                   repo_location)
         os.system(repo_location +
                   '/scripts/colab_files/colab_install_armadillo.sh')
-        os.system('rm -rf ' + repo_location)
+        if delete_source:
+            os.system('rm -rf ' + repo_location)
 
 
 def setup_paperspace_gradient():
@@ -269,7 +275,7 @@ def install_check_ubuntu():
         "zlib1g-dev",
     ]
 
-    setup_colab()
+    setup_colab(delete_source=False)
 
     setup_paperspace_gradient()
 
@@ -401,6 +407,7 @@ def main():
                              "build_medoids_python.cpp"),
                 os.path.join("src", "python_bindings", "labels_python.cpp"),
                 os.path.join("src", "python_bindings", "steps_python.cpp"),
+                os.path.join("src", "python_bindings", "loss_python.cpp"),
             ],
             include_dirs=include_dirs,
             library_dirs=[os.path.join("/", "usr", "local", "lib")],
