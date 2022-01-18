@@ -43,7 +43,8 @@ def bpam_agrees_pam(
 
     if assert_immediately:
         error_message = ''.join(map(str, [
-                                        "BanditPAM and FastPAM1 disagree!",
+                                        "BanditPAM and {} disagree!".format(
+                                            alg_name),
                                         "\nBanditPAM build medoids:",
                                         bpam_build_medoids,
                                         "\n{} build medoids:".format(alg_name),
