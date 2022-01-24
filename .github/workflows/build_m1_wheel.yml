@@ -17,10 +17,10 @@ jobs:
       - uses: actions/checkout@v2
 
       # Is this necessary?
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+      # - name: Set up Python ${{ matrix.python-version }}
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: ${{ matrix.python-version }}
 
       # # Is this necessary?
       # - name: Install MacOS dependencies
@@ -38,6 +38,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.3.1
         env:
           CIBW_ARCHS_MACOS: arm64 # x86_64 universal2
+          MACOSX_DEPLOYMENT_TARGET: 10.14
 
       - uses: actions/upload-artifact@v2
         with:
