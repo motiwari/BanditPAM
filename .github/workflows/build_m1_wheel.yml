@@ -16,11 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # # Is this necessary?
-      # - name: Set up Python ${{ matrix.python-version }}
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: ${{ matrix.python-version }}
+      # Is this necessary?
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
 
       # # Is this necessary?
       # - name: Install MacOS dependencies
