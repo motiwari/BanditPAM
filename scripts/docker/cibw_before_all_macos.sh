@@ -1,7 +1,7 @@
+echo "LOOK HERE"
 pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
 xcodebuild -version
-sudo xcode-select -s /Library/Developer/CommandLineTools
-echo "LOOK HERE"
+# sudo xcode-select -s /Library/Developer/CommandLineTools
 # sudo rm -rf /Library/Developer/CommandLineTools
 # xcode-select --install
 # xcodebuild -version
