@@ -1,9 +1,10 @@
 pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
 xcodebuild -version
+sudo xcode-select -s /Library/Developer/CommandLineTools
 echo "LOOK HERE"
-sudo rm -rf /Library/Developer/CommandLineTools
-xcode-select --install
-xcodebuild -version
+# sudo rm -rf /Library/Developer/CommandLineTools
+# xcode-select --install
+# xcodebuild -version
 pip install numpy
 gcc --version
 g++ --version
