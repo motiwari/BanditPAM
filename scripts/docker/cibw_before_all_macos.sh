@@ -5,7 +5,7 @@ xcodebuild -version
 # sudo rm -rf /Library/Developer/CommandLineTools
 # xcode-select --install
 # xcodebuild -version
-pip install numpy
+#pip install numpy
 gcc --version
 g++ --version
 cmake --version
