@@ -1,4 +1,7 @@
 echo "LOOK HERE"
+python -V
+pip -V
+which python
 pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
 xcodebuild -version
 # sudo xcode-select -s /Library/Developer/CommandLineTools
