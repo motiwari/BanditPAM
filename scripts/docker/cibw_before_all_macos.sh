@@ -1,3 +1,5 @@
+pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
+echo "LOOK HERE"
 pip install numpy
 gcc --version
 g++ --version

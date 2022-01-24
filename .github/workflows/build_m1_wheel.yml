@@ -1,5 +1,10 @@
 name: Build Wheels for M1 Mac
-on: [push, pull_request]
+on: 
+  push:
+  pull_request:
+  release:
+    types:
+      - published
 jobs:
   build_wheels_macos:
     name: Build wheels on macos-10.15
