@@ -20,7 +20,7 @@ jobs:
       # Is this necessary?
       - name: Install MacOS dependencies
         run: |
-          brew install llvm libomp armadillo
+          brew install libomp armadillo
 
       # Is this necessary?
       - name: Install Python dependencies 
