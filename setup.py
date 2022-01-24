@@ -85,7 +85,7 @@ def cpp_flag(compiler: str):
     compiler_name = compiler_check()
     if compiler_name == 'clang':
         #flags = ["-std=c++17", "-std=c++14", "-std=c++11"]
-        flags = ["-std=c++14", "-std=c++11"]
+        flags = ["-std=c++11"]
     else:
         # Assume gcc
         flags = ["-std=c++1y"]
