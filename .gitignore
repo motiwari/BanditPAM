@@ -26,4 +26,5 @@ src/main
 src/main.dSYM/
 tmp/
 var/
+dist/
 wheelhouse/

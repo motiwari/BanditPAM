@@ -2,8 +2,7 @@
  * @file banditpam.cpp
  * @date 2021-07-25
  *
- * This file contains the primary C++ implementation of the BanditPAM code.
- *
+ * Contains the primary C++ implementation of the BanditPAM code.
  */
 
 #include "banditpam.hpp"
@@ -14,8 +13,7 @@
 
 namespace km {
 void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
-  data = inputData;
-  data = arma::trans(data);
+  data = arma::trans(inputData);
 
   if (this->useCacheP) {
     size_t n = data.n_cols;
@@ -24,7 +22,7 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
 
     #pragma omp parallel for
     for (size_t idx = 0; idx < m*n; idx++) {
-      cache[idx] = -1;
+      cache[idx] = -1;  // TODO(@motiwari): need better value here
     }
 
     permutation = arma::randperm(n);
@@ -154,8 +152,9 @@ void BanditPAM::build(
   arma::frowvec numSamples(N, arma::fill::zeros);
   arma::frowvec exactMask(N, arma::fill::zeros);
 
+  // TODO(@motiwari): #pragma omp parallel for?
   for (size_t k = 0; k < nMedoids; k++) {
-    // instantiate medoids one-by-online
+    // instantiate medoids one-by-one
     permutationIdx = 0;
     size_t step_count = 0;
     candidates.fill(1);
@@ -359,8 +358,7 @@ void BanditPAM::swap(
 
   arma::frowvec bestDistances(N);
   arma::frowvec secondBestDistances(N);
-  size_t iter = 0;
-  bool swap_performed = true;
+  bool swapPerformed = true;
   arma::umat candidates(nMedoids, N, arma::fill::ones);
   arma::umat exactMask(nMedoids, N, arma::fill::zeros);
   arma::fmat estimates(nMedoids, N, arma::fill::zeros);
@@ -368,18 +366,19 @@ void BanditPAM::swap(
   arma::fmat ucbs(nMedoids, N);
   arma::umat numSamples(nMedoids, N, arma::fill::zeros);
 
-  // continue making swaps while loss is decreasing
-  while (swap_performed && iter < maxIter) {
-    iter++;
-    permutationIdx = 0;
+  // calculate quantities needed for swap, bestDistances and sigma
+  calcBestDistancesSwap(
+    data,
+    medoidIndices,
+    &bestDistances,
+    &secondBestDistances,
+    assignments,
+    swapPerformed);
 
-    // calculate quantities needed for swap, bestDistances and sigma
-    calcBestDistancesSwap(
-      data,
-      medoidIndices,
-      &bestDistances,
-      &secondBestDistances,
-      assignments);
+  // continue making swaps while loss is decreasing
+  while (swapPerformed && steps < maxIter) {
+    steps++;
+    permutationIdx = 0;
 
     sigma = swapSigma(
       data,
@@ -394,13 +393,6 @@ void BanditPAM::swap(
 
     // while there is at least one candidate (float comparison issues)
     while (arma::accu(candidates) > 0.5) {
-      calcBestDistancesSwap(
-        data,
-        medoidIndices,
-        &bestDistances,
-        &secondBestDistances,
-        assignments);
-
       // compute exactly if it's been samples more than N times and
       // hasn't been computed exactly already
       arma::umat compute_exactly =
@@ -451,24 +443,26 @@ void BanditPAM::swap(
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
       targets = arma::find(candidates);
     }
-    // now switch medoids
-    arma::uword new_medoid = lcbs.index_min();
-    // extract medoid of swap
-    size_t k = new_medoid % medoids->n_cols;
 
-    // extract data point of swap
-    size_t n = new_medoid / medoids->n_cols;
-    swap_performed = (*medoidIndices)(k) != n;
+    // Perform the medoid switch
+    arma::uword newMedoid = lcbs.index_min();
+    // extract old and new medoids of swap
+    size_t k = newMedoid % medoids->n_cols;
+    size_t n = newMedoid / medoids->n_cols;
+    swapPerformed = (*medoidIndices)(k) != n;
     steps++;
 
-    (*medoidIndices)(k) = n;
-    medoids->col(k) = data.col((*medoidIndices)(k));
+    if (swapPerformed) {
+      (*medoidIndices)(k) = n;
+      medoids->col(k) = data.col((*medoidIndices)(k));
+    }
     calcBestDistancesSwap(
-      data,
-      medoidIndices,
-      &bestDistances,
-      &secondBestDistances,
-      assignments);
+        data,
+        medoidIndices,
+        &bestDistances,
+        &secondBestDistances,
+        assignments,
+        swapPerformed);
   }
 }
 }  // namespace km

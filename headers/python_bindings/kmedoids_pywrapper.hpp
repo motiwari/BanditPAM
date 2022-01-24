@@ -63,33 +63,46 @@ class KMedoidsWrapper : public km::KMedoids {
    * KMedoids::fit
    */
   int getStepsPython();
+
+  /**
+   * @brief Returns the average clustering loss
+   *
+   * The average loss, i.e., the average distance from each point to its
+   * nearest medoid
+   */
+  float getLossPython();
 };
 
 // TODO(@motiwari): Encapsulate these
 
 /**
- * @brief Python function to bind to the C++ function KMedoids::fit
+ * @brief Binding for the C++ function KMedoids::fit
  */
 void fit_python(pybind11::class_<km::KMedoidsWrapper> *);
 
 /**
- * @brief Python function to bind to the C++ function KMedoids::getMedoidsBuild()
+ * @brief Binding for the C++ function KMedoids::getMedoidsBuild()
  */
 void build_medoids_python(pybind11::class_<km::KMedoidsWrapper> *);
 
 /**
- * @brief Python function to bind to the C++ function KMedoids::getMedoidsFinal()
+ * @brief Binding for the C++ function KMedoids::getMedoidsFinal()
  */
 void medoids_python(pybind11::class_<km::KMedoidsWrapper> *);
 
 /**
- * @brief Python function to bind to the C++ function KMedoids::getLabels()
+ * @brief Binding for the C++ function KMedoids::getLabels()
  */
 void labels_python(pybind11::class_<km::KMedoidsWrapper> *);
 
 /**
- * @brief Python function to bind to the C++ function KMedoids::getSteps()
+ * @brief Binding for the C++ function KMedoids::getSteps()
  */
 void steps_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::calcLoss()
+ */
+void loss_python(pybind11::class_<km::KMedoidsWrapper> *);
 }  // namespace km
 #endif  // HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_

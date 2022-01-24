@@ -4,8 +4,8 @@
  *
  * Defines the function fitPython in KMedoidsWrapper class 
  * which is used in Python bindings.
- * 
  */
+
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <carma>

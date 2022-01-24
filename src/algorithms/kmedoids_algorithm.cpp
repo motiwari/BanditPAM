@@ -2,8 +2,7 @@
  * @file kmedoids_algorithm.cpp
  * @date 2020-06-10
  *
- * This file contains the primary C++ implementation of the BanditPAM code.
- *
+ * Contains the primary C++ implementation of the BanditPAM code.
  */
 
 #include <omp.h>
@@ -22,13 +21,19 @@ KMedoids::KMedoids(
   const std::string& algorithm,
   size_t maxIter,
   size_t buildConfidence,
-  size_t swapConfidence):
+  size_t swapConfidence,
+  size_t seed):
     nMedoids(nMedoids),
     algorithm(algorithm),
     maxIter(maxIter),
     buildConfidence(buildConfidence),
-    swapConfidence(swapConfidence) {
+    swapConfidence(swapConfidence),
+    seed(seed) {
   KMedoids::checkAlgorithm(algorithm);
+
+  // Though we initialize seed from the given parameter,
+  // we need to call setSeed to pass it to arma
+  KMedoids::setSeed(seed);
 }
 
 KMedoids::~KMedoids() {}
@@ -39,14 +44,19 @@ void KMedoids::fit(const arma::fmat& inputData, const std::string& loss) {
   if (inputData.n_rows == 0) {
     throw std::invalid_argument("Dataset is empty");
   }
-
-  KMedoids::setLossFn(loss);
-  if (algorithm == "PAM") {
-    static_cast<PAM*>(this)->fitPAM(inputData);
-  } else if (algorithm == "BanditPAM") {
-    static_cast<BanditPAM*>(this)->fitBanditPAM(inputData);
-  } else if (algorithm == "FastPAM1") {
-    static_cast<FastPAM1*>(this)->fitFastPAM1(inputData);
+  try {
+    KMedoids::setLossFn(loss);
+    if (algorithm == "PAM") {
+      static_cast<PAM*>(this)->fitPAM(inputData);
+    } else if (algorithm == "BanditPAM") {
+      static_cast<BanditPAM*>(this)->fitBanditPAM(inputData);
+    } else if (algorithm == "FastPAM1") {
+      static_cast<FastPAM1*>(this)->fitFastPAM1(inputData);
+    }
+  } catch (std::invalid_argument& e) {
+    std::cout << e.what() << std::endl;
+    std::cout << "Error: Clustering did not run." << std::endl;
+    throw e;
   }
 }
 
@@ -116,34 +126,62 @@ void KMedoids::setSwapConfidence(size_t newSwapConfidence) {
   swapConfidence = newSwapConfidence;
 }
 
+void KMedoids::setSeed(size_t newSeed) {
+  seed = newSeed;
+  arma::arma_rng::set_seed(seed);
+}
+
+size_t KMedoids::getSeed() const {
+  return seed;
+}
+
 void KMedoids::setLossFn(std::string loss) {
-  if (std::regex_match(loss, std::regex("L\\d*"))) {
-    loss = loss.substr(1);
-  }
-  try {
-    if (loss == "manhattan") {
-      lossFn = &KMedoids::manhattan;
-    } else if (loss == "cos") {
-      lossFn = &KMedoids::cos;
-    } else if (loss == "inf") {
-      lossFn = &KMedoids::LINF;
-    } else if (std::isdigit(loss.at(0))) {
-      lossFn = &KMedoids::LP;
-      lp     = atoi(loss.c_str());
-    } else {
-      throw std::invalid_argument("error: unrecognized loss function");
-    }
-  } catch (std::invalid_argument& e) {
-    std::cout << e.what() << std::endl;
+  // TODO(@motiwari): On setting this, clear the cache and the average loss,
+  // assignments, medoids, etc.
+  std::for_each(loss.begin(), loss.end(), [](char& c){
+    c = ::tolower(c);
+  });
+  // TODO(@motiwari): Change this to a switch
+  if (std::regex_match(loss, std::regex("l\\d*"))) {
+    lossFn = &KMedoids::LP;
+    lp = stoi(loss.substr(1));
+  } else if (loss == "manhattan") {
+    lossFn = &KMedoids::manhattan;
+  } else if (loss == "cos" || loss == "cosine") {
+    lossFn = &KMedoids::cos;
+  } else if (loss == "inf") {
+    lossFn = &KMedoids::LINF;
+  } else if (loss == "euclidean") {
+    lossFn = &KMedoids::LP;
+    lp = 2;
+  } else {
+    throw std::invalid_argument("Error: unrecognized loss function");
   }
 }
+
+std::string KMedoids::getLossFn() const {
+  // TODO(@motiwari): make the strings constants
+  if (lossFn == &KMedoids::manhattan) {
+      return "manhattan";
+  } else if (lossFn == &KMedoids::cos) {
+    return "cosine";
+  } else if (lossFn == &KMedoids::LINF) {
+    return "L-infinity";
+  } else if (lossFn == &KMedoids::LP) {
+    return "L" + std::to_string(lp);
+  } else {
+    throw std::invalid_argument("Error: Loss Function Undefined!");
+  }
+}
+
 
 void KMedoids::calcBestDistancesSwap(
   const arma::fmat& data,
   const arma::urowvec* medoidIndices,
   arma::frowvec* bestDistances,
   arma::frowvec* secondBestDistances,
-  arma::urowvec* assignments) {
+  arma::urowvec* assignments,
+  const bool swapPerformed) {
   #pragma omp parallel for
   for (size_t i = 0; i < data.n_cols; i++) {
     float best = std::numeric_limits<float>::infinity();
@@ -160,6 +198,11 @@ void KMedoids::calcBestDistancesSwap(
     }
     (*bestDistances)(i) = best;
     (*secondBestDistances)(i) = second;
+  }
+
+  if (!swapPerformed) {
+    // We have converged; update the final loss
+    averageLoss = arma::accu(*bestDistances) / data.n_cols;
   }
 }
 
@@ -179,7 +222,9 @@ float KMedoids::calcLoss(
     }
     total += cost;
   }
-  return total;
+
+  // Returns average distance
+  return total/data.n_cols;
 }
 
 float KMedoids::cachedLoss(
@@ -213,6 +258,10 @@ void KMedoids::checkAlgorithm(const std::string& algorithm) const {
     // TODO(@motiwari): Better error type
     throw "unrecognized algorithm";
   }
+}
+
+float KMedoids::getAverageLoss() const {
+  return averageLoss;
 }
 
 float KMedoids::LP(const arma::fmat& data,

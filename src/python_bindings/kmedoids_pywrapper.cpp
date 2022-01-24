@@ -4,8 +4,8 @@
  *
  * Creates the Python bindings for the C++ code that
  * allows it to be called in Python.
- *
  */
+
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <carma>
@@ -38,11 +38,16 @@ PYBIND11_MODULE(banditpam, m) {
     &KMedoidsWrapper::getBuildConfidence, &KMedoidsWrapper::setBuildConfidence);
   cls.def_property("swap_confidence",
     &KMedoidsWrapper::getSwapConfidence, &KMedoidsWrapper::setSwapConfidence);
+  cls.def_property("loss_function",
+    &KMedoidsWrapper::getLossFn, &KMedoidsWrapper::setLossFn);
+  cls.def_property("seed",
+    &KMedoidsWrapper::getSeed, &KMedoidsWrapper::setSeed);
   medoids_python(&cls);
   build_medoids_python(&cls);
   labels_python(&cls);
   steps_python(&cls);
   fit_python(&cls);
+  loss_python(&cls);
   m.attr("__version__") = VERSION_INFO;
 }
 }  // namespace km

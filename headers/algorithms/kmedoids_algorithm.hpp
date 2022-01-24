@@ -29,7 +29,8 @@ class KMedoids {
     const std::string& algorithm = "BanditPAM",
     size_t maxIter = 1000,
     size_t buildConfidence = 1000,
-    size_t swapConfidence = 10000);
+    size_t swapConfidence = 10000,
+    size_t seed = 0);
 
   ~KMedoids();
 
@@ -151,6 +152,20 @@ class KMedoids {
   void setSwapConfidence(size_t newSwapConfidence);
 
   /**
+   * @brief Sets the random seed for armadillo.
+   *
+   * @param newSeed The new seed value to use
+   */
+  void setSeed(size_t newSeed);
+
+  /**
+   * @brief Gets the value of the last supplied seed used by armadillo
+   *
+   * @param newSeed The new seed value to use
+   */
+  size_t getSeed() const;
+
+  /**
    * @brief Sets the loss function to use during clustering.
    *
    * @param loss Loss function to be used e.g. "L2"
@@ -158,6 +173,22 @@ class KMedoids {
    * @throws If the loss function is unrecognized
    */
   void setLossFn(std::string loss);
+
+  /**
+   * @brief Gets the loss function currently used by the KMedoids object
+   *
+   * @returns Loss function currently being recognized
+   */
+  std::string getLossFn() const;
+
+  /**
+   * @brief Get the average loss from the prior clustering
+   *
+   * @returns The average clustering loss from the prior clusteringq
+   *
+   * @throws If no clustering has been run yet
+   */
+  float getAverageLoss() const;
 
   /// The cache will be of size cacheMultiplier*nlogn
   size_t cacheMultiplier = 1000;
@@ -198,15 +229,17 @@ class KMedoids {
     const arma::urowvec* medoidIndices,
     arma::frowvec* bestDistances,
     arma::frowvec* secondBestDistances,
-    arma::urowvec* assignments);
+    arma::urowvec* assignments,
+    const bool swapPerformed = true);
 
   /**
-   * @brief Calculate the overall loss for the given choice of medoids. 
+   * @brief Calculate the average loss for the given choice of medoids. 
    * 
    * @param data Transposed data to cluster
    * @param medoidIndices Indices of the medoids in the dataset
    * 
-   * @returns The total (not average) loss
+   * @returns The average loss, i.e., the average distance from each point to its
+   * nearest medoid
    */
   float calcLoss(
     const arma::fmat& data,
@@ -341,8 +374,14 @@ class KMedoids {
   /// Used for floatcomparisons, primarily number of "arms" remaining
   const float precision = 0.001;
 
+  /// Contains the average loss at the last step of the algorithm
+  float averageLoss;
+
   /// Number of points to sample per reference batch
   size_t batchSize = 100;
+
+  /// The random seed with which to perform the clustering
+  size_t seed = 0;
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_
