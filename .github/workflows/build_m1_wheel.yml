@@ -1,0 +1,39 @@
+name: Build Wheels for M1 Mac
+on: [push, pull_request]
+jobs:
+  build_wheels_macos:
+    name: Build wheels on macos-10.15
+    runs-on: macos-10.15
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.6", "3.7", "3.8", "3.9"]
+    steps:
+      - uses: actions/checkout@v2
+
+      # Is this necessary?
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Is this necessary?
+      - name: Install MacOS dependencies
+        run: |
+          brew install llvm libomp armadillo
+
+      # Is this necessary?
+      - name: Install Python dependencies 
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Note: Only CPython 3.8 and newer support universal2 and arm64 wheels
+      - name: Build across different versions of MacOS
+        uses: pypa/cibuildwheel@v2.3.1
+        env:
+          CIBW_ARCHS_MACOS: x86_64 arm64 universal2
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ./wheelhouse/*.whl
