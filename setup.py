@@ -383,6 +383,9 @@ def main():
             os.path.join("headers", "carma", "include", "carma"),
             os.path.join("headers", "carma", "include", "carma", "carma"),
             os.path.join("/", "usr", "local", "include"),
+            # To include carma when the repo hasnt been initialized
+            os.path.join("/", "usr", "local", "include", "carma"),
+
         ]
 
     compiler_name = compiler_check()
