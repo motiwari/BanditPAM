@@ -13,7 +13,7 @@ mkdir -p build
 cd build
 cmake -DCARMA_INSTALL_LIB=ON ..
 sudo cmake --build . --config Release --target install
-sudo find / -iname "carma"
+#sudo find / -iname "carma"
 
 # These do not work
 # For a solution, see https://github.com/pypa/cibuildwheel/issues/816
