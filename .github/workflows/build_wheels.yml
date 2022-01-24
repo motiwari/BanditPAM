@@ -1,4 +1,4 @@
-name: Build wheels and source distribution, and upload to PyPI
+name: Build Linux wheels and source distribution, and upload to PyPI
 on:
   push:
   pull_request:
@@ -40,6 +40,7 @@ jobs:
             # dist/*.zip # We can only upload one sdist per release
 
   build_wheels:
+    needs: [build_sdist]
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
