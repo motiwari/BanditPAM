@@ -34,7 +34,7 @@ jobs:
       #     pip install -r requirements.txt
 
       # Note: Only CPython 3.8 and newer support universal2 and arm64 wheels
-      - name: Build across different versions of MacOS
+      - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
         env:
           CIBW_ARCHS_MACOS: arm64 # x86_64 universal2

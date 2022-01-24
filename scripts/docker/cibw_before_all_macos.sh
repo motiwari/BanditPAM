@@ -26,7 +26,7 @@ sudo cmake --build . --config Release --target install
 # For a solution, see https://github.com/pypa/cibuildwheel/issues/816
 
 # Brew install armadillo llvm libomp
-export DYLD_LIBRARY_PATH=/usr/local/opt/armadillo/lib 
-export LD_LIBRARY_PATH=/usr/local/opt/armadillo/lib
+#export DYLD_LIBRARY_PATH=/usr/local/opt/armadillo/lib 
+#export LD_LIBRARY_PATH=/usr/local/opt/armadillo/lib
 
 
