@@ -1,0 +1,44 @@
+name: Build Wheels for Windows
+on: 
+  push:
+  pull_request:
+  release:
+    types:
+      - published
+jobs:
+  build_wheels_windows:
+    name: Build wheels on Windows
+    runs-on: windows-2019
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+
+      # Need to install armadillo and OpenMP
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.3.1
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ./wheelhouse/*.whl
+
+  # upload_pypi:
+  #   needs: [build_wheels_windows]
+  #   runs-on: ubuntu-latest # Can only upload from Linux containers
+  #   # TODO: RBF
+  #   # if: github.event_name == 'release' && github.event.action == 'published'
+  #   steps:
+  #     - uses: actions/download-artifact@v2
+  #       with:
+  #         name: artifact
+  #         path: dist
+
+  #     - uses: pypa/gh-action-pypi-publish@v1.4.2
+  #       with:
+  #         user: __token__
+  #         # For PyPI
+  #         # password: ${{ secrets.PYPI_APIKEY }}
+  #         # For TestPyPI. TODO: RBF
+  #         password: ${{ secrets.TEST_PYPI_APIKEY }}
+  #         repository_url: https://test.pypi.org/legacy/
