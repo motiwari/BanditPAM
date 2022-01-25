@@ -393,7 +393,8 @@ def main():
     if compiler_name == "clang":
         libraries = ["armadillo", "omp"]
     else:  # gcc
-        libraries = ["armadillo", "gomp"]
+        #libraries = ["armadillo", "gomp"]
+        libraries = ["armadillo", "omp"] # For M1 Mac runner build
 
     ext_modules = [
         Extension(
