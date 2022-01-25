@@ -330,7 +330,7 @@ class BuildExt(build_ext):
         # TODO(@motiwari): on Windows, these flags are unrecognized
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
-        #opts.append("-fopenmp")
+        opts.append("-Xpreprocessor -fopenmp")
 
         compiler_name = compiler_check()
         if sys.platform == "darwin":
