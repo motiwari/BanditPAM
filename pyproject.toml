@@ -7,11 +7,7 @@ before-all = [
 ]
 
 [tool.cibuildwheel.macos]
-#archs = ["x86_64"]
-archs = ["universal2"]
-#delocate_arches = ["universal2"]
-#archs = ["arm64"]
-#archs = ["x86_64", "universal2", "arm64"]
+archs = ["x86_64", "universal2", "arm64"]
 
 # Get dependencies
 before-all = [

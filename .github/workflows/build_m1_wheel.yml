@@ -18,11 +18,20 @@ jobs:
         run: |
           brew install libomp armadillo
 
+      # Numpy 1.19 has an annoying issue with PyPy
+      # See https://github.com/numpy/numpy/issues/15947
+      - name: Fix Numpy for PyPy
+        run: |
+          pip cache remove numpy
+          brew install openblas
+          OPENBLAS="$(brew --prefix openblas)" pip install numpy
+
       # Note: Only CPython 3.8 and newer support universal2 and arm64 wheels
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
         env:
           CIBW_ARCHS_MACOS: x86_64 arm64 universal2
+          CIBW_BUILD: pp*
 
       - uses: actions/upload-artifact@v2
         with:
