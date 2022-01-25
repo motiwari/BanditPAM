@@ -84,8 +84,7 @@ def cpp_flag(compiler: str):
     """
     compiler_name = compiler_check()
     if compiler_name == 'clang':
-        #flags = ["-std=c++17", "-std=c++14", "-std=c++11"]
-        flags = ["-std=c++11"]
+        flags = ["-std=c++17", "-std=c++14", "-std=c++11"]
     else:
         # Assume gcc
         flags = ["-std=c++1y"]
@@ -311,7 +310,7 @@ class BuildExt(build_ext):
     if sys.platform == "darwin":
         install_check_mac()
         assert compiler_check() == 'clang', "Need to install LLVM clang!"
-        darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.7", "-O3"]
+        darwin_opts = ["-stdlib=libc++", "-O3"]
         c_opts["unix"] += darwin_opts
         l_opts["unix"] += darwin_opts
     elif sys.platform == "linux" or sys.platform == "linux2":
