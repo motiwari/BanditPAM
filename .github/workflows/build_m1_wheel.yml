@@ -46,4 +46,4 @@ jobs:
           # password: ${{ secrets.PYPI_APIKEY }}
           # For TestPyPI. TODO: RBF
           password: ${{ secrets.TEST_PYPI_APIKEY }}
-          repository_url: https://test.pypi.org/legacy
+          repository_url: https://test.pypi.org/legacy/
