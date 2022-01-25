@@ -339,8 +339,8 @@ class BuildExt(build_ext):
         else:
             if compiler_name == 'clang':
                 link_opts.append("-lomp")
-            else:
-                link_opts.append("-lgomp")
+            # else:
+            #     link_opts.append("-lgomp")
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
