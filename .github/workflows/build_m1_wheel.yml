@@ -22,10 +22,10 @@ jobs:
       #   with:
       #     python-version: ${{ matrix.python-version }}
 
-      # # Is this necessary?
-      # - name: Install MacOS dependencies
-      #   run: |
-      #     brew install libomp armadillo
+      # Is this necessary?
+      - name: Install MacOS dependencies
+        run: |
+          brew install libomp armadillo
 
       # # Is this necessary?
       # - name: Install Python dependencies 
