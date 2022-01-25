@@ -141,8 +141,8 @@ def install_check_mac():
     check_brew_package("armadillo")
 
     # Set compiler to LLVM clang on Mac for OpenMP support
-    distutils.sysconfig.get_config_vars()["CC"] = \
-        os.path.join(llvm_loc, "bin", "clang")
+    # distutils.sysconfig.get_config_vars()["CC"] = \
+    #     os.path.join(llvm_loc, "bin", "clang")
 
 
 def check_omp_install_linux():
@@ -310,7 +310,7 @@ class BuildExt(build_ext):
     if sys.platform == "darwin":
         install_check_mac()
         assert compiler_check() == 'clang', "Need to install LLVM clang!"
-        darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.14", "-O3"]
+        darwin_opts = ["-stdlib=libc++", "-O3"]
         c_opts["unix"] += darwin_opts
         l_opts["unix"] += darwin_opts
     elif sys.platform == "linux" or sys.platform == "linux2":

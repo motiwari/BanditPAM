@@ -37,7 +37,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
         env:
-          CIBW_ARCHS_MACOS: arm64 # x86_64 universal2
+          CIBW_ARCHS_MACOS: universal2 # x86_64 universal2
 
       - uses: actions/upload-artifact@v2
         with:
