@@ -62,7 +62,8 @@ jobs:
   upload_pypi:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' && github.event.action == 'published'
+    # TODO: RBF
+    # if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/download-artifact@v2
         with:
@@ -72,4 +73,8 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@v1.4.2
         with:
           user: __token__
-          password: ${{ secrets.pypi_password }}
+          # For PyPI
+          # password: ${{ secrets.PYPI_APIKEY }}
+          # For TestPyPI. TODO: RBF
+          password: ${{ secrets.TEST_PYPI_APIKEY }}
+          repository_url: https://test.pypi.org/legacy

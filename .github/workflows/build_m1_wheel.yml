@@ -42,3 +42,23 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
+
+  upload_pypi:
+    needs: [build_wheels_macos]
+    runs-on: macos-10.15
+    # TODO: RBF
+    # if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: artifact
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@v1.4.2
+        with:
+          user: __token__
+          # For PyPI
+          # password: ${{ secrets.PYPI_APIKEY }}
+          # For TestPyPI. TODO: RBF
+          password: ${{ secrets.TEST_PYPI_APIKEY }}
+          repository_url: https://test.pypi.org/legacy
