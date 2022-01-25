@@ -23,7 +23,8 @@ jobs:
       - name: Fix Numpy for PyPy
         run: |
           brew install openblas
-          OPENBLAS="$(brew --prefix openblas)" pip install --ignore-installed --no-cache-dir --upgrade numpy
+          pip uninstall numpy
+          OPENBLAS="$(brew --prefix openblas)" pip install --ignore-installed --no-cache-dir numpy==1.18.0
 
       # Note: Only CPython 3.8 and newer support universal2 and arm64 wheels
       - name: Build wheels
