@@ -1,4 +1,4 @@
-name: Build Linux wheels and source distribution, and upload to PyPI
+name: Linux - build source distribution and wheels
 on:
   push:
   pull_request:

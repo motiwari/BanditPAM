@@ -1,4 +1,4 @@
-name: Build Wheels for M1 Mac
+name: MacOS - build wheels
 on: 
   push:
   pull_request:
