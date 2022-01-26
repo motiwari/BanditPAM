@@ -10,6 +10,9 @@ import distutils.spawn
 
 __version__ = "3.0.3a6"
 
+# TODO(@motiwari): Move this to a separate file
+GHA = 'GITHUB_ACTIONS'
+
 
 class get_pybind_include(object):
     """
@@ -146,7 +149,7 @@ def install_check_mac():
     # TODO(@motiwari): Check if the arm64 wheels are not multithreaded
     # TODO(@motiwari): Check if the universal2 wheels are not multithreaded
     # when installed on Intel Mac
-    if not os.environ.get('GITHUB_ACTIONS', False):
+    if not os.environ.get(GHA, False):
         # If we are NOT running inside a Github action,
         # check that LLVM clang is installed
         llvm_loc = check_brew_package(
@@ -324,8 +327,7 @@ class BuildExt(build_ext):
         install_check_mac()
         # Verify that we're either compiling with clang or
         # inside a Github Action
-        assert compiler_check() == 'clang' or \
-            os.environ.get('GITHUB_ACTIONS', False), \
+        assert compiler_check() == 'clang' or os.environ.get(GHA, False), \
             "Need to install LLVM clang!"
         darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.14", "-O3"]
         c_opts["unix"] += darwin_opts
@@ -347,7 +349,7 @@ class BuildExt(build_ext):
         # TODO(@motiwari): on Windows, these flags are unrecognized
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
-        if os.environ.get('GITHUB_ACTIONS', False):
+        if sys.platform == 'darwin' and os.environ.get(GHA, False):
             opts.append('-Xpreprocessor -fopenmp')
         else:
             opts.append('-fopenmp')
@@ -356,8 +358,7 @@ class BuildExt(build_ext):
         if sys.platform == "darwin":
             link_opts.append('-lomp')
         else:
-            if compiler_name == 'clang' or \
-                    os.environ.get('GITHUB_ACTIONS', False):
+            if compiler_name == 'clang' or os.environ.get(GHA, False):
                 link_opts.append("-lomp")
             else:
                 link_opts.append("-lgomp")
@@ -424,7 +425,7 @@ def main():
         ]
 
     compiler_name = compiler_check()
-    if compiler_name == "clang" or os.environ.get('GITHUB_ACTIONS', False):
+    if compiler_name == "clang" or os.environ.get(GHA, False):
         libraries = ["armadillo", "omp"]  # For M1 Mac runner build
     else:  # gcc
         libraries = ["armadillo", "gomp"]
