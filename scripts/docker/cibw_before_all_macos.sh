@@ -1,4 +1,3 @@
-pip install numpy
 cd ~
 git clone https://gitlab.com/conradsnicta/armadillo-code.git
 git clone https://github.com/RUrlus/carma.git --recursive # Do we need this?
