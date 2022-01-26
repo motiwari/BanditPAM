@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.3a6"
+__version__ = "3.0.3a7"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = 'GITHUB_ACTIONS'
@@ -355,13 +355,10 @@ class BuildExt(build_ext):
             opts.append('-fopenmp')
 
         compiler_name = compiler_check()
-        if sys.platform == "darwin":
+        if sys.platform == "darwin" or compiler_name == 'clang':
             link_opts.append('-lomp')
         else:
-            if compiler_name == 'clang' or os.environ.get(GHA, False):
-                link_opts.append("-lomp")
-            else:
-                link_opts.append("-lgomp")
+            link_opts.append("-lgomp")
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
@@ -425,7 +422,8 @@ def main():
         ]
 
     compiler_name = compiler_check()
-    if compiler_name == "clang" or os.environ.get(GHA, False):
+    if compiler_name == "clang" or \
+            (os.environ.get(GHA, False) and sys.platform == 'darwin'):
         libraries = ["armadillo", "omp"]  # For M1 Mac runner build
     else:  # gcc
         libraries = ["armadillo", "gomp"]
