@@ -44,3 +44,4 @@ The following is a list of issues seen when installing BanditPAM on MacOS. To re
 1 error generated.
 error: command '/usr/local/opt/llvm/bin/clang' failed with exit code 1
 ```
+- Building the wheels for PyPy on MacOS via `cibuildwheel` do not work. As such, it's necessary to build the package from source if using PyPy. For more information, see the [Developer Notes](https://github.com/ThrunGroup/BanditPAM/wiki/Developer-Notes)
