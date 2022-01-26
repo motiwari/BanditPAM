@@ -17,8 +17,8 @@ before-all = [
 # The Anaconda version of szip is out of date, and since it appears first in the DYLD_LIBRARY_PATH, you may need to upgrade it with "conda install -c csdms-stack szip"
 # Also see https://cibuildwheel.readthedocs.io/en/stable/faq/#macos-passing-dyld_library_path-to-delocate.
 # NOTE: We removed the --require-archs {delocate_archs} from the delocate-wheel command temporarily. It can be re-enabled when building all MacOS wheels at once
-# repair-wheel-command = 'DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.0/lib delocate-listdeps {wheel} && DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.0/lib delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}'
-repair-wheel-command = 'DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.0/lib delocate-listdeps {wheel} && DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.0/lib delocate-wheel -w {dest_dir} {wheel}'
+repair-wheel-command = 'DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.0/lib delocate-listdeps {wheel} && DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.0/lib delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}'
+#repair-wheel-command = 'DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.0/lib delocate-listdeps {wheel} && DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.0/lib delocate-wheel -w {dest_dir} {wheel}'
 
 
 [build-system]
@@ -27,4 +27,3 @@ requires = [
     "numpy",
     "pybind11",
 ]
-#build-backend = "setuptools.build_meta"
