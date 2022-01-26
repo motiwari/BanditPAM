@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.3a4"
+__version__ = "3.0.3a5"
 
 
 class get_pybind_include(object):
@@ -41,6 +41,10 @@ def compiler_check():
     python for some of the compilation process, even if the user specifies
     another one!
     """
+    print("COMPILER INFO:")
+    print(distutils.sysconfig.get_config_vars()["CC"])
+    print(distutils.spawn.find_executable('clang'))
+    print(distutils.spawn.find_executable('gcc'))
     try:
         return 'clang' \
             if 'clang' in distutils.sysconfig.get_config_vars()["CC"] \
