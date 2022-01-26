@@ -41,10 +41,6 @@ def compiler_check():
     python for some of the compilation process, even if the user specifies
     another one!
     """
-    print("COMPILER INFO:")
-    print(distutils.sysconfig.get_config_vars()["CC"])
-    print(distutils.spawn.find_executable('clang'))
-    print(distutils.spawn.find_executable('gcc'))
     try:
         return 'clang' \
             if 'clang' in distutils.sysconfig.get_config_vars()["CC"] \
