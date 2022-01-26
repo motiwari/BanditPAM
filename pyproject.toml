@@ -3,7 +3,7 @@
 [tool.cibuildwheel.linux]
 # Get dependencies
 before-all = [
-    "scripts/docker/cibw_before_all.sh",
+    "scripts/docker/cibw_before_all_linux.sh",
 ]
 
 [tool.cibuildwheel.macos]
