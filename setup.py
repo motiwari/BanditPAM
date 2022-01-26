@@ -137,7 +137,7 @@ def install_check_mac():
     check_brew_package("libomp")
     check_brew_package("armadillo")
     if 'GITHUB_ACTIONS' in os.environ:
-        print(os.environ['GITHUB_ACTIONS'])
+        print("ACTION ENV", os.environ['GITHUB_ACTIONS'])
     # Check that LLVM clang is installed
     # llvm_loc = check_brew_package(
     #     "llvm"
