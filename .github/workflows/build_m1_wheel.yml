@@ -25,8 +25,8 @@ jobs:
           brew install openblas
           pip uninstall numpy
           pip download --no-binary :all: --no-deps numpy
-          unzip numpy-1.18.2.zip  # (you may have newer version)
-          cd numpy-1.18.2
+          unzip numpy-1.16.6.zip  # (you may have newer version)
+          cd numpy-1.16.6
           cat > site.cfg <<EOF
           [openblas]
           libraries = openblas
