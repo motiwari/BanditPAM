@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.3a3"
+__version__ = "3.0.3a4"
 
 
 class get_pybind_include(object):

@@ -27,8 +27,9 @@ sudo cmake --build . --config Release --target install
 
 # These do not work
 # For a solution, see https://github.com/pypa/cibuildwheel/issues/816
+# and https://cibuildwheel.readthedocs.io/en/stable/faq/#macos-passing-dyld_library_path-to-delocate
 
-# Brew install armadillo llvm libomp
+# brew install armadillo llvm libomp
 #export DYLD_LIBRARY_PATH=/usr/local/opt/armadillo/lib 
 #export LD_LIBRARY_PATH=/usr/local/opt/armadillo/lib
 
