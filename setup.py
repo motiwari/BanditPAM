@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.3a5"
+__version__ = "3.0.3a6"
 
 
 class get_pybind_include(object):
@@ -133,12 +133,15 @@ def install_check_mac():
     # Make sure numpy is installed
     check_numpy_installation()
 
-    # Check that LLVM clang, libomp, and armadillo are installed
+    # Check that libomp, and armadillo are installed
+    check_brew_package("libomp")
+    check_brew_package("armadillo")
+    if 'GITHUB_ACTIONS' in os.environ:
+        print(os.environ['GITHUB_ACTIONS'])
+    # Check that LLVM clang is installed
     # llvm_loc = check_brew_package(
     #     "llvm"
     # )  # We need to use LLVM clang since Apple's doesn't support OpenMP
-    check_brew_package("libomp")
-    check_brew_package("armadillo")
 
     # Set compiler to LLVM clang on Mac for OpenMP support
     # distutils.sysconfig.get_config_vars()["CC"] = \
