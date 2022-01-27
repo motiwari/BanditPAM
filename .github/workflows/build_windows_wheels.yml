@@ -13,9 +13,12 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: true
 
       # Need to install armadillo and OpenMP
 
+      # Install python dependencies (maybe?)
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.3.1
 

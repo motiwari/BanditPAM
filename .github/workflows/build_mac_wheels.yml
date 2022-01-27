@@ -12,6 +12,7 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      # Do we need a with: submodules: true here?
       - uses: actions/checkout@v2
 
       - name: Install MacOS dependencies
