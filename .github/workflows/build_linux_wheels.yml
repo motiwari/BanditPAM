@@ -63,7 +63,7 @@ jobs:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     # TODO: RBF
-    # if: github.event_name == 'release' && github.event.action == 'published'
+    if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/download-artifact@v2
         with:
@@ -74,7 +74,7 @@ jobs:
         with:
           user: __token__
           # For PyPI
-          # password: ${{ secrets.PYPI_APIKEY }}
+          password: ${{ secrets.PYPI_APIKEY }}
           # For TestPyPI. TODO: RBF
-          password: ${{ secrets.TEST_PYPI_APIKEY }}
-          repository_url: https://test.pypi.org/legacy
+          # password: ${{ secrets.TEST_PYPI_APIKEY }}
+          # repository_url: https://test.pypi.org/legacy
