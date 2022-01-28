@@ -419,6 +419,8 @@ def main():
                          "include"),
             os.path.join("/", "opt", "homebrew", "opt", "armadillo", \
                          "include", "armadillo_bits"),
+            # For Windows
+            os.path.join("C:\\", "Users", "mohit", "Desktop", "armadillo-code", "include")
         ]
 
     compiler_name = compiler_check()
