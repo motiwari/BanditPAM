@@ -8,7 +8,10 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.2"
+__version__ = "3.0.3"
+
+# TODO(@motiwari): Move this to a separate file
+GHA = 'GITHUB_ACTIONS'
 
 
 class get_pybind_include(object):
@@ -133,16 +136,29 @@ def install_check_mac():
     # Make sure numpy is installed
     check_numpy_installation()
 
-    # Check that LLVM clang, libomp, and armadillo are installed
-    llvm_loc = check_brew_package(
-        "llvm"
-    )  # We need to use LLVM clang since Apple's doesn't support OpenMP
+    # Check that libomp, and armadillo are installed
     check_brew_package("libomp")
     check_brew_package("armadillo")
 
-    # Set compiler to LLVM clang on Mac for OpenMP support
-    distutils.sysconfig.get_config_vars()["CC"] = \
-        os.path.join(llvm_loc, "bin", "clang")
+    # Because we don't want to force M1 users to compile from source,
+    # we build wheels on Github Runners via Github Actions. In
+    # doing so, we need to use Apple's compiler to cross-compile
+    # for M1 Macs and should NOT use clang.
+    # If we are building from source on a non-M1 Mac, we should use
+    # LLVM clang to support multithreading via OpenMP
+    # TODO(@motiwari): Check if the arm64 wheels are not multithreaded
+    # TODO(@motiwari): Check if the universal2 wheels are not multithreaded
+    # when installed on Intel Mac
+    if not os.environ.get(GHA, False):
+        # If we are NOT running inside a Github action,
+        # check that LLVM clang is installed
+        llvm_loc = check_brew_package(
+            "llvm"
+        )  # We need to use LLVM clang since Apple's doesn't support OpenMP
+
+        # Set compiler to LLVM clang on Mac for OpenMP support
+        distutils.sysconfig.get_config_vars()["CC"] = \
+            os.path.join(llvm_loc, "bin", "clang")
 
 
 def check_omp_install_linux():
@@ -309,8 +325,11 @@ class BuildExt(build_ext):
 
     if sys.platform == "darwin":
         install_check_mac()
-        assert compiler_check() == 'clang', "Need to install LLVM clang!"
-        darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.7", "-O3"]
+        # Verify that we're either compiling with clang or
+        # inside a Github Action
+        assert compiler_check() == 'clang' or os.environ.get(GHA, False), \
+            "Need to install LLVM clang!"
+        darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.14", "-O3"]
         c_opts["unix"] += darwin_opts
         l_opts["unix"] += darwin_opts
     elif sys.platform == "linux" or sys.platform == "linux2":
@@ -330,17 +349,16 @@ class BuildExt(build_ext):
         # TODO(@motiwari): on Windows, these flags are unrecognized
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
-        opts.append("-fopenmp")
+        if sys.platform == 'darwin' and os.environ.get(GHA, False):
+            opts.append('-Xpreprocessor -fopenmp')
+        else:
+            opts.append('-fopenmp')
 
         compiler_name = compiler_check()
-        if sys.platform == "darwin":
-            assert compiler_name == 'clang', "Need to install LLVM clang!"
+        if sys.platform == "darwin" or compiler_name == 'clang':
             link_opts.append('-lomp')
         else:
-            if compiler_name == 'clang':
-                link_opts.append("-lomp")
-            else:
-                link_opts.append("-lgomp")
+            link_opts.append("-lgomp")
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
@@ -382,12 +400,31 @@ def main():
             os.path.join("headers", "carma", "include"),
             os.path.join("headers", "carma", "include", "carma"),
             os.path.join("headers", "carma", "include", "carma", "carma"),
+            # To include carma when the BanditPAM repo hasnt been initialized
             os.path.join("/", "usr", "local", "include"),
+            os.path.join("/", "usr", "local", "include", "carma"),
+            os.path.join("/", "usr", "local", "include", "carma", \
+                         "carma_bits"),
+            # When building from source on M1 Macs, may need these dirs
+            # Currently, we should never be building from soure on an M1 Mac,
+            # Only cross-compiling from an Intel Mac
+            # TODO(@motiwari): Remove extraneous directories
+            os.path.join("/", "opt", "homebrew"),
+            os.path.join("/", "opt", "homebrew", "bin"),
+            os.path.join("/", "opt", "homebrew", "include"),
+            os.path.join("/", "opt", "homebrew", "lib"),
+            os.path.join("/", "opt", "homebrew", "opt"),
+            os.path.join("/", "opt", "homebrew", "opt", "armadillo"),
+            os.path.join("/", "opt", "homebrew", "opt", "armadillo", \
+                         "include"),
+            os.path.join("/", "opt", "homebrew", "opt", "armadillo", \
+                         "include", "armadillo_bits"),
         ]
 
     compiler_name = compiler_check()
-    if compiler_name == "clang":
-        libraries = ["armadillo", "omp"]
+    if compiler_name == "clang" or \
+            (os.environ.get(GHA, False) and sys.platform == 'darwin'):
+        libraries = ["armadillo", "omp"]  # For M1 Mac runner build
     else:  # gcc
         libraries = ["armadillo", "gomp"]
 

@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
     size_t maxIter = 1000;
     size_t buildConfidence = 1000;
     size_t swapConfidence = 10000;
-    std::string loss = "2";
+    std::string loss = "L2";
     bool f_flag = false;
     bool k_flag = false;
     const int ARGUMENT_ERROR_CODE = 1;
@@ -84,4 +84,7 @@ int main(int argc, char* argv[]) {
       buildConfidence,
       swapConfidence);
     kmed.fit(data, loss);
+    for (auto medoid : kmed.getMedoidsFinal()) {
+      std::cout << medoid << ",";
+    }
 }
