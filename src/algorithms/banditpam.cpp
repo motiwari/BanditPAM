@@ -450,7 +450,6 @@ void BanditPAM::swap(
     size_t k = newMedoid % medoids->n_cols;
     size_t n = newMedoid / medoids->n_cols;
     swapPerformed = (*medoidIndices)(k) != n;
-    steps++;
 
     if (swapPerformed) {
       (*medoidIndices)(k) = n;
