@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.4"
+__version__ = "3.0.5a"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = 'GITHUB_ACTIONS'
@@ -343,16 +343,19 @@ class BuildExt(build_ext):
     def build_extensions(self):
         ct = self.compiler.compiler_type
 
-        opts = self.c_opts.get(ct, [])
-        link_opts = self.l_opts.get(ct, [])
+        comp_opts = self.c_opts.get(ct, [])
+        # TODO(@motiwari): Use global "-static" here?
+        comp_opts += ["-static-libstdc++", "-static-libgcc"]
 
+        link_opts = self.l_opts.get(ct, [])
+        #link_opts += ["-static-libomp"]
         # TODO(@motiwari): on Windows, these flags are unrecognized
-        opts.append(cpp_flag(self.compiler))
-        opts.append("-O3")
+        comp_opts.append(cpp_flag(self.compiler))
+        comp_opts.append("-O3")
         if sys.platform == 'darwin' and os.environ.get(GHA, False):
-            opts.append('-Xpreprocessor -fopenmp')
+            comp_opts.append('-Xpreprocessor -fopenmp')
         else:
-            opts.append('-fopenmp')
+            comp_opts.append('-fopenmp')
 
         compiler_name = compiler_check()
         if sys.platform == "darwin" or compiler_name == 'clang':
@@ -360,9 +363,10 @@ class BuildExt(build_ext):
         else:
             link_opts.append("-lgomp")
 
-        if ct == "unix":
-            if has_flag(self.compiler, "-fvisibility=hidden"):
-                opts.append("-fvisibility=hidden")
+        # TODO(@motiwari): Do we really want -fvisibility=hidden?
+        #if ct == "unix":
+        #    if has_flag(self.compiler, "-fvisibility=hidden"):
+        #        comp_opts.append("-fvisibility=hidden")
 
         for ext in self.extensions:
             ext.define_macros = [
@@ -371,8 +375,8 @@ class BuildExt(build_ext):
                     '"{}"'.format(self.distribution.get_version())
                 )
             ]
-            ext.extra_compile_args = opts
-            ext.extra_link_args = link_opts
+            ext.extra_compile_args += comp_opts
+            ext.extra_link_args += link_opts
 
         build_ext.build_extensions(self)
 
@@ -450,7 +454,6 @@ def main():
             library_dirs=[os.path.join("/", "usr", "local", "lib")],
             libraries=libraries,
             language="c++1y",  # TODO: modify this based on cpp_flag(compiler)
-            extra_compile_args=["-static-libstdc++"],
         )
     ]
 
