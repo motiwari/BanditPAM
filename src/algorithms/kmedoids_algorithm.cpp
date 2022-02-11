@@ -46,6 +46,8 @@ void KMedoids::fit(const arma::fmat& inputData, const std::string& loss, const a
       throw std::invalid_argument("Malformed distance matrix provided");
     }
     useDistMat = true;
+  } else {
+    useDistMat = false;  // In case the user is running a new problem without a distance matrix after running a distance matrix problem
   }
   
   if (inputData.n_rows == 0) {
@@ -244,10 +246,9 @@ float KMedoids::cachedLoss(
   const arma::fmat& distMat,
   const size_t i,
   const size_t j,
-  const bool useCache,
-  const bool useDistMat) {
+  const bool useCache) {
 
-  if (useDistMat) {
+  if (this->useDistMat) {
     return distMat.at(i, j);
   }
 

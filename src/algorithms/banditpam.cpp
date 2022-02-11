@@ -15,25 +15,28 @@ namespace km {
 void BanditPAM::fitBanditPAM(const arma::fmat& inputData, const arma::fmat& distMat) {
   data = arma::trans(inputData);
 
-  if (distMat.n_cols == 0) {  // If we are NOT using a distance matrix, use cache
-    if (this->useCacheP) {
-      size_t n = data.n_cols;
-      size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
-      cache = new float[n * m];
+  // Note: even if we are using a distance matrix, we compute the permutation
+  // in the block below because it is used elsewhere in the call stack
+  // TODO@(motiwari): Remove need for data or permutation through when using
+  // a distance matrix
+  if (this->useCacheP) {
+    size_t n = data.n_cols;
+    size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
+    cache = new float[n * m];
 
-      #pragma omp parallel for
-      for (size_t idx = 0; idx < m*n; idx++) {
-        cache[idx] = -1;  // TODO(@motiwari): need better value here
-      }
-
-      permutation = arma::randperm(n);
-      permutationIdx = 0;
-      reindex = {};
-      // TODO(@motiwari): Can we parallelize this?
-      for (size_t counter = 0; counter < m; counter++) {
-        reindex[permutation[counter]] = counter;
-      }
+    #pragma omp parallel for
+    for (size_t idx = 0; idx < m*n; idx++) {
+      cache[idx] = -1;  // TODO(@motiwari): need better value here
     }
+
+    permutation = arma::randperm(n);
+    permutationIdx = 0;
+    reindex = {};
+    // TODO(@motiwari): Can we parallelize this?
+    for (size_t counter = 0; counter < m; counter++) {
+      reindex[permutation[counter]] = counter;
+    }
+    
   }
 
   arma::fmat medoidMatrix(data.n_rows, nMedoids);

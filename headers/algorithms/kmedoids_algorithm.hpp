@@ -268,8 +268,7 @@ class KMedoids {
     const arma::fmat& distMat,
     const size_t i,
     const size_t j,
-    const bool useCache = true,
-    const bool useDistMat = false);
+    const bool useCache = true);
 
   /// If using an L_p loss, the value of p
   size_t lp;
