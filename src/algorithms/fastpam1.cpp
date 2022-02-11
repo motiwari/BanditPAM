@@ -93,7 +93,6 @@ void FastPAM1::swapFastPAM1(
   arma::urowvec* assignments
 ) {
   float bestChange = 0;
-  float minDistance = std::numeric_limits<float>::infinity();
   size_t swapIn = 0;
   size_t medoidToSwap = 0;
   size_t N = data.n_cols;
@@ -165,7 +164,6 @@ void FastPAM1::swapFastPAM1(
 
     // Update the loss and perform the swap if the loss would be improved
     if (bestChange < 0) {
-      minDistance = arma::sum(bestDistances) + bestChange;
       (*medoidIndices)(medoidToSwap) = swapIn;
       calcBestDistancesSwap(
         data,
@@ -175,7 +173,6 @@ void FastPAM1::swapFastPAM1(
         assignments,
         swapPerformed);
     } else {
-      minDistance = arma::sum(bestDistances);
       swapPerformed = false;
     }
   }

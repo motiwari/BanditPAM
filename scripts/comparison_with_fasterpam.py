@@ -13,6 +13,8 @@ from kmedoids import fasterpam
 # - precomputation of entire distance matrix
 # - Why is there a variable XX in the Google colab?
 # - Euclidean_distances may be faster than the way BanditPAM computes it
+# - max_iter should be set to much lower!
+# - Is the rust implementation multithreaded? Confirm with Schubert, but doesn't look like it
 
 def benchmark(data, f, n=1):
   data_ = defaultdict(list)
@@ -37,7 +39,6 @@ def run_fasterpam(data, seed):
   return {"time (ms)": (end-start)*1000, "verified loss": verified_loss, "reported loss": r.loss, "opt. time (ms)": (end-mid)*1000, "mat. time (ms)": (mid-start)*1000 }  
 
 def run_bandit(data, seed):
-  banditpam.set_num_threads(1) # c.f., https://github.com/ThrunGroup/BanditPAM/issues/176#issuecomment-1015920113
   km = banditpam.KMedoids(100)
   km.seed = seed
   start = time.time()
@@ -45,7 +46,7 @@ def run_bandit(data, seed):
   end = time.time()
   meds, lbl = data[km.medoids], km.labels
   #del km # try to free memory
-  verified_loss = numpy.sqrt(((data - meds[lbl])**2).sum(axis=1)).sum()
+  verified_loss = np.sqrt(((data - meds[lbl])**2).sum(axis=1)).sum()
   return {"time (ms)": (end-start)*1000, "verified loss": verified_loss, "reported loss": km.average_loss }  
 
 

@@ -406,7 +406,7 @@ def main():
             os.path.join("/", "usr", "local", "include", "carma", \
                          "carma_bits"),
             # When building from source on M1 Macs, may need these dirs
-            # Currently, we should never be building from soure on an M1 Mac,
+            # Currently, we should never be building from source on an M1 Mac,
             # Only cross-compiling from an Intel Mac
             # TODO(@motiwari): Remove extraneous directories
             os.path.join("/", "opt", "homebrew"),
