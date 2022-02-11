@@ -9,12 +9,15 @@ from sklearn.metrics.pairwise import euclidean_distances
 from kmedoids import fasterpam
 
 # Possible discrepancies: 
-# - number of threads in BanditPAM vs. rust implementation
+# - number of threads in BanditPAM vs. rust implementation. Is the rust implementation multithreaded? Confirm with Schubert, but doesn't look like it
 # - precomputation of entire distance matrix
 # - Why is there a variable XX in the Google colab?
 # - Euclidean_distances may be faster than the way BanditPAM computes it
 # - max_iter should be set to much lower!
-# - Is the rust implementation multithreaded? Confirm with Schubert, but doesn't look like it
+
+# TODO:
+# 1. Lower max_iter
+# 2. Allow for distance matrix
 
 def benchmark(data, f, n=1):
   data_ = defaultdict(list)
