@@ -38,9 +38,9 @@ KMedoids::KMedoids(
 
 KMedoids::~KMedoids() {}
 
-void KMedoids::fit(const arma::fmat& inputData, const std::string& loss, const arma::fmat& distMat) {
+void KMedoids::fit(const arma::fmat& inputData, const std::string& loss, std::optional<const arma::fmat&> distMat) {
 
-  if (distMat.n_rows != 0) {  // User has provided a distance matrix
+  if (distMat) {  // User has provided a distance matrix
     if (distMat.n_cols != distMat.n_rows) {
       // TODO(@motiwari): Change this to an assertion that is properly raised
       throw std::invalid_argument("Malformed distance matrix provided");

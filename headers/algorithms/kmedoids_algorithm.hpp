@@ -42,7 +42,7 @@ class KMedoids {
    * 
    * @throws if the input data is empty.
    */
-  void fit(const arma::fmat& inputData, const std::string& loss, const arma::fmat& distMat = nullptr);
+  void fit(const arma::fmat& inputData, const std::string& loss, std::optional<const arma::fmat&> distMat);
 
   /**
    * @brief Returns the medoids at the end of the BUILD step.
