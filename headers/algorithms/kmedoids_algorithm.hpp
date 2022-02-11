@@ -27,7 +27,7 @@ class KMedoids {
   KMedoids(
     size_t nMedoids = 5,
     const std::string& algorithm = "BanditPAM",
-    size_t maxIter = 1000,
+    size_t maxIter = 100,
     size_t buildConfidence = 1000,
     size_t swapConfidence = 10000,
     size_t seed = 0);

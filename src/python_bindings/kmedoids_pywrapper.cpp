@@ -19,9 +19,9 @@ PYBIND11_MODULE(banditpam, m) {
   m.doc() = "BanditPAM Python library, implemented in C++";
   pybind11::class_<KMedoidsWrapper> cls(m, "KMedoids");
   cls.def(pybind11::init<int, std::string, int, int, int>(),
-          pybind11::arg("n_medoids") = NULL,
+          pybind11::arg("n_medoids") = 5,
           pybind11::arg("algorithm") = "BanditPAM",
-          pybind11::arg("max_iter") = 1000,
+          pybind11::arg("max_iter") = 100,
           pybind11::arg("build_confidence") = 1000,
           pybind11::arg("swap_confidence") = 10000);
   cls.def_property("n_medoids",
