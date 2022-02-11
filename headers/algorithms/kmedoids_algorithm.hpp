@@ -42,7 +42,7 @@ class KMedoids {
    * 
    * @throws if the input data is empty.
    */
-  void fit(const arma::fmat& inputData, const std::string& loss);
+  void fit(const arma::fmat& inputData, const std::string& loss, const arma::fmat& distMat = nullptr);
 
   /**
    * @brief Returns the medoids at the end of the BUILD step.
@@ -211,6 +211,9 @@ class KMedoids {
   /// Used for debugging only to toggle use of the cache
   bool useCacheP = true;
 
+  /// Determines whether we use a user-provided distance matrix
+  bool useDistMat = false;
+
  protected:
   /**
    * @brief Calculates the best and second best distances for each datapoint to
@@ -226,6 +229,7 @@ class KMedoids {
    */
   void calcBestDistancesSwap(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     const arma::urowvec* medoidIndices,
     arma::frowvec* bestDistances,
     arma::frowvec* secondBestDistances,
@@ -243,6 +247,7 @@ class KMedoids {
    */
   float calcLoss(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     const arma::urowvec* medoidIndices);
 
   /**
@@ -260,9 +265,11 @@ class KMedoids {
    */
   float cachedLoss(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     const size_t i,
     const size_t j,
-    const bool useCache = true);
+    const bool useCache = true,
+    const bool useDistMat = false);
 
   /// If using an L_p loss, the value of p
   size_t lp;

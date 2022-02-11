@@ -10,7 +10,6 @@
 #include "kmedoids_algorithm.hpp"
 
 
-
 namespace km {
 /**
  * @brief Contains all necessary PAM functions
@@ -22,7 +21,7 @@ class PAM : public km::KMedoids {
    * 
    * @param inputData Input data to cluster
    */
-  void fitPAM(const arma::fmat& inputData);
+  void fitPAM(const arma::fmat& inputData, const arma::fmat& distMat);
 
   /**
   * @brief Performs the BUILD step of PAM.
@@ -37,6 +36,7 @@ class PAM : public km::KMedoids {
   */
   void buildPAM(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     arma::urowvec* medoidIndices);
 
   /** 
@@ -54,6 +54,7 @@ class PAM : public km::KMedoids {
   */
   void swapPAM(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     arma::urowvec* medoidIndices,
     arma::urowvec* assignments);
 };

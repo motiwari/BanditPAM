@@ -21,7 +21,7 @@ class FastPAM1 : public km::KMedoids {
    *
    * @param inputData Input data to cluster
    */
-  void fitFastPAM1(const arma::fmat& inputData);
+  void fitFastPAM1(const arma::fmat& inputData, const arma::fmat& distMat);
 
   /**
    * @brief Performs the BUILD step of FastPAM1.
@@ -36,6 +36,7 @@ class FastPAM1 : public km::KMedoids {
    */
   void buildFastPAM1(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     arma::urowvec* medoidIndices);
 
   /**
@@ -53,6 +54,7 @@ class FastPAM1 : public km::KMedoids {
    */
   void swapFastPAM1(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     arma::urowvec* medoidIndices,
     arma::urowvec* assignments);
 };

@@ -14,10 +14,10 @@
 #include <unordered_map>
 
 namespace km {
-void PAM::fitPAM(const arma::fmat& inputData) {
+void PAM::fitPAM(const arma::fmat& inputData, const arma::fmat& distMat) {
   data = arma::trans(inputData);
   arma::urowvec medoidIndices(nMedoids);
-  PAM::buildPAM(data, &medoidIndices);
+  PAM::buildPAM(data, distMat, &medoidIndices);
   steps = 0;
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
@@ -26,7 +26,7 @@ void PAM::fitPAM(const arma::fmat& inputData) {
   bool medoidChange = true;
   while (i < maxIter && medoidChange) {
     auto previous(medoidIndices);
-    PAM::swapPAM(data, &medoidIndices, &assignments);
+    PAM::swapPAM(data, distMat, &medoidIndices, &assignments);
     medoidChange = arma::any(medoidIndices != previous);
     i++;
   }
@@ -37,6 +37,7 @@ void PAM::fitPAM(const arma::fmat& inputData) {
 
 void PAM::buildPAM(
   const arma::fmat& data,
+  const arma::fmat& distMat,
   arma::urowvec* medoidIndices) {
   size_t N = data.n_cols;
   arma::frowvec estimates(N, arma::fill::zeros);
@@ -74,6 +75,7 @@ void PAM::buildPAM(
 
 void PAM::swapPAM(
   const arma::fmat& data,
+  const arma::fmat& distMat,
   arma::urowvec* medoidIndices,
   arma::urowvec* assignments) {
   float minDistance = std::numeric_limits<float>::infinity();
@@ -85,6 +87,7 @@ void PAM::swapPAM(
 
   KMedoids::calcBestDistancesSwap(
     data,
+    distMat,
     medoidIndices,
     &bestDistances,
     &secondBestDistances,

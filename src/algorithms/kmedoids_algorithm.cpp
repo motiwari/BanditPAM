@@ -38,20 +38,30 @@ KMedoids::KMedoids(
 
 KMedoids::~KMedoids() {}
 
-void KMedoids::fit(const arma::fmat& inputData, const std::string& loss) {
-  batchSize = fmin(inputData.n_rows, batchSize);
+void KMedoids::fit(const arma::fmat& inputData, const std::string& loss, const arma::fmat& distMat) {
 
+  if (distMat.n_rows != 0) {  // User has provided a distance matrix
+    if (distMat.n_cols != distMat.n_rows) {
+      // TODO(@motiwari): Change this to an assertion that is properly raised
+      throw std::invalid_argument("Malformed distance matrix provided");
+    }
+    useDistMat = true;
+  }
+  
   if (inputData.n_rows == 0) {
+    // TODO(@motiwari): Change this to an assertion that is properly raised
     throw std::invalid_argument("Dataset is empty");
   }
+  batchSize = fmin(inputData.n_rows, batchSize);
+  
   try {
     KMedoids::setLossFn(loss);
     if (algorithm == "PAM") {
-      static_cast<PAM*>(this)->fitPAM(inputData);
+      static_cast<PAM*>(this)->fitPAM(inputData, distMat);
     } else if (algorithm == "BanditPAM") {
-      static_cast<BanditPAM*>(this)->fitBanditPAM(inputData);
+      static_cast<BanditPAM*>(this)->fitBanditPAM(inputData, distMat);
     } else if (algorithm == "FastPAM1") {
-      static_cast<FastPAM1*>(this)->fitFastPAM1(inputData);
+      static_cast<FastPAM1*>(this)->fitFastPAM1(inputData, distMat);
     }
   } catch (std::invalid_argument& e) {
     std::cout << e.what() << std::endl;
@@ -139,7 +149,7 @@ void KMedoids::setLossFn(std::string loss) {
   // TODO(@motiwari): On setting this, clear the cache and the average loss,
   // assignments, medoids, etc.
   std::for_each(loss.begin(), loss.end(), [](char& c){
-    c = ::tolower(c);
+    c = ::tolower(c);  // TODO(@motiwari): Put something before ::
   });
   // TODO(@motiwari): Change this to a switch
   if (std::regex_match(loss, std::regex("l\\d*"))) {
@@ -177,6 +187,7 @@ std::string KMedoids::getLossFn() const {
 
 void KMedoids::calcBestDistancesSwap(
   const arma::fmat& data,
+  const arma::fmat& distMat,
   const arma::urowvec* medoidIndices,
   arma::frowvec* bestDistances,
   arma::frowvec* secondBestDistances,
@@ -187,7 +198,7 @@ void KMedoids::calcBestDistancesSwap(
     float best = std::numeric_limits<float>::infinity();
     float second = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < medoidIndices->n_cols; k++) {
-      float cost = KMedoids::cachedLoss(data, i, (*medoidIndices)(k));
+      float cost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k));
       if (cost < best) {
         (*assignments)(i) = k;
         second = best;
@@ -208,6 +219,7 @@ void KMedoids::calcBestDistancesSwap(
 
 float KMedoids::calcLoss(
   const arma::fmat& data,
+  const arma::fmat& distMat,
   const arma::urowvec* medoidIndices) {
   float total = 0;
   // TODO(@motiwari): is this parallel loop accumulating properly?
@@ -215,7 +227,7 @@ float KMedoids::calcLoss(
   for (size_t i = 0; i < data.n_cols; i++) {
     float cost = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < nMedoids; k++) {
-      float currCost = KMedoids::cachedLoss(data, i, (*medoidIndices)(k));
+      float currCost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k));
       if (currCost < cost) {
         cost = currCost;
       }
@@ -229,9 +241,16 @@ float KMedoids::calcLoss(
 
 float KMedoids::cachedLoss(
   const arma::fmat& data,
+  const arma::fmat& distMat,
   const size_t i,
   const size_t j,
-  const bool useCache) {
+  const bool useCache,
+  const bool useDistMat) {
+
+  if (useDistMat) {
+    return distMat.at(i, j);
+  }
+
   if (!useCache) {
     return (this->*lossFn)(data, i, j);
   }

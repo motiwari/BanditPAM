@@ -21,7 +21,7 @@ class BanditPAM : public km::KMedoids {
    * 
    * @param inputData Input data to cluster
    */
-  void fitBanditPAM(const arma::fmat& inputData);
+  void fitBanditPAM(const arma::fmat& inputData, const arma::fmat& distMat);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -36,6 +36,7 @@ class BanditPAM : public km::KMedoids {
    */
   arma::frowvec buildSigma(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     const arma::frowvec& bestDistances,
     const bool useAbsolute);
 
@@ -53,6 +54,7 @@ class BanditPAM : public km::KMedoids {
    */
   arma::frowvec buildTarget(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     const arma::uvec* target,
     const arma::frowvec* bestDistances,
     const bool useAbsolute,
@@ -74,6 +76,7 @@ class BanditPAM : public km::KMedoids {
    */
   void build(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     arma::urowvec* medoidIndices,
     arma::fmat* medoids);
 
@@ -90,6 +93,7 @@ class BanditPAM : public km::KMedoids {
    */
   arma::fmat swapSigma(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     const arma::frowvec* bestDistances,
     const arma::frowvec* secondBestDistances,
     const arma::urowvec* assignments);
@@ -110,6 +114,7 @@ class BanditPAM : public km::KMedoids {
    */
   arma::fvec swapTarget(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     const arma::urowvec* medoidIndices,
     const arma::uvec* targets,
     const arma::frowvec* bestDistances,
@@ -135,6 +140,7 @@ class BanditPAM : public km::KMedoids {
   */
   void swap(
     const arma::fmat& data,
+    const arma::fmat& distMat,
     arma::urowvec* medoidIndices,
     arma::fmat* medoids,
     arma::urowvec* assignments);

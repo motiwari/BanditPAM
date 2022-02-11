@@ -16,11 +16,11 @@
 #include <unordered_map>
 
 namespace km {
-void FastPAM1::fitFastPAM1(const arma::fmat& inputData) {
+void FastPAM1::fitFastPAM1(const arma::fmat& inputData, const arma::fmat& distMat) {
   data = inputData;
   data = arma::trans(data);
   arma::urowvec medoidIndices(nMedoids);
-  FastPAM1::buildFastPAM1(data, &medoidIndices);
+  FastPAM1::buildFastPAM1(data, distMat, &medoidIndices);
   steps = 0;
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
@@ -28,7 +28,7 @@ void FastPAM1::fitFastPAM1(const arma::fmat& inputData) {
   bool medoidChange = true;
   while (iter < maxIter && medoidChange) {
     auto previous{medoidIndices};
-    FastPAM1::swapFastPAM1(data, &medoidIndices, &assignments);
+    FastPAM1::swapFastPAM1(data, distMat, &medoidIndices, &assignments);
     medoidChange = arma::any(medoidIndices != previous);
     iter++;
   }
@@ -39,6 +39,7 @@ void FastPAM1::fitFastPAM1(const arma::fmat& inputData) {
 
 void FastPAM1::buildFastPAM1(
   const arma::fmat& data,
+  const arma::fmat& distMat,
   arma::urowvec* medoidIndices
 ) {
   size_t N = data.n_cols;
@@ -89,6 +90,7 @@ void FastPAM1::buildFastPAM1(
 
 void FastPAM1::swapFastPAM1(
   const arma::fmat& data,
+  const arma::fmat& distMat,
   arma::urowvec* medoidIndices,
   arma::urowvec* assignments
 ) {
@@ -106,6 +108,7 @@ void FastPAM1::swapFastPAM1(
   // calculate quantities needed for swap, bestDistances and sigma
   KMedoids::calcBestDistancesSwap(
     data,
+    distMat,
     medoidIndices,
     &bestDistances,
     &secondBestDistances,
@@ -167,6 +170,7 @@ void FastPAM1::swapFastPAM1(
       (*medoidIndices)(medoidToSwap) = swapIn;
       calcBestDistancesSwap(
         data,
+        distMat,
         medoidIndices,
         &bestDistances,
         &secondBestDistances,
