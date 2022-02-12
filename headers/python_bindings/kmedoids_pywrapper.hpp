@@ -31,7 +31,6 @@ class KMedoidsWrapper : public km::KMedoids {
   void fitPython(
     const pybind11::array_t<float>& inputData,
     const std::string& loss,
-    std::optional<std::reference_wrapper<const pybind11::array_t<float>>> distMat,
     pybind11::kwargs kw);
 
   /**
