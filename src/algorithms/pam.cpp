@@ -14,7 +14,7 @@
 #include <unordered_map>
 
 namespace km {
-void PAM::fitPAM(const arma::fmat& inputData, const arma::fmat& distMat) {
+void PAM::fitPAM(const arma::fmat& inputData, std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   data = arma::trans(inputData);
   arma::urowvec medoidIndices(nMedoids);
   PAM::buildPAM(data, distMat, &medoidIndices);
@@ -37,7 +37,7 @@ void PAM::fitPAM(const arma::fmat& inputData, const arma::fmat& distMat) {
 
 void PAM::buildPAM(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   arma::urowvec* medoidIndices) {
   size_t N = data.n_cols;
   arma::frowvec estimates(N, arma::fill::zeros);
@@ -75,7 +75,7 @@ void PAM::buildPAM(
 
 void PAM::swapPAM(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   arma::urowvec* medoidIndices,
   arma::urowvec* assignments) {
   float minDistance = std::numeric_limits<float>::infinity();

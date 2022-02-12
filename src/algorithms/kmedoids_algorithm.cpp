@@ -38,10 +38,9 @@ KMedoids::KMedoids(
 
 KMedoids::~KMedoids() {}
 
-void KMedoids::fit(const arma::fmat& inputData, const std::string& loss, std::optional<const arma::fmat&> distMat) {
-
+void KMedoids::fit(const arma::fmat& inputData, const std::string& loss, std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   if (distMat) {  // User has provided a distance matrix
-    if (distMat.n_cols != distMat.n_rows) {
+    if (distMat.value().get().n_cols != distMat.value().get().n_rows) {
       // TODO(@motiwari): Change this to an assertion that is properly raised
       throw std::invalid_argument("Malformed distance matrix provided");
     }
@@ -189,7 +188,7 @@ std::string KMedoids::getLossFn() const {
 
 void KMedoids::calcBestDistancesSwap(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const arma::urowvec* medoidIndices,
   arma::frowvec* bestDistances,
   arma::frowvec* secondBestDistances,
@@ -221,7 +220,7 @@ void KMedoids::calcBestDistancesSwap(
 
 float KMedoids::calcLoss(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const arma::urowvec* medoidIndices) {
   float total = 0;
   // TODO(@motiwari): is this parallel loop accumulating properly?
@@ -243,13 +242,13 @@ float KMedoids::calcLoss(
 
 float KMedoids::cachedLoss(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const size_t i,
   const size_t j,
   const bool useCache) {
 
   if (this->useDistMat) {
-    return distMat.at(i, j);
+    return distMat.value().get().at(i, j);
   }
 
   if (!useCache) {

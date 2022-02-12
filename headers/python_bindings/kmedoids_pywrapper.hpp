@@ -2,6 +2,7 @@
 #define HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 #include <carma>
 #include <armadillo>
@@ -30,7 +31,7 @@ class KMedoidsWrapper : public km::KMedoids {
   void fitPython(
     const pybind11::array_t<float>& inputData,
     const std::string& loss,
-    std::optional<const pybind11::array_t<float>&> distMat,
+    std::optional<std::reference_wrapper<const pybind11::array_t<float>>> distMat,
     pybind11::kwargs kw);
 
   /**

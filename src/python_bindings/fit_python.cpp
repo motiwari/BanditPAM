@@ -7,6 +7,7 @@
  */
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 #include <carma>
 #include <armadillo>
@@ -18,7 +19,7 @@ namespace km {
 void km::KMedoidsWrapper::fitPython(
   const pybind11::array_t<float>& inputData,
   const std::string& loss,
-  std::optional<const pybind11::array_t<float>&> distMat,
+  std::optional<std::reference_wrapper<const pybind11::array_t<float>>> distMat,
   pybind11::kwargs kw) {
   // throw an error if the number of medoids is not specified in either
   // the KMedoids object or the fitPython function
@@ -39,8 +40,12 @@ void km::KMedoidsWrapper::fitPython(
   if ((kw.size() != 0) && (kw.contains("k"))) {
     KMedoids::setNMedoids(pybind11::cast<int>(kw["k"]));
   }
+  
+  // TODO(@motiwari): Add a comment here explaining the massaging, cleanup
   if (distMat) {
-    KMedoids::fit(carma::arr_to_mat<float>(inputData), loss, carma::arr_to_mat<float>(distMat));
+    const arma::fmat& tmp_array = carma::arr_to_mat<float>(distMat.value().get());
+    KMedoids::fit(carma::arr_to_mat<float>(inputData), loss, 
+      std::make_optional<std::reference_wrapper<const arma::fmat>>(tmp_array));
   } else {
     KMedoids::fit(carma::arr_to_mat<float>(inputData), loss, std::nullopt);
   }

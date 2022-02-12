@@ -21,7 +21,7 @@ class PAM : public km::KMedoids {
    * 
    * @param inputData Input data to cluster
    */
-  void fitPAM(const arma::fmat& inputData, const arma::fmat& distMat);
+  void fitPAM(const arma::fmat& inputData, std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
   * @brief Performs the BUILD step of PAM.
@@ -36,7 +36,7 @@ class PAM : public km::KMedoids {
   */
   void buildPAM(
     const arma::fmat& data,
-    const arma::fmat& distMat,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     arma::urowvec* medoidIndices);
 
   /** 
@@ -54,7 +54,7 @@ class PAM : public km::KMedoids {
   */
   void swapPAM(
     const arma::fmat& data,
-    const arma::fmat& distMat,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     arma::urowvec* medoidIndices,
     arma::urowvec* assignments);
 };

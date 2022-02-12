@@ -12,7 +12,7 @@
 #include <cmath>
 
 namespace km {
-void BanditPAM::fitBanditPAM(const arma::fmat& inputData, const arma::fmat& distMat) {
+void BanditPAM::fitBanditPAM(const arma::fmat& inputData, std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   data = arma::trans(inputData);
 
   // Note: even if we are using a distance matrix, we compute the permutation
@@ -53,7 +53,7 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData, const arma::fmat& dist
 
 arma::frowvec BanditPAM::buildSigma(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const arma::frowvec& bestDistances,
   const bool useAbsolute) {
   size_t N = data.n_cols;
@@ -94,7 +94,7 @@ arma::frowvec BanditPAM::buildSigma(
 
 arma::frowvec BanditPAM::buildTarget(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const arma::uvec* target,
   const arma::frowvec* bestDistances,
   const bool useAbsolute,
@@ -142,7 +142,7 @@ arma::frowvec BanditPAM::buildTarget(
 
 void BanditPAM::build(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   arma::urowvec* medoidIndices,
   arma::fmat* medoids) {
   size_t N = data.n_cols;
@@ -240,7 +240,7 @@ void BanditPAM::build(
 
 arma::fmat BanditPAM::swapSigma(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const arma::frowvec* bestDistances,
   const arma::frowvec* secondBestDistances,
   const arma::urowvec* assignments) {
@@ -297,7 +297,7 @@ arma::fmat BanditPAM::swapSigma(
 
 arma::fvec BanditPAM::swapTarget(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const arma::urowvec* medoidIndices,
   const arma::uvec* targets,
   const arma::frowvec* bestDistances,
@@ -360,7 +360,7 @@ arma::fvec BanditPAM::swapTarget(
 
 void BanditPAM::swap(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   arma::urowvec* medoidIndices,
   arma::fmat* medoids,
   arma::urowvec* assignments) {

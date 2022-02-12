@@ -16,7 +16,7 @@
 #include <unordered_map>
 
 namespace km {
-void FastPAM1::fitFastPAM1(const arma::fmat& inputData, const arma::fmat& distMat) {
+void FastPAM1::fitFastPAM1(const arma::fmat& inputData, std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   data = inputData;
   data = arma::trans(data);
   arma::urowvec medoidIndices(nMedoids);
@@ -39,7 +39,7 @@ void FastPAM1::fitFastPAM1(const arma::fmat& inputData, const arma::fmat& distMa
 
 void FastPAM1::buildFastPAM1(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   arma::urowvec* medoidIndices
 ) {
   size_t N = data.n_cols;
@@ -90,7 +90,7 @@ void FastPAM1::buildFastPAM1(
 
 void FastPAM1::swapFastPAM1(
   const arma::fmat& data,
-  const arma::fmat& distMat,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   arma::urowvec* medoidIndices,
   arma::urowvec* assignments
 ) {
