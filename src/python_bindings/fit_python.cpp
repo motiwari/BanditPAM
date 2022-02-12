@@ -42,8 +42,8 @@ void km::KMedoidsWrapper::fitPython(
   
   // TODO(@motiwari): Add a comment here explaining the massaging, cleanup
   if ((kw.size() != 0) && (kw.contains("dist_mat"))) {
-    std::cout << typeid(kw["dist_mat"]).name() << "\n";
-    const arma::fmat& tmp_array = carma::arr_to_mat<float>(pybind11::cast<const pybind11::array_t<float>&>(kw["dist_mat"]));
+    const pybind11::array_t<float>& distMat = pybind11::cast<const pybind11::array_t<float>>(kw["dist_mat"]);
+    const arma::fmat& tmp_array = carma::arr_to_mat<float>(distMat);
     KMedoids::fit(carma::arr_to_mat<float>(inputData), loss, 
       std::make_optional<std::reference_wrapper<const arma::fmat>>(tmp_array));
   } else {
