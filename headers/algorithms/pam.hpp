@@ -21,7 +21,9 @@ class PAM : public km::KMedoids {
    * 
    * @param inputData Input data to cluster
    */
-  void fitPAM(const arma::fmat& inputData, std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+  void fitPAM(
+    const arma::fmat& inputData,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
   * @brief Performs the BUILD step of PAM.

@@ -38,7 +38,10 @@ KMedoids::KMedoids(
 
 KMedoids::~KMedoids() {}
 
-void KMedoids::fit(const arma::fmat& inputData, const std::string& loss, std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
+void KMedoids::fit(
+  const arma::fmat& inputData,
+  const std::string& loss,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   if (distMat) {  // User has provided a distance matrix
     if (distMat.value().get().n_cols != distMat.value().get().n_rows) {
       // TODO(@motiwari): Change this to an assertion that is properly raised
@@ -46,15 +49,17 @@ void KMedoids::fit(const arma::fmat& inputData, const std::string& loss, std::op
     }
     useDistMat = true;
   } else {
-    useDistMat = false;  // In case the user is running a new problem without a distance matrix after running a distance matrix problem
+    // In case the user is running a new problem without a distance matrix
+    // after running a distance matrix problem
+    useDistMat = false;
   }
-  
+
   if (inputData.n_rows == 0) {
     // TODO(@motiwari): Change this to an assertion that is properly raised
     throw std::invalid_argument("Dataset is empty");
   }
   batchSize = fmin(inputData.n_rows, batchSize);
-  
+
   try {
     KMedoids::setLossFn(loss);
     if (algorithm == "PAM") {
@@ -228,7 +233,11 @@ float KMedoids::calcLoss(
   for (size_t i = 0; i < data.n_cols; i++) {
     float cost = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < nMedoids; k++) {
-      float currCost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k));
+      float currCost = KMedoids::cachedLoss(
+        data,
+        distMat,
+        i,
+        (*medoidIndices)(k));
       if (currCost < cost) {
         cost = currCost;
       }
@@ -246,7 +255,6 @@ float KMedoids::cachedLoss(
   const size_t i,
   const size_t j,
   const bool useCache) {
-
   if (this->useDistMat) {
     return distMat.value().get().at(i, j);
   }
@@ -299,9 +307,8 @@ float KMedoids::LINF(
 float KMedoids::cos(const arma::fmat& data,
   const size_t i,
   const size_t j) const {
-  return arma::dot(
-    data.col(i),
-    data.col(j)) / (arma::norm(data.col(i))* arma::norm(data.col(j)));
+  return 1 - (arma::dot(data.col(i), data.col(j))
+    / (arma::norm(data.col(i)) * arma::norm(data.col(j))));
 }
 
 float KMedoids::manhattan(const arma::fmat& data,

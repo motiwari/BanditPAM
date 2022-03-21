@@ -12,12 +12,14 @@
 #include <cmath>
 
 namespace km {
-void BanditPAM::fitBanditPAM(const arma::fmat& inputData, std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
+void BanditPAM::fitBanditPAM(
+  const arma::fmat& inputData,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   data = arma::trans(inputData);
 
   // Note: even if we are using a distance matrix, we compute the permutation
   // in the block below because it is used elsewhere in the call stack
-  // TODO@(motiwari): Remove need for data or permutation through when using
+  // TODO(@motiwari): Remove need for data or permutation through when using
   // a distance matrix
   if (this->useCacheP) {
     size_t n = data.n_cols;
@@ -36,7 +38,6 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData, std::optional<std::ref
     for (size_t counter = 0; counter < m; counter++) {
       reindex[permutation[counter]] = counter;
     }
-    
   }
 
   arma::fmat medoidMatrix(data.n_rows, nMedoids);
@@ -228,7 +229,11 @@ void BanditPAM::build(
     // don't need to do this on final iteration
     #pragma omp parallel for
     for (size_t i = 0; i < N; i++) {
-        float cost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k));
+        float cost = KMedoids::cachedLoss(
+          data,
+          distMat,
+          i,
+          (*medoidIndices)(k));
         if (cost < bestDistances(i)) {
             bestDistances(i) = cost;
         }

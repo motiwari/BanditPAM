@@ -14,7 +14,9 @@
 #include <unordered_map>
 
 namespace km {
-void PAM::fitPAM(const arma::fmat& inputData, std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
+void PAM::fitPAM(
+  const arma::fmat& inputData,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   data = arma::trans(inputData);
   arma::urowvec medoidIndices(nMedoids);
   PAM::buildPAM(data, distMat, &medoidIndices);

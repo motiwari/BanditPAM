@@ -21,7 +21,9 @@ class FastPAM1 : public km::KMedoids {
    *
    * @param inputData Input data to cluster
    */
-  void fitFastPAM1(const arma::fmat& inputData, std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+  void fitFastPAM1(
+    const arma::fmat& inputData,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
    * @brief Performs the BUILD step of FastPAM1.

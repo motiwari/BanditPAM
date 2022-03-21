@@ -21,7 +21,9 @@ class BanditPAM : public km::KMedoids {
    * 
    * @param inputData Input data to cluster
    */
-  void fitBanditPAM(const arma::fmat& inputData, std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+  void fitBanditPAM(
+    const arma::fmat& inputData,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
