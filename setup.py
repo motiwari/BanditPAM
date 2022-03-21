@@ -90,7 +90,7 @@ def cpp_flag(compiler: str):
         flags = ["-std=c++17", "-std=c++14", "-std=c++11"]
     else:
         # Assume gcc
-        flags = ["-std=c++1y"]
+        flags = ["-std=c++1z"]
 
     for flag in flags:
         if has_flag(compiler, flag):
@@ -449,7 +449,7 @@ def main():
             include_dirs=include_dirs,
             library_dirs=[os.path.join("/", "usr", "local", "lib")],
             libraries=libraries,
-            language="c++1y",  # TODO: modify this based on cpp_flag(compiler)
+            language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
             extra_compile_args=["-static-libstdc++"],
         )
     ]
