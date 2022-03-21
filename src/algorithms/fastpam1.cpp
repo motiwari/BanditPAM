@@ -126,7 +126,7 @@ void FastPAM1::swapFastPAM1(
 
       // Consider making point i a medoid.
       // The total loss then contains at least one term, -di,
-      // because the loss contribution for point i is reduced to 0
+      // because the loss contribution for point i is reduced from di to 0
       deltaTD.fill(-di);
       // TODO(@motiwari): pragma omp parallel for?
       for (size_t j = 0; j < data.n_cols; j++) {

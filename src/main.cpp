@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
       maxIter,
       buildConfidence,
       swapConfidence);
-    kmed.fit(data, loss);
+    kmed.fit(data, loss, {});
     for (auto medoid : kmed.getMedoidsFinal()) {
       std::cout << medoid << ",";
     }
