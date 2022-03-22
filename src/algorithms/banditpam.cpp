@@ -300,7 +300,7 @@ arma::fmat BanditPAM::swapSigma(
   return updated_sigma;
 }
 
-arma::fvec BanditPAM::swapTarget(
+arma::fmat BanditPAM::swapTarget(
   const arma::fmat& data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const arma::urowvec* medoidIndices,
@@ -309,8 +309,28 @@ arma::fvec BanditPAM::swapTarget(
   const arma::frowvec* secondBestDistances,
   const arma::urowvec* assignments,
   const size_t exact = 0) {
-  size_t N = data.n_cols;
-  arma::fvec estimates(targets->n_rows, arma::fill::zeros);
+  const size_t N = data.n_cols;
+  // TODO(@motiwari): Change this to row-major and ->n_rows?
+  const size_t K = medoidIndices->n_cols; 
+  const size_t T = targets->n_rows;
+  arma::fmat estimates(K, T, arma::fill::zeros);
+
+  // Targets should be a list of indices for target CANDIDATE points
+  // Then update all corresponding EXISTING MEDOID indices targets.
+  // If targets is a T-length vector, then the return value should be
+  // a matrix of size K x T. We should perform the appropriate update then
+  // in the swap() function.
+  //
+  // An alternate method to do this would be to pass only the (m, c)
+  // Points under consideration. Then we wouldn't need to update all
+  // k virtual arms for each candidate, just the ones that are passed
+  // However, this would incur a .find() call to find all pairs
+  // (m, c) where c == c', the arm under consideration. I believe this
+  // would be an O(kn) cost. Instead, may need to use another data 
+  // structure to avoid this .find() call, like a tree where the top-level
+  // nodes are the candidates and the bottom-level nodes are the corresponding
+  // virtual arms.
+
 
   size_t tmpBatchSize = batchSize;
   if (exact > 0) {
@@ -320,6 +340,7 @@ arma::fvec BanditPAM::swapTarget(
   arma::uvec referencePoints;
   // TODO(@motiwari): Make this wraparound properly
   // as last batch_size elements are dropped
+  // TODO(@motiwari): Break this duplicated code into a function
   if (usePerm) {
     if ((permutationIdx + tmpBatchSize - 1) >= N) {
       permutationIdx = 0;
@@ -333,33 +354,28 @@ arma::fvec BanditPAM::swapTarget(
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
 
-  // for each considered swap
+  // TODO(@motiwari): Declare variables outside of loops
   #pragma omp parallel for
-  for (size_t i = 0; i < targets->n_rows; i++) {
+  for (size_t i = 0; i < T; i++) {
     float total = 0;
-    // extract data point of swap
-    size_t n = (*targets)(i) / medoidIndices->n_cols;
-    size_t k = (*targets)(i) % medoidIndices->n_cols;
-    // calculate total loss for some subset of the data
+    // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j));
-      if (k == (*assignments)(referencePoints(j))) {
-        if (cost < (*secondBestDistances)(referencePoints(j))) {
-          total += cost;
-        } else {
-          total += (*secondBestDistances)(referencePoints(j));
-        }
-      } else {
-        if (cost < (*bestDistances)(referencePoints(j))) {
-          total += cost;
-        } else {
-          total += (*bestDistances)(referencePoints(j));
-        }
-      }
-      total -= (*bestDistances)(referencePoints(j));
+      float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
+      size_t k = (*assignments)(referencePoints(j));
+      estimates.row(i) -= (*bestDistances)(referencePoints(j));
+      // The next two lines allow us to use intelligent broadcasting while containing
+      // a special case for k. We add and subtract the first term from the kth medoid
+      // for readability
+      // We might be able to change this to .eachrow(every column but k) since arma
+      // Does this in-place and it should not introduce complexity
+      estimates.row(i) += std::fmin(cost, (*bestDistances)(referencePoints(j)));
+      estimates(k, i) += std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j)));
     }
-    estimates(i) = total / referencePoints.n_rows;
   }
+
+  // TODO(@motiwari): we can probably avoid this division 
+  // if we look at total loss, not average loss
+  estimates /= referencePoints.n_rows;
   return estimates;
 }
 
@@ -417,53 +433,51 @@ void BanditPAM::swap(
       // hasn't been computed exactly already
       arma::umat compute_exactly =
         ((numSamples + batchSize) >= N) != (exactMask);
-      arma::uvec targets = arma::find(compute_exactly);
-
-      if (targets.size() > 0) {
+      
+      if (compute_exactly.size() > 0) {
           arma::fvec result = swapTarget(
             data,
             distMat,
             medoidIndices,
-            &targets,
+            &compute_exactly,
             &bestDistances,
             &secondBestDistances,
             assignments,
             N);
-          estimates.elem(targets) = result;
-          ucbs.elem(targets) = result;
-          lcbs.elem(targets) = result;
-          exactMask.elem(targets).fill(1);
-          numSamples.elem(targets) += N;
+          estimates.elem(compute_exactly) = result;
+          ucbs.elem(compute_exactly) = result;
+          lcbs.elem(compute_exactly) = result;
+          exactMask.elem(compute_exactly).fill(1);
+          numSamples.elem(compute_exactly) += N;
           candidates = (lcbs < ucbs.min()) && (exactMask == 0);
       }
       if (arma::accu(candidates) < precision) {
         break;
       }
-      targets = arma::find(candidates);
+
       arma::fvec result = swapTarget(
         data,
         distMat,
         medoidIndices,
-        &targets,
+        &candidates,
         &bestDistances,
         &secondBestDistances,
         assignments,
         0);
-      estimates.elem(targets) =
-        ((numSamples.elem(targets) % estimates.elem(targets)) +
+      estimates.elem(candidates) =
+        ((numSamples.elem(candidates) % estimates.elem(candidates)) +
         (result * batchSize)) /
-        (batchSize + numSamples.elem(targets));
-      numSamples.elem(targets) += batchSize;
-      arma::fvec adjust(targets.n_rows);
+        (batchSize + numSamples.elem(candidates));
+      numSamples.elem(candidates) += batchSize;
+      arma::fvec adjust(candidates.n_rows);
       adjust.fill(p);
       adjust = arma::log(adjust);
-      arma::fvec confBoundDelta = sigma.elem(targets) %
-                          arma::sqrt(adjust / numSamples.elem(targets));
+      arma::fvec confBoundDelta = sigma.elem(candidates) %
+                          arma::sqrt(adjust / numSamples.elem(candidates));
 
-      ucbs.elem(targets) = estimates.elem(targets) + confBoundDelta;
-      lcbs.elem(targets) = estimates.elem(targets) - confBoundDelta;
+      ucbs.elem(candidates) = estimates.elem(candidates) + confBoundDelta;
+      lcbs.elem(candidates) = estimates.elem(candidates) - confBoundDelta;
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
-      targets = arma::find(candidates);
     }
 
     // Perform the medoid switch
