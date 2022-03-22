@@ -330,6 +330,7 @@ arma::fmat BanditPAM::swapTarget(
   // structure to avoid this .find() call, like a tree where the top-level
   // nodes are the candidates and the bottom-level nodes are the corresponding
   // virtual arms.
+  // A jagged array might also do the trick.
 
 
   size_t tmpBatchSize = batchSize;
@@ -357,7 +358,6 @@ arma::fmat BanditPAM::swapTarget(
   // TODO(@motiwari): Declare variables outside of loops
   #pragma omp parallel for
   for (size_t i = 0; i < T; i++) {
-    float total = 0;
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
       float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
@@ -434,49 +434,60 @@ void BanditPAM::swap(
       arma::umat compute_exactly =
         ((numSamples + batchSize) >= N) != (exactMask);
       
-      if (compute_exactly.size() > 0) {
-          arma::fvec result = swapTarget(
+
+      // Get unique candidate medoids from the candidates (second index)
+      // Store all k x T in estimates
+      // TODO(@motiwari): Move this declaration outside loop
+      // Need unique values over second index
+      arma::uvec compute_exactly_targets = arma::find(arma::sum(compute_exactly, 0) >= 1); // Sum the different columns, if any index appears in at least one, compute it exactly
+      if (compute_exactly_targets.size() > 0) {
+          
+          arma::fmat result = swapTarget(
             data,
             distMat,
             medoidIndices,
-            &compute_exactly,
+            &compute_exactly_targets,
             &bestDistances,
             &secondBestDistances,
             assignments,
             N);
-          estimates.elem(compute_exactly) = result;
-          ucbs.elem(compute_exactly) = result;
-          lcbs.elem(compute_exactly) = result;
-          exactMask.elem(compute_exactly).fill(1);
-          numSamples.elem(compute_exactly) += N;
+
+          // results will be k x T matrix
+          // Now update the correct indices
+
+          estimates.cols(compute_exactly_targets) = result;
+          ucbs.cols(compute_exactly_targets) = result;
+          lcbs.cols(compute_exactly_targets) = result;
+          exactMask.cols(compute_exactly_targets).fill(1);
+          numSamples.cols(compute_exactly_targets) += N;
           candidates = (lcbs < ucbs.min()) && (exactMask == 0);
       }
       if (arma::accu(candidates) < precision) {
         break;
       }
 
-      arma::fvec result = swapTarget(
+      arma::uvec candidate_targets = arma::find(arma::sum(candidates, 0) >= 1); // Sum the different columns, if any index appears in at least one, compute it exactly
+      arma::fmat result = swapTarget(
         data,
         distMat,
         medoidIndices,
-        &candidates,
+        &candidate_targets,
         &bestDistances,
         &secondBestDistances,
         assignments,
         0);
-      estimates.elem(candidates) =
-        ((numSamples.elem(candidates) % estimates.elem(candidates)) +
+      estimates.cols(candidate_targets) =
+        ((numSamples.cols(candidate_targets) % estimates.cols(candidate_targets)) +
         (result * batchSize)) /
-        (batchSize + numSamples.elem(candidates));
-      numSamples.elem(candidates) += batchSize;
-      arma::fvec adjust(candidates.n_rows);
-      adjust.fill(p);
+        (batchSize + numSamples.cols(candidate_targets));
+      numSamples.cols(candidate_targets) += batchSize;
+      arma::fmat adjust(nMedoids, candidate_targets.size());
+      adjust.fill(p); // TOOD(@motiwari): Move this ::fill to the initialization on the previous line
       adjust = arma::log(adjust);
-      arma::fvec confBoundDelta = sigma.elem(candidates) %
-                          arma::sqrt(adjust / numSamples.elem(candidates));
-
-      ucbs.elem(candidates) = estimates.elem(candidates) + confBoundDelta;
-      lcbs.elem(candidates) = estimates.elem(candidates) - confBoundDelta;
+      arma::fmat confBoundDelta = sigma.cols(candidate_targets) %
+                          arma::sqrt(adjust / numSamples.cols(candidate_targets));
+      ucbs.cols(candidate_targets) = estimates.cols(candidate_targets) + confBoundDelta;
+      lcbs.cols(candidate_targets) = estimates.cols(candidate_targets) - confBoundDelta;
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
     }
 
