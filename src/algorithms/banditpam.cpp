@@ -46,6 +46,7 @@ void BanditPAM::fitBanditPAM(
   steps = 0;
 
   medoidIndicesBuild = medoidIndices;
+  std::cout << "Build medoids are: " << medoidIndices << "\n";
   arma::urowvec assignments(data.n_cols);
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
   medoidIndicesFinal = medoidIndices;
@@ -494,11 +495,12 @@ void BanditPAM::swap(
     // Perform the medoid switch
     arma::uword newMedoid = lcbs.index_min();
     // extract old and new medoids of swap
-    size_t k = newMedoid % medoids->n_cols;
-    size_t n = newMedoid / medoids->n_cols;
+    size_t k = newMedoid % nMedoids;
+    size_t n = newMedoid / nMedoids;
     swapPerformed = (*medoidIndices)(k) != n;
 
     if (swapPerformed) {
+      std::cout << "Performed swap: " << (*medoidIndices)(k) << " with " << n << "\n";
       (*medoidIndices)(k) = n;
       medoids->col(k) = data.col((*medoidIndices)(k));
     }
