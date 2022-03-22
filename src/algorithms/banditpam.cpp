@@ -40,6 +40,7 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
   steps = 0;
 
   medoidIndicesBuild = medoidIndices;
+  std::cout << "Build medoids are: " << medoidIndices << "\n";
   arma::urowvec assignments(data.n_cols);
   BanditPAM::swap(data, &medoidIndices, &medoidMatrix, &assignments);
   medoidIndicesFinal = medoidIndices;
@@ -453,6 +454,7 @@ void BanditPAM::swap(
     steps++;
 
     if (swapPerformed) {
+      std::cout << "Performed swap: " << (*medoidIndices)(k) << " with " << n << "\n";
       (*medoidIndices)(k) = n;
       medoids->col(k) = data.col((*medoidIndices)(k));
     }
