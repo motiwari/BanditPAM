@@ -362,13 +362,13 @@ arma::fmat BanditPAM::swapTarget(
     for (size_t j = 0; j < tmpBatchSize; j++) {
       float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
       size_t k = (*assignments)(referencePoints(j));
-      estimates.row(i) -= (*bestDistances)(referencePoints(j));
+      estimates.col(i) -= (*bestDistances)(referencePoints(j));
       // The next two lines allow us to use intelligent broadcasting while containing
       // a special case for k. We add and subtract the first term from the kth medoid
       // for readability
       // We might be able to change this to .eachrow(every column but k) since arma
       // Does this in-place and it should not introduce complexity
-      estimates.row(i) += std::fmin(cost, (*bestDistances)(referencePoints(j)));
+      estimates.col(i) += std::fmin(cost, (*bestDistances)(referencePoints(j)));
       estimates(k, i) += std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j)));
     }
   }
