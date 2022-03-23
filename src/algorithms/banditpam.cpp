@@ -357,7 +357,8 @@ arma::fmat BanditPAM::swapTarget(
   }
 
   // TODO(@motiwari): Declare variables outside of loops
-  #pragma omp parallel for
+  // #pragma omp parallel for
+  
   for (size_t i = 0; i < T; i++) {
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
