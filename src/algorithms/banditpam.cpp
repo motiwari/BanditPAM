@@ -336,6 +336,9 @@ arma::fvec BanditPAM::swapTarget(
     }
     estimates(i) = total / referencePoints.n_rows;
   }
+  arma::fmat mat_est = arma::resize(estimates, 5, 1000);
+  mat_est.raw_print();
+  std::exit(0);
   return estimates;
 }
 
