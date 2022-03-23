@@ -26,7 +26,7 @@ void BanditPAM::fitBanditPAM(
     size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
     cache = new float[n * m];
 
-    #pragma omp parallel for
+    // #pragma omp parallel for
     for (size_t idx = 0; idx < m*n; idx++) {
       cache[idx] = -1;  // TODO(@motiwari): need better value here
     }
@@ -77,7 +77,7 @@ arma::frowvec BanditPAM::buildSigma(
 
   arma::fvec sample(batchSize);
   arma::frowvec updated_sigma(N);
-  #pragma omp parallel for
+  // #pragma omp parallel for
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
       float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
@@ -123,7 +123,7 @@ arma::frowvec BanditPAM::buildTarget(
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
 
-  #pragma omp parallel for
+  // #pragma omp parallel for
   for (size_t i = 0; i < target->n_rows; i++) {
     float total = 0;
     for (size_t j = 0; j < referencePoints.n_rows; j++) {
@@ -228,7 +228,7 @@ void BanditPAM::build(
     medoids->unsafe_col(k) = data.unsafe_col((*medoidIndices)(k));
 
     // don't need to do this on final iteration
-    #pragma omp parallel for
+    // #pragma omp parallel for
     for (size_t i = 0; i < N; i++) {
         float cost = KMedoids::cachedLoss(
           data,
@@ -271,7 +271,7 @@ arma::fmat BanditPAM::swapSigma(
 
   arma::fvec sample(batchSize);
   // for each considered swap
-  #pragma omp parallel for
+  // #pragma omp parallel for
   for (size_t i = 0; i < K * N; i++) {
     // extract data point of swap
     size_t n = i / K;
@@ -334,7 +334,7 @@ arma::fmat BanditPAM::swapTarget(
   // A jagged array might also do the trick.
 
 
-  size_t tmpBatchSize = batchSize;
+  size_t tmpBatchSize = 1; // TODO: FIX
   if (exact > 0) {
     tmpBatchSize = N;
   }
@@ -358,21 +358,29 @@ arma::fmat BanditPAM::swapTarget(
 
   // TODO(@motiwari): Declare variables outside of loops
   // #pragma omp parallel for
-  
+  estimates.raw_print();
   for (size_t i = 0; i < T; i++) {
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
       float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
+      std::cout << "Distance between point " << i << " and point " << referencePoints(j) << " is " << cost << "\n";
       size_t k = (*assignments)(referencePoints(j));
+      estimates.col(i).raw_print();
       estimates.col(i) -= (*bestDistances)(referencePoints(j));
+      estimates.col(i).raw_print();
       // The next two lines allow us to use intelligent broadcasting while containing
       // a special case for k. We add and subtract the first term from the kth medoid
       // for readability
       // We might be able to change this to .eachrow(every column but k) since arma
       // Does this in-place and it should not introduce complexity
       estimates.col(i) += std::fmin(cost, (*bestDistances)(referencePoints(j)));
+      estimates.col(i).raw_print();
       estimates(k, i) += std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j)));
+      estimates.col(i).raw_print();
     }
+    estimates.raw_print();
+    std::cout << "About to exit\n";
+    std::exit(1);
   }
 
   // TODO(@motiwari): we can probably avoid this division 
