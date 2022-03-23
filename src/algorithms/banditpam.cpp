@@ -296,7 +296,7 @@ arma::fvec BanditPAM::swapTarget(
   size_t N = data.n_cols;
   arma::fvec estimates(targets->n_rows, arma::fill::zeros);
 
-  size_t tmpBatchSize = batchSize;
+  size_t tmpBatchSize = 1;
   if (exact > 0) {
     tmpBatchSize = N;
   }
@@ -328,17 +328,9 @@ arma::fvec BanditPAM::swapTarget(
     for (size_t j = 0; j < tmpBatchSize; j++) {
       float cost = KMedoids::cachedLoss(data, n, referencePoints(j));
       if (k == (*assignments)(referencePoints(j))) {
-        if (cost < (*secondBestDistances)(referencePoints(j))) {
-          total += cost;
-        } else {
-          total += (*secondBestDistances)(referencePoints(j));
-        }
+        total += std::fmin(cost, (*secondBestDistances)(referencePoints(j)));
       } else {
-        if (cost < (*bestDistances)(referencePoints(j))) {
-          total += cost;
-        } else {
-          total += (*bestDistances)(referencePoints(j));
-        }
+        total += std::fmin(cost, (*bestDistances)(referencePoints(j)));
       }
       total -= (*bestDistances)(referencePoints(j));
     }
