@@ -376,7 +376,11 @@ arma::fmat BanditPAM::swapTarget(
 
   // TODO(@motiwari): we can probably avoid this division 
   // if we look at total loss, not average loss
-  estimates /= referencePoints.n_rows;
+  std::cout << "Batch size: " << tmpBatchSize << "\n";
+  estimates.raw_print(); 
+  estimates /= tmpBatchSize;
+  std::cout << "Normalized estimates:\n";
+  estimates.raw_print();
   return estimates;
 }
 
