@@ -358,38 +358,33 @@ arma::fmat BanditPAM::swapTarget(
 
   // TODO(@motiwari): Declare variables outside of loops
   // #pragma omp parallel for
-  estimates.raw_print();
   for (size_t i = 0; i < T; i++) {
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
       float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
-      std::cout << "Distance between point " << i << " and point " << referencePoints(j) << " is " << cost << "\n";
+      // std::cout << "Distance between point " << i << " and point " << referencePoints(j) << " is " << cost << "\n";
       size_t k = (*assignments)(referencePoints(j));
-      estimates.col(i).raw_print();
       estimates.col(i) -= (*bestDistances)(referencePoints(j));
-      estimates.col(i).raw_print();
       // The next two lines allow us to use intelligent broadcasting while containing
       // a special case for k. We add and subtract the first term from the kth medoid
       // for readability
       // We might be able to change this to .eachrow(every column but k) since arma
       // Does this in-place and it should not introduce complexity
       estimates.col(i) += std::fmin(cost, (*bestDistances)(referencePoints(j)));
-      estimates.col(i).raw_print();
       estimates.row(k) += std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j)));
-      estimates.col(i).raw_print();
     }
-    estimates.raw_print();
-    std::cout << "About to exit\n";
-    std::exit(1);
+    
   }
+  estimates /= tmpBatchSize;
+  estimates.raw_print();
+  std::cout << "About to exit\n";
+  std::exit(1);
 
   // TODO(@motiwari): we can probably avoid this division 
   // if we look at total loss, not average loss
-  std::cout << "Batch size: " << tmpBatchSize << "\n";
-  estimates.raw_print(); 
-  estimates /= tmpBatchSize;
-  std::cout << "Normalized estimates:\n";
-  estimates.raw_print();
+  // std::cout << "Batch size: " << tmpBatchSize << "\n";
+  // estimates.raw_print(); 
+
   return estimates;
 }
 
