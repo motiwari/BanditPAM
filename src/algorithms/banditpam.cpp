@@ -375,7 +375,7 @@ arma::fmat BanditPAM::swapTarget(
       // Does this in-place and it should not introduce complexity
       estimates.col(i) += std::fmin(cost, (*bestDistances)(referencePoints(j)));
       estimates.col(i).raw_print();
-      estimates(k, i) += std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j)));
+      estimates.row(k) += std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j)));
       estimates.col(i).raw_print();
     }
     estimates.raw_print();
