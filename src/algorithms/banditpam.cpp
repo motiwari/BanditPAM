@@ -371,14 +371,18 @@ arma::fmat BanditPAM::swapTarget(
       // We might be able to change this to .eachrow(every column but k) since arma
       // Does this in-place and it should not introduce complexity
       estimates.col(i) += std::fmin(cost, (*bestDistances)(referencePoints(j)));
-      estimates.row(k) += std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j)));
+      estimates(k, i) += std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j)));
+      // std::cout << std::fmin(cost, (*secondBestDistances)(referencePoints(j))) << "\n";
+      // std::cout << std::fmin(cost, (*bestDistances)(referencePoints(j))) << "\n";
+      // std::cout << std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j))) << "\n\n";
     }
     
   }
   estimates /= tmpBatchSize;
-  estimates.raw_print();
-  std::cout << "About to exit\n";
-  std::exit(1);
+  // estimates.raw_print();
+  
+  // std::cout << "About to exit\n";
+  // std::exit(1);
 
   // TODO(@motiwari): we can probably avoid this division 
   // if we look at total loss, not average loss
