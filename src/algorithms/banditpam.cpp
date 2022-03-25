@@ -336,15 +336,20 @@ arma::fvec BanditPAM::swapTarget(
     }
     estimates(i) = total / referencePoints.n_rows;
   }
-  estimates.raw_print();
-  std::cout << estimates.n_elem << "\n";
-  std::cout << estimates.n_rows << "\n";
+  
+  // estimates.raw_print();
+  // std::cout << estimates.n_elem << "\n";
+  // std::cout << estimates.n_rows << "\n";
   std::cout << estimates.n_cols << "\n\n";
 
   arma::fmat mat_est = arma::conv_to<arma::fmat>::from(estimates);
   mat_est.reshape(5, 1000);
   mat_est.raw_print();
-  std::exit(0);
+
+  counter++;
+  if (counter == 2) {
+    std::exit(0);
+  }
   return estimates;
 }
 

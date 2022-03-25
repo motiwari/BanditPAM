@@ -382,6 +382,9 @@ class KMedoids {
 
   /// The random seed with which to perform the clustering
   size_t seed = 0;
+
+  /// Used for debugging only
+  size_t counter = 0;
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_
