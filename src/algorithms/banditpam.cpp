@@ -296,7 +296,7 @@ arma::fvec BanditPAM::swapTarget(
   size_t N = data.n_cols;
   arma::fvec estimates(targets->n_rows, arma::fill::zeros);
 
-  size_t tmpBatchSize = 1;
+  size_t tmpBatchSize = 100;
   if (exact > 0) {
     tmpBatchSize = N;
   }
