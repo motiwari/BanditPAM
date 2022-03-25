@@ -334,7 +334,7 @@ arma::fvec BanditPAM::swapTarget(
       }
       total -= (*bestDistances)(referencePoints(j));
     }
-    estimates(i) = total; // / referencePoints.n_rows;
+    estimates(i) = total / referencePoints.n_rows;
   }
   estimates.raw_print();
   std::cout << estimates.n_elem << "\n";
