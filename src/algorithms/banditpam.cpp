@@ -489,6 +489,7 @@ void BanditPAM::swap(
       std::cout << "Candidates: " << candidate_targets.size() << "\n";
       candidate_targets.raw_print();
       std::cout << "Sum of candidates: " << arma::sum(arma::sum(candidates)) << "\n";
+      std::cout << "Index-wise sum of candidates: " << arma::sum(candidates) << "\n";
       arma::fmat result = swapTarget(
         data,
         distMat,
