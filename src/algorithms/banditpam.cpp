@@ -382,6 +382,10 @@ arma::fmat BanditPAM::swapTarget(
   estimates.raw_print();
   std::cout << "\n\n";
   
+  counter++;
+  if (counter == 2) {
+    std::exit(0);
+  }
   // std::cout << "About to exit\n";
   // std::exit(1);
 
