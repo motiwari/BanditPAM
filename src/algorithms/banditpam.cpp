@@ -488,6 +488,7 @@ void BanditPAM::swap(
       arma::uvec candidate_targets = arma::find(arma::sum(candidates, 0) >= 1); // Sum the different columns, if any index appears in at least one, compute it exactly
       std::cout << "Candidates: " << candidate_targets.size() << "\n";
       candidate_targets.raw_print();
+      std::cout << "Sum of candidates: " << arma::sum(arma::sum(candidates)) << "\n";
       arma::fmat result = swapTarget(
         data,
         distMat,
