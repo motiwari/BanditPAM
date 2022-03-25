@@ -349,8 +349,7 @@ arma::fvec BanditPAM::swapTarget(
 
   counter++;
   if (counter == 2) {
-    
-    std::exit(0);
+    // std::exit(0);
   }
   return estimates;
 }
