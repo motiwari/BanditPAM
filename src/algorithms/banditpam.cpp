@@ -334,7 +334,7 @@ arma::fmat BanditPAM::swapTarget(
   // A jagged array might also do the trick.
 
 
-  size_t tmpBatchSize = 1; // TODO: FIX
+  size_t tmpBatchSize = 100; // TODO: FIX
   if (exact > 0) {
     tmpBatchSize = N;
   }
