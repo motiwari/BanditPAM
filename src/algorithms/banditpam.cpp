@@ -385,7 +385,7 @@ arma::fmat BanditPAM::swapTarget(
   
   counter++;
   if (counter == 2) {
-    std::exit(0);
+    // std::exit(0);
   }
   // std::cout << "About to exit\n";
   // std::exit(1);
@@ -485,6 +485,7 @@ void BanditPAM::swap(
         break;
       }
 
+      // candidates should be of size T
       arma::uvec candidate_targets = arma::find(arma::sum(candidates, 0) >= 1); // Sum the different columns, if any index appears in at least one, compute it exactly
       std::cout << "Candidates: " << candidate_targets.size() << "\n";
       candidate_targets.raw_print();
@@ -499,24 +500,34 @@ void BanditPAM::swap(
         &secondBestDistances,
         assignments,
         0);
+      
+      // candidate_targets should be k x T
+
       estimates.cols(candidate_targets) =
-        ((numSamples.cols(candidate_targets) % estimates.cols(candidate_targets)) +
-        (result * batchSize)) /
+        ((numSamples.cols(candidate_targets) % estimates.cols(candidate_targets)) + (result * batchSize)) /
         (batchSize + numSamples.cols(candidate_targets));
+      
+      // numSamples should be k x N -- select the T of N columns that are candidates
       numSamples.cols(candidate_targets) += batchSize;
+      
       arma::fmat adjust(nMedoids, candidate_targets.size());
       adjust.fill(p); // TOOD(@motiwari): Move this ::fill to the initialization on the previous line
       adjust = arma::log(adjust);
-      arma::fmat confBoundDelta = sigma.cols(candidate_targets) %
-                          arma::sqrt(adjust / numSamples.cols(candidate_targets));
+      
+      // 
+      arma::fmat confBoundDelta = sigma.cols(candidate_targets) % arma::sqrt(adjust / numSamples.cols(candidate_targets));
       ucbs.cols(candidate_targets) = estimates.cols(candidate_targets) + confBoundDelta;
       lcbs.cols(candidate_targets) = estimates.cols(candidate_targets) - confBoundDelta;
+      
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
     }
 
     // Perform the medoid switch
     arma::uword newMedoid = lcbs.index_min();
     // extract old and new medoids of swap
+
+    // Is THIS the correct thing to do???
+    std::cout << "New medoid choice is: " << newMedoid << "\n";
     size_t k = newMedoid % nMedoids;
     size_t n = newMedoid / nMedoids;
     swapPerformed = (*medoidIndices)(k) != n;
