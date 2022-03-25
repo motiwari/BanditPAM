@@ -432,6 +432,8 @@ void BanditPAM::swap(
         break;
       }
       targets = arma::find(candidates);
+      std::cout << "Targets: " << targets.size() << "\n";
+      targets.raw_print();
       arma::fvec result = swapTarget(
         data,
         medoidIndices,
