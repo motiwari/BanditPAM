@@ -316,6 +316,7 @@ arma::fvec BanditPAM::swapTarget(
   } else {
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
+  referencePoints.raw_print();
 
   // for each considered swap
   // #pragma omp parallel for
@@ -348,6 +349,7 @@ arma::fvec BanditPAM::swapTarget(
 
   counter++;
   if (counter == 2) {
+    
     std::exit(0);
   }
   return estimates;
