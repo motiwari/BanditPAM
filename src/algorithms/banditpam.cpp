@@ -12,6 +12,47 @@
 #include <cmath>
 
 namespace km {
+
+// Need: , , frowvec,, fmat, umat, fvec, urowvec, uvec
+void print_matrix(arma::uvec m) {
+  m.raw_print();
+}
+void print_matrix(arma::uvec* m) {
+  m->raw_print();
+}
+
+void print_matrix(arma::fmat m) {
+  m.raw_print();
+}
+
+void print_matrix(arma::fmat* m) {
+  m->raw_print();
+}
+
+void print_matrix(arma::frowvec m) {
+  m.raw_print();
+}
+
+void print_matrix(arma::frowvec* m) {
+  m->raw_print();
+}
+
+void print_matrix(arma::urowvec m) {
+  m.raw_print();
+}
+
+void print_matrix(arma::urowvec* m) {
+  m->raw_print();
+}
+
+void print_matrix(arma::umat m) {
+  m.raw_print();
+}
+
+void print_matrix(arma::umat* m) {
+  m->raw_print();
+}
+
 void BanditPAM::fitBanditPAM(
   const arma::fmat& inputData,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
@@ -42,12 +83,15 @@ void BanditPAM::fitBanditPAM(
 
   arma::fmat medoidMatrix(data.n_rows, nMedoids);
   arma::urowvec medoidIndices(nMedoids);
-  BanditPAM::build(data, distMat, &medoidIndices, &medoidMatrix);
   steps = 0;
-
+  BanditPAM::build(data, distMat, &medoidIndices, &medoidMatrix);
+  
   medoidIndicesBuild = medoidIndices;
   std::cout << "Build medoids are: " << medoidIndices << "\n";
   arma::urowvec assignments(data.n_cols);
+  if (steps > 1000) { 
+    print_matrix(assignments);
+  }
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
@@ -77,6 +121,9 @@ arma::frowvec BanditPAM::buildSigma(
 
   arma::fvec sample(batchSize);
   arma::frowvec updated_sigma(N);
+  if (steps > 1000) {
+    print_matrix(updated_sigma);
+  }
   // #pragma omp parallel for
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
@@ -108,6 +155,9 @@ arma::frowvec BanditPAM::buildTarget(
   }
   arma::frowvec estimates(target->n_rows, arma::fill::zeros);
   arma::uvec referencePoints;
+  if (steps > 1000) {
+    print_matrix(referencePoints);
+  }
   // TODO(@motiwari): Make this wraparound properly
   // as last batch_size elements are dropped
   if (usePerm) {
@@ -355,8 +405,7 @@ arma::fmat BanditPAM::swapTarget(
   } else {
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
-  referencePoints.raw_print();
-
+  
   // TODO(@motiwari): Declare variables outside of loops
   // #pragma omp parallel for
   for (size_t i = 0; i < T; i++) {
@@ -379,22 +428,9 @@ arma::fmat BanditPAM::swapTarget(
     }
     
   }
-  estimates /= tmpBatchSize;
-  estimates.raw_print();
-  std::cout << "\n\n";
-  
-  counter++;
-  if (counter == 2) {
-    // std::exit(0);
-  }
-  // std::cout << "About to exit\n";
-  // std::exit(1);
-
   // TODO(@motiwari): we can probably avoid this division 
   // if we look at total loss, not average loss
-  // std::cout << "Batch size: " << tmpBatchSize << "\n";
-  // estimates.raw_print(); 
-
+  estimates /= tmpBatchSize;
   return estimates;
 }
 
@@ -487,10 +523,6 @@ void BanditPAM::swap(
 
       // candidates should be of size T
       arma::uvec candidate_targets = arma::find(arma::sum(candidates, 0) >= 1); // Sum the different columns, if any index appears in at least one, compute it exactly
-      std::cout << "Candidates: " << candidate_targets.size() << "\n";
-      candidate_targets.raw_print();
-      std::cout << "Sum of candidates: " << arma::sum(arma::sum(candidates)) << "\n";
-      std::cout << "Index-wise sum of candidates: " << arma::sum(candidates) << "\n";
       arma::fmat result = swapTarget(
         data,
         distMat,
@@ -520,6 +552,10 @@ void BanditPAM::swap(
       lcbs.cols(candidate_targets) = estimates.cols(candidate_targets) - confBoundDelta;
       
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
+      if (steps > 1000) {
+        print_matrix(result); // fvec -- to prevent optimizing away the calls we need
+        print_matrix(&result); // fvec* -- to prevent optimizing away the calls we need
+      }
     }
 
     // Perform the medoid switch
@@ -545,6 +581,13 @@ void BanditPAM::swap(
         &secondBestDistances,
         assignments,
         swapPerformed);
+  }
+
+  if (steps > 1000) { 
+    print_matrix(numSamples); // umat -- to prevent optimizing away the calls we need
+    print_matrix(&numSamples); // umat* --to prevent optimizing away the calls we need
+    print_matrix(lcbs); // fmat -- to prevent optimizing away the calls we need
+    print_matrix(&lcbs); // fmat* -- to prevent optimizing away the calls we need
   }
 }
 }  // namespace km
