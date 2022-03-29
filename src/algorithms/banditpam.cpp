@@ -390,6 +390,11 @@ void BanditPAM::swap(
   // continue making swaps while loss is decreasing
   while (swapPerformed && steps < maxIter) {
     steps++;
+    std::cout << "Performing swap: " << steps << "\n";
+    if (steps == 2) {
+      std::exit(0);
+    }
+
     permutationIdx = 0;
 
     sigma = swapSigma(
@@ -460,9 +465,10 @@ void BanditPAM::swap(
 
     // Perform the medoid switch
     arma::uword newMedoid = lcbs.index_min();
+    std::cout << "New swap is: " << newMedoid << "\n";
     // extract old and new medoids of swap
-    size_t k = newMedoid % medoids->n_cols;
-    size_t n = newMedoid / medoids->n_cols;
+    size_t k = newMedoid % nMedoids;
+    size_t n = newMedoid / nMedoids;
     swapPerformed = (*medoidIndices)(k) != n;
     steps++;
 
