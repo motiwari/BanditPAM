@@ -12,6 +12,48 @@
 #include <cmath>
 
 namespace km {
+
+
+// Need: , , frowvec,, fmat, umat, fvec, urowvec, uvec
+void print_matrix(arma::uvec m) {
+  m.raw_print();
+}
+void print_matrix(arma::uvec* m) {
+  m->raw_print();
+}
+
+void print_matrix(arma::fmat m) {
+  m.raw_print();
+}
+
+void print_matrix(arma::fmat* m) {
+  m->raw_print();
+}
+
+void print_matrix(arma::frowvec m) {
+  m.raw_print();
+}
+
+void print_matrix(arma::frowvec* m) {
+  m->raw_print();
+}
+
+void print_matrix(arma::urowvec m) {
+  m.raw_print();
+}
+
+void print_matrix(arma::urowvec* m) {
+  m->raw_print();
+}
+
+void print_matrix(arma::umat m) {
+  m.raw_print();
+}
+
+void print_matrix(arma::umat* m) {
+  m->raw_print();
+}
+
 void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
   data = arma::trans(inputData);
 
@@ -42,6 +84,9 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
   medoidIndicesBuild = medoidIndices;
   std::cout << "Build medoids are: " << medoidIndices << "\n";
   arma::urowvec assignments(data.n_cols);
+  if (steps > 1000) { 
+    print_matrix(assignments);
+  }
   BanditPAM::swap(data, &medoidIndices, &medoidMatrix, &assignments);
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
@@ -70,6 +115,9 @@ arma::frowvec BanditPAM::buildSigma(
 
   arma::fvec sample(batchSize);
   arma::frowvec updated_sigma(N);
+  if (steps > 1000) {
+    print_matrix(updated_sigma);
+  }
   // #pragma omp parallel for
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
@@ -100,6 +148,9 @@ arma::frowvec BanditPAM::buildTarget(
   }
   arma::frowvec estimates(target->n_rows, arma::fill::zeros);
   arma::uvec referencePoints;
+  if (steps > 1000) {
+    print_matrix(referencePoints);
+  }
   // TODO(@motiwari): Make this wraparound properly
   // as last batch_size elements are dropped
   if (usePerm) {
@@ -228,6 +279,7 @@ void BanditPAM::build(
     useAbsolute = false;
   }
 }
+
 
 arma::fmat BanditPAM::swapSigma(
   const arma::fmat& data,
@@ -436,8 +488,6 @@ void BanditPAM::swap(
         break;
       }
       targets = arma::find(candidates);
-      std::cout << "Targets: " << targets.size() << "\n";
-      targets.raw_print();
       arma::fvec result = swapTarget(
         data,
         medoidIndices,
@@ -461,6 +511,11 @@ void BanditPAM::swap(
       lcbs.elem(targets) = estimates.elem(targets) - confBoundDelta;
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
       targets = arma::find(candidates);
+
+      if (steps > 1000) {
+        print_matrix(result); // fvec -- to prevent optimizing away the calls we need
+        print_matrix(&result); // fvec* -- to prevent optimizing away the calls we need
+      }
     }
 
     // Perform the medoid switch
@@ -484,6 +539,13 @@ void BanditPAM::swap(
         &secondBestDistances,
         assignments,
         swapPerformed);
+  }
+
+  if (steps > 1000) { 
+    print_matrix(numSamples); // umat -- to prevent optimizing away the calls we need
+    print_matrix(&numSamples); // umat* --to prevent optimizing away the calls we need
+    print_matrix(lcbs); // fmat -- to prevent optimizing away the calls we need
+    print_matrix(&lcbs); // fmat* -- to prevent optimizing away the calls we need
   }
 }
 }  // namespace km
