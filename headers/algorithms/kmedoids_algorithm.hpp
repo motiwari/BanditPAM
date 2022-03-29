@@ -363,7 +363,7 @@ class KMedoids {
     const;
 
   /// Number of SWAP steps performed
-  size_t steps;
+  size_t steps = 0;
 
   /// Governs the error rate of each BUILD step in BanditPAM
   size_t buildConfidence;

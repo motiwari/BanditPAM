@@ -78,9 +78,8 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
 
   arma::fmat medoidMatrix(data.n_rows, nMedoids);
   arma::urowvec medoidIndices(nMedoids);
-  BanditPAM::build(data, &medoidIndices, &medoidMatrix);
   steps = 0;
-
+  BanditPAM::build(data, &medoidIndices, &medoidMatrix);
   medoidIndicesBuild = medoidIndices;
   std::cout << "Build medoids are: " << medoidIndices << "\n";
   arma::urowvec assignments(data.n_cols);
@@ -116,6 +115,7 @@ arma::frowvec BanditPAM::buildSigma(
   arma::fvec sample(batchSize);
   arma::frowvec updated_sigma(N);
   if (steps > 1000) {
+    std::cout << "INHERE!!!!\n";
     print_matrix(updated_sigma);
   }
   // #pragma omp parallel for
@@ -215,7 +215,7 @@ void BanditPAM::build(
     estimates.fill(0);
     // compute std dev amongst batch of reference points
     sigma = buildSigma(data, bestDistances, useAbsolute);
-
+    
     while (arma::sum(candidates) > precision) {
       // TODO(@motiwari): Do not need a matrix for this comparison,
       // use broadcasting
@@ -287,8 +287,7 @@ arma::fmat BanditPAM::swapSigma(
   const arma::frowvec* secondBestDistances,
   const arma::urowvec* assignments) {
   size_t N = data.n_cols;
-  size_t K = nMedoids;
-  arma::fmat updated_sigma(K, N, arma::fill::zeros);
+  arma::fmat updated_sigma(nMedoids, N, arma::fill::zeros);
   arma::uvec referencePoints;
   // TODO(@motiwari): Make this wraparound properly
   // as last batch_size elements are dropped
@@ -308,10 +307,10 @@ arma::fmat BanditPAM::swapSigma(
   arma::fvec sample(batchSize);
   // for each considered swap
   // #pragma omp parallel for
-  for (size_t i = 0; i < K * N; i++) {
+  for (size_t i = 0; i < nMedoids * N; i++) {
     // extract data point of swap
-    size_t n = i / K;
-    size_t k = i % K;
+    size_t n = i / nMedoids;
+    size_t k = i % nMedoids;
 
     // calculate change in loss for some subset of the data
     for (size_t j = 0; j < batchSize; j++) {
@@ -368,8 +367,7 @@ arma::fvec BanditPAM::swapTarget(
   } else {
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
-  referencePoints.raw_print();
-
+  
   // for each considered swap
   // #pragma omp parallel for
   for (size_t i = 0; i < targets->n_rows; i++) {
@@ -390,19 +388,8 @@ arma::fvec BanditPAM::swapTarget(
     estimates(i) = total / referencePoints.n_rows;
   }
   
-  // estimates.raw_print();
-  // std::cout << estimates.n_elem << "\n";
-  // std::cout << estimates.n_rows << "\n";
-  std::cout << estimates.n_cols << "\n\n";
-
   arma::fmat mat_est = arma::conv_to<arma::fmat>::from(estimates);
   mat_est.reshape(5, 1000);
-  mat_est.raw_print();
-
-  counter++;
-  if (counter == 2) {
-    // std::exit(0);
-  }
   return estimates;
 }
 
@@ -415,7 +402,6 @@ void BanditPAM::swap(
   size_t p = (N * nMedoids * swapConfidence);
 
   arma::fmat sigma(nMedoids, N, arma::fill::zeros);
-
   arma::frowvec bestDistances(N);
   arma::frowvec secondBestDistances(N);
   bool swapPerformed = true;
@@ -426,8 +412,6 @@ void BanditPAM::swap(
   arma::fmat ucbs(nMedoids, N);
   arma::umat numSamples(nMedoids, N, arma::fill::zeros);
 
-  // std::cout << "Printing assignments:\n";
-  // assignments->raw_print();
   // calculate quantities needed for swap, bestDistances and sigma
   calcBestDistancesSwap(
     data,
@@ -436,16 +420,11 @@ void BanditPAM::swap(
     &secondBestDistances,
     assignments,
     swapPerformed);
-  // std::cout << "Recomputed assignments:\n";
-  // assignments->raw_print();
-
+  
   // continue making swaps while loss is decreasing
   while (swapPerformed && steps < maxIter) {
     steps++;
     std::cout << "Performing swap: " << steps << "\n";
-    if (steps == 2) {
-      std::exit(0);
-    }
 
     permutationIdx = 0;
 
@@ -525,8 +504,7 @@ void BanditPAM::swap(
     size_t k = newMedoid % nMedoids;
     size_t n = newMedoid / nMedoids;
     swapPerformed = (*medoidIndices)(k) != n;
-    steps++;
-
+    
     if (swapPerformed) {
       std::cout << "Performed swap: " << (*medoidIndices)(k) << " with " << n << "\n";
       (*medoidIndices)(k) = n;
