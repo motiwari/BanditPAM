@@ -14,42 +14,42 @@
 namespace km {
 
 // Need: , , frowvec,, fmat, umat, fvec, urowvec, uvec
-void print_matrix(arma::uvec m) {
+void print(arma::uvec m) {
   m.raw_print();
 }
-void print_matrix(arma::uvec* m) {
+void print(arma::uvec* m) {
   m->raw_print();
 }
 
-void print_matrix(arma::fmat m) {
+void print(arma::fmat m) {
   m.raw_print();
 }
 
-void print_matrix(arma::fmat* m) {
+void print(arma::fmat* m) {
   m->raw_print();
 }
 
-void print_matrix(arma::frowvec m) {
+void print(arma::frowvec m) {
   m.raw_print();
 }
 
-void print_matrix(arma::frowvec* m) {
+void print(arma::frowvec* m) {
   m->raw_print();
 }
 
-void print_matrix(arma::urowvec m) {
+void print(arma::urowvec m) {
   m.raw_print();
 }
 
-void print_matrix(arma::urowvec* m) {
+void print(arma::urowvec* m) {
   m->raw_print();
 }
 
-void print_matrix(arma::umat m) {
+void print(arma::umat m) {
   m.raw_print();
 }
 
-void print_matrix(arma::umat* m) {
+void print(arma::umat* m) {
   m->raw_print();
 }
 
@@ -90,7 +90,7 @@ void BanditPAM::fitBanditPAM(
   std::cout << "Build medoids are: " << medoidIndices << "\n";
   arma::urowvec assignments(data.n_cols);
   if (steps > 1000) { 
-    print_matrix(assignments);
+    print(assignments);
   }
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
   medoidIndicesFinal = medoidIndices;
@@ -122,7 +122,7 @@ arma::frowvec BanditPAM::buildSigma(
   arma::fvec sample(batchSize);
   arma::frowvec updated_sigma(N);
   if (steps > 1000) {
-    print_matrix(updated_sigma);
+    print(updated_sigma);
   }
   // #pragma omp parallel for
   for (size_t i = 0; i < N; i++) {
@@ -156,7 +156,7 @@ arma::frowvec BanditPAM::buildTarget(
   arma::frowvec estimates(target->n_rows, arma::fill::zeros);
   arma::uvec referencePoints;
   if (steps > 1000) {
-    print_matrix(referencePoints);
+    print(referencePoints);
   }
   // TODO(@motiwari): Make this wraparound properly
   // as last batch_size elements are dropped
@@ -553,8 +553,8 @@ void BanditPAM::swap(
       
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
       if (steps > 1000) {
-        print_matrix(result); // fvec -- to prevent optimizing away the calls we need
-        print_matrix(&result); // fvec* -- to prevent optimizing away the calls we need
+        print(result); // fvec -- to prevent optimizing away the calls we need
+        print(&result); // fvec* -- to prevent optimizing away the calls we need
       }
     }
 
@@ -584,10 +584,10 @@ void BanditPAM::swap(
   }
 
   if (steps > 1000) { 
-    print_matrix(numSamples); // umat -- to prevent optimizing away the calls we need
-    print_matrix(&numSamples); // umat* --to prevent optimizing away the calls we need
-    print_matrix(lcbs); // fmat -- to prevent optimizing away the calls we need
-    print_matrix(&lcbs); // fmat* -- to prevent optimizing away the calls we need
+    print(numSamples); // umat -- to prevent optimizing away the calls we need
+    print(&numSamples); // umat* --to prevent optimizing away the calls we need
+    print(lcbs); // fmat -- to prevent optimizing away the calls we need
+    print(&lcbs); // fmat* -- to prevent optimizing away the calls we need
   }
 }
 }  // namespace km
