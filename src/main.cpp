@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
     int prev_ind;
     size_t maxIter = 100;
     size_t buildConfidence = 1000;
-    size_t swapConfidence = 10000;
+    size_t swapConfidence = 100000000;
     std::string loss = "L2";
     bool f_flag = false;
     bool k_flag = false;
