@@ -23,12 +23,14 @@ int main(int argc, char* argv[]) {
     int prev_ind;
     size_t maxIter = 100;
     size_t buildConfidence = 1000;
-    size_t swapConfidence = 100000000;
+    size_t swapConfidence = 10000000000;
     std::string loss = "L2";
     bool f_flag = false;
     bool k_flag = false;
     const int ARGUMENT_ERROR_CODE = 1;
 
+
+    // TODO(@motiwari): Use a variadic function signature for this instead
     while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:s:")) != -1) {
         if ( optind == prev_ind + 2 && *optarg == '-' ) {
         opt = ':';
