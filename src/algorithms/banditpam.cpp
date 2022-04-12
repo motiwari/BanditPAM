@@ -581,7 +581,10 @@ void BanditPAM::swap(
         &secondBestDistances,
         assignments,
         swapPerformed);
+    std::cout << "new loss: " << calcLoss(data, std::nullopt, medoidIndices) << "\n";
   }
+
+  
 
   if (steps > 1000) { 
     print(numSamples); // umat -- to prevent optimizing away the calls we need
