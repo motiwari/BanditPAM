@@ -22,8 +22,8 @@ int main(int argc, char* argv[]) {
     int opt;
     int prev_ind;
     size_t maxIter = 100;
-    size_t buildConfidence = 1000;
-    size_t swapConfidence = 10000000000;
+    size_t buildConfidence = 3;
+    size_t swapConfidence = 8;
     std::string loss = "L2";
     bool f_flag = false;
     bool k_flag = false;

@@ -27,8 +27,8 @@ PYBIND11_MODULE(banditpam, m) {
           pybind11::arg("n_medoids") = 5,
           pybind11::arg("algorithm") = "BanditPAM",
           pybind11::arg("max_iter") = 100,
-          pybind11::arg("build_confidence") = 1000,
-          pybind11::arg("swap_confidence") = 10000);
+          pybind11::arg("build_confidence") = 3,
+          pybind11::arg("swap_confidence") = 4);
   cls.def_property("n_medoids",
     &KMedoidsWrapper::getNMedoids, &KMedoidsWrapper::setNMedoids);
   cls.def_property("algorithm",

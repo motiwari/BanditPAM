@@ -375,10 +375,10 @@ class KMedoids {
   size_t steps = 0;
 
   /// Governs the error rate of each BUILD step in BanditPAM
-  size_t buildConfidence = 0;
+  size_t buildConfidence = 3;
 
   /// Governs the error rate of each SWAP step in BanditPAM
-  size_t swapConfidence = 0;
+  size_t swapConfidence = 4;
 
   /// Used for floatcomparisons, primarily number of "arms" remaining
   const float precision = 0.001;

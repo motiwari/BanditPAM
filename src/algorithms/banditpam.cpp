@@ -441,7 +441,7 @@ void BanditPAM::swap(
   arma::fmat* medoids,
   arma::urowvec* assignments) {
   size_t N = data.n_cols;
-  size_t p = (N * nMedoids * swapConfidence);
+  size_t p = (N * nMedoids);
 
   arma::fmat sigma(nMedoids, N, arma::fill::zeros);
 
@@ -465,6 +465,8 @@ void BanditPAM::swap(
     assignments,
     swapPerformed);
 
+  std::cout << "starting loss: " << calcLoss(data, std::nullopt, medoidIndices) << "\n";
+
   // continue making swaps while loss is decreasing
   while (swapPerformed && steps < maxIter) {
     steps++;
@@ -483,7 +485,7 @@ void BanditPAM::swap(
     numSamples.fill(0);
 
     // while there is at least one candidate (float comparison issues)
-    while (arma::accu(candidates) > 0.5) {
+    while (arma::accu(candidates) > 1.5) {
       // compute exactly if it's been samples more than N times and
       // hasn't been computed exactly already
       arma::umat compute_exactly =
@@ -544,9 +546,7 @@ void BanditPAM::swap(
       
       arma::fmat adjust(nMedoids, candidate_targets.size());
       adjust.fill(p); // TOOD(@motiwari): Move this ::fill to the initialization on the previous line
-      adjust = arma::log(adjust);
-      
-      // 
+      adjust = swapConfidence * arma::log(adjust);
       arma::fmat confBoundDelta = sigma.cols(candidate_targets) % arma::sqrt(adjust / numSamples.cols(candidate_targets));
       ucbs.cols(candidate_targets) = estimates.cols(candidate_targets) + confBoundDelta;
       lcbs.cols(candidate_targets) = estimates.cols(candidate_targets) - confBoundDelta;
@@ -563,7 +563,7 @@ void BanditPAM::swap(
     // extract old and new medoids of swap
 
     // Is THIS the correct thing to do???
-    std::cout << "New medoid choice is: " << newMedoid << "\n";
+    // std::cout << "New medoid choice is: " << newMedoid << "\n";
     size_t k = newMedoid % nMedoids;
     size_t n = newMedoid / nMedoids;
     swapPerformed = (*medoidIndices)(k) != n;
