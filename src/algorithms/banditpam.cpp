@@ -200,7 +200,7 @@ void BanditPAM::build(
   size_t N = data.n_cols;
   arma::frowvec N_mat(N);
   N_mat.fill(N);
-  size_t p = (buildConfidence * N);
+  size_t p = N;
   bool useAbsolute = true;
   arma::frowvec estimates(N, arma::fill::zeros);
   arma::frowvec bestDistances(N);
@@ -264,7 +264,7 @@ void BanditPAM::build(
       numSamples.cols(targets) += batchSize;
       arma::frowvec adjust(targets.n_rows);
       adjust.fill(p);
-      adjust = arma::log(adjust);
+      adjust = buildConfidence * arma::log(adjust);
       arma::frowvec confBoundDelta =
         sigma.cols(targets) %
         arma::sqrt(adjust / numSamples.cols(targets));
