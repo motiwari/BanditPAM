@@ -12,47 +12,6 @@
 #include <cmath>
 
 namespace km {
-
-// Need: , , frowvec,, fmat, umat, fvec, urowvec, uvec
-void print(arma::uvec m) {
-  m.raw_print();
-}
-void print(arma::uvec* m) {
-  m->raw_print();
-}
-
-void print(arma::fmat m) {
-  m.raw_print();
-}
-
-void print(arma::fmat* m) {
-  m->raw_print();
-}
-
-void print(arma::frowvec m) {
-  m.raw_print();
-}
-
-void print(arma::frowvec* m) {
-  m->raw_print();
-}
-
-void print(arma::urowvec m) {
-  m.raw_print();
-}
-
-void print(arma::urowvec* m) {
-  m->raw_print();
-}
-
-void print(arma::umat m) {
-  m.raw_print();
-}
-
-void print(arma::umat* m) {
-  m->raw_print();
-}
-
 void BanditPAM::fitBanditPAM(
   const arma::fmat& inputData,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
@@ -85,13 +44,10 @@ void BanditPAM::fitBanditPAM(
   arma::urowvec medoidIndices(nMedoids);
   steps = 0;
   BanditPAM::build(data, distMat, &medoidIndices, &medoidMatrix);
-  
+
   medoidIndicesBuild = medoidIndices;
   std::cout << "Build medoids are: " << medoidIndices << "\n";
   arma::urowvec assignments(data.n_cols);
-  if (steps > 1000) { 
-    print(assignments);
-  }
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
@@ -121,9 +77,6 @@ arma::frowvec BanditPAM::buildSigma(
 
   arma::fvec sample(batchSize);
   arma::frowvec updated_sigma(N);
-  if (steps > 1000) {
-    print(updated_sigma);
-  }
   // #pragma omp parallel for
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
@@ -155,9 +108,6 @@ arma::frowvec BanditPAM::buildTarget(
   }
   arma::frowvec estimates(target->n_rows, arma::fill::zeros);
   arma::uvec referencePoints;
-  if (steps > 1000) {
-    print(referencePoints);
-  }
   // TODO(@motiwari): Make this wraparound properly
   // as last batch_size elements are dropped
   if (usePerm) {
@@ -362,7 +312,7 @@ arma::fmat BanditPAM::swapTarget(
   const size_t exact = 0) {
   const size_t N = data.n_cols;
   // TODO(@motiwari): Change this to row-major and ->n_rows?
-  const size_t K = medoidIndices->n_cols; 
+  const size_t K = medoidIndices->n_cols;
   const size_t T = targets->n_rows;
   arma::fmat estimates(K, T, arma::fill::zeros);
 
@@ -377,14 +327,14 @@ arma::fmat BanditPAM::swapTarget(
   // k virtual arms for each candidate, just the ones that are passed
   // However, this would incur a .find() call to find all pairs
   // (m, c) where c == c', the arm under consideration. I believe this
-  // would be an O(kn) cost. Instead, may need to use another data 
+  // would be an O(kn) cost. Instead, may need to use another data
   // structure to avoid this .find() call, like a tree where the top-level
   // nodes are the candidates and the bottom-level nodes are the corresponding
   // virtual arms.
   // A jagged array might also do the trick.
 
 
-  size_t tmpBatchSize = 100; // TODO: FIX
+  size_t tmpBatchSize = 100;  // TODO(@motiwari): FIX
   if (exact > 0) {
     tmpBatchSize = N;
   }
@@ -405,30 +355,27 @@ arma::fmat BanditPAM::swapTarget(
   } else {
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
-  
+
   // TODO(@motiwari): Declare variables outside of loops
   // #pragma omp parallel for
   for (size_t i = 0; i < T; i++) {
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
       float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
-      // std::cout << "Distance between point " << i << " and point " << referencePoints(j) << " is " << cost << "\n";
       size_t k = (*assignments)(referencePoints(j));
       estimates.col(i) -= (*bestDistances)(referencePoints(j));
-      // The next two lines allow us to use intelligent broadcasting while containing
-      // a special case for k. We add and subtract the first term from the kth medoid
-      // for readability
-      // We might be able to change this to .eachrow(every column but k) since arma
-      // Does this in-place and it should not introduce complexity
+      // The next two lines allow us to use intelligent broadcasting while
+      // containing a special case for k. We add and subtract the first term
+      // from the kth medoid for readability.
+      // We might be able to change this to .eachrow(every column but k) since
+      // arma does this in-place and it should not introduce complexity
       estimates.col(i) += std::fmin(cost, (*bestDistances)(referencePoints(j)));
-      estimates(k, i) += std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j)));
-      // std::cout << std::fmin(cost, (*secondBestDistances)(referencePoints(j))) << "\n";
-      // std::cout << std::fmin(cost, (*bestDistances)(referencePoints(j))) << "\n";
-      // std::cout << std::fmin(cost, (*secondBestDistances)(referencePoints(j))) - std::fmin(cost, (*bestDistances)(referencePoints(j))) << "\n\n";
+      estimates(k, i) +=
+        std::fmin(cost, (*secondBestDistances)(referencePoints(j))) -
+          std::fmin(cost, (*bestDistances)(referencePoints(j)));
     }
-    
   }
-  // TODO(@motiwari): we can probably avoid this division 
+  // TODO(@motiwari): we can probably avoid this division
   // if we look at total loss, not average loss
   estimates /= tmpBatchSize;
   return estimates;
@@ -465,8 +412,6 @@ void BanditPAM::swap(
     assignments,
     swapPerformed);
 
-  std::cout << "starting loss: " << calcLoss(data, std::nullopt, medoidIndices) << "\n";
-
   // continue making swaps while loss is decreasing
   while (swapPerformed && steps < maxIter) {
     steps++;
@@ -490,15 +435,18 @@ void BanditPAM::swap(
       // hasn't been computed exactly already
       arma::umat compute_exactly =
         ((numSamples + batchSize) >= N) != (exactMask);
-      
 
       // Get unique candidate medoids from the candidates (second index)
       // Store all k x T in estimates
       // TODO(@motiwari): Move this declaration outside loop
       // Need unique values over second index
-      arma::uvec compute_exactly_targets = arma::find(arma::sum(compute_exactly, 0) >= 1); // Sum the different columns, if any index appears in at least one, compute it exactly
+      // Sum the different columns
+      // if any index appears in at least one, compute it exactly
+      // TODO(@motiwari): make sure we're only computing exactly
+      // for the relevant candidates
+      arma::uvec compute_exactly_targets =
+        arma::find(arma::sum(compute_exactly, 0) >= 1);
       if (compute_exactly_targets.size() > 0) {
-          
           arma::fmat result = swapTarget(
             data,
             distMat,
@@ -511,7 +459,6 @@ void BanditPAM::swap(
 
           // results will be k x T matrix
           // Now update the correct indices
-
           estimates.cols(compute_exactly_targets) = result;
           ucbs.cols(compute_exactly_targets) = result;
           lcbs.cols(compute_exactly_targets) = result;
@@ -524,7 +471,9 @@ void BanditPAM::swap(
       }
 
       // candidates should be of size T
-      arma::uvec candidate_targets = arma::find(arma::sum(candidates, 0) >= 1); // Sum the different columns, if any index appears in at least one, compute it exactly
+      // Sum the different columns
+      // if any index appears in at least one, compute it exactly
+      arma::uvec candidate_targets = arma::find(arma::sum(candidates, 0) >= 1);
       arma::fmat result = swapTarget(
         data,
         distMat,
@@ -534,42 +483,39 @@ void BanditPAM::swap(
         &secondBestDistances,
         assignments,
         0);
-      
-      // candidate_targets should be k x T
 
+      // candidate_targets should be k x T
       estimates.cols(candidate_targets) =
-        ((numSamples.cols(candidate_targets) % estimates.cols(candidate_targets)) + (result * batchSize)) /
-        (batchSize + numSamples.cols(candidate_targets));
-      
-      // numSamples should be k x N -- select the T of N columns that are candidates
+        ((numSamples.cols(candidate_targets)
+        % estimates.cols(candidate_targets))
+        + (result * batchSize)) / (batchSize +
+          numSamples.cols(candidate_targets));
+
+      // numSamples should be k x N
+      // select the T of N columns that are candidates
       numSamples.cols(candidate_targets) += batchSize;
-      
+
       arma::fmat adjust(nMedoids, candidate_targets.size());
-      adjust.fill(p); // TOOD(@motiwari): Move this ::fill to the initialization on the previous line
+      // TOOD(@motiwari): Move this ::fill to the previous line
+      adjust.fill(p);
       adjust = swapConfidence * arma::log(adjust);
-      arma::fmat confBoundDelta = sigma.cols(candidate_targets) % arma::sqrt(adjust / numSamples.cols(candidate_targets));
-      ucbs.cols(candidate_targets) = estimates.cols(candidate_targets) + confBoundDelta;
-      lcbs.cols(candidate_targets) = estimates.cols(candidate_targets) - confBoundDelta;
-      
+      arma::fmat confBoundDelta = sigma.cols(candidate_targets) %
+        arma::sqrt(adjust / numSamples.cols(candidate_targets));
+      ucbs.cols(candidate_targets) = estimates.cols(candidate_targets)
+        + confBoundDelta;
+      lcbs.cols(candidate_targets) = estimates.cols(candidate_targets)
+        - confBoundDelta;
+
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
-      if (steps > 1000) {
-        print(result); // fvec -- to prevent optimizing away the calls we need
-        print(&result); // fvec* -- to prevent optimizing away the calls we need
-      }
     }
 
     // Perform the medoid switch
     arma::uword newMedoid = lcbs.index_min();
-    // extract old and new medoids of swap
-
-    // Is THIS the correct thing to do???
-    // std::cout << "New medoid choice is: " << newMedoid << "\n";
     size_t k = newMedoid % nMedoids;
     size_t n = newMedoid / nMedoids;
     swapPerformed = (*medoidIndices)(k) != n;
 
     if (swapPerformed) {
-      std::cout << "Performed swap: " << (*medoidIndices)(k) << " with " << n << "\n";
       (*medoidIndices)(k) = n;
       medoids->col(k) = data.col((*medoidIndices)(k));
     }
@@ -581,16 +527,6 @@ void BanditPAM::swap(
         &secondBestDistances,
         assignments,
         swapPerformed);
-    std::cout << "new loss: " << calcLoss(data, std::nullopt, medoidIndices) << "\n";
-  }
-
-  
-
-  if (steps > 1000) { 
-    print(numSamples); // umat -- to prevent optimizing away the calls we need
-    print(&numSamples); // umat* --to prevent optimizing away the calls we need
-    print(lcbs); // fmat -- to prevent optimizing away the calls we need
-    print(&lcbs); // fmat* -- to prevent optimizing away the calls we need
   }
 }
 }  // namespace km
