@@ -46,7 +46,6 @@ void BanditPAM::fitBanditPAM(
   BanditPAM::build(data, distMat, &medoidIndices, &medoidMatrix);
 
   medoidIndicesBuild = medoidIndices;
-  std::cout << "Build medoids are: " << medoidIndices << "\n";
   arma::urowvec assignments(data.n_cols);
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
   medoidIndicesFinal = medoidIndices;

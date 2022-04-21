@@ -70,5 +70,7 @@ if __name__ == "__main__":
     X = X[:20000]  # at 20k, colab will timeout for BanditPAM
     print(X.shape, type(X))
 
+    print("Benchmarking FasterPAM")
     benchmark(X, run_fasterpam)
+    print("Benchmarking BanditPAM")
     benchmark(X, run_bandit)
