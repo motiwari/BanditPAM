@@ -30,4 +30,4 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --exclude headers/carma
       - name: Lint with cpplint
         run: |
-          cpplint --exclude=headers/carma --exclude=build --filter=-legal/copyright,-build/c++11 --recursive .
+          cpplint --exclude=headers/carma --exclude=build --filter=-legal/copyright,-build/c++11,-build/include_subdir --recursive .

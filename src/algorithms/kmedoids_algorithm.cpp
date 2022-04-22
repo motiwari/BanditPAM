@@ -280,9 +280,8 @@ float KMedoids::LINF(
 float KMedoids::cos(const arma::fmat& data,
   const size_t i,
   const size_t j) const {
-  return arma::dot(
-    data.col(i),
-    data.col(j)) / (arma::norm(data.col(i))* arma::norm(data.col(j)));
+  return 1 - (arma::dot(data.col(i), data.col(j))
+    / (arma::norm(data.col(i)) * arma::norm(data.col(j))));
 }
 
 float KMedoids::manhattan(const arma::fmat& data,

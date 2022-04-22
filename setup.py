@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "3.0.3"
+__version__ = "3.0.4"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = 'GITHUB_ACTIONS'
