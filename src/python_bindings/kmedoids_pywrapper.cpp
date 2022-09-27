@@ -17,6 +17,10 @@
 namespace km {
 PYBIND11_MODULE(banditpam, m) {
   m.doc() = "BanditPAM Python library, implemented in C++";
+  m.def("get_max_threads",  // TODO(@motiwari): change to get_num_threads
+    &omp_get_max_threads, "Returns max number of threads");
+  m.def("set_num_threads",
+    &omp_set_num_threads, "Set the maximum number of threads");
   pybind11::class_<KMedoidsWrapper> cls(m, "KMedoids");
   cls.def(pybind11::init<int, std::string, int, int, int>(),
           pybind11::arg("n_medoids") = NULL,
