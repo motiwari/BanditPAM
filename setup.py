@@ -348,7 +348,7 @@ class BuildExt(build_ext):
         comp_opts += ["-static-libstdc++", "-static-libgcc"]
 
         link_opts = self.l_opts.get(ct, [])
-        #link_opts += ["-static-libomp"]
+        # link_opts += ["-static-libomp"]
         # TODO(@motiwari): on Windows, these flags are unrecognized
         comp_opts.append(cpp_flag(self.compiler))
         comp_opts.append("-O3")
@@ -364,7 +364,7 @@ class BuildExt(build_ext):
             link_opts.append("-lgomp")
 
         # TODO(@motiwari): Do we really want -fvisibility=hidden?
-        #if ct == "unix":
+        # if ct == "unix":
         #    if has_flag(self.compiler, "-fvisibility=hidden"):
         #        comp_opts.append("-fvisibility=hidden")
 
