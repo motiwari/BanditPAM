@@ -18,7 +18,7 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 
 # Experiment
 
-1. Install the dataset before running
+1. Install the dataset before running the experiments
    ```
    /BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
    /BanditPAM/: tar -xf data/MNIST_70k.tar.gz -C data
