@@ -18,6 +18,9 @@ namespace km {
  *
  * @param nMedoids Number of medoids to use and clusters to create
  * @param algorithm Algorithm used to find medoids: "BanditPAM", "PAM", or "FastPAM1"
+ * @param cacheMultiplier
+ * @param useCacheP Whether cache is on or not
+ * @param usePerm Whether permutation is on or not
  * @param maxIter The maximum number of SWAP steps the algorithm runs
  * @param buildConfidence Parameter that affects the width of BUILD confidence intervals
  * @param swapConfidence Parameter that affects the width of SWAP confidence intervals
@@ -25,8 +28,11 @@ namespace km {
 class KMedoids {
  public:
   KMedoids(
-    size_t nMedoids = 5,
+    size_t nMedoids = 10,
     const std::string& algorithm = "BanditPAM",
+    bool useCacheP = false,
+    bool usePerm = false,
+    size_t cacheMultiplier = 2000,
     size_t maxIter = 1000,
     size_t buildConfidence = 1000,
     size_t swapConfidence = 10000,
@@ -99,6 +105,48 @@ class KMedoids {
    * @param newAlgorithm The new algorithm to use: "BanditPAM", "PAM", or "FastPAM1"
    */
   void setAlgorithm(const std::string& newAlgorithm);
+
+  /**
+   * @brief Returns whether cache is on or not.
+   * 
+   * @returns Whether cache is on or not
+   */
+  bool getCacheMultiplier() const;  // NEW
+
+  /**
+   * @brief Sets whether cache is on or not.
+   *
+   * @param cacheMultiplier whether cache is to be on or not.
+   */
+  void setCacheMultiplier(bool cacheMultiplier);
+
+  /**
+   * @brief Returns whether cache is on or not.
+   * 
+   * @returns Whether cache is on or not
+   */
+  bool getUseCacheP() const;  // NEW
+
+  /**
+   * @brief Sets whether cache is on or not.
+   *
+   * @param useCacheP whether cache is to be on or not.
+   */
+  void setUseCacheP(bool useCacheP);
+
+  /**
+   * @brief Returns whether permutation is on or not.
+   * 
+   * @returns Whether permutation is on or not
+   */
+  bool getUsePerm() const;
+
+  /**
+   * @brief Sets whether cache is on or not.
+   *
+   * @param usePerm whether cache is to be on or not.
+   */
+  void setUsePerm(bool usePerm);
 
   /**
    * @brief Returns the maximum number of SWAP steps during clustering.
@@ -191,7 +239,7 @@ class KMedoids {
   float getAverageLoss() const;
 
   /// The cache will be of size cacheMultiplier*nlogn
-  size_t cacheMultiplier = 1000;
+  size_t cacheMultiplier;
 
   /// The cache which stores pairwise distance computations
   float* cache;
@@ -206,10 +254,10 @@ class KMedoids {
   std::unordered_map<size_t, size_t> reindex;
 
   /// Used for debugging only to toggle a fixed permutation of points
-  bool usePerm = true;
+  bool usePerm;
 
   /// Used for debugging only to toggle use of the cache
-  bool useCacheP = true;
+  bool useCacheP;
 
  protected:
   /**

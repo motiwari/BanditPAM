@@ -9,6 +9,7 @@
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
+#include <iostream>
 
 #include "kmedoids_algorithm.hpp"
 #include "fastpam1.hpp"
@@ -19,12 +20,18 @@ namespace km {
 KMedoids::KMedoids(
   size_t nMedoids,
   const std::string& algorithm,
+  bool useCacheP, 
+  bool usePerm,
+  size_t cacheMultiplier,
   size_t maxIter,
   size_t buildConfidence,
   size_t swapConfidence,
   size_t seed):
     nMedoids(nMedoids),
     algorithm(algorithm),
+    useCacheP(useCacheP),
+    usePerm(usePerm),
+    cacheMultiplier(cacheMultiplier),
     maxIter(maxIter),
     buildConfidence(buildConfidence),
     swapConfidence(swapConfidence),
@@ -40,6 +47,10 @@ KMedoids::~KMedoids() {}
 
 void KMedoids::fit(const arma::fmat& inputData, const std::string& loss) {
   batchSize = fmin(inputData.n_rows, batchSize);
+
+  // printf("nmedoids: %d\n", nMedoids);
+  // printf("cacheMultiplier: %zu \n", cacheMultiplier);
+  // std::cout << std::boolalpha << useCacheP << std::endl;
 
   if (inputData.n_rows == 0) {
     throw std::invalid_argument("Dataset is empty");
@@ -91,6 +102,30 @@ std::string KMedoids::getAlgorithm() const {
 void KMedoids::setAlgorithm(const std::string& newAlgorithm) {
   algorithm = newAlgorithm;
   KMedoids::checkAlgorithm(algorithm);
+}
+
+bool KMedoids::getUseCacheP() const {
+  return useCacheP;
+}
+
+void KMedoids::setUseCacheP(bool newUseCacheP) {
+  useCacheP = newUseCacheP;
+}
+
+bool KMedoids::getUsePerm() const {
+  return usePerm;
+}
+
+void KMedoids::setUsePerm(bool newUsePerm) {
+  usePerm = newUsePerm;
+}
+
+bool KMedoids::getCacheMultiplier() const {
+  return cacheMultiplier;
+}
+
+void KMedoids::setCacheMultiplier(bool newCacheMultiplier) {
+  cacheMultiplier = newCacheMultiplier;
 }
 
 size_t KMedoids::getMaxIter() const {
