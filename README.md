@@ -16,11 +16,23 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 }
 ```
 
+# Reproduce the tables
+
+Building this repository requires four external requirements:
+
+- [CMake](https://cmake.org/download/) >= 3.17
+- [Armadillo](http://arma.sourceforge.net/download.html) >= 10.5.3
+- [OpenMP](https://www.openmp.org/resources/openmp-compilers-tools/) >= 2.5 (OpenMP is supported by default on most Linux platforms)
+
+If you're using MacOS, you can install them through [homebrew](https://brew.sh/).
+
+After the installation, run `scripts/reproduce_results.sh`. It will automatically install carma, MNIST, and BanditPAM and reproduce the results in the paper.
+
+
 # Experiment
 
-The work is in progress to make a one-line script to reproduce results. You should install the packge following the instructions in the section "Requirements."
-
 ## Install the dataset before running the experiments
+You can skip this step if you've already run `scripts/reproduce_results.sh`.
 ```
 /BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
 /BanditPAM/: tar -xf data/MNIST_70k.tar.gz -C data
@@ -30,6 +42,9 @@ The work is in progress to make a one-line script to reproduce results. You shou
 ```
 /BanditPAM/: python scripts/experiment.py [options]
 ```
+
+If you don't pass any options, the script will run experiments with `n_medoids=[5, 10]` and `n_data = [10000, 30000]`.
+
 
 ### Options
 ```
@@ -50,12 +65,6 @@ Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)
 [mnist: 3000 | k: 3]
 1.71 (0.107)                  0.738 (0.0476)                0.743 (0.0518)     
 ```
-
-If you don't pass any options, the script will run experiments with `n_medoids=[5, 10]` and `n_data = [10000, 30000]`.
-
-
-
-
 
 
 # Requirements
