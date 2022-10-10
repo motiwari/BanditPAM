@@ -17,32 +17,54 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 ```
 
 # Experiment
-<<<<<<< HEAD
-1. Install the dataset before running
-    ```
-    /BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
-    /BanditPAM/: tar -xf data/MNIST_70k.tar.gz -C data
-    ```
-2. Run the experiments
-    ```
-    /BanditPAM/: python scripts/experiment.py
-    ```
 
-The work is in progress to make a one-line script to reproduce results. For now, you can edit `scripts/experiment.py` to change the dataset size and number of medoids. 
-=======
+The work is in progress to make a one-line script to reproduce results. You should install the packge following the instructions below.
 
-1. Install the dataset before running the experiments
-   ```
-   /BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
-   /BanditPAM/: tar -xf data/MNIST_70k.tar.gz -C data
-   ```
-2. Run the experiments
-   ```
-   /BanditPAM/: python scripts/experiment.py
-   ```
+## Install the dataset before running the experiments
+```
+/BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
+/BanditPAM/: tar -xf data/MNIST_70k.tar.gz -C data
+```
 
-The work is in progress to make a one-line script to reproduce results. For now, you can edit `scripts/experiment.py` to change the dataset size and number of medoids.
->>>>>>> 8968292b50bb31b642571a2c6ff7751c00730097
+## Run the experiments
+```
+/BanditPAM/: python scripts/experiment.py [options]
+```
+
+### Options
+```
+-k, --n_medoids  int/string  default: [5, 10]
+-n, --n_data     int/string  default: [10000, 30000]
+```
+
+**Example** : Run experiments with `k=3` and `n_data = [1000, 3000]`  
+(Make sure to put a list in double quotes) 
+```
+$ python scripts/experiment.py -k 3 -n "[1000, 3000]"
+
+[mnist : 100 | k: 5]
+Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
+0.026 (0.00353)               0.00381 (6.62e-05)            0.00696 (0.00213)             
+
+[mnist : 100 | k: 10]
+Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
+0.0572 (0.0214)               0.00529 (0.000502)            0.00472 (2.01e-05)            
+
+[mnist : 300 | k: 5]
+Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
+0.29 (0.031)                  0.0335 (0.00426)              0.0284 (0.0028)               
+
+[mnist : 300 | k: 10]
+Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
+1.53 (0.145)                  0.141 (0.0228)                0.122 (0.00768)    
+```
+
+If you don't pass any options, the script will run experiments with `n_medoids=[5, 10]` and `n_data = [10000, 30000]`.
+
+
+
+
+
 
 # Requirements
 
