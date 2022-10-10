@@ -16,6 +16,19 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 }
 ```
 
+# Experiment
+1. Install the dataset before running
+    ```
+    /BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
+    /BanditPAM/: tar -xf data/MNIST_70k.tar.gz -C data
+    ```
+2. Run the experiments
+    ```
+    /BanditPAM/: python scripts/experiment.py
+    ```
+
+The work is in progress to make a one-line script to reproduce results. For now, you can edit `scripts/experiment.py` to change the dataset size and number of medoids. 
+
 # Requirements
 # TL;DR run `pip install banditpam` and jump to the [examples](https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
 

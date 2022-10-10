@@ -80,6 +80,9 @@ int main(int argc, char* argv[]) {
     km::KMedoids kmed(
       k,
       "BanditPAM",
+      false,
+      false,
+      2000,
       maxIter,
       buildConfidence,
       swapConfidence);

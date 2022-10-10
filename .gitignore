@@ -28,3 +28,6 @@ tmp/
 var/
 dist/
 wheelhouse/
+banditpam.egg-info/
+scrna_reformat.csv
+scripts/docker/data/*
