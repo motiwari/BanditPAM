@@ -42,21 +42,13 @@ The work is in progress to make a one-line script to reproduce results. You shou
 ```
 $ python scripts/experiment.py -k 3 -n "[1000, 3000]"
 
-[mnist : 100 | k: 5]
 Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
-0.026 (0.00353)               0.00381 (6.62e-05)            0.00696 (0.00213)             
 
-[mnist : 100 | k: 10]
-Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
-0.0572 (0.0214)               0.00529 (0.000502)            0.00472 (2.01e-05)            
+[mnist : 1000 | k: 3]
+0.535 (0.041)                 0.149 (0.003)                 0.146 (0.00565)               
 
-[mnist : 300 | k: 5]
-Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
-0.29 (0.031)                  0.0335 (0.00426)              0.0284 (0.0028)               
-
-[mnist : 300 | k: 10]
-Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
-1.53 (0.145)                  0.141 (0.0228)                0.122 (0.00768)    
+[mnist : 3000 | k: 3]
+1.71 (0.107)                  0.738 (0.0476)                0.743 (0.0518)     
 ```
 
 If you don't pass any options, the script will run experiments with `n_medoids=[5, 10]` and `n_data = [10000, 30000]`.
