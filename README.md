@@ -18,7 +18,7 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 
 # Experiment
 
-The work is in progress to make a one-line script to reproduce results. You should install the packge following the instructions below.
+The work is in progress to make a one-line script to reproduce results. You should install the packge following the instructions in the section "Requirements."
 
 ## Install the dataset before running the experiments
 ```
