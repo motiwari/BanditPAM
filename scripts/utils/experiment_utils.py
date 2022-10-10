@@ -16,7 +16,6 @@ def get_stat_format(stats):
     mean, std = stats
     return "{:30}".format("{:4.3} ({:4.3})".format(mean, std))
 
-def print_summary(stats, dataset_name, n_data, n_medoids, space=30):
+def print_summary(stats, dataset_name, n_data, n_medoids):
     print(f"\n[{dataset_name} : {n_data} | k: {n_medoids}]")
-    print("{:30}{:30}{:30}".format('Cache (X) Perm (X)', 'Cache (O) Perm (X)', 'Cache (O) Perm (O)'))
     print("".join(get_stat_format(stat) for stat in stats))
