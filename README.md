@@ -1,10 +1,10 @@
-# BanditPAM: Almost Linear-Time *k*-Medoids Clustering
+# BanditPAM: Almost Linear-Time _k_-Medoids Clustering
 
 This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf). The code can be called directly from Python or C++.
 
 If you use this software, please cite:
 
-Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "BanditPAM: Almost Linear Time *k*-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
+Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "BanditPAM: Almost Linear Time _k_-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
 
 ```python
 @inproceedings{BanditPAM,
@@ -17,6 +17,7 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 ```
 
 # Experiment
+<<<<<<< HEAD
 1. Install the dataset before running
     ```
     /BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
@@ -28,29 +29,49 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
     ```
 
 The work is in progress to make a one-line script to reproduce results. For now, you can edit `scripts/experiment.py` to change the dataset size and number of medoids. 
+=======
+
+1. Install the dataset before running the experiments
+   ```
+   /BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
+   /BanditPAM/: tar -xf data/MNIST_70k.tar.gz -C data
+   ```
+2. Run the experiments
+   ```
+   /BanditPAM/: python scripts/experiment.py
+   ```
+
+The work is in progress to make a one-line script to reproduce results. For now, you can edit `scripts/experiment.py` to change the dataset size and number of medoids.
+>>>>>>> 8968292b50bb31b642571a2c6ff7751c00730097
 
 # Requirements
-# TL;DR run `pip install banditpam` and jump to the [examples](https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
+
+# TL;DR run `pip install banditpam` and jump to the [examples](https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model).
 
 If you have any difficulties, please see the [platform-specific guides](https://github.com/ThrunGroup/BanditPAM#platform-specific-installation-guides) and file a Github issue if you have additional trouble.
 
 ## Further Reading
-* [Full paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf)
-* [3-minute summary video](https://crossminds.ai/video/bandit-pam-almost-linear-time-k-medoids-clustering-via-multi-armed-bandits-5fb88782b0a3f6412973b646/)
-* [Blog post](https://ai.stanford.edu/blog/banditpam/)
-* [Code](https://github.com/ThrunGroup/BanditPAM)
-* [PyPI](https://pypi.org/project/banditpam/)
-* [Documentation](https://banditpam.readthedocs.io/en/latest)
+
+- [Full paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf)
+- [3-minute summary video](https://crossminds.ai/video/bandit-pam-almost-linear-time-k-medoids-clustering-via-multi-armed-bandits-5fb88782b0a3f6412973b646/)
+- [Blog post](https://ai.stanford.edu/blog/banditpam/)
+- [Code](https://github.com/ThrunGroup/BanditPAM)
+- [PyPI](https://pypi.org/project/banditpam/)
+- [Documentation](https://banditpam.readthedocs.io/en/latest)
 
 # Python Quickstart
 
 ## Install the repo and its dependencies:
+
 This can be done either through PyPI (recommended)
+
 ```python
 /BanditPAM/: pip install -r requirements.txt
 /BanditPAM/: pip install banditpam
 ```
+
 OR through the source code via
+
 ```python
 /BanditPAM/: git submodule update --init --recursive
 /BanditPAM/: cd headers/carma
@@ -126,7 +147,7 @@ Documentation for BanditPAM can be found on [read the docs](https://banditpam.re
 
 ## Building the C++ executable from source
 
-Please note that it is *NOT* necessary to build the C++ executable from source to use the Python code above. However, if you would like to use the C++ executable directly, follow the instructions below.
+Please note that it is _NOT_ necessary to build the C++ executable from source to use the Python code above. However, if you would like to use the C++ executable directly, follow the instructions below.
 
 ### Option 1: Building with Docker
 
@@ -148,13 +169,16 @@ which will start a Docker instance with the necessary dependencies. Then:
 This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 
 ### Option 2: Installing requirements and building directly
+
 Building this repository requires four external requirements:
-* [CMake](https://cmake.org/download/) >= 3.17
-* [Armadillo](http://arma.sourceforge.net/download.html) >= 10.5.3 
-* [OpenMP](https://www.openmp.org/resources/openmp-compilers-tools/) >= 2.5 (OpenMP is supported by default on most Linux platforms, and can be downloaded through [homebrew](https://brew.sh/) on MacOS)
-* [CARMA](https://github.com/RUrlus/carma) >= 0.6.2
+
+- [CMake](https://cmake.org/download/) >= 3.17
+- [Armadillo](http://arma.sourceforge.net/download.html) >= 10.5.3
+- [OpenMP](https://www.openmp.org/resources/openmp-compilers-tools/) >= 2.5 (OpenMP is supported by default on most Linux platforms, and can be downloaded through [homebrew](https://brew.sh/) on MacOS)
+- [CARMA](https://github.com/RUrlus/carma) >= 0.6.2
 
 If installing these requirements from source, one can generally use the following procedure to install each requirement from the library's root folder (with `armadillo` used as an example here):
+
 ```
 /armadillo$ mkdir build && cd build
 /armadillo/build$ cmake .. && make && sudo make install
@@ -162,7 +186,8 @@ If installing these requirements from source, one can generally use the followin
 
 Note that `CARMA` has different installation instructions; see the [quickstart](https://github.com/ThrunGroup/BanditPAM#install-the-repo-and-its-dependencies).
 
-####  Platform-specific installation guides
+#### Platform-specific installation guides
+
 Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:
 
 ```
@@ -175,12 +200,13 @@ This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
 ## C++ Usage
 
 Once the executable has been built, it can be invoked with:
+
 ```
 /BanditPAM/build/src/BanditPAM -f [path/to/input.csv] -k [number of clusters]
 ```
 
-* `-f` is mandatory and specifies the path to the dataset
-* `-k` is mandatory and specifies the number of clusters with which to fit the data
+- `-f` is mandatory and specifies the path to the dataset
+- `-k` is mandatory and specifies the number of clusters with which to fit the data
 
 For example, if you ran `./env_setup.sh` and downloaded the MNIST dataset, you could run:
 
@@ -189,6 +215,7 @@ For example, if you ran `./env_setup.sh` and downloaded the MNIST dataset, you c
 ```
 
 The expected output in the command line will be:
+
 ```
 Medoids: 694,168,306,714,324,959,527,251,800,737
 ```
@@ -216,6 +243,7 @@ To run the full suite of tests, run in the root directory:
 ```
 
 Alternatively, to run a "smaller" set of tests, from the main repo folder run `python tests/test_smaller.py` or `python tests/test_larger.py` to run a set of longer, more intensive tests.
+
 ## Credits
 
 Mo Tiwari wrote the original Python implementation of BanditPAM and many features of the C++ implementation. Mo now maintains the C++ implementation.

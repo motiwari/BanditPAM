@@ -11,10 +11,7 @@ __pycache__
 banditpam.cpython*
 build/
 build/
-data/MNIST_*.csv
-data/MNIST_CSV.csv
-data/data.csv
-data/scrna*
+data/*
 docs/html
 docs/latex
 python_generate_plots/__pycache__
@@ -28,6 +25,7 @@ tmp/
 var/
 dist/
 wheelhouse/
-banditpam.egg-info/
+<<<<<<< HEAD
+banditpam.egg-info/*
 scrna_reformat.csv
 scripts/docker/data/*
