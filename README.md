@@ -44,10 +44,10 @@ $ python scripts/experiment.py -k 3 -n "[1000, 3000]"
 
 Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
 
-[mnist : 1000 | k: 3]
+[mnist: 1000 | k: 3]
 0.535 (0.041)                 0.149 (0.003)                 0.146 (0.00565)               
 
-[mnist : 3000 | k: 3]
+[mnist: 3000 | k: 3]
 1.71 (0.107)                  0.738 (0.0476)                0.743 (0.0518)     
 ```
 

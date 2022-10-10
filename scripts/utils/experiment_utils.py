@@ -17,5 +17,5 @@ def get_stat_format(stats):
     return "{:30}".format("{:4.3} ({:4.3})".format(mean, std))
 
 def print_summary(stats, dataset_name, n_data, n_medoids):
-    print(f"\n[{dataset_name} : {n_data} | k: {n_medoids}]")
+    print(f"\n[{dataset_name}: {n_data} | k: {n_medoids}]")
     print("".join(get_stat_format(stat) for stat in stats))
