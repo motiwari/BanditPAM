@@ -4,11 +4,11 @@ import numpy as np
 import banditpam
 from utils.experiment_utils import get_dataset, print_summary
 
-def _run_experiments(dataset, n_experiments=3, n_medoids=5, useCacheP=True, usePerm=True, cacheMultiplier=5000):
+def _run_experiments(dataset, n_experiments=3, n_medoids=5, useCacheP=True, usePerm=True, cache_multiplier=4000):
     print("Cache: %r   Perm: %r" % (useCacheP, usePerm))
     results = []
     for i in range(n_experiments):    
-        kmed = banditpam.KMedoids(n_medoids=n_medoids, algorithm="BanditPAM", useCacheP=useCacheP, usePerm=usePerm, cacheMultiplier=cacheMultiplier)
+        kmed = banditpam.KMedoids(n_medoids=n_medoids, algorithm="BanditPAM", useCacheP=useCacheP, usePerm=usePerm, cacheMultiplier=cache_multiplier)
         start = time.time()
         kmed.fit(dataset, "L2")
         time_elapsed = time.time() - start
@@ -20,16 +20,16 @@ def _run_experiments(dataset, n_experiments=3, n_medoids=5, useCacheP=True, useP
 
     return mean, std
 
-def run_experiments(dataset_name, n_experiments, n_data, n_medoids):
+def run_experiments(dataset_name, n_experiments, n_data, n_medoids, cache_multiplier):
     print(f"\n[{dataset_name}={n_data}, K={n_medoids}]")
     dataset = get_dataset(dataset_name=dataset_name, n_data=n_data)
-    stats1 = _run_experiments(dataset, n_experiments=n_experiments, n_medoids=n_medoids, useCacheP=False, usePerm=False)
-    stats2 = _run_experiments(dataset, n_experiments=n_experiments, n_medoids=n_medoids, useCacheP=True, usePerm=False)
-    stats3 = _run_experiments(dataset, n_experiments=n_experiments, n_medoids=n_medoids, useCacheP=True, usePerm=True)
+    stats1 = _run_experiments(dataset, n_experiments=1, n_medoids=n_medoids, useCacheP=False, usePerm=False, cache_multiplier=cache_multiplier)
+    stats2 = _run_experiments(dataset, n_experiments=n_experiments, n_medoids=n_medoids, useCacheP=True, usePerm=False, cache_multiplier=cache_multiplier)
+    stats3 = _run_experiments(dataset, n_experiments=n_experiments, n_medoids=n_medoids, useCacheP=True, usePerm=True, cache_multiplier=cache_multiplier)
     stats = [stats1, stats2, stats3]
     return stats
 
-def run_multiple_experiments(dataset_list=[], n_data_list=[], n_medoids_list=[]):
+def run_multiple_experiments(dataset_list=[], n_data_list=[], n_medoids_list=[], cache_multiplier=5000):
     stats_list = []
 
     # collect experiment results
@@ -39,7 +39,12 @@ def run_multiple_experiments(dataset_list=[], n_data_list=[], n_medoids_list=[])
     for dataset_name in dataset_list:
         for n_data in n_data_list:
             for n_medoids in n_medoids_list:
-                stats = run_experiments(dataset_name=dataset_name, n_experiments=3, n_data=n_data, n_medoids=n_medoids)
+                stats = run_experiments(
+                    dataset_name=dataset_name, 
+                    n_experiments=3, 
+                    n_data=n_data, 
+                    n_medoids=n_medoids, 
+                    cache_multiplier=cache_multiplier)
                 stats_list += stats,
 
     # print results
@@ -59,11 +64,12 @@ def run_multiple_experiments(dataset_list=[], n_data_list=[], n_medoids_list=[])
     
 def main(argv):
     try:
-        opts, _ = getopt.getopt(argv, "k:n:d:", ["n_medoids=", "n_data=", "dataset="])
+        opts, _ = getopt.getopt(argv, "k:n:d:c:", ["n_medoids=", "n_data=", "dataset=", "cache_multiplier="])
         
         dataset_list = ["mnist"]
         n_medoids_list = [5, 10]
         n_data_list = [10000, 30000]
+        cache_multiplier = 5000
 
         for opt, arg in opts:
             if opt in ["-k", "--n_medoids"]:
@@ -72,6 +78,8 @@ def main(argv):
             elif opt in ["-n", "--n_data"]:
                 arg = ast.literal_eval(arg)
                 n_data_list = [arg] if type(arg) == int else arg
+            elif opt in ["-c", "--cache_multiplier"]:
+                cache_multiplier = int(arg)
             # elif opt in ["-d", "--datasets"]:
             #     print(type(arg))
             #     arg = ast.literal_eval(arg)
@@ -79,7 +87,7 @@ def main(argv):
             else:
                 assert(False, "Unhandled option")
 
-        run_multiple_experiments(dataset_list, n_data_list, n_medoids_list)
+        run_multiple_experiments(dataset_list, n_data_list, n_medoids_list, cache_multiplier)
 
     except getopt.GetoptError as error:
         print(error)
