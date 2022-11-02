@@ -29,3 +29,4 @@ wheelhouse/
 banditpam.egg-info/*
 scrna_reformat.csv
 scripts/docker/data/*
+data/MNIST_70k.csv

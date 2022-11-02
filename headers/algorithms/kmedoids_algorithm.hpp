@@ -30,7 +30,7 @@ class KMedoids {
   KMedoids(
     size_t nMedoids = 10,
     const std::string& algorithm = "BanditPAM",
-    bool useCacheP = false,
+    bool useCacheP = true,
     bool usePerm = false,
     size_t cacheMultiplier = 2000,
     size_t maxIter = 1000,
@@ -254,10 +254,10 @@ class KMedoids {
   std::unordered_map<size_t, size_t> reindex;
 
   /// Used for debugging only to toggle a fixed permutation of points
-  bool usePerm;
+  bool usePerm = false;
 
   /// Used for debugging only to toggle use of the cache
-  bool useCacheP;
+  bool useCacheP = true;
 
  protected:
   /**
@@ -430,6 +430,10 @@ class KMedoids {
 
   /// The random seed with which to perform the clustering
   size_t seed = 0;
+
+  long int numLoadCache = 0;
+  long int numSaveCache = 0;
+  long int numPulled = 0;
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_

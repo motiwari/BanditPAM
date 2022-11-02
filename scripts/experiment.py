@@ -24,9 +24,9 @@ def run_experiments(dataset_name, n_experiments, n_data, n_medoids, cache_multip
     print(f"\n[{dataset_name}={n_data}, K={n_medoids}]")
     dataset = get_dataset(dataset_name=dataset_name, n_data=n_data)
     stats1 = _run_experiments(dataset, n_experiments=1, n_medoids=n_medoids, useCacheP=False, usePerm=False, cache_multiplier=cache_multiplier)
-    stats2 = _run_experiments(dataset, n_experiments=n_experiments, n_medoids=n_medoids, useCacheP=True, usePerm=False, cache_multiplier=cache_multiplier)
-    stats3 = _run_experiments(dataset, n_experiments=n_experiments, n_medoids=n_medoids, useCacheP=True, usePerm=True, cache_multiplier=cache_multiplier)
-    stats = [stats1, stats2, stats3]
+    stats2 = _run_experiments(dataset, n_experiments=1, n_medoids=n_medoids, useCacheP=True, usePerm=False, cache_multiplier=cache_multiplier)
+    # stats3 = _run_experiments(dataset, n_experiments=1, n_medoids=n_medoids, useCacheP=True, usePerm=True, cache_multiplier=cache_multiplier)
+    stats = [stats1, stats2]
     return stats
 
 def run_multiple_experiments(dataset_list=[], n_data_list=[], n_medoids_list=[], cache_multiplier=5000):

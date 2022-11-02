@@ -47,11 +47,7 @@ KMedoids::~KMedoids() {}
 
 void KMedoids::fit(const arma::fmat& inputData, const std::string& loss) {
   batchSize = fmin(inputData.n_rows, batchSize);
-
-  // printf("nmedoids: %d\n", nMedoids);
-  // printf("cacheMultiplier: %zu \n", cacheMultiplier);
-  // std::cout << std::boolalpha << useCacheP << std::endl;
-
+  
   if (inputData.n_rows == 0) {
     throw std::invalid_argument("Dataset is empty");
   }
@@ -267,6 +263,9 @@ float KMedoids::cachedLoss(
   const size_t i,
   const size_t j,
   const bool useCache) {
+
+  numPulled += 1;
+
   if (!useCache) {
     return (this->*lossFn)(data, i, j);
   }
@@ -280,7 +279,11 @@ float KMedoids::cachedLoss(
     // T1 begins to write to cache and then T2 access in the middle of write?
     if (cache[(m*i) + reindex[j]] == -1) {
       cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
+      numSaveCache += 1;
+    } else {
+      numLoadCache += 1;
     }
+    
     return cache[m*i + reindex[j]];
   }
   return (this->*lossFn)(data, i, j);

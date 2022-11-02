@@ -6,6 +6,7 @@
  */
 
 #include "banditpam.hpp"
+#include <iostream>
 
 #include <armadillo>
 #include <unordered_map>
@@ -44,6 +45,10 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
   BanditPAM::swap(data, &medoidIndices, &medoidMatrix, &assignments);
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
+
+  std::cout << "numPulled: " << numPulled << "\n";
+  std::cout << "numLoadCache: " << numLoadCache << "\n";
+  std::cout << "numSaveCache: " << numSaveCache << "\n";
 }
 
 arma::frowvec BanditPAM::buildSigma(
