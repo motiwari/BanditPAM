@@ -238,6 +238,8 @@ class KMedoids {
    */
   float getAverageLoss() const;
 
+  void setNumArms(size_t numArms);
+
   /// The cache will be of size cacheMultiplier*nlogn
   size_t cacheMultiplier;
 
@@ -252,6 +254,10 @@ class KMedoids {
 
   /// A map from permutation index of each point to its original index
   std::unordered_map<size_t, size_t> reindex;
+
+  size_t maxCacheSize;
+  int* sigma;
+  size_t currentCacheSize = 0;
 
   /// Used for debugging only to toggle a fixed permutation of points
   bool usePerm;
@@ -431,9 +437,10 @@ class KMedoids {
   /// The random seed with which to perform the clustering
   size_t seed = 0;
 
-  long int numLoadCache = 0;
-  long int numSaveCache = 0;
-  long int numPulled = 0;
+  size_t numPulled = 0;
+  size_t numCachedLoaded = 0;
+  size_t numCachedSaved = 0;
+  size_t numOutsideCache = 0;
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_

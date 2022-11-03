@@ -20,6 +20,7 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
     size_t n = data.n_cols;
     size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
     cache = new float[n * m];
+    maxCacheSize = m;
 
     #pragma omp parallel for
     for (size_t idx = 0; idx < m*n; idx++) {
@@ -28,11 +29,21 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
 
     permutation = arma::randperm(n);
     permutationIdx = 0;
-    reindex = {};
-    // TODO(@motiwari): Can we parallelize this?
+
     for (size_t counter = 0; counter < m; counter++) {
       reindex[permutation[counter]] = counter;
     }
+
+    if (this->usePerm) {
+      // TODO(@motiwari): Can we parallelize this?
+      for (size_t counter = 0; counter < m; counter++) {
+        reindex[permutation[counter]] = counter;
+      }
+    } else {
+      sigma = new int[n];
+      std::fill_n(sigma, n, -1);
+    }
+    
   }
 
   arma::fmat medoidMatrix(data.n_rows, nMedoids);
@@ -45,10 +56,6 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
   BanditPAM::swap(data, &medoidIndices, &medoidMatrix, &assignments);
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
-
-  std::cout << "numPulled: " << numPulled << "\n";
-  std::cout << "numLoadCache: " << numLoadCache << "\n";
-  std::cout << "numSaveCache: " << numSaveCache << "\n";
 }
 
 arma::frowvec BanditPAM::buildSigma(

@@ -96,7 +96,8 @@ int main(int argc, char* argv[]) {
       2000,
       maxIter,
       buildConfidence,
-      swapConfidence);
+      swapConfidence,
+      1);
     kmed.fit(data, loss);
     for (auto medoid : kmed.getMedoidsFinal()) {
       std::cout << medoid << ",";

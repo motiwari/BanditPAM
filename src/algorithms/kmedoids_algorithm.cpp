@@ -65,6 +65,13 @@ void KMedoids::fit(const arma::fmat& inputData, const std::string& loss) {
     std::cout << "Error: Clustering did not run." << std::endl;
     throw e;
   }
+
+  std::cout << "numPulled:         " << numPulled       << "\n";
+  std::cout << "numCachedLoaded:   " << numCachedLoaded << "\n";
+  std::cout << "numCachedSaved:    " << numCachedSaved  << "\n";
+  std::cout << "numOutsideCache:   " << numOutsideCache << "\n";
+  std::cout << "maxCacheSize:      " << maxCacheSize << "\n";
+  std::cout << "currentCacheSize:  " << currentCacheSize << "\n";
 }
 
 arma::urowvec KMedoids::getMedoidsBuild() const {
@@ -266,26 +273,50 @@ float KMedoids::cachedLoss(
 
   numPulled += 1;
 
-  if (!useCache) {
+  if (!this->useCacheP) {
     return (this->*lossFn)(data, i, j);
   }
 
   size_t n = data.n_cols;
   size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
 
-  // test this is one of the early points in the permutation
-  if (reindex.find(j) != reindex.end()) {
-    // TODO(@motiwari): Potential race condition with shearing?
-    // T1 begins to write to cache and then T2 access in the middle of write?
-    if (cache[(m*i) + reindex[j]] == -1) {
-      cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
-      numSaveCache += 1;
-    } else {
-      numLoadCache += 1;
+  if (this->usePerm) {
+    // test this is one of the early points in the permutation
+    if (reindex.find(j) != reindex.end()) {
+      // TODO(@motiwari): Potential race condition with shearing?
+      // T1 begins to write to cache and then T2 access in the middle of write?
+      if (cache[(m*i) + reindex[j]] == -1) {
+        cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
+
+        numCachedSaved += 1;
+      } else {
+        numCachedLoaded += 1;
+      }
+      
+      return cache[m*i + reindex[j]];
     }
-    
-    return cache[m*i + reindex[j]];
+  } else {
+    if (currentCacheSize < maxCacheSize || sigma[j] != -1) {
+
+      if (cache[(m*i) + sigma[j]] == -1) {
+        // save cache
+        sigma[j] = currentCacheSize;
+        cache[(m*i) + currentCacheSize] = (this->*lossFn)(data, i, j);;
+        
+        numCachedSaved += 1;
+      } else {
+        numCachedLoaded += 1;
+      }
+
+      if (currentCacheSize < maxCacheSize && sigma[j] == -1) {
+        currentCacheSize += 1;
+      }
+      return cache[m*i + sigma[j]];
+    }
   }
+
+  numOutsideCache += 1;
+  
   // numNewCompute
   return (this->*lossFn)(data, i, j);
 }
