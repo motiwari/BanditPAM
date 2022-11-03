@@ -254,10 +254,10 @@ class KMedoids {
   std::unordered_map<size_t, size_t> reindex;
 
   /// Used for debugging only to toggle a fixed permutation of points
-  bool usePerm = false;
+  bool usePerm;
 
   /// Used for debugging only to toggle use of the cache
-  bool useCacheP = true;
+  bool useCacheP;
 
  protected:
   /**

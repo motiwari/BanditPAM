@@ -286,6 +286,7 @@ float KMedoids::cachedLoss(
     
     return cache[m*i + reindex[j]];
   }
+  // numNewCompute
   return (this->*lossFn)(data, i, j);
 }
 
