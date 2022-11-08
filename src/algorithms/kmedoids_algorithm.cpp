@@ -280,39 +280,19 @@ float KMedoids::cachedLoss(
   size_t n = data.n_cols;
   size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
 
-  if (this->usePerm) {
-    // test this is one of the early points in the permutation
-    if (reindex.find(j) != reindex.end()) {
-      // TODO(@motiwari): Potential race condition with shearing?
-      // T1 begins to write to cache and then T2 access in the middle of write?
-      if (cache[(m*i) + reindex[j]] == -1) {
-        cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
+  // test this is one of the early points in the permutation
+  if (reindex.find(j) != reindex.end()) {
+    // TODO(@motiwari): Potential race condition with shearing?
+    // T1 begins to write to cache and then T2 access in the middle of write?
+    if (cache[(m*i) + reindex[j]] == -1) {
+      cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
 
-        numCachedSaved += 1;
-      } else {
-        numCachedLoaded += 1;
-      }
-      
-      return cache[m*i + reindex[j]];
+      numCachedSaved += 1;
+    } else {
+      numCachedLoaded += 1;
     }
-  } else {
-    if (currentCacheSize < maxCacheSize || sigma[j] != -1) {
 
-      if (cache[(m*i) + sigma[j]] == -1) {
-        // save cache
-        sigma[j] = currentCacheSize;
-        cache[(m*i) + currentCacheSize] = (this->*lossFn)(data, i, j);;
-        
-        numCachedSaved += 1;
-      } else {
-        numCachedLoaded += 1;
-      }
-
-      if (currentCacheSize < maxCacheSize && sigma[j] == -1) {
-        currentCacheSize += 1;
-      }
-      return cache[m*i + sigma[j]];
-    }
+    return cache[m*i + reindex[j]];
   }
 
   numOutsideCache += 1;
