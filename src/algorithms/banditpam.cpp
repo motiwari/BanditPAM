@@ -30,18 +30,9 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
     permutation = arma::randperm(n);
     permutationIdx = 0;
 
+    // TODO(@motiwari): Can we parallelize this?
     for (size_t counter = 0; counter < m; counter++) {
       reindex[permutation[counter]] = counter;
-    }
-
-    if (this->usePerm) {
-      // TODO(@motiwari): Can we parallelize this?
-      for (size_t counter = 0; counter < m; counter++) {
-        reindex[permutation[counter]] = counter;
-      }
-    } else {
-      sigma = new int[n];
-      std::fill_n(sigma, n, -1);
     }
     
   }
