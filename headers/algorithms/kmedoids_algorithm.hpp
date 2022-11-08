@@ -36,7 +36,7 @@ class KMedoids {
     size_t maxIter = 1000,
     size_t buildConfidence = 1000,
     size_t swapConfidence = 10000,
-    size_t seed = 0);
+    size_t seed = 1);
 
   ~KMedoids();
 
