@@ -313,7 +313,7 @@ arma::fmat BanditPAM::swapTarget(
   // TODO(@motiwari): Change this to row-major and ->n_rows?
   const size_t K = medoidIndices->n_cols;
   const size_t T = targets->n_rows;
-  arma::fmat estimates(K, T, arma::fill::zeros);
+  arma::fmat results(nMedoids, T, arma::fill::zeros);
 
   // Targets should be a list of indices for target CANDIDATE points
   // Then update all corresponding EXISTING MEDOID indices targets.
@@ -360,24 +360,25 @@ arma::fmat BanditPAM::swapTarget(
   for (size_t i = 0; i < T; i++) {
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
+      float cost = KMedoids::cachedLoss(data, distMat, (*targets)(i), referencePoints(j));
+
       size_t k = (*assignments)(referencePoints(j));
-      estimates.col(i) -= (*bestDistances)(referencePoints(j));
+      results.col(i) -= (*bestDistances)(referencePoints(j));
       // The next two lines allow us to use intelligent broadcasting while
       // containing a special case for k. We add and subtract the first term
       // from the kth medoid for readability.
       // We might be able to change this to .eachrow(every column but k) since
       // arma does this in-place and it should not introduce complexity
-      estimates.col(i) += std::fmin(cost, (*bestDistances)(referencePoints(j)));
-      estimates(k, i) +=
+      results.col(i) += std::fmin(cost, (*bestDistances)(referencePoints(j)));
+      results(k, i) +=
         std::fmin(cost, (*secondBestDistances)(referencePoints(j))) -
           std::fmin(cost, (*bestDistances)(referencePoints(j)));
     }
   }
   // TODO(@motiwari): we can probably avoid this division
   // if we look at total loss, not average loss
-  estimates /= tmpBatchSize;
-  return estimates;
+  results /= tmpBatchSize;
+  return results;
 }
 
 void BanditPAM::swap(
@@ -423,6 +424,7 @@ void BanditPAM::swap(
       &secondBestDistances,
       assignments);
 
+    // Reset variables when starting a new swap
     candidates.fill(1);
     exactMask.fill(0);
     estimates.fill(0);
@@ -445,6 +447,7 @@ void BanditPAM::swap(
       // for the relevant candidates
       arma::uvec compute_exactly_targets =
         arma::find(arma::sum(compute_exactly, 0) >= 1);
+
       if (compute_exactly_targets.size() > 0) {
           arma::fmat result = swapTarget(
             data,
@@ -469,7 +472,7 @@ void BanditPAM::swap(
         break;
       }
 
-      // candidates should be of size T
+      // candidate_targets should be of size T
       // Sum the different columns
       // if any index appears in at least one, compute it exactly
       arma::uvec candidate_targets = arma::find(arma::sum(candidates, 0) >= 1);
@@ -483,7 +486,7 @@ void BanditPAM::swap(
         assignments,
         0);
 
-      // candidate_targets should be k x T
+      // candidate_targets should be of size T, 1
       estimates.cols(candidate_targets) =
         ((numSamples.cols(candidate_targets)
         % estimates.cols(candidate_targets))
@@ -518,6 +521,7 @@ void BanditPAM::swap(
       (*medoidIndices)(k) = n;
       medoids->col(k) = data.col((*medoidIndices)(k));
     }
+
     calcBestDistancesSwap(
         data,
         distMat,
