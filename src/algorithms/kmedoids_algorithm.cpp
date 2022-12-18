@@ -199,7 +199,7 @@ void KMedoids::calcBestDistancesSwap(
   arma::frowvec* secondBestDistances,
   arma::urowvec* assignments,
   const bool swapPerformed) {
-  // #pragma omp parallel for
+  #pragma omp parallel for
   for (size_t i = 0; i < data.n_cols; i++) {
     float best = std::numeric_limits<float>::infinity();
     float second = std::numeric_limits<float>::infinity();
@@ -230,7 +230,7 @@ float KMedoids::calcLoss(
   const arma::urowvec* medoidIndices) {
   float total = 0;
   // TODO(@motiwari): is this parallel loop accumulating properly?
-  // #pragma omp parallel for
+  #pragma omp parallel for
   for (size_t i = 0; i < data.n_cols; i++) {
     float cost = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < nMedoids; k++) {
