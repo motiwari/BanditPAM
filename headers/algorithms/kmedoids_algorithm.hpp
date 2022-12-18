@@ -379,7 +379,7 @@ class KMedoids {
   size_t buildConfidence = 1;
 
   /// Governs the error rate of each SWAP step in BanditPAM
-  size_t swapConfidence = 5;
+  size_t swapConfidence = 1;
 
   /// Used for floatcomparisons, primarily number of "arms" remaining
   const float precision = 0.001;

@@ -213,7 +213,7 @@ void BanditPAM::build(
       numSamples.cols(targets) += batchSize;
       arma::frowvec adjust(targets.n_rows);
       adjust.fill(p);
-      adjust = buildConfidence * arma::log(adjust);
+      adjust = buildConfidence + arma::log(adjust);  // Assume buildConfidence is given in logspace
       arma::frowvec confBoundDelta =
         sigma.cols(targets) %
         arma::sqrt(adjust / numSamples.cols(targets));
@@ -500,7 +500,7 @@ void BanditPAM::swap(
       arma::fmat adjust(nMedoids, candidate_targets.size());
       // TOOD(@motiwari): Move this ::fill to the previous line
       adjust.fill(p);
-      adjust = swapConfidence * arma::log(adjust);
+      adjust = swapConfidence + arma::log(adjust);  // Assume swapConfidence is given in logspace
       arma::fmat confBoundDelta = sigma.cols(candidate_targets) %
         arma::sqrt(adjust / numSamples.cols(candidate_targets));
       ucbs.cols(candidate_targets) = estimates.cols(candidate_targets)
