@@ -105,7 +105,7 @@ arma::frowvec BanditPAM::buildTarget(
   if (exact > 0) {
     tmpBatchSize = N;
   }
-  arma::frowvec estimates(target->n_rows, arma::fill::zeros);
+  arma::frowvec results(target->n_rows, arma::fill::zeros);
   arma::uvec referencePoints;
   // TODO(@motiwari): Make this wraparound properly
   // as last batch_size elements are dropped
@@ -136,9 +136,9 @@ arma::frowvec BanditPAM::buildTarget(
         total -= (*bestDistances)(referencePoints(j));
       }
     }
-     estimates(i) = total / tmpBatchSize;
+     results(i) = total / tmpBatchSize;
   }
-  return estimates;
+  return results;
 }
 
 void BanditPAM::build(
