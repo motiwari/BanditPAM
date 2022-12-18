@@ -89,4 +89,6 @@ int main(int argc, char* argv[]) {
     for (auto medoid : kmed.getMedoidsFinal()) {
       std::cout << medoid << ",";
     }
+    std::cout << "Final loss: " << kmed.getAverageLoss() << "\n";
+    std::cout << "Num Swap Steps: " << kmed.getSteps() << "\n";
 }
