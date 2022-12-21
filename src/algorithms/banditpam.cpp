@@ -10,6 +10,7 @@
 #include <armadillo>
 #include <unordered_map>
 #include <cmath>
+#include <chrono>
 
 namespace km {
 void BanditPAM::fitBanditPAM(
@@ -47,7 +48,13 @@ void BanditPAM::fitBanditPAM(
 
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
+
+  auto start = std::chrono::high_resolution_clock::now();
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
+  auto end = std::chrono::high_resolution_clock::now();
+  auto duration = duration_cast<std::chrono::milliseconds>(end - start).count();
+  std::cout << "Average milliseconds per swap:" << duration / getSteps() << "\n\n\n";
+
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
 }
@@ -388,7 +395,7 @@ void BanditPAM::swap(
   arma::fmat* medoids,
   arma::urowvec* assignments) {
   size_t N = data.n_cols;
-  size_t p = (N * nMedoids);
+  size_t p = N;
 
   arma::fmat sigma(nMedoids, N, arma::fill::zeros);
 
