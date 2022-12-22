@@ -33,8 +33,7 @@ PYBIND11_MODULE(banditpam, m) {
           pybind11::arg("use_cache") = true,
           pybind11::arg("use_perm") = true,
           pybind11::arg("cache_multiplier") = 1000,
-          pybind11::arg("parallelize") = true,
-          );
+          pybind11::arg("parallelize") = true);
   cls.def_property("n_medoids",
     &KMedoidsWrapper::getNMedoids, &KMedoidsWrapper::setNMedoids);
   cls.def_property("algorithm",

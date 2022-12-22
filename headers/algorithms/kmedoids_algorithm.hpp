@@ -266,11 +266,11 @@ class KMedoids {
   /// A map from permutation index of each point to its original index
   std::unordered_map<size_t, size_t> reindex;
 
-  /// Used for debugging only to toggle a fixed permutation of points
-  bool usePerm = true;
-
   /// Used for debugging only to toggle use of the cache
   bool useCache = true;
+
+  /// Used for debugging only to toggle a fixed permutation of points
+  bool usePerm = true;
 
   /// The cache will be of size cacheMultiplier*nlogn
   size_t cacheMultiplier = 1000;

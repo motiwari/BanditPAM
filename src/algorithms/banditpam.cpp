@@ -317,8 +317,6 @@ arma::fmat BanditPAM::swapTarget(
   const arma::urowvec* assignments,
   const size_t exact = 0) {
   const size_t N = data.n_cols;
-  // TODO(@motiwari): Change this to row-major and ->n_rows?
-  const size_t K = medoidIndices->n_cols;
   const size_t T = targets->n_rows;
   arma::fmat results(nMedoids, T, arma::fill::zeros);
 
