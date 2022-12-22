@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     bool usePerm = true;
     int seed = 0;
     int num_data = 0;
-    bool parallelize = false;
+    bool parallelize = true;
 
 
 
