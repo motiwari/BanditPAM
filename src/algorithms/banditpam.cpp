@@ -22,19 +22,19 @@ void BanditPAM::fitBanditPAM(
   // in the block below because it is used elsewhere in the call stack
   // TODO(@motiwari): Remove need for data or permutation through when using
   // a distance matrix
-  if (this->useCacheP) {
+  if (this->useCache) {
     size_t n = data.n_cols;
     size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
     cache = new float[n * m];
 
-    #pragma omp parallel for
+    #pragma omp parallel for if(this->parallelize)
     for (size_t idx = 0; idx < m*n; idx++) {
       cache[idx] = -1;  // TODO(@motiwari): need better value here
     }
 
     permutation = arma::randperm(n);
     permutationIdx = 0;
-    reindex = {};
+    reindex = {};  // TODO(@motiwari): Can this intialization be removed?
     // TODO(@motiwari): Can we parallelize this?
     for (size_t counter = 0; counter < m; counter++) {
       reindex[permutation[counter]] = counter;
@@ -83,7 +83,7 @@ arma::frowvec BanditPAM::buildSigma(
 
   arma::fvec sample(batchSize);
   arma::frowvec updated_sigma(N);
-  #pragma omp parallel for
+  #pragma omp parallel for if(this->parallelize)
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
       float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
@@ -129,7 +129,7 @@ arma::frowvec BanditPAM::buildTarget(
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
 
-  #pragma omp parallel for
+  #pragma omp parallel for if(this->parallelize)
   for (size_t i = 0; i < target->n_rows; i++) {
     float total = 0;
     for (size_t j = 0; j < referencePoints.n_rows; j++) {
@@ -168,7 +168,7 @@ void BanditPAM::build(
   arma::frowvec numSamples(N, arma::fill::zeros);
   arma::frowvec exactMask(N, arma::fill::zeros);
 
-  // TODO(@motiwari): #pragma omp parallel for?
+  // TODO(@motiwari): #pragma omp parallel for if(this->parallelize)?
   for (size_t k = 0; k < nMedoids; k++) {
     // instantiate medoids one-by-one
     permutationIdx = 0;
@@ -234,7 +234,7 @@ void BanditPAM::build(
     medoids->unsafe_col(k) = data.unsafe_col((*medoidIndices)(k));
 
     // don't need to do this on final iteration
-    #pragma omp parallel for
+    #pragma omp parallel for if(this->parallelize)
     for (size_t i = 0; i < N; i++) {
         float cost = KMedoids::cachedLoss(
           data,
@@ -277,7 +277,7 @@ arma::fmat BanditPAM::swapSigma(
 
   arma::fvec sample(batchSize);
   // for each considered swap
-  #pragma omp parallel for
+  #pragma omp parallel for if(this->parallelize)
   for (size_t i = 0; i < K * N; i++) {
     // extract data point of swap
     size_t n = i / K;
@@ -363,7 +363,7 @@ arma::fmat BanditPAM::swapTarget(
   }
 
   // TODO(@motiwari): Declare variables outside of loops
-  #pragma omp parallel for
+  #pragma omp parallel for if(this->parallelize)
   for (size_t i = 0; i < T; i++) {
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {

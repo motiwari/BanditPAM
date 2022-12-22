@@ -31,7 +31,11 @@ class KMedoids {
     size_t maxIter = 100,
     size_t buildConfidence = 1000,
     size_t swapConfidence = 10000,
-    size_t seed = 0);
+    size_t seed = 0,
+    bool useCache = true,
+    bool usePerm = true,
+    size_t cacheMultiplier = 1000,
+    bool parallelize = true);
 
   ~KMedoids();
 
@@ -194,8 +198,61 @@ class KMedoids {
    */
   float getAverageLoss() const;
 
-  /// The cache will be of size cacheMultiplier*nlogn
-  size_t cacheMultiplier = 1000;
+  /**
+   * @brief Returns whether a distance cache is being used
+   *
+   * @return Whether a distance cache is being used
+   */
+  bool getUseCache() const;
+
+  /**
+   * @brief Sets whether a distance cache should be used
+   *
+   * @param newUseCache Whether to use a distance cache
+   */
+  void setUseCache(bool newUseCache);
+
+  /**
+   * @brief Returns whether a permutation of reference points is being used
+   *
+   * @return Whether a permutation of reference points is being used
+   */
+  bool getUsePerm() const;
+
+  /**
+   * @brief Sets whether a permutation of reference points should used
+   *
+   * @param newUsePerm Whether a permutation of reference points should used
+   */
+  void setUsePerm(bool newUsePerm);
+
+  /**
+   * @brief Returns the cache multiplier being used, in multiples of batch size
+   *
+   * @return The cache multiplier being used, in multiples of batch size
+   */
+  bool getCacheMultiplier() const;
+
+  /**
+   * @brief Sets the new cache multiplier to use, in multiples of batch size
+   *
+   * @param newCacheMultiplier The new cache multiplier to use, in multiples of batch size
+   */
+  void setCacheMultiplier(bool newCacheMultiplier);
+
+  /**
+   * @brief Whether the algorithm is parallelized via OpenMP
+   *
+   * @return Whether the algorithm is being parallelized via OpenMP
+   */
+  bool getParallelize() const;
+
+  /**
+   * @brief Whether to parallelize the algorithm via OpenMP
+   *
+   * @param newParallelize Whether to parallelize the algorithm via OpenMP
+   */
+  void setParallelize(bool newParallelize);
 
   /// The cache which stores pairwise distance computations
   float* cache;
@@ -213,10 +270,16 @@ class KMedoids {
   bool usePerm = true;
 
   /// Used for debugging only to toggle use of the cache
-  bool useCacheP = true;
+  bool useCache = true;
+
+  /// The cache will be of size cacheMultiplier*nlogn
+  size_t cacheMultiplier = 1000;
 
   /// Determines whether we use a user-provided distance matrix
   bool useDistMat = false;
+
+  /// Determines whether we parallelize the algorithm with OpenMP
+  bool parallelize = true;
 
  protected:
   /**
@@ -258,12 +321,12 @@ class KMedoids {
    * @brief A wrapper around the given loss function that caches distances
    * between the given points.
    * 
-   * NOTE: if you change useCache, also change useCacheP
+   * NOTE: if you change useCacheFunctionOverride, also change useCache
    * 
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
-   * @param useCache Indices of the medoids in the dataset
+   * @param useCacheFunctionOverride Whether to use the cache in this function (by default, uses value of useCache)
    * 
    * @returns The distance between points i and j
    */
@@ -272,7 +335,7 @@ class KMedoids {
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     const size_t i,
     const size_t j,
-    const bool useCache = true);
+    const bool useCacheFunctionOverride = true);
 
   /// If using an L_p loss, the value of p
   size_t lp;
@@ -392,6 +455,15 @@ class KMedoids {
 
   /// The random seed with which to perform the clustering
   size_t seed = 0;
+
+  /// The number of non-cache distance computations we compute. For debugging only.
+  size_t numDistanceComputations = 0;
+
+  /// The number of cache hits (distance computations we reuse). For debugging only.
+  size_t numCacheHits = 0;
+
+  /// The number of cache misses, i.e., distance computations we need to compute. For debugging only.
+  size_t numCacheMisses = 0;
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_

@@ -23,12 +23,18 @@ PYBIND11_MODULE(banditpam, m) {
   m.def("set_num_threads",
     &omp_set_num_threads, "Set the maximum number of threads");
   pybind11::class_<KMedoidsWrapper> cls(m, "KMedoids");
-  cls.def(pybind11::init<int, std::string, int, int, int>(),
+  cls.def(pybind11::init<int, std::string, int, int, int, bool, bool, int, bool>(),
           pybind11::arg("n_medoids") = 5,
           pybind11::arg("algorithm") = "BanditPAM",
           pybind11::arg("max_iter") = 100,
           pybind11::arg("build_confidence") = 3,
-          pybind11::arg("swap_confidence") = 4);
+          pybind11::arg("swap_confidence") = 4,
+          // TODO(@motiwari): Verify these options are re-used correctly on reset
+          pybind11::arg("use_cache") = true,
+          pybind11::arg("use_perm") = true,
+          pybind11::arg("cache_multiplier") = 1000,
+          pybind11::arg("parallelize") = true,
+          );
   cls.def_property("n_medoids",
     &KMedoidsWrapper::getNMedoids, &KMedoidsWrapper::setNMedoids);
   cls.def_property("algorithm",
@@ -43,6 +49,14 @@ PYBIND11_MODULE(banditpam, m) {
     &KMedoidsWrapper::getLossFn, &KMedoidsWrapper::setLossFn);
   cls.def_property("seed",
     &KMedoidsWrapper::getSeed, &KMedoidsWrapper::setSeed);
+  cls.def_property("use_cache",
+    &KMedoidsWrapper::getUseCache, &KMedoidsWrapper::setUseCache);
+  cls.def_property("use_perm",
+    &KMedoidsWrapper::getUsePerm, &KMedoidsWrapper::setUsePerm);
+  cls.def_property("cache_multiplier",
+    &KMedoidsWrapper::getCacheMultiplier, &KMedoidsWrapper::setCacheMultiplier);
+  cls.def_property("parallelize",
+    &KMedoidsWrapper::getParallelize, &KMedoidsWrapper::setParallelize);
   medoids_python(&cls);
   build_medoids_python(&cls);
   labels_python(&cls);

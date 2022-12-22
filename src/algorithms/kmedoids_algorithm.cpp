@@ -22,13 +22,21 @@ KMedoids::KMedoids(
   size_t maxIter,
   size_t buildConfidence,
   size_t swapConfidence,
-  size_t seed):
+  size_t seed,
+  bool useCache,
+  bool usePerm,
+  size_t cacheMultiplier,
+  bool parallelize):
     nMedoids(nMedoids),
     algorithm(algorithm),
     maxIter(maxIter),
     buildConfidence(buildConfidence),
     swapConfidence(swapConfidence),
-    seed(seed) {
+    seed(seed),
+    useCache(useCache),
+    usePerm(usePerm),
+    cacheMultiplier(cacheMultiplier),
+    parallelize(parallelize) {
   KMedoids::checkAlgorithm(algorithm);
 
   // Though we initialize seed from the given parameter,
@@ -42,6 +50,11 @@ void KMedoids::fit(
   const arma::fmat& inputData,
   const std::string& loss,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
+
+  numDistanceComputations = 0;
+  numCacheHits = 0;
+  numCacheMisses = 0;
+
   if (distMat) {  // User has provided a distance matrix
     if (distMat.value().get().n_cols != distMat.value().get().n_rows) {
       // TODO(@motiwari): Change this to an assertion that is properly raised
@@ -151,6 +164,38 @@ size_t KMedoids::getSeed() const {
   return seed;
 }
 
+bool KMedoids::getUseCache() const {
+    return useCache;
+}
+
+void KMedoids::setUseCache(bool newUseCache) {
+    useCache = newUseCache;
+}
+
+bool KMedoids::getUsePerm() const {
+    return usePerm;
+}
+
+void KMedoids::setUsePerm(bool newUsePerm) {
+    usePerm = newUsePerm;
+}
+
+bool KMedoids::getCacheMultiplier() const {
+    return cacheMultiplier;
+}
+
+void KMedoids::setCacheMultiplier(bool newCacheMultiplier) {
+    cacheMultiplier = newCacheMultiplier;
+}
+
+bool KMedoids::getParallelize() const {
+    return parallelize;
+}
+
+void KMedoids::setParallelize(bool newParallelize) {
+    parallelize = newParallelize;
+}
+
 void KMedoids::setLossFn(std::string loss) {
   // TODO(@motiwari): On setting this, clear the cache and the average loss,
   // assignments, medoids, etc.
@@ -199,7 +244,7 @@ void KMedoids::calcBestDistancesSwap(
   arma::frowvec* secondBestDistances,
   arma::urowvec* assignments,
   const bool swapPerformed) {
-  #pragma omp parallel for
+  #pragma omp parallel for if(this->parallelize)
   for (size_t i = 0; i < data.n_cols; i++) {
     float best = std::numeric_limits<float>::infinity();
     float second = std::numeric_limits<float>::infinity();
@@ -230,7 +275,7 @@ float KMedoids::calcLoss(
   const arma::urowvec* medoidIndices) {
   float total = 0;
   // TODO(@motiwari): is this parallel loop accumulating properly?
-  #pragma omp parallel for
+  #pragma omp parallel for if(this->parallelize)
   for (size_t i = 0; i < data.n_cols; i++) {
     float cost = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < nMedoids; k++) {
