@@ -34,7 +34,7 @@ class KMedoids {
     size_t seed = 0,
     bool useCache = true,
     bool usePerm = true,
-    size_t cacheMultiplier = 1000,
+    size_t cacheWidth = 1000,
     bool parallelize = true);
 
   ~KMedoids();
@@ -227,18 +227,18 @@ class KMedoids {
   void setUsePerm(bool newUsePerm);
 
   /**
-   * @brief Returns the cache multiplier being used, in multiples of batch size
+   * @brief Returns the cache width being used
    *
-   * @return The cache multiplier being used, in multiples of batch size
+   * @return The cache width being used
    */
-  bool getCacheMultiplier() const;
+  size_t getCacheWidth() const;
 
   /**
-   * @brief Sets the new cache multiplier to use, in multiples of batch size
+   * @brief Sets the new cache width to use
    *
-   * @param newCacheMultiplier The new cache multiplier to use, in multiples of batch size
+   * @param newCacheWidth The new cache width to use
    */
-  void setCacheMultiplier(bool newCacheMultiplier);
+  void setCacheWidth(size_t newCacheWidth);
 
   /**
    * @brief Whether the algorithm is parallelized via OpenMP
@@ -253,6 +253,34 @@ class KMedoids {
    * @param newParallelize Whether to parallelize the algorithm via OpenMP
    */
   void setParallelize(bool newParallelize);
+
+  /**
+   * @brief Get total sample complexity of .fit() call
+   *
+   * @return Total sample complexity of last .fit() call
+   */
+  size_t getNumDistanceComputations() const;
+
+  /**
+   * @brief Get number of times we wrote to the cache
+   *
+   * @return Number of times we wrote to the cache
+   */
+  size_t getNumCacheWrites() const;
+
+  /**
+   * @brief Get number of cache hits
+   *
+   * @return Number of cache hits
+   */
+  size_t getNumCacheHits() const;
+
+  /**
+   * @brief Get number of cache misses
+   *
+   * @return Number of cache misses
+   */
+  size_t getNumCacheMisses() const;
 
   /// The cache which stores pairwise distance computations
   float* cache;
@@ -272,8 +300,8 @@ class KMedoids {
   /// Used for debugging only to toggle a fixed permutation of points
   bool usePerm = true;
 
-  /// The cache will be of size cacheMultiplier*nlogn
-  size_t cacheMultiplier = 1000;
+  /// The cache will be of size cacheWidth*n
+  size_t cacheWidth = 1000;
 
   /// Determines whether we use a user-provided distance matrix
   bool useDistMat = false;
@@ -460,6 +488,9 @@ class KMedoids {
   size_t numDistanceComputations = 0;
 
   /// The number of cache hits (distance computations we reuse). For debugging only.
+  size_t numCacheWrites = 0;
+
+  /// The number of cache writes (distance computations we save). For debugging only.
   size_t numCacheHits = 0;
 
   /// The number of cache misses, i.e., distance computations we need to compute. For debugging only.

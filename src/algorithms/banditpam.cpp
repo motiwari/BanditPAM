@@ -21,10 +21,10 @@ void BanditPAM::fitBanditPAM(
   // Note: even if we are using a distance matrix, we compute the permutation
   // in the block below because it is used elsewhere in the call stack
   // TODO(@motiwari): Remove need for data or permutation through when using
-  // a distance matrix
+  //  a distance matrix
   if (this->useCache) {
     size_t n = data.n_cols;
-    size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
+    size_t m = fmin(n, cacheWidth);
     cache = new float[n * m];
 
     #pragma omp parallel for if(this->parallelize)

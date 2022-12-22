@@ -25,7 +25,7 @@ KMedoids::KMedoids(
   size_t seed,
   bool useCache,
   bool usePerm,
-  size_t cacheMultiplier,
+  size_t cacheWidth,
   bool parallelize):
     nMedoids(nMedoids),
     algorithm(algorithm),
@@ -35,12 +35,13 @@ KMedoids::KMedoids(
     seed(seed),
     useCache(useCache),
     usePerm(usePerm),
-    cacheMultiplier(cacheMultiplier),
+    cacheWidth(cacheWidth),
     parallelize(parallelize) {
   KMedoids::checkAlgorithm(algorithm);
 
   // Though we initialize seed from the given parameter,
   // we need to call setSeed to pass it to arma
+  std::cout << "Cache width is " << cacheWidth << "\n\n";
   KMedoids::setSeed(seed);
 }
 
@@ -52,6 +53,7 @@ void KMedoids::fit(
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
 
   numDistanceComputations = 0;
+  numCacheWrites = 0;
   numCacheHits = 0;
   numCacheMisses = 0;
 
@@ -180,12 +182,12 @@ void KMedoids::setUsePerm(bool newUsePerm) {
     usePerm = newUsePerm;
 }
 
-bool KMedoids::getCacheMultiplier() const {
-    return cacheMultiplier;
+size_t KMedoids::getCacheWidth() const {
+    return cacheWidth;
 }
 
-void KMedoids::setCacheMultiplier(bool newCacheMultiplier) {
-    cacheMultiplier = newCacheMultiplier;
+void KMedoids::setCacheWidth(size_t newCacheWidth) {
+    cacheWidth = newCacheWidth;
 }
 
 bool KMedoids::getParallelize() const {
@@ -194,6 +196,22 @@ bool KMedoids::getParallelize() const {
 
 void KMedoids::setParallelize(bool newParallelize) {
     parallelize = newParallelize;
+}
+
+size_t KMedoids::getNumDistanceComputations() const {
+    return numDistanceComputations;
+}
+
+size_t KMedoids::getNumCacheWrites() const {
+    return numCacheWrites;
+}
+
+size_t KMedoids::getNumCacheHits() const {
+    return numCacheHits;
+}
+
+size_t KMedoids::getNumCacheMisses() const {
+    return numCacheMisses;
 }
 
 void KMedoids::setLossFn(std::string loss) {
@@ -301,6 +319,9 @@ float KMedoids::cachedLoss(
   const size_t i,
   const size_t j,
   const bool useCache) {
+
+  numDistanceComputations++;
+
   if (this->useDistMat) {
     return distMat.value().get().at(i, j);
   }
@@ -309,18 +330,23 @@ float KMedoids::cachedLoss(
     return (this->*lossFn)(data, i, j);
   }
 
+  // TODO(@motiwari): Should infer n and m from the size of the cache
   size_t n = data.n_cols;
-  size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
+  size_t m = fmin(n, cacheWidth);
 
   // test this is one of the early points in the permutation
   if (reindex.find(j) != reindex.end()) {
     // TODO(@motiwari): Potential race condition with shearing?
     // T1 begins to write to cache and then T2 access in the middle of write?
     if (cache[(m*i) + reindex[j]] == -1) {
+      numCacheWrites++;
       cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
     }
+    numCacheHits++;
     return cache[m*i + reindex[j]];
   }
+
+  numCacheMisses++;
   return (this->*lossFn)(data, i, j);
 }
 

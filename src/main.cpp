@@ -117,7 +117,7 @@ int main(int argc, char* argv[]) {
       seed,
       useCache,
       usePerm,
-      1000,  // Cache multiplier
+      1000,  // Cache Width
       parallelize
       );
     kmed.fit(data, loss, {});

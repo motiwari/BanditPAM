@@ -32,7 +32,7 @@ PYBIND11_MODULE(banditpam, m) {
           // TODO(@motiwari): Verify these options are re-used correctly on reset
           pybind11::arg("use_cache") = true,
           pybind11::arg("use_perm") = true,
-          pybind11::arg("cache_multiplier") = 1000,
+          pybind11::arg("cache_width") = 1000,
           pybind11::arg("parallelize") = true);
   cls.def_property("n_medoids",
     &KMedoidsWrapper::getNMedoids, &KMedoidsWrapper::setNMedoids);
@@ -52,10 +52,14 @@ PYBIND11_MODULE(banditpam, m) {
     &KMedoidsWrapper::getUseCache, &KMedoidsWrapper::setUseCache);
   cls.def_property("use_perm",
     &KMedoidsWrapper::getUsePerm, &KMedoidsWrapper::setUsePerm);
-  cls.def_property("cache_multiplier",
-    &KMedoidsWrapper::getCacheMultiplier, &KMedoidsWrapper::setCacheMultiplier);
+  cls.def_property("cache_width",
+    &KMedoidsWrapper::getCacheWidth, &KMedoidsWrapper::setCacheWidth);
   cls.def_property("parallelize",
     &KMedoidsWrapper::getParallelize, &KMedoidsWrapper::setParallelize);
+  cls.def("get_num_distance_computations", &KMedoidsWrapper::getNumDistanceComputations);
+  cls.def("get_num_cache_writes", &KMedoidsWrapper::getNumCacheWrites);
+  cls.def("get_num_cache_hits", &KMedoidsWrapper::getNumCacheHits);
+  cls.def("get_num_cache_misses", &KMedoidsWrapper::getNumCacheMisses);
   medoids_python(&cls);
   build_medoids_python(&cls);
   labels_python(&cls);
