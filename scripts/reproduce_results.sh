@@ -2,7 +2,7 @@
 git submodule update --init --recursive
 cd headers/carma
 mkdir build && cd build && cmake -DCARMA_INSTALL_LIB=ON .. && sudo cmake --build . --config Release --target install
-cd ../../..
+cd ../../
 pip install -r requirements.txt
 sudo pip install .
 

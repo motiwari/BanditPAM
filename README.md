@@ -66,17 +66,16 @@ OR through the source code via
 ```
 
 
-
 ## Experiment
 
-### Install the dataset before running the experiments
-You can skip this step if you've already run `scripts/reproduce_results.sh`.
+If you want to install the package and run the default experiments at one go, please run the following command.
 ```
-/BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
-/BanditPAM/: tar -xf data/MNIST_70k.tar.gz -C data
+/BanditPAM/: bash scripts/reproduce_results.sh
 ```
 
 ### Run the experiments
+If you want to manually experiement with different conditions, please run the following command.
+
 ```
 /BanditPAM/: python scripts/experiment.py [options]
 ```
