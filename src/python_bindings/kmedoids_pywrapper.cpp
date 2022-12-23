@@ -18,16 +18,26 @@ namespace km {
 PYBIND11_MODULE(banditpam, m) {
   m.doc() = "BanditPAM Python library, implemented in C++";
   pybind11::class_<KMedoidsWrapper> cls(m, "KMedoids");
-  cls.def(pybind11::init<int, std::string, int, int, int>(),
+  cls.def(pybind11::init<int, std::string, bool, bool, int, int, int, int, int>(),
           pybind11::arg("n_medoids") = NULL,
           pybind11::arg("algorithm") = "BanditPAM",
+          pybind11::arg("useCacheP") = true,
+          pybind11::arg("usePerm") = true,
+          pybind11::arg("cacheMultiplier") = 1000,
           pybind11::arg("max_iter") = 1000,
           pybind11::arg("build_confidence") = 1000,
-          pybind11::arg("swap_confidence") = 10000);
+          pybind11::arg("swap_confidence") = 10000,
+          pybind11::arg("seed") = 0);
   cls.def_property("n_medoids",
     &KMedoidsWrapper::getNMedoids, &KMedoidsWrapper::setNMedoids);
   cls.def_property("algorithm",
     &KMedoidsWrapper::getAlgorithm, &KMedoidsWrapper::setAlgorithm);
+  cls.def_property("useCacheP",
+    &KMedoidsWrapper::getUseCacheP, &KMedoidsWrapper::setUseCacheP);
+  cls.def_property("usePerm",
+    &KMedoidsWrapper::getUsePerm, &KMedoidsWrapper::setUsePerm);
+  cls.def_property("cacheMultiplier",
+    &KMedoidsWrapper::getCacheMultiplier, &KMedoidsWrapper::setCacheMultiplier);
   cls.def_property("max_iter",
     &KMedoidsWrapper::getMaxIter, &KMedoidsWrapper::setMaxIter);
   cls.def_property("build_confidence",

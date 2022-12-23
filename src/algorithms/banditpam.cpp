@@ -6,6 +6,7 @@
  */
 
 #include "banditpam.hpp"
+#include <iostream>
 
 #include <armadillo>
 #include <unordered_map>
@@ -19,6 +20,7 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
     size_t n = data.n_cols;
     size_t m = fmin(n, ceil(log10(data.n_cols) * cacheMultiplier));
     cache = new float[n * m];
+    maxCacheSize = m;
 
     #pragma omp parallel for
     for (size_t idx = 0; idx < m*n; idx++) {
@@ -27,11 +29,12 @@ void BanditPAM::fitBanditPAM(const arma::fmat& inputData) {
 
     permutation = arma::randperm(n);
     permutationIdx = 0;
-    reindex = {};
+
     // TODO(@motiwari): Can we parallelize this?
     for (size_t counter = 0; counter < m; counter++) {
       reindex[permutation[counter]] = counter;
     }
+    
   }
 
   arma::fmat medoidMatrix(data.n_rows, nMedoids);

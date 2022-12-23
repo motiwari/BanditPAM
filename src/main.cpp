@@ -29,7 +29,10 @@ int main(int argc, char* argv[]) {
     bool k_flag = false;
     const int ARGUMENT_ERROR_CODE = 1;
 
-    while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:s:")) != -1) {
+    bool useCacheP = false;
+    bool usePerm = false;
+
+    while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:s:cp")) != -1) {
         if ( optind == prev_ind + 2 && *optarg == '-' ) {
         opt = ':';
         --optind;
@@ -53,6 +56,14 @@ int main(int argc, char* argv[]) {
             case ':':
                 printf("option needs a value\n");
                 return ARGUMENT_ERROR_CODE;
+            case 'c':
+                printf("Use cache\n");
+                useCacheP = true;
+                break;
+            case 'p':
+                printf("Use perm\n");
+                usePerm = true;
+                break;
             case '?':
                 printf("unknown option: %c\n", optopt);
                 return ARGUMENT_ERROR_CODE;
@@ -80,9 +91,13 @@ int main(int argc, char* argv[]) {
     km::KMedoids kmed(
       k,
       "BanditPAM",
+      useCacheP,
+      usePerm,
+      2000,
       maxIter,
       buildConfidence,
-      swapConfidence);
+      swapConfidence,
+      1);
     kmed.fit(data, loss);
     for (auto medoid : kmed.getMedoidsFinal()) {
       std::cout << medoid << ",";
