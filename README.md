@@ -28,45 +28,6 @@ If you're using MacOS, you can install them through [homebrew](https://brew.sh/)
 
 After the installation, run `scripts/reproduce_results.sh`. It will automatically install carma, MNIST, and BanditPAM and reproduce the results in the paper.
 
-
-# Experiment
-
-## Install the dataset before running the experiments
-You can skip this step if you've already run `scripts/reproduce_results.sh`.
-```
-/BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
-/BanditPAM/: tar -xf data/MNIST_70k.tar.gz -C data
-```
-
-## Run the experiments
-```
-/BanditPAM/: python scripts/experiment.py [options]
-```
-
-If you don't pass any options, the script will run experiments with `n_medoids=[5, 10]` and `n_data = [10000, 30000]`.
-
-
-### Options
-```
--k, --n_medoids  int/string  default: [5, 10]
--n, --n_data     int/string  default: [10000, 30000]
-```
-
-**Example** : Run experiments with `k=3` and `n_data = [1000, 3000]`  
-(Make sure to put a list in double quotes) 
-```
-$ python scripts/experiment.py -k 3 -n "[1000, 3000]"
-
-Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
-
-[mnist: 1000 | k: 3]
-0.535 (0.041)                 0.149 (0.003)                 0.146 (0.00565)               
-
-[mnist: 3000 | k: 3]
-1.71 (0.107)                  0.738 (0.0476)                0.743 (0.0518)     
-```
-
-
 # Requirements
 
 # TL;DR run `pip install banditpam` and jump to the [examples](https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model).
@@ -103,6 +64,48 @@ OR through the source code via
 /BanditPAM/: pip install -r requirements.txt
 /BanditPAM/: sudo pip install .
 ```
+
+
+
+## Experiment
+
+### Install the dataset before running the experiments
+You can skip this step if you've already run `scripts/reproduce_results.sh`.
+```
+/BanditPAM/: wget https://motiwari.com/banditpam_data/MNIST_70k.tar.gz -P data
+/BanditPAM/: tar -xf data/MNIST_70k.tar.gz -C data
+```
+
+### Run the experiments
+```
+/BanditPAM/: python scripts/experiment.py [options]
+```
+
+If you don't pass any options, the script will run experiments with `n_medoids=[5, 10]` and `n_data = [10000, 30000]`.
+
+
+### Options
+```
+-k, --n_medoids  int/string  default: [5, 10]
+-n, --n_data     int/string  default: [10000, 30000]
+```
+
+**Example** : Run experiments with `k=3` and `n_data = [1000, 3000]`  
+(Make sure to put a list in double quotes) 
+```
+$ python scripts/experiment.py -k 3 -n "[1000, 3000]"
+
+Cache (X) Perm (X)            Cache (O) Perm (X)            Cache (O) Perm (O)            
+
+[mnist: 1000 | k: 3]
+0.535 (0.041)                 0.149 (0.003)                 0.146 (0.00565)               
+
+[mnist: 3000 | k: 3]
+1.71 (0.107)                  0.738 (0.0476)                0.743 (0.0518)     
+```
+
+
+## Usage
 
 ### Example 1: Synthetic data from a Gaussian Mixture Model
 
