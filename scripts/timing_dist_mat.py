@@ -5,11 +5,12 @@ import time
 import numpy as np
 import banditpam
 from sklearn.metrics.pairwise import euclidean_distances
+import os
 
 
 # banditpam.set_num_threads(1)
 
-X = np.loadtxt("data/MNIST_10k.csv")
+X = np.loadtxt(os.path.join("data", "MNIST_10k.csv"))
 kmed = banditpam.KMedoids(n_medoids=5, algorithm="BanditPAM")
 start = time.time()
 diss = euclidean_distances(X)
