@@ -34,8 +34,6 @@ int main(int argc, char* argv[]) {
     int num_data = 0;
     bool parallelize = true;
 
-
-
     // TODO(@motiwari): Use a variadic function signature for this instead
     while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:s:cpnw:")) != -1) {
         if ( optind == prev_ind + 2 && *optarg == '-' ) {
@@ -114,11 +112,11 @@ int main(int argc, char* argv[]) {
       maxIter,
       buildConfidence,
       swapConfidence,
-      seed,
       useCache,
       usePerm,
       1000,  // Cache Width
-      parallelize
+      parallelize,
+      seed
       );
     kmed.fit(data, loss, {});
     for (auto medoid : kmed.getMedoidsFinal()) {
