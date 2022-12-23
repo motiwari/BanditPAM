@@ -17,11 +17,13 @@ def time_measured_fit(kmed: KMedoids, X: np.array, loss: str = "L2",):
 def get_cache_statistics(kmed: KMedoids, X: np.array, loss: str = "L2", cache_width: int = 1000):
     kmed.cache_width = cache_width
     time = time_measured_fit(kmed, X, loss)
-    print("Cache Width:", kmed.cache_width)
-    print("Cache Writes:", kmed.cache_writes)
-    print("Cache Hits:", kmed.cache_hits)
-    print("Cache Misses:", kmed.cache_misses)
-    return time, kmed.cache_width, kmed.cache_writes, kmed.cache_hits, kmed.cache_misses
+    print("Cache Width: {:,}".format(kmed.cache_width))
+    print("Distance Computations: {:,}".format(kmed.distance_computations))
+    print("Swap Steps: {:,}".format(kmed.steps))
+    print("Cache Writes: {:,}".format(kmed.cache_writes))
+    print("Cache Hits: {:,}".format(kmed.cache_hits))
+    print("Cache Misses: {:,}".format(kmed.cache_misses))
+    return time, kmed.cache_width, kmed.steps, kmed.distance_computations, kmed.cache_writes, kmed.cache_hits, kmed.cache_misses
 
 
 def main():
@@ -82,12 +84,12 @@ def main():
     def test_old_bpam_vs_new_bpam():
         X = np.loadtxt(os.path.join("data", "MNIST_10k.csv"))
         kmed = KMedoids(n_medoids=10, algorithm="BanditPAM")
-        bpam_time_ = time_measured_fit(kmed=kmed, X=X, loss="L2")
+        bpam_time, bpam_width, bpam_distance_computations, bpam_steps, bpam_writes, bpam_hits, bpam_misses = get_cache_statistics(kmed=kmed, X=X, loss="L2", cache_width=1000)
 
         kmed_v3 = KMedoids(n_medoids=10, algorithm="BanditPAM_v3")
-        bpam_v3_time_ = time_measured_fit(kmed=kmed_v3, X=X, loss="L2")
+        bpam_v3_time, bpam_v3_width, bpam_v3_distance_computations, bpam_v3_steps, bpam_v3_writes, bpam_v3_hits, bpam_v3_misses = get_cache_statistics(kmed=kmed_v3, X=X, loss="L2", cache_width=1000)
 
-        print(bpam_time_, bpam_v3_time_)
+        print(bpam_time, bpam_v3_time)
         print(kmed.time_per_swap, kmed_v3.time_per_swap)
 
 
