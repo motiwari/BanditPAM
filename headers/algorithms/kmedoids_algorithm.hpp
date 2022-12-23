@@ -284,6 +284,20 @@ class KMedoids {
    */
   size_t getCacheMisses() const;
 
+  /**
+   * @brief Get total number of milliseconds for the whole SWAP procedure
+   *
+   * @return Total number of milliseconds for the whole SWAP procedure
+   */
+  size_t getTotalSwapMilliseconds() const;
+
+  /**
+   * @brief Get average number of milliseconds per swap step
+   *
+   * @return Average number of milliseconds per swap step
+   */
+  size_t getMillisecondsPerSwap() const;
+
   /// The cache which stores pairwise distance computations
   float* cache;
 
@@ -498,6 +512,9 @@ class KMedoids {
 
   /// The number of cache misses, i.e., distance computations we need to compute. For debugging only.
   size_t numCacheMisses = 0;
+
+  /// The number of milliseconds taken per swap step, on average
+  size_t totalSwapMilliseconds = 0;
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_

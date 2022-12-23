@@ -126,4 +126,6 @@ int main(int argc, char* argv[]) {
     }
     std::cout << "Final loss: " << kmed.getAverageLoss() << "\n";
     std::cout << "Num Swap Steps: " << kmed.getSteps() << "\n";
+    std::cout << "Total Swap Milliseconds: " << kmed.getTotalSwapMilliseconds() << "\n";
+    std::cout << "Total Swap Milliseconds: " << kmed.getMillisecondsPerSwap() << "\n";
 }

@@ -55,6 +55,9 @@ void BanditPAM::fitBanditPAM(
   auto duration = duration_cast<std::chrono::milliseconds>(end - start).count();
   std::cout << "Average milliseconds per swap:" << duration / getSteps() << "\n\n\n";
 
+  // TODO(@motiwari): Convert this duration to a size_t
+  totalSwapMilliseconds = duration;
+
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
 }

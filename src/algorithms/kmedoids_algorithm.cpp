@@ -167,12 +167,12 @@ size_t KMedoids::getSeed() const {
 }
 
 bool KMedoids::getUseCache() const {
-    return useCache;
+  return useCache;
 }
 
 void KMedoids::setUseCache(bool newUseCache) {
-    // TODO(@motiwari): Throw an error if not using BanditPAM
-    useCache = newUseCache;
+  // TODO(@motiwari): Throw an error if not using BanditPAM
+  useCache = newUseCache;
 }
 
 bool KMedoids::getUsePerm() const {
@@ -180,42 +180,50 @@ bool KMedoids::getUsePerm() const {
 }
 
 void KMedoids::setUsePerm(bool newUsePerm) {
-    // TODO(@motiwari): Throw an error if not using BanditPAM
-    usePerm = newUsePerm;
+  // TODO(@motiwari): Throw an error if not using BanditPAM
+  usePerm = newUsePerm;
 }
 
 size_t KMedoids::getCacheWidth() const {
-    // TODO(@motiwari): Throw an error if not using BanditPAM
-    return cacheWidth;
+  // TODO(@motiwari): Throw an error if not using BanditPAM
+  return cacheWidth;
 }
 
 void KMedoids::setCacheWidth(size_t newCacheWidth) {
-    // TODO(@motiwari): Throw an error if not using BanditPAM
-    cacheWidth = newCacheWidth;
+  // TODO(@motiwari): Throw an error if not using BanditPAM
+  cacheWidth = newCacheWidth;
 }
 
 bool KMedoids::getParallelize() const {
-    return parallelize;
+  return parallelize;
 }
 
 void KMedoids::setParallelize(bool newParallelize) {
-    parallelize = newParallelize;
+  parallelize = newParallelize;
 }
 
 size_t KMedoids::getDistanceComputations() const {
-    return numDistanceComputations;
+  return numDistanceComputations;
 }
 
 size_t KMedoids::getCacheWrites() const {
-    return numCacheWrites;
+  return numCacheWrites;
 }
 
 size_t KMedoids::getCacheHits() const {
-    return numCacheHits;
+  return numCacheHits;
 }
 
 size_t KMedoids::getCacheMisses() const {
-    return numCacheMisses;
+  return numCacheMisses;
+}
+
+size_t KMedoids::getTotalSwapMilliseconds() const {
+  return totalSwapMilliseconds;
+}
+
+size_t KMedoids::getMillisecondsPerSwap() const {
+  return totalSwapMilliseconds / steps;
 }
 
 void KMedoids::setLossFn(std::string loss) {

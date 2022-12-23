@@ -55,16 +55,24 @@ def main():
         assert time_no_parallel > time_parallel, "Parallelization should increase speed on MNIST-10k dataset"
 
     def test_permutation():
-        pass
+        X = np.loadtxt(os.path.join("data", "MNIST_10k.csv"))
+        kmed = KMedoids(n_medoids=5, algorithm="BanditPAM")
+        time_perm = time_measured_fit(kmed=kmed, X=X, loss="L2")
+        kmed.use_perm = False
+        time_no_perm = time_measured_fit(kmed=kmed, X=X, loss="L2")
+
+        print(time_perm, time_no_perm)
+        assert time_no_perm > time_perm, "Permutation should increase speed on MNIST-10k dataset"
 
     def test_time_per_swap():
         pass
 
     def test_old_bpam_vs_new_bpam():
         pass
-    
+
     #test_cache_stats()
-    test_parallelization()
+    #test_parallelization()
+    test_permutation()
 
 
 if __name__ == "__main__":
