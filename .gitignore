@@ -28,3 +28,4 @@ tmp/
 var/
 dist/
 wheelhouse/
+.eggs/
