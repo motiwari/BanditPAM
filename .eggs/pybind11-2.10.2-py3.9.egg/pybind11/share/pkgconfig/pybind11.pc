@@ -1,7 +1,0 @@
-prefix=${pcfiledir}/../../
-includedir=${prefix}/include
-
-Name: pybind11
-Description: Seamless operability between C++11 and Python
-Version: 2.10.2
-Cflags: -I${includedir}

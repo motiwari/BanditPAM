@@ -1,3 +1,0 @@
-
-[global]
-pybind11-global==2.10.2
