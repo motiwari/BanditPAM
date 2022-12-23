@@ -367,6 +367,7 @@ float KMedoids::cachedLoss(
 
 void KMedoids::checkAlgorithm(const std::string& algorithm) const {
   if ((algorithm != "BanditPAM") &&
+          (algorithm != "BanditPAM_v3") &&
       (algorithm != "PAM") &&
       (algorithm != "FastPAM1")) {
     // TODO(@motiwari): Better error type
