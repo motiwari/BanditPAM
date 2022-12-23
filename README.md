@@ -16,7 +16,7 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 }
 ```
 
-If you want to install the package and run the default experiments at one go, please run the following command.
+**To install the package and run the default experiments at one go, please run the following command.**
 ```
 /BanditPAM/: bash scripts/reproduce_results.sh
 ```
