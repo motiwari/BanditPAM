@@ -11,7 +11,6 @@ __pycache__
 banditpam.cpython*
 build/
 build/
-data/*
 docs/html
 docs/latex
 python_generate_plots/__pycache__
@@ -31,3 +30,4 @@ scrna_reformat.csv
 scripts/docker/data/*
 data/MNIST_70k.csv
 build/
+
