@@ -14,6 +14,7 @@
 #include "fastpam1.hpp"
 #include "pam.hpp"
 #include "banditpam.hpp"
+#include "banditpam_v3.hpp"
 
 namespace km {
 // NOTE: The order of arguments in this constructor must match that of the arguments in kmedoids_pywrapper.cpp,
@@ -81,6 +82,8 @@ void KMedoids::fit(
       static_cast<PAM*>(this)->fitPAM(inputData, distMat);
     } else if (algorithm == "BanditPAM") {
       static_cast<BanditPAM*>(this)->fitBanditPAM(inputData, distMat);
+    } else if (algorithm == "BanditPAM_v3") {
+      static_cast<BanditPAM_v3*>(this)->fitBanditPAM_v3(inputData, distMat);
     } else if (algorithm == "FastPAM1") {
       static_cast<FastPAM1*>(this)->fitFastPAM1(inputData, distMat);
     }

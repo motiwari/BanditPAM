@@ -448,6 +448,7 @@ def main():
                 os.path.join("src", "algorithms", "kmedoids_algorithm.cpp"),
                 os.path.join("src", "algorithms", "pam.cpp"),
                 os.path.join("src", "algorithms", "banditpam.cpp"),
+                os.path.join("src", "algorithms", "banditpam_v3.cpp"),
                 os.path.join("src", "algorithms", "fastpam1.cpp"),
                 os.path.join("src", "python_bindings", "kmedoids_pywrapper.cpp"),
                 os.path.join("src", "python_bindings", "medoids_python.cpp"),
