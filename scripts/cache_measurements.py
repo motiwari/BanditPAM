@@ -2,6 +2,9 @@ import numpy as np
 import time
 import os
 from banditpam import KMedoids
+import math
+
+from tests.constants import MILLISECONDS_IN_A_SECOND
 
 
 def time_measured_fit(kmed: KMedoids, X: np.array, loss: str = "L2",):
@@ -65,15 +68,24 @@ def main():
         assert time_no_perm > time_perm, "Permutation should increase speed on MNIST-10k dataset"
 
     def test_time_per_swap():
-        pass
+        X = np.loadtxt(os.path.join("data", "MNIST_10k.csv"))
+        kmed = KMedoids(n_medoids=5, algorithm="BanditPAM")
+        time_ = time_measured_fit(kmed=kmed, X=X, loss="L2")
+        total_swap_time = kmed.total_swap_time
+        average_swap_time = kmed.time_per_swap
+
+        print(time_, total_swap_time / MILLISECONDS_IN_A_SECOND, average_swap_time / MILLISECONDS_IN_A_SECOND)
+        assert time_ > total_swap_time / MILLISECONDS_IN_A_SECOND, "Total time should be greater than total swap time"
+        assert total_swap_time > average_swap_time / MILLISECONDS_IN_A_SECOND, "Total swap time should be greater than average swap time"
+        assert math.isclose(total_swap_time / kmed.steps,  average_swap_time, abs_tol=kmed.steps), "Average swap time inconsistent with total swap time and steps"
 
     def test_old_bpam_vs_new_bpam():
         pass
 
     #test_cache_stats()
     #test_parallelization()
-    test_permutation()
-
+    # test_permutation()
+    test_time_per_swap()
 
 if __name__ == "__main__":
     main()
