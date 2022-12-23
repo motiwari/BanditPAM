@@ -457,6 +457,7 @@ def main():
                 os.path.join("src", "python_bindings", "steps_python.cpp"),
                 os.path.join("src", "python_bindings", "loss_python.cpp"),
                 os.path.join("src", "python_bindings", "cache_python.cpp"),
+                os.path.join("src", "python_bindings", "swap_times_python.cpp"),
             ],
             include_dirs=include_dirs,
             library_dirs=[os.path.join("/", "usr", "local", "lib")],

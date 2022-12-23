@@ -100,6 +100,20 @@ class KMedoidsWrapper : public km::KMedoids {
    * The number of cache misses from the last call to .fit()
    */
   size_t getCacheMissesPython();
+
+  /**
+   * @brief Returns the total time for the entire SWAP procedure by the last call to .fit()
+   *
+   * The total time for the entire SWAP procedure by the last call to .fit()
+   */
+  size_t getTotalSwapTimePython();
+
+  /**
+   * @brief Returns the average time per swap step by the last call to .fit()
+   *
+   * The average time per swap step by the last call to .fit()
+   */
+  float getTimePerSwapPython();
 };
 
 // TODO(@motiwari): Encapsulate these
@@ -153,5 +167,15 @@ void cache_hits_python(pybind11::class_<km::KMedoidsWrapper> *);
  * @brief Binding for the C++ function KMedoids::getCacheMisses()
  */
 void cache_misses_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getTotalSwapTime()
+ */
+void total_swap_time_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getTimePerSwap()
+ */
+void time_per_swap_python(pybind11::class_<km::KMedoidsWrapper> *);
 }  // namespace km
 #endif  // HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_

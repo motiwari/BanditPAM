@@ -218,12 +218,12 @@ size_t KMedoids::getCacheMisses() const {
   return numCacheMisses;
 }
 
-size_t KMedoids::getTotalSwapMilliseconds() const {
-  return totalSwapMilliseconds;
+size_t KMedoids::getTotalSwapTime() const {
+  return totalSwapTime;
 }
 
-size_t KMedoids::getMillisecondsPerSwap() const {
-  return totalSwapMilliseconds / steps;
+float KMedoids::getTimePerSwap() const {
+  return totalSwapTime / steps;
 }
 
 void KMedoids::setLossFn(std::string loss) {

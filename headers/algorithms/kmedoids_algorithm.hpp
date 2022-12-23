@@ -289,14 +289,14 @@ class KMedoids {
    *
    * @return Total number of milliseconds for the whole SWAP procedure
    */
-  size_t getTotalSwapMilliseconds() const;
+  size_t getTotalSwapTime() const;
 
   /**
    * @brief Get average number of milliseconds per swap step
    *
    * @return Average number of milliseconds per swap step
    */
-  size_t getMillisecondsPerSwap() const;
+  float getTimePerSwap() const;
 
   /// The cache which stores pairwise distance computations
   float* cache;
@@ -514,7 +514,7 @@ class KMedoids {
   size_t numCacheMisses = 0;
 
   /// The number of milliseconds taken per swap step, on average
-  size_t totalSwapMilliseconds = 0;
+  size_t totalSwapTime = 0;
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_

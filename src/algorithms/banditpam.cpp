@@ -55,8 +55,9 @@ void BanditPAM::fitBanditPAM(
   auto duration = duration_cast<std::chrono::milliseconds>(end - start).count();
   std::cout << "Average milliseconds per swap:" << duration / getSteps() << "\n\n\n";
 
-  // TODO(@motiwari): Convert this duration to a size_t
-  totalSwapMilliseconds = duration;
+  // TODO(@motiwari): Convert this duration to a size_t. The implicit cast seems to work for now, but will probably
+  //  shoot me in the foot later
+  totalSwapTime = duration;
 
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
@@ -175,7 +176,6 @@ void BanditPAM::build(
   for (size_t k = 0; k < nMedoids; k++) {
     // instantiate medoids one-by-one
     permutationIdx = 0;
-    size_t step_count = 0;
     candidates.fill(1);
     numSamples.fill(0);
     exactMask.fill(0);
@@ -230,7 +230,6 @@ void BanditPAM::build(
       ucbs.cols(targets) = estimates.cols(targets) + confBoundDelta;
       lcbs.cols(targets) = estimates.cols(targets) - confBoundDelta;
       candidates = (lcbs < ucbs.min()) && (exactMask == 0);
-      step_count++;
     }
 
     medoidIndices->at(k) = lcbs.index_min();

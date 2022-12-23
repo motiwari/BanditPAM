@@ -75,9 +75,15 @@ PYBIND11_MODULE(banditpam, m) {
   steps_python(&cls);
   fit_python(&cls);
   loss_python(&cls);
+
+  // Cache functions
   distance_computations_python(&cls);
   cache_writes_python(&cls);
   cache_hits_python(&cls);
   cache_misses_python(&cls);
+
+  // Swap timing functions
+  time_per_swap_python(&cls);
+  total_swap_time_python(&cls);
 }
 }  // namespace km

@@ -14,19 +14,19 @@
 
 namespace km {
 size_t km::KMedoidsWrapper::getDistanceComputationsPython() {
-    return KMedoids::getDistanceComputations();
+  return KMedoids::getDistanceComputations();
 }
 
 size_t km::KMedoidsWrapper::getCacheWritesPython() {
-    return KMedoids::getCacheWrites();
+  return KMedoids::getCacheWrites();
 }
 
 size_t km::KMedoidsWrapper::getCacheHitsPython() {
-    return KMedoids::getCacheHits();
+  return KMedoids::getCacheHits();
 }
 
 size_t km::KMedoidsWrapper::getCacheMissesPython() {
-    return KMedoids::getCacheMisses();
+  return KMedoids::getCacheMisses();
 }
 
 void distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
