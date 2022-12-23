@@ -21,12 +21,8 @@ def benchmark(data, f, n=1):
     for k, v in data_.items():
         v = np.array(v)
         min, avg = v.min(), v.mean()
-        ste = v.std(ddof=1) / np.sqrt(len(v)) if len(v) > 1 else 0.
-        print("{:16s} min={:-10.2f} mean={:-10.2f} ±{:-.2f}".format(
-            k,
-            min,
-            avg,
-            ste))
+        ste = v.std(ddof=1) / np.sqrt(len(v)) if len(v) > 1 else 0.0
+        print("{:16s} min={:-10.2f} mean={:-10.2f} ±{:-.2f}".format(k, min, avg, ste))
 
 
 def run_fasterpam(data, seed):
@@ -35,13 +31,13 @@ def run_fasterpam(data, seed):
     r = fasterpam(diss, 5, random_state=seed, n_cpu=-1)
     end = time.time()
     meds, lbl = data[r.medoids], r.labels
-    verified_loss = np.sqrt(((data - meds[lbl])**2).sum(axis=1)).sum()
+    verified_loss = np.sqrt(((data - meds[lbl]) ** 2).sum(axis=1)).sum()
     return {
-        "time (ms)": (end-start)*1000,
+        "time (ms)": (end - start) * 1000,
         "verified loss": verified_loss,
         "reported loss": r.loss,
-        "mat. time (ms)": (end-start)*1000,
-        }
+        "mat. time (ms)": (end - start) * 1000,
+    }
 
 
 def run_bandit(data, seed):
@@ -53,20 +49,16 @@ def run_bandit(data, seed):
     end = time.time()
     meds, lbl = data[km.medoids], km.labels
     # del km # try to free memory
-    verified_loss = np.sqrt(((data - meds[lbl])**2).sum(axis=1)).sum()
+    verified_loss = np.sqrt(((data - meds[lbl]) ** 2).sum(axis=1)).sum()
     return {
-        "time (ms)": (end-start)*1000,
+        "time (ms)": (end - start) * 1000,
         "verified loss": verified_loss,
         "reported loss": km.average_loss,
-        }
+    }
 
 
 if __name__ == "__main__":
-    X, _ = fetch_openml(
-        'mnist_784',
-        version=1,
-        return_X_y=True,
-        as_frame=False)
+    X, _ = fetch_openml("mnist_784", version=1, return_X_y=True, as_frame=False)
     X = X[:20000]  # at 20k, colab will timeout for BanditPAM
     print(X.shape, type(X))
 

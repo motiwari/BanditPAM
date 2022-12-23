@@ -72,6 +72,34 @@ class KMedoidsWrapper : public km::KMedoids {
    * nearest medoid
    */
   float getLossPython();
+
+  /**
+   * @brief Returns the number of distance computations (sample complexity) used by .fit()
+   *
+   * The total number of distance computations (sample complexity) used by .fit()
+   */
+  size_t getDistanceComputationsPython();
+
+  /**
+   * @brief Returns the number of cache writes done by .fit()
+   *
+   * The number of cache writes performed by the last call to .fit()
+   */
+  size_t getCacheWritesPython();
+
+  /**
+   * @brief Returns the number of cache hits from the last call to .fit()
+   *
+   * The number of cache hits from the last call to .fit()
+  */
+  size_t getCacheHitsPython();
+
+  /**
+   * @brief Returns the number of cache misses by the last call to .fit()
+   *
+   * The number of cache misses from the last call to .fit()
+   */
+  size_t getCacheMissesPython();
 };
 
 // TODO(@motiwari): Encapsulate these
@@ -105,5 +133,25 @@ void steps_python(pybind11::class_<km::KMedoidsWrapper> *);
  * @brief Binding for the C++ function KMedoids::calcLoss()
  */
 void loss_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getDistanceComputations()
+ */
+void distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getCacheWrites()
+ */
+void cache_writes_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getCacheHits()
+ */
+void cache_hits_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getCacheMisses()
+ */
+void cache_misses_python(pybind11::class_<km::KMedoidsWrapper> *);
 }  // namespace km
 #endif  // HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_

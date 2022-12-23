@@ -16,32 +16,32 @@
 #include "banditpam.hpp"
 
 namespace km {
+// NOTE: The order of arguments in this constructor must match that of the arguments in kmedoids_pywrapper.cpp,
+//  otherwise undefined behavior can result (variables being initialized with others' values)
 KMedoids::KMedoids(
   size_t nMedoids,
   const std::string& algorithm,
   size_t maxIter,
   size_t buildConfidence,
   size_t swapConfidence,
-  size_t seed,
   bool useCache,
   bool usePerm,
   size_t cacheWidth,
-  bool parallelize):
+  bool parallelize,
+  size_t seed):
     nMedoids(nMedoids),
     algorithm(algorithm),
     maxIter(maxIter),
     buildConfidence(buildConfidence),
     swapConfidence(swapConfidence),
-    seed(seed),
     useCache(useCache),
     usePerm(usePerm),
     cacheWidth(cacheWidth),
-    parallelize(parallelize) {
+    parallelize(parallelize),
+    seed(seed) {
   KMedoids::checkAlgorithm(algorithm);
-
   // Though we initialize seed from the given parameter,
   // we need to call setSeed to pass it to arma
-  std::cout << "Cache width is " << cacheWidth << "\n\n";
   KMedoids::setSeed(seed);
 }
 
@@ -171,6 +171,7 @@ bool KMedoids::getUseCache() const {
 }
 
 void KMedoids::setUseCache(bool newUseCache) {
+    // TODO(@motiwari): Throw an error if not using BanditPAM
     useCache = newUseCache;
 }
 
@@ -179,14 +180,17 @@ bool KMedoids::getUsePerm() const {
 }
 
 void KMedoids::setUsePerm(bool newUsePerm) {
+    // TODO(@motiwari): Throw an error if not using BanditPAM
     usePerm = newUsePerm;
 }
 
 size_t KMedoids::getCacheWidth() const {
+    // TODO(@motiwari): Throw an error if not using BanditPAM
     return cacheWidth;
 }
 
 void KMedoids::setCacheWidth(size_t newCacheWidth) {
+    // TODO(@motiwari): Throw an error if not using BanditPAM
     cacheWidth = newCacheWidth;
 }
 
@@ -198,19 +202,19 @@ void KMedoids::setParallelize(bool newParallelize) {
     parallelize = newParallelize;
 }
 
-size_t KMedoids::getNumDistanceComputations() const {
+size_t KMedoids::getDistanceComputations() const {
     return numDistanceComputations;
 }
 
-size_t KMedoids::getNumCacheWrites() const {
+size_t KMedoids::getCacheWrites() const {
     return numCacheWrites;
 }
 
-size_t KMedoids::getNumCacheHits() const {
+size_t KMedoids::getCacheHits() const {
     return numCacheHits;
 }
 
-size_t KMedoids::getNumCacheMisses() const {
+size_t KMedoids::getCacheMisses() const {
     return numCacheMisses;
 }
 

@@ -25,17 +25,19 @@ namespace km {
  */
 class KMedoids {
  public:
+  // NOTE: The order of arguments in this constructor must match that of the arguments in kmedoids_pywrapper.cpp,
+  //  otherwise undefined behavior can result (variables being initialized with others' values)
   KMedoids(
     size_t nMedoids = 5,
     const std::string& algorithm = "BanditPAM",
     size_t maxIter = 100,
-    size_t buildConfidence = 1000,
-    size_t swapConfidence = 10000,
-    size_t seed = 0,
+    size_t buildConfidence = 3,
+    size_t swapConfidence = 4,
     bool useCache = true,
     bool usePerm = true,
     size_t cacheWidth = 1000,
-    bool parallelize = true);
+    bool parallelize = true,
+    size_t seed = 0);
 
   ~KMedoids();
 
@@ -259,28 +261,28 @@ class KMedoids {
    *
    * @return Total sample complexity of last .fit() call
    */
-  size_t getNumDistanceComputations() const;
+  size_t getDistanceComputations() const;
 
   /**
    * @brief Get number of times we wrote to the cache
    *
    * @return Number of times we wrote to the cache
    */
-  size_t getNumCacheWrites() const;
+  size_t getCacheWrites() const;
 
   /**
    * @brief Get number of cache hits
    *
    * @return Number of cache hits
    */
-  size_t getNumCacheHits() const;
+  size_t getCacheHits() const;
 
   /**
    * @brief Get number of cache misses
    *
    * @return Number of cache misses
    */
-  size_t getNumCacheMisses() const;
+  size_t getCacheMisses() const;
 
   /// The cache which stores pairwise distance computations
   float* cache;
@@ -294,20 +296,9 @@ class KMedoids {
   /// A map from permutation index of each point to its original index
   std::unordered_map<size_t, size_t> reindex;
 
-  /// Used for debugging only to toggle use of the cache
-  bool useCache = true;
-
-  /// Used for debugging only to toggle a fixed permutation of points
-  bool usePerm = true;
-
-  /// The cache will be of size cacheWidth*n
-  size_t cacheWidth = 1000;
-
   /// Determines whether we use a user-provided distance matrix
   bool useDistMat = false;
 
-  /// Determines whether we parallelize the algorithm with OpenMP
-  bool parallelize = true;
 
  protected:
   /**
@@ -472,6 +463,21 @@ class KMedoids {
   /// Governs the error rate of each SWAP step in BanditPAM
   size_t swapConfidence = 1;
 
+  /// Used for debugging only to toggle use of the cache
+  bool useCache = true;
+
+  /// Used for debugging only to toggle a fixed permutation of points
+  bool usePerm = true;
+
+  /// The cache will be of size cacheWidth*n
+  size_t cacheWidth = 1000;
+
+  /// Determines whether we parallelize the algorithm with OpenMP
+  bool parallelize = true;
+
+  /// The random seed with which to perform the clustering
+  size_t seed = 0;
+
   /// Used for floatcomparisons, primarily number of "arms" remaining
   const float precision = 0.001;
 
@@ -480,9 +486,6 @@ class KMedoids {
 
   /// Number of points to sample per reference batch
   size_t batchSize = 100;
-
-  /// The random seed with which to perform the clustering
-  size_t seed = 0;
 
   /// The number of non-cache distance computations we compute. For debugging only.
   size_t numDistanceComputations = 0;

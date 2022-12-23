@@ -8,10 +8,10 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "4.0.0a"
+__version__ = "4.0.1a"
 
 # TODO(@motiwari): Move this to a separate file
-GHA = 'GITHUB_ACTIONS'
+GHA = "GITHUB_ACTIONS"
 
 
 class get_pybind_include(object):
@@ -21,8 +21,10 @@ class get_pybind_include(object):
     until it is actually installed via setup's setup_requires arg,
     so that the ``get_include()`` method can be invoked.
     """
+
     def __str__(self):
         import pybind11
+
         return pybind11.get_include()
 
 
@@ -33,8 +35,10 @@ class get_numpy_include(object):
     until it is actually installed via setup's setup_requires arg,
     so that the ``get_include()`` method can be invoked.
     """
+
     def __str__(self):
         import numpy
+
         return numpy.get_include()
 
 
@@ -45,17 +49,17 @@ def compiler_check():
     another one!
     """
     try:
-        return 'clang' \
-            if 'clang' in distutils.sysconfig.get_config_vars()["CC"] \
-            else 'gcc'
+        return (
+            "clang" if "clang" in distutils.sysconfig.get_config_vars()["CC"] else "gcc"
+        )
     except KeyError:
         # The 'CC' environment variable hasn't been set.
         # In this case, search for clang and gcc
         # Borrowed from https://github.com/clab/dynet/blob/master/setup.py
-        if distutils.spawn.find_executable('clang') is not None:
-            return 'clang'
-        elif distutils.spawn.find_executable('gcc') is not None:
-            return 'gcc'
+        if distutils.spawn.find_executable("clang") is not None:
+            return "clang"
+        elif distutils.spawn.find_executable("gcc") is not None:
+            return "gcc"
 
     raise Exception("No C++ compiler was found. Please install LLVM clang.")
 
@@ -86,7 +90,7 @@ def cpp_flag(compiler: str):
     The newer version is prefered over c++11 (when it is available).
     """
     compiler_name = compiler_check()
-    if compiler_name == 'clang':
+    if compiler_name == "clang":
         flags = ["-std=c++17", "-std=c++14", "-std=c++11"]
     else:
         # Assume gcc
@@ -96,8 +100,10 @@ def cpp_flag(compiler: str):
         if has_flag(compiler, flag):
             return flag
 
-    raise RuntimeError("Unsupported compiler -- \
-        at least C++11 support is needed!")
+    raise RuntimeError(
+        "Unsupported compiler -- \
+        at least C++11 support is needed!"
+    )
 
 
 def check_brew_package(pkg_name: str):
@@ -118,8 +124,10 @@ def check_brew_installation():
     process = subprocess.Popen(brew_cmd, stdout=subprocess.PIPE)
     output, _error = process.communicate()
     if output.decode() == "":
-        raise Exception("Error: Need to install homebrew! \
-            Please see https://brew.sh")
+        raise Exception(
+            "Error: Need to install homebrew! \
+            Please see https://brew.sh"
+        )
 
 
 def check_numpy_installation():
@@ -157,8 +165,9 @@ def install_check_mac():
         )  # We need to use LLVM clang since Apple's doesn't support OpenMP
 
         # Set compiler to LLVM clang on Mac for OpenMP support
-        distutils.sysconfig.get_config_vars()["CC"] = \
-            os.path.join(llvm_loc, "bin", "clang")
+        distutils.sysconfig.get_config_vars()["CC"] = os.path.join(
+            llvm_loc, "bin", "clang"
+        )
 
 
 def check_omp_install_linux():
@@ -171,10 +180,10 @@ def check_armadillo_install_linux():
     # Since armadillo is a C++ extension, just check if it exists
     cmd = ["find", "/", "-iname", "armadillo"]
     process = subprocess.Popen(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-                            )
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+    )
     output, _error = process.communicate()
     if output.decode() == "":
         print(
@@ -211,8 +220,9 @@ def check_linux_package_installation(pkg_name: str):
 def install_ubuntu_pkgs():
     # TODO: Remove dangerous os.system() calls
     # See https://stackoverflow.com/a/51329156
-    os.system('apt update')
-    os.system('apt install -y \
+    os.system("apt update")
+    os.system(
+        "apt install -y \
         build-essential \
         checkinstall \
         libreadline-gplv2-dev \
@@ -223,7 +233,7 @@ def install_ubuntu_pkgs():
         libc6-dev \
         libbz2-dev \
         libffi-dev \
-        zlib1g-dev'
+        zlib1g-dev"
     )  # noqa: E124
 
 
@@ -233,6 +243,7 @@ def setup_colab(delete_source=False):
     # NOTE: This only works for Colab instances with Ubuntu 18.04 Runtimes!
     try:
         import google.colab  # noqa: F401
+
         in_colab = True
     except ModuleNotFoundError:
         in_colab = False
@@ -246,12 +257,12 @@ def setup_colab(delete_source=False):
         # and set delete_source=True always
         repo_location = os.path.join("/", "content", "BanditPAM")
         # Note the space after the git URL to separate the source and target
-        os.system('git clone https://github.com/ThrunGroup/BanditPAM.git ' +
-                  repo_location)
-        os.system(repo_location +
-                  '/scripts/colab_files/colab_install_armadillo.sh')
+        os.system(
+            "git clone https://github.com/ThrunGroup/BanditPAM.git " + repo_location
+        )
+        os.system(repo_location + "/scripts/colab_files/colab_install_armadillo.sh")
         if delete_source:
-            os.system('rm -rf ' + repo_location)
+            os.system("rm -rf " + repo_location)
 
 
 def setup_paperspace_gradient():
@@ -263,15 +274,19 @@ def setup_paperspace_gradient():
     # TODO: Remove dangerous os.system() calls
     # See https://stackoverflow.com/a/51329156
 
-    in_paperspace_gradient = os.path.exists('/notebooks')
+    in_paperspace_gradient = os.path.exists("/notebooks")
 
     if in_paperspace_gradient:
         install_ubuntu_pkgs()
-        os.system('DEBIAN_FRONTEND=noninteractive TZ=America/NewYork \
-            apt install -y tk-dev')
-        os.system('git clone \
-            https://gitlab.com/conradsnicta/armadillo-code.git')
-        os.system('cd armadillo-code && cmake . && make install')
+        os.system(
+            "DEBIAN_FRONTEND=noninteractive TZ=America/NewYork \
+            apt install -y tk-dev"
+        )
+        os.system(
+            "git clone \
+            https://gitlab.com/conradsnicta/armadillo-code.git"
+        )
+        os.system("cd armadillo-code && cmake . && make install")
 
 
 def install_check_ubuntu():
@@ -327,8 +342,9 @@ class BuildExt(build_ext):
         install_check_mac()
         # Verify that we're either compiling with clang or
         # inside a Github Action
-        assert compiler_check() == 'clang' or os.environ.get(GHA, False), \
-            "Need to install LLVM clang!"
+        assert compiler_check() == "clang" or os.environ.get(
+            GHA, False
+        ), "Need to install LLVM clang!"
         darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.14", "-O3"]
         c_opts["unix"] += darwin_opts
         l_opts["unix"] += darwin_opts
@@ -349,14 +365,14 @@ class BuildExt(build_ext):
         # TODO(@motiwari): on Windows, these flags are unrecognized
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
-        if sys.platform == 'darwin' and os.environ.get(GHA, False):
-            opts.append('-Xpreprocessor -fopenmp')
+        if sys.platform == "darwin" and os.environ.get(GHA, False):
+            opts.append("-Xpreprocessor -fopenmp")
         else:
-            opts.append('-fopenmp')
+            opts.append("-fopenmp")
 
         compiler_name = compiler_check()
-        if sys.platform == "darwin" or compiler_name == 'clang':
-            link_opts.append('-lomp')
+        if sys.platform == "darwin" or compiler_name == "clang":
+            link_opts.append("-lomp")
         else:
             link_opts.append("-lgomp")
 
@@ -366,10 +382,7 @@ class BuildExt(build_ext):
 
         for ext in self.extensions:
             ext.define_macros = [
-                (
-                    "VERSION_INFO",
-                    '"{}"'.format(self.distribution.get_version())
-                )
+                ("VERSION_INFO", '"{}"'.format(self.distribution.get_version()))
             ]
             ext.extra_compile_args = opts
             ext.extra_link_args = link_opts
@@ -403,8 +416,7 @@ def main():
             # To include carma when the BanditPAM repo hasnt been initialized
             os.path.join("/", "usr", "local", "include"),
             os.path.join("/", "usr", "local", "include", "carma"),
-            os.path.join("/", "usr", "local", "include", "carma", \
-                         "carma_bits"),
+            os.path.join("/", "usr", "local", "include", "carma", "carma_bits"),
             # When building from source on M1 Macs, may need these dirs
             # Currently, we should never be building from source on an M1 Mac,
             # Only cross-compiling from an Intel Mac
@@ -415,15 +427,16 @@ def main():
             os.path.join("/", "opt", "homebrew", "lib"),
             os.path.join("/", "opt", "homebrew", "opt"),
             os.path.join("/", "opt", "homebrew", "opt", "armadillo"),
-            os.path.join("/", "opt", "homebrew", "opt", "armadillo", \
-                         "include"),
-            os.path.join("/", "opt", "homebrew", "opt", "armadillo", \
-                         "include", "armadillo_bits"),
+            os.path.join("/", "opt", "homebrew", "opt", "armadillo", "include"),
+            os.path.join(
+                "/", "opt", "homebrew", "opt", "armadillo", "include", "armadillo_bits"
+            ),
         ]
 
     compiler_name = compiler_check()
-    if compiler_name == "clang" or \
-            (os.environ.get(GHA, False) and sys.platform == 'darwin'):
+    if compiler_name == "clang" or (
+        os.environ.get(GHA, False) and sys.platform == "darwin"
+    ):
         libraries = ["armadillo", "omp"]  # For M1 Mac runner build
     else:  # gcc
         libraries = ["armadillo", "gomp"]
@@ -436,15 +449,14 @@ def main():
                 os.path.join("src", "algorithms", "pam.cpp"),
                 os.path.join("src", "algorithms", "banditpam.cpp"),
                 os.path.join("src", "algorithms", "fastpam1.cpp"),
-                os.path.join("src", "python_bindings",
-                             "kmedoids_pywrapper.cpp"),
-                os.path.join("src", "python_bindings", "fit_python.cpp"),
+                os.path.join("src", "python_bindings", "kmedoids_pywrapper.cpp"),
                 os.path.join("src", "python_bindings", "medoids_python.cpp"),
-                os.path.join("src", "python_bindings",
-                             "build_medoids_python.cpp"),
+                os.path.join("src", "python_bindings", "build_medoids_python.cpp"),
+                os.path.join("src", "python_bindings", "fit_python.cpp"),
                 os.path.join("src", "python_bindings", "labels_python.cpp"),
                 os.path.join("src", "python_bindings", "steps_python.cpp"),
                 os.path.join("src", "python_bindings", "loss_python.cpp"),
+                os.path.join("src", "python_bindings", "cache_python.cpp"),
             ],
             include_dirs=include_dirs,
             library_dirs=[os.path.join("/", "usr", "local", "lib")],
@@ -460,7 +472,7 @@ def main():
     setup(
         name="banditpam",
         version=__version__,
-        author="Mo Tiwari and James Mayclin",
+        author="Mo Tiwari",
         maintainer="Mo Tiwari",
         author_email="motiwari@stanford.edu",
         url="https://github.com/ThrunGroup/BanditPAM",
@@ -479,16 +491,14 @@ def main():
             "Operating System :: OS Independent",
         ],
         headers=[
-            os.path.join("headers", "algorithms",
-                         "kmedoids_algorithm.hpp"),
+            os.path.join("headers", "algorithms", "kmedoids_algorithm.hpp"),
             os.path.join("headers", "algorithms", "banditpam.hpp"),
             os.path.join("headers", "algorithms", "fastpam1.hpp"),
             os.path.join("headers", "algorithms", "pam.hpp"),
-            os.path.join("headers", "python_bindings",
-                         "kmedoids_pywrapper.hpp"),
+            os.path.join("headers", "python_bindings", "kmedoids_pywrapper.hpp"),
         ],
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -6,13 +6,10 @@ import banditpam
 
 # banditpam.set_num_threads(1)
 
-X = np.loadtxt('data/MNIST_1k.csv')
-kmed = banditpam.KMedoids(n_medoids=5, algorithm="BanditPAM", cache_width = 5)
-import ipdb; ipdb.set_trace()
+X = np.loadtxt("data/MNIST_1k.csv")
+kmed = banditpam.KMedoids(n_medoids=5, algorithm="BanditPAM")
 start = time.time()
 kmed.fit(X, "L2")
 print(time.time() - start, "seconds")
 print("Number of SWAP steps:", kmed.steps)
 print(kmed.medoids)
-print(kmed.cache_width)
-import ipdb; ipdb.set_trace()

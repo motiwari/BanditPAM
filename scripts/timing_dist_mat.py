@@ -9,7 +9,7 @@ from sklearn.metrics.pairwise import euclidean_distances
 
 # banditpam.set_num_threads(1)
 
-X = np.loadtxt('data/MNIST_10k.csv')
+X = np.loadtxt("data/MNIST_10k.csv")
 kmed = banditpam.KMedoids(n_medoids=5, algorithm="BanditPAM")
 start = time.time()
 diss = euclidean_distances(X)
