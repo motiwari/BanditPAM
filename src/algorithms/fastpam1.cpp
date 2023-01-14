@@ -16,7 +16,7 @@
 #include <unordered_map>
 
 namespace km {
-void FastPAM1::fitFastPAM1(const arma::fmat& inputData) {
+void FastPAM1::fitFastPAM1(const arma::mat& inputData) {
   data = inputData;
   data = arma::trans(data);
   arma::urowvec medoidIndices(nMedoids);
@@ -38,14 +38,14 @@ void FastPAM1::fitFastPAM1(const arma::fmat& inputData) {
 }
 
 void FastPAM1::buildFastPAM1(
-  const arma::fmat& data,
+  const arma::mat& data,
   arma::urowvec* medoidIndices
 ) {
   size_t N = data.n_cols;
-  arma::frowvec estimates(N, arma::fill::zeros);
-  arma::frowvec bestDistances(N);
+  arma::rowvec estimates(N, arma::fill::zeros);
+  arma::rowvec bestDistances(N);
   bestDistances.fill(std::numeric_limits<float>::infinity());
-  arma::frowvec sigma(N);
+  arma::rowvec sigma(N);
   float minDistance = std::numeric_limits<float>::infinity();
   int best = 0;
   float total = 0;
@@ -88,7 +88,7 @@ void FastPAM1::buildFastPAM1(
 }
 
 void FastPAM1::swapFastPAM1(
-  const arma::fmat& data,
+  const arma::mat& data,
   arma::urowvec* medoidIndices,
   arma::urowvec* assignments
 ) {
@@ -99,10 +99,10 @@ void FastPAM1::swapFastPAM1(
   size_t N = data.n_cols;
   size_t iter = 0;
   bool swapPerformed = true;
-  arma::fmat sigma(nMedoids, N, arma::fill::zeros);
-  arma::frowvec bestDistances(N);
-  arma::frowvec secondBestDistances(N);
-  arma::frowvec deltaTD(nMedoids, arma::fill::zeros);
+  arma::mat sigma(nMedoids, N, arma::fill::zeros);
+  arma::rowvec bestDistances(N);
+  arma::rowvec secondBestDistances(N);
+  arma::rowvec deltaTD(nMedoids, arma::fill::zeros);
 
   // calculate quantities needed for swap, bestDistances and sigma
   KMedoids::calcBestDistancesSwap(

@@ -14,7 +14,7 @@
 #include <unordered_map>
 
 namespace km {
-void PAM::fitPAM(const arma::fmat& inputData) {
+void PAM::fitPAM(const arma::mat& inputData) {
   data = arma::trans(inputData);
   arma::urowvec medoidIndices(nMedoids);
   PAM::buildPAM(data, &medoidIndices);
@@ -36,11 +36,11 @@ void PAM::fitPAM(const arma::fmat& inputData) {
 }
 
 void PAM::buildPAM(
-  const arma::fmat& data,
+  const arma::mat& data,
   arma::urowvec* medoidIndices) {
   size_t N = data.n_cols;
-  arma::frowvec estimates(N, arma::fill::zeros);
-  arma::frowvec bestDistances(N);
+  arma::rowvec estimates(N, arma::fill::zeros);
+  arma::rowvec bestDistances(N);
   bestDistances.fill(std::numeric_limits<float>::infinity());
   for (size_t k = 0; k < nMedoids; k++) {
     float minDistance = std::numeric_limits<float>::infinity();
@@ -73,15 +73,15 @@ void PAM::buildPAM(
 }
 
 void PAM::swapPAM(
-  const arma::fmat& data,
+  const arma::mat& data,
   arma::urowvec* medoidIndices,
   arma::urowvec* assignments) {
   float minDistance = std::numeric_limits<float>::infinity();
   size_t best = 0;
   size_t medoidToSwap = 0;
   size_t N = data.n_cols;
-  arma::frowvec bestDistances(N);
-  arma::frowvec secondBestDistances(N);
+  arma::rowvec bestDistances(N);
+  arma::rowvec secondBestDistances(N);
 
   KMedoids::calcBestDistancesSwap(
     data,

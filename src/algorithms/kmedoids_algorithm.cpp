@@ -38,7 +38,7 @@ KMedoids::KMedoids(
 
 KMedoids::~KMedoids() {}
 
-void KMedoids::fit(const arma::fmat& inputData, const std::string& loss) {
+void KMedoids::fit(const arma::mat& inputData, const std::string& loss) {
   batchSize = fmin(inputData.n_rows, batchSize);
 
   if (inputData.n_rows == 0) {
@@ -176,10 +176,10 @@ std::string KMedoids::getLossFn() const {
 
 
 void KMedoids::calcBestDistancesSwap(
-  const arma::fmat& data,
+  const arma::mat& data,
   const arma::urowvec* medoidIndices,
-  arma::frowvec* bestDistances,
-  arma::frowvec* secondBestDistances,
+  arma::rowvec* bestDistances,
+  arma::rowvec* secondBestDistances,
   arma::urowvec* assignments,
   const bool swapPerformed) {
   #pragma omp parallel for
@@ -207,7 +207,7 @@ void KMedoids::calcBestDistancesSwap(
 }
 
 float KMedoids::calcLoss(
-  const arma::fmat& data,
+  const arma::mat& data,
   const arma::urowvec* medoidIndices) {
   float total = 0;
   // TODO(@motiwari): is this parallel loop accumulating properly?
@@ -228,7 +228,7 @@ float KMedoids::calcLoss(
 }
 
 float KMedoids::cachedLoss(
-  const arma::fmat& data,
+  const arma::mat& data,
   const size_t i,
   const size_t j,
   const bool useCache) {
@@ -264,27 +264,27 @@ float KMedoids::getAverageLoss() const {
   return averageLoss;
 }
 
-float KMedoids::LP(const arma::fmat& data,
+float KMedoids::LP(const arma::mat& data,
   const size_t i,
   const size_t j) const {
   return arma::norm(data.col(i) - data.col(j), lp);
 }
 
 float KMedoids::LINF(
-  const arma::fmat& data,
+  const arma::mat& data,
   const size_t i,
   const size_t j) const {
   return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
 
-float KMedoids::cos(const arma::fmat& data,
+float KMedoids::cos(const arma::mat& data,
   const size_t i,
   const size_t j) const {
   return 1 - (arma::dot(data.col(i), data.col(j))
     / (arma::norm(data.col(i)) * arma::norm(data.col(j))));
 }
 
-float KMedoids::manhattan(const arma::fmat& data,
+float KMedoids::manhattan(const arma::mat& data,
   const size_t i,
   const size_t j) const {
   return arma::accu(arma::abs(data.col(i) - data.col(j)));
