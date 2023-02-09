@@ -18,7 +18,7 @@ size_t km::KMedoidsWrapper::getDistanceComputationsPython(const bool includeMisc
 }
 
 size_t km::KMedoidsWrapper::getMiscDistanceComputationsPython() {
-    return KMedoids::getBuildDistanceComputations();
+    return KMedoids::getMiscDistanceComputations();
 }
 
 size_t km::KMedoidsWrapper::getBuildDistanceComputationsPython() {
