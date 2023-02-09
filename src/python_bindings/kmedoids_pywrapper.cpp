@@ -78,6 +78,9 @@ PYBIND11_MODULE(banditpam, m) {
 
   // Cache functions
   distance_computations_python(&cls);
+  misc_distance_computations_python(&cls);
+  build_distance_computations_python(&cls);
+  swap_distance_computations_python(&cls);
   cache_writes_python(&cls);
   cache_hits_python(&cls);
   cache_misses_python(&cls);

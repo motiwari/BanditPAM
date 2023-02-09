@@ -13,8 +13,20 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-size_t km::KMedoidsWrapper::getDistanceComputationsPython() {
-  return KMedoids::getDistanceComputations();
+size_t km::KMedoidsWrapper::getDistanceComputationsPython(const bool includeMisc) {
+  return KMedoids::getDistanceComputations(includeMisc);
+}
+
+size_t km::KMedoidsWrapper::getMiscDistanceComputationsPython() {
+    return KMedoids::getBuildDistanceComputations();
+}
+
+size_t km::KMedoidsWrapper::getBuildDistanceComputationsPython() {
+    return KMedoids::getBuildDistanceComputations();
+}
+
+size_t km::KMedoidsWrapper::getSwapDistanceComputationsPython() {
+    return KMedoids::getSwapDistanceComputations();
 }
 
 size_t km::KMedoidsWrapper::getCacheWritesPython() {
@@ -30,7 +42,19 @@ size_t km::KMedoidsWrapper::getCacheMissesPython() {
 }
 
 void distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-  cls->def_property_readonly("distance_computations", &KMedoidsWrapper::getDistanceComputationsPython);
+  cls->def("getDistanceComputations", &KMedoidsWrapper::getDistanceComputationsPython);
+}
+
+void misc_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
+    cls->def_property_readonly("misc_distance_computations", &KMedoidsWrapper::getMiscDistanceComputationsPython);
+}
+
+void build_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
+    cls->def_property_readonly("build_distance_computations", &KMedoidsWrapper::getBuildDistanceComputationsPython);
+}
+
+void swap_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
+    cls->def_property_readonly("swap_distance_computations", &KMedoidsWrapper::getSwapDistanceComputationsPython);
 }
 
 void cache_writes_python(pybind11::class_<km::KMedoidsWrapper> *cls) {

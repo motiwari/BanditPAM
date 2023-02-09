@@ -85,7 +85,7 @@ namespace km {
 #pragma omp parallel for
     for (size_t i = 0; i < N; i++) {
       for (size_t j = 0; j < batchSize; j++) {
-        float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
+        float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j), 0); // 0 for MISC
         if (useAbsolute) {
           sample(j) = cost;
         } else {
@@ -133,7 +133,7 @@ namespace km {
       float total = 0;
       for (size_t j = 0; j < referencePoints.n_rows; j++) {
         float cost =
-            KMedoids::cachedLoss(data, distMat, (*target)(i), referencePoints(j));
+            KMedoids::cachedLoss(data, distMat, (*target)(i), referencePoints(j), 1); // 1 for BUILD
         if (useAbsolute) {
           total += cost;
         } else {
@@ -235,7 +235,7 @@ namespace km {
       // don't need to do this on final iteration
 #pragma omp parallel for
       for (size_t i = 0; i < N; i++) {
-        float cost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k));
+        float cost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k), 0); // 0 for MISC
         if (cost < bestDistances(i)) {
           bestDistances(i) = cost;
         }
@@ -280,7 +280,7 @@ namespace km {
 
       // calculate change in loss for some subset of the data
       for (size_t j = 0; j < batchSize; j++) {
-        float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j));
+        float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 0); // 0 for Misc when estimating sigma
 
         if (k == (*assignments)(referencePoints(j))) {
           if (cost < (*secondBestDistances)(referencePoints(j))) {
@@ -344,7 +344,7 @@ namespace km {
       size_t k = (*targets)(i) % medoidIndices->n_cols;
       // calculate total loss for some subset of the data
       for (size_t j = 0; j < tmpBatchSize; j++) {
-        float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j));
+        float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 2); // 2 for SWAP
         if (k == (*assignments)(referencePoints(j))) {
           if (cost < (*secondBestDistances)(referencePoints(j))) {
             total += cost;

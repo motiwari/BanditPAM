@@ -53,7 +53,9 @@ void KMedoids::fit(
   const std::string& loss,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
 
-  numDistanceComputations = 0;
+  numMiscDistanceComputations = 0;
+  numBuildDistanceComputations = 0;
+  numSwapDistanceComputations = 0;
   numCacheWrites = 0;
   numCacheHits = 0;
   numCacheMisses = 0;
@@ -201,12 +203,29 @@ bool KMedoids::getParallelize() const {
   return parallelize;
 }
 
+// TODO(@motiwari): Change this to const bool newParallelize
 void KMedoids::setParallelize(bool newParallelize) {
   parallelize = newParallelize;
 }
 
-size_t KMedoids::getDistanceComputations() const {
-  return numDistanceComputations;
+size_t KMedoids::getDistanceComputations(const bool includeMisc) const {
+    if (includeMisc) {
+        return numMiscDistanceComputations + numBuildDistanceComputations + numSwapDistanceComputations;
+    } else {
+        return numBuildDistanceComputations + numSwapDistanceComputations;
+    }
+}
+
+size_t KMedoids::getMiscDistanceComputations() const {
+    return numMiscDistanceComputations;
+}
+
+size_t KMedoids::getBuildDistanceComputations() const {
+  return numBuildDistanceComputations;
+}
+
+size_t KMedoids::getSwapDistanceComputations() const {
+  return numSwapDistanceComputations;
 }
 
 size_t KMedoids::getCacheWrites() const {
@@ -282,7 +301,7 @@ void KMedoids::calcBestDistancesSwap(
     float best = std::numeric_limits<float>::infinity();
     float second = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < medoidIndices->n_cols; k++) {
-      float cost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k));
+      float cost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k), 0); // 0 for Misc in calculating loss
       if (cost < best) {
         (*assignments)(i) = k;
         second = best;
@@ -316,7 +335,8 @@ float KMedoids::calcLoss(
         data,
         distMat,
         i,
-        (*medoidIndices)(k));
+        (*medoidIndices)(k),
+        0);  // 0 for Misc
       if (currCost < cost) {
         cost = currCost;
       }
@@ -333,9 +353,21 @@ float KMedoids::cachedLoss(
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const size_t i,
   const size_t j,
-  const bool useCache) {
+  const size_t category,
+  const bool useCacheFunctionOverride
+  ) {
 
-  numDistanceComputations++;
+    // TODO(@motiwari): Change category to an enum
+    if (category == 0) { // miscallaneous
+        numMiscDistanceComputations++;
+    } else if (category == 1) {
+        numBuildDistanceComputations++;
+    }
+    else if (category == 2){
+        numSwapDistanceComputations++;
+    } else {
+        // TODO(@motiwari): Throw exception
+    }
 
   if (this->useDistMat) {
     return distMat.value().get().at(i, j);

@@ -261,7 +261,28 @@ class KMedoids {
    *
    * @return Total sample complexity of last .fit() call
    */
-  size_t getDistanceComputations() const;
+  size_t getDistanceComputations(const bool includeMisc = false) const;
+
+  /**
+   * @brief Get number of miscellaneous distance computations
+   *
+   * @return Total number of miscellaneous distance computations
+   */
+  size_t getMiscDistanceComputations() const;
+
+  /**
+   * @brief Get total sample complexity of BUILD step
+   *
+   * @return Total sample complexity of last BUILD step
+   */
+  size_t getBuildDistanceComputations() const;
+
+  /**
+   * @brief Get total sample complexity of SWAP steps
+   *
+   * @return Total sample complexity of last SWAP steps
+   */
+  size_t getSwapDistanceComputations() const;
 
   /**
    * @brief Get number of times we wrote to the cache
@@ -368,7 +389,9 @@ class KMedoids {
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     const size_t i,
     const size_t j,
-    const bool useCacheFunctionOverride = true);
+    const size_t category,
+    const bool useCacheFunctionOverride = true
+    );
 
   /// If using an L_p loss, the value of p
   size_t lp;
@@ -501,8 +524,14 @@ class KMedoids {
   /// Number of points to sample per reference batch
   size_t batchSize = 100;
 
+  /// The number of non-cache distance computations we compute in the BUILD step. For debugging only.
+  size_t numMiscDistanceComputations = 0;
+
+  /// The number of non-cache distance computations we compute in the BUILD step. For debugging only.
+  size_t numBuildDistanceComputations = 0;
+
   /// The number of non-cache distance computations we compute. For debugging only.
-  size_t numDistanceComputations = 0;
+  size_t numSwapDistanceComputations = 0;
 
   /// The number of cache hits (distance computations we reuse). For debugging only.
   size_t numCacheWrites = 0;

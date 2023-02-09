@@ -82,11 +82,11 @@ def main():
         assert math.isclose(total_swap_time / kmed.steps,  average_swap_time, abs_tol=kmed.steps), "Average swap time inconsistent with total swap time and steps"
 
     def test_old_bpam_vs_new_bpam():
-        X = np.loadtxt(os.path.join("data", "MNIST_10k.csv"))
-        kmed = KMedoids(n_medoids=10, algorithm="BanditPAM")
+        X = np.loadtxt(os.path.join("data", "MNIST_1k.csv"))
+        kmed = KMedoids(n_medoids=10, algorithm="BanditPAM", use_cache=False, use_perm=False, parallelize=False)
         bpam_time, bpam_width, bpam_distance_computations, bpam_steps, bpam_writes, bpam_hits, bpam_misses = get_cache_statistics(kmed=kmed, X=X, loss="L2", cache_width=1000)
 
-        kmed_v3 = KMedoids(n_medoids=10, algorithm="BanditPAM_v3")
+        kmed_v3 = KMedoids(n_medoids=10, algorithm="BanditPAM_v3", use_cache=False, use_perm=False, parallelize=False)
         bpam_v3_time, bpam_v3_width, bpam_v3_distance_computations, bpam_v3_steps, bpam_v3_writes, bpam_v3_hits, bpam_v3_misses = get_cache_statistics(kmed=kmed_v3, X=X, loss="L2", cache_width=1000)
 
         print(bpam_time, bpam_v3_time)

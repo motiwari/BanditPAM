@@ -90,7 +90,7 @@ arma::frowvec BanditPAM::buildSigma(
   #pragma omp parallel for if(this->parallelize)
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j));
+      float cost = KMedoids::cachedLoss(data, distMat, i,referencePoints(j), 0); // 0 for estimating sigmas
       if (useAbsolute) {
         sample(j) = cost;
       } else {
@@ -138,7 +138,7 @@ arma::frowvec BanditPAM::buildTarget(
     float total = 0;
     for (size_t j = 0; j < referencePoints.n_rows; j++) {
       float cost =
-        KMedoids::cachedLoss(data, distMat, (*target)(i), referencePoints(j));
+        KMedoids::cachedLoss(data, distMat, (*target)(i), referencePoints(j), 1);  // 1 for BUILD
       if (useAbsolute) {
         total += cost;
       } else {
@@ -242,7 +242,9 @@ void BanditPAM::build(
           data,
           distMat,
           i,
-          (*medoidIndices)(k));
+          (*medoidIndices)(k),
+          0  // 0 for misc in calculating loss
+          );
         if (cost < bestDistances(i)) {
             bestDistances(i) = cost;
         }
@@ -287,7 +289,7 @@ arma::fmat BanditPAM::swapSigma(
 
     // calculate change in loss for some subset of the data
     for (size_t j = 0; j < batchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j));
+      float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 0); // 0 for misc on sigma
 
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
@@ -367,7 +369,7 @@ arma::fmat BanditPAM::swapTarget(
   for (size_t i = 0; i < T; i++) {
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, (*targets)(i), referencePoints(j));
+      float cost = KMedoids::cachedLoss(data, distMat, (*targets)(i), referencePoints(j), 2); // 2 for SWAP
 
       size_t k = (*assignments)(referencePoints(j));
       results.col(i) -= (*bestDistances)(referencePoints(j));
@@ -438,6 +440,7 @@ void BanditPAM::swap(
     numSamples.fill(0);
 
     // while there is at least one candidate (float comparison issues)
+    // TODO(@motiwari): Change this to > 2.5
     while (arma::accu(candidates) > 1.5) {
       // compute exactly if it's been samples more than N times and
       // hasn't been computed exactly already
@@ -466,7 +469,7 @@ void BanditPAM::swap(
             assignments,
             N);
 
-          // results will be k x T matrix
+          // result will be k x T
           // Now update the correct indices
           estimates.cols(compute_exactly_targets) = result;
           ucbs.cols(compute_exactly_targets) = result;
@@ -481,8 +484,10 @@ void BanditPAM::swap(
 
       // candidate_targets should be of size T
       // Sum the different columns
-      // if any index appears in at least one, compute it exactly
+      // if any index appears in at least one column, sample it
       arma::uvec candidate_targets = arma::find(arma::sum(candidates, 0) >= 1);
+
+      // result will be k x T
       arma::fmat result = swapTarget(
         data,
         distMat,

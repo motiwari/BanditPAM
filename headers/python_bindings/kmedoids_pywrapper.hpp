@@ -78,7 +78,16 @@ class KMedoidsWrapper : public km::KMedoids {
    *
    * The total number of distance computations (sample complexity) used by .fit()
    */
-  size_t getDistanceComputationsPython();
+  size_t getDistanceComputationsPython(const bool includeMisc);
+
+  // TODO(@motiwari): Add docstring
+  size_t getMiscDistanceComputationsPython();
+
+  // TODO(@motiwari): Add docstring
+  size_t getBuildDistanceComputationsPython();
+
+  // TODO(@motiwari): Add docstring
+  size_t getSwapDistanceComputationsPython();
 
   /**
    * @brief Returns the number of cache writes done by .fit()
@@ -152,6 +161,15 @@ void loss_python(pybind11::class_<km::KMedoidsWrapper> *);
  * @brief Binding for the C++ function KMedoids::getDistanceComputations()
  */
 void distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+// TODO(@motiwari): Add docstring
+void misc_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+// TODO(@motiwari): Add docstring
+void build_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+// TODO(@motiwari): Add docstring
+void swap_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
 
 /**
  * @brief Binding for the C++ function KMedoids::getCacheWrites()
