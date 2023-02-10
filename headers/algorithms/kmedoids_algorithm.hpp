@@ -30,7 +30,7 @@ class KMedoids {
   KMedoids(
     size_t nMedoids = 5,
     const std::string& algorithm = "BanditPAM",
-    size_t maxIter = 100,
+    size_t maxIter = 100, // TODO(@motiwari): Change this back to 100
     size_t buildConfidence = 3,
     size_t swapConfidence = 4,
     bool useCache = true,

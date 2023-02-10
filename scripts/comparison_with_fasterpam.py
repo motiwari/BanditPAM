@@ -18,6 +18,7 @@ def benchmark(data, f, n=1):
         print("Restart", i)
         for k, v in f(data, i).items():
             data_[k].append(v)
+
     for k, v in data_.items():
         v = np.array(v)
         min, avg = v.min(), v.mean()
@@ -28,30 +29,29 @@ def benchmark(data, f, n=1):
 def run_fasterpam(data, seed):
     diss = euclidean_distances(data)
     start = time.time()
-    r = fasterpam(diss, 5, random_state=seed, n_cpu=-1)
+    r = fasterpam(diss, 5, random_state=seed, n_cpu=1)
     end = time.time()
+    print("FasterPAM took ", r.n_iter, " iterations")
     meds, lbl = data[r.medoids], r.labels
     verified_loss = np.sqrt(((data - meds[lbl]) ** 2).sum(axis=1)).sum()
     return {
-        "time (ms)": (end - start) * 1000,
+        "time (ms)": (end - start),
         "verified loss": verified_loss,
         "reported loss": r.loss,
-        "mat. time (ms)": (end - start) * 1000,
     }
 
 
 def run_bandit(data, seed):
     diss = euclidean_distances(data)
-    km = banditpam.KMedoids(5)
+    km = banditpam.KMedoids(5, parallelize=False)
     km.seed = seed
     start = time.time()
     km.fit(data, "L2", dist_mat=diss)
     end = time.time()
     meds, lbl = data[km.medoids], km.labels
-    # del km # try to free memory
     verified_loss = np.sqrt(((data - meds[lbl]) ** 2).sum(axis=1)).sum()
     return {
-        "time (ms)": (end - start) * 1000,
+        "time (ms)": (end - start),
         "verified loss": verified_loss,
         "reported loss": km.average_loss,
     }
@@ -64,5 +64,5 @@ if __name__ == "__main__":
 
     print("Benchmarking FasterPAM")
     benchmark(X, run_fasterpam)
-    print("Benchmarking BanditPAM")
+    print("\n\nBenchmarking BanditPAM")
     benchmark(X, run_bandit)
