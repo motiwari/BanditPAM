@@ -49,11 +49,7 @@ void BanditPAM::fitBanditPAM(
   arma::urowvec assignments(data.n_cols);
 
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
-
-  // TODO(@motiwari): Convert this duration to a size_t. The implicit cast seems to work for now, but will probably
-  //  shoot me in the foot later
-  totalSwapTime = duration;
-
+  
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
 }
