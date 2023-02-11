@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     bool usePerm = true;
     int seed = 0;
     int num_data = 0;
-    bool parallelize = true;
+    bool parallelize = false;
 
     // TODO(@motiwari): Use a variadic function signature for this instead
     while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:s:cpnw:")) != -1) {
@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
                 num_data = std::stoi(optarg);
                 break;
             case 'w':
-                parallelize = true;
+                parallelize = false;
                 break;
             case '?':
                 printf("unknown option: %c\n", optopt);
