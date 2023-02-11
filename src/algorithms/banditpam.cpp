@@ -53,8 +53,6 @@ void BanditPAM::fitBanditPAM(
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
   auto end = std::chrono::high_resolution_clock::now();
   auto duration = duration_cast<std::chrono::milliseconds>(end - start).count();
-  std::cout << "Average milliseconds per swap: " << duration / getSteps() << "\n\n\n";
-    std::cout << "Number of Swap steps: " << getSteps() << "\n\n\n";
 
   // TODO(@motiwari): Convert this duration to a size_t. The implicit cast seems to work for now, but will probably
   //  shoot me in the foot later
@@ -380,7 +378,7 @@ arma::fmat BanditPAM::swapTarget(
 
       results(k, i) +=
         std::fmin(cost, (*secondBestDistances)(referencePoints(j))) -
-          std::fmin(cost, (*bestDistances)(referencePoints(j))); // If cost < bd, this second term will subtract off the "new cost" added by the all-column call above inside the iff
+          std::fmin(cost, (*bestDistances)(referencePoints(j))); // If cost < bd, this second term will subtract off the "new cost" added by the all-column call above inside the if
     }
   }
   // TODO(@motiwari): we can probably avoid this division

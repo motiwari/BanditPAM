@@ -48,7 +48,6 @@ namespace km {
       BanditPAM_v3::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
       auto end = std::chrono::high_resolution_clock::now();
       auto duration = duration_cast<std::chrono::milliseconds>(end - start).count();
-      std::cout << "Average milliseconds per swap:" << duration / getSteps() << "\n\n\n";
 
       // TODO(@motiwari): Convert this duration to a size_t. The implicit cast seems to work for now, but will probably
       //  shoot me in the foot later
