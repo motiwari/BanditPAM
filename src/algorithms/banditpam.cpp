@@ -10,7 +10,6 @@
 #include <armadillo>
 #include <unordered_map>
 #include <cmath>
-#include <chrono>
 
 namespace km {
 void BanditPAM::fitBanditPAM(
@@ -49,10 +48,7 @@ void BanditPAM::fitBanditPAM(
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
 
-  auto start = std::chrono::high_resolution_clock::now();
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
-  auto end = std::chrono::high_resolution_clock::now();
-  auto duration = duration_cast<std::chrono::milliseconds>(end - start).count();
 
   // TODO(@motiwari): Convert this duration to a size_t. The implicit cast seems to work for now, but will probably
   //  shoot me in the foot later
