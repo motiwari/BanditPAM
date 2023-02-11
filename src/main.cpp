@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
                 num_data = std::stoi(optarg);
                 break;
             case 'w':
-                parallelize = false;
+                parallelize = true;
                 break;
             case '?':
                 printf("unknown option: %c\n", optopt);
