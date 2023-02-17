@@ -7,7 +7,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "kmedoids_algorithm.hpp"
+#include "headers/algorithms/kmedoids_algorithm.hpp"
 
 
 namespace km {
@@ -17,12 +17,12 @@ namespace km {
 class PAM : public km::KMedoids {
  public:
   /**
-   * @brief Runs PAM to identify a dataset's medoids.
-   * 
-   * @param inputData Input data to cluster
-   */
+  * @brief Runs PAM to identify a dataset's medoids.
+  *
+  * @param inputData Input data to cluster
+  */
   void fitPAM(
-    const arma::fmat& inputData,
+  const arma::fmat& inputData,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
@@ -41,12 +41,12 @@ class PAM : public km::KMedoids {
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     arma::urowvec* medoidIndices);
 
-  /** 
+  /**
   * @brief Performs the SWAP steps of BanditPAM.
-  * 
+  *
   * Loops over all (medoid, non-medoid) pairs and computes the change in loss
   * when the points are swapped in and out of the medoid set. Then updates
-  * the list of medoids by performing the swap that would lower the overall 
+  * the list of medoids by performing the swap that would lower the overall
   * loss the most, provided at least one such swap would reduce the loss.
   *
   * @param data Transposed input data to cluster

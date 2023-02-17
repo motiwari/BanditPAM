@@ -8,7 +8,7 @@
 #include <armadillo>
 #include <string>
 
-#include "kmedoids_algorithm.hpp"
+#include "headers/algorithms/kmedoids_algorithm.hpp"
 
 namespace km {
 /**
@@ -166,7 +166,8 @@ void distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
 void misc_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
 
 // TODO(@motiwari): Add docstring
-void build_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+void build_distance_computations_python(
+    pybind11::class_<km::KMedoidsWrapper> *);
 
 // TODO(@motiwari): Add docstring
 void swap_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);

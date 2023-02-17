@@ -1,13 +1,13 @@
 #ifndef HEADERS_ALGORITHMS_FASTPAM1_HPP_
 #define HEADERS_ALGORITHMS_FASTPAM1_HPP_
 
-#include <omp.h>
 #include <armadillo>
-#include <vector>
-#include <fstream>
+#include <omp.h>
 #include <iostream>
+#include <fstream>
+#include <vector>
 
-#include "kmedoids_algorithm.hpp"
+#include "headers/algorithms/kmedoids_algorithm.hpp"
 
 
 namespace km {

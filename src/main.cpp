@@ -14,7 +14,7 @@
 #include <exception>
 #include <filesystem>
 
-#include "kmedoids_algorithm.hpp"
+#include "headers/algorithms/kmedoids_algorithm.hpp"
 
 int main(int argc, char* argv[]) {
     std::string input_name;
@@ -35,7 +35,8 @@ int main(int argc, char* argv[]) {
     bool parallelize = false;
 
     // TODO(@motiwari): Use a variadic function signature for this instead
-    while (prev_ind = optind, (opt = getopt(argc, argv, "f:l:k:v:s:cpnw:")) != -1) {
+    while (prev_ind = optind,
+        (opt = getopt(argc, argv, "f:l:k:v:s:cpnw:")) != -1) {
         if ( optind == prev_ind + 2 && *optarg == '-' ) {
         opt = ':';
         --optind;
@@ -116,8 +117,7 @@ int main(int argc, char* argv[]) {
       usePerm,
       1000,  // Cache Width
       parallelize,
-      seed
-      );
+      seed);
     kmed.fit(data, loss, {});
     for (auto medoid : kmed.getMedoidsFinal()) {
       std::cout << medoid << ",";

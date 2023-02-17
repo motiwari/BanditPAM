@@ -10,15 +10,16 @@
 #include <unordered_map>
 #include <regex>
 
-#include "kmedoids_algorithm.hpp"
-#include "fastpam1.hpp"
-#include "pam.hpp"
-#include "banditpam.hpp"
-#include "banditpam_orig.hpp"
+#include "headers/algorithms/kmedoids_algorithm.hpp"
+#include "headers/algorithms/fastpam1.hpp"
+#include "headers/algorithms/pam.hpp"
+#include "headers/algorithms/banditpam.hpp"
+#include "headers/algorithms/banditpam_orig.hpp"
 
 namespace km {
-// NOTE: The order of arguments in this constructor must match that of the arguments in kmedoids_pywrapper.cpp,
-//  otherwise undefined behavior can result (variables being initialized with others' values)
+// NOTE: The order of arguments in this constructor must match that of the
+// arguments in kmedoids_pywrapper.cpp, otherwise undefined behavior can
+// result (variables being initialized with others' values)
 KMedoids::KMedoids(
   size_t nMedoids,
   const std::string& algorithm,
@@ -52,7 +53,6 @@ void KMedoids::fit(
   const arma::fmat& inputData,
   const std::string& loss,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
-
   numMiscDistanceComputations = 0;
   numBuildDistanceComputations = 0;
   numSwapDistanceComputations = 0;
@@ -210,9 +210,12 @@ void KMedoids::setParallelize(bool newParallelize) {
 
 size_t KMedoids::getDistanceComputations(const bool includeMisc) const {
     if (includeMisc) {
-        return numMiscDistanceComputations + numBuildDistanceComputations + numSwapDistanceComputations;
+        return numMiscDistanceComputations +
+          numBuildDistanceComputations +
+          numSwapDistanceComputations;
     } else {
-        return numBuildDistanceComputations + numSwapDistanceComputations;
+        return numBuildDistanceComputations +
+          numSwapDistanceComputations;
     }
 }
 
@@ -296,12 +299,14 @@ void KMedoids::calcBestDistancesSwap(
   arma::frowvec* secondBestDistances,
   arma::urowvec* assignments,
   const bool swapPerformed) {
-  #pragma omp parallel for if(this->parallelize)
+  #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < data.n_cols; i++) {
     float best = std::numeric_limits<float>::infinity();
     float second = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < medoidIndices->n_cols; k++) {
-      float cost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k), 0); // 0 for Misc in calculating loss
+      // 0 for MISC
+      float cost =
+          KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k), 0);
       if (cost < best) {
         (*assignments)(i) = k;
         second = best;
@@ -326,7 +331,7 @@ float KMedoids::calcLoss(
   const arma::urowvec* medoidIndices) {
   float total = 0;
   // TODO(@motiwari): is this parallel loop accumulating properly?
-  #pragma omp parallel for if(this->parallelize)
+  #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < data.n_cols; i++) {
     float cost = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < nMedoids; k++) {
@@ -355,14 +360,12 @@ float KMedoids::cachedLoss(
   const size_t category,
   const bool useCacheFunctionOverride
   ) {
-
     // TODO(@motiwari): Change category to an enum
-    if (category == 0) { // miscallaneous
+    if (category == 0) {  // MISC
         numMiscDistanceComputations++;
-    } else if (category == 1) {
+    } else if (category == 1) {  // BUILD
         numBuildDistanceComputations++;
-    }
-    else if (category == 2){
+    } else if (category == 2) {  // SWAP
         numSwapDistanceComputations++;
     } else {
         // TODO(@motiwari): Throw exception

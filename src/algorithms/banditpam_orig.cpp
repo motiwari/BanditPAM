@@ -5,7 +5,7 @@
  * Contains the primary C++ implementation of the BanditPAM_orig code.
  */
 
-#include "banditpam_orig.hpp"
+#include "headers/algorithms/banditpam_orig.hpp"
 
 #include <armadillo>
 #include <unordered_map>
@@ -26,7 +26,7 @@ void BanditPAM_orig::fitBanditPAM_orig(
     size_t m = fmin(n, cacheWidth);
     cache = new float[n * m];
 
-    #pragma omp parallel for if(this->parallelize)
+    #pragma omp parallel for if (this->parallelize)
     for (size_t idx = 0; idx < m*n; idx++) {
       cache[idx] = -1;  // TODO(@motiwari): need better value here
     }
@@ -48,7 +48,12 @@ void BanditPAM_orig::fitBanditPAM_orig(
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
 
-  BanditPAM_orig::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
+  BanditPAM_orig::swap(
+      data,
+      distMat,
+      &medoidIndices,
+      &medoidMatrix,
+      &assignments);
 
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
@@ -78,10 +83,12 @@ arma::frowvec BanditPAM_orig::buildSigma(
 
   arma::fvec sample(batchSize);
   arma::frowvec updated_sigma(N);
-  #pragma omp parallel for if(this->parallelize)
+  #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j), 0); // 0 for MISC
+      // 0 for MISC
+      float cost =
+          KMedoids::cachedLoss(data, distMat, i, referencePoints(j), 0);
       if (useAbsolute) {
         sample(j) = cost;
       } else {
@@ -124,12 +131,17 @@ arma::frowvec BanditPAM_orig::buildTarget(
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
 
-  #pragma omp parallel for if(this->parallelize)
+  #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < target->n_rows; i++) {
     float total = 0;
     for (size_t j = 0; j < referencePoints.n_rows; j++) {
       float cost =
-          KMedoids::cachedLoss(data, distMat, (*target)(i), referencePoints(j), 1); // 1 for BUILD
+          KMedoids::cachedLoss(
+              data,
+              distMat,
+              (*target)(i),
+              referencePoints(j),
+              1);  // 1 for BUILD
       if (useAbsolute) {
         total += cost;
       } else {
@@ -163,7 +175,7 @@ void BanditPAM_orig::build(
   arma::frowvec numSamples(N, arma::fill::zeros);
   arma::frowvec exactMask(N, arma::fill::zeros);
 
-  // TODO(@motiwari): #pragma omp parallel for if(this->parallelize)?
+  // TODO(@motiwari): #pragma omp parallel for if (this->parallelize)?
   for (size_t k = 0; k < nMedoids; k++) {
     // instantiate medoids one-by-one
     permutationIdx = 0;
@@ -214,7 +226,8 @@ void BanditPAM_orig::build(
       numSamples.cols(targets) += batchSize;
       arma::frowvec adjust(targets.n_rows);
       adjust.fill(p);
-      adjust = buildConfidence + arma::log(adjust);  // Assume buildConfidence is given in logspace
+      // Assume buildConfidence is given in logspace
+      adjust = buildConfidence + arma::log(adjust);
       arma::frowvec confBoundDelta =
         sigma.cols(targets) %
         arma::sqrt(adjust / numSamples.cols(targets));
@@ -227,15 +240,14 @@ void BanditPAM_orig::build(
     medoids->unsafe_col(k) = data.unsafe_col((*medoidIndices)(k));
 
     // don't need to do this on final iteration
-    #pragma omp parallel for if(this->parallelize)
+    #pragma omp parallel for if (this->parallelize)
     for (size_t i = 0; i < N; i++) {
       float cost = KMedoids::cachedLoss(
         data,
         distMat,
         i,
         (*medoidIndices)(k),
-        0
-        ); // 0 for MISC
+        0);  // 0 for MISC
       if (cost < bestDistances(i)) {
         bestDistances(i) = cost;
       }
@@ -272,7 +284,7 @@ arma::fmat BanditPAM_orig::swapSigma(
 
   arma::fvec sample(batchSize);
   // for each considered swap
-  #pragma omp parallel for if(this->parallelize)
+  #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < K * N; i++) {
     // extract data point of swap
     size_t n = i / K;
@@ -280,7 +292,9 @@ arma::fmat BanditPAM_orig::swapSigma(
 
     // calculate change in loss for some subset of the data
     for (size_t j = 0; j < batchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 0); // 0 for MISC when estimating sigma
+      // 0 for MISC when estimating sigma
+      float cost =
+          KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 0);
 
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
@@ -337,7 +351,7 @@ arma::fvec BanditPAM_orig::swapTarget(
   }
 
   // TODO(@motiwari): Declare variables outside of loops
-  #pragma omp parallel for if(this->parallelize)
+  #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < targets->n_rows; i++) {
     float total = 0;
     // extract data point of swap
@@ -345,7 +359,9 @@ arma::fvec BanditPAM_orig::swapTarget(
     size_t k = (*targets)(i) % medoidIndices->n_cols;
     // calculate total loss for some subset of the data
     for (size_t j = 0; j < tmpBatchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 2); // 2 for SWAP
+      // 2 for SWAP
+      float cost =
+          KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 2);
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
           total += cost;
@@ -462,7 +478,8 @@ void BanditPAM_orig::swap(
       numSamples.elem(targets) += batchSize;
       arma::fvec adjust(targets.n_rows);
       adjust.fill(p);
-      adjust = swapConfidence + arma::log(adjust);  // Assume swapConfidence is given in logspace
+      // Assume swapConfidence is given in logspace
+      adjust = swapConfidence + arma::log(adjust);
       arma::fvec confBoundDelta = sigma.elem(targets) %
                     arma::sqrt(adjust / numSamples.elem(targets));
       ucbs.elem(targets) = estimates.elem(targets) + confBoundDelta;

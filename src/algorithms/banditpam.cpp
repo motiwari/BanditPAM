@@ -5,7 +5,7 @@
  * Contains the primary C++ implementation of the BanditPAM code.
  */
 
-#include "banditpam.hpp"
+#include "headers/algorithms/banditpam.hpp"
 
 #include <armadillo>
 #include <unordered_map>
@@ -26,7 +26,7 @@ void BanditPAM::fitBanditPAM(
     size_t m = fmin(n, cacheWidth);
     cache = new float[n * m];
 
-    #pragma omp parallel for if(this->parallelize)
+    #pragma omp parallel for if (this->parallelize)
     for (size_t idx = 0; idx < m*n; idx++) {
       cache[idx] = -1;  // TODO(@motiwari): need better value here
     }
@@ -49,7 +49,7 @@ void BanditPAM::fitBanditPAM(
   arma::urowvec assignments(data.n_cols);
 
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
-  
+
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
 }
@@ -78,10 +78,12 @@ arma::frowvec BanditPAM::buildSigma(
 
   arma::fvec sample(batchSize);
   arma::frowvec updated_sigma(N);
-  #pragma omp parallel for if(this->parallelize)
+  #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, i,referencePoints(j), 0); // 0 for MISC
+      // 0 for MISC
+      float cost =
+          KMedoids::cachedLoss(data, distMat, i, referencePoints(j), 0);
       if (useAbsolute) {
         sample(j) = cost;
       } else {
@@ -124,12 +126,17 @@ arma::frowvec BanditPAM::buildTarget(
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
 
-  #pragma omp parallel for if(this->parallelize)
+  #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < target->n_rows; i++) {
     float total = 0;
     for (size_t j = 0; j < referencePoints.n_rows; j++) {
       float cost =
-        KMedoids::cachedLoss(data, distMat, (*target)(i), referencePoints(j), 1);  // 1 for BUILD
+        KMedoids::cachedLoss(
+            data,
+            distMat,
+            (*target)(i),
+            referencePoints(j),
+            1);  // 1 for BUILD
       if (useAbsolute) {
         total += cost;
       } else {
@@ -163,7 +170,7 @@ void BanditPAM::build(
   arma::frowvec numSamples(N, arma::fill::zeros);
   arma::frowvec exactMask(N, arma::fill::zeros);
 
-  // TODO(@motiwari): #pragma omp parallel for if(this->parallelize)?
+  // TODO(@motiwari): #pragma omp parallel for if (this->parallelize)?
   for (size_t k = 0; k < nMedoids; k++) {
     // instantiate medoids one-by-one
     permutationIdx = 0;
@@ -214,7 +221,8 @@ void BanditPAM::build(
       numSamples.cols(targets) += batchSize;
       arma::frowvec adjust(targets.n_rows);
       adjust.fill(p);
-      adjust = buildConfidence + arma::log(adjust);  // Assume buildConfidence is given in logspace
+      // Assume buildConfidence is given in logspace
+      adjust = buildConfidence + arma::log(adjust);
       arma::frowvec confBoundDelta =
         sigma.cols(targets) %
         arma::sqrt(adjust / numSamples.cols(targets));
@@ -227,15 +235,14 @@ void BanditPAM::build(
     medoids->unsafe_col(k) = data.unsafe_col((*medoidIndices)(k));
 
     // don't need to do this on final iteration
-    #pragma omp parallel for if(this->parallelize)
+    #pragma omp parallel for if (this->parallelize)
     for (size_t i = 0; i < N; i++) {
         float cost = KMedoids::cachedLoss(
           data,
           distMat,
           i,
           (*medoidIndices)(k),
-          0  // 0 for MISC
-          );
+          0);  // 0 for MISC
         if (cost < bestDistances(i)) {
             bestDistances(i) = cost;
         }
@@ -272,7 +279,7 @@ arma::fmat BanditPAM::swapSigma(
 
   arma::fvec sample(batchSize);
   // for each considered swap
-  #pragma omp parallel for if(this->parallelize)
+  #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < K * N; i++) {
     // extract data point of swap
     size_t n = i / K;
@@ -280,7 +287,9 @@ arma::fmat BanditPAM::swapSigma(
 
     // calculate change in loss for some subset of the data
     for (size_t j = 0; j < batchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 0); // 0 for MISC when estimating sigma
+      // 0 for MISC when estimating sigma
+      float cost =
+          KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 0);
 
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
@@ -356,21 +365,30 @@ arma::fmat BanditPAM::swapTarget(
   }
 
   // TODO(@motiwari): Declare variables outside of loops
-  #pragma omp parallel for if(this->parallelize)
+  #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < T; i++) {
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
-      float cost = KMedoids::cachedLoss(data, distMat, (*targets)(i), referencePoints(j), 2); // 2 for SWAP
+      float cost =
+          KMedoids::cachedLoss(
+              data,
+              distMat,
+              (*targets)(i),
+              referencePoints(j),
+              2);  // 2 for SWAP
       size_t k = (*assignments)(referencePoints(j));
       if (cost < (*bestDistances)(referencePoints(j))) {
-          // We might be able to change this to .eachrow(every column but k) since
-          // arma does this in-place and it should not introduce complexity
+          // We might be able to change this to .eachrow(every column but k)
+          // since arma does this in-place and it should not introduce
+          // complexity
           results.col(i) += cost - (*bestDistances)(referencePoints(j));
       }
 
+      // If cost < bd, this second term will subtract off the "new cost"
+      // added by the all-column call above inside the if
       results(k, i) +=
         std::fmin(cost, (*secondBestDistances)(referencePoints(j))) -
-          std::fmin(cost, (*bestDistances)(referencePoints(j))); // If cost < bd, this second term will subtract off the "new cost" added by the all-column call above inside the if
+          std::fmin(cost, (*bestDistances)(referencePoints(j)));
     }
   }
   // TODO(@motiwari): we can probably avoid this division
@@ -500,7 +518,8 @@ void BanditPAM::swap(
       arma::fmat adjust(nMedoids, candidate_targets.size());
       // TODO(@motiwari): Move this ::fill to the previous line
       adjust.fill(p);
-      adjust = swapConfidence + arma::log(adjust);  // Assume swapConfidence is given in logspace
+      // Assume swapConfidence is given in logspace
+      adjust = swapConfidence + arma::log(adjust);
       arma::fmat confBoundDelta = sigma.cols(candidate_targets) %
         arma::sqrt(adjust / numSamples.cols(candidate_targets));
       ucbs.cols(candidate_targets) = estimates.cols(candidate_targets)

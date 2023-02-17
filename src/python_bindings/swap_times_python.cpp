@@ -10,7 +10,7 @@
 #include <carma>
 #include <armadillo>
 
-#include "kmedoids_pywrapper.hpp"
+#include "headers/python_bindings/kmedoids_pywrapper.hpp"
 
 namespace km {
 size_t km::KMedoidsWrapper::getTotalSwapTimePython() {
@@ -22,10 +22,14 @@ float km::KMedoidsWrapper::getTimePerSwapPython() {
 }
 
 void total_swap_time_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-  cls->def_property_readonly("total_swap_time", &KMedoidsWrapper::getTotalSwapTimePython);
+  cls->def_property_readonly(
+    "total_swap_time",
+    &KMedoidsWrapper::getTotalSwapTimePython);
 }
 
 void time_per_swap_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-  cls->def_property_readonly("time_per_swap", &KMedoidsWrapper::getTimePerSwapPython);
+  cls->def_property_readonly(
+    "time_per_swap",
+    &KMedoidsWrapper::getTimePerSwapPython);
 }
 }  // namespace km

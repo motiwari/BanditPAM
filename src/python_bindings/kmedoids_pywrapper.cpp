@@ -12,8 +12,8 @@
 #include <carma>
 #include <armadillo>
 
-#include "kmedoids_algorithm.hpp"
-#include "kmedoids_pywrapper.hpp"
+#include "headers/algorithms/kmedoids_algorithm.hpp"
+#include "headers/python_bindings/kmedoids_pywrapper.hpp"
 
 namespace km {
 PYBIND11_MODULE(banditpam, m) {
@@ -29,9 +29,11 @@ PYBIND11_MODULE(banditpam, m) {
   pybind11::class_<KMedoidsWrapper> cls(m, "KMedoids");
 
   // Constructor
-  // NOTE: The order of these matters! Otherwise you can get warnings about variables not being intialized in the same
-  //  order as their declarations, which can lead to undefined behavior (variables being intialized with each others'
-  //  values). The order here much also match that of the constructor in kmedoids_algorithm.*pp
+  // NOTE: The order of these matters! Otherwise you can get warnings about
+  //  variables not being intialized in the same order as their declarations,
+  //  which can lead to undefined behavior (variables being intialized with
+  //  each others' values). The order here much also match that of the
+  //  constructor in kmedoids_algorithm.*pp
   cls.def(
     pybind11::init<int, std::string, int, int, int, bool, bool, int, bool>(),
     pybind11::arg("n_medoids") = 5,
@@ -43,8 +45,7 @@ PYBIND11_MODULE(banditpam, m) {
     pybind11::arg("use_cache") = true,
     pybind11::arg("use_perm") = true,
     pybind11::arg("cache_width") = 1000,
-    pybind11::arg("parallelize") = true
-  );
+    pybind11::arg("parallelize") = true);
 
   // Properties
   cls.def_property("n_medoids",

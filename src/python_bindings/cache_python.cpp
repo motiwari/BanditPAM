@@ -10,10 +10,11 @@
 #include <carma>
 #include <armadillo>
 
-#include "kmedoids_pywrapper.hpp"
+#include "headers/python_bindings/kmedoids_pywrapper.hpp"
 
 namespace km {
-size_t km::KMedoidsWrapper::getDistanceComputationsPython(const bool includeMisc) {
+size_t km::KMedoidsWrapper::getDistanceComputationsPython(
+  const bool includeMisc) {
   return KMedoids::getDistanceComputations(includeMisc);
 }
 
@@ -42,30 +43,46 @@ size_t km::KMedoidsWrapper::getCacheMissesPython() {
 }
 
 void distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-  cls->def("getDistanceComputations", &KMedoidsWrapper::getDistanceComputationsPython);
+  cls->def("getDistanceComputations",
+           &KMedoidsWrapper::getDistanceComputationsPython);
 }
 
-void misc_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-    cls->def_property_readonly("misc_distance_computations", &KMedoidsWrapper::getMiscDistanceComputationsPython);
+void misc_distance_computations_python(
+    pybind11::class_<km::KMedoidsWrapper> *cls) {
+    cls->def_property_readonly(
+      "misc_distance_computations",
+      &KMedoidsWrapper::getMiscDistanceComputationsPython);
 }
 
-void build_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-    cls->def_property_readonly("build_distance_computations", &KMedoidsWrapper::getBuildDistanceComputationsPython);
+void build_distance_computations_python(
+    pybind11::class_<km::KMedoidsWrapper> *cls) {
+    cls->def_property_readonly(
+      "build_distance_computations",
+      &KMedoidsWrapper::getBuildDistanceComputationsPython);
 }
 
-void swap_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-    cls->def_property_readonly("swap_distance_computations", &KMedoidsWrapper::getSwapDistanceComputationsPython);
+void swap_distance_computations_python(
+    pybind11::class_<km::KMedoidsWrapper> *cls) {
+    cls->def_property_readonly(
+      "swap_distance_computations",
+      &KMedoidsWrapper::getSwapDistanceComputationsPython);
 }
 
 void cache_writes_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-  cls->def_property_readonly("cache_writes", &KMedoidsWrapper::getCacheWritesPython);
+  cls->def_property_readonly(
+      "cache_writes",
+      &KMedoidsWrapper::getCacheWritesPython);
 }
 
 void cache_hits_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-  cls->def_property_readonly("cache_hits", &KMedoidsWrapper::getCacheHitsPython);
+  cls->def_property_readonly(
+      "cache_hits",
+      &KMedoidsWrapper::getCacheHitsPython);
 }
 
 void cache_misses_python(pybind11::class_<km::KMedoidsWrapper> *cls) {
-  cls->def_property_readonly("cache_misses", &KMedoidsWrapper::getCacheMisses);
+  cls->def_property_readonly(
+      "cache_misses",
+      &KMedoidsWrapper::getCacheMisses);
 }
 }  // namespace km

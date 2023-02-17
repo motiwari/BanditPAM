@@ -2,8 +2,8 @@
 #define HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_
 
 #include <omp.h>
-#include <optional>
 #include <armadillo>
+#include <optional>
 #include <vector>
 #include <fstream>
 #include <iostream>
@@ -25,12 +25,13 @@ namespace km {
  */
 class KMedoids {
  public:
-  // NOTE: The order of arguments in this constructor must match that of the arguments in kmedoids_pywrapper.cpp,
-  //  otherwise undefined behavior can result (variables being initialized with others' values)
+  // NOTE: The order of arguments in this constructor must match that of the
+  //  arguments in kmedoids_pywrapper.cpp, otherwise undefined behavior can
+  //  result (variables being initialized with others' values)
   KMedoids(
     size_t nMedoids = 5,
     const std::string& algorithm = "BanditPAM",
-    size_t maxIter = 100, // TODO(@motiwari): Change this back to 100
+    size_t maxIter = 100,
     size_t buildConfidence = 3,
     size_t swapConfidence = 4,
     bool useCache = true,
@@ -390,8 +391,7 @@ class KMedoids {
     const size_t i,
     const size_t j,
     const size_t category,
-    const bool useCacheFunctionOverride = true
-    );
+    const bool useCacheFunctionOverride = true);
 
   /// If using an L_p loss, the value of p
   size_t lp;
@@ -524,22 +524,28 @@ class KMedoids {
   /// Number of points to sample per reference batch
   size_t batchSize = 100;
 
-  /// The number of non-cache distance computations we compute in the BUILD step. For debugging only.
+  /// The number of non-cache distance computations we compute
+  /// in the BUILD step. For debugging only.
   size_t numMiscDistanceComputations = 0;
 
-  /// The number of non-cache distance computations we compute in the BUILD step. For debugging only.
+  /// The number of non-cache distance computations we compute
+  /// in the BUILD step. For debugging only.
   size_t numBuildDistanceComputations = 0;
 
-  /// The number of non-cache distance computations we compute. For debugging only.
+  /// The number of non-cache distance computations we compute.
+  /// For debugging only.
   size_t numSwapDistanceComputations = 0;
 
-  /// The number of cache hits (distance computations we reuse). For debugging only.
+  /// The number of cache hits (distance computations we reuse).
+  /// For debugging only.
   size_t numCacheWrites = 0;
 
-  /// The number of cache writes (distance computations we save). For debugging only.
+  /// The number of cache writes (distance computations we save).
+  /// For debugging only.
   size_t numCacheHits = 0;
 
-  /// The number of cache misses, i.e., distance computations we need to compute. For debugging only.
+  /// The number of cache misses, i.e., distance computations we
+  /// need to compute. For debugging only.
   size_t numCacheMisses = 0;
 
   /// The number of milliseconds taken per swap step, on average

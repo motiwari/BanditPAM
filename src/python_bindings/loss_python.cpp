@@ -11,7 +11,7 @@
 #include <carma>
 #include <armadillo>
 
-#include "kmedoids_pywrapper.hpp"
+#include "headers/python_bindings/kmedoids_pywrapper.hpp"
 
 namespace km {
 float km::KMedoidsWrapper::getLossPython() {

@@ -8,7 +8,7 @@
 #include <iostream>
 
 
-#include "kmedoids_algorithm.hpp"
+#include "headers/algorithms/kmedoids_algorithm.hpp"
 
 namespace km {
 /**
@@ -18,7 +18,7 @@ class BanditPAM : public km::KMedoids {
  public:
   /**
    * @brief Runs BanditPAM to identify a dataset's medoids.
-   * 
+   *
    * @param inputData Input data to cluster
    */
   void fitBanditPAM(
@@ -33,7 +33,7 @@ class BanditPAM : public km::KMedoids {
    * @param bestDistances Contains best distances from each point to medoids
    * @param useAbsolute Flag to use the absolute distance to each arm instead
    * of improvement over prior loss; necessary for the first BUILD step
-   * 
+   *
    * @returns Estimate of each arm's standard deviation
    */
   arma::frowvec buildSigma(
@@ -42,16 +42,16 @@ class BanditPAM : public km::KMedoids {
     const arma::frowvec& bestDistances,
     const bool useAbsolute);
 
-  /** 
+  /**
    * @brief Estimates the mean reward for each arm in the BUILD steps.
-   * 
+   *
    * @param data Transposed input data to cluster
    * @param target Candidate datapoints to consider adding as medoids
    * @param bestDistances Contains best distances from each point to medoids
    * @param useAbsolute Flag to use the absolute distance to each arm instead
    * of improvement over prior loss; necessary for the first BUILD step
    * @param exact 0 if using standard batch size; size of dataset otherwise
-   * 
+   *
    * @returns Estimate of each arm's change in loss
    */
   arma::frowvec buildTarget(
@@ -67,7 +67,7 @@ class BanditPAM : public km::KMedoids {
    *
    * Draws batch size reference points with replacement and uses the estimated
    * reward of adding candidate medoids to the set of medoids. Constructs
-   * confidence intervals for expected loss when adding each candidate as a 
+   * confidence intervals for expected loss when adding each candidate as a
    * medoid, and continues drawing reference points until the best candidate's
    * confidence interval is disjoint from all others.
    *
@@ -90,7 +90,7 @@ class BanditPAM : public km::KMedoids {
    * @param bestDistances Contains best distances from each point to medoids
    * @param secondBestDistances Contains second best distances from each point to medoids
    * @param assignments Assignments of datapoints to their closest medoid
-   * 
+   *
    * @returns Estimate of each arm's standard deviation
    */
   arma::fmat swapSigma(
@@ -111,7 +111,7 @@ class BanditPAM : public km::KMedoids {
    * @param secondBestDistances Contains second best distances from each point to medoids
    * @param assignments Assignments of datapoints to their closest medoid
    * @param exact 0 if using standard batch size; size of dataset otherwise
-   * 
+   *
    * @returns Estimate of each arm's change in loss
    */
   arma::fmat swapTarget(
@@ -126,10 +126,10 @@ class BanditPAM : public km::KMedoids {
 
   /**
   * @brief Performs the SWAP step of BanditPAM.
-  * 
+  *
   * Draws batch size reference points with replacement and uses the estimated
   * reward of performing a (medoid, non-medoid) swap. Constructs
-  * confidence intervals for expected loss when performing the swap, 
+  * confidence intervals for expected loss when performing the swap,
   * and continues drawing reference points until the best candidate's
   * confidence interval is disjoint from all others.
   *
