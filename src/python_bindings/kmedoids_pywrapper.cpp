@@ -32,17 +32,19 @@ PYBIND11_MODULE(banditpam, m) {
   // NOTE: The order of these matters! Otherwise you can get warnings about variables not being intialized in the same
   //  order as their declarations, which can lead to undefined behavior (variables being intialized with each others'
   //  values). The order here much also match that of the constructor in kmedoids_algorithm.*pp
-  cls.def(pybind11::init<int, std::string, int, int, int, bool, bool, int, bool>(),
-          pybind11::arg("n_medoids") = 5,
-          pybind11::arg("algorithm") = "BanditPAM",
-          pybind11::arg("max_iter") = 100,
-          pybind11::arg("build_confidence") = 3,
-          pybind11::arg("swap_confidence") = 4,
-          // TODO(@motiwari): Verify these options are re-used correctly on reset
-          pybind11::arg("use_cache") = true,
-          pybind11::arg("use_perm") = true,
-          pybind11::arg("cache_width") = 1000,
-          pybind11::arg("parallelize") = true);
+  cls.def(
+    pybind11::init<int, std::string, int, int, int, bool, bool, int, bool>(),
+    pybind11::arg("n_medoids") = 5,
+    pybind11::arg("algorithm") = "BanditPAM",
+    pybind11::arg("max_iter") = 100,
+    pybind11::arg("build_confidence") = 3,
+    pybind11::arg("swap_confidence") = 4,
+    // TODO(@motiwari): Verify these options are re-used correctly on reset
+    pybind11::arg("use_cache") = true,
+    pybind11::arg("use_perm") = true,
+    pybind11::arg("cache_width") = 1000,
+    pybind11::arg("parallelize") = true
+  );
 
   // Properties
   cls.def_property("n_medoids",
