@@ -498,7 +498,7 @@ void BanditPAM_p::swap(
       numSamples.cols(candidate_targets) += batchSize;
 
       arma::fmat adjust(nMedoids, candidate_targets.size());
-      // TOOD(@motiwari): Move this ::fill to the previous line
+      // TODO(@motiwari): Move this ::fill to the previous line
       adjust.fill(p);
       adjust = swapConfidence + arma::log(adjust);  // Assume swapConfidence is given in logspace
       arma::fmat confBoundDelta = sigma.cols(candidate_targets) %
