@@ -101,7 +101,7 @@ int main(int argc, char* argv[]) {
 
     if (num_data < 0) {
         throw std::invalid_argument(
-                "Error: num_data passed was less than 0");
+        "Error: num_data passed was less than 0");
     } else if (num_data != 0) {
         data.resize(num_data, data.n_cols);
     }
