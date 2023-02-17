@@ -7,7 +7,7 @@ import numpy as np
 import banditpam
 
 from sklearn.metrics.pairwise import euclidean_distances
-from kmedoids import fasterpam, fastpam1
+from kmedoids import fasterpam
 
 # - Why is there a variable XX in the Google colab?
 
@@ -23,7 +23,8 @@ def benchmark(data, f, n=1):
         v = np.array(v)
         min, avg = v.min(), v.mean()
         ste = v.std(ddof=1) / np.sqrt(len(v)) if len(v) > 1 else 0.0
-        print("{:16s} min={:-10.2f} mean={:-10.2f} ±{:-.2f}".format(k, min, avg, ste))
+        print("{:16s} min={:-10.2f} mean={:-10.2f} ±{:-.2f}"
+              .format(k, min, avg, ste))
 
 
 def run_fasterpam(data, seed):
@@ -43,7 +44,7 @@ def run_fasterpam(data, seed):
 
 def run_bandit(data, seed):
     diss = euclidean_distances(data)
-    km = banditpam.KMedoids(5, parallelize=True)
+    km = banditpam.KMedoids(5, parallelize=True, dist_mat=diss)
     print(km.algorithm)
     km.seed = seed
     start = time.time()
@@ -57,9 +58,14 @@ def run_bandit(data, seed):
         "reported loss": km.average_loss,
     }
 
+
 def run_old_bandit(data, seed):
     diss = euclidean_distances(data)
-    km = banditpam.KMedoids(5, parallelize=True, algorithm="BanditPAM_v3")
+    km = banditpam.KMedoids(
+        n_medoids=5,
+        parallelize=True,
+        algorithm="BanditPAM_orig",
+        dist_mat=diss)
     print(km.algorithm)
     km.seed = seed
     start = time.time()
@@ -75,7 +81,12 @@ def run_old_bandit(data, seed):
 
 
 if __name__ == "__main__":
-    X, _ = fetch_openml("mnist_784", version=1, return_X_y=True, as_frame=False)
+    X, _ = fetch_openml(
+        "mnist_784",
+        version=1,
+        return_X_y=True,
+        as_frame=False,
+    )
     X = X[:20000]  # at 20k, colab will timeout for BanditPAM
     print(X.shape, type(X))
 
@@ -87,5 +98,3 @@ if __name__ == "__main__":
 
     print("\n\nBenchmarking Old BanditPAM")
     benchmark(X, run_old_bandit)
-
-
