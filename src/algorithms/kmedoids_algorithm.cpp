@@ -14,7 +14,7 @@
 #include "fastpam1.hpp"
 #include "pam.hpp"
 #include "banditpam.hpp"
-#include "banditpam_p.hpp"
+#include "banditpam_orig.hpp"
 
 namespace km {
 // NOTE: The order of arguments in this constructor must match that of the arguments in kmedoids_pywrapper.cpp,
@@ -84,8 +84,8 @@ void KMedoids::fit(
       static_cast<PAM*>(this)->fitPAM(inputData, distMat);
     } else if (algorithm == "BanditPAM") {
       static_cast<BanditPAM*>(this)->fitBanditPAM(inputData, distMat);
-    } else if (algorithm == "BanditPAM_p") {
-      static_cast<BanditPAM_p*>(this)->fitBanditPAM_p(inputData, distMat);
+    } else if (algorithm == "BanditPAM_orig") {
+      static_cast<BanditPAM_orig*>(this)->fitBanditPAM_orig(inputData, distMat);
     } else if (algorithm == "FastPAM1") {
       static_cast<FastPAM1*>(this)->fitFastPAM1(inputData, distMat);
     }
@@ -143,7 +143,7 @@ size_t KMedoids::getBuildConfidence() const {
 }
 
 void KMedoids::setBuildConfidence(size_t newBuildConfidence) {
-  if (algorithm != "BanditPAM" && algorithm != "BanditPAM_p") {
+  if (algorithm != "BanditPAM" && algorithm != "BanditPAM_orig") {
     // TODO(@motiwari): Better error type
     throw "Cannot set buildConfidence when not using BanditPAM";
   }
@@ -155,7 +155,7 @@ size_t KMedoids::getSwapConfidence() const {
 }
 
 void KMedoids::setSwapConfidence(size_t newSwapConfidence) {
-  if (algorithm != "BanditPAM" && algorithm != "BanditPAM_p") {
+  if (algorithm != "BanditPAM" && algorithm != "BanditPAM_orig") {
     // TODO(@motiwari): Better error type
     throw "Cannot set buildConfidence when not using BanditPAM";
   }
@@ -398,7 +398,7 @@ float KMedoids::cachedLoss(
 
 void KMedoids::checkAlgorithm(const std::string& algorithm) const {
   if ((algorithm != "BanditPAM") &&
-      (algorithm != "BanditPAM_p") &&
+      (algorithm != "BanditPAM_orig") &&
       (algorithm != "PAM") &&
       (algorithm != "FastPAM1")) {
     // TODO(@motiwari): Better error type
