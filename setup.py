@@ -159,17 +159,17 @@ def install_check_mac():
     # TODO(@motiwari): Check if the arm64 wheels are not multithreaded
     # TODO(@motiwari): Check if the universal2 wheels are not multithreaded
     # when installed on Intel Mac
+    if not os.environ.get(GHA, False):
+        # If we are NOT running inside a Github action,
+        # check that LLVM clang is installed
+        llvm_loc = check_brew_package(
+            "llvm"
+        )  # We need to use LLVM clang since Apple's doesn't support OpenMP
 
-    # check that LLVM clang is installed
-    # We need to use LLVM clang since Apple's doesn't support OpenMP
-    llvm_loc = check_brew_package(
-        "llvm"
-    )
-
-    # Set compiler to LLVM clang on Mac for OpenMP support
-    distutils.sysconfig.get_config_vars()["CC"] = os.path.join(
-        llvm_loc, "bin", "clang"
-    )
+        # Set compiler to LLVM clang on Mac for OpenMP support
+        distutils.sysconfig.get_config_vars()["CC"] = os.path.join(
+            llvm_loc, "bin", "clang"
+        )
 
 
 def check_omp_install_linux():
@@ -350,7 +350,9 @@ class BuildExt(build_ext):
         install_check_mac()
         # Verify that we're either compiling with clang or
         # inside a Github Action
-        assert compiler_check() == "clang", "Need to install LLVM clang!"
+        assert compiler_check() == "clang" or os.environ.get(
+            GHA, False
+        ), "Need to install LLVM clang!"
         darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.14", "-O3"]
         c_opts["unix"] += darwin_opts
         l_opts["unix"] += darwin_opts
@@ -371,12 +373,15 @@ class BuildExt(build_ext):
         # TODO(@motiwari): on Windows, these flags are unrecognized
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
-        opts.append("-fopenmp")
+        if sys.platform == "darwin" and os.environ.get(GHA, False):
+            opts.append("-fopenmp")
+        else:
+            opts.append("-fopenmp")
 
         compiler_name = compiler_check()
-        if compiler_name == "clang":
+        if sys.platform == "darwin" or compiler_name == "clang":
             link_opts.append("-lomp")
-        else:  # gcc
+        else:
             link_opts.append("-lgomp")
 
         if ct == "unix":
@@ -442,7 +447,9 @@ def main():
         ]
 
     compiler_name = compiler_check()
-    if compiler_name == "clang":
+    if compiler_name == "clang" or (
+        os.environ.get(GHA, False) and sys.platform == "darwin"
+    ):
         libraries = ["armadillo", "omp"]  # For M1 Mac runner build
     else:  # gcc
         libraries = ["armadillo", "gomp"]
@@ -472,7 +479,7 @@ def main():
             include_dirs=include_dirs,
             library_dirs=[os.path.join("/", "usr", "local", "lib")],
             libraries=libraries,
-            language="c++17",  # TODO: modify this based on cpp_flag(compiler)
+            language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
             extra_compile_args=["-static-libstdc++"],
         )
     ]
