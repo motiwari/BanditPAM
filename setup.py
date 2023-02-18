@@ -444,6 +444,9 @@ def main():
                 "/", "opt", "homebrew", "opt", "armadillo", "include",
                 "armadillo_bits"
             ),
+            # Needed for Mac Github Runners
+            os.path.join("/", "usr", "local", "Cellar", "libomp",
+                         "15.0.2", "include"),
         ]
 
     compiler_name = compiler_check()
