@@ -10,7 +10,7 @@
  * 2) Leonard Kaufman and Peter J. Rousseeuw: Partitioning around medoids (program pam).
  */
 
-#include "headers/algorithms/fastpam1.hpp"
+#include "fastpam1.hpp"
 
 #include <armadillo>
 #include <unordered_map>

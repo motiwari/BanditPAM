@@ -12,8 +12,8 @@
 #include <carma>
 #include <armadillo>
 
-#include "headers/algorithms/kmedoids_algorithm.hpp"
-#include "headers/python_bindings/kmedoids_pywrapper.hpp"
+#include "kmedoids_algorithm.hpp"
+#include "kmedoids_pywrapper.hpp"
 
 namespace km {
 PYBIND11_MODULE(banditpam, m) {

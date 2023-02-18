@@ -11,7 +11,7 @@
 #include <carma>
 #include <armadillo>
 
-#include "headers/python_bindings/kmedoids_pywrapper.hpp"
+#include "kmedoids_pywrapper.hpp"
 
 namespace km {
 pybind11::array_t<arma::uword> km::KMedoidsWrapper::getMedoidsBuildPython() {

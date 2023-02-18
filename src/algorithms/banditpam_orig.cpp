@@ -5,7 +5,7 @@
  * Contains the primary C++ implementation of the BanditPAM_orig code.
  */
 
-#include "headers/algorithms/banditpam_orig.hpp"
+#include "banditpam_orig.hpp"
 
 #include <armadillo>
 #include <unordered_map>

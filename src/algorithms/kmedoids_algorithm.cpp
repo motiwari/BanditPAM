@@ -10,11 +10,11 @@
 #include <unordered_map>
 #include <regex>
 
-#include "headers/algorithms/kmedoids_algorithm.hpp"
-#include "headers/algorithms/fastpam1.hpp"
-#include "headers/algorithms/pam.hpp"
-#include "headers/algorithms/banditpam.hpp"
-#include "headers/algorithms/banditpam_orig.hpp"
+#include "kmedoids_algorithm.hpp"
+#include "fastpam1.hpp"
+#include "pam.hpp"
+#include "banditpam.hpp"
+#include "banditpam_orig.hpp"
 
 namespace km {
 // NOTE: The order of arguments in this constructor must match that of the

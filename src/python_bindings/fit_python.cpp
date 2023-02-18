@@ -13,7 +13,7 @@
 #include <armadillo>
 #include <optional>
 
-#include "headers/python_bindings/kmedoids_pywrapper.hpp"
+#include "kmedoids_pywrapper.hpp"
 
 namespace km {
 void km::KMedoidsWrapper::fitPython(

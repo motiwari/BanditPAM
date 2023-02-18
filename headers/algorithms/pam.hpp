@@ -7,7 +7,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "headers/algorithms/kmedoids_algorithm.hpp"
+#include "kmedoids_algorithm.hpp"
 
 
 namespace km {

@@ -8,7 +8,7 @@
 #include <armadillo>
 #include <string>
 
-#include "headers/algorithms/kmedoids_algorithm.hpp"
+#include "kmedoids_algorithm.hpp"
 
 namespace km {
 /**

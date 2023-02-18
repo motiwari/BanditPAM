@@ -14,7 +14,7 @@
 #include <exception>
 #include <filesystem>
 
-#include "headers/algorithms/kmedoids_algorithm.hpp"
+#include "kmedoids_algorithm.hpp"
 
 int main(int argc, char* argv[]) {
     std::string input_name;
@@ -22,8 +22,8 @@ int main(int argc, char* argv[]) {
     int opt;
     int prev_ind;
     size_t maxIter = 100;
-    size_t buildConfidence = 7;
-    size_t swapConfidence = 9;
+    size_t buildConfidence = 3;
+    size_t swapConfidence = 4;
     std::string loss = "L2";
     bool f_flag = false;
     bool k_flag = false;

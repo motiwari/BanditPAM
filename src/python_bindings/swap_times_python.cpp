@@ -10,7 +10,7 @@
 #include <carma>
 #include <armadillo>
 
-#include "headers/python_bindings/kmedoids_pywrapper.hpp"
+#include "kmedoids_pywrapper.hpp"
 
 namespace km {
 size_t km::KMedoidsWrapper::getTotalSwapTimePython() {
