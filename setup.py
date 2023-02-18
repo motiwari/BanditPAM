@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "4.0.2"
+__version__ = "4.0.0a"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = "GITHUB_ACTIONS"
@@ -211,7 +211,7 @@ def check_linux_package_installation(pkg_name: str):
             "Error: Need to install %s! \
             Please ensure all dependencies are installed \
             via your package manager (apt, yum, etc.): \
-            build-essential checkinstall libreadline-gplv2-dev \
+            build-essential checkinstall \
             libncursesw5-dev libssl-dev libsqlite3-dev tk-dev \
             libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
             % (pkg_name)
@@ -227,7 +227,6 @@ def install_ubuntu_pkgs():
         "apt install -y \
         build-essential \
         checkinstall \
-        libreadline-gplv2-dev \
         libncursesw5-dev \
         libssl-dev \
         libsqlite3-dev \
@@ -304,7 +303,6 @@ def install_check_ubuntu():
     dependencies = [
         "build-essential",
         "checkinstall",
-        "libreadline-gplv2-dev",
         "libncursesw5-dev",
         "libssl-dev",
         "libsqlite3-dev",
