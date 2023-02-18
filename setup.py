@@ -374,7 +374,8 @@ class BuildExt(build_ext):
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
         if sys.platform == "darwin" and os.environ.get(GHA, False):
-            opts.append("-Xpreprocessor -fopenmp")
+            #opts.append("-Xpreprocessor -fopenmp")
+            pass
         else:
             opts.append("-fopenmp")
 
@@ -382,8 +383,10 @@ class BuildExt(build_ext):
         # use -gomp on Mac Github runners because we use gcc
         if (sys.platform == "darwin" and not os.environ.get(GHA, False)) or compiler_name == "clang":
             link_opts.append("-lomp")
+
         else:
-            link_opts.append("-lgomp")
+            #link_opts.append("-lgomp")
+            pass
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
@@ -455,7 +458,7 @@ def main():
     if (sys.platform == "darwin" and not os.environ.get(GHA, False)) or compiler_name == "clang":
         libraries = ["armadillo", "omp"]  # For M1 Mac runner build
     else:  # gcc
-        libraries = ["armadillo", "gomp"]
+        libraries = ["armadillo"] #, "gomp"]
 
     ext_modules = [
         Extension(
