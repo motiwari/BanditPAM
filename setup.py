@@ -374,7 +374,7 @@ class BuildExt(build_ext):
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
         if sys.platform == "darwin" and os.environ.get(GHA, False):
-            opts.append("-fopenmp")
+            opts.append("-Xpreprocessor -fopenmp")
         else:
             opts.append("-fopenmp")
 
