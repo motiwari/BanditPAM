@@ -451,9 +451,8 @@ def main():
         ]
 
     compiler_name = compiler_check()
-    if compiler_name == "clang" or (
-        os.environ.get(GHA, False) and sys.platform == "darwin"
-    ):
+    # use -gomp on Mac Github runners because we use gcc
+    if (sys.platform == "darwin" and not os.environ.get(GHA, False)) or compiler_name == "clang":
         libraries = ["armadillo", "omp"]  # For M1 Mac runner build
     else:  # gcc
         libraries = ["armadillo", "gomp"]
