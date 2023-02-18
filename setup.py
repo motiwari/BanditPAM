@@ -379,7 +379,8 @@ class BuildExt(build_ext):
             opts.append("-fopenmp")
 
         compiler_name = compiler_check()
-        if sys.platform == "darwin" or compiler_name == "clang":
+        # use -gomp on Mac Github runners because we use gcc
+        if (sys.platform == "darwin" and not os.environ.get(GHA, False)) or compiler_name == "clang":
             link_opts.append("-lomp")
         else:
             link_opts.append("-lgomp")
