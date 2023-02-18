@@ -96,7 +96,7 @@ def cpp_flag(compiler: str):
         flags = ["-std=c++17", "-std=c++14", "-std=c++11"]
     else:
         # Assume gcc
-        flags = ["-std=c++1z"]
+        flags = ["-std=c++17"]
 
     for flag in flags:
         if has_flag(compiler, flag):
