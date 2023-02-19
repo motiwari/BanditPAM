@@ -383,7 +383,7 @@ class BuildExt(build_ext):
         # use -gomp on Mac Github runners because we use gcc
         if (sys.platform == "darwin" and os.environ.get(GHA, False)):
             # On Mac Github Runners, we should NOT include gomp or omp here due to build errors
-            pass
+            link_opts.append('-lomp -I"$(brew --prefix libomp)/include" -L"$(brew --prefix libomp)/lib"')
         else:
             if compiler_name == "clang":
                 link_opts.append("-lomp")
@@ -462,7 +462,7 @@ def main():
     compiler_name = compiler_check()
     if (sys.platform == "darwin" and os.environ.get(GHA, False)):
         # On Mac Github Runners, we should NOT include gomp or omp here due to build errors.
-        libraries = ["armadillo"]
+        libraries = ["armadillo", "omp"]
     else:
         if compiler_name == "clang":
             libraries = ["armadillo", "omp"]

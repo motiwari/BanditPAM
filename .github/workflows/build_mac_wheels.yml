@@ -21,6 +21,10 @@ jobs:
           echo "LIBOMP:" && ls -alh $(brew --prefix libomp)
           echo "DYLD_LIBRARY_PATH:$(DLYD_LIBRARY_PATH)"
           printenv
+          gcc --version
+          g++ --version
+          clang --version
+          clang++ --version
 
       # Note: CIBW only supports CPython 3.8 and newer for universal2 and arm64 wheels
       - name: Build wheels

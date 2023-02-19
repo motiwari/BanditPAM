@@ -22,6 +22,12 @@ jobs:
           brew install llvm libomp armadillo
           echo "BREW PREFIX:" && brew --prefix libomp
           echo "LIBOMP:" && ls -alh $(brew --prefix libomp)
+          echo "DYLD_LIBRARY_PATH:$(DLYD_LIBRARY_PATH)"
+          printenv
+          gcc --version
+          g++ --version
+          clang --version
+          clang++ --version
 
       - name: Install Python dependencies 
         run: |
