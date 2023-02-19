@@ -49,7 +49,6 @@ jobs:
 
       - name: Verify that the C++ executable compiles and runs
         run : |
-          printenv
           echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
           source /Users/runner/.bash_profile
           export LDFLAGS="-L/usr/local/opt/llvm/lib, -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
@@ -59,11 +58,12 @@ jobs:
           export CXX=/usr/local/opt/llvm/bin/clang++
           echo "NEW DYLD"
           echo $DYLD_LIBRARY_PATH
+          printenv
           git clone https://github.com/ThrunGroup/BanditPAM
           cd BanditPAM
           mkdir build
           cd build
-          sudo cmake ..
+          sudo CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake ..
           sudo make
           src/BanditPAM -f ../data/MNIST_1k.csv -k 5 -l L2
         env:
