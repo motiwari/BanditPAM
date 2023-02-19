@@ -87,7 +87,7 @@ jobs:
       - name: Verify that the C++ executable compiles and runs
         run : |
           printenv
-          echo "NEW DYLD: $(DYLD_LIBRARY_PATH)$"
+          echo "NEW DYLD: $(DYLD_LIBRARY_PATH)"
           git clone https://github.com/ThrunGroup/BanditPAM
           cd BanditPAM
           mkdir build
@@ -97,4 +97,4 @@ jobs:
           src/BanditPAM -f ../data/MNIST_1k.csv -k 5 -l L2
         env:
           DYLD_LIBRARY_PATH: /usr/local/opt/libomp/lib:/usr/local/opt/libomp/include
-          CPLUS_INCLUDE_PATH: /usr/local/include/carma:/usr/local/Cellar/libomp/15.0.2/include:/usr/local/Cellar/libomp/15.0.7/include
+#          CPLUS_INCLUDE_PATH: /usr/local/include/carma:/usr/local/Cellar/libomp/15.0.2/include:/usr/local/Cellar/libomp/15.0.7/include
