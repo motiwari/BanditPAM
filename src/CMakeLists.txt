@@ -4,7 +4,7 @@ include_directories(${PROJECT_SOURCE_DIR}/headers/python_bindings)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma_bits)
 
-# For Mac Github Runner to find OpenMP
+# For Mac Github Runner to find OpenMP -- potentially unnecessary after fixing -Xpreprocessor -fopenmp issue
 include_directories(/usr/local/Cellar/libomp/15.0.2/include)
 include_directories(/usr/local/Cellar/libomp/15.0.7/include)
 include_directories(/usr/local/Cellar/libomp)
