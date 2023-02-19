@@ -47,6 +47,8 @@ jobs:
           mkdir -p data
           curl -XGET https://motiwari.com/banditpam_data/MNIST_1k.csv > data/MNIST_1k.csv
 
+      # On the MacOS machine, when installing from source,
+      # we use LLVM Clang
       - name: Verify that the C++ executable compiles and runs
         run : |
           echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
