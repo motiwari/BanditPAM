@@ -375,8 +375,9 @@ class BuildExt(build_ext):
         opts.append("-O3")
         if sys.platform == "darwin" and os.environ.get(GHA, False):
             # On Mac Github runners, we should NOT include gomp or omp here due to build errors
-            opts.append('-Xpreprocessor')
-            opts.append('-fopenmp')
+            opts.append('-Xpreprocessor')  # NEEDS TO BE WITH NEXT LINE
+            opts.append('-fopenmp')  # NEEDS TO BE WITH PREVIOUS LINE
+
             opts.append('-lomp')
             opts.append('-I/usr/local/opt/libomp/include')
             opts.append('-L/usr/local/opt/libomp/lib')
