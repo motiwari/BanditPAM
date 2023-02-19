@@ -1,0 +1,65 @@
+name: MacOS - build package and run tests
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+
+      # On the MacOS machine, when installing from source,
+      # we use LLVM Clang
+      - name: Install MacOS dependencies
+        run: |
+          brew install llvm libomp armadillo
+          brew reinstall llvm
+          echo "BREW PREFIX:" && brew --prefix libomp
+          echo "LIBOMP:" && ls -alh $(brew --prefix libomp)
+          echo "DYLD_LIBRARY_PATH:$(DLYD_LIBRARY_PATH)"
+          printenv
+          gcc --version
+          g++ --version
+          clang --version
+          clang++ --version
+          echo "BREW PREFIX:" && brew --prefix llvm
+
+      - name: Install Armadillo 10.7.5+
+        run: |
+          cd ~
+          git clone https://gitlab.com/conradsnicta/armadillo-code.git
+          cd armadillo-code
+          sudo cmake .
+          sudo make install
+
+      - name: Install carma
+        run: |
+          cd ~
+          git clone https://github.com/RUrlus/carma.git
+          cd carma
+          mkdir build
+          cd build
+          sudo cmake -DCARMA_INSTALL_LIB=ON ..
+          sudo cmake --build . --config Release --target install
+          cd ~
+
+      - name: Downloading data files for tests
+        run: |
+          mkdir -p data
+          curl -XGET https://motiwari.com/banditpam_data/MNIST_1k.csv > data/MNIST_1k.csv
+
+      - name: Verify that the C++ executable compiles and runs
+        run : |
+          printenv
+          echo "NEW DYLD"
+          echo $DYLD_LIBRARY_PATH
+          git clone https://github.com/ThrunGroup/BanditPAM
+          cd BanditPAM
+          mkdir build
+          cd build
+          sudo cmake ..
+          sudo make
+          src/BanditPAM -f ../data/MNIST_1k.csv -k 5 -l L2
+        env:
+          DYLD_LIBRARY_PATH: /usr/local/opt/libomp/lib:/usr/local/opt/libomp/include
+          CPLUS_INCLUDE_PATH: /usr/local/include/carma:/usr/local/Cellar/libomp/15.0.2/include:/usr/local/Cellar/libomp/15.0.7/include
