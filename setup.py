@@ -452,8 +452,12 @@ def main():
                 "armadillo_bits"
             ),
             # Needed for Mac Github Runners
+            # for macos-10.15
             os.path.join("/", "usr", "local", "Cellar", "libomp",
                          "15.0.2", "include"),
+            # for macos-latest
+            os.path.join("/", "usr", "local", "Cellar", "libomp",
+                         "15.0.7", "include"),
         ]
 
     compiler_name = compiler_check()
@@ -492,8 +496,13 @@ def main():
             library_dirs=[
                 os.path.join("/", "usr", "local", "lib"),
                 # For Mac Github runners that install locally (not build wheels) - testing
+                # for macos-10.15
                 os.path.join("/", "usr", "local", "Cellar", "libomp",
                              "15.0.2", "lib"),
+
+                # for macos-latest
+                os.path.join("/", "usr", "local", "Cellar", "libomp",
+                             "15.0.7", "lib"),
             ],
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
