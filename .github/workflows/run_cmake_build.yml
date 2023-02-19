@@ -1,4 +1,4 @@
-name: MacOS - build package and run tests
+name: Run CMake build on MacOS
 on: [push, pull_request]
 jobs:
   build:
