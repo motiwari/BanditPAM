@@ -375,7 +375,10 @@ class BuildExt(build_ext):
         opts.append("-O3")
         if sys.platform == "darwin" and os.environ.get(GHA, False):
             # On Mac Github runners, we should NOT include gomp or omp here due to build errors
-            opts.append('-Xpreprocessor -fopenmp -lomp -I"$(brew --prefix libomp)/include" -L"$(brew --prefix libomp)/lib"')
+            opts.append('-Xpreprocessor -fopenmp')
+            opts.append('-lomp')
+            opts.append('-I"$(brew --prefix libomp)/include"')
+            opts.append('-L"$(brew --prefix libomp)/lib"')
         else:
             opts.append("-fopenmp")
 
@@ -383,7 +386,9 @@ class BuildExt(build_ext):
         # use -gomp on Mac Github runners because we use gcc
         if (sys.platform == "darwin" and os.environ.get(GHA, False)):
             # On Mac Github Runners, we should NOT include gomp or omp here due to build errors
-            link_opts.append('-lomp -I"$(brew --prefix libomp)/include" -L"$(brew --prefix libomp)/lib"')
+            link_opts.append('-lomp')
+            link_opts.append('-I"$(brew --prefix libomp)/include"')
+            link_opts.append('-L"$(brew --prefix libomp)/lib"')
         else:
             if compiler_name == "clang":
                 link_opts.append("-lomp")
