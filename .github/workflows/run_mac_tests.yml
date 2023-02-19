@@ -87,7 +87,8 @@ jobs:
       - name: Verify that the C++ executable compiles and runs
         run : |
           printenv
-          echo "NEW DYLD: $(DYLD_LIBRARY_PATH)"
+          
+          echo "NEW DYLD: $DYLD_LIBRARY_PATH"
           git clone https://github.com/ThrunGroup/BanditPAM
           cd BanditPAM
           mkdir build
