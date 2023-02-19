@@ -374,7 +374,6 @@ class BuildExt(build_ext):
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
         if sys.platform == "darwin" and os.environ.get(GHA, False):
-            # On Mac Github runners, we should NOT include gomp or omp here due to build errors
             opts.append('-Xpreprocessor')  # NEEDS TO BE WITH NEXT LINE
             opts.append('-fopenmp')  # NEEDS TO BE WITH PREVIOUS LINE
 
@@ -385,12 +384,10 @@ class BuildExt(build_ext):
             opts.append("-fopenmp")
 
         compiler_name = compiler_check()
-        # use -gomp on Mac Github runners because we use gcc
         if (sys.platform == "darwin" and os.environ.get(GHA, False)):
-            # On Mac Github Runners, we should NOT include gomp or omp here due to build errors
-            link_opts.append('-lomp')
+            link_opts.append('-lomp')  # Potentially unused?
             link_opts.append('-I/usr/local/opt/libomp/include')
-            link_opts.append('-L/usr/local/opt/libomp/lib')
+            link_opts.append('-L/usr/local/opt/libomp/lib')  # Potentially unused?
         else:
             if compiler_name == "clang":
                 link_opts.append("-lomp")
