@@ -7,6 +7,9 @@ include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma_bits)
 # For Mac Github Runner to find OpenMP
 include_directories(/usr/local/Cellar/libomp/15.0.2/include)
 include_directories(/usr/local/Cellar/libomp/15.0.7/include)
+include_directories(/usr/local/Cellar/libomp)
+include_directories(/usr/local/opt/libomp)
+include_directories(/usr/local/opt)
 
 add_executable(BanditPAM main.cpp)
 
