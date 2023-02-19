@@ -88,7 +88,8 @@ jobs:
         run : |
           printenv
           
-          echo "NEW DYLD: $DYLD_LIBRARY_PATH"
+          echo "NEW DYLD"
+          echo $DYLD_LIBRARY_PATH
           git clone https://github.com/ThrunGroup/BanditPAM
           cd BanditPAM
           mkdir build
