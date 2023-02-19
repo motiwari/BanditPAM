@@ -10,10 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
+#      - name: Set up Python ${{ matrix.python-version }}
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: ${{ matrix.python-version }}
 
       # On the MacOS machine, when installing from source,
       # we use LLVM Clang
@@ -86,6 +86,7 @@ jobs:
 
       - name: Verify that the C++ executable compiles and runs
         run : |
+          printenv
           git clone https://github.com/ThrunGroup/BanditPAM
           cd BanditPAM
           mkdir build
@@ -93,3 +94,6 @@ jobs:
           sudo cmake ..
           sudo make
           src/BanditPAM -f ../data/MNIST_1k.csv -k 5 -l L2
+        env:
+          DYLD_LIBRARY_PATH: /usr/local/opt/libomp/lib:/usr/local/opt/libomp/include
+          CPLUS_INCLUDE_PATH: /usr/local/include/carma:/usr/local/Cellar/libomp/15.0.2/include:/usr/local/Cellar/libomp/15.0.7/include
