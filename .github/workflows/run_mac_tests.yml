@@ -67,14 +67,14 @@ jobs:
       - name: Downloading data files for tests
         run: |
           mkdir -p data
-          curl -XGET https://motiwari.com/banditpam_data/scRNA_1k.csv > data/scRNA_1k.csv
-          curl -XGET https://motiwari.com/banditpam_data/scrna_reformat.csv.gz > data/scrna_reformat.csv.gz
-          curl -XGET https://motiwari.com/banditpam_data/MNIST_100.csv > data/MNIST_100.csv
+#          curl -XGET https://motiwari.com/banditpam_data/scRNA_1k.csv > data/scRNA_1k.csv
+#          curl -XGET https://motiwari.com/banditpam_data/scrna_reformat.csv.gz > data/scrna_reformat.csv.gz
+#          curl -XGET https://motiwari.com/banditpam_data/MNIST_100.csv > data/MNIST_100.csv
           curl -XGET https://motiwari.com/banditpam_data/MNIST_1k.csv > data/MNIST_1k.csv
-          curl -XGET https://motiwari.com/banditpam_data/MNIST_10k.tar.gz > data/MNIST_10k.tar.gz
-          tar -xzvf data/MNIST_10k.tar.gz -C data
-          curl -XGET https://motiwari.com/banditpam_data/MNIST_70k.tar.gz > data/MNIST_70k.tar.gz
-          tar -xzvf data/MNIST_70k.tar.gz -C data
+#          curl -XGET https://motiwari.com/banditpam_data/MNIST_10k.tar.gz > data/MNIST_10k.tar.gz
+#          tar -xzvf data/MNIST_10k.tar.gz -C data
+#          curl -XGET https://motiwari.com/banditpam_data/MNIST_70k.tar.gz > data/MNIST_70k.tar.gz
+#          tar -xzvf data/MNIST_70k.tar.gz -C data
 
       - name: Run smaller suite of test cases
         run : |
