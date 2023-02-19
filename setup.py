@@ -382,13 +382,14 @@ class BuildExt(build_ext):
 
         compiler_name = compiler_check()
         # use -gomp on Mac Github runners because we use gcc
-        if (sys.platform == "darwin" and not os.environ.get(GHA, False)) or compiler_name == "clang":
-            link_opts.append("-lomp")
-        elif (sys.platform == "darwin" and os.environ.get(GHA, False)):
+        if (sys.platform == "darwin" and os.environ.get(GHA, False)):
             # On Mac Github Runners, we should NOT include gomp or omp here due to build errors
             pass
-        else:  # gcc
-            link_opts.append("-lgomp")
+        else:
+            if compiler_name == "clang":
+                link_opts.append("-lomp")
+            else:  # gcc
+                link_opts.append("-lgomp")
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
@@ -456,14 +457,14 @@ def main():
         ]
 
     compiler_name = compiler_check()
-    # use -gomp on Mac Github runners because we use gcc
-    if (sys.platform == "darwin" and not os.environ.get(GHA, False)) or compiler_name == "clang":
-        libraries = ["armadillo", "omp"]  # For M1 Mac runner build
-    elif (sys.platform == "darwin" and os.environ.get(GHA, False)):
+    if (sys.platform == "darwin" and os.environ.get(GHA, False)):
         # On Mac Github Runners, we should NOT include gomp or omp here due to build errors.
         libraries = ["armadillo"]
-    else:  # gcc
-        libraries = ["armadillo", "gomp"]
+    else:
+        if compiler_name == "clang":
+            libraries = ["armadillo", "omp"]
+        else:  # gcc
+            libraries = ["armadillo", "gomp"]
 
     ext_modules = [
         Extension(
