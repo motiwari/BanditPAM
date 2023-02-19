@@ -15,7 +15,7 @@ from constants import (
     MNIST_SIZE_MULTIPLIERS,
     SCRNA_SIZE_MULTIPLIERS,
     PROPORTION_PASSING,
-    SCALING_EXPONENT
+    SCALING_EXPONENT,
 )
 
 
@@ -74,7 +74,7 @@ class LargerTests(unittest.TestCase):
             # TODO(@motiwari): Timing test will not work
             # need to compute it over number of steps
             self.assertTrue(
-                runtime < (size_multiplier ** SCALING_EXPONENT) * base_runtime
+                runtime < (size_multiplier**SCALING_EXPONENT) * base_runtime
             )
 
     def test_medium_scrna(self):
@@ -90,9 +90,9 @@ class LargerTests(unittest.TestCase):
                 data=data,
                 loss="L1",
                 test_build=False,
-                assert_immediately=False
+                assert_immediately=False,
             )
-        self.assertTrue(count >= PROPORTION_PASSING*NUM_MEDIUM_CASES)
+        self.assertTrue(count >= PROPORTION_PASSING * NUM_MEDIUM_CASES)
 
     def test_various_medium_scrna(self):
         """
@@ -106,11 +106,12 @@ class LargerTests(unittest.TestCase):
             data = self.scrna.sample(n=size)
             count += bpam_agrees_pam(
                 k=SMALL_K_SCHEDULE[i % N_SMALL_K],
-                data=data, loss="L2",
+                data=data,
+                loss="L2",
                 test_build=False,
-                assert_immediately=False
+                assert_immediately=False,
             )
-        self.assertTrue(count >= PROPORTION_PASSING*NUM_MEDIUM_CASES)
+        self.assertTrue(count >= PROPORTION_PASSING * NUM_MEDIUM_CASES)
 
     def test_time_cases_scrna(self):
         """
@@ -131,7 +132,7 @@ class LargerTests(unittest.TestCase):
             # TODO(@motiwari): Timing test will not work
             # need to compute it over number of steps
             self.assertTrue(
-                runtime < (size_multiplier ** SCALING_EXPONENT) * base_runtime
+                runtime < (size_multiplier**SCALING_EXPONENT) * base_runtime
             )
 
 

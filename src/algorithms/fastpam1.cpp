@@ -16,11 +16,13 @@
 #include <unordered_map>
 
 namespace km {
-void FastPAM1::fitFastPAM1(const arma::fmat& inputData) {
+void FastPAM1::fitFastPAM1(
+  const arma::fmat& inputData,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   data = inputData;
   data = arma::trans(data);
   arma::urowvec medoidIndices(nMedoids);
-  FastPAM1::buildFastPAM1(data, &medoidIndices);
+  FastPAM1::buildFastPAM1(data, distMat, &medoidIndices);
   steps = 0;
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
@@ -28,7 +30,7 @@ void FastPAM1::fitFastPAM1(const arma::fmat& inputData) {
   bool medoidChange = true;
   while (iter < maxIter && medoidChange) {
     auto previous{medoidIndices};
-    FastPAM1::swapFastPAM1(data, &medoidIndices, &assignments);
+    FastPAM1::swapFastPAM1(data, distMat, &medoidIndices, &assignments);
     medoidChange = arma::any(medoidIndices != previous);
     iter++;
   }
@@ -39,6 +41,7 @@ void FastPAM1::fitFastPAM1(const arma::fmat& inputData) {
 
 void FastPAM1::buildFastPAM1(
   const arma::fmat& data,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   arma::urowvec* medoidIndices
 ) {
   size_t N = data.n_cols;
@@ -89,11 +92,11 @@ void FastPAM1::buildFastPAM1(
 
 void FastPAM1::swapFastPAM1(
   const arma::fmat& data,
+  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   arma::urowvec* medoidIndices,
   arma::urowvec* assignments
 ) {
   float bestChange = 0;
-  float minDistance = std::numeric_limits<float>::infinity();
   size_t swapIn = 0;
   size_t medoidToSwap = 0;
   size_t N = data.n_cols;
@@ -107,6 +110,7 @@ void FastPAM1::swapFastPAM1(
   // calculate quantities needed for swap, bestDistances and sigma
   KMedoids::calcBestDistancesSwap(
     data,
+    distMat,
     medoidIndices,
     &bestDistances,
     &secondBestDistances,
@@ -124,7 +128,7 @@ void FastPAM1::swapFastPAM1(
 
       // Consider making point i a medoid.
       // The total loss then contains at least one term, -di,
-      // because the loss contribution for point i is reduced to 0
+      // because the loss contribution for point i is reduced from di to 0
       deltaTD.fill(-di);
       // TODO(@motiwari): pragma omp parallel for?
       for (size_t j = 0; j < data.n_cols; j++) {
@@ -165,17 +169,16 @@ void FastPAM1::swapFastPAM1(
 
     // Update the loss and perform the swap if the loss would be improved
     if (bestChange < 0) {
-      minDistance = arma::sum(bestDistances) + bestChange;
       (*medoidIndices)(medoidToSwap) = swapIn;
       calcBestDistancesSwap(
         data,
+        distMat,
         medoidIndices,
         &bestDistances,
         &secondBestDistances,
         assignments,
         swapPerformed);
     } else {
-      minDistance = arma::sum(bestDistances);
       swapPerformed = false;
     }
   }

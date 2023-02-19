@@ -1,0 +1,61 @@
+name: Run CMake build on MacOS
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+
+      # On the MacOS machine, when installing from source,
+      # we use LLVM Clang
+      - name: Install MacOS dependencies
+        run: |
+          brew install llvm libomp armadillo
+
+      - name: Install Armadillo 10.7.5+
+        run: |
+          cd ~
+          git clone https://gitlab.com/conradsnicta/armadillo-code.git
+          cd armadillo-code
+          sudo cmake .
+          sudo make install
+
+      - name: Install carma
+        run: |
+          cd ~
+          git clone https://github.com/RUrlus/carma.git
+          cd carma
+          mkdir build
+          cd build
+          sudo cmake -DCARMA_INSTALL_LIB=ON ..
+          sudo cmake --build . --config Release --target install
+          cd ~
+
+      - name: Downloading data files for tests
+        run: |
+          mkdir -p data
+          curl -XGET https://motiwari.com/banditpam_data/MNIST_1k.csv > data/MNIST_1k.csv
+
+      # On the MacOS machine, when installing from source,
+      # we use LLVM Clang
+      # TODO(@motiwari): Clean this environment variables up
+      - name: Verify that the C++ executable compiles and runs
+        run : |
+          echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
+          source /Users/runner/.bash_profile
+          export LDFLAGS="-L/usr/local/opt/llvm/lib, -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
+          export CPPFLAGS="-I/usr/local/opt/llvm/include"
+          export DYLD_LIBRARY_PATH=/usr/local/opt/libomp/lib:/usr/local/opt/libomp/include
+          export CC=/usr/local/opt/llvm/bin/clang
+          export CXX=/usr/local/opt/llvm/bin/clang++
+          git clone https://github.com/ThrunGroup/BanditPAM
+          cd BanditPAM
+          mkdir build
+          cd build
+          sudo CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake ..
+          sudo make
+          src/BanditPAM -f ../data/MNIST_1k.csv -k 5 -l L2
+        env:
+          CPLUS_INCLUDE_PATH: /usr/local/include/carma:/usr/local/Cellar/libomp/15.0.2/include:/usr/local/Cellar/libomp/15.0.7/include

@@ -64,7 +64,7 @@ class SmallerTests(unittest.TestCase):
                 test_build=True,
                 assert_immediately=False,
                 use_fp=True,
-                )
+            )
 
             # Test agreement with PAM
             count += bpam_agrees_pam(
@@ -74,9 +74,9 @@ class SmallerTests(unittest.TestCase):
                 test_build=True,
                 assert_immediately=False,
                 use_fp=False,
-                )
+            )
         # Occasionally some may fail due to degeneracy in the scRNA dataset
-        self.assertTrue(count >= 2*PROPORTION_PASSING*NUM_SMALL_CASES)
+        self.assertTrue(count >= 2 * PROPORTION_PASSING * NUM_SMALL_CASES)
 
     def test_small_mnist_known_cases(self):
         """
@@ -106,7 +106,7 @@ class SmallerTests(unittest.TestCase):
 
         self.assertEqual(
             sorted(kmed_10.build_medoids.tolist()),
-            [16, 24, 32, 49, 70, 82, 87, 90, 94, 99]
+            [16, 24, 32, 49, 70, 82, 87, 90, 94, 99],
         )
         self.assertEqual(
             sorted(kmed_10.medoids.tolist()),

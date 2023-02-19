@@ -2,6 +2,7 @@
 #define HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_
 
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 #include <carma>
 #include <armadillo>
@@ -71,6 +72,57 @@ class KMedoidsWrapper : public km::KMedoids {
    * nearest medoid
    */
   float getLossPython();
+
+  /**
+   * @brief Returns the number of distance computations (sample complexity) used by .fit()
+   *
+   * The total number of distance computations (sample complexity) used by .fit()
+   */
+  size_t getDistanceComputationsPython(const bool includeMisc);
+
+  // TODO(@motiwari): Add docstring
+  size_t getMiscDistanceComputationsPython();
+
+  // TODO(@motiwari): Add docstring
+  size_t getBuildDistanceComputationsPython();
+
+  // TODO(@motiwari): Add docstring
+  size_t getSwapDistanceComputationsPython();
+
+  /**
+   * @brief Returns the number of cache writes done by .fit()
+   *
+   * The number of cache writes performed by the last call to .fit()
+   */
+  size_t getCacheWritesPython();
+
+  /**
+   * @brief Returns the number of cache hits from the last call to .fit()
+   *
+   * The number of cache hits from the last call to .fit()
+  */
+  size_t getCacheHitsPython();
+
+  /**
+   * @brief Returns the number of cache misses by the last call to .fit()
+   *
+   * The number of cache misses from the last call to .fit()
+   */
+  size_t getCacheMissesPython();
+
+  /**
+   * @brief Returns the total time for the entire SWAP procedure by the last call to .fit()
+   *
+   * The total time for the entire SWAP procedure by the last call to .fit()
+   */
+  size_t getTotalSwapTimePython();
+
+  /**
+   * @brief Returns the average time per swap step by the last call to .fit()
+   *
+   * The average time per swap step by the last call to .fit()
+   */
+  float getTimePerSwapPython();
 };
 
 // TODO(@motiwari): Encapsulate these
@@ -104,5 +156,45 @@ void steps_python(pybind11::class_<km::KMedoidsWrapper> *);
  * @brief Binding for the C++ function KMedoids::calcLoss()
  */
 void loss_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getDistanceComputations()
+ */
+void distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+// TODO(@motiwari): Add docstring
+void misc_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+// TODO(@motiwari): Add docstring
+void build_distance_computations_python(
+    pybind11::class_<km::KMedoidsWrapper> *);
+
+// TODO(@motiwari): Add docstring
+void swap_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getCacheWrites()
+ */
+void cache_writes_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getCacheHits()
+ */
+void cache_hits_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getCacheMisses()
+ */
+void cache_misses_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getTotalSwapTime()
+ */
+void total_swap_time_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::getTimePerSwap()
+ */
+void time_per_swap_python(pybind11::class_<km::KMedoidsWrapper> *);
 }  // namespace km
 #endif  // HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_

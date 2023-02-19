@@ -3,6 +3,7 @@
 
 #include <omp.h>
 #include <armadillo>
+#include <optional>
 #include <vector>
 #include <fstream>
 #include <iostream>
@@ -24,12 +25,19 @@ namespace km {
  */
 class KMedoids {
  public:
+  // NOTE: The order of arguments in this constructor must match that of the
+  //  arguments in kmedoids_pywrapper.cpp, otherwise undefined behavior can
+  //  result (variables being initialized with others' values)
   KMedoids(
     size_t nMedoids = 5,
     const std::string& algorithm = "BanditPAM",
-    size_t maxIter = 1000,
-    size_t buildConfidence = 1000,
-    size_t swapConfidence = 10000,
+    size_t maxIter = 100,
+    size_t buildConfidence = 3,
+    size_t swapConfidence = 4,
+    bool useCache = true,
+    bool usePerm = true,
+    size_t cacheWidth = 1000,
+    bool parallelize = true,
     size_t seed = 0);
 
   ~KMedoids();
@@ -42,7 +50,10 @@ class KMedoids {
    * 
    * @throws if the input data is empty.
    */
-  void fit(const arma::fmat& inputData, const std::string& loss);
+  void fit(
+    const arma::fmat& inputData,
+    const std::string& loss,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
    * @brief Returns the medoids at the end of the BUILD step.
@@ -190,8 +201,124 @@ class KMedoids {
    */
   float getAverageLoss() const;
 
-  /// The cache will be of size cacheMultiplier*nlogn
-  size_t cacheMultiplier = 1000;
+  /**
+   * @brief Returns whether a distance cache is being used
+   *
+   * @return Whether a distance cache is being used
+   */
+  bool getUseCache() const;
+
+  /**
+   * @brief Sets whether a distance cache should be used
+   *
+   * @param newUseCache Whether to use a distance cache
+   */
+  void setUseCache(bool newUseCache);
+
+  /**
+   * @brief Returns whether a permutation of reference points is being used
+   *
+   * @return Whether a permutation of reference points is being used
+   */
+  bool getUsePerm() const;
+
+  /**
+   * @brief Sets whether a permutation of reference points should used
+   *
+   * @param newUsePerm Whether a permutation of reference points should used
+   */
+  void setUsePerm(bool newUsePerm);
+
+  /**
+   * @brief Returns the cache width being used
+   *
+   * @return The cache width being used
+   */
+  size_t getCacheWidth() const;
+
+  /**
+   * @brief Sets the new cache width to use
+   *
+   * @param newCacheWidth The new cache width to use
+   */
+  void setCacheWidth(size_t newCacheWidth);
+
+  /**
+   * @brief Whether the algorithm is parallelized via OpenMP
+   *
+   * @return Whether the algorithm is being parallelized via OpenMP
+   */
+  bool getParallelize() const;
+
+  /**
+   * @brief Whether to parallelize the algorithm via OpenMP
+   *
+   * @param newParallelize Whether to parallelize the algorithm via OpenMP
+   */
+  void setParallelize(bool newParallelize);
+
+  /**
+   * @brief Get total sample complexity of .fit() call
+   *
+   * @return Total sample complexity of last .fit() call
+   */
+  size_t getDistanceComputations(const bool includeMisc = false) const;
+
+  /**
+   * @brief Get number of miscellaneous distance computations
+   *
+   * @return Total number of miscellaneous distance computations
+   */
+  size_t getMiscDistanceComputations() const;
+
+  /**
+   * @brief Get total sample complexity of BUILD step
+   *
+   * @return Total sample complexity of last BUILD step
+   */
+  size_t getBuildDistanceComputations() const;
+
+  /**
+   * @brief Get total sample complexity of SWAP steps
+   *
+   * @return Total sample complexity of last SWAP steps
+   */
+  size_t getSwapDistanceComputations() const;
+
+  /**
+   * @brief Get number of times we wrote to the cache
+   *
+   * @return Number of times we wrote to the cache
+   */
+  size_t getCacheWrites() const;
+
+  /**
+   * @brief Get number of cache hits
+   *
+   * @return Number of cache hits
+   */
+  size_t getCacheHits() const;
+
+  /**
+   * @brief Get number of cache misses
+   *
+   * @return Number of cache misses
+   */
+  size_t getCacheMisses() const;
+
+  /**
+   * @brief Get total number of milliseconds for the whole SWAP procedure
+   *
+   * @return Total number of milliseconds for the whole SWAP procedure
+   */
+  size_t getTotalSwapTime() const;
+
+  /**
+   * @brief Get average number of milliseconds per swap step
+   *
+   * @return Average number of milliseconds per swap step
+   */
+  float getTimePerSwap() const;
 
   /// The cache which stores pairwise distance computations
   float* cache;
@@ -205,11 +332,9 @@ class KMedoids {
   /// A map from permutation index of each point to its original index
   std::unordered_map<size_t, size_t> reindex;
 
-  /// Used for debugging only to toggle a fixed permutation of points
-  bool usePerm = true;
+  /// Determines whether we use a user-provided distance matrix
+  bool useDistMat = false;
 
-  /// Used for debugging only to toggle use of the cache
-  bool useCacheP = true;
 
  protected:
   /**
@@ -226,6 +351,7 @@ class KMedoids {
    */
   void calcBestDistancesSwap(
     const arma::fmat& data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     const arma::urowvec* medoidIndices,
     arma::frowvec* bestDistances,
     arma::frowvec* secondBestDistances,
@@ -243,26 +369,29 @@ class KMedoids {
    */
   float calcLoss(
     const arma::fmat& data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     const arma::urowvec* medoidIndices);
 
   /**
    * @brief A wrapper around the given loss function that caches distances
    * between the given points.
    * 
-   * NOTE: if you change useCache, also change useCacheP
+   * NOTE: if you change useCacheFunctionOverride, also change useCache
    * 
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
-   * @param useCache Indices of the medoids in the dataset
+   * @param useCacheFunctionOverride Whether to use the cache in this function (by default, uses value of useCache)
    * 
    * @returns The distance between points i and j
    */
   float cachedLoss(
     const arma::fmat& data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     const size_t i,
     const size_t j,
-    const bool useCache = true);
+    const size_t category,
+    const bool useCacheFunctionOverride = true);
 
   /// If using an L_p loss, the value of p
   size_t lp;
@@ -363,25 +492,64 @@ class KMedoids {
     const;
 
   /// Number of SWAP steps performed
-  size_t steps;
+  size_t steps = 0;
 
   /// Governs the error rate of each BUILD step in BanditPAM
-  size_t buildConfidence;
+  size_t buildConfidence = 1;
 
   /// Governs the error rate of each SWAP step in BanditPAM
-  size_t swapConfidence;
+  size_t swapConfidence = 1;
+
+  /// Used for debugging only to toggle use of the cache
+  bool useCache = true;
+
+  /// Used for debugging only to toggle a fixed permutation of points
+  bool usePerm = true;
+
+  /// The cache will be of size cacheWidth*n
+  size_t cacheWidth = 1000;
+
+  /// Determines whether we parallelize the algorithm with OpenMP
+  bool parallelize = true;
+
+  /// The random seed with which to perform the clustering
+  size_t seed = 0;
 
   /// Used for floatcomparisons, primarily number of "arms" remaining
   const float precision = 0.001;
 
   /// Contains the average loss at the last step of the algorithm
-  float averageLoss;
+  float averageLoss = 0.0;
 
   /// Number of points to sample per reference batch
   size_t batchSize = 100;
 
-  /// The random seed with which to perform the clustering
-  size_t seed = 0;
+  /// The number of non-cache distance computations we compute
+  /// in the BUILD step. For debugging only.
+  size_t numMiscDistanceComputations = 0;
+
+  /// The number of non-cache distance computations we compute
+  /// in the BUILD step. For debugging only.
+  size_t numBuildDistanceComputations = 0;
+
+  /// The number of non-cache distance computations we compute.
+  /// For debugging only.
+  size_t numSwapDistanceComputations = 0;
+
+  /// The number of cache hits (distance computations we reuse).
+  /// For debugging only.
+  size_t numCacheWrites = 0;
+
+  /// The number of cache writes (distance computations we save).
+  /// For debugging only.
+  size_t numCacheHits = 0;
+
+  /// The number of cache misses, i.e., distance computations we
+  /// need to compute. For debugging only.
+  size_t numCacheMisses = 0;
+
+  /// The number of milliseconds taken per swap step, on average
+  size_t totalSwapTime = 0;
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_

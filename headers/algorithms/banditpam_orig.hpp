@@ -1,5 +1,5 @@
-#ifndef HEADERS_ALGORITHMS_BANDITPAM_HPP_
-#define HEADERS_ALGORITHMS_BANDITPAM_HPP_
+#ifndef HEADERS_ALGORITHMS_BANDITPAM_ORIG_HPP_
+#define HEADERS_ALGORITHMS_BANDITPAM_ORIG_HPP_
 
 #include <omp.h>
 #include <armadillo>
@@ -12,18 +12,18 @@
 
 namespace km {
 /**
- * @brief Contains all necessary BanditPAM functions
+ * @brief Contains all necessary BanditPAM_orig functions
  */
-class BanditPAM : public km::KMedoids {
+class BanditPAM_orig : public km::KMedoids {
  public:
   /**
-   * @brief Runs BanditPAM to identify a dataset's medoids.
+   * @brief Runs BanditPAM_orig to identify a dataset's medoids.
    *
    * @param inputData Input data to cluster
    */
-  void fitBanditPAM(
-    const arma::fmat& inputData,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+  void fitBanditPAM_orig(
+      const arma::fmat& inputData,
+      std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -63,7 +63,7 @@ class BanditPAM : public km::KMedoids {
     const size_t exact);
 
   /**
-   * @brief Performs the BUILD step of BanditPAM.
+   * @brief Performs the BUILD step of BanditPAM_orig.
    *
    * Draws batch size reference points with replacement and uses the estimated
    * reward of adding candidate medoids to the set of medoids. Constructs
@@ -108,13 +108,14 @@ class BanditPAM : public km::KMedoids {
    * as medoids are swapped in and out
    * @param targets Set of potential swaps to be evaluated
    * @param bestDistances Contains best distances from each point to medoids
-   * @param secondBestDistances Contains second best distances from each point to medoids
+   * @param secondBestDistances Contains second best distances
+   * from each point to medoids
    * @param assignments Assignments of datapoints to their closest medoid
    * @param exact 0 if using standard batch size; size of dataset otherwise
    *
    * @returns Estimate of each arm's change in loss
    */
-  arma::fmat swapTarget(
+  arma::fvec swapTarget(
     const arma::fmat& data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     const arma::urowvec* medoidIndices,
@@ -125,7 +126,7 @@ class BanditPAM : public km::KMedoids {
     const size_t exact);
 
   /**
-  * @brief Performs the SWAP step of BanditPAM.
+  * @brief Performs the SWAP step of BanditPAM_orig.
   *
   * Draws batch size reference points with replacement and uses the estimated
   * reward of performing a (medoid, non-medoid) swap. Constructs
@@ -148,4 +149,4 @@ class BanditPAM : public km::KMedoids {
     arma::urowvec* assignments);
 };
 }  // namespace km
-#endif  // HEADERS_ALGORITHMS_BANDITPAM_HPP_
+#endif  // HEADERS_ALGORITHMS_BANDITPAM_ORIG_HPP_

@@ -39,23 +39,25 @@ def bpam_agrees_pam(
 
     bpam_and_pam_agree = 1 if bpam_final_medoids == pam_final_medoids else 0
     if test_build:
-        bpam_and_pam_agree &= (bpam_build_medoids == pam_build_medoids)
+        bpam_and_pam_agree &= bpam_build_medoids == pam_build_medoids
 
     if assert_immediately:
-        error_message = ''.join(map(str, [
-                                        "BanditPAM and {} disagree!".format(
-                                            alg_name),
-                                        "\nBanditPAM build medoids:",
-                                        bpam_build_medoids,
-                                        "\n{} build medoids:".format(alg_name),
-                                        pam_build_medoids,
-                                        "\nBanditPAM final medoids:",
-                                        bpam_final_medoids,
-                                        "\n{} final medoids:".format(alg_name),
-                                        pam_final_medoids,
-                                        ]
-                                    )
-                                )
+        error_message = "".join(
+            map(
+                str,
+                [
+                    "BanditPAM and {} disagree!".format(alg_name),
+                    "\nBanditPAM build medoids:",
+                    bpam_build_medoids,
+                    "\n{} build medoids:".format(alg_name),
+                    pam_build_medoids,
+                    "\nBanditPAM final medoids:",
+                    bpam_final_medoids,
+                    "\n{} final medoids:".format(alg_name),
+                    pam_final_medoids,
+                ],
+            )
+        )
         assert bpam_and_pam_agree, error_message
 
     return bpam_and_pam_agree
