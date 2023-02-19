@@ -4,6 +4,10 @@ include_directories(${PROJECT_SOURCE_DIR}/headers/python_bindings)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma_bits)
 
+# For Mac Github Runner to find OpenMP
+include_directories(/usr/local/Cellar/libomp/15.0.2/include)
+include_directories(/usr/local/Cellar/libomp/15.0.7/include)
+
 add_executable(BanditPAM main.cpp)
 
 add_library(BanditPAM_LIB algorithms/kmedoids_algorithm.cpp algorithms/pam.cpp algorithms/banditpam.cpp algorithms/banditpam_orig.cpp algorithms/fastpam1.cpp)
