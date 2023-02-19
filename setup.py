@@ -378,9 +378,9 @@ class BuildExt(build_ext):
             opts.append('-Xpreprocessor')  # NEEDS TO BE WITH NEXT LINE
             opts.append('-fopenmp')  # NEEDS TO BE WITH PREVIOUS LINE
 
-            opts.append('-lomp')
+            opts.append('-lomp')  # Potentially unused?
             opts.append('-I/usr/local/opt/libomp/include')
-            opts.append('-L/usr/local/opt/libomp/lib')
+            opts.append('-L/usr/local/opt/libomp/lib')  # Potentially unused?
         else:
             opts.append("-fopenmp")
 
