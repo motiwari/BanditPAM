@@ -21,16 +21,6 @@ jobs:
       - name: Install MacOS dependencies
         run: |
           brew install llvm libomp armadillo
-          brew reinstall llvm
-          echo "BREW PREFIX:" && brew --prefix libomp
-          echo "LIBOMP:" && ls -alh $(brew --prefix libomp)
-          echo "DYLD_LIBRARY_PATH:$(DLYD_LIBRARY_PATH)"
-          printenv
-          gcc --version
-          g++ --version
-          clang --version
-          clang++ --version
-          echo "BREW PREFIX:" && brew --prefix llvm
 
       - name: Install Python dependencies
         run: |
