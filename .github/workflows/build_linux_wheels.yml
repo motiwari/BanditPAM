@@ -41,12 +41,8 @@ jobs:
 
   build_wheels:
     needs: [build_sdist]
-    name: Build wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-20.04, ubuntu-22.04]
-
+    name: Build wheels on ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
@@ -63,7 +59,7 @@ jobs:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     # TODO: RBF
-    if: github.event_name == 'release' && github.event.action == 'published'
+#    if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/download-artifact@v2
         with:

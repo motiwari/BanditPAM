@@ -17,21 +17,13 @@ jobs:
       - name: Install MacOS dependencies
         run: |
           brew install libomp armadillo
-          echo "BREW PREFIX:" && brew --prefix libomp
-          echo "LIBOMP:" && ls -alh $(brew --prefix libomp)
-          echo "DYLD_LIBRARY_PATH:$(DLYD_LIBRARY_PATH)"
-          printenv
-          gcc --version
-          g++ --version
-          clang --version
-          clang++ --version
 
       # Note: CIBW only supports CPython 3.8 and newer for universal2 and arm64 wheels
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.12.0
         env:
-          CIBW_ARCHS_MACOS: x86_64 # arm64 universal2
-          CIBW_BUILD: cp310*
+          CIBW_ARCHS_MACOS: x86_64 arm64 universal2
+          CIBW_BUILD: cp*
 
       - uses: actions/upload-artifact@v2
         with:
@@ -41,7 +33,7 @@ jobs:
     needs: [build_wheels_macos]
     runs-on: ubuntu-latest # Can only upload from Linux containers
     # TODO: RBF
-    if: github.event_name == 'release' && github.event.action == 'published'
+    #if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/download-artifact@v2
         with:
@@ -52,7 +44,7 @@ jobs:
         with:
           user: __token__
           # For PyPI
-          password: ${{ secrets.PYPI_APIKEY }}
+#          password: ${{ secrets.PYPI_APIKEY }}
           # For TestPyPI. TODO: RBF
-          # password: ${{ secrets.TEST_PYPI_APIKEY }}
-          # repository_url: https://test.pypi.org/legacy/
+          password: ${{ secrets.TEST_PYPI_APIKEY }}
+          repository_url: https://test.pypi.org/legacy/

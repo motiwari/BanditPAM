@@ -13,15 +13,6 @@ jobs:
       - name: Install MacOS dependencies
         run: |
           brew install llvm libomp armadillo
-          echo "BREW PREFIX:" && brew --prefix libomp
-          echo "LIBOMP:" && ls -alh $(brew --prefix libomp)
-          echo "DYLD_LIBRARY_PATH:$(DLYD_LIBRARY_PATH)"
-          printenv
-          gcc --version
-          g++ --version
-          clang --version
-          clang++ --version
-          echo "BREW PREFIX:" && brew --prefix llvm
 
       - name: Install Armadillo 10.7.5+
         run: |
@@ -49,6 +40,7 @@ jobs:
 
       # On the MacOS machine, when installing from source,
       # we use LLVM Clang
+      # TODO(@motiwari): Clean this environment variables up
       - name: Verify that the C++ executable compiles and runs
         run : |
           echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
@@ -58,9 +50,6 @@ jobs:
           export DYLD_LIBRARY_PATH=/usr/local/opt/libomp/lib:/usr/local/opt/libomp/include
           export CC=/usr/local/opt/llvm/bin/clang
           export CXX=/usr/local/opt/llvm/bin/clang++
-          echo "NEW DYLD"
-          echo $DYLD_LIBRARY_PATH
-          printenv
           git clone https://github.com/ThrunGroup/BanditPAM
           cd BanditPAM
           mkdir build
