@@ -374,19 +374,21 @@ class BuildExt(build_ext):
         opts.append(cpp_flag(self.compiler))
         opts.append("-O3")
         if sys.platform == "darwin" and os.environ.get(GHA, False):
-            #opts.append("-Xpreprocessor -fopenmp")
+            # On Mac Github runners, we should NOT include gomp or omp here due to build errors
             pass
         else:
+            # TODO(@motiwari): is this necessary?
             opts.append("-fopenmp")
 
         compiler_name = compiler_check()
         # use -gomp on Mac Github runners because we use gcc
         if (sys.platform == "darwin" and not os.environ.get(GHA, False)) or compiler_name == "clang":
             link_opts.append("-lomp")
-
-        else:
-            #link_opts.append("-lgomp")
+        elif (sys.platform == "darwin" and os.environ.get(GHA, False)):
+            # On Mac Github Runners, we should NOT include gomp or omp here due to build errors
             pass
+        else:  # gcc
+            link_opts.append("-lgomp")
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
@@ -457,8 +459,11 @@ def main():
     # use -gomp on Mac Github runners because we use gcc
     if (sys.platform == "darwin" and not os.environ.get(GHA, False)) or compiler_name == "clang":
         libraries = ["armadillo", "omp"]  # For M1 Mac runner build
+    elif (sys.platform == "darwin" and os.environ.get(GHA, False)):
+        # On Mac Github Runners, we should NOT include gomp or omp here due to build errors.
+        libraries = ["armadillo"]
     else:  # gcc
-        libraries = ["armadillo"] #, "gomp"]
+        libraries = ["armadillo", "gomp"]
 
     ext_modules = [
         Extension(
@@ -483,7 +488,12 @@ def main():
                              "swap_times_python.cpp"),
             ],
             include_dirs=include_dirs,
-            library_dirs=[os.path.join("/", "usr", "local", "lib")],
+            library_dirs=[
+                os.path.join("/", "usr", "local", "lib"),
+                # For Mac Github runners that install locally (not build wheels) - testing
+                os.path.join("/", "usr", "local", "Cellar", "libomp",
+                             "15.0.2", "lib"),
+            ],
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
             extra_compile_args=["-static-libstdc++"],

@@ -54,7 +54,7 @@ jobs:
         env:
           # The default compiler on the Github Ubuntu runners is gcc
           # Would need to make a respective include change for clang 
-          CPLUS_INCLUDE_PATH: /usr/local/include/carma
+          CPLUS_INCLUDE_PATH: /usr/local/include/carma:/usr/local/Cellar/libomp/15.0.2/include
 
       - name: Downloading data files for tests
         run: |
