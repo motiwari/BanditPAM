@@ -16,10 +16,7 @@ jobs:
 
       - name: Install MacOS dependencies
         run: |
-          brew update
-          brew install libomp armadillo
-          brew --prefix armadillo
-          ls -alh /usr/local/opt/armadillo
+          brew install libomp
 
       # Note: CIBW only supports CPython 3.8 and newer for universal2 and arm64 wheels
       - name: Build wheels
@@ -27,6 +24,7 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: x86_64 arm64 universal2
           CIBW_BUILD: cp*
+          CIBW_BUILD_VERBOSITY: 3
 
       - uses: actions/upload-artifact@v2
         with:
