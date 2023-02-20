@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "4.0.0"
+__version__ = "4.0.1a0"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = "GITHUB_ACTIONS"
@@ -343,6 +343,10 @@ class BuildExt(build_ext):
     A custom build extension for adding compiler-specific options.
     """
 
+    print("Calling setup.py, printing environ vars:")
+    print("CC:", os.environ.get('CC', "NO CC found"))
+    print("CXX:", os.environ.get('CXX', "No CXX found"))
+
     c_opts = {"msvc": ["/EHsc"], "unix": []}
     l_opts = {"msvc": [], "unix": []}
 
@@ -411,6 +415,7 @@ class BuildExt(build_ext):
 
 
 def main():
+    print("Calling setup.py inside main()")
     if sys.platform == "linux" or sys.platform == "linux2":
         include_dirs = [
             get_pybind_include(),
