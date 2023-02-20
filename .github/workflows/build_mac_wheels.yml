@@ -16,20 +16,7 @@ jobs:
 
       - name: Install MacOS dependencies
         run: |
-          echo $PATH
           brew install libomp armadillo
-          clang --version
-          clang++ --version
-          gcc --version
-          g++ --version
-          brew reinstall gcc
-          gcc --version
-          brew --prefix gcc
-          ls -alh /usr/local/opt/gcc
-          echo "LS-ing Cellar" && ls -alh /usr/local/Cellar/gcc/
-          brew --prefix libomp
-          ls -alh /usr/local/opt/libomp
-          ls -alh /usr/local/Cellar/libomp/15.0.2
           
 
       # Note: CIBW only supports CPython 3.8 and newer for universal2 and arm64 wheels
@@ -48,7 +35,7 @@ jobs:
     needs: [build_wheels_macos]
     runs-on: ubuntu-latest # Can only upload from Linux containers
     # TODO: RBF
-#    if: github.event_name == 'release' && github.event.action == 'published'
+    if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/download-artifact@v2
         with:
