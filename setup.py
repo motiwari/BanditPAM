@@ -344,8 +344,8 @@ class BuildExt(build_ext):
     """
 
     print("Calling setup.py, printing environ vars:")
-    print("CC:", os.environ['CC'])
-    print("CXX:", os.environ['CXX'])
+    print("CC:", os.environ.get('CC', "NO CC found"))
+    print("CXX:", os.environ.get('CXX', "No CXX found"))
 
     c_opts = {"msvc": ["/EHsc"], "unix": []}
     l_opts = {"msvc": [], "unix": []}
