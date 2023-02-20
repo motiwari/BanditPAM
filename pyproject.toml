@@ -8,7 +8,6 @@ before-all = [
 
 [tool.cibuildwheel.macos]
 # Setting the path does not use brew gcc because the brew gcc is called gcc-12, so need to set CC and CXX explicitly
-#environment = { PATH="/usr/local/opt/gcc:$PATH", CC="/usr/local/Cellar/gcc/12.2.0/bin/gcc-12", CXX="/usr/local/Cellar/gcc/12.2.0/bin/g++-12" }
 archs = ["x86_64", "universal2", "arm64"]
 
 # Get dependencies
