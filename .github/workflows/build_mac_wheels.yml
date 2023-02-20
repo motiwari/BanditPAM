@@ -16,6 +16,7 @@ jobs:
 
       - name: Install MacOS dependencies
         run: |
+          echo $PATH
           brew install libomp armadillo
           clang --version
           clang++ --version
@@ -24,6 +25,9 @@ jobs:
           brew install gcc
           gcc --version
           brew --prefix gcc
+          ls -alh /usr/local/opt/gcc
+          ls -alh /usr/local/Cellar/gcc/
+          
 
       # Note: CIBW only supports CPython 3.8 and newer for universal2 and arm64 wheels
       - name: Build wheels
