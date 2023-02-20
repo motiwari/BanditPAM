@@ -28,11 +28,17 @@ jobs:
           ls -alh /usr/local/opt/gcc
           ls -alh /usr/local/Cellar/gcc/
           brew --prefix libomp
+          ls -alh /usr/local/opt/libomp
           
 
       # Note: CIBW only supports CPython 3.8 and newer for universal2 and arm64 wheels
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.0
+        steps:
+          - run: |
+              echo "CC:" $CC 
+              echo "CXX:" $CXX
+              echo "PATH:" $PATH
+          - uses: pypa/cibuildwheel@v2.12.0
         env:
           CIBW_ARCHS_MACOS: x86_64 arm64 universal2
           CIBW_BUILD: cp*
