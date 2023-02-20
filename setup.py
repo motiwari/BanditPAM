@@ -344,6 +344,8 @@ class BuildExt(build_ext):
     """
 
     print("Calling setup.py, printing environ vars:")
+    print("CC:", os.environ['CC'])
+    print("CXX:", os.environ['CXX'])
 
     c_opts = {"msvc": ["/EHsc"], "unix": []}
     l_opts = {"msvc": [], "unix": []}
@@ -413,6 +415,7 @@ class BuildExt(build_ext):
 
 
 def main():
+    print("Calling setup.py inside main()")
     if sys.platform == "linux" or sys.platform == "linux2":
         include_dirs = [
             get_pybind_include(),
