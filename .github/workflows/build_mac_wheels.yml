@@ -16,6 +16,7 @@ jobs:
 
       - name: Install MacOS dependencies
         run: |
+          brew update
           brew install libomp armadillo
           brew --prefix armadillo
           ls -alh /usr/local/opt/armadillo
