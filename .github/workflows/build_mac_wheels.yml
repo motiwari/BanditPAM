@@ -22,7 +22,7 @@ jobs:
           clang++ --version
           gcc --version
           g++ --version
-          brew install gcc
+          brew reinstall gcc
           gcc --version
           brew --prefix gcc
           ls -alh /usr/local/opt/gcc
