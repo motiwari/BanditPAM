@@ -343,6 +343,8 @@ class BuildExt(build_ext):
     A custom build extension for adding compiler-specific options.
     """
 
+    print("Calling setup.py, printing environ vars:")
+
     c_opts = {"msvc": ["/EHsc"], "unix": []}
     l_opts = {"msvc": [], "unix": []}
 
