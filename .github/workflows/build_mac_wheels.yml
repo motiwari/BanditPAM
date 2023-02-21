@@ -16,7 +16,8 @@ jobs:
 
       - name: Install MacOS dependencies
         run: |
-          brew uninstall --ignore-dependencies libomp
+          brew --prefix libomp
+          ls -alh $(brew --prefix libomp)
 
       # Note: CIBW only supports CPython 3.8 and newer for universal2 and arm64 wheels
       - name: Build wheels
