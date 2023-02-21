@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "4.0.3a0"
+__version__ = "4.0.1a1"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = "GITHUB_ACTIONS"
@@ -357,7 +357,7 @@ class BuildExt(build_ext):
         assert compiler_check() == "clang" or os.environ.get(
             GHA, False
         ), "Need to install LLVM clang!"
-        darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.14", "-O3"]
+        darwin_opts = ["-mmacosx-version-min=10.14", "-O3"]  # Removed "-stdlib=libc++",
         c_opts["unix"] += darwin_opts
         l_opts["unix"] += darwin_opts
     elif sys.platform == "linux" or sys.platform == "linux2":
@@ -514,7 +514,7 @@ def main():
             ],
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
-            extra_compile_args=["-static-libstdc++"],
+            #extra_compile_args=["-static-libstdc++"],
         )
     ]
 
