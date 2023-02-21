@@ -5,8 +5,6 @@
  * Contains the primary C++ implementation of the BanditPAM code.
  */
 
-#include <omp.h>
-#include <armadillo>
 #include <unordered_map>
 #include <regex>
 
@@ -14,6 +12,7 @@
 #include "fastpam1.hpp"
 #include "pam.hpp"
 #include "banditpam.hpp"
+
 #include "banditpam_orig.hpp"
 
 namespace km {
@@ -50,9 +49,9 @@ KMedoids::KMedoids(
 KMedoids::~KMedoids() {}
 
 void KMedoids::fit(
-  const arma::fmat& inputData,
+  const arma_mat& inputData,
   const std::string& loss,
-  std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
+  std::optional<std::reference_wrapper<const arma_mat>> distMat) {
   numMiscDistanceComputations = 0;
   numBuildDistanceComputations = 0;
   numSwapDistanceComputations = 0;
@@ -164,7 +163,12 @@ void KMedoids::setSwapConfidence(size_t newSwapConfidence) {
 
 void KMedoids::setSeed(size_t newSeed) {
   seed = newSeed;
+  // In R, the seed is set using set.seed(newSeed) and is the user responsibility
+  // Plus the sequence is controlled by R and RcppArmadillo automatically uses
+  // that sequence.
+#ifndef R_INTERFACE  
   arma::arma_rng::set_seed(seed);
+#endif
 }
 
 size_t KMedoids::getSeed() const {
@@ -247,7 +251,7 @@ size_t KMedoids::getTotalSwapTime() const {
   return totalSwapTime;
 }
 
-float KMedoids::getTimePerSwap() const {
+banditpam_float KMedoids::getTimePerSwap() const {
   return totalSwapTime / steps;
 }
 
@@ -292,20 +296,20 @@ std::string KMedoids::getLossFn() const {
 
 
 void KMedoids::calcBestDistancesSwap(
-  const arma::fmat& data,
-  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+  const arma_mat& data,
+  std::optional<std::reference_wrapper<const arma_mat>> distMat,
   const arma::urowvec* medoidIndices,
-  arma::frowvec* bestDistances,
-  arma::frowvec* secondBestDistances,
+  arma_rowvec* bestDistances,
+  arma_rowvec* secondBestDistances,
   arma::urowvec* assignments,
   const bool swapPerformed) {
   #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < data.n_cols; i++) {
-    float best = std::numeric_limits<float>::infinity();
-    float second = std::numeric_limits<float>::infinity();
+    banditpam_float best = std::numeric_limits<banditpam_float>::infinity();
+    banditpam_float second = std::numeric_limits<banditpam_float>::infinity();
     for (size_t k = 0; k < medoidIndices->n_cols; k++) {
       // 0 for MISC
-      float cost =
+      banditpam_float cost =
           KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k), 0);
       if (cost < best) {
         (*assignments)(i) = k;
@@ -325,17 +329,17 @@ void KMedoids::calcBestDistancesSwap(
   }
 }
 
-float KMedoids::calcLoss(
-  const arma::fmat& data,
-  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+banditpam_float KMedoids::calcLoss(
+  const arma_mat& data,
+  std::optional<std::reference_wrapper<const arma_mat>> distMat,
   const arma::urowvec* medoidIndices) {
-  float total = 0;
+  banditpam_float total = 0;
   // TODO(@motiwari): is this parallel loop accumulating properly?
   #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < data.n_cols; i++) {
-    float cost = std::numeric_limits<float>::infinity();
+    banditpam_float cost = std::numeric_limits<banditpam_float>::infinity();
     for (size_t k = 0; k < nMedoids; k++) {
-      float currCost = KMedoids::cachedLoss(
+      banditpam_float currCost = KMedoids::cachedLoss(
         data,
         distMat,
         i,
@@ -352,9 +356,9 @@ float KMedoids::calcLoss(
   return total/data.n_cols;
 }
 
-float KMedoids::cachedLoss(
-  const arma::fmat& data,
-  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+banditpam_float KMedoids::cachedLoss(
+  const arma_mat& data,
+  std::optional<std::reference_wrapper<const arma_mat>> distMat,
   const size_t i,
   const size_t j,
   const size_t category,
@@ -409,31 +413,31 @@ void KMedoids::checkAlgorithm(const std::string& algorithm) const {
   }
 }
 
-float KMedoids::getAverageLoss() const {
+banditpam_float KMedoids::getAverageLoss() const {
   return averageLoss;
 }
 
-float KMedoids::LP(const arma::fmat& data,
+banditpam_float KMedoids::LP(const arma_mat& data,
   const size_t i,
   const size_t j) const {
   return arma::norm(data.col(i) - data.col(j), lp);
 }
 
-float KMedoids::LINF(
-  const arma::fmat& data,
+banditpam_float KMedoids::LINF(
+  const arma_mat& data,
   const size_t i,
   const size_t j) const {
   return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
 
-float KMedoids::cos(const arma::fmat& data,
+banditpam_float KMedoids::cos(const arma_mat& data,
   const size_t i,
   const size_t j) const {
   return 1 - (arma::dot(data.col(i), data.col(j))
     / (arma::norm(data.col(i)) * arma::norm(data.col(j))));
 }
 
-float KMedoids::manhattan(const arma::fmat& data,
+banditpam_float KMedoids::manhattan(const arma_mat& data,
   const size_t i,
   const size_t j) const {
   return arma::accu(arma::abs(data.col(i) - data.col(j)));

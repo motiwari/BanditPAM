@@ -12,13 +12,12 @@
 
 #include "fastpam1.hpp"
 
-#include <armadillo>
 #include <unordered_map>
 
 namespace km {
 void FastPAM1::fitFastPAM1(
-  const arma::fmat& inputData,
-  std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
+  const arma_mat& inputData,
+  std::optional<std::reference_wrapper<const arma_mat>> distMat) {
   data = inputData;
   data = arma::trans(data);
   arma::urowvec medoidIndices(nMedoids);
@@ -40,23 +39,23 @@ void FastPAM1::fitFastPAM1(
 }
 
 void FastPAM1::buildFastPAM1(
-  const arma::fmat& data,
-  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+  const arma_mat& data,
+  std::optional<std::reference_wrapper<const arma_mat>> distMat,
   arma::urowvec* medoidIndices
 ) {
   size_t N = data.n_cols;
-  arma::frowvec estimates(N, arma::fill::zeros);
-  arma::frowvec bestDistances(N);
-  bestDistances.fill(std::numeric_limits<float>::infinity());
-  arma::frowvec sigma(N);
-  float minDistance = std::numeric_limits<float>::infinity();
+  arma_rowvec estimates(N, arma::fill::zeros);
+  arma_rowvec bestDistances(N);
+  bestDistances.fill(std::numeric_limits<banditpam_float>::infinity());
+  arma_rowvec sigma(N);
+  banditpam_float minDistance = std::numeric_limits<banditpam_float>::infinity();
   int best = 0;
-  float total = 0;
-  float cost = 0;
+  banditpam_float total = 0;
+  banditpam_float cost = 0;
 
   // TODO(@motiwari): pragma omp parallel for?
   for (size_t k = 0; k < nMedoids; k++) {
-    minDistance = std::numeric_limits<float>::infinity();
+    minDistance = std::numeric_limits<banditpam_float>::infinity();
     best = 0;
     // fixes a base datapoint
     // TODO(@motiwari): pragma omp parallel for?
@@ -91,21 +90,21 @@ void FastPAM1::buildFastPAM1(
 }
 
 void FastPAM1::swapFastPAM1(
-  const arma::fmat& data,
-  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+  const arma_mat& data,
+  std::optional<std::reference_wrapper<const arma_mat>> distMat,
   arma::urowvec* medoidIndices,
   arma::urowvec* assignments
 ) {
-  float bestChange = 0;
+  banditpam_float bestChange = 0;
   size_t swapIn = 0;
   size_t medoidToSwap = 0;
   size_t N = data.n_cols;
   size_t iter = 0;
   bool swapPerformed = true;
-  arma::fmat sigma(nMedoids, N, arma::fill::zeros);
-  arma::frowvec bestDistances(N);
-  arma::frowvec secondBestDistances(N);
-  arma::frowvec deltaTD(nMedoids, arma::fill::zeros);
+  arma_mat sigma(nMedoids, N, arma::fill::zeros);
+  arma_rowvec bestDistances(N);
+  arma_rowvec secondBestDistances(N);
+  arma_rowvec deltaTD(nMedoids, arma::fill::zeros);
 
   // calculate quantities needed for swap, bestDistances and sigma
   KMedoids::calcBestDistancesSwap(
@@ -117,8 +116,8 @@ void FastPAM1::swapFastPAM1(
     assignments,
     swapPerformed);
 
-  float di = 0;
-  float dij = 0;
+  banditpam_float di = 0;
+  banditpam_float dij = 0;
 
   while (swapPerformed && iter < maxIter) {
     iter++;

@@ -17,7 +17,7 @@ size_t km::KMedoidsWrapper::getTotalSwapTimePython() {
   return KMedoids::getTotalSwapTime();
 }
 
-float km::KMedoidsWrapper::getTimePerSwapPython() {
+banditpam_float km::KMedoidsWrapper::getTimePerSwapPython() {
   return KMedoids::getTimePerSwap();
 }
 

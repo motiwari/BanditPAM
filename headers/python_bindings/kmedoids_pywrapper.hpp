@@ -5,7 +5,7 @@
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 #include <carma>
-#include <armadillo>
+#include <banditpam_common.h>
 #include <string>
 
 #include "kmedoids_algorithm.hpp"
@@ -29,7 +29,7 @@ class KMedoidsWrapper : public km::KMedoids {
    * @param k The number of medoids to compute
    */
   void fitPython(
-    const pybind11::array_t<float>& inputData,
+    const pybind11::array_t<banditpam_float>& inputData,
     const std::string& loss,
     pybind11::kwargs kw);
 
@@ -71,7 +71,7 @@ class KMedoidsWrapper : public km::KMedoids {
    * The average loss, i.e., the average distance from each point to its
    * nearest medoid
    */
-  float getLossPython();
+  banditpam_float getLossPython();
 
   /**
    * @brief Returns the number of distance computations (sample complexity) used by .fit()
@@ -122,7 +122,7 @@ class KMedoidsWrapper : public km::KMedoids {
    *
    * The average time per swap step by the last call to .fit()
    */
-  float getTimePerSwapPython();
+  banditpam_float getTimePerSwapPython();
 };
 
 // TODO(@motiwari): Encapsulate these

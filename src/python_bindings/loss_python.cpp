@@ -14,7 +14,7 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-float km::KMedoidsWrapper::getLossPython() {
+banditpam_float km::KMedoidsWrapper::getLossPython() {
   return KMedoids::getAverageLoss();
 }
 

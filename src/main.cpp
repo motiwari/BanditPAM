@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
       return ARGUMENT_ERROR_CODE;
     }
 
-    arma::fmat data;
+    arma_mat data;
     data.load(input_name);
 
     if (num_data < 0) {

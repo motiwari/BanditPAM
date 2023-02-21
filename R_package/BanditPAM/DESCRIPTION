@@ -1,0 +1,27 @@
+Package: BanditPAM
+Title: Almost Linear-Time k-Mediods Clustering
+Version: 0.0.0.9001
+Authors@R: c(person("Balasubramanian", "Narasimhan", role=c("aut", "cre"),
+	   	   email = "naras@stanford.edu"),
+	     person("Mo", "Tiwari", role=c("aut"),
+	           comment = c(website = "https://motiwari.com")))
+Description: R interface to a high-performance implementation of k-Mediods clustering described in Tiwari, et. al (Advances in Neural Information Processing Systems 33: Annual Conference on Neural Information Processing Systems 2020).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+SystemRequirements: C++17
+RoxygenNote: 7.2.3
+Suggests: 
+    ggplot2,
+    knitr,
+    MASS,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo
+Imports: 
+    R6,
+    Rcpp
+VignetteBuilder: knitr

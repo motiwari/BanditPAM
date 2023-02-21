@@ -17,7 +17,7 @@
 
 namespace km {
 void km::KMedoidsWrapper::fitPython(
-  const pybind11::array_t<float>& inputData,
+  const pybind11::array_t<banditpam_float>& inputData,
   const std::string& loss,
   pybind11::kwargs kw) {
   // throw an error if the number of medoids is not specified in either
@@ -42,14 +42,14 @@ void km::KMedoidsWrapper::fitPython(
 
   // TODO(@motiwari): Add a comment here explaining the massaging, cleanup
   if ((kw.size() != 0) && (kw.contains("dist_mat"))) {
-    const pybind11::array_t<float>& distMat =
-      pybind11::cast<const pybind11::array_t<float>>(kw["dist_mat"]);
-    const arma::fmat& tmp_array = carma::arr_to_mat<float>(distMat);
-    KMedoids::fit(carma::arr_to_mat<float>(inputData), loss,
-      std::make_optional<std::reference_wrapper<const arma::fmat>>(tmp_array));
+    const pybind11::array_t<banditpam_float>& distMat =
+      pybind11::cast<const pybind11::array_t<banditpam_float>>(kw["dist_mat"]);
+    const arma_mat& tmp_array = carma::arr_to_mat<banditpam_float>(distMat);
+    KMedoids::fit(carma::arr_to_mat<banditpam_float>(inputData), loss,
+      std::make_optional<std::reference_wrapper<const arma_mat>>(tmp_array));
   } else {
     // TODO(@motiwari): change std::nullopt to nullopt?
-    KMedoids::fit(carma::arr_to_mat<float>(inputData), loss, std::nullopt);
+    KMedoids::fit(carma::arr_to_mat<banditpam_float>(inputData), loss, std::nullopt);
   }
 }
 

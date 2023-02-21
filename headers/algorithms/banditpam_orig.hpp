@@ -1,8 +1,7 @@
 #ifndef HEADERS_ALGORITHMS_BANDITPAM_ORIG_HPP_
 #define HEADERS_ALGORITHMS_BANDITPAM_ORIG_HPP_
 
-#include <omp.h>
-#include <armadillo>
+#include <banditpam_common.h>
 #include <vector>
 #include <fstream>
 #include <iostream>
@@ -22,8 +21,8 @@ class BanditPAM_orig : public km::KMedoids {
    * @param inputData Input data to cluster
    */
   void fitBanditPAM_orig(
-      const arma::fmat& inputData,
-      std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+      const arma_mat& inputData,
+      std::optional<std::reference_wrapper<const arma_mat>> distMat);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -36,10 +35,10 @@ class BanditPAM_orig : public km::KMedoids {
    *
    * @returns Estimate of each arm's standard deviation
    */
-  arma::frowvec buildSigma(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    const arma::frowvec& bestDistances,
+  arma_rowvec buildSigma(
+    const arma_mat& data,
+    std::optional<std::reference_wrapper<const arma_mat>> distMat,
+    const arma_rowvec& bestDistances,
     const bool useAbsolute);
 
   /**
@@ -54,11 +53,11 @@ class BanditPAM_orig : public km::KMedoids {
    *
    * @returns Estimate of each arm's change in loss
    */
-  arma::frowvec buildTarget(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+  arma_rowvec buildTarget(
+    const arma_mat& data,
+    std::optional<std::reference_wrapper<const arma_mat>> distMat,
     const arma::uvec* target,
-    const arma::frowvec* bestDistances,
+    const arma_rowvec* bestDistances,
     const bool useAbsolute,
     const size_t exact);
 
@@ -77,10 +76,10 @@ class BanditPAM_orig : public km::KMedoids {
    * @param medoids Matrix that contains the coordinates of each medoid
    */
   void build(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma_mat& data,
+    std::optional<std::reference_wrapper<const arma_mat>> distMat,
     arma::urowvec* medoidIndices,
-    arma::fmat* medoids);
+    arma_mat* medoids);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -93,11 +92,11 @@ class BanditPAM_orig : public km::KMedoids {
    *
    * @returns Estimate of each arm's standard deviation
    */
-  arma::fmat swapSigma(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    const arma::frowvec* bestDistances,
-    const arma::frowvec* secondBestDistances,
+  arma_mat swapSigma(
+    const arma_mat& data,
+    std::optional<std::reference_wrapper<const arma_mat>> distMat,
+    const arma_rowvec* bestDistances,
+    const arma_rowvec* secondBestDistances,
     const arma::urowvec* assignments);
 
   /**
@@ -115,13 +114,13 @@ class BanditPAM_orig : public km::KMedoids {
    *
    * @returns Estimate of each arm's change in loss
    */
-  arma::fvec swapTarget(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+  arma_vec swapTarget(
+    const arma_mat& data,
+    std::optional<std::reference_wrapper<const arma_mat>> distMat,
     const arma::urowvec* medoidIndices,
     const arma::uvec* targets,
-    const arma::frowvec* bestDistances,
-    const arma::frowvec* secondBestDistances,
+    const arma_rowvec* bestDistances,
+    const arma_rowvec* secondBestDistances,
     const arma::urowvec* assignments,
     const size_t exact);
 
@@ -142,10 +141,10 @@ class BanditPAM_orig : public km::KMedoids {
   * @param assignments Array of containing the medoid each point is closest to
   */
   void swap(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma_mat& data,
+    std::optional<std::reference_wrapper<const arma_mat>> distMat,
     arma::urowvec* medoidIndices,
-    arma::fmat* medoids,
+    arma_mat* medoids,
     arma::urowvec* assignments);
 };
 }  // namespace km
