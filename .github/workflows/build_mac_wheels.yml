@@ -16,6 +16,7 @@ jobs:
 
       - name: Install MacOS dependencies
         run: |
+          brew install gcc
           brew --prefix libomp
           ls -alh $(brew --prefix libomp)
 
