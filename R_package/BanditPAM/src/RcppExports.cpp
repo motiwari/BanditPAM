@@ -159,6 +159,18 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// KMedoids__get_statistic
+SEXP KMedoids__get_statistic(SEXP xp, IntegerVector what);
+RcppExport SEXP _BanditPAM_KMedoids__get_statistic(SEXP xpSEXP, SEXP whatSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type what(whatSEXP);
+    rcpp_result_gen = Rcpp::wrap(KMedoids__get_statistic(xp, what));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_BanditPAM_KMedoids__new", (DL_FUNC) &_BanditPAM_KMedoids__new, 4},
@@ -174,6 +186,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_BanditPAM_KMedoids__set_swap_conf", (DL_FUNC) &_BanditPAM_KMedoids__set_swap_conf, 2},
     {"_BanditPAM_KMedoids__get_loss_fn", (DL_FUNC) &_BanditPAM_KMedoids__get_loss_fn, 1},
     {"_BanditPAM_KMedoids__set_loss_fn", (DL_FUNC) &_BanditPAM_KMedoids__set_loss_fn, 2},
+    {"_BanditPAM_KMedoids__get_statistic", (DL_FUNC) &_BanditPAM_KMedoids__get_statistic, 2},
     {NULL, NULL, 0}
 };
 

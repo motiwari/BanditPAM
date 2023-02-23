@@ -81,4 +81,12 @@ ggplot(data = d) +
   geom_point(aes(x, y), data = dd, color = "red")
 ```
 
+One can query some performance statistics too; see help on
+`KMedoids`. 
+
+```{r}
+obj$get_statistic("dist_computations") # no of dist computations
+obj$get_statistic("cache_misses") #  no of cache misses
+```
+
 ## References

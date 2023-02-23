@@ -88,6 +88,7 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 <ul><li><p><a href="#method-KMedoids-new"><code>KMedoids$new()</code></a></p></li>
 <li><p><a href="#method-KMedoids-fit"><code>KMedoids$fit()</code></a></p></li>
 <li><p><a href="#method-KMedoids-get_medoids_final"><code>KMedoids$get_medoids_final()</code></a></p></li>
+<li><p><a href="#method-KMedoids-get_statistic"><code>KMedoids$get_statistic()</code></a></p></li>
 <li><p><a href="#method-KMedoids-print"><code>KMedoids$print()</code></a></p></li>
 <li><p><a href="#method-KMedoids-clone"><code>KMedoids$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-KMedoids-new"></a><div class="section">
@@ -126,7 +127,7 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 <h3 id="method-fit-">Method <code>fit()</code><a class="anchor" aria-label="anchor" href="#method-fit-"></a></h3>
 <p>Fit the KMedoids algorthm given the data and loss. It is advisable to set the seed before calling this method for reproducible results.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="va">data</span>, <span class="va">loss</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="va">data</span>, <span class="va">loss</span>, dist_mat <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -137,6 +138,10 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 
 <dt><code>loss</code></dt>
 <dd><p>the loss function, either "lp" (p, integer indicating L_p loss) or one of "manhattan", "cosine", "inf" or "euclidean"</p></dd>
+
+
+<dt><code>dist_mat</code></dt>
+<dd><p>an optional distance matrix</p></dd>
 
 
 </dl><p></p></div>
@@ -150,9 +155,27 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 </div>
 
 <div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>a vector indices of the final mediods</p>
+</div>
+
+</div><p></p><hr><a id="method-KMedoids-get_statistic"></a><div class="section">
+<h3 id="method-get-statistic-">Method <code>get_statistic()</code><a class="anchor" aria-label="anchor" href="#method-get-statistic-"></a></h3>
+<p>Get the specified statistic after clustering</p><div class="section">
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">get_statistic</span><span class="op">(</span><span class="va">what</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>return</code></dt>
-<dd><p>a vector indices of the final mediods</p></dd>
+<p></p><div class="arguments"><dl><dt><code>what</code></dt>
+<dd><p>a string which should one of <code>"dist_computations"</code>, <code>"dist_computations_and_misc"</code>,
+<code>"misc_dist"</code>, <code>"build_dist"</code>, <code>"swap_dist"</code>, <code>"cache_writes"</code>, <code>"cache_hits"</code>,
+or <code>"cache_misses"</code></p></dd>
+
+
+<dt><code>return</code></dt>
+<dd><p>the statistic</p></dd>
 
 
 </dl><p></p></div>
@@ -161,7 +184,7 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 </div><p></p><hr><a id="method-KMedoids-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Printer.</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -177,7 +200,7 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 </div><p></p><hr><a id="method-KMedoids-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 

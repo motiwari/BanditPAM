@@ -101,9 +101,30 @@ KMedoids <- R6::R6Class( "KMedoids"
    ,
     #' @description
     #' Return the final medoid indices after clustering
-    #' @param return a vector indices of the final mediods
+    #' @return a vector indices of the final mediods
     get_medoids_final = function() {
       .Call('_BanditPAM_KMedoids__get_medoids_final', PACKAGE = 'BanditPAM', private$xptr)
+    }
+   ,
+
+    #' @description
+    #' Get the specified statistic after clustering
+    #' @param what a string which should one of `"dist_computations"`, `"dist_computations_and_misc"`,
+    #' `"misc_dist"`, `"build_dist"`, `"swap_dist"`, `"cache_writes"`, `"cache_hits"`,
+    #' or `"cache_misses"`
+    #' @param return the statistic
+    get_statistic = function(what) {
+      if(is.na(what_index <- match(what, c("dist_computations",
+                                           "dist_computations_and_misc",
+                                           "misc_dist",
+                                           "build_dist",
+                                           "swap_dist",
+                                           "cache_writes",
+                                           "cache_hits",
+                                           "cache_misses")))) {
+        return(NULL)
+      }
+      .Call('_BanditPAM_KMedoids__get_statistic', PACKAGE = 'BanditPAM', private$xptr, what_index)
     }
    ,
 

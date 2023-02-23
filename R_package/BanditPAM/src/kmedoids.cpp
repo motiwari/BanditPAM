@@ -57,7 +57,12 @@ void KMedoids__fit(SEXP xp, arma::mat data, std::vector< std::string > loss, SEX
 SEXP KMedoids__get_medoids_final(SEXP xp) {
   // grab the object as a XPtr (smart pointer)
   XPtr<km::KMedoids> ptr(xp);
-  return wrap(ptr->getMedoidsFinal());
+  // Turn 0-based indices into 1-based indices for R
+  arma::urowvec medoidIndices = ptr->getMedoidsFinal();
+  for (auto i = medoidIndices.begin(), e = medoidIndices.end(); i != e; ++i) {
+    (*i)++;
+  }
+  return wrap(medoidIndices);
 }
 
 //' Return the number of medoids property k
@@ -161,3 +166,32 @@ void KMedoids__set_loss_fn(SEXP xp, std::vector< std::string > loss_fn ) {
 }
 
 
+//' Return specified metric/statistics from the computation
+//'
+//' @param xp the km::KMedoids Object XPtr
+//' @param what which metric to return, 1 = "dist_computations", 2 = "dist_computations_and_misc", 3 = "misc_dist", 4 = "build_dist", 5 = "swap_dist", 6 = "cache_writes", 7 = "cache_hits", 8 = "cache_misses"
+// [[Rcpp::export(.KMedoids__get_statistic)]]
+SEXP KMedoids__get_statistic(SEXP xp, IntegerVector what) {
+  // grab the object as a XPtr (smart pointer)
+  XPtr<km::KMedoids> ptr(xp);
+  switch (what[0]) {
+  case 1: 
+    return wrap(ptr->getDistanceComputations(false));
+  case 2:
+    return wrap(ptr->getDistanceComputations(true));
+  case 3:
+    return wrap(ptr->getMiscDistanceComputations());
+  case 4:
+    return wrap(ptr->getBuildDistanceComputations());
+  case 5:
+    return wrap(ptr->getSwapDistanceComputations());
+  case 6:
+    return wrap(ptr->getCacheWrites());
+  case 7:
+    return wrap(ptr->getCacheHits());
+  case 8:
+    return wrap(ptr->getCacheMisses());
+  }
+  //stop("Unexpected argument value %i in argument what for get_statistic!", what[0]);
+  return R_NilValue; 
+}

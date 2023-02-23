@@ -128,6 +128,13 @@ change.</p>
 Clustering with 3-mediods with L1 loss
 </p>
 </div>
+<p>One can query some performance statistics too; see help on
+<code>KMedoids</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">obj</span><span class="op">$</span><span class="fu">get_statistic</span><span class="op">(</span><span class="st">"dist_computations"</span><span class="op">)</span> <span class="co"># no of dist computations</span></span>
+<span><span class="co">#&gt; [1] 158400</span></span>
+<span><span class="va">obj</span><span class="op">$</span><span class="fu">get_statistic</span><span class="op">(</span><span class="st">"cache_misses"</span><span class="op">)</span> <span class="co">#  no of cache misses</span></span>
+<span><span class="co">#&gt; [1] 0</span></span></code></pre></div>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

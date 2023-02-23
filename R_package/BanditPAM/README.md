@@ -51,5 +51,12 @@ meds <- obj$get_medoids_final()
 ## Plot the results
 plot(X[, 1], X[, 2])
 points(X[meds, 1], X[meds, 2], col = "red", pch = 19)
+##
+## One can query some statistics too; see help("KMedoids")
+##
+obj$get_statistic("dist_computations")
+obj$get_statistic("dist_computations_and_misc")
+obj$get_statistic("cache_misses")
+
 ```
 

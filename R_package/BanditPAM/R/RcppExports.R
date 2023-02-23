@@ -95,3 +95,11 @@
     invisible(.Call('_BanditPAM_KMedoids__set_loss_fn', PACKAGE = 'BanditPAM', xp, loss_fn))
 }
 
+#' Return specified metric/statistics from the computation
+#'
+#' @param xp the km::KMedoids Object XPtr
+#' @param what which metric to return, 1 = "dist_computations", 2 = "dist_computations_and_misc", 3 = "misc_dist", 4 = "build_dist", 5 = "swap_dist", 6 = "cache_writes", 7 = "cache_hits", 8 = "cache_misses"
+.KMedoids__get_statistic <- function(xp, what) {
+    .Call('_BanditPAM_KMedoids__get_statistic', PACKAGE = 'BanditPAM', xp, what)
+}
+

@@ -44,6 +44,7 @@ The loss function, "lp" (for p integer > 0) or one of "manhattan", "cosine", "in
 \item \href{#method-KMedoids-new}{\code{KMedoids$new()}}
 \item \href{#method-KMedoids-fit}{\code{KMedoids$fit()}}
 \item \href{#method-KMedoids-get_medoids_final}{\code{KMedoids$get_medoids_final()}}
+\item \href{#method-KMedoids-get_statistic}{\code{KMedoids$get_statistic()}}
 \item \href{#method-KMedoids-print}{\code{KMedoids$print()}}
 \item \href{#method-KMedoids-clone}{\code{KMedoids$clone()}}
 }
@@ -104,10 +105,27 @@ Return the final medoid indices after clustering
 \if{html}{\out{<div class="r">}}\preformatted{KMedoids$get_medoids_final()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+a vector indices of the final mediods
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-KMedoids-get_statistic"></a>}}
+\if{latex}{\out{\hypertarget{method-KMedoids-get_statistic}{}}}
+\subsection{Method \code{get_statistic()}}{
+Get the specified statistic after clustering
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{KMedoids$get_statistic(what)}\if{html}{\out{</div>}}
+}
+
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{return}}{a vector indices of the final mediods}
+\item{\code{what}}{a string which should one of \code{"dist_computations"}, \code{"dist_computations_and_misc"},
+\code{"misc_dist"}, \code{"build_dist"}, \code{"swap_dist"}, \code{"cache_writes"}, \code{"cache_hits"},
+or \code{"cache_misses"}}
+
+\item{\code{return}}{the statistic}
 }
 \if{html}{\out{</div>}}
 }
