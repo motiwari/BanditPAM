@@ -56,14 +56,32 @@ class BanditFasterPAM : public km::KMedoids {
     arma::frowvec* bestDistances,
     arma::frowvec* secondBestDistances);
 
-  /**
-  * @brief Performs the SWAP steps of BanditFasterPAM.
-  *
-  * @param data Transposed input data to cluster
-  * @param medoidIndices Array of medoid indices created from the BUILD step
-  * that is modified in place as better medoids are identified
-  * @param assignments Array of containing the medoid each point is closest to
-  */
+  float swapSigma(
+    const size_t candidate,
+    const arma::fmat& data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma::frowvec* bestDistances,
+    const arma::frowvec* secondBestDistances,
+    const arma::urowvec* assignments);
+
+  float swapTarget(
+    const arma::fmat& data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const size_t candidate,
+    arma::fmat* Delta_TD_ms,
+    const arma::frowvec* bestDistances,
+    const arma::frowvec* secondBestDistances,
+    const arma::urowvec* assignments,
+    const size_t exact = 0);
+
+    /**
+    * @brief Performs the SWAP steps of BanditFasterPAM.
+    *
+    * @param data Transposed input data to cluster
+    * @param medoidIndices Array of medoid indices created from the BUILD step
+    * that is modified in place as better medoids are identified
+    * @param assignments Array of containing the medoid each point is closest to
+    */
   void swapBanditFasterPAM(
     const arma::fmat& data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
