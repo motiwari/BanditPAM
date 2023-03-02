@@ -12,6 +12,7 @@
 
 #include "kmedoids_algorithm.hpp"
 #include "fastpam1.hpp"
+#include "fasterpam.hpp"
 #include "pam.hpp"
 #include "banditpam.hpp"
 #include "banditpam_orig.hpp"
@@ -88,6 +89,8 @@ void KMedoids::fit(
       static_cast<BanditPAM_orig*>(this)->fitBanditPAM_orig(inputData, distMat);
     } else if (algorithm == "FastPAM1") {
       static_cast<FastPAM1*>(this)->fitFastPAM1(inputData, distMat);
+    } else if (algorithm == "FasterPAM") {
+      static_cast<FasterPAM*>(this)->fitFasterPAM(inputData, distMat);
     }
   } catch (std::invalid_argument& e) {
     std::cout << e.what() << std::endl;
@@ -403,6 +406,7 @@ void KMedoids::checkAlgorithm(const std::string& algorithm) const {
   if ((algorithm != "BanditPAM") &&
       (algorithm != "BanditPAM_orig") &&
       (algorithm != "PAM") &&
+      (algorithm != "FasterPAM") &&
       (algorithm != "FastPAM1")) {
     // TODO(@motiwari): Better error type
     throw "unrecognized algorithm";
