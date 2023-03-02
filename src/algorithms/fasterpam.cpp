@@ -147,9 +147,7 @@ void FasterPAM::swapFasterPAM(
       }
 
       arma::uword best_m_idx = Delta_TD_ms.index_min();
-//      std::cout << "best Delta_TD " << Delta_TD_ms(best_m_idx) << "\n";
-//      std::cout << "Delta_TD_x_c " << Delta_TD_x_c << "\n\n";
-      if (Delta_TD_ms(best_m_idx) + Delta_TD_x_c < -0.01) { // -0.01 to avoid precision errors
+      if (Delta_TD_ms(best_m_idx) + Delta_TD_x_c < -0.01) {  // -0.01 to avoid precision errors
         // Perform Swap
         std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with " << x_c << "\n";
         (*medoidIndices)(best_m_idx) = x_c;
@@ -174,5 +172,15 @@ void FasterPAM::swapFasterPAM(
       }
     }
   }
+
+  // Call it one last time to update the loss
+  KMedoids::calcBestDistancesSwap(
+      data,
+      distMat,
+      medoidIndices,
+      &bestDistances,
+      &secondBestDistances,
+      assignments,
+      false); // no swap performed, update loss
 }
 }  // namespace km
