@@ -42,7 +42,7 @@ class PAM : public km::KMedoids {
           arma::urowvec *medoidIndices);
 
   /**
-  * @brief Performs the SWAP steps of BanditPAM.
+  * @brief Performs the SWAP steps of PAM.
   *
   * Loops over all (medoid, non-medoid) pairs and computes the change in loss
   * when the points are swapped in and out of the medoid set. Then updates

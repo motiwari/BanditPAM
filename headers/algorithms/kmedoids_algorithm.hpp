@@ -348,7 +348,7 @@ class KMedoids {
  protected:
   /**
    * @brief Calculates the best and second best distances for each datapoint to
-   * the medoids in the current set of medoids.
+   * the medoids in the current set of medoids. Also updates assignments and loss.
    *
    * @param data Transposed data to cluster
    * @param medoidIndices Array of medoid indices corresponding to dataset entries

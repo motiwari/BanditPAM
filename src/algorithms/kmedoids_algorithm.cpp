@@ -12,6 +12,7 @@
 
 #include "kmedoids_algorithm.hpp"
 #include "fastpam1.hpp"
+#include "fasterpam.hpp"
 #include "pam.hpp"
 #include "banditpam.hpp"
 #include "banditpam_orig.hpp"

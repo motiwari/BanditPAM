@@ -618,6 +618,7 @@ def main():
             os.path.join("headers", "algorithms", "kmedoids_algorithm.hpp"),
             os.path.join("headers", "algorithms", "banditpam.hpp"),
             os.path.join("headers", "algorithms", "fastpam1.hpp"),
+            os.path.join("headers", "algorithms", "fasterpam.hpp"),
             os.path.join("headers", "algorithms", "pam.hpp"),
             os.path.join(
                 "headers", "python_bindings", "kmedoids_pywrapper.hpp"
