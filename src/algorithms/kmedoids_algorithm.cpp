@@ -16,6 +16,7 @@
 #include "pam.hpp"
 #include "banditpam.hpp"
 #include "banditpam_orig.hpp"
+#include "banditfasterpam.hpp"
 
 namespace km {
 // NOTE: The order of arguments in this constructor must match that of the
@@ -91,6 +92,8 @@ void KMedoids::fit(
       static_cast<FastPAM1*>(this)->fitFastPAM1(inputData, distMat);
     } else if (algorithm == "FasterPAM") {
       static_cast<FasterPAM*>(this)->fitFasterPAM(inputData, distMat);
+    } else if (algorithm == "BanditFasterPAM") {
+      static_cast<BanditFasterPAM*>(this)->fitBanditFasterPAM(inputData, distMat);
     }
   } catch (std::invalid_argument& e) {
     std::cout << e.what() << std::endl;
@@ -405,6 +408,7 @@ float KMedoids::cachedLoss(
 void KMedoids::checkAlgorithm(const std::string& algorithm) const {
   if ((algorithm != "BanditPAM") &&
       (algorithm != "BanditPAM_orig") &&
+      (algorithm != "BanditFasterPAM") &&
       (algorithm != "PAM") &&
       (algorithm != "FasterPAM") &&
       (algorithm != "FastPAM1")) {
