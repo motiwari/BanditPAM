@@ -153,8 +153,6 @@ void FasterPAM::swapFasterPAM(
       // -0.01 to avoid precision errors
       // TODO(@motiwari): Move 0.01 to a constants file
       if (Delta_TD_ms(best_m_idx) + Delta_TD_candidate < -0.01) {
-        // Update TD and assignments
-
         // Perform Swap
         std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with " << candidate << "\n";
         iter++;
