@@ -550,6 +550,8 @@ def main():
                 os.path.join("src", "algorithms", "banditpam.cpp"),
                 os.path.join("src", "algorithms", "banditpam_orig.cpp"),
                 os.path.join("src", "algorithms", "fastpam1.cpp"),
+                os.path.join("src", "algorithms", "fasterpam.cpp"),
+                os.path.join("src", "algorithms", "banditfasterpam.cpp"),
                 os.path.join(
                     "src", "python_bindings", "kmedoids_pywrapper.cpp"
                 ),
@@ -619,6 +621,7 @@ def main():
             os.path.join("headers", "algorithms", "banditpam.hpp"),
             os.path.join("headers", "algorithms", "fastpam1.hpp"),
             os.path.join("headers", "algorithms", "fasterpam.hpp"),
+            os.path.join("headers", "algorithms", "banditfasterpam.hpp"),
             os.path.join("headers", "algorithms", "pam.hpp"),
             os.path.join(
                 "headers", "python_bindings", "kmedoids_pywrapper.hpp"

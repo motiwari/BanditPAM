@@ -1,5 +1,5 @@
-#ifndef HEADERS_ALGORITHMS_FASTERPAM_HPP_
-#define HEADERS_ALGORITHMS_FASTERPAM_HPP_
+#ifndef HEADERS_ALGORITHMS_BANDITFASTERPAM_HPP_
+#define HEADERS_ALGORITHMS_BANDITFASTERPAM_HPP_
 
 #include <omp.h>
 #include <armadillo>
@@ -12,21 +12,21 @@
 
 namespace km {
 /**
- * @brief Contains all necessary FasterPAM functions
+ * @brief Contains all necessary BanditFasterPAM functions
  */
-class FasterPAM : public km::KMedoids {
+class BanditFasterPAM : public km::KMedoids {
  public:
   /**
-  * @brief Runs FasterPAM to identify a dataset's medoids.
+  * @brief Runs BanditFasterPAM to identify a dataset's medoids.
   *
   * @param inputData Input data to cluster
   */
-  void fitFasterPAM(
+  void fitBanditFasterPAM(
   const arma::fmat& inputData,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
-  * @brief Performs the BUILD step of FasterPAM.
+  * @brief Performs the BUILD step of BanditFasterPAM.
   *
   * Loops over all datapoint and checks each's distance to every other
   * datapoint in the dataset, then adds the point with the lowest overall
@@ -36,7 +36,7 @@ class FasterPAM : public km::KMedoids {
   * @param medoidIndices Array of medoids that is modified in place
   * as medoids are identified
   */
-  void buildFasterPAM(
+  void buildBanditFasterPAM(
     const arma::fmat& data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     arma::urowvec* medoidIndices);
@@ -57,18 +57,18 @@ class FasterPAM : public km::KMedoids {
     arma::frowvec* secondBestDistances);
 
   /**
-  * @brief Performs the SWAP steps of FasterPAM.
+  * @brief Performs the SWAP steps of BanditFasterPAM.
   *
   * @param data Transposed input data to cluster
   * @param medoidIndices Array of medoid indices created from the BUILD step
   * that is modified in place as better medoids are identified
   * @param assignments Array of containing the medoid each point is closest to
   */
-  void swapFasterPAM(
+  void swapBanditFasterPAM(
     const arma::fmat& data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     arma::urowvec* medoidIndices,
     arma::urowvec* assignments);
 };
 }  // namespace km
-#endif  // HEADERS_ALGORITHMS_FASTERPAM_HPP_
+#endif  // HEADERS_ALGORITHMS_BANDITFASTERPAM_HPP_

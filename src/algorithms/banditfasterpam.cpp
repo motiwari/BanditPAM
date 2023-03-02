@@ -1,37 +1,38 @@
 /**
- * @file fasterpam.cpp
+ * @file BanditFasterPAM.cpp
  * @date 2021-07-25
  *
- * Contains a C++ implementation of the FasterPAM algorithm.
- * The original FasterPAM papers are:
+ * Contains a C++ implementation of the BanditFasterPAM algorithm.
+ * The original BanditFasterPAM papers are:
  * 1) Erich Schubert and Peter J. Rousseeuw: Fast and Eager k-Medoids Clustering:
  *  O(k) Runtime Improvement of the PAM, CLARA, and CLARANS Algorithms
  * 2) Erich Schubert and Peter J. Rousseeuw: Faster k-Medoids Clustering:
  *  Improving the PAM, CLARA, and CLARANS Algorithms
  */
 
-#include "fasterpam.hpp"
+#include "banditfasterpam.hpp"
 
 #include <armadillo>
 #include <unordered_map>
 
 namespace km {
-void FasterPAM::fitFasterPAM(
+void BanditFasterPAM::fitBanditFasterPAM(
   const arma::fmat& inputData,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   data = arma::trans(inputData);
   arma::urowvec medoidIndices(nMedoids);
-  FasterPAM::buildFasterPAM(data, distMat, &medoidIndices);
+  BanditFasterPAM::buildBanditFasterPAM(data, distMat, &medoidIndices);
   steps = 0;
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
-  FasterPAM::swapFasterPAM(data, distMat, &medoidIndices, &assignments);
+  BanditFasterPAM::swapBanditFasterPAM(data, distMat, &medoidIndices, &assignments);
 
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
 }
 
-void FasterPAM::buildFasterPAM(
+// TODO(@motiwari): consolidate this function which is identical to several other BUILD fns
+void BanditFasterPAM::buildBanditFasterPAM(
   const arma::fmat& data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   arma::urowvec* medoidIndices) {
@@ -69,7 +70,7 @@ void FasterPAM::buildFasterPAM(
   }
 }
 
-arma::frowvec FasterPAM::calcDeltaTDMs(
+arma::frowvec BanditFasterPAM::calcDeltaTDMs(
   arma::urowvec* assignments,
   arma::frowvec* bestDistances,
   arma::frowvec* secondBestDistances) {
@@ -84,7 +85,7 @@ arma::frowvec FasterPAM::calcDeltaTDMs(
   return Delta_TD_ms;
 }
 
-void FasterPAM::swapFasterPAM(
+void BanditFasterPAM::swapBanditFasterPAM(
   const arma::fmat& data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   arma::urowvec* medoidIndices,
@@ -107,7 +108,7 @@ void FasterPAM::swapFasterPAM(
   size_t x_last{data.n_cols};
 
   // Calculate initial removal loss for each medoid. This function modifies Delat_TD_ms in place
-  arma::frowvec Delta_TD_ms_initial = FasterPAM::calcDeltaTDMs(
+  arma::frowvec Delta_TD_ms_initial = BanditFasterPAM::calcDeltaTDMs(
     assignments,
     &bestDistances,
     &secondBestDistances);
@@ -123,6 +124,10 @@ void FasterPAM::swapFasterPAM(
       float Delta_TD_candidate = 0;
       Delta_TD_ms = Delta_TD_ms_initial; // TODO(@motiwari): Ensure this is copy assignment
 
+      size_t N = data.n_cols;
+      size_t p = N;
+
+      // TODO(@motiwari): usePerm and parallelization here
       // NOTE: Can probably sample this loop
       for (size_t reference = 0; reference < data.n_cols; reference++) {
         float d_cr = KMedoids::cachedLoss(
@@ -173,7 +178,7 @@ void FasterPAM::swapFasterPAM(
             assignments);
 
         // Update \Delta_TD_m's. This function modifies Delat_TD_ms in place
-        Delta_TD_ms_initial = FasterPAM::calcDeltaTDMs(
+        Delta_TD_ms_initial = BanditFasterPAM::calcDeltaTDMs(
           assignments,
           &bestDistances,
           &secondBestDistances);
