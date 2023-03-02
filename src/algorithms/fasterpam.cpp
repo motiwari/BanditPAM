@@ -93,6 +93,8 @@ void FasterPAM::swapFasterPAM(
   arma::frowvec bestDistances(N);
   arma::frowvec secondBestDistances(N);
 
+  // TODO(@motiwari): This is O(kn). Can remove by carrying through assignments from the BUILD step, but that will be
+  //  O(kn) too. Since we only do this O(kn) once, we can amortize it over all eager SWAP steps.
   KMedoids::calcBestDistancesSwap(
     data,
     distMat,
@@ -111,7 +113,8 @@ void FasterPAM::swapFasterPAM(
     &secondBestDistances);
 
   arma::frowvec Delta_TD_ms;
-  while (!converged) {
+  size_t iter = 0;
+  while (iter < maxIter && !converged) {
     for (size_t x_c = 0; x_c < data.n_cols; x_c++) {
       if (x_c == x_last) {
         converged = true;
@@ -147,12 +150,20 @@ void FasterPAM::swapFasterPAM(
       }
 
       arma::uword best_m_idx = Delta_TD_ms.index_min();
-      if (Delta_TD_ms(best_m_idx) + Delta_TD_x_c < -0.01) {  // -0.01 to avoid precision errors
+      // -0.01 to avoid precision errors
+      // TODO(@motiwari): Move 0.01 to a constants file
+      if (Delta_TD_ms(best_m_idx) + Delta_TD_x_c < -0.01) {
+        // Update TD and assignments
+
         // Perform Swap
         std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with " << x_c << "\n";
+        iter++;
         (*medoidIndices)(best_m_idx) = x_c;
 
-        // Update TD and assignments
+        // TODO(@motiwari): This is O(kn) per swap. Instead, we could do a single pass over all kn pairs and keep a
+        //  heap of all k distances to medoids per datapoint. That way we will have all the proper j-th nearest medoids
+        //  which are necessary for this eager swapping out of medoids. This would incur O(kn) space though.
+        //  We should also see how Schubert does this... I believe his algorithm is also O(kn).
         KMedoids::calcBestDistancesSwap(
             data,
             distMat,
@@ -167,20 +178,22 @@ void FasterPAM::swapFasterPAM(
           &bestDistances,
           &secondBestDistances);
 
-        // Update x_last
         x_last = x_c;
       }
     }
   }
+  steps = iter;
 
   // Call it one last time to update the loss
+  // This is O(kn) but amortized over all eager SWAP steps
+  // TODO(@motiwari): make this a call to calcLoss instead
   KMedoids::calcBestDistancesSwap(
-      data,
-      distMat,
-      medoidIndices,
-      &bestDistances,
-      &secondBestDistances,
-      assignments,
-      false); // no swap performed, update loss
+    data,
+    distMat,
+    medoidIndices,
+    &bestDistances,
+    &secondBestDistances,
+    assignments,
+    false); // no swap performed, update loss
 }
 }  // namespace km
