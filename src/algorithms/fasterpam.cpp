@@ -25,18 +25,10 @@ void FasterPAM::fitFasterPAM(
   steps = 0;
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
+  FasterPAM::swapFasterPAM(data, distMat, &medoidIndices, &assignments);
 
-  size_t i = 0;
-  bool medoidChange = true;
-  while (i < maxIter && medoidChange) {
-    auto previous(medoidIndices);
-    FasterPAM::swapFasterPAM(data, distMat, &medoidIndices, &assignments);
-    medoidChange = arma::any(medoidIndices != previous);
-    i++;
-  }
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
-  steps = i;
 }
 
 void FasterPAM::buildFasterPAM(
@@ -77,18 +69,19 @@ void FasterPAM::buildFasterPAM(
   }
 }
 
-void FasterPAM::calcDeltaTDMs(
+arma::frowvec FasterPAM::calcDeltaTDMs(
   arma::urowvec* assignments,
   arma::frowvec* bestDistances,
-  arma::frowvec* secondBestDistances,
-  arma::frowvec* Delta_TD_ms) {
+  arma::frowvec* secondBestDistances) {
+  arma::frowvec Delta_TD_ms(nMedoids, arma::fill::zeros);
   for (size_t i = 0; i < data.n_cols; i++) {
     // Find which medoid point i is assigned to
     size_t m = (*assignments)(i);
 
     // Update \Delta_TD(ms) with -best(i) + secondBestDistances(i)
-    (*Delta_TD_ms)(m) += -(*bestDistances)(i) + (*secondBestDistances)(i);
+    Delta_TD_ms(m) += -(*bestDistances)(i) + (*secondBestDistances)(i);
   }
+  return Delta_TD_ms;
 }
 
 void FasterPAM::swapFasterPAM(
@@ -108,20 +101,16 @@ void FasterPAM::swapFasterPAM(
     &secondBestDistances,
     assignments);
 
-
-  arma::frowvec Delta_TD_ms(nMedoids, arma::fill::zeros);
   bool converged{false};
   size_t x_last{data.n_cols};
 
   // Calculate initial removal loss for each medoid. This function modifies Delat_TD_ms in place
-  FasterPAM::calcDeltaTDMs(
+  arma::frowvec Delta_TD_ms_initial = FasterPAM::calcDeltaTDMs(
     assignments,
     &bestDistances,
-    &secondBestDistances,
-    &Delta_TD_ms
-    );
+    &secondBestDistances);
 
-
+  arma::frowvec Delta_TD_ms;
   while (!converged) {
     for (size_t x_c = 0; x_c < data.n_cols; x_c++) {
       if (x_c == x_last) {
@@ -129,7 +118,7 @@ void FasterPAM::swapFasterPAM(
         break;
       }
       float Delta_TD_x_c = 0;
-
+      Delta_TD_ms = Delta_TD_ms_initial; // TODO(@motiwari): Ensure this is copy assignment
 
       // NOTE: Can probably sample this loop
       for (size_t x_o = 0; x_o < data.n_cols; x_o++) {
@@ -158,10 +147,11 @@ void FasterPAM::swapFasterPAM(
       }
 
       arma::uword best_m_idx = Delta_TD_ms.index_min();
-      Delta_TD_ms(best_m_idx) += Delta_TD_x_c; // Paired with line below
-      if (Delta_TD_ms(best_m_idx) < 0) {
+//      std::cout << "best Delta_TD " << Delta_TD_ms(best_m_idx) << "\n";
+//      std::cout << "Delta_TD_x_c " << Delta_TD_x_c << "\n\n";
+      if (Delta_TD_ms(best_m_idx) + Delta_TD_x_c < -0.01) { // -0.01 to avoid precision errors
         // Perform Swap
-        std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with " << x_c;
+        std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with " << x_c << "\n";
         (*medoidIndices)(best_m_idx) = x_c;
 
         // Update TD and assignments
@@ -174,18 +164,13 @@ void FasterPAM::swapFasterPAM(
             assignments);
 
         // Update \Delta_TD_m's. This function modifies Delat_TD_ms in place
-        FasterPAM::calcDeltaTDMs(
+        Delta_TD_ms_initial = FasterPAM::calcDeltaTDMs(
           assignments,
           &bestDistances,
-          &secondBestDistances,
-          &Delta_TD_ms
-        );
+          &secondBestDistances);
 
         // Update x_last
         x_last = x_c;
-      } else {
-        Delta_TD_ms(best_m_idx) -= Delta_TD_x_c; // This allows us to avoid the .copy in Line 7 of the original algorithm
-                                                // when no swap is performed
       }
     }
   }

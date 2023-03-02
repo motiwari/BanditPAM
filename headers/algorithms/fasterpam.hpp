@@ -51,11 +51,10 @@ class FasterPAM : public km::KMedoids {
    * @param secondBestDistances
    * @param Delta_TD_ms
    */
-  void calcDeltaTDMs(
+  arma::frowvec calcDeltaTDMs(
     arma::urowvec* assignments,
     arma::frowvec* bestDistances,
-    arma::frowvec* secondBestDistances,
-    arma::frowvec* Delta_TD_ms);
+    arma::frowvec* secondBestDistances);
 
   /**
   * @brief Performs the SWAP steps of FasterPAM.
