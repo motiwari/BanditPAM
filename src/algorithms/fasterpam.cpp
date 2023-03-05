@@ -152,7 +152,12 @@ void FasterPAM::swapFasterPAM(
       arma::uword best_m_idx = Delta_TD_ms.index_min();
       // -0.01 to avoid precision errors
       // TODO(@motiwari): Move 0.01 to a constants file
-      if (Delta_TD_ms(best_m_idx) + Delta_TD_candidate < -0.01) {
+//      std::cout << "\n\n";
+//      std::cout << "Delta_TD_ms: " << Delta_TD_ms;
+//      std::cout << "Delta_TD_candidate: " << Delta_TD_candidate << "\n";
+
+      // TODO(@motiwari): This -0.1 / N should be moved to an approximate comparison
+      if (Delta_TD_ms(best_m_idx) + Delta_TD_candidate < -0.00001) {
         // Perform Swap
         std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with " << candidate << "\n";
         iter++;
