@@ -292,6 +292,7 @@ void BanditFasterPAM::swapBanditFasterPAM(
           candidate_lcb = candidate_result;
           Delta_TD_ms_given_candidate = std::get<1>(result);
           continue_sampling = false; // Unnecessary because
+          numSamples += N;
         } else {
           std::tuple<float, arma::frowvec> result = swapTarget(
             data,
@@ -306,17 +307,26 @@ void BanditFasterPAM::swapBanditFasterPAM(
           Delta_TD_ms_given_candidate = ((numSamples * Delta_TD_ms_given_candidate) + (std::get<1>(result) * batchSize)) / (numSamples + batchSize);
           candidate_estimate = ((numSamples * candidate_estimate) + (candidate_result * batchSize)) / (numSamples + batchSize);
           numSamples += batchSize;
-          std::cout << "Computed  " << numSamples << " for candidate " << candidate << "\n";
-          float adjust = swapConfidence + std::log(N);
-          float confBoundDelta = candidate_sigma * std::sqrt(adjust / numSamples);
+
+          float adjust = swapConfidence + std::log(N) + std::log(nMedoids);
+
+          // TODO(@motiwari): 5 is a fudge factor. Really, we should consider each of Delta_TD_ms_given_candidate as an
+          //  r.v. and create a new confidence bound on the difference.
+
+          float confBoundDelta = 5 * candidate_sigma * std::sqrt(adjust / numSamples);
           candidate_ucb = candidate_estimate + confBoundDelta;
           candidate_lcb = candidate_estimate - confBoundDelta;
-          std::cout << "Bounds are " << candidate_lcb << " to " << candidate_ucb << "\n";
+
+//          std::cout << "Bounds are " << candidate_lcb << " to " << candidate_ucb << "\n";
         }
         arma::frowvec total_Delta_TD_ms(nMedoids);
-
-
         total_Delta_TD_ms = Delta_TD_ms_initial + Delta_TD_ms_given_candidate;
+//        std::cout << "\n\n";
+//        std::cout << "Initial Delta_TD_ms: " << Delta_TD_ms_initial;
+//        std::cout << "Delta_TD_ms_given_candidate" << Delta_TD_ms_given_candidate;
+//        std::cout << "total Delta TD ms" << total_Delta_TD_ms;
+//        std::cout << "Bounds are " << candidate_lcb << " to " << candidate_ucb;
+//        std::cout << "\n\n";
         arma::uword best_m_idx = total_Delta_TD_ms.index_min();
         continue_sampling = total_Delta_TD_ms(best_m_idx) + candidate_lcb < - 0.01;
         // -0.01 to avoid precision errors
@@ -325,7 +335,8 @@ void BanditFasterPAM::swapBanditFasterPAM(
         //  source of randomness the subsampled data used to update it. Right now, we just compare to sigma and fiddle
         //  with sigma to get a reasonable CI
         // TODO(@motiwari): This -0.1 / N should be moved to an approximate comparison
-        if (total_Delta_TD_ms(best_m_idx) + candidate_ucb < -0.00001) {
+        std::cout << "Computed  " << numSamples << " for candidate " << candidate << "\n";
+        if (total_Delta_TD_ms(best_m_idx) + candidate_ucb < -0.0001) {
           // Perform Swap
           std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with "
                     << candidate << "\n";
