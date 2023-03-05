@@ -10,7 +10,7 @@ from kmedoids import fasterpam
 X = np.loadtxt("../data/MNIST_1k.csv")
 
 k = 5
-kmed = banditpam.KMedoids(n_medoids=k, algorithm="FasterPAM", max_iter=1)
+kmed = banditpam.KMedoids(n_medoids=k, algorithm="FasterPAM")
 start = time.time()
 kmed.fit(X, "L2")
 print(time.time() - start, "seconds")
@@ -19,7 +19,7 @@ print("Loss:", kmed.average_loss)
 print("Swap steps:", kmed.steps)
 print("Done with FasterPAM\n\n")
 
-kmed = banditpam.KMedoids(n_medoids=k, algorithm="BanditFasterPAM", max_iter=1)
+kmed = banditpam.KMedoids(n_medoids=k, algorithm="BanditFasterPAM")
 start = time.time()
 kmed.fit(X, "L2")
 print(time.time() - start, "seconds")

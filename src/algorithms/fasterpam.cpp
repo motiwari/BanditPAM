@@ -157,7 +157,7 @@ void FasterPAM::swapFasterPAM(
 //      std::cout << "Delta_TD_candidate: " << Delta_TD_candidate << "\n";
 
       // TODO(@motiwari): This -0.1 / N should be moved to an approximate comparison
-      if (Delta_TD_ms(best_m_idx) + Delta_TD_candidate < -0.00001) {
+      if (Delta_TD_ms(best_m_idx) + Delta_TD_candidate < -0.001) {
         // Perform Swap
         std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with " << candidate << "\n";
         iter++;
