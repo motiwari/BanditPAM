@@ -7,7 +7,7 @@ import banditpam
 from sklearn.metrics.pairwise import euclidean_distances
 from kmedoids import fasterpam
 
-X = np.loadtxt("../data/MNIST_10k.csv")
+X = np.loadtxt("../data/MNIST_1k.csv")
 
 k = 5
 kmed = banditpam.KMedoids(n_medoids=k, algorithm="FasterPAM")
