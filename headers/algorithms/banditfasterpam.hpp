@@ -64,11 +64,10 @@ class BanditFasterPAM : public km::KMedoids {
     const arma::frowvec* secondBestDistances,
     const arma::urowvec* assignments);
 
-  float swapTarget(
+  std::tuple<float, arma::frowvec> swapTarget(
     const arma::fmat& data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     const size_t candidate,
-    arma::fmat* Delta_TD_ms,
     const arma::frowvec* bestDistances,
     const arma::frowvec* secondBestDistances,
     const arma::urowvec* assignments,
