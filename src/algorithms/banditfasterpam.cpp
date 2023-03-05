@@ -336,7 +336,7 @@ void BanditFasterPAM::swapBanditFasterPAM(
         //  with sigma to get a reasonable CI
         // TODO(@motiwari): This -0.1 / N should be moved to an approximate comparison
         std::cout << "Computed  " << numSamples << " for candidate " << candidate << "\n";
-        if (total_Delta_TD_ms(best_m_idx) + candidate_ucb < -0.0001) {
+        if (total_Delta_TD_ms(best_m_idx) + candidate_ucb < -0.0001  && (*medoidIndices)(best_m_idx) != candidate) {
           // Perform Swap
           std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with "
                     << candidate << "\n";

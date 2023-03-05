@@ -7,10 +7,11 @@ import banditpam
 from sklearn.metrics.pairwise import euclidean_distances
 from kmedoids import fasterpam
 
-X = np.loadtxt("../data/MNIST_1k.csv")
+X = np.loadtxt("../data/MNIST_10k.csv")
 
 k = 5
 kmed = banditpam.KMedoids(n_medoids=k, algorithm="FasterPAM")
+print("Starting fit")
 start = time.time()
 kmed.fit(X, "L2")
 print(time.time() - start, "seconds")
@@ -20,6 +21,7 @@ print("Swap steps:", kmed.steps)
 print("Done with FasterPAM\n\n")
 
 kmed = banditpam.KMedoids(n_medoids=k, algorithm="BanditFasterPAM")
+print("Starting fit")
 start = time.time()
 kmed.fit(X, "L2")
 print(time.time() - start, "seconds")
