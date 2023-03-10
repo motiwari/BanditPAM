@@ -28,7 +28,11 @@ ggplot(data = d) +
   p
 
 
+## sticker(p, package = "BanditPAM", p_color = "aliceblue", p_family = "sans", p_fontface = "italic",
+##         p_size = 16, s_x = 1.0, s_y = 0.75, s_width = 1.7, s_height = 1.3,
+##         h_fill = "deepskyblue4", h_size = 0.75, h_color = "darkgoldenrod1", filename = "banditpam.png")
+
 sticker(p, package = "BanditPAM", p_color = "aliceblue", p_family = "sans", p_fontface = "italic",
         p_size = 16, s_x = 1.0, s_y = 0.75, s_width = 1.7, s_height = 1.3,
-        h_fill = "deepskyblue4", h_size = 0.75, h_color = "darkgoldenrod1", filename = "banditpam.png")
+        h_fill = "steelblue", h_size = 0.75, h_color = "darkgoldenrod1", filename = "banditpam.png")
 
