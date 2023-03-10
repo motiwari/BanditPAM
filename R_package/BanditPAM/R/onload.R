@@ -5,6 +5,6 @@
     packageStartupMessage("BanditPAM: OpenMP not in effect!")
   } else {
     ## This erroneously reports hyperthreads too
-    packageStartupMessage(sprintf("BanditPAM: using %d threads", n_threads))
+    packageStartupMessage(sprintf("BanditPAM: using %d (hyper) threads.", n_threads))
   }
 }

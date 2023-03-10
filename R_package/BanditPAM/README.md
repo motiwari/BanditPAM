@@ -2,12 +2,13 @@
 
 We provide an R interface to the high-performance implementation of
 [BanditPAM](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf),
-an $k$-medoids clustering algorithm.
+a $k$-medoids clustering algorithm.
 
 If you use this software, please cite:
 
-Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "BanditPAM: Almost Linear Time *k*-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
+>>Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "BanditPAM: Almost Linear Time *k*-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
 
+Here's a BibTeX entry:
 ```
 @inproceedings{BanditPAM,
   title={BanditPAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits},
