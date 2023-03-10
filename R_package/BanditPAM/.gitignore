@@ -1,0 +1,12 @@
+.Rproj.user
+.Rhistory
+.Rdata
+.httr-oauth
+.DS_Store
+inst/doc
+inst/stuff
+config.log
+config.status
+src/*.o
+src/*.so
+src/Makevars
