@@ -15,11 +15,13 @@
 #' plot(X[, 1], X[, 2])
 #' points(X[meds, 1], X[meds, 2], col = "red", pch = 19)
 #' @importFrom Rcpp evalCpp
+#' @importFrom R6 R6Class
 #' @export
 KMedoids <- R6::R6Class( "KMedoids"
 ,
   private = list(
-    xptr = NA
+    xptr = NA,
+    algorithm = NULL
   )
 , 
   active = list(
@@ -78,14 +80,27 @@ KMedoids <- R6::R6Class( "KMedoids"
     #' @description
     #' Create a new KMedoids object
     #' @param k number of medoids/clusters to create, default 5
+    #' @param algorithm the algorithm to use, one of "BanditPAM", "PAM", "FastPAM1" 
     #' @param max_iter the maximum number of SWAP steps the algorithm runs, default 1000
     #' @param build_conf parameter that affects the width of BUILD confidence intervals, default 1000
     #' @param swap_conf parameter that affects the width of SWAP confidence intervals, default 10000
     #' @return a KMedoids object which can be used to fit the BanditPAM algorithm to data
-    initialize = function(k = 5L, max_iter = 1000L, build_conf = 1000, swap_conf = 10000L) {
-      private$xptr <- .Call('_BanditPAM_KMedoids__new', PACKAGE = 'BanditPAM', k, max_iter, build_conf, swap_conf)
+    initialize = function(k = 5L, algorithm = c("BanditPAM", "PAM", "FastPAM1"),
+                          max_iter = 1000L, build_conf = 1000, swap_conf = 10000L) {
+      algorithm <- match.arg(algorithm)
+      private$algorithm <- algorithm
+      private$xptr <- .Call('_BanditPAM_KMedoids__new', PACKAGE = 'BanditPAM', k, algorithm, max_iter, build_conf, swap_conf)
     }
    ,
+
+    #' @description
+    #' Return the algorithm used
+    #' @return a string indicating the algorithm
+    get_algorithm = function() {
+      private$algorithm
+    }
+   ,
+    
     #' @description
     #' Fit the KMedoids algorthm given the data and loss. It is advisable to set the seed before calling this method for reproducible results.
     #' @param data the data matrix
@@ -134,6 +149,7 @@ KMedoids <- R6::R6Class( "KMedoids"
     print = function(...) {
       catn(sprintf("<%s>", class(self)[1L]))
       catn(sprintf("\tk: %d", self$k))
+      catn(sprintf("\talgorithm: %s", private$algorithm))
       catn(sprintf("\tmax_iter: %d", self$max_iter))
       catn(sprintf("\tloss: %s", self$loss_fn))
       catn(sprintf("\tbuild_confidence: %d", self$build_conf))

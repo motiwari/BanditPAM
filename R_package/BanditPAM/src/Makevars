@@ -1,4 +1,8 @@
+# _*_ mode: Makefile; _*_
+
 CXX_STD = CXX17
-PKG_CPPFLAGS = -DR_INTERFACE -DUSE_DOUBLE -I.
-PKG_CXXFLAGS = $(SHLIB_OPENMP_CXXFLAGS)
-PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
+
+PKG_CPPFLAGS= -DR_INTERFACE -DUSE_DOUBLE -DR_HAS_OPENMP -I.
+PKG_CXXFLAGS= -Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include
+PKG_LIBS = -Xpreprocessor -fopenmp -I/usr/local/opt/libomp/include -lomp -L/usr/local/opt/libomp/lib
+

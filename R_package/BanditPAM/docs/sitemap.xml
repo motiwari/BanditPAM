@@ -7,9 +7,6 @@
     <loc>/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
@@ -31,40 +28,7 @@
     <loc>/reference/KMedoids.html</loc>
   </url>
   <url>
-    <loc>/reference/dot-KMedoids__fit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__get_build_conf.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__get_k.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__get_loss_fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__get_max_iter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__get_medoids_final.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__get_statistic.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__get_swap_conf.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__new.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__set_iter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__set_k.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-KMedoids__set_loss_fn.html</loc>
+    <loc>/reference/bpam_num_threads.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>

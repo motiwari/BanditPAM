@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">BanditPAM</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +33,13 @@
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
-      <ul class="navbar-nav"></ul></div>
+      <ul class="navbar-nav"><li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/motiwari/BanditPAM/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul></div>
 
     
   </div>
@@ -41,7 +47,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>KMedoids Class</h1>
-      
+      <small class="dont-index">Source: <a href="https://github.com/motiwari/BanditPAM/blob/HEAD/R/KMedoid.R" class="external-link"><code>R/KMedoid.R</code></a></small>
       <div class="d-none name"><code>KMedoids.Rd</code></div>
     </div>
 
@@ -86,6 +92,7 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
 <ul><li><p><a href="#method-KMedoids-new"><code>KMedoids$new()</code></a></p></li>
+<li><p><a href="#method-KMedoids-get_algorithm"><code>KMedoids$get_algorithm()</code></a></p></li>
 <li><p><a href="#method-KMedoids-fit"><code>KMedoids$fit()</code></a></p></li>
 <li><p><a href="#method-KMedoids-get_medoids_final"><code>KMedoids$get_medoids_final()</code></a></p></li>
 <li><p><a href="#method-KMedoids-get_statistic"><code>KMedoids$get_statistic()</code></a></p></li>
@@ -95,13 +102,23 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Create a new KMedoids object</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/KMedoids.html">KMedoids</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>k <span class="op">=</span> <span class="fl">5L</span>, max_iter <span class="op">=</span> <span class="fl">1000L</span>, build_conf <span class="op">=</span> <span class="fl">1000</span>, swap_conf <span class="op">=</span> <span class="fl">10000L</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/KMedoids.html">KMedoids</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  k <span class="op">=</span> <span class="fl">5L</span>,</span>
+<span>  algorithm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BanditPAM"</span>, <span class="st">"PAM"</span>, <span class="st">"FastPAM1"</span><span class="op">)</span>,</span>
+<span>  max_iter <span class="op">=</span> <span class="fl">1000L</span>,</span>
+<span>  build_conf <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  swap_conf <span class="op">=</span> <span class="fl">10000L</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>k</code></dt>
 <dd><p>number of medoids/clusters to create, default 5</p></dd>
+
+
+<dt><code>algorithm</code></dt>
+<dd><p>the algorithm to use, one of "BanditPAM", "PAM", "FastPAM1"</p></dd>
 
 
 <dt><code>max_iter</code></dt>
@@ -123,10 +140,22 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 <p>a KMedoids object which can be used to fit the BanditPAM algorithm to data</p>
 </div>
 
+</div><p></p><hr><a id="method-KMedoids-get_algorithm"></a><div class="section">
+<h3 id="method-get-algorithm-">Method <code>get_algorithm()</code><a class="anchor" aria-label="anchor" href="#method-get-algorithm-"></a></h3>
+<p>Return the algorithm used</p><div class="section">
+<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">get_algorithm</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<p>a string indicating the algorithm</p>
+</div>
+
 </div><p></p><hr><a id="method-KMedoids-fit"></a><div class="section">
 <h3 id="method-fit-">Method <code>fit()</code><a class="anchor" aria-label="anchor" href="#method-fit-"></a></h3>
 <p>Fit the KMedoids algorthm given the data and loss. It is advisable to set the seed before calling this method for reproducible results.</p><div class="section">
-<h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
+<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">fit</span><span class="op">(</span><span class="va">data</span>, <span class="va">loss</span>, dist_mat <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -150,19 +179,19 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 </div><p></p><hr><a id="method-KMedoids-get_medoids_final"></a><div class="section">
 <h3 id="method-get-medoids-final-">Method <code>get_medoids_final()</code><a class="anchor" aria-label="anchor" href="#method-get-medoids-final-"></a></h3>
 <p>Return the final medoid indices after clustering</p><div class="section">
-<h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
+<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">get_medoids_final</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
-<h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
+<h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p>a vector indices of the final mediods</p>
 </div>
 
 </div><p></p><hr><a id="method-KMedoids-get_statistic"></a><div class="section">
 <h3 id="method-get-statistic-">Method <code>get_statistic()</code><a class="anchor" aria-label="anchor" href="#method-get-statistic-"></a></h3>
 <p>Get the specified statistic after clustering</p><div class="section">
-<h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">get_statistic</span><span class="op">(</span><span class="va">what</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -184,7 +213,7 @@ or <code>"cache_misses"</code></p></dd>
 </div><p></p><hr><a id="method-KMedoids-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Printer.</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -200,7 +229,7 @@ or <code>"cache_misses"</code></p></dd>
 </div><p></p><hr><a id="method-KMedoids-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 

@@ -11,17 +11,28 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// bpam_num_threads
+int bpam_num_threads();
+RcppExport SEXP _BanditPAM_bpam_num_threads() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(bpam_num_threads());
+    return rcpp_result_gen;
+END_RCPP
+}
 // KMedoids__new
-SEXP KMedoids__new(IntegerVector k, IntegerVector max_iter, IntegerVector build_confidence, IntegerVector swap_confidence);
-RcppExport SEXP _BanditPAM_KMedoids__new(SEXP kSEXP, SEXP max_iterSEXP, SEXP build_confidenceSEXP, SEXP swap_confidenceSEXP) {
+SEXP KMedoids__new(IntegerVector k, CharacterVector alg, IntegerVector max_iter, IntegerVector build_confidence, IntegerVector swap_confidence);
+RcppExport SEXP _BanditPAM_KMedoids__new(SEXP kSEXP, SEXP algSEXP, SEXP max_iterSEXP, SEXP build_confidenceSEXP, SEXP swap_confidenceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< IntegerVector >::type k(kSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type alg(algSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type build_confidence(build_confidenceSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type swap_confidence(swap_confidenceSEXP);
-    rcpp_result_gen = Rcpp::wrap(KMedoids__new(k, max_iter, build_confidence, swap_confidence));
+    rcpp_result_gen = Rcpp::wrap(KMedoids__new(k, alg, max_iter, build_confidence, swap_confidence));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -173,7 +184,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_BanditPAM_KMedoids__new", (DL_FUNC) &_BanditPAM_KMedoids__new, 4},
+    {"_BanditPAM_bpam_num_threads", (DL_FUNC) &_BanditPAM_bpam_num_threads, 0},
+    {"_BanditPAM_KMedoids__new", (DL_FUNC) &_BanditPAM_KMedoids__new, 5},
     {"_BanditPAM_KMedoids__fit", (DL_FUNC) &_BanditPAM_KMedoids__fit, 4},
     {"_BanditPAM_KMedoids__get_medoids_final", (DL_FUNC) &_BanditPAM_KMedoids__get_medoids_final, 1},
     {"_BanditPAM_KMedoids__get_k", (DL_FUNC) &_BanditPAM_KMedoids__get_k, 1},

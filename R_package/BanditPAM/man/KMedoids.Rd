@@ -42,6 +42,7 @@ The loss function, "lp" (for p integer > 0) or one of "manhattan", "cosine", "in
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-KMedoids-new}{\code{KMedoids$new()}}
+\item \href{#method-KMedoids-get_algorithm}{\code{KMedoids$get_algorithm()}}
 \item \href{#method-KMedoids-fit}{\code{KMedoids$fit()}}
 \item \href{#method-KMedoids-get_medoids_final}{\code{KMedoids$get_medoids_final()}}
 \item \href{#method-KMedoids-get_statistic}{\code{KMedoids$get_statistic()}}
@@ -55,13 +56,21 @@ The loss function, "lp" (for p integer > 0) or one of "manhattan", "cosine", "in
 \subsection{Method \code{new()}}{
 Create a new KMedoids object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{KMedoids$new(k = 5L, max_iter = 1000L, build_conf = 1000, swap_conf = 10000L)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{KMedoids$new(
+  k = 5L,
+  algorithm = c("BanditPAM", "PAM", "FastPAM1"),
+  max_iter = 1000L,
+  build_conf = 1000,
+  swap_conf = 10000L
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{k}}{number of medoids/clusters to create, default 5}
+
+\item{\code{algorithm}}{the algorithm to use, one of "BanditPAM", "PAM", "FastPAM1"}
 
 \item{\code{max_iter}}{the maximum number of SWAP steps the algorithm runs, default 1000}
 
@@ -73,6 +82,19 @@ Create a new KMedoids object
 }
 \subsection{Returns}{
 a KMedoids object which can be used to fit the BanditPAM algorithm to data
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-KMedoids-get_algorithm"></a>}}
+\if{latex}{\out{\hypertarget{method-KMedoids-get_algorithm}{}}}
+\subsection{Method \code{get_algorithm()}}{
+Return the algorithm used
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{KMedoids$get_algorithm()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+a string indicating the algorithm
 }
 }
 \if{html}{\out{<hr>}}

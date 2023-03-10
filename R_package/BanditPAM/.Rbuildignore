@@ -5,4 +5,6 @@ LICENSE\.md$
 _pkgdown\.yml$
 docs$
 pkgdown$
-
+src/*.o
+src/*.so
+inst/misc/*

@@ -1,8 +1,8 @@
 # BanditPAM <img src="man/figures/logo.png" align="right" />
 
-This repo contains a high-performance implementation of
-[BanditPAM](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf)
-in R.
+We provide an R interface to the high-performance implementation of
+[BanditPAM](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf),
+an $k$-medoids clustering algorithm.
 
 If you use this software, please cite:
 
@@ -20,11 +20,11 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 
 ## Installation
 
-Until it gets on CRAN, you can install the development version of
-BanditPAM like so:
+BanditPAM can be installed from CRAN like any other
+package. Development versions may be installed via:
 
 ``` r
-remotes::install_github("bnaras/BanditPAM")
+remotes::install_github("bnaras/BanditPAM", subdir = "R_package/BanditPAM")
 ```
 
 For the latter, you need the package development toolchain for R

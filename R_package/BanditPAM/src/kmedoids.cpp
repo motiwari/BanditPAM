@@ -16,25 +16,37 @@ using namespace Rcpp;
 
 #include "kmedoids_algorithm.hpp"
 
-//' Create a new KMedoids object.
-//'
-//' @return an external ptr (Rcpp::XPtr) to a KMedoids object instance.
-// [[Rcpp::export(.KMedoids__new)]]
-SEXP KMedoids__new(IntegerVector k, IntegerVector max_iter, IntegerVector build_confidence, IntegerVector swap_confidence) {
+//' Return the number of threads BanditPAM is using
+//' @return the number of threads BanditPAM is using
+// [[Rcpp::export]]
+int bpam_num_threads() {
+  int result = 1;
+#pragma omp parallel
+  {
+  result = omp_get_num_threads();
+  }
+  return result;
+}
+
+//// Create a new KMedoids object.
+////
+//// @return an external ptr (Rcpp::XPtr) to a KMedoids object instance.
+// [[Rcpp::export(.KMedoids__new)]] 
+SEXP KMedoids__new(IntegerVector k, CharacterVector alg, IntegerVector max_iter, IntegerVector build_confidence, IntegerVector swap_confidence) {
   
   // create a pointer to an KMedoids object and wrap it
   // as an external pointer
-  XPtr<km::KMedoids> ptr( new km::KMedoids((size_t) k[0], "BanditPAM", (size_t) max_iter[0], (size_t) build_confidence[0], (size_t) swap_confidence[0]), true );
+  XPtr<km::KMedoids> ptr( new km::KMedoids((size_t) k[0], (std::string) alg[0], (size_t) max_iter[0], (size_t) build_confidence[0], (size_t) swap_confidence[0]), true );
   // return the external pointer to the R side
   return ptr;
 }
 
-//' Fit the KMedoids algorthm given the data and loss
-//'
-//' @param xp the km::KMedoids Object XPtr
-//' @param data the data matrix
-//' @param loss the loss indicator
-//' @param distMat the optional distance matrix
+//// Fit the KMedoids algorthm given the data and loss
+////
+//// @param xp the km::KMedoids Object XPtr
+//// @param data the data matrix
+//// @param loss the loss indicator
+//// @param distMat the optional distance matrix
 // [[Rcpp::export(.KMedoids__fit)]]
 void KMedoids__fit(SEXP xp, arma::mat data, std::vector< std::string > loss, SEXP distMat = R_NilValue) {
   // grab the object as a XPtr (smart pointer)
@@ -50,9 +62,9 @@ void KMedoids__fit(SEXP xp, arma::mat data, std::vector< std::string > loss, SEX
 
 }
 
-//' Return the final medoids
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Return the final medoids
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__get_medoids_final)]]
 SEXP KMedoids__get_medoids_final(SEXP xp) {
   // grab the object as a XPtr (smart pointer)
@@ -65,9 +77,9 @@ SEXP KMedoids__get_medoids_final(SEXP xp) {
   return wrap(medoidIndices);
 }
 
-//' Return the number of medoids property k
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Return the number of medoids property k
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__get_k)]]
 SEXP KMedoids__get_k(SEXP xp) {
   // grab the object as a XPtr (smart pointer)
@@ -75,9 +87,9 @@ SEXP KMedoids__get_k(SEXP xp) {
   return wrap(ptr->getNMedoids());
 }
 
-//' Set the number of medoids property k
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Set the number of medoids property k
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__set_k)]]
 void KMedoids__set_k(SEXP xp, IntegerVector k) {
   // grab the object as a XPtr (smart pointer)
@@ -85,9 +97,9 @@ void KMedoids__set_k(SEXP xp, IntegerVector k) {
   ptr->setNMedoids(k[0]);
 }
 
-//' Return the max_iter property
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Return the max_iter property
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__get_max_iter)]]
 SEXP KMedoids__get_max_iter(SEXP xp) {
   // grab the object as a XPtr (smart pointer)
@@ -95,9 +107,9 @@ SEXP KMedoids__get_max_iter(SEXP xp) {
   return wrap(ptr->getMaxIter());
 }
 
-//' Set the max_iter property
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Set the max_iter property
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__set_iter)]]
 void KMedoids__set_max_iter(SEXP xp, IntegerVector m) {
   // grab the object as a XPtr (smart pointer)
@@ -105,9 +117,9 @@ void KMedoids__set_max_iter(SEXP xp, IntegerVector m) {
   ptr->setMaxIter(m[0]);
 }
 
-//' Return the build_conf property
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Return the build_conf property
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__get_build_conf)]]
 SEXP KMedoids__get_build_conf(SEXP xp) {
   // grab the object as a XPtr (smart pointer)
@@ -115,9 +127,9 @@ SEXP KMedoids__get_build_conf(SEXP xp) {
   return wrap(ptr->getBuildConfidence());
 }
 
-//' Set the build_conf property
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Set the build_conf property
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__set_iter)]]
 void KMedoids__set_build_conf(SEXP xp, IntegerVector bc) {
   // grab the object as a XPtr (smart pointer)
@@ -125,9 +137,9 @@ void KMedoids__set_build_conf(SEXP xp, IntegerVector bc) {
   ptr->setBuildConfidence(bc[0]);
 }
 
-//' Return the swap_conf property
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Return the swap_conf property
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__get_swap_conf)]]
 SEXP KMedoids__get_swap_conf(SEXP xp) {
   // grab the object as a XPtr (smart pointer)
@@ -135,9 +147,9 @@ SEXP KMedoids__get_swap_conf(SEXP xp) {
   return wrap(ptr->getSwapConfidence());
 }
 
-//' Set the swap_conf property
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Set the swap_conf property
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__set_iter)]]
 void KMedoids__set_swap_conf(SEXP xp, IntegerVector bc) {
   // grab the object as a XPtr (smart pointer)
@@ -145,9 +157,9 @@ void KMedoids__set_swap_conf(SEXP xp, IntegerVector bc) {
   ptr->setSwapConfidence(bc[0]);
 }
 
-//' Return the loss_fn property
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Return the loss_fn property
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__get_loss_fn)]]
 SEXP KMedoids__get_loss_fn(SEXP xp) {
   // grab the object as a XPtr (smart pointer)
@@ -155,9 +167,9 @@ SEXP KMedoids__get_loss_fn(SEXP xp) {
   return wrap(ptr->getLossFn());
 }
 
-//' Set the loss_fn property
-//'
-//' @param xp the km::KMedoids Object XPtr
+//// Set the loss_fn property
+////
+//// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__set_loss_fn)]]
 void KMedoids__set_loss_fn(SEXP xp, std::vector< std::string > loss_fn ) {
   // grab the object as a XPtr (smart pointer)
@@ -166,10 +178,10 @@ void KMedoids__set_loss_fn(SEXP xp, std::vector< std::string > loss_fn ) {
 }
 
 
-//' Return specified metric/statistics from the computation
-//'
-//' @param xp the km::KMedoids Object XPtr
-//' @param what which metric to return, 1 = "dist_computations", 2 = "dist_computations_and_misc", 3 = "misc_dist", 4 = "build_dist", 5 = "swap_dist", 6 = "cache_writes", 7 = "cache_hits", 8 = "cache_misses"
+//// Return specified metric/statistics from the computation
+////
+//// @param xp the km::KMedoids Object XPtr
+//// @param what which metric to return, 1 = "dist_computations", 2 = "dist_computations_and_misc", 3 = "misc_dist", 4 = "build_dist", 5 = "swap_dist", 6 = "cache_writes", 7 = "cache_hits", 8 = "cache_misses"
 // [[Rcpp::export(.KMedoids__get_statistic)]]
 SEXP KMedoids__get_statistic(SEXP xp, IntegerVector what) {
   // grab the object as a XPtr (smart pointer)
