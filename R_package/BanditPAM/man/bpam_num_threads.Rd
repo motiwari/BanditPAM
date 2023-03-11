@@ -2,13 +2,13 @@
 % Please edit documentation in R/RcppExports.R
 \name{bpam_num_threads}
 \alias{bpam_num_threads}
-\title{Return the number of threads BanditPAM is using}
+\title{Return the number of threads banditpam is using}
 \usage{
 bpam_num_threads()
 }
 \value{
-the number of threads BanditPAM is using
+the number of threads banditpam is using
 }
 \description{
-Return the number of threads BanditPAM is using
+Return the number of threads banditpam is using
 }

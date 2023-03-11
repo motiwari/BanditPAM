@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="R interface to a high-performance implementation of k-medoids clustering described in Tiwari et al. 2020 (Advances in Neural Information Processing Systems 33).">
-<title>Almost Linear-Time k-Medoids Clustering • BanditPAM</title>
+<title>Almost Linear-Time k-Medoids Clustering • banditpam</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -31,7 +31,7 @@
 
     <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
-    <a class="navbar-brand me-2" href="index.html">BanditPAM</a>
+    <a class="navbar-brand me-2" href="index.html">banditpam</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0</small>
 
@@ -75,19 +75,19 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header">
-<img src="logo.png" class="logo" alt=""><h1 id="banditpam-">BanditPAM <a class="anchor" aria-label="anchor" href="#banditpam-"></a>
+<img src="logo.png" class="logo" alt=""><h1 id="banditpam-">banditpam <a class="anchor" aria-label="anchor" href="#banditpam-"></a>
 </h1>
 </div>
-<p>We provide an R interface to the high-performance implementation of <a href="https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf" class="external-link">BanditPAM</a>, a <span class="math inline"><em>k</em></span>-medoids clustering algorithm.</p>
+<p>We provide an R interface to the high-performance implementation of <a href="https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf" class="external-link">banditpam</a>, a <span class="math inline"><em>k</em></span>-medoids clustering algorithm.</p>
 <p>If you use this software, please cite:</p>
 <blockquote>
 <blockquote>
-<p>Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. “BanditPAM: Almost Linear Time <em>k</em>-medoids Clustering via Multi-Armed Bandits” Advances in Neural Information Processing Systems (NeurIPS) 2020.</p>
+<p>Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. “banditpam: Almost Linear Time <em>k</em>-medoids Clustering via Multi-Armed Bandits” Advances in Neural Information Processing Systems (NeurIPS) 2020.</p>
 </blockquote>
 </blockquote>
 <p>Here’s a BibTeX entry:</p>
-<pre><code>@inproceedings{BanditPAM,
-  title={BanditPAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits},
+<pre><code>@inproceedings{banditpam,
+  title={banditpam: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits},
   author={Tiwari, Mo and Zhang, Martin J and Mayclin, James and Thrun, Sebastian and Piech, Chris and Shomorony, Ilan},
   booktitle={Advances in Neural Information Processing Systems},
   pages={368--374},
@@ -96,9 +96,9 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>BanditPAM can be installed from CRAN like any other package. Development versions may be installed via:</p>
+<p>banditpam can be installed from CRAN like any other package. Development versions may be installed via:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"bnaras/BanditPAM"</span>, subdir <span class="op">=</span> <span class="st">"R_package/BanditPAM"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"bnaras/banditpam"</span>, subdir <span class="op">=</span> <span class="st">"R_package/banditpam"</span><span class="op">)</span></span></code></pre></div>
 <p>For the latter, you need the package development toolchain for R packages. Refer to <a href="https://cran.r-project.org" class="external-link">CRAN</a>.</p>
 </div>
 <div class="section level2">
@@ -106,7 +106,7 @@
 </h2>
 <p>This is a basic example which shows you how to solve a common problem:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">BanditPAM</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">banditpam</span><span class="op">)</span></span>
 <span><span class="co">## Generate data from a Gaussian Mixture Model with the given means:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">n_per_cluster</span> <span class="op">&lt;-</span> <span class="fl">40</span></span>
@@ -150,7 +150,7 @@
 <div class="citation">
 <h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing BanditPAM</a></li>
+<li><a href="authors.html#citation">Citing banditpam</a></li>
 </ul>
 </div>
 

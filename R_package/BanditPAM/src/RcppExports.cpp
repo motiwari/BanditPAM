@@ -13,7 +13,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // bpam_num_threads
 int bpam_num_threads();
-RcppExport SEXP _BanditPAM_bpam_num_threads() {
+RcppExport SEXP _banditpam_bpam_num_threads() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,7 +23,7 @@ END_RCPP
 }
 // KMedoids__new
 SEXP KMedoids__new(IntegerVector k, CharacterVector alg, IntegerVector max_iter, IntegerVector build_confidence, IntegerVector swap_confidence);
-RcppExport SEXP _BanditPAM_KMedoids__new(SEXP kSEXP, SEXP algSEXP, SEXP max_iterSEXP, SEXP build_confidenceSEXP, SEXP swap_confidenceSEXP) {
+RcppExport SEXP _banditpam_KMedoids__new(SEXP kSEXP, SEXP algSEXP, SEXP max_iterSEXP, SEXP build_confidenceSEXP, SEXP swap_confidenceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -38,7 +38,7 @@ END_RCPP
 }
 // KMedoids__fit
 void KMedoids__fit(SEXP xp, arma::mat data, std::vector< std::string > loss, SEXP distMat);
-RcppExport SEXP _BanditPAM_KMedoids__fit(SEXP xpSEXP, SEXP dataSEXP, SEXP lossSEXP, SEXP distMatSEXP) {
+RcppExport SEXP _banditpam_KMedoids__fit(SEXP xpSEXP, SEXP dataSEXP, SEXP lossSEXP, SEXP distMatSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
@@ -51,7 +51,7 @@ END_RCPP
 }
 // KMedoids__get_medoids_final
 SEXP KMedoids__get_medoids_final(SEXP xp);
-RcppExport SEXP _BanditPAM_KMedoids__get_medoids_final(SEXP xpSEXP) {
+RcppExport SEXP _banditpam_KMedoids__get_medoids_final(SEXP xpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -62,7 +62,7 @@ END_RCPP
 }
 // KMedoids__get_k
 SEXP KMedoids__get_k(SEXP xp);
-RcppExport SEXP _BanditPAM_KMedoids__get_k(SEXP xpSEXP) {
+RcppExport SEXP _banditpam_KMedoids__get_k(SEXP xpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -73,7 +73,7 @@ END_RCPP
 }
 // KMedoids__set_k
 void KMedoids__set_k(SEXP xp, IntegerVector k);
-RcppExport SEXP _BanditPAM_KMedoids__set_k(SEXP xpSEXP, SEXP kSEXP) {
+RcppExport SEXP _banditpam_KMedoids__set_k(SEXP xpSEXP, SEXP kSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
@@ -84,7 +84,7 @@ END_RCPP
 }
 // KMedoids__get_max_iter
 SEXP KMedoids__get_max_iter(SEXP xp);
-RcppExport SEXP _BanditPAM_KMedoids__get_max_iter(SEXP xpSEXP) {
+RcppExport SEXP _banditpam_KMedoids__get_max_iter(SEXP xpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -95,7 +95,7 @@ END_RCPP
 }
 // KMedoids__set_max_iter
 void KMedoids__set_max_iter(SEXP xp, IntegerVector m);
-RcppExport SEXP _BanditPAM_KMedoids__set_max_iter(SEXP xpSEXP, SEXP mSEXP) {
+RcppExport SEXP _banditpam_KMedoids__set_max_iter(SEXP xpSEXP, SEXP mSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
@@ -106,7 +106,7 @@ END_RCPP
 }
 // KMedoids__get_build_conf
 SEXP KMedoids__get_build_conf(SEXP xp);
-RcppExport SEXP _BanditPAM_KMedoids__get_build_conf(SEXP xpSEXP) {
+RcppExport SEXP _banditpam_KMedoids__get_build_conf(SEXP xpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -117,7 +117,7 @@ END_RCPP
 }
 // KMedoids__set_build_conf
 void KMedoids__set_build_conf(SEXP xp, IntegerVector bc);
-RcppExport SEXP _BanditPAM_KMedoids__set_build_conf(SEXP xpSEXP, SEXP bcSEXP) {
+RcppExport SEXP _banditpam_KMedoids__set_build_conf(SEXP xpSEXP, SEXP bcSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
@@ -128,7 +128,7 @@ END_RCPP
 }
 // KMedoids__get_swap_conf
 SEXP KMedoids__get_swap_conf(SEXP xp);
-RcppExport SEXP _BanditPAM_KMedoids__get_swap_conf(SEXP xpSEXP) {
+RcppExport SEXP _banditpam_KMedoids__get_swap_conf(SEXP xpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -139,7 +139,7 @@ END_RCPP
 }
 // KMedoids__set_swap_conf
 void KMedoids__set_swap_conf(SEXP xp, IntegerVector bc);
-RcppExport SEXP _BanditPAM_KMedoids__set_swap_conf(SEXP xpSEXP, SEXP bcSEXP) {
+RcppExport SEXP _banditpam_KMedoids__set_swap_conf(SEXP xpSEXP, SEXP bcSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
@@ -150,7 +150,7 @@ END_RCPP
 }
 // KMedoids__get_loss_fn
 SEXP KMedoids__get_loss_fn(SEXP xp);
-RcppExport SEXP _BanditPAM_KMedoids__get_loss_fn(SEXP xpSEXP) {
+RcppExport SEXP _banditpam_KMedoids__get_loss_fn(SEXP xpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -161,7 +161,7 @@ END_RCPP
 }
 // KMedoids__set_loss_fn
 void KMedoids__set_loss_fn(SEXP xp, std::vector< std::string > loss_fn);
-RcppExport SEXP _BanditPAM_KMedoids__set_loss_fn(SEXP xpSEXP, SEXP loss_fnSEXP) {
+RcppExport SEXP _banditpam_KMedoids__set_loss_fn(SEXP xpSEXP, SEXP loss_fnSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
@@ -172,7 +172,7 @@ END_RCPP
 }
 // KMedoids__get_statistic
 SEXP KMedoids__get_statistic(SEXP xp, IntegerVector what);
-RcppExport SEXP _BanditPAM_KMedoids__get_statistic(SEXP xpSEXP, SEXP whatSEXP) {
+RcppExport SEXP _banditpam_KMedoids__get_statistic(SEXP xpSEXP, SEXP whatSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -184,25 +184,25 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_BanditPAM_bpam_num_threads", (DL_FUNC) &_BanditPAM_bpam_num_threads, 0},
-    {"_BanditPAM_KMedoids__new", (DL_FUNC) &_BanditPAM_KMedoids__new, 5},
-    {"_BanditPAM_KMedoids__fit", (DL_FUNC) &_BanditPAM_KMedoids__fit, 4},
-    {"_BanditPAM_KMedoids__get_medoids_final", (DL_FUNC) &_BanditPAM_KMedoids__get_medoids_final, 1},
-    {"_BanditPAM_KMedoids__get_k", (DL_FUNC) &_BanditPAM_KMedoids__get_k, 1},
-    {"_BanditPAM_KMedoids__set_k", (DL_FUNC) &_BanditPAM_KMedoids__set_k, 2},
-    {"_BanditPAM_KMedoids__get_max_iter", (DL_FUNC) &_BanditPAM_KMedoids__get_max_iter, 1},
-    {"_BanditPAM_KMedoids__set_max_iter", (DL_FUNC) &_BanditPAM_KMedoids__set_max_iter, 2},
-    {"_BanditPAM_KMedoids__get_build_conf", (DL_FUNC) &_BanditPAM_KMedoids__get_build_conf, 1},
-    {"_BanditPAM_KMedoids__set_build_conf", (DL_FUNC) &_BanditPAM_KMedoids__set_build_conf, 2},
-    {"_BanditPAM_KMedoids__get_swap_conf", (DL_FUNC) &_BanditPAM_KMedoids__get_swap_conf, 1},
-    {"_BanditPAM_KMedoids__set_swap_conf", (DL_FUNC) &_BanditPAM_KMedoids__set_swap_conf, 2},
-    {"_BanditPAM_KMedoids__get_loss_fn", (DL_FUNC) &_BanditPAM_KMedoids__get_loss_fn, 1},
-    {"_BanditPAM_KMedoids__set_loss_fn", (DL_FUNC) &_BanditPAM_KMedoids__set_loss_fn, 2},
-    {"_BanditPAM_KMedoids__get_statistic", (DL_FUNC) &_BanditPAM_KMedoids__get_statistic, 2},
+    {"_banditpam_bpam_num_threads", (DL_FUNC) &_banditpam_bpam_num_threads, 0},
+    {"_banditpam_KMedoids__new", (DL_FUNC) &_banditpam_KMedoids__new, 5},
+    {"_banditpam_KMedoids__fit", (DL_FUNC) &_banditpam_KMedoids__fit, 4},
+    {"_banditpam_KMedoids__get_medoids_final", (DL_FUNC) &_banditpam_KMedoids__get_medoids_final, 1},
+    {"_banditpam_KMedoids__get_k", (DL_FUNC) &_banditpam_KMedoids__get_k, 1},
+    {"_banditpam_KMedoids__set_k", (DL_FUNC) &_banditpam_KMedoids__set_k, 2},
+    {"_banditpam_KMedoids__get_max_iter", (DL_FUNC) &_banditpam_KMedoids__get_max_iter, 1},
+    {"_banditpam_KMedoids__set_max_iter", (DL_FUNC) &_banditpam_KMedoids__set_max_iter, 2},
+    {"_banditpam_KMedoids__get_build_conf", (DL_FUNC) &_banditpam_KMedoids__get_build_conf, 1},
+    {"_banditpam_KMedoids__set_build_conf", (DL_FUNC) &_banditpam_KMedoids__set_build_conf, 2},
+    {"_banditpam_KMedoids__get_swap_conf", (DL_FUNC) &_banditpam_KMedoids__get_swap_conf, 1},
+    {"_banditpam_KMedoids__set_swap_conf", (DL_FUNC) &_banditpam_KMedoids__set_swap_conf, 2},
+    {"_banditpam_KMedoids__get_loss_fn", (DL_FUNC) &_banditpam_KMedoids__get_loss_fn, 1},
+    {"_banditpam_KMedoids__set_loss_fn", (DL_FUNC) &_banditpam_KMedoids__set_loss_fn, 2},
+    {"_banditpam_KMedoids__get_statistic", (DL_FUNC) &_banditpam_KMedoids__get_statistic, 2},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_BanditPAM(DllInfo *dll) {
+RcppExport void R_init_banditpam(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

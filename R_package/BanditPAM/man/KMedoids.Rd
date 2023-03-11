@@ -81,7 +81,7 @@ Create a new KMedoids object
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-a KMedoids object which can be used to fit the BanditPAM algorithm to data
+a KMedoids object which can be used to fit the banditpam algorithm to data
 }
 }
 \if{html}{\out{<hr>}}

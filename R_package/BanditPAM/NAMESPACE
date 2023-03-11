@@ -3,4 +3,4 @@
 export(KMedoids)
 importFrom(R6,R6Class)
 importFrom(Rcpp,evalCpp)
-useDynLib(BanditPAM)
+useDynLib(banditpam)
