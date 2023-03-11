@@ -1,17 +1,17 @@
-# BanditPAM <img src="man/figures/logo.png" align="right" />
+# banditpam <img src="man/figures/logo.png" align="right" />
 
 We provide an R interface to the high-performance implementation of
-[BanditPAM](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf),
+[banditpam](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf),
 a $k$-medoids clustering algorithm.
 
 If you use this software, please cite:
 
->>Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "BanditPAM: Almost Linear Time *k*-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
+>>Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "banditpam: Almost Linear Time *k*-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
 
 Here's a BibTeX entry:
 ```
-@inproceedings{BanditPAM,
-  title={BanditPAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits},
+@inproceedings{banditpam,
+  title={banditpam: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits},
   author={Tiwari, Mo and Zhang, Martin J and Mayclin, James and Thrun, Sebastian and Piech, Chris and Shomorony, Ilan},
   booktitle={Advances in Neural Information Processing Systems},
   pages={368--374},
@@ -21,11 +21,11 @@ Here's a BibTeX entry:
 
 ## Installation
 
-BanditPAM can be installed from CRAN like any other
+banditpam can be installed from CRAN like any other
 package. Development versions may be installed via:
 
 ``` r
-remotes::install_github("bnaras/BanditPAM", subdir = "R_package/BanditPAM")
+remotes::install_github("bnaras/banditpam", subdir = "R_package/banditpam")
 ```
 
 For the latter, you need the package development toolchain for R
@@ -37,7 +37,7 @@ packages. Refer to [CRAN](https://cran.r-project.org).
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(BanditPAM)
+library(banditpam)
 ## Generate data from a Gaussian Mixture Model with the given means:
 set.seed(10)
 n_per_cluster <- 40

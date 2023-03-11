@@ -1,12 +1,12 @@
-#' BanditPAM is a package for fast clustering using medoids
+#' banditpam is a package for fast clustering using medoids
 #'
-#' @description BanditPAM is a high-performance package for almost
+#' @description banditpam is a high-performance package for almost
 #'   linear-time k-medoids clustering. The methods are described in
 #'   Tiwari, et al. 2020 (Advances in Neural Information Processing Systems
 #'   33).
 #'
-#' @name BanditPAM-package
-#' @useDynLib BanditPAM
+#' @name banditpam-package
+#' @useDynLib banditpam
 #' @docType package
 #' @author Balasubramanian Narasimhan and Mo Tiwari
 #' @keywords package

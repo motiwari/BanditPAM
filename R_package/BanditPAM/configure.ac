@@ -1,5 +1,5 @@
 dnl Hacked from original source at https://github.com/dmlc/xgboost
-AC_INIT(BanditPAM, 1.0)
+AC_INIT(banditpam, 1.0)
 AC_PREREQ(2.71)
 
 : ${R_HOME=`R RHOME`}

@@ -1,6 +1,6 @@
 
 ## Constants
-library(BanditPAM)
+library(banditpam)
 
 NUM_SMALL_CASES <- 10
 NUM_MEDIUM_CASES <- 48
