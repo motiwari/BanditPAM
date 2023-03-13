@@ -1,5 +1,12 @@
 # BanditPAM: Almost Linear-Time *k*-Medoids Clustering
 
+[![Linux - build package and run tests](https://github.com/motiwari/BanditPAM/actions/workflows/run_linux_tests.yml/badge.svg?branch=main)](https://github.com/motiwari/BanditPAM/actions/workflows/run_linux_tests.yml)
+[![Linux - build source distribution and wheels](https://github.com/motiwari/BanditPAM/actions/workflows/build_linux_wheels.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/build_linux_wheels.yml)
+[![MacOS - build package and run tests](https://github.com/motiwari/BanditPAM/actions/workflows/run_mac_tests.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_mac_tests.yml)
+[![MacOS - build wheels](https://github.com/motiwari/BanditPAM/actions/workflows/build_mac_wheels.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/build_mac_wheels.yml)
+[![Run CMake build on MacOS](https://github.com/motiwari/BanditPAM/actions/workflows/run_cmake_build.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_cmake_build.yml)
+[![Run style checks](https://github.com/motiwari/BanditPAM/actions/workflows/run_style_checks.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_style_checks.yml)
+
 This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf). The code can be called directly from Python or C++.
 
 If you use this software, please cite:
