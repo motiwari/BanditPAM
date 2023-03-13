@@ -387,7 +387,7 @@ class BuildExt(build_ext):
         if (sys.platform == "darwin" and os.environ.get(GHA, False)):
             link_opts.append('-lomp')  # Potentially unused?
             link_opts.append('-I/usr/local/opt/libomp/include')
-            link_opts.append('-L/usr/local/opt/libomp/lib')  # Potentially unused?
+            link_opts.append('-L/usr/local/opt/libomp/lib')  # Unused?
         else:
             if compiler_name == "clang":
                 link_opts.append("-lomp")
@@ -465,7 +465,8 @@ def main():
 
     compiler_name = compiler_check()
     if (sys.platform == "darwin" and os.environ.get(GHA, False)):
-        # On Mac Github Runners, we should NOT include gomp or omp here due to build errors.
+        # On Mac Github Runners, we should NOT include gomp or omp here
+        # due to build errors.
         libraries = ["armadillo", "omp"]
     else:
         if compiler_name == "clang":
@@ -498,8 +499,8 @@ def main():
             include_dirs=include_dirs,
             library_dirs=[
                 os.path.join("/", "usr", "local", "lib"),
-                # For Mac Github runners that install locally (not build wheels) - testing
-                # for macos-10.15
+                # For Mac Github runners that install locally
+                # (not build wheels) - testing for macos-10.15
                 os.path.join("/", "usr", "local", "Cellar", "libomp",
                              "15.0.2", "lib"),
 
