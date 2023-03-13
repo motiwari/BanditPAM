@@ -24,8 +24,9 @@ before-all = [
 
 # Adding /usr/local/lib because that's where armadillo is installed from the repo
 repair-wheel-command = [
+    "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib:/usr/local/opt/armadillo/lib:/usr/local/lib:/usr/local/opt/libomp/lib:/usr/local/Cellar/libomp/15.0.2/lib:/usr/local/Cellar/libomp/15.0.7/lib delocate-listdeps --depending {wheel}",
     "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib:/usr/local/opt/armadillo/lib:/usr/local/lib:/usr/local/opt/libomp/lib:/usr/local/Cellar/libomp/15.0.2/lib:/usr/local/Cellar/libomp/15.0.7/lib delocate-listdeps {wheel}",
-    "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib:/usr/local/opt/armadillo/lib:/usr/local/lib:/usr/local/opt/libomp/lib:/usr/local/Cellar/libomp/15.0.2/lib:/usr/local/Cellar/libomp/15.0.7/lib -w {dest_dir} {wheel}"
+    "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib:/usr/local/opt/armadillo/lib:/usr/local/lib:/usr/local/opt/libomp/lib:/usr/local/Cellar/libomp/15.0.2/lib:/usr/local/Cellar/libomp/15.0.7/lib delocate-wheel -v -w {dest_dir} {wheel}"
 ]
 
 
