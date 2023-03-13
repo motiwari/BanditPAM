@@ -1,4 +1,4 @@
-# BanditPAM: Almost Linear-Time *k*-Medoids Clustering
+# BanditPAM: Almost Linear-Time $k$-Medoids Clustering
 
 [![Linux - build package and run tests](https://github.com/motiwari/BanditPAM/actions/workflows/run_linux_tests.yml/badge.svg?branch=main)](https://github.com/motiwari/BanditPAM/actions/workflows/run_linux_tests.yml)
 [![Linux - build source distribution and wheels](https://github.com/motiwari/BanditPAM/actions/workflows/build_linux_wheels.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/build_linux_wheels.yml)
@@ -7,7 +7,7 @@
 [![Run CMake build on MacOS](https://github.com/motiwari/BanditPAM/actions/workflows/run_cmake_build.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_cmake_build.yml)
 [![Run style checks](https://github.com/motiwari/BanditPAM/actions/workflows/run_style_checks.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_style_checks.yml)
 
-This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf). The code can be called directly from Python or C++.
+This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time $k$-Medoids Clustering](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf). The code can be called directly from Python or C++.
 
 If you use this software, please cite:
 
@@ -24,15 +24,15 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 ```
 
 # Requirements
-# TL;DR run `pip install banditpam` and jump to the [examples](https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
+# TL;DR run `pip install banditpam` and jump to the [examples](https://github.com/motiwari/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
 
-If you have any difficulties, please see the [platform-specific guides](https://github.com/ThrunGroup/BanditPAM#platform-specific-installation-guides) and file a Github issue if you have additional trouble.
+If you have any difficulties, please see the [platform-specific guides](https://github.com/motiwari/BanditPAM#platform-specific-installation-guides) and file a Github issue if you have additional trouble.
 
 ## Further Reading
 * [Full paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf)
 * [3-minute summary video](https://crossminds.ai/video/bandit-pam-almost-linear-time-k-medoids-clustering-via-multi-armed-bandits-5fb88782b0a3f6412973b646/)
 * [Blog post](https://ai.stanford.edu/blog/banditpam/)
-* [Code](https://github.com/ThrunGroup/BanditPAM)
+* [Code](https://github.com/motiwari/BanditPAM)
 * [PyPI](https://pypi.org/project/banditpam/)
 * [Documentation](https://banditpam.readthedocs.io/en/latest)
 
@@ -116,7 +116,7 @@ plt.show()
 
 ## Documentation
 
-Documentation for BanditPAM can be found on [read the docs](https://banditpam.readthedocs.io/en)
+Documentation for BanditPAM can be found on [read the docs](https://banditpam.readthedocs.io/).
 
 ## Building the C++ executable from source
 
@@ -154,7 +154,7 @@ If installing these requirements from source, one can generally use the followin
 /armadillo/build$ cmake .. && make && sudo make install
 ```
 
-Note that `CARMA` has different installation instructions; see the [quickstart](https://github.com/ThrunGroup/BanditPAM#install-the-repo-and-its-dependencies).
+Note that `CARMA` has different installation instructions; see the [its instructions](https://github.com/RUrlus/carma#installation).
 
 ####  Platform-specific installation guides
 Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:
@@ -195,11 +195,11 @@ This also allows for clustering of "exotic" objects like trees, graphs, natural 
 
 The package currently supports a number of distance metrics, including all Lp losses and cosine distance.
 
-If you're willing to write a little C++, you only need to add a few lines to [kmedoids_algorithm.cpp](https://github.com/ThrunGroup/BanditPAM/blob/main/src/kmedoids_algorithm.cpp#L560-L615) and [kmedoids_algorithm.hpp](https://github.com/ThrunGroup/BanditPAM/blob/main/headers/kmedoids_algorithm.hpp#L136-L142) to implement your distance metric / pairwise dissimilarity!
+If you're willing to write a little C++, you only need to add a few lines to [kmedoids_algorithm.cpp](https://github.com/motiwari/BanditPAM/blob/main/src/kmedoids_algorithm.cpp#L560-L615) and [kmedoids_algorithm.hpp](https://github.com/motiwari/BanditPAM/blob/main/headers/kmedoids_algorithm.hpp#L136-L142) to implement your distance metric / pairwise dissimilarity!
 
 Then, be sure to re-install the repository with a `pip install .` (note the trailing `.`).
 
-The maintainers of this repository are working on permitting arbitrary dissimilarity metrics that users write in Python, as well; see [#4](https://github.com/ThrunGroup/BanditPAM/issues/4).
+The maintainers of this repository are working on permitting arbitrary dissimilarity metrics that users write in Python, as well; see [#4](https://github.com/motiwari/BanditPAM/issues/4).
 
 ## Testing
 
