@@ -76,6 +76,15 @@ jobs:
       #   run : |
       #     pytest tests/test_larger.py 
 
+      - name: Extract branch name
+        shell: bash
+        run: |
+          echo "here";
+          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})";
+          echo "${{ steps.extract_branch.outputs.branch }}";
+          echo "here2";
+        id: extract_branch
+
       - name: Verify that the C++ executable compiles and runs
         run : |
           git clone https://github.com/motiwari/BanditPAM
