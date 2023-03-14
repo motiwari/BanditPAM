@@ -27,6 +27,14 @@ jobs:
           pip install pytest
           pip install -r requirements.txt
 
+      - name: Extract branch name
+        shell: bash
+        run: |
+          echo "here";
+          echo ${GITHUB_REF#refs/heads/};
+          echo "here2";
+        id: extract_branch
+
       - name: Install Armadillo 10.7.5+
         run: |
           cd ~
@@ -74,16 +82,7 @@ jobs:
 
       # - name: Run larger suite of test cases
       #   run : |
-      #     pytest tests/test_larger.py 
-
-      - name: Extract branch name
-        shell: bash
-        run: |
-          echo "here";
-          echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})";
-          echo "${{ steps.extract_branch.outputs.branch }}";
-          echo "here2";
-        id: extract_branch
+      #     pytest tests/test_larger.py
 
       - name: Verify that the C++ executable compiles and runs
         run : |
