@@ -321,7 +321,7 @@ class KMedoids {
   float getTimePerSwap() const;
 
   /// The cache which stores pairwise distance computations
-  float* cache;
+  std::vector<float> cache;
 
   /// The permutation in which to sample the reference points
   arma::uvec permutation;
