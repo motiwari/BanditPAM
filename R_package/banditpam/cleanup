@@ -1,0 +1,3 @@
+#! /bin/sh
+
+rm -rf src/*so src/*dll src/*.o src/symbols.rds src/Makevars config.log config.status autom4*
