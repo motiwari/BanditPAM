@@ -1,11 +1,11 @@
 Package: banditpam
 Title: Almost Linear-Time k-Medoids Clustering
-Version: 1.0
+Version: 1.0-1
 Authors@R: c(person("Balasubramanian", "Narasimhan", role=c("aut", "cre"),
 	   	   email = "naras@stanford.edu"),
 	     person("Mo", "Tiwari", role=c("aut"),
 	           comment = c(website = "https://motiwari.com")))
-Description: R interface to a high-performance implementation of k-medoids clustering described in Tiwari et al. 2020 (Advances in Neural Information Processing Systems 33).
+Description: Interface to a high-performance implementation of k-medoids clustering described in Tiwari, Zhang, Mayclin, Thrun, Piech and Shomorony (2020) "BanditPAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits" <https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -19,7 +19,6 @@ Suggests:
     MASS,
     rmarkdown,
     tinytest
-Config/testthat/edition: 3
 LinkingTo: 
     Rcpp,
     RcppArmadillo

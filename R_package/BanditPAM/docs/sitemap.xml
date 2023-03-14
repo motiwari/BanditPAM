@@ -22,10 +22,10 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/KMedoids.html</loc>
+    <loc>/reference/BanditPAM-package.html</loc>
   </url>
   <url>
-    <loc>/reference/banditpam-package.html</loc>
+    <loc>/reference/KMedoids.html</loc>
   </url>
   <url>
     <loc>/reference/bpam_num_threads.html</loc>
