@@ -25,7 +25,7 @@ void BanditPAM::fitBanditPAM(
   if (this->useCache) {
     size_t n = data.n_cols;
     size_t m = fmin(n, cacheWidth);
-    std::vector<float> cache(n*m, -1);
+    cache = new float[n * m];
 
     #pragma omp parallel for if (this->parallelize)
     for (size_t idx = 0; idx < m*n; idx++) {
