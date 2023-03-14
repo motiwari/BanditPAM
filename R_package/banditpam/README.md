@@ -21,16 +21,7 @@ Here's a BibTeX entry:
 
 ## Installation
 
-banditpam can be installed from CRAN like any other
-package. Development versions may be installed via:
-
-``` r
-remotes::install_github("motiwari/BanditPAM", subdir = "R_package/banditpam")
-```
-
-For the latter, you need the package development toolchain for R
-packages. Refer to [CRAN](https://cran.r-project.org).
-
+`banditpam` can be installed from CRAN like any other package.
 
 ## Example
 
