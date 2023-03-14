@@ -78,7 +78,7 @@ jobs:
 
       - name: Verify that the C++ executable compiles and runs
         run : |
-          git clone https://github.com/ThrunGroup/BanditPAM
+          git clone https://github.com/motiwari/BanditPAM
           cd BanditPAM
           mkdir build
           cd build

@@ -4,7 +4,7 @@ BanditPAM: A state-of-the-art, high-performance k-medoids algorithm
 Quickstart
 ----------
 
-Run `pip install banditpam` and then check out the `examples <https://github.com/ThrunGroup/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model>`_.
+Run `pip install banditpam` and then check out the `examples <https://github.com/motiwari/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model>`_.
 
 If you use this software, please cite:
 Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "BanditPAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
@@ -37,6 +37,6 @@ Further Reading
 * `Full paper <https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf>`_
 * `3-minute summary video <https://crossminds.ai/video/bandit-pam-almost-linear-time-k-medoids-clustering-via-multi-armed-bandits-5fb88782b0a3f6412973b646/>`_
 * `Blog post <https://ai.stanford.edu/blog/banditpam/>`_
-* `Code <https://github.com/ThrunGroup/BanditPAM>`_
+* `Code <https://github.com/motiwari/BanditPAM>`_
 * `PyPI <https://pypi.org/project/banditpam/>`_
 * `Documentation <https://banditpam.readthedocs.io/en>`_

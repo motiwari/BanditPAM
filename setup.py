@@ -259,7 +259,7 @@ def setup_colab(delete_source=False):
         repo_location = os.path.join("/", "content", "BanditPAM")
         # Note the space after the git URL to separate the source and target
         os.system(
-            "git clone https://github.com/ThrunGroup/BanditPAM.git "
+            "git clone https://github.com/motiwari/BanditPAM.git "
             + repo_location
         )
         os.system(
@@ -523,7 +523,7 @@ def main():
         author="Mo Tiwari",
         maintainer="Mo Tiwari",
         author_email="motiwari@stanford.edu",
-        url="https://github.com/ThrunGroup/BanditPAM",
+        url="https://github.com/motiwari/BanditPAM",
         description="BanditPAM: A state-of-the-art, \
             high-performance k-medoids algorithm.",
         long_description=long_description,
