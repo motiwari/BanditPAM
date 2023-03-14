@@ -10,6 +10,7 @@
 #include <armadillo>
 #include <unordered_map>
 #include <cmath>
+#include <vector>
 
 namespace km {
 void BanditPAM_orig::fitBanditPAM_orig(
@@ -24,7 +25,7 @@ void BanditPAM_orig::fitBanditPAM_orig(
   if (this->useCache) {
     size_t n = data.n_cols;
     size_t m = fmin(n, cacheWidth);
-    cache = new float[n * m];
+    vector<float> cache(n * m, -1);
 
     #pragma omp parallel for if (this->parallelize)
     for (size_t idx = 0; idx < m*n; idx++) {
