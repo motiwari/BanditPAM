@@ -27,14 +27,6 @@ jobs:
           pip install pytest
           pip install -r requirements.txt
 
-      - name: Extract branch name
-        shell: bash
-        run: |
-          echo "here";
-          echo ${GITHUB_REF#refs/heads/};
-          echo "here2";
-        id: extract_branch
-
       - name: Install Armadillo 10.7.5+
         run: |
           cd ~
