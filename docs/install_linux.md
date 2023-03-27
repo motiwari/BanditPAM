@@ -9,7 +9,7 @@ Please ensure the following dependencies are installed:
  - `CMake`: via the [CMake installation instructions](https://cmake.org/install/)
  - OpenMP: via `sudo apt install libomp-dev` or `sudo yum install libomp-dev`
  - Armadillo: via the [Armadillo installation instructions](http://arma.sourceforge.net/download.html)
- - CARMA: via the instructions in the [quickstart](https://github.com/ThrunGroup/BanditPAM#install-the-repo-and-its-dependencies)
+ - CARMA: via the instructions in [its guide](https://github.com/RUrlus/carma#installation)
  - Python3: if not installed, we recommend installing Python3 via [Anaconda](https://www.anaconda.com/products/individual), which is CPython compiled with `clang`
  - `pip` for your Python3 installation: this should be completed if installing via Anaconda above
  - The necessary python packages: via `pip install -r requirements.txt`
@@ -34,6 +34,6 @@ BanditPAM can then be installed via one of the following ways:
 2) Running `pip install .` in the home directory (`/BanditPAM`)
 
 ## Known Issues 
-The following is a list of issues seen when installing BanditPAM on Linux. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/
+The following is a list of issues seen when installing BanditPAM on Linux. To report a bug, please file an issue at https://github.com/motiwari/BanditPAM/
 
 - Beware that installing `libarmadillo-dev` using `apt` or `yum` may provide an outdated version of `armadillo`, especially if you are running an older version of Linux. In this case, you may need to download the latest stable version of `armadillo` and compile it from source

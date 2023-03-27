@@ -33,7 +33,7 @@ class KMedoids {
     const std::string& algorithm = "BanditPAM",
     size_t maxIter = 100,
     size_t buildConfidence = 3,
-    size_t swapConfidence = 4,
+    size_t swapConfidence = 5,
     bool useCache = true,
     bool usePerm = true,
     size_t cacheWidth = 1000,

@@ -50,7 +50,7 @@ jobs:
           export DYLD_LIBRARY_PATH=/usr/local/opt/libomp/lib:/usr/local/opt/libomp/include
           export CC=/usr/local/opt/llvm/bin/clang
           export CXX=/usr/local/opt/llvm/bin/clang++
-          git clone https://github.com/ThrunGroup/BanditPAM
+          git clone -b ${GITHUB_REF#refs/heads/} https://github.com/motiwari/BanditPAM
           cd BanditPAM
           mkdir build
           cd build

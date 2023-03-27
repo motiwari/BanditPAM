@@ -4,11 +4,11 @@ The following is a more detailed description of the installation process of Band
 
 ## Prerequisites
 Please ensure the following dependencies are installed:
- - The most recent version of the Xcode Command Line Tools: via `xcode-select --install`. If you get errors about C++ standard library headers not being found, see the [known issues](https://github.com/ThrunGroup/BanditPAM/blob/main/docs/install_mac.md#known-issues)
+ - The most recent version of the Xcode Command Line Tools: via `xcode-select --install`. If you get errors about C++ standard library headers not being found, see the [known issues](https://github.com/motiwari/BanditPAM/blob/main/docs/install_mac.md#known-issues)
  - Homebrew: via `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
  - LLVM's `clang`: via `brew install llvm`
  - The OpenMP and and Armadillo libraries: via `brew install libomp armadillo`
- - CARMA: via the instructions in the [quickstart](https://github.com/ThrunGroup/BanditPAM#install-the-repo-and-its-dependencies)
+ - CARMA: via the instructions in [its guide](https://github.com/RUrlus/carma#installation)
  - Python3: if not installed, we recommend installing Python3 via [Anaconda](https://www.anaconda.com/products/individual), which is CPython compiled with `clang`
  - `pip` for your Python3 installation; this should be completed if installing via Anaconda above
  - The necessary python packages: via `pip install -r requirements.txt`
@@ -33,9 +33,9 @@ BanditPAM can then be installed via one of the following ways:
 2) Running `pip install .` in the home directory (`/BanditPAM`)
 
 ## Known Issues 
-The following is a list of issues seen when installing BanditPAM on MacOS. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/
+The following is a list of issues seen when installing BanditPAM on MacOS. To report a bug, please file an issue at https://github.com/motiwari/BanditPAM/
 
-- MacOS users may get an error like the one below. If so, you likely need to update your Xcode Tools. Open the XCode app and install the additional software when prompted. If that still does not work, delete your XCode command line tools, re-install them, open the Xcode app and install the additional software when prompted. If that still does not work, restart your computer and try again. [Original Thread](https://github.com/ThrunGroup/BanditPAM/issues/167#issuecomment-1002747153)
+- MacOS users may get an error like the one below. If so, you likely need to update your Xcode Tools. Open the XCode app and install the additional software when prompted. If that still does not work, delete your XCode command line tools, re-install them, open the Xcode app and install the additional software when prompted. If that still does not work, restart your computer and try again. [Original Thread](https://github.com/motiwari/BanditPAM/issues/167#issuecomment-1002747153)
 
 ```
 /usr/local/opt/llvm/bin/../include/c++/v1/stdlib.h:93:15: fatal error: 'stdlib.h' file not found
@@ -44,4 +44,4 @@ The following is a list of issues seen when installing BanditPAM on MacOS. To re
 1 error generated.
 error: command '/usr/local/opt/llvm/bin/clang' failed with exit code 1
 ```
-- Building the wheels for PyPy on MacOS via `cibuildwheel` do not work. As such, it's necessary to build the package from source if using PyPy. For more information, see the [Developer Notes](https://github.com/ThrunGroup/BanditPAM/wiki/Developer-Notes)
+- Building the wheels for PyPy on MacOS via `cibuildwheel` do not work. As such, it's necessary to build the package from source if using PyPy. For more information, see the [Developer Notes](https://github.com/motiwari/BanditPAM/wiki/Developer-Notes)

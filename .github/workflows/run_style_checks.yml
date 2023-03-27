@@ -34,4 +34,4 @@ jobs:
 
       - name: Lint with cpplint
         run: |
-          cpplint --exclude=headers/carma --exclude=build --filter=-legal/copyright,-build/c++11,-build/include_subdir --recursive .
+          cpplint --exclude=headers/carma --exclude=build --exclude=R_package --filter=-legal/copyright,-build/c++11,-build/include_subdir --recursive .

@@ -10,7 +10,7 @@ tar -xvzf cmake-v3.22.1.tar.gz
 cd /content/CMake-3.22.1 && mkdir build && cd build && cmake .. && make && make install
 
 cd /content
-git clone https://github.com/ThrunGroup/BanditPAM.git
+git clone https://github.com/motiwari/BanditPAM.git
 cd /content/BanditPAM
 git submodule update --init --recursive
 cd /content/BanditPAM/headers/carma

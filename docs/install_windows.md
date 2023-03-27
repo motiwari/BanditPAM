@@ -8,7 +8,7 @@ Please ensure the following dependencies are installed:
  - OpenMP: if using LLVM's `clang`, then OpenMP is already enabled
  - `CMake`: via the [CMake installation instructions](https://cmake.org/install/)
  - Armadillo: via the [Armadillo installation instructions](http://arma.sourceforge.net/download.html)
- - CARMA: via the instructions in the [quickstart](https://github.com/ThrunGroup/BanditPAM#install-the-repo-and-its-dependencies)
+ - CARMA: via the instructions in [its guide](https://github.com/RUrlus/carma#installation)
  - Python3: if not installed, we recommend installing Python3 via [Anaconda](https://www.anaconda.com/products/individual), which is CPython compiled with `clang`
  - `pip` for your Python3 installation: this should be completed if installing via Anaconda above
  - The necessary python packages: via `pip install -r requirements.txt`
@@ -33,6 +33,6 @@ BanditPAM can then be installed via one of the following ways:
 2) Running `pip install .` in the home directory (`/BanditPAM`)
 
 ## Known Issues 
-The following is a list of issues seen when installing BanditPAM on Windows. To report a bug, please file an issue at https://github.com/ThrunGroup/BanditPAM/
+The following is a list of issues seen when installing BanditPAM on Windows. To report a bug, please file an issue at https://github.com/motiwari/BanditPAM/
 
-- You may run into an error like `error: ‘class arma::Mat<float>’ has no member named ‘n_alloc’`; this is fundamentally due to an [error in CARMA](https://github.com/RUrlus/carma/pull/98). If this isn't fixed by the time you're reading this, follow the fix described in [this issue](https://github.com/ThrunGroup/BanditPAM/issues/169).
+- You may run into an error like `error: ‘class arma::Mat<float>’ has no member named ‘n_alloc’`; this is fundamentally due to an [error in CARMA](https://github.com/RUrlus/carma/pull/98). If this isn't fixed by the time you're reading this, follow the fix described in [this issue](https://github.com/motiwari/BanditPAM/issues/169).

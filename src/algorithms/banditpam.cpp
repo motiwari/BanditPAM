@@ -10,6 +10,7 @@
 #include <armadillo>
 #include <unordered_map>
 #include <cmath>
+#include <vector>
 
 namespace km {
 void BanditPAM::fitBanditPAM(

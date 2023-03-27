@@ -69,7 +69,7 @@ jobs:
       #     pytest tests/test_larger.py 
       # - name: Verify that the C++ executable compiles and runs
       #   run : |
-      #     git clone https://github.com/ThrunGroup/BanditPAM
+      #     git clone -b ${GITHUB_REF#refs/heads/} https://github.com/motiwari/BanditPAM
       #     cd BanditPAM
       #     mkdir build
       #     cd build
