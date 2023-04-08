@@ -89,7 +89,7 @@ def has_flag(compiler: str, flagname: str):
 def cpp_flag(compiler: str):
     """
     Return the -std=c++[11/14/17] compiler flag.
-    The newer version is prefered over c++11 (when it is available).
+    The newer version is preferred over c++11 (when it is available).
     """
     compiler_name = compiler_check()
     if compiler_name == "clang":
