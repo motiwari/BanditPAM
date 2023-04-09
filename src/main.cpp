@@ -13,6 +13,7 @@
 #include <fstream>
 #include <exception>
 #include <filesystem>
+#include <getopt.h>
 
 #include "kmedoids_algorithm.hpp"
 
@@ -76,7 +77,7 @@ int main(int argc, char* argv[]) {
                 parallelize = true;
                 break;
             case '?':
-                printf("unknown option: %c\n", optopt);
+                // printf("unknown option: %c\n", optopt);
                 return ARGUMENT_ERROR_CODE;
         }
     }
