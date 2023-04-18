@@ -499,6 +499,14 @@ def main():
             include_dirs=include_dirs,
             library_dirs=[
                 os.path.join("/", "usr", "local", "lib"),
+
+                # M1 Macs need the following brew directories,
+                # and need to ensure that these libraries are built for arm64
+                os.path.join("/", "opt", "homebrew", "opt", "armadillo",
+                             "lib"),
+                os.path.join("/", "opt", "homebrew", "opt", "libomp",
+                             "lib"),
+                
                 # For Mac Github runners that install locally
                 # (not build wheels) - testing for macos-10.15
                 os.path.join("/", "usr", "local", "Cellar", "libomp",
