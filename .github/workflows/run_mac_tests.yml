@@ -28,6 +28,7 @@ jobs:
           pip install pytest
           pip install setuptools
           pip install wheel
+          pip install --upgrade setuptools wheel
           pip install -r requirements.txt
 
       - name: Install Armadillo 10.7.5+
