@@ -1,7 +1,5 @@
 import numpy as np
 import os
-import banditpam
-import time
 
 from run_all_versions import run_banditpam
 from scripts.comparison_utils import print_results, store_results
