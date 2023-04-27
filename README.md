@@ -7,7 +7,7 @@
 [![Run CMake build on MacOS](https://github.com/motiwari/BanditPAM/actions/workflows/run_cmake_build.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_cmake_build.yml)
 [![Run style checks](https://github.com/motiwari/BanditPAM/actions/workflows/run_style_checks.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_style_checks.yml)
 
-This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf). The code can be called directly from Python or C++.
+This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf). The code can be called directly from Python, R, or C++.
 
 If you use this software, please cite:
 
@@ -24,7 +24,7 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 ```
 
 # Requirements
-# TL;DR run `pip install banditpam` and jump to the [examples](https://github.com/motiwari/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
+# TL;DR run `pip install banditpam` or `install.packages(banditpam)` and jump to the [examples](https://github.com/motiwari/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
 
 If you have any difficulties, please see the [platform-specific guides](https://github.com/motiwari/BanditPAM#platform-specific-installation-guides) and file a Github issue if you have additional trouble.
 
@@ -113,6 +113,10 @@ for p_idx, point in enumerate(X):
 
 plt.show()
 ```
+
+# R Examples
+
+Please see [here](https://github.com/motiwari/BanditPAM/tree/main/R_package/banditpam).
 
 ## Documentation
 
