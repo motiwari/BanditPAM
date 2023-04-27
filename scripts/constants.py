@@ -1,0 +1,25 @@
+BANDITPAM_ORIGINAL_NO_CACHING = "BanditPAM Original without caching"
+BANDITPAM_ORIGINAL_CACHING = "BanditPAM Original with caching"
+BANDITPAM_VA_NO_CACHING = "BanditPAM VA without caching"
+BANDITPAM_VA_CACHING = "BanditPAM VA with caching"
+
+ALL_BANDITPAMS = [BANDITPAM_ORIGINAL_NO_CACHING,
+                  BANDITPAM_ORIGINAL_CACHING,
+                  BANDITPAM_VA_NO_CACHING,
+                  BANDITPAM_VA_CACHING]
+
+NUM_DATA = "num_data"
+NUM_MEDOIDS = "num_medoids"
+
+MNIST = "MNIST"
+SCRNA = "SCRNA"
+
+ALG_TO_COLOR = {
+    BANDITPAM_ORIGINAL_NO_CACHING: "#4FC1E8",
+    BANDITPAM_ORIGINAL_CACHING: "#A0D568",
+    BANDITPAM_VA_NO_CACHING: "#FFCE54",
+    BANDITPAM_VA_CACHING: "#ED5564",
+}
+
+SAMPLE_COMPLEXITY = "sample_complexity"
+RUNTIME = "total_runtime"
