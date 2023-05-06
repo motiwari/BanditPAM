@@ -1,5 +1,6 @@
 import numpy as np
 import os
+import pandas as pd
 
 from run_all_versions import run_banditpam
 from scripts.comparison_utils import print_results, store_results
@@ -29,9 +30,11 @@ def run_sampling_complexity_experiment_with_k(dataset_name,
                                               loss: str = "L2",
                                               verbose=True,
                                               save_logs=True,
+                                              cache_width=1000,
                                               num_experiments=3):
     dataset_file_name = get_dataset_filename(dataset_name)
-    dataset = np.loadtxt(os.path.join("data", f"{dataset_file_name}.csv"))
+    # dataset = np.loadtxt(os.path.join("data", f"{dataset_file_name}.csv"))
+    dataset = pd.read_csv(os.path.join("data", f"{dataset_file_name}.csv"), header=None).to_numpy()
     num_data = len(dataset)
     log_dir = os.path.join("scripts", "experiments", "logs", "scaling_with_k_cluster")
     print("Running sampling complexity experiment with k")
@@ -43,7 +46,7 @@ def run_sampling_complexity_experiment_with_k(dataset_name,
                 print("Running ", algorithm)
 
                 log_name = f"{algorithm}_{dataset_name}_n{num_data}"
-                kmed, runtime = run_banditpam(algorithm, dataset, n_medoids, loss)
+                kmed, runtime = run_banditpam(algorithm, dataset, n_medoids, loss, cache_width)
 
                 if verbose:
                     print_results(kmed, runtime)
@@ -63,9 +66,11 @@ def run_sampling_complexity_experiment_with_n(dataset_name,
                                               loss: str = "L2",
                                               verbose=True,
                                               save_logs=True,
+                                              cache_width=1000,
                                               num_experiments=3):
     dataset_file_name = get_dataset_filename(dataset_name)
-    dataset = np.loadtxt(os.path.join("data", f"{dataset_file_name}.csv"))
+    # dataset = np.loadtxt(os.path.join("data", f"{dataset_file_name}.csv"))
+    dataset = pd.read_csv(os.path.join("data", f"{dataset_file_name}.csv"), header=None).to_numpy()
     log_dir = os.path.join("scripts", "experiments", "logs", "scaling_with_n_cluster")
 
     print("Running sampling complexity experiment with n")
@@ -78,7 +83,7 @@ def run_sampling_complexity_experiment_with_n(dataset_name,
             for algorithm in algorithms:
                 print("Running ", algorithm)
                 log_name = f"{algorithm}_{dataset_name}_k{n_medoids}"
-                kmed, runtime = run_banditpam(algorithm, data, n_medoids, loss)
+                kmed, runtime = run_banditpam(algorithm, data, n_medoids, loss, cache_width)
 
                 if verbose:
                     print_results(kmed, runtime)
@@ -92,16 +97,26 @@ def run_sampling_complexity_experiment_with_n(dataset_name,
 
 
 def main():
-    # run_sampling_complexity_experiment_with_n(SCRNA,
-    #                                           num_data_list=[10],
-    #                                           n_medoids=5, num_experiments=1)
-    run_sampling_complexity_experiment_with_n(MNIST,
-                                              num_data_list=np.linspace(10000, 70000, 5).astype(int),
-                                              n_medoids=5, num_experiments=4)
-    run_sampling_complexity_experiment_with_n(MNIST,
-                                              num_data_list=np.linspace(10000, 70000, 5).astype(int),
-                                              n_medoids=10, num_experiments=4)
-    run_sampling_complexity_experiment_with_k(MNIST, n_medoids_list=[5, 10, 15, 20])
+    run_sampling_complexity_experiment_with_n(SCRNA,
+                                              num_data_list=np.linspace(1200, 4000, 2).astype(int),
+                                              algorithms=ALL_BANDITPAMS,
+                                              n_medoids=5,
+                                              num_experiments=1,
+                                              loss="L1")
+
+    # run_sampling_complexity_experiment_with_k(SCRNA,
+    #                                           n_medoids_list=[5, 10, 15],
+    #                                           algorithms=ALL_BANDITPAMS,
+    #                                           num_experiments=1,
+    #                                           loss="L1")
+
+    # run_sampling_complexity_experiment_with_n(MNIST,
+    #                                           num_data_list=np.linspace(10000, 70000, 5).astype(int),
+    #                                           n_medoids=5, num_experiments=4)
+    # run_sampling_complexity_experiment_with_n(MNIST,
+    #                                           num_data_list=np.linspace(10000, 70000, 5).astype(int),
+    #                                           n_medoids=10, num_experiments=4)
+    # run_sampling_complexity_experiment_with_k(MNIST, n_medoids_list=[3], algorithms=ALL_BANDITPAMS)
 
 
 if __name__ == "__main__":

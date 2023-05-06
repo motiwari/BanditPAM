@@ -12,7 +12,7 @@ from scripts.constants import (
 )
 
 
-def run_banditpam(algorithm_name, data, n_medoids, loss):
+def run_banditpam(algorithm_name, data, n_medoids, loss, cache_width):
     if algorithm_name == BANDITPAM_ORIGINAL_NO_CACHING:
         algorithm = "BanditPAM_orig"
         use_cache = False
@@ -34,6 +34,7 @@ def run_banditpam(algorithm_name, data, n_medoids, loss):
         use_cache=use_cache,
         use_perm=use_cache,
         parallelize=False,
+        cache_width=cache_width,
     )
     start = time.time()
     kmed.fit(data, loss)

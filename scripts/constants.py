@@ -21,5 +21,6 @@ ALG_TO_COLOR = {
     BANDITPAM_VA_CACHING: "#ED5564",
 }
 
-SAMPLE_COMPLEXITY = "sample_complexity"
+SAMPLE_COMPLEXITY = "Sample Complexity"
 RUNTIME = "total_runtime"
+LOSS = "loss"

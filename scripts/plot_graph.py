@@ -18,6 +18,7 @@ from constants import (
     NUM_MEDOIDS,
     RUNTIME,
     SAMPLE_COMPLEXITY,
+    LOSS,
 
     # utils
     ALG_TO_COLOR
@@ -105,11 +106,29 @@ def create_scaling_plots(
                         if f.find(dataset) < 0 or alg_name not in algorithms:
                             continue
 
+                        # Set x axis
+                        xlabel = (
+                            "Number of data" if x_axis == NUM_DATA else "Number of medoids"
+                        )
+                        if is_logspace_x:
+                            xlabel = f"ln({xlabel})"
+
                         x = data[x_axis].tolist()
-                        if y_axis is SAMPLE_COMPLEXITY:
+
+                        # Set y axis
+                        if y_axis is LOSS:
+                            y = data[y_axis].tolist()
+                            ylabel = "Loss"
+                        elif y_axis is SAMPLE_COMPLEXITY:
                             y = data["total_complexity_with_misc"].tolist()
+                            ylabel = "Sample Complexity"
                         else:
                             y = data["total_runtime"].tolist()
+                            ylabel = "Runtime"
+
+                        if is_logspace_y:
+                            ylabel = f"ln({ylabel})"
+
                         x, y = zip(*sorted(zip(x, y), key=lambda pair: pair[0]))  # sort
 
                         if is_logspace_x:
@@ -132,19 +151,7 @@ def create_scaling_plots(
                             *sorted(zip(labels, handles), key=lambda t: t[0])
                         )
                         plt.legend(handles, labels, loc="upper left")
-
                         plt.title(title)
-
-                        xlabel = (
-                            "Number of data" if x_axis == NUM_DATA else "Number of medoids"
-                        )
-                        if is_logspace_x:
-                            xlabel = f"ln({xlabel})"
-
-                        ylabel = "Sample Complexity" if y_axis == SAMPLE_COMPLEXITY else "Runtime"
-                        if is_logspace_y:
-                            ylabel = f"ln({ylabel})"
-
                         plt.xlabel(xlabel)
                         plt.ylabel(ylabel)
 
@@ -152,9 +159,9 @@ def create_scaling_plots(
 
 
 if __name__ == "__main__":
-    create_scaling_plots(datasets=[MNIST],
+    create_scaling_plots(datasets=[SCRNA],
                          algorithms=ALL_BANDITPAMS,
-                         x_axes=[NUM_DATA, NUM_MEDOIDS],
-                         y_axes=[SAMPLE_COMPLEXITY, RUNTIME],
+                         x_axes=[NUM_MEDOIDS],
+                         y_axes=[RUNTIME, SAMPLE_COMPLEXITY],
                          is_logspace_y=True
                          )
