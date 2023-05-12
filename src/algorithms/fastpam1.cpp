@@ -30,7 +30,10 @@ void FastPAM1::fitFastPAM1(
   bool medoidChange = true;
   while (iter < maxIter && medoidChange) {
     auto previous{medoidIndices};
-    FastPAM1::swapFastPAM1(data, distMat, &medoidIndices, &assignments);
+    if (nMedoids > 1) {
+        FastPAM1::swapFastPAM1(data, distMat, &medoidIndices, &assignments);
+    }
+
     medoidChange = arma::any(medoidIndices != previous);
     iter++;
   }

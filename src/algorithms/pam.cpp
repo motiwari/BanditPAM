@@ -28,7 +28,10 @@ void PAM::fitPAM(
   bool medoidChange = true;
   while (i < maxIter && medoidChange) {
     auto previous(medoidIndices);
-    PAM::swapPAM(data, distMat, &medoidIndices, &assignments);
+    if (nMedoids > 1) {
+        PAM::swapPAM(data, distMat, &medoidIndices, &assignments);
+    }
+
     medoidChange = arma::any(medoidIndices != previous);
     i++;
   }
