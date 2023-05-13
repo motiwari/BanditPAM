@@ -50,7 +50,7 @@ class BanditPAM_orig : public km::KMedoids {
    * @param bestDistances Contains best distances from each point to medoids
    * @param useAbsolute Flag to use the absolute distance to each arm instead
    * of improvement over prior loss; necessary for the first BUILD step
-   * @param exact 0 if using standard batch size; size of dataset otherwise
+   * @param exact false if using standard batch size; true otherwise
    *
    * @returns Estimate of each arm's change in loss
    */
@@ -60,7 +60,7 @@ class BanditPAM_orig : public km::KMedoids {
     const arma::uvec* target,
     const arma::frowvec* bestDistances,
     const bool useAbsolute,
-    const size_t exact);
+    const bool exact);
 
   /**
    * @brief Performs the BUILD step of BanditPAM_orig.
@@ -111,7 +111,7 @@ class BanditPAM_orig : public km::KMedoids {
    * @param secondBestDistances Contains second best distances
    * from each point to medoids
    * @param assignments Assignments of datapoints to their closest medoid
-   * @param exact 0 if using standard batch size; size of dataset otherwise
+   * @param exact false if using standard batch size; true otherwise
    *
    * @returns Estimate of each arm's change in loss
    */
@@ -123,7 +123,7 @@ class BanditPAM_orig : public km::KMedoids {
     const arma::frowvec* bestDistances,
     const arma::frowvec* secondBestDistances,
     const arma::urowvec* assignments,
-    const size_t exact);
+    const bool exact);
 
   /**
   * @brief Performs the SWAP step of BanditPAM_orig.

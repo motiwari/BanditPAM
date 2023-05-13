@@ -105,10 +105,10 @@ arma::frowvec BanditPAM::buildTarget(
   const arma::uvec* target,
   const arma::frowvec* bestDistances,
   const bool useAbsolute,
-  const size_t exact = 0) {
+  const bool exact = false) {
   size_t N = data.n_cols;
   size_t tmpBatchSize = batchSize;
-  if (exact > 0) {
+  if (exact) {
     tmpBatchSize = N;
   }
   arma::frowvec results(target->n_rows, arma::fill::zeros);
@@ -196,7 +196,7 @@ void BanditPAM::build(
           &targets,
           &bestDistances,
           useAbsolute,
-          N);
+          (true ? N > 0 : false));
         estimates.cols(targets) = result;
         ucbs.cols(targets) = result;
         lcbs.cols(targets) = result;
@@ -214,7 +214,7 @@ void BanditPAM::build(
         &targets,
         &bestDistances,
         useAbsolute,
-        0);
+        false);
       // update the running average
       estimates.cols(targets) =
         ((numSamples.cols(targets) % estimates.cols(targets)) +
@@ -321,7 +321,7 @@ arma::fmat BanditPAM::swapTarget(
   const arma::frowvec* bestDistances,
   const arma::frowvec* secondBestDistances,
   const arma::urowvec* assignments,
-  const size_t exact = 0) {
+  const bool exact = false) {
   const size_t N = data.n_cols;
   const size_t T = targets->n_rows;
   arma::fmat results(nMedoids, T, arma::fill::zeros);
@@ -345,7 +345,7 @@ arma::fmat BanditPAM::swapTarget(
 
 
   size_t tmpBatchSize = batchSize;
-  if (exact > 0) {
+  if (exact) {
     tmpBatchSize = N;
   }
 
@@ -475,7 +475,7 @@ void BanditPAM::swap(
           &bestDistances,
           &secondBestDistances,
           assignments,
-          N);
+          (true ? N > 0 : false));
 
         // result will be k x T
         // Now update the correct indices
@@ -504,7 +504,7 @@ void BanditPAM::swap(
         &bestDistances,
         &secondBestDistances,
         assignments,
-        0);
+        false);
 
       // candidate_targets should be of size T, 1
       estimates.cols(candidate_targets) =
