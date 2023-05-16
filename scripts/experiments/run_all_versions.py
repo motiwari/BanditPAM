@@ -8,7 +8,8 @@ from scripts.constants import (
     BANDITPAM_ORIGINAL_NO_CACHING,
     BANDITPAM_ORIGINAL_CACHING,
     BANDITPAM_VA_NO_CACHING,
-    BANDITPAM_VA_CACHING
+    BANDITPAM_VA_CACHING,
+    FASTPAM,
 )
 
 
@@ -25,6 +26,9 @@ def run_banditpam(algorithm_name, data, n_medoids, loss, cache_width):
     elif algorithm_name == BANDITPAM_VA_NO_CACHING:
         algorithm = "BanditPAM"
         use_cache = False
+    elif algorithm_name == FASTPAM:
+        algorithm = "FastPAM1"
+        use_cache = False
     else:
         assert False, "Incorrect algorithm!"
 
@@ -33,7 +37,7 @@ def run_banditpam(algorithm_name, data, n_medoids, loss, cache_width):
         algorithm=algorithm,
         use_cache=use_cache,
         use_perm=use_cache,
-        parallelize=False,
+        parallelize=True,
         cache_width=cache_width,
     )
     start = time.time()

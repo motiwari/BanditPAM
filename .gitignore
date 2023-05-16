@@ -15,6 +15,7 @@ data/MNIST_*.csv
 data/MNIST_CSV.csv
 data/data.csv
 data/scrna*
+data/cifar*
 docs/html
 docs/latex
 python_generate_plots/__pycache__

@@ -58,18 +58,8 @@ def store_results(kmed, runtime, log_dir, log_name, num_data, num_medoids):
     else:
         log_df = pd.DataFrame(columns=log_dict.keys())
 
-    # Find the matching row to take a mean
-    mask = (log_df["num_data"] == num_data) & (log_df["num_medoids"] == num_medoids)
-    matching_row = log_df.loc[mask]
-
-    if matching_row.empty:
-        # Append the dictionary to the dataframe
-        log_df = pd.concat([log_df, log_pd_row], ignore_index=True)
-    else:
-        mean_row = pd.concat([log_pd_row, matching_row], ignore_index=True).mean(axis=0)
-        # Convert mean_row to a DataFrame with the same index as matching_row
-        mean_df = pd.DataFrame([mean_row.values], columns=log_df.columns, index=matching_row.index)
-        log_df.update(mean_df)  # Update log_df using mean_df
+    # Append the dictionary to the dataframe
+    log_df = pd.concat([log_df, log_pd_row], ignore_index=True)
 
     # Save the updated dataframe back to the CSV file
     log_df.to_csv(log_path, index=False)
