@@ -61,7 +61,7 @@ void KMedoids::fit(
 
   if (distMat) {  // User has provided a distance matrix
     if (distMat.value().get().n_cols != distMat.value().get().n_rows) {
-      // TODO(@motiwari): Change this to an assertion that is properly raised
+      // TODO(@anon): Change this to an assertion that is properly raised
       throw std::invalid_argument("Malformed distance matrix provided");
     }
     useDistMat = true;
@@ -72,7 +72,7 @@ void KMedoids::fit(
   }
 
   if (inputData.n_rows == 0) {
-    // TODO(@motiwari): Change this to an assertion that is properly raised
+    // TODO(@anon): Change this to an assertion that is properly raised
     throw std::invalid_argument("Dataset is empty");
   }
   batchSize = fmin(inputData.n_rows, batchSize);
@@ -148,7 +148,7 @@ size_t KMedoids::getBuildConfidence() const {
 
 void KMedoids::setBuildConfidence(size_t newBuildConfidence) {
   if (algorithm != "BanditPAM" && algorithm != "BanditPAM_orig") {
-    // TODO(@motiwari): Better error type
+    // TODO(@anon): Better error type
     throw "Cannot set buildConfidence when not using BanditPAM";
   }
   buildConfidence = newBuildConfidence;
@@ -160,7 +160,7 @@ size_t KMedoids::getSwapConfidence() const {
 
 void KMedoids::setSwapConfidence(size_t newSwapConfidence) {
   if (algorithm != "BanditPAM" && algorithm != "BanditPAM_orig") {
-    // TODO(@motiwari): Better error type
+    // TODO(@anon): Better error type
     throw "Cannot set buildConfidence when not using BanditPAM";
   }
   swapConfidence = newSwapConfidence;
@@ -185,7 +185,7 @@ bool KMedoids::getUseCache() const {
 }
 
 void KMedoids::setUseCache(bool newUseCache) {
-  // TODO(@motiwari): Throw an error if not using BanditPAM
+  // TODO(@anon): Throw an error if not using BanditPAM
   useCache = newUseCache;
 }
 
@@ -194,17 +194,17 @@ bool KMedoids::getUsePerm() const {
 }
 
 void KMedoids::setUsePerm(bool newUsePerm) {
-  // TODO(@motiwari): Throw an error if not using BanditPAM
+  // TODO(@anon): Throw an error if not using BanditPAM
   usePerm = newUsePerm;
 }
 
 size_t KMedoids::getCacheWidth() const {
-  // TODO(@motiwari): Throw an error if not using BanditPAM
+  // TODO(@anon): Throw an error if not using BanditPAM
   return cacheWidth;
 }
 
 void KMedoids::setCacheWidth(size_t newCacheWidth) {
-  // TODO(@motiwari): Throw an error if not using BanditPAM
+  // TODO(@anon): Throw an error if not using BanditPAM
   cacheWidth = newCacheWidth;
 }
 
@@ -212,7 +212,7 @@ bool KMedoids::getParallelize() const {
   return parallelize;
 }
 
-// TODO(@motiwari): Change this to const bool newParallelize
+// TODO(@anon): Change this to const bool newParallelize
 void KMedoids::setParallelize(bool newParallelize) {
   parallelize = newParallelize;
 }
@@ -261,12 +261,12 @@ banditpam_float KMedoids::getTimePerSwap() const {
 }
 
 void KMedoids::setLossFn(std::string loss) {
-  // TODO(@motiwari): On setting this, clear the cache and the average loss,
+  // TODO(@anon): On setting this, clear the cache and the average loss,
   // assignments, medoids, etc.
   std::for_each(loss.begin(), loss.end(), [](char& c){
-    c = ::tolower(c);  // TODO(@motiwari): Put something before ::
+    c = ::tolower(c);  // TODO(@anon): Put something before ::
   });
-  // TODO(@motiwari): Change this to a switch
+  // TODO(@anon): Change this to a switch
   if (std::regex_match(loss, std::regex("l\\d*"))) {
     lossFn = &KMedoids::LP;
     lp = stoi(loss.substr(1));
@@ -285,7 +285,7 @@ void KMedoids::setLossFn(std::string loss) {
 }
 
 std::string KMedoids::getLossFn() const {
-  // TODO(@motiwari): make the strings constants
+  // TODO(@anon): make the strings constants
   if (lossFn == &KMedoids::manhattan) {
       return "manhattan";
   } else if (lossFn == &KMedoids::cos) {
@@ -339,7 +339,7 @@ banditpam_float KMedoids::calcLoss(
   std::optional<std::reference_wrapper<const arma_mat>> distMat,
   const arma::urowvec* medoidIndices) {
   banditpam_float total = 0;
-  // TODO(@motiwari): is this parallel loop accumulating properly?
+  // TODO(@anon): is this parallel loop accumulating properly?
   #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < data.n_cols; i++) {
     banditpam_float cost = std::numeric_limits<banditpam_float>::infinity();
@@ -369,7 +369,7 @@ banditpam_float KMedoids::cachedLoss(
   const size_t category,
   const bool useCacheFunctionOverride
   ) {
-    // TODO(@motiwari): Change category to an enum
+    // TODO(@anon): Change category to an enum
     if (category == 0) {  // MISC
         numMiscDistanceComputations++;
     } else if (category == 1) {  // BUILD
@@ -377,7 +377,7 @@ banditpam_float KMedoids::cachedLoss(
     } else if (category == 2) {  // SWAP
         numSwapDistanceComputations++;
     } else {
-        // TODO(@motiwari): Throw exception
+        // TODO(@anon): Throw exception
     }
 
   if (this->useDistMat) {
@@ -388,13 +388,13 @@ banditpam_float KMedoids::cachedLoss(
     return (this->*lossFn)(data, i, j);
   }
 
-  // TODO(@motiwari): Should infer n and m from the size of the cache
+  // TODO(@anon): Should infer n and m from the size of the cache
   size_t n = data.n_cols;
   size_t m = fmin(n, cacheWidth);
 
   // test this is one of the early points in the permutation
   if (reindex.find(j) != reindex.end()) {
-    // TODO(@motiwari): Potential race condition with shearing?
+    // TODO(@anon): Potential race condition with shearing?
     // T1 begins to write to cache and then T2 access in the middle of write?
     if (cache[(m*i) + reindex[j]] == -1) {
       numCacheWrites++;
@@ -413,7 +413,7 @@ void KMedoids::checkAlgorithm(const std::string& algorithm) const {
       (algorithm != "BanditPAM_orig") &&
       (algorithm != "PAM") &&
       (algorithm != "FastPAM1")) {
-    // TODO(@motiwari): Better error type
+    // TODO(@anon): Better error type
     throw "unrecognized algorithm";
   }
 }

@@ -18,7 +18,7 @@ void BanditPAM_orig::fitBanditPAM_orig(
 
   // Note: even if we are using a distance matrix, we compute the permutation
   // in the block below because it is used elsewhere in the call stack
-  // TODO(@motiwari): Remove need for data or permutation through when using
+  // TODO(@anon): Remove need for data or permutation through when using
   //  a distance matrix
   if (this->useCache) {
     size_t n = data.n_cols;
@@ -27,13 +27,13 @@ void BanditPAM_orig::fitBanditPAM_orig(
 
     #pragma omp parallel for if (this->parallelize)
     for (size_t idx = 0; idx < m*n; idx++) {
-      cache[idx] = -1;  // TODO(@motiwari): need better value here
+      cache[idx] = -1;  // TODO(@anon): need better value here
     }
 
     permutation = arma::randperm(n);
     permutationIdx = 0;
-    reindex = {};  // TODO(@motiwari): Can this intialization be removed?
-    // TODO(@motiwari): Can we parallelize this?
+    reindex = {};  // TODO(@anon): Can this intialization be removed?
+    // TODO(@anon): Can we parallelize this?
     for (size_t counter = 0; counter < m; counter++) {
       reindex[permutation[counter]] = counter;
     }
@@ -65,7 +65,7 @@ arma_rowvec BanditPAM_orig::buildSigma(
   const bool useAbsolute) {
   size_t N = data.n_cols;
   arma::uvec referencePoints;
-  // TODO(@motiwari): Make this wraparound properly as
+  // TODO(@anon): Make this wraparound properly as
   //  last batch_size elements are dropped
   if (usePerm) {
     if ((permutationIdx + batchSize - 1) >= N) {
@@ -115,7 +115,7 @@ arma_rowvec BanditPAM_orig::buildTarget(
   }
   arma_rowvec estimates(target->n_rows, arma::fill::zeros);
   arma::uvec referencePoints;
-  // TODO(@motiwari): Make this wraparound properly
+  // TODO(@anon): Make this wraparound properly
   //  as last batch_size elements are dropped
   if (usePerm) {
     if ((permutationIdx + tmpBatchSize - 1) >= N) {
@@ -174,7 +174,7 @@ void BanditPAM_orig::build(
   arma_rowvec numSamples(N, arma::fill::zeros);
   arma_rowvec exactMask(N, arma::fill::zeros);
 
-  // TODO(@motiwari): #pragma omp parallel for if (this->parallelize)?
+  // TODO(@anon): #pragma omp parallel for if (this->parallelize)?
   for (size_t k = 0; k < nMedoids; k++) {
     // instantiate medoids one-by-one
     permutationIdx = 0;
@@ -186,7 +186,7 @@ void BanditPAM_orig::build(
     sigma = buildSigma(data, distMat, bestDistances, useAbsolute);
 
     while (arma::sum(candidates) > precision) {
-      // TODO(@motiwari): Do not need a matrix for this comparison,
+      // TODO(@anon): Do not need a matrix for this comparison,
       //  use broadcasting
       arma::umat compute_exactly =
           ((numSamples + batchSize) >= N_mat) != exactMask;
@@ -266,7 +266,7 @@ arma_mat BanditPAM_orig::swapSigma(
   size_t K = nMedoids;
   arma_mat updated_sigma(K, N, arma::fill::zeros);
   arma::uvec referencePoints;
-  // TODO(@motiwari): Make this wraparound properly
+  // TODO(@anon): Make this wraparound properly
   //  as last batch_size elements are dropped
   if (usePerm) {
     if ((permutationIdx + batchSize - 1) >= N) {
@@ -333,9 +333,9 @@ arma_vec BanditPAM_orig::swapTarget(
   }
 
   arma::uvec referencePoints;
-  // TODO(@motiwari): Make this wraparound properly
+  // TODO(@anon): Make this wraparound properly
   //  as last batch_size elements are dropped
-  // TODO(@motiwari): Break this duplicated code into a function
+  // TODO(@anon): Break this duplicated code into a function
   if (usePerm) {
     if ((permutationIdx + tmpBatchSize - 1) >= N) {
       permutationIdx = 0;
@@ -349,7 +349,7 @@ arma_vec BanditPAM_orig::swapTarget(
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
 
-  // TODO(@motiwari): Declare variables outside of loops
+  // TODO(@anon): Declare variables outside of loops
   #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < targets->n_rows; i++) {
     banditpam_float total = 0;
@@ -376,7 +376,7 @@ arma_vec BanditPAM_orig::swapTarget(
       }
       total -= (*bestDistances)(referencePoints(j));
     }
-    // TODO(@motiwari): we can probably avoid this division
+    // TODO(@anon): we can probably avoid this division
     //  if we look at total loss, not average loss
     estimates(i) = total / referencePoints.n_rows;
   }

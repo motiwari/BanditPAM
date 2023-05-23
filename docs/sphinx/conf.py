@@ -21,8 +21,8 @@ import glob
 # -- Project information -----------------------------------------------------
 
 project = "BanditPAM"
-copyright = "2021, Mo Tiwari"
-author = "Mo Tiwari"
+copyright = "2021, anon"
+author = "anon"
 
 # The full version, including alpha/beta/rc tags
 release = "2.0.0"

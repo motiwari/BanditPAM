@@ -528,8 +528,8 @@ def main():
     setup(
         name="banditpam",
         version=__version__,
-        author="Mo Tiwari",
-        maintainer="Mo Tiwari",
+        author="anon",
+        maintainer="anon",
         author_email="motiwari@stanford.edu",
         url="https://github.com/motiwari/BanditPAM",
         description="BanditPAM: A state-of-the-art, \

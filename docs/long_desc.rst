@@ -7,7 +7,7 @@ Quickstart
 Run `pip install banditpam` and then check out the `examples <https://github.com/motiwari/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model>`_.
 
 If you use this software, please cite:
-Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "BanditPAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
+anon, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "BanditPAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
 
 Introduction
 ------------

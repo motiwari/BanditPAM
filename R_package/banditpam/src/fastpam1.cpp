@@ -53,15 +53,15 @@ void FastPAM1::buildFastPAM1(
   banditpam_float total = 0;
   banditpam_float cost = 0;
 
-  // TODO(@motiwari): pragma omp parallel for?
+  // TODO(@anon): pragma omp parallel for?
   for (size_t k = 0; k < nMedoids; k++) {
     minDistance = std::numeric_limits<banditpam_float>::infinity();
     best = 0;
     // fixes a base datapoint
-    // TODO(@motiwari): pragma omp parallel for?
+    // TODO(@anon): pragma omp parallel for?
     for (size_t i = 0; i < data.n_cols; i++) {
       total = 0;
-      // TODO(@motiwari): pragma omp parallel for?
+      // TODO(@anon): pragma omp parallel for?
       for (size_t j = 0; j < data.n_cols; j++) {
         // computes distance between base and all other points
         cost = (this->*lossFn)(data, i, j);
@@ -79,7 +79,7 @@ void FastPAM1::buildFastPAM1(
     (*medoidIndices)(k) = best;
 
     // update the medoid assignment and best_distance for this datapoint
-    // TODO(@motiwari): pragma omp parallel for?
+    // TODO(@anon): pragma omp parallel for?
     for (size_t l = 0; l < N; l++) {
       cost = (this->*lossFn)(data, l, (*medoidIndices)(k));
       if (cost < bestDistances(l)) {
@@ -121,7 +121,7 @@ void FastPAM1::swapFastPAM1(
 
   while (swapPerformed && iter < maxIter) {
     iter++;
-    // TODO(@motiwari): pragma omp parallel for?
+    // TODO(@anon): pragma omp parallel for?
     for (size_t i = 0; i < data.n_cols; i++) {
       di = bestDistances(i);
 
@@ -129,7 +129,7 @@ void FastPAM1::swapFastPAM1(
       // The total loss then contains at least one term, -di,
       // because the loss contribution for point i is reduced from di to 0
       deltaTD.fill(-di);
-      // TODO(@motiwari): pragma omp parallel for?
+      // TODO(@anon): pragma omp parallel for?
       for (size_t j = 0; j < data.n_cols; j++) {
         if (j != i) {
           dij = (this->*lossFn)(data, i, j);

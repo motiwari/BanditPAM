@@ -18,7 +18,7 @@ void BanditPAM::fitBanditPAM(
 
   // Note: even if we are using a distance matrix, we compute the permutation
   // in the block below because it is used elsewhere in the call stack
-  // TODO(@motiwari): Remove need for data or permutation through when using
+  // TODO(@anon): Remove need for data or permutation through when using
   //  a distance matrix
   if (this->useCache) {
     size_t n = data.n_cols;
@@ -27,13 +27,13 @@ void BanditPAM::fitBanditPAM(
 
     #pragma omp parallel for if (this->parallelize)
     for (size_t idx = 0; idx < m*n; idx++) {
-      cache[idx] = -1;  // TODO(@motiwari): need better value here
+      cache[idx] = -1;  // TODO(@anon): need better value here
     }
 
     permutation = arma::randperm(n);
     permutationIdx = 0;
-    reindex = {};  // TODO(@motiwari): Can this intialization be removed?
-    // TODO(@motiwari): Can we parallelize this?
+    reindex = {};  // TODO(@anon): Can this intialization be removed?
+    // TODO(@anon): Can we parallelize this?
     for (size_t counter = 0; counter < m; counter++) {
       reindex[permutation[counter]] = counter;
     }
@@ -60,7 +60,7 @@ arma_rowvec BanditPAM::buildSigma(
   const bool useAbsolute) {
   size_t N = data.n_cols;
   arma::uvec referencePoints;
-  // TODO(@motiwari): Make this wraparound properly as
+  // TODO(@anon): Make this wraparound properly as
   //  last batch_size elements are dropped
   if (usePerm) {
     if ((permutationIdx + batchSize - 1) >= N) {
@@ -110,7 +110,7 @@ arma_rowvec BanditPAM::buildTarget(
   }
   arma_rowvec results(target->n_rows, arma::fill::zeros);
   arma::uvec referencePoints;
-  // TODO(@motiwari): Make this wraparound properly
+  // TODO(@anon): Make this wraparound properly
   //  as last batch_size elements are dropped
   if (usePerm) {
     if ((permutationIdx + tmpBatchSize - 1) >= N) {
@@ -169,7 +169,7 @@ void BanditPAM::build(
   arma_rowvec numSamples(N, arma::fill::zeros);
   arma_rowvec exactMask(N, arma::fill::zeros);
 
-  // TODO(@motiwari): #pragma omp parallel for if (this->parallelize)?
+  // TODO(@anon): #pragma omp parallel for if (this->parallelize)?
   for (size_t k = 0; k < nMedoids; k++) {
     // instantiate medoids one-by-one
     permutationIdx = 0;
@@ -181,7 +181,7 @@ void BanditPAM::build(
     sigma = buildSigma(data, distMat, bestDistances, useAbsolute);
 
     while (arma::sum(candidates) > precision) {
-      // TODO(@motiwari): Do not need a matrix for this comparison,
+      // TODO(@anon): Do not need a matrix for this comparison,
       //  use broadcasting
       arma::umat compute_exactly =
         ((numSamples + batchSize) >= N_mat) != exactMask;
@@ -261,7 +261,7 @@ arma_mat BanditPAM::swapSigma(
   size_t K = nMedoids;
   arma_mat updated_sigma(K, N, arma::fill::zeros);
   arma::uvec referencePoints;
-  // TODO(@motiwari): Make this wraparound properly
+  // TODO(@anon): Make this wraparound properly
   //  as last batch_size elements are dropped
   if (usePerm) {
     if ((permutationIdx + batchSize - 1) >= N) {
@@ -347,9 +347,9 @@ arma_mat BanditPAM::swapTarget(
   }
 
   arma::uvec referencePoints;
-  // TODO(@motiwari): Make this wraparound properly
+  // TODO(@anon): Make this wraparound properly
   //  as last batch_size elements are dropped
-  // TODO(@motiwari): Break this duplicated code into a function
+  // TODO(@anon): Break this duplicated code into a function
   if (usePerm) {
     if ((permutationIdx + tmpBatchSize - 1) >= N) {
       permutationIdx = 0;
@@ -363,10 +363,10 @@ arma_mat BanditPAM::swapTarget(
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
 
-  // TODO(@motiwari): Declare variables outside of loops
+  // TODO(@anon): Declare variables outside of loops
   #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < T; i++) {
-    // TODO(@motiwari): pragma omp parallel for?
+    // TODO(@anon): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
       banditpam_float cost =
           KMedoids::cachedLoss(
@@ -390,7 +390,7 @@ arma_mat BanditPAM::swapTarget(
           std::fmin(cost, (*bestDistances)(referencePoints(j)));
     }
   }
-  // TODO(@motiwari): we can probably avoid this division
+  // TODO(@anon): we can probably avoid this division
   //  if we look at total loss, not average loss
   results /= tmpBatchSize;
   return results;
@@ -454,11 +454,11 @@ void BanditPAM::swap(
 
       // Get unique candidate medoids from the candidates (second index)
       // Store all k x T in estimates
-      // TODO(@motiwari): Move this declaration outside loop
+      // TODO(@anon): Move this declaration outside loop
       // Need unique values over second index
       // Sum the different columns
       // if any index appears in at least one, compute it exactly
-      // TODO(@motiwari): make sure we're only computing exactly
+      // TODO(@anon): make sure we're only computing exactly
       // for the relevant candidates
       arma::uvec compute_exactly_targets =
         arma::find(arma::sum(compute_exactly, 0) >= 1);
@@ -515,7 +515,7 @@ void BanditPAM::swap(
       numSamples.cols(candidate_targets) += batchSize;
 
       arma_mat adjust(nMedoids, candidate_targets.size());
-      // TODO(@motiwari): Move this ::fill to the previous line
+      // TODO(@anon): Move this ::fill to the previous line
       adjust.fill(p);
       // Assume swapConfidence is given in logspace
       adjust = swapConfidence + arma::log(adjust);
