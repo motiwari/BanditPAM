@@ -16,9 +16,9 @@ Thank you for reviewing our submission!
 The files are organized as follows:
 
 - `src/` contains the implementation of all versions of BanditPAM with and without caching and virtual arms.
-- `scripts/` contains the scripts for the experiments.
+- `scripts/` contains any python scripts for experiments or tests.
+- `experiments/` contains experiment scripts
   - The two main types of experiments are the scaling experiments with respect to `k` and `n`.
-- `utils/` contains helper functions used across the codebase.
 - `logs/` contains the logs of the experiments.
 
 ## Reproducing the results

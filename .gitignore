@@ -14,6 +14,7 @@ build/
 data/MNIST_*.csv
 data/MNIST_CSV.csv
 data/data.csv
+data/*.csv
 data/scrna*
 data/cifar*
 docs/html
