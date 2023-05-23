@@ -12,6 +12,12 @@ from scripts.constants import (
 
 
 def get_loss_function(dataset):
+    """
+    Returns the appropriate loss function based on the dataset.
+
+    :param dataset: A string that represents the name of the dataset
+    :return: A string indicating the type of loss function ("L1" or "L2")
+    """
     if dataset == MNIST:
         return "L1"
     else:
@@ -19,6 +25,13 @@ def get_loss_function(dataset):
 
 
 def get_num_data_list(dataset):
+    """
+    Returns a list of numbers indicating the different number of data points to run the experiment with,
+    based on the dataset.
+
+    :param dataset: A string that represents the name of the dataset
+    :return: A numpy array specifying different numbers of data points
+    """
     if dataset == MNIST:
         num_data = 70000
         return np.linspace(40000, num_data, 5)
@@ -28,6 +41,10 @@ def get_num_data_list(dataset):
 
 
 def run_scaling_experiment_with_k():
+    """
+    Runs scaling experiments varying the number of medoids (k) for the MNIST and CIFAR datasets
+    using all BanditPAM algorithms.
+    """
     for dataset in [MNIST, CIFAR]:
         loss = get_loss_function(dataset)
         scaling_experiment_with_k(dataset_name=dataset,
@@ -38,6 +55,10 @@ def run_scaling_experiment_with_k():
 
 
 def run_scaling_experiment_with_n():
+    """
+    Runs scaling experiments varying the number of data points (n) for the MNIST and CIFAR datasets
+    using all BanditPAM algorithms.
+    """
     for dataset in [MNIST, CIFAR]:
         loss = get_loss_function(dataset)
         num_data_list = get_num_data_list(dataset)
