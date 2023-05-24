@@ -337,78 +337,74 @@ def is_ubuntu():
     output, _error = process.communicate()
     return "Ubuntu" in output.decode()
 
+if sys.platform != "win32":
+    class BuildExt(build_ext):
+        """
+        A custom build extension for adding compiler-specific options.
+        """
 
-class BuildExt(build_ext):
-    """
-    A custom build extension for adding compiler-specific options.
-    """
+        c_opts = {"msvc": ["/EHsc"], "unix": []}
+        l_opts = {"msvc": [], "unix": []}
 
-    c_opts = {"msvc": ["/EHsc"], "unix": []}
-    l_opts = {"msvc": [], "unix": []}
+        if sys.platform == "darwin":
+            install_check_mac()
+            # Verify that we're either compiling with clang or
+            # inside a Github Action
+            assert compiler_check() == "clang" or os.environ.get(
+                GHA, False
+            ), "Need to install LLVM clang!"
+            darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.14", "-O3"]
+            c_opts["unix"] += darwin_opts
+            l_opts["unix"] += darwin_opts
+        elif sys.platform == "linux" or sys.platform == "linux2":
+            if is_ubuntu():
+                install_check_ubuntu()
 
-    if sys.platform == "darwin":
-        install_check_mac()
-        # Verify that we're either compiling with clang or
-        # inside a Github Action
-        assert compiler_check() == "clang" or os.environ.get(
-            GHA, False
-        ), "Need to install LLVM clang!"
-        darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.14", "-O3"]
-        c_opts["unix"] += darwin_opts
-        l_opts["unix"] += darwin_opts
-    elif sys.platform == "linux" or sys.platform == "linux2":
-        if is_ubuntu():
-            install_check_ubuntu()
+            linux_opts = ["-O3"]
+            c_opts["unix"] += linux_opts
+            l_opts["unix"] += linux_opts
 
-        linux_opts = ["-O3"]
-        c_opts["unix"] += linux_opts
-        l_opts["unix"] += linux_opts
+        def build_extensions(self):
+            ct = self.compiler.compiler_type
 
-    def build_extensions(self):
-        ct = self.compiler.compiler_type
+            opts = self.c_opts.get(ct, [])
+            link_opts = self.l_opts.get(ct, [])
 
-        opts = self.c_opts.get(ct, [])
-        link_opts = self.l_opts.get(ct, [])
+            # TODO(@motiwari): on Windows, these flags are unrecognized
+            opts.append(cpp_flag(self.compiler))
+            opts.append("-O3")
+            if sys.platform == "darwin" and os.environ.get(GHA, False):
+                opts.append('-Xpreprocessor')  # NEEDS TO BE WITH NEXT LINE
+                opts.append('-I/usr/local/opt/libomp/include')
+                opts.append('-L/usr/local/opt/libomp/lib')  # Potentially unused?
 
-        # TODO(@motiwari): on Windows, these flags are unrecognized
-        opts.append(cpp_flag(self.compiler))
-        opts.append("-O3")
-        if sys.platform == "darwin" and os.environ.get(GHA, False):
-            opts.append('-Xpreprocessor')  # NEEDS TO BE WITH NEXT LINE
-            opts.append('-fopenmp')  # NEEDS TO BE WITH PREVIOUS LINE
+            if ct == "unix":
+                if has_flag(self.compiler, "-fvisibility=hidden"):
+                    opts.append("-fvisibility=hidden")
 
-            opts.append('-lomp')  # Potentially unused?
-            opts.append('-I/usr/local/opt/libomp/include')
-            opts.append('-L/usr/local/opt/libomp/lib')  # Potentially unused?
-        else:
-            opts.append("-fopenmp")
+            for ext in self.extensions:
+                ext.define_macros = [
+                    ("VERSION_INFO", '"{}"'.format(
+                        self.distribution.get_version()
+                    ))
+                ]
+                ext.extra_compile_args = opts
+                ext.extra_link_args = link_opts
 
-        compiler_name = compiler_check()
-        if (sys.platform == "darwin" and os.environ.get(GHA, False)):
-            link_opts.append('-lomp')  # Potentially unused?
-            link_opts.append('-I/usr/local/opt/libomp/include')
-            link_opts.append('-L/usr/local/opt/libomp/lib')  # Unused?
-        else:
-            if compiler_name == "clang":
-                link_opts.append("-lomp")
-            else:  # gcc
-                link_opts.append("-lgomp")
-
-        if ct == "unix":
-            if has_flag(self.compiler, "-fvisibility=hidden"):
-                opts.append("-fvisibility=hidden")
-
-        for ext in self.extensions:
-            ext.define_macros = [
-                ("VERSION_INFO", '"{}"'.format(
-                    self.distribution.get_version()
-                ))
-            ]
-            ext.extra_compile_args = opts
-            ext.extra_link_args = link_opts
-
-        build_ext.build_extensions(self)
-
+            build_ext.build_extensions(self)
+else:
+    class BuildExt(build_ext):
+        """
+        A custom build extension for adding compiler-specific options.
+        """
+        def build_extensions(self):
+            for ext in self.extensions:
+                ext.define_macros = [
+                    ("VERSION_INFO", '"{}"'.format(
+                        self.distribution.get_version()
+                    ))
+                ]
+            build_ext.build_extensions(self)
 
 def main():
     if sys.platform == "linux" or sys.platform == "linux2":
@@ -423,7 +419,7 @@ def main():
             os.path.join("/", "usr", "local", "include"),
         ]
 
-    else:  # OSX
+    elif sys.platform == "darwin":  # OSX
         include_dirs = [
             get_pybind_include(),
             get_numpy_include(),
@@ -455,24 +451,27 @@ def main():
                 "armadillo_bits"
             ),
             # Needed for Mac Github Runners
-            # for macos-10.15
-            os.path.join("/", "usr", "local", "Cellar", "libomp",
-                         "15.0.2", "include"),
-            # for macos-latest
-            os.path.join("/", "usr", "local", "Cellar", "libomp",
-                         "15.0.7", "include"),
+            os.path.join("/", "usr", "local", "opt", "libomp", "include"),
+        ]
+    else: #WIN32
+        include_dirs = [
+            get_pybind_include(),
+            get_numpy_include(),
+            "headers",
+            os.path.join("headers", "algorithms"),
+            os.path.join("headers", "python_bindings"),
+            os.path.join("headers", "carma", "include"),
+            os.path.join("headers", "carma", "include", "carma_bits"),
+            os.path.join("headers", "armadillo", "include"),
+            os.path.join("headers", "armadillo", "include", "armadillo_bits"),
         ]
 
-    compiler_name = compiler_check()
-    if (sys.platform == "darwin" and os.environ.get(GHA, False)):
-        # On Mac Github Runners, we should NOT include gomp or omp here
-        # due to build errors.
-        libraries = ["armadillo", "omp"]
+    cpp_args = None
+    if sys.platform == "win32":
+        libraries = ["libopenblas"]
+        cpp_args = ['/std:c++17']
     else:
-        if compiler_name == "clang":
-            libraries = ["armadillo", "omp"]
-        else:  # gcc
-            libraries = ["armadillo", "gomp"]
+        libraries = ["armadillo"]
 
     ext_modules = [
         Extension(
@@ -507,15 +506,24 @@ def main():
                 # for macos-latest
                 os.path.join("/", "usr", "local", "Cellar", "libomp",
                              "15.0.7", "lib"),
+                # for windows
+                os.path.join(os.getcwd(),r'headers\armadillo\examples\lib_win64'),
             ],
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
-            extra_compile_args=["-static-libstdc++"],
+            extra_compile_args=cpp_args,
         )
     ]
 
     with open(os.path.join("docs", "long_desc.rst"), encoding="utf-8") as f:
         long_description = f.read()
+
+    my_data_files = None
+    if sys.platform == "win32":
+        my_data_files = [("docs", [os.path.join("docs", "long_desc.rst")]),
+                         ('', [os.path.join(os.getcwd(),r'headers\armadillo\examples\lib_win64\libopenblas.dll')])]
+    else:
+        my_data_files = [("docs", [os.path.join("docs", "long_desc.rst")])]
 
     setup(
         name="banditpam",
@@ -529,7 +537,7 @@ def main():
         long_description=long_description,
         ext_modules=ext_modules,
         setup_requires=["pybind11>=2.5.0", "numpy>=1.18"],
-        data_files=[("docs", [os.path.join("docs", "long_desc.rst")])],
+        data_files=my_data_files,
         include_package_data=True,
         cmdclass={"build_ext": BuildExt},
         zip_safe=False,
