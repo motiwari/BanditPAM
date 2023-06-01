@@ -202,6 +202,15 @@ class KMedoids {
   float getAverageLoss() const;
 
   /**
+   * @brief Get the loss at the end of the BUILD step of the algorithm
+   *
+   * @returns The loss at the end of the BUILD step of the algorithm
+   *
+   * @throws If the BUILD step has not been run yet
+   */
+  float getBuildLoss() const;
+
+  /**
    * @brief Returns whether a distance cache is being used
    *
    * @return Whether a distance cache is being used
@@ -520,6 +529,9 @@ class KMedoids {
 
   /// Contains the average loss at the last step of the algorithm
   float averageLoss = 0.0;
+
+  /// Contains the loss at the end of the BUILD step of the algorithm
+  float buildLoss = 0.0;
 
   /// Number of points to sample per reference batch
   size_t batchSize = 100;

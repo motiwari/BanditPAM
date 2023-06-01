@@ -413,6 +413,10 @@ float KMedoids::getAverageLoss() const {
   return averageLoss;
 }
 
+float KMedoids::getBuildLoss() const {
+    return buildLoss;
+}
+
 float KMedoids::LP(const arma::fmat& data,
   const size_t i,
   const size_t j) const {

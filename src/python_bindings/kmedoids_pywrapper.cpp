@@ -78,6 +78,7 @@ PYBIND11_MODULE(banditpam, m) {
   steps_python(&cls);
   fit_python(&cls);
   loss_python(&cls);
+  build_loss_python(&cls);
 
   // Cache functions
   distance_computations_python(&cls);

@@ -74,6 +74,14 @@ class KMedoidsWrapper : public km::KMedoids {
   float getLossPython();
 
   /**
+   * @brief Returns the loss after the BUILD step
+   *
+   * The loss after the BUILD step, i.e., the average distance from each point to its
+   * nearest medoid after the BUILD step
+   */
+  float getBuildLossPython();
+
+  /**
    * @brief Returns the number of distance computations (sample complexity) used by .fit()
    *
    * The total number of distance computations (sample complexity) used by .fit()
@@ -156,6 +164,11 @@ void steps_python(pybind11::class_<km::KMedoidsWrapper> *);
  * @brief Binding for the C++ function KMedoids::calcLoss()
  */
 void loss_python(pybind11::class_<km::KMedoidsWrapper> *);
+
+/**
+ * @brief Binding for the C++ function KMedoids::calcLoss() (after BUILD step)
+ */
+void build_loss_python(pybind11::class_<km::KMedoidsWrapper> *);
 
 /**
  * @brief Binding for the C++ function KMedoids::getDistanceComputations()

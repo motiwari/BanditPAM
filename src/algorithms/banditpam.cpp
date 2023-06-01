@@ -46,6 +46,8 @@ void BanditPAM::fitBanditPAM(
   steps = 0;
   BanditPAM::build(data, distMat, &medoidIndices, &medoidMatrix);
 
+  buildLoss = KMedoids::calcLoss(data, distMat, &medoidIndices);
+
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
   if (nMedoids > 1) {
