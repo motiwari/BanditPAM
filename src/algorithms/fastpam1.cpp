@@ -100,6 +100,7 @@ void FastPAM1::swapFastPAM1(
   arma::urowvec* assignments
 ) {
   float bestChange = 0;
+  float prevBestChange = 0;
   size_t swapIn = 0;
   size_t medoidToSwap = 0;
   size_t N = data.n_cols;
@@ -171,7 +172,7 @@ void FastPAM1::swapFastPAM1(
     }
 
     // Update the loss and perform the swap if the loss would be improved
-    if (bestChange < 0) {
+    if (bestChange < prevBestChange) {
       (*medoidIndices)(medoidToSwap) = swapIn;
       calcBestDistancesSwap(
         data,
@@ -181,6 +182,7 @@ void FastPAM1::swapFastPAM1(
         &secondBestDistances,
         assignments,
         swapPerformed);
+      prevBestChange = bestChange;
     } else {
       swapPerformed = false;
     }
