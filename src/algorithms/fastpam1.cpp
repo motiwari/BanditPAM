@@ -125,6 +125,8 @@ void FastPAM1::swapFastPAM1(
   float dij = 0;
 
   while (swapPerformed && iter < maxIter) {
+    bestChange = 0;
+    deltaTD.zeros();
     iter++;
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t i = 0; i < data.n_cols; i++) {
@@ -164,15 +166,16 @@ void FastPAM1::swapFastPAM1(
       arma::uword swapOut = deltaTD.index_min();
       // If the loss change is better than the best loss change so far,
       // Update our running best statistics
-      if (deltaTD.min() < bestChange) {
+      if (deltaTD.min() < prevBestChange) {
         bestChange = deltaTD.min();
+        prevBestChange = bestChange;
         swapIn = i;
         medoidToSwap = swapOut;
       }
     }
 
     // Update the loss and perform the swap if the loss would be improved
-    if (bestChange < prevBestChange) {
+    if (bestChange < 0) {
       (*medoidIndices)(medoidToSwap) = swapIn;
       calcBestDistancesSwap(
         data,
@@ -182,7 +185,6 @@ void FastPAM1::swapFastPAM1(
         &secondBestDistances,
         assignments,
         swapPerformed);
-      prevBestChange = bestChange;
     } else {
       swapPerformed = false;
     }
