@@ -405,7 +405,10 @@ class BuildExt(build_ext):
                 ))
             ]
             ext.extra_compile_args = opts
+            ext.extra_compile_args += []#[]["-arch", "x86_64"]
+
             ext.extra_link_args = link_opts
+            ext.extra_link_args += ["-v",] # "-arch", "x86_64"]
 
         build_ext.build_extensions(self)
 
@@ -499,6 +502,8 @@ def main():
             include_dirs=include_dirs,
             library_dirs=[
                 os.path.join("/", "usr", "local", "lib"),
+                os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib"),
+                os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib"),
                 # For Mac Github runners that install locally
                 # (not build wheels) - testing for macos-10.15
                 os.path.join("/", "usr", "local", "Cellar", "libomp",
@@ -511,6 +516,7 @@ def main():
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
             extra_compile_args=["-static-libstdc++"],
+            extra_link_args=[],  # This is not passed correct, because BuildExt sets the extra_link_args
         )
     ]
 
