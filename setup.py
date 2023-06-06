@@ -1,3 +1,4 @@
+import platform
 import sys
 import os
 import tempfile
@@ -7,7 +8,6 @@ from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
-from pybind11.setup_helpers import Pybind11Extension, build_ext
 
 __version__ = "4.0.1"
 
@@ -51,9 +51,7 @@ def compiler_check():
     """
     try:
         return (
-            "clang"
-            if "clang" in distutils.sysconfig.get_config_vars()["CC"]
-            else "gcc"
+            "clang" if "clang" in distutils.sysconfig.get_config_vars()["CC"] else "gcc"
         )
     except KeyError:
         # The 'CC' environment variable hasn't been set.
@@ -119,6 +117,7 @@ def check_brew_package(pkg_name: str):
             Please run `brew install %s`"
             % (pkg_name, pkg_name)
         )
+
     return output.decode().strip()
 
 
@@ -200,6 +199,7 @@ def check_armadillo_install_linux():
                 "armadillo-code",
             ),
         )
+
     return output.decode().strip()
 
 
@@ -217,6 +217,7 @@ def check_linux_package_installation(pkg_name: str):
             libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
             % (pkg_name)
         )
+
     return output.decode().strip()
 
 
@@ -260,12 +261,11 @@ def setup_colab(delete_source=False):
         repo_location = os.path.join("/", "content", "BanditPAM")
         # Note the space after the git URL to separate the source and target
         os.system(
-            "git clone https://github.com/motiwari/BanditPAM.git "
-            + repo_location
+            "git clone https://github.com/motiwari/BanditPAM.git " + repo_location
         )
         os.system(
-            repo_location +
-            os.path.join(
+            repo_location
+            + os.path.join(
                 "scripts",
                 "colab_files",
                 "colab_install_armadillo.sh",
@@ -339,96 +339,250 @@ def is_ubuntu():
     return "Ubuntu" in output.decode()
 
 
-class BuildExt(build_ext):
-    """
-    A custom build extension for adding compiler-specific options.
-    """
-    def build_extensions(self):
-        for ext in self.extensions:
-            ext.define_macros = [
-                ("VERSION_INFO", '"{}"'.format(
-                    self.distribution.get_version()
-                ))
-            ]
-        build_ext.build_extensions(self)
+if sys.platform != "win32":
 
-include_dirs = [
-    get_pybind_include(),
-    get_numpy_include(),
-    "headers",
-    os.path.join("headers", "algorithms"),
-    os.path.join("headers", "python_bindings"),
-    os.path.join("headers", "carma", "include"),
-    os.path.join("headers", "carma", "include", "carma_bits"),
-    os.path.join("headers", "armadillo-code", "include"),
-    os.path.join("headers", "armadillo-code", "include", "armadillo_bits"),
-]
+    class BuildExt(build_ext):
+        """
+        A custom build extension for adding compiler-specific options.
+        """
 
-cpp_args = ['/std:c++17']
-ext_modules = [
-    Pybind11Extension(
-        "banditpam",
-        [
-            os.path.join("src", "algorithms", "kmedoids_algorithm.cpp"),
-            os.path.join("src", "algorithms", "pam.cpp"),
-            os.path.join("src", "algorithms", "banditpam.cpp"),
-            os.path.join("src", "algorithms", "banditpam_orig.cpp"),
-            os.path.join("src", "algorithms", "fastpam1.cpp"),
-            os.path.join("src", "python_bindings",
-                            "kmedoids_pywrapper.cpp"),
-            os.path.join("src", "python_bindings", "medoids_python.cpp"),
-            os.path.join("src", "python_bindings",
-                            "build_medoids_python.cpp"),
-            os.path.join("src", "python_bindings", "fit_python.cpp"),
-            os.path.join("src", "python_bindings", "labels_python.cpp"),
-            os.path.join("src", "python_bindings", "steps_python.cpp"),
-            os.path.join("src", "python_bindings", "loss_python.cpp"),
-            os.path.join("src", "python_bindings", "cache_python.cpp"),
-            os.path.join("src", "python_bindings",
-                            "swap_times_python.cpp"),
+        c_opts = {"msvc": ["/EHsc"], "unix": []}
+        l_opts = {"msvc": [], "unix": []}
+
+        if sys.platform == "darwin":
+            install_check_mac()
+            # Verify that we're either compiling with clang or
+            # inside a Github Action
+            assert compiler_check() == "clang" or os.environ.get(
+                GHA, False
+            ), "Need to install LLVM clang!"
+            darwin_opts = ["-mmacosx-version-min=10.14", "-O3"]
+            c_opts["unix"] += darwin_opts
+            l_opts["unix"] += darwin_opts
+        elif sys.platform == "linux" or sys.platform == "linux2":
+            if is_ubuntu():
+                install_check_ubuntu()
+
+            linux_opts = ["-O3"]
+            c_opts["unix"] += linux_opts
+            l_opts["unix"] += linux_opts
+
+        def build_extensions(self):
+            ct = self.compiler.compiler_type
+
+            opts = self.c_opts.get(ct, [])
+            link_opts = self.l_opts.get(ct, [])
+
+            # TODO(@motiwari): on Windows, these flags are unrecognized
+            opts.append(cpp_flag(self.compiler))
+            opts.append("-O3")
+            if sys.platform == "darwin" and os.environ.get(GHA, False):
+                opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
+                opts.append("-I/usr/local/opt/libomp/include")
+                opts.append("-L/usr/local/opt/libomp/lib")  # Potentially unused?
+            else:
+                opts.append("-fopenmp")
+
+            compiler_name = compiler_check()
+            if compiler_name == "clang":
+                link_opts.append("-lomp")
+            else:  # gcc
+                link_opts.append("-lgomp")
+
+            if ct == "unix":
+                if has_flag(self.compiler, "-fvisibility=hidden"):
+                    opts.append("-fvisibility=hidden")
+
+            for ext in self.extensions:
+                ext.define_macros = [
+                    ("VERSION_INFO", '"{}"'.format(self.distribution.get_version()))
+                ]
+                ext.extra_compile_args = opts
+                ext.extra_compile_args += []  # []["-arch", "x86_64"]
+
+                ext.extra_link_args = link_opts
+                ext.extra_link_args += [
+                    "-v",
+                ]  # "-arch", "x86_64"]
+
+            build_ext.build_extensions(self)
+
+else:
+
+    class BuildExt(build_ext):
+        """
+        A custom build extension for adding compiler-specific options.
+        """
+
+        def build_extensions(self):
+            for ext in self.extensions:
+                ext.define_macros = [
+                    ("VERSION_INFO", '"{}"'.format(self.distribution.get_version()))
+                ]
+
+            build_ext.build_extensions(self)
+
+
+def main():
+    if sys.platform == "linux" or sys.platform == "linux2":
+        include_dirs = [
+            get_pybind_include(),
+            get_numpy_include(),
+            "headers",
+            os.path.join("headers", "algorithms"),
+            os.path.join("headers", "python_bindings"),
+            os.path.join("headers", "carma", "include"),
+            os.path.join("headers", "carma", "include", "carma_bits"),
+            os.path.join("/", "usr", "local", "include"),
+        ]
+    elif sys.platform == "darwin":  # OSX
+        include_dirs = [
+            get_pybind_include(),
+            get_numpy_include(),
+            "headers",
+            os.path.join("headers", "algorithms"),
+            os.path.join("headers", "python_bindings"),
+            os.path.join("headers", "carma", "include"),
+            os.path.join("headers", "carma", "include", "carma"),
+            os.path.join("headers", "carma", "include", "carma", "carma"),
+            # To include carma when the BanditPAM repo hasnt been initialized
+            os.path.join("/", "usr", "local", "include"),
+            os.path.join("/", "usr", "local", "include", "carma"),
+            os.path.join("/", "usr", "local", "include", "carma", "carma_bits"),
+            # When building from source on M1 Macs, may need these dirs
+            # Currently, we should never be building from source on an M1 Mac,
+            # Only cross-compiling from an Intel Mac
+            # TODO(@motiwari): Remove extraneous directories
+            os.path.join("/", "opt", "homebrew"),
+            os.path.join("/", "opt", "homebrew", "bin"),
+            os.path.join("/", "opt", "homebrew", "include"),
+            os.path.join("/", "opt", "homebrew", "lib"),
+            os.path.join("/", "opt", "homebrew", "opt"),
+            os.path.join("/", "opt", "homebrew", "opt", "armadillo"),
+            os.path.join("/", "opt", "homebrew", "opt", "armadillo", "include"),
+            os.path.join(
+                "/", "opt", "homebrew", "opt", "armadillo", "include", "armadillo_bits"
+            ),
+            # Needed for Mac Github Runners
+            os.path.join("/", "usr", "local", "opt", "libomp", "include"),
+        ]
+    else:  # WIN32
+        include_dirs = [
+            get_pybind_include(),
+            get_numpy_include(),
+            "headers",
+            os.path.join("headers", "algorithms"),
+            os.path.join("headers", "python_bindings"),
+            os.path.join("headers", "carma", "include"),
+            os.path.join("headers", "carma", "include", "carma_bits"),
+            os.path.join("headers", "armadillo", "include"),
+            os.path.join("headers", "armadillo", "include", "armadillo_bits"),
+        ]
+
+    cpp_args = None
+    if sys.platform == "win32":
+        libraries = ["libopenblas"]
+        cpp_args = ["/std:c++17"]
+        library_dirs = [
+            # for windows
+            os.path.join(os.getcwd(), r"headers\armadillo\examples\lib_win64"),
+        ]
+    else:
+        libraries = ["armadillo"]
+        library_dirs = [
+            os.path.join("/", "usr", "local", "lib"),
+            # For Mac Github runners that install locally
+            # (not build wheels) - testing for macos-10.15
+            os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.2", "lib"),
+            # for macos-latest
+            os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.7", "lib"),
+        ]
+        if sys.platform == "darwin" and platform.processor() == "arm":  # M1 Mac
+            library_dirs.append(
+                os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
+            )
+            library_dirs.append(
+                os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib")
+            )
+
+    ext_modules = [
+        Extension(
+            "banditpam",
+            [
+                os.path.join("src", "algorithms", "kmedoids_algorithm.cpp"),
+                os.path.join("src", "algorithms", "pam.cpp"),
+                os.path.join("src", "algorithms", "banditpam.cpp"),
+                os.path.join("src", "algorithms", "banditpam_orig.cpp"),
+                os.path.join("src", "algorithms", "fastpam1.cpp"),
+                os.path.join("src", "python_bindings", "kmedoids_pywrapper.cpp"),
+                os.path.join("src", "python_bindings", "medoids_python.cpp"),
+                os.path.join("src", "python_bindings", "build_medoids_python.cpp"),
+                os.path.join("src", "python_bindings", "fit_python.cpp"),
+                os.path.join("src", "python_bindings", "labels_python.cpp"),
+                os.path.join("src", "python_bindings", "steps_python.cpp"),
+                os.path.join("src", "python_bindings", "loss_python.cpp"),
+                os.path.join("src", "python_bindings", "cache_python.cpp"),
+                os.path.join("src", "python_bindings", "swap_times_python.cpp"),
+            ],
+            include_dirs=include_dirs,
+            library_dirs=library_dirs,
+            libraries=libraries,
+            language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
+            extra_compile_args=cpp_args,
+            extra_link_args=[],  # This is not passed correct, because BuildExt sets the extra_link_args
+        )
+    ]
+
+    with open(os.path.join("docs", "long_desc.rst"), encoding="utf-8") as f:
+        long_description = f.read()
+
+    my_data_files = None
+    if sys.platform == "win32":
+        my_data_files = [
+            ("docs", [os.path.join("docs", "long_desc.rst")]),
+            (
+                "",
+                [
+                    os.path.join(
+                        os.getcwd(),
+                        r"headers\armadillo\examples\lib_win64\libopenblas.dll",
+                    )
+                ],
+            ),
+        ]
+    else:
+        my_data_files = [("docs", [os.path.join("docs", "long_desc.rst")])]
+
+    setup(
+        name="banditpam",
+        version=__version__,
+        author="Mo Tiwari",
+        maintainer="Mo Tiwari",
+        author_email="motiwari@stanford.edu",
+        url="https://github.com/motiwari/BanditPAM",
+        description="BanditPAM: A state-of-the-art, \
+            high-performance k-medoids algorithm.",
+        long_description=long_description,
+        ext_modules=ext_modules,
+        setup_requires=["pybind11>=2.5.0", "numpy>=1.18"],
+        data_files=my_data_files,
+        include_package_data=True,
+        cmdclass={"build_ext": BuildExt},
+        zip_safe=False,
+        classifiers=[
+            "Programming Language :: Python :: 3",
+            "License :: OSI Approved :: MIT License",
+            "Operating System :: OS Independent",
         ],
-        include_dirs=include_dirs,
-        # language="c++",  # TODO: modify this based on cpp_flag(compiler)
-        extra_compile_args=cpp_args,
-        libraries = ['libopenblas'],
-        library_dirs = [os.path.join(os.getcwd(),r'headers\armadillo-code\examples\lib_win64')],
-        # define_macros = [('VERSION_INFO', __version__)],
+        headers=[
+            os.path.join("headers", "algorithms", "kmedoids_algorithm.hpp"),
+            os.path.join("headers", "algorithms", "banditpam.hpp"),
+            os.path.join("headers", "algorithms", "fastpam1.hpp"),
+            os.path.join("headers", "algorithms", "pam.hpp"),
+            os.path.join("headers", "python_bindings", "kmedoids_pywrapper.hpp"),
+        ],
     )
-]
 
-with open(os.path.join("docs", "long_desc.rst"), encoding="utf-8") as f:
-    long_description = f.read()
 
-setup(
-    name="banditpam",
-    version=__version__,
-    author="Mo Tiwari",
-    maintainer="Mo Tiwari",
-    author_email="motiwari@stanford.edu",
-    url="https://github.com/ThrunGroup/BanditPAM",
-    description="BanditPAM: A state-of-the-art, \
-        high-performance k-medoids algorithm.",
-    long_description=long_description,
-    ext_modules=ext_modules,
-    setup_requires=["pybind11>=2.5.0", "numpy>=1.18"],
-    data_files=[("docs", [os.path.join("docs", "long_desc.rst")]),
-                ('', [os.path.join(os.getcwd(),r'headers\armadillo-code\examples\lib_win64\libopenblas.dll')])],
-    include_package_data=True,
-    zip_safe=False,
-    python_requires=">=3.7",
-    cmdclass={"build_ext": BuildExt},
-    # classifiers=[
-    #     "Programming Language :: Python :: 3",
-    #     "License :: OSI Approved :: MIT License",
-    #     "Operating System :: OS Independent",
-    # ],
-    # headers=[
-    #     os.path.join("headers", "algorithms", "kmedoids_algorithm.hpp"),
-    #     os.path.join("headers", "algorithms", "banditpam.hpp"),
-    #     os.path.join("headers", "algorithms", "fastpam1.hpp"),
-    #     os.path.join("headers", "algorithms", "pam.hpp"),
-    #     os.path.join("headers", "python_bindings",
-    #                  "kmedoids_pywrapper.hpp"),
-    # ],
-    # packages=find_packages(),
-)
+if __name__ == "__main__":
+    main()
