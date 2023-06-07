@@ -24,7 +24,7 @@ include_directories(/usr/local/opt)
 endif()
 
 if(WIN32)
-add_executable(BanditPAM main.cpp )
+add_executable(BanditPAM getopt.cpp main.cpp )
 
 elseif(APPLE OR UNIX)
 add_executable(BanditPAM main.cpp )
