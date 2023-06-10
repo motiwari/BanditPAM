@@ -86,8 +86,8 @@ jobs:
       - name: Clone for Push
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          echo $GITHUB_REF
-          git clone -b $GITHUB_REF https://github.com/motiwari/BanditPAM
+          echo ${GITHUB_REF#refs/heads/}
+          git clone -b ${GITHUB_REF#refs/heads/} https://github.com/motiwari/BanditPAM
 
       - name: Verify that the C++ executable compiles and runs
         run : |
