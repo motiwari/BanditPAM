@@ -50,6 +50,8 @@ jobs:
 
       - name: Install BanditPAM package
         run: |
+          export CC=/usr/local/opt/llvm/bin/clang
+          export CXX=/usr/local/opt/llvm/bin/clang++
           # The flags are necessary to ignore the pyproject.toml
           # See https://github.com/pypa/pip/issues/9738
           pip install --no-use-pep517 --no-build-isolation -vvv -e .
