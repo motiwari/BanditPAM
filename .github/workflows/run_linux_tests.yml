@@ -79,7 +79,7 @@ jobs:
 
       - name: Verify that the C++ executable compiles and runs
         run : |
-          git clone -b ${GITHUB_REF#refs/heads/} https://github.com/motiwari/BanditPAM
+          git clone -b GITHUB_REF_NAME https://github.com/motiwari/BanditPAM
           cd BanditPAM
           mkdir build
           cd build
