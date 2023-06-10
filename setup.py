@@ -489,14 +489,7 @@ def main():
         ]
     else:
         libraries = ["armadillo"]
-        library_dirs = [
-            os.path.join("/", "usr", "local", "lib"),
-            # For Mac Github runners that install locally
-            # (not build wheels) - testing for macos-10.15
-            os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.2", "lib"),
-            # for macos-latest
-            os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.7", "lib"),
-        ]
+        library_dirs = [os.path.join("/", "usr", "local", "lib")]
         if sys.platform == "darwin" and platform.processor() == "arm":  # M1 Mac
             library_dirs.append(
                 os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
