@@ -29,6 +29,9 @@ jobs:
           python -m pip install pytest
           python -m pip install -r requirements.txt
           python -m pip install --upgrade setuptools wheel
+          echo $CXX
+          echo $CC
+          which gcc
 
       - name: Install Armadillo 10.7.5+
         run: |
