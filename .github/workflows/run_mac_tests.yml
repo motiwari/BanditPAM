@@ -48,16 +48,8 @@ jobs:
           sudo cmake --build . --config Release --target install
           cd ~
 
-      # TODO(@motiwari): Clean this environment variables up
       - name: Install BanditPAM package
         run: |
-          echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
-          source /Users/runner/.bash_profile
-          export LDFLAGS="-L/usr/local/opt/llvm/lib, -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
-          export CPPFLAGS="-I/usr/local/opt/llvm/include"
-          export DYLD_LIBRARY_PATH=/usr/local/opt/libomp/lib:/usr/local/opt/libomp/include
-          export CC=/usr/local/opt/llvm/bin/clang
-          export CXX=/usr/local/opt/llvm/bin/clang++
           # The flags are necessary to ignore the pyproject.toml
           # See https://github.com/pypa/pip/issues/9738
           python -m pip install --no-use-pep517 --no-build-isolation -vvv -e .
