@@ -52,7 +52,7 @@ jobs:
         run: |
           # The flags are necessary to ignore the pyproject.toml
           # See https://github.com/pypa/pip/issues/9738
-          pip install --no-use-pep517 --no-build-isolation -vvv -e .
+          pip install --no-build-isolation -vvv -e .
         env:
           # The default compiler on the Github Ubuntu runners is gcc
           # Would need to make a respective include change for clang
