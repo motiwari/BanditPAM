@@ -356,7 +356,7 @@ if sys.platform != "win32":
             assert compiler_check() == "clang" or os.environ.get(
                 GHA, False
             ), "Need to install LLVM clang!"
-            darwin_opts = ["-mmacosx-version-min=10.14", "-O3"]
+            darwin_opts = ["-stdlib=libc++", "-mmacosx-version-min=10.14", "-O3"]
             c_opts["unix"] += darwin_opts
             l_opts["unix"] += darwin_opts
         elif sys.platform == "linux" or sys.platform == "linux2":
@@ -378,16 +378,24 @@ if sys.platform != "win32":
             opts.append("-O3")
             if sys.platform == "darwin" and os.environ.get(GHA, False):
                 opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
+                opts.append('-fopenmp')  # NEEDS TO BE WITH PREVIOUS LINE
+
+                opts.append('-lomp')  # Potentially unused?
                 opts.append("-I/usr/local/opt/libomp/include")
                 opts.append("-L/usr/local/opt/libomp/lib")  # Potentially unused?
             else:
                 opts.append("-fopenmp")
 
             compiler_name = compiler_check()
-            if compiler_name == "clang":
-                link_opts.append("-lomp")
-            else:  # gcc
-                link_opts.append("-lgomp")
+            if (sys.platform == "darwin" and os.environ.get(GHA, False)):
+                link_opts.append('-lomp')  # Potentially unused?
+                link_opts.append('-I/usr/local/opt/libomp/include')
+                link_opts.append('-L/usr/local/opt/libomp/lib')  # Unused?
+            else:
+                if compiler_name == "clang":
+                    link_opts.append("-lomp")
+                else:  # gcc
+                    link_opts.append("-lgomp")
 
             if ct == "unix":
                 if has_flag(self.compiler, "-fvisibility=hidden"):
@@ -398,10 +406,10 @@ if sys.platform != "win32":
                     ("VERSION_INFO", '"{}"'.format(self.distribution.get_version()))
                 ]
                 ext.extra_compile_args = opts
-                ext.extra_compile_args += []  # []["-arch", "x86_64"]
+                ext.extra_compile_args += []  # []["-arch", "x86_64"] # TODO: check if this is causing issues
 
                 ext.extra_link_args = link_opts
-                ext.extra_link_args += [
+                ext.extra_link_args += [ # TODO: check if this is causing issues
                     "-v",
                 ]  # "-arch", "x86_64"]
 
@@ -497,7 +505,6 @@ def main():
 
     cpp_args = None
     if sys.platform == "win32":
-        libraries = ["libopenblas"]
         cpp_args = ["/std:c++17"]
         library_dirs = [
             # for windows
@@ -509,7 +516,7 @@ def main():
                         os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.2", "lib"),
                         os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.7", "lib"),
                         ]
-        if sys.platform == "darwin" and platform.processor() == "arm":  # M1 Mac
+        if sys.platform == "darwin" and platform.processor() == "arm":  # M1 Mac # TODO: check if this is causing issues
             library_dirs.append(
                 os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
             )
@@ -541,7 +548,7 @@ def main():
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
             extra_compile_args=cpp_args,
-            extra_link_args=[],  # This is not passed correct, because BuildExt sets the extra_link_args
+            extra_link_args=[],  # This is not passed correct, because BuildExt sets the extra_link_args # TODO: check if this is causing issues
         )
     ]
 
