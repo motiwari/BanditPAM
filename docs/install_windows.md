@@ -13,7 +13,7 @@ Please ensure the following dependencies are installed:
 
 ## BanditPAM Installation
 
-TO UPDATE: Add the following files:
+Copy the files in [this repo](https://github.com/ThrunGroup/BanditPAM-Windows) into the following locations:
 1) `headers/unistd.h`
 2) `headers/getopt.h`
 3) `src/getopt.cpp`
