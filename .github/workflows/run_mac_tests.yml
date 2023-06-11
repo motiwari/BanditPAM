@@ -32,6 +32,7 @@ jobs:
           echo $CXX
           echo $CC
           which gcc
+          gcc --version
 
       - name: Install Armadillo 10.7.5+
         run: |
