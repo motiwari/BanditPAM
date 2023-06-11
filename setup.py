@@ -465,11 +465,9 @@ def main():
             ),
             # Needed for Mac Github Runners
             # for macos-10.15
-            os.path.join("/", "usr", "local", "Cellar", "libomp",
-                         "15.0.2", "include"),
+            os.path.join("/", "usr", "local", "Cellar", "libomp","15.0.2", "include"),
             # for macos-latest
-            os.path.join("/", "usr", "local", "Cellar", "libomp",
-                         "15.0.7", "include")
+            os.path.join("/", "usr", "local", "Cellar", "libomp","15.0.7", "include"),
             os.path.join("/", "usr", "local", "opt", "libomp", "include"),
         ]
     else:  # WIN32
