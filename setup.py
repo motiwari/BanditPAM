@@ -468,7 +468,6 @@ def main():
             os.path.join("/", "usr", "local", "Cellar", "libomp","15.0.2", "include"),
             # for macos-latest
             os.path.join("/", "usr", "local", "Cellar", "libomp","15.0.7", "include"),
-            os.path.join("/", "usr", "local", "opt", "libomp", "include"),
         ]
     else:  # WIN32
         include_dirs = [
@@ -483,6 +482,19 @@ def main():
             os.path.join("headers", "armadillo", "include", "armadillo_bits"),
         ]
 
+    compiler_name = compiler_check()
+    if (sys.platform == "darwin" and os.environ.get(GHA, False)):
+        # On Mac Github Runners, we should NOT include gomp or omp here
+        # due to build errors.
+        libraries = ["armadillo", "omp"]
+    elif sys.platform == "win32":
+        libraries = ["libopenblas"]
+    else:
+        if compiler_name == "clang":
+            libraries = ["armadillo", "omp"]
+        else:  # gcc
+            libraries = ["armadillo", "gomp"]
+
     cpp_args = None
     if sys.platform == "win32":
         libraries = ["libopenblas"]
@@ -493,13 +505,10 @@ def main():
         ]
     else:
         cpp_args = ["-static-libstdc++"]  # TODO(@motiwari): Modify this based on gcc or clang
-        compiler_name = compiler_check()
-        if compiler_name == "clang":
-            libraries = ["armadillo", "omp"]
-        else:  # gcc
-            libraries = ["armadillo", "gomp"]
-
-        library_dirs = [os.path.join("/", "usr", "local", "lib")]
+        library_dirs = [os.path.join("/", "usr", "local", "lib"),
+                        os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.2", "lib"),
+                        os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.7", "lib"),
+                        ]
         if sys.platform == "darwin" and platform.processor() == "arm":  # M1 Mac
             library_dirs.append(
                 os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
@@ -507,16 +516,6 @@ def main():
             library_dirs.append(
                 os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib")
             )
-            library_dirs += [os.path.join("/", "usr", "local", "lib"),
-            # For Mac Github runners that install locally
-            # (not build wheels) - testing for macos-10.15
-            os.path.join("/", "usr", "local", "Cellar", "libomp",
-                         "15.0.2", "lib"),
-
-            # for macos-latest
-            os.path.join("/", "usr", "local", "Cellar", "libomp",
-                         "15.0.7", "lib"),
-            ]
 
     ext_modules = [
         Extension(
