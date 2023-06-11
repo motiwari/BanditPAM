@@ -507,6 +507,16 @@ def main():
             library_dirs.append(
                 os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib")
             )
+            library_dirs += [os.path.join("/", "usr", "local", "lib"),
+            # For Mac Github runners that install locally
+            # (not build wheels) - testing for macos-10.15
+            os.path.join("/", "usr", "local", "Cellar", "libomp",
+                         "15.0.2", "lib"),
+
+            # for macos-latest
+            os.path.join("/", "usr", "local", "Cellar", "libomp",
+                         "15.0.7", "lib"),
+            ]
 
     ext_modules = [
         Extension(
