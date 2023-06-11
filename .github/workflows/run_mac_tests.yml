@@ -48,6 +48,7 @@ jobs:
           sudo cmake --build . --config Release --target install
           cd ~
 
+      # TODO(@motiwari): Clean this environment variables up
       - name: Install BanditPAM package
         run: |
           echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
