@@ -464,6 +464,12 @@ def main():
                 "/", "opt", "homebrew", "opt", "armadillo", "include", "armadillo_bits"
             ),
             # Needed for Mac Github Runners
+            # for macos-10.15
+            os.path.join("/", "usr", "local", "Cellar", "libomp",
+                         "15.0.2", "include"),
+            # for macos-latest
+            os.path.join("/", "usr", "local", "Cellar", "libomp",
+                         "15.0.7", "include")
             os.path.join("/", "usr", "local", "opt", "libomp", "include"),
         ]
     else:  # WIN32
@@ -488,7 +494,13 @@ def main():
             os.path.join(os.getcwd(), r"headers\armadillo\examples\lib_win64"),
         ]
     else:
-        libraries = ["armadillo"]
+        cpp_args = ["-static-libstdc++"]  # TODO(@motiwari): Modify this based on gcc or clang
+        compiler_name = compiler_check()
+        if compiler_name == "clang":
+            libraries = ["armadillo", "omp"]
+        else:  # gcc
+            libraries = ["armadillo", "gomp"]
+
         library_dirs = [os.path.join("/", "usr", "local", "lib")]
         if sys.platform == "darwin" and platform.processor() == "arm":  # M1 Mac
             library_dirs.append(
