@@ -406,10 +406,10 @@ if sys.platform != "win32":
                     ("VERSION_INFO", '"{}"'.format(self.distribution.get_version()))
                 ]
                 ext.extra_compile_args = opts
-                ext.extra_compile_args += []  # []["-arch", "x86_64"] # TODO: check if this is causing issues
+                ext.extra_compile_args += []  # []["-arch", "x86_64"]
 
                 ext.extra_link_args = link_opts
-                ext.extra_link_args += [ # TODO: check if this is causing issues
+                ext.extra_link_args += [
                     "-v",
                 ]  # "-arch", "x86_64"]
 
@@ -496,6 +496,7 @@ def main():
         # due to build errors.
         libraries = ["armadillo", "omp"]
     elif sys.platform == "win32":
+        # libraries = ["libopenblas", "libarmadillo"]
         libraries = ["libopenblas"]
     else:
         if compiler_name == "clang":
@@ -516,7 +517,7 @@ def main():
                         os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.2", "lib"),
                         os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.7", "lib"),
                         ]
-        if sys.platform == "darwin" and platform.processor() == "arm":  # M1 Mac # TODO: check if this is causing issues
+        if sys.platform == "darwin" and platform.processor() == "arm":  # M1 Mac
             library_dirs.append(
                 os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
             )
@@ -548,7 +549,7 @@ def main():
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
             extra_compile_args=cpp_args,
-            extra_link_args=[],  # This is not passed correct, because BuildExt sets the extra_link_args # TODO: check if this is causing issues
+            extra_link_args=[],  # This is not passed correct, because BuildExt sets the extra_link_args
         )
     ]
 
