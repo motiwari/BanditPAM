@@ -11,8 +11,6 @@ from scripts.constants import (
     BANDITPAM_ORIGINAL_NO_CACHING,
 )
 
-np.random.seed(3)
-
 
 def read_dataset(dataset_name):
     """
@@ -124,4 +122,3 @@ def scaling_experiment_with_n(dataset_name,
 
                 if save_logs:
                     store_results(kmed, runtime, log_dir, log_name, num_data, n_medoids)
-
