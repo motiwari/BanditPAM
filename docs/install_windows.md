@@ -21,7 +21,7 @@ Copy the files in [this repo](https://github.com/ThrunGroup/BanditPAM-Windows) i
 CMake Build:
 1) Add the Visual Studio IDE location to PATH in Environment Variables (e.g. `C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE`). You can find this path by running `C:\Program Files (x86)\Microsoft Visual Studio\Installer>vswhere.exe`.
 2) Add `${project_dir}\headers\armadillo\examples\lib_win64` to PATH 
-3) Run `devenv BanditPAM.sln /Build "Release|x64"` after `cmake ..`
+3) Run `devenv BanditPAM.sln /Build "Release|x64"` after `cmake ..` in a prompt other than Git Bash
 4) The `.exe` will be located in `build/src/Release`
 
 BanditPAM can then be installed via one of the following ways:
