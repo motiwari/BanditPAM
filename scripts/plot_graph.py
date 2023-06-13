@@ -235,7 +235,6 @@ def create_scaling_plots(
                     for algorithm in ALL_BANDITPAMS:
                         algorithm_files = glob.glob(os.path.join(log_dir, f"*{algorithm}*{dataset}*"
                                                                           f"{setting}*idx*"))
-                        algorithm_files = list(filter(lambda x: "idx1" not in x, algorithm_files))
                         algorithm_dfs = [pd.read_csv(file) for file in algorithm_files]
                         data = pd.concat(algorithm_dfs)
 
@@ -256,6 +255,7 @@ def create_scaling_plots(
                             # Plot the loss divided by that of Original BanaditPam without Caching
                             y = np.array(data_mean[y_axis].tolist())
                             if algorithm == BANDITPAM_ORIGINAL_NO_CACHING:
+                                # The first algorithm is BANDITPAM_ORIGINAL_NO_CACHING
                                 banditpam_original_losses = y.copy()
                             y /= banditpam_original_losses
                             error = data_std[y_axis].tolist()
@@ -325,4 +325,12 @@ if __name__ == "__main__":
                          is_logspace_y=False,
                          dir_name="scaling_with_n",
                          include_error_bar=True,
+                         )
+    create_scaling_plots(datasets=[MNIST],
+                         algorithms=[ALL_BANDITPAMS],
+                         x_axes=[NUM_DATA],
+                         y_axes=[LOSS],
+                         is_logspace_y=False,
+                         dir_name="scaling_with_n",
+                         include_error_bar=False,
                          )
