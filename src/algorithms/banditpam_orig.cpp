@@ -182,7 +182,7 @@ void BanditPAM_orig::build(
   arma::frowvec ucbs(N);
   arma::frowvec numSamples(N, arma::fill::zeros);
   arma::frowvec exactMask(N, arma::fill::zeros);
-  float sigmaMinNonZero;
+  float minSigma;
 
   // TODO(@motiwari): #pragma omp parallel for if (this->parallelize)?
   for (size_t k = 0; k < nMedoids; k++) {
@@ -199,8 +199,8 @@ void BanditPAM_orig::build(
     // Otherwise, some candidates could have a 0 confidence interval.
     // This step prevents the overestimated candidates from discarding underestimated candidates,
     // which could lead to suboptimal results.
-    sigmaMinNonZero = arma::min(arma::nonzeros(sigma));
-    sigma.elem(arma::find(sigma == 0.0)).fill(sigmaMinNonZero);
+    minSigma = arma::min(arma::nonzeros(sigma));
+    sigma.elem(arma::find(sigma == 0.0)).fill(minSigma);
 
     while (arma::sum(candidates) > precision) {
       // TODO(@motiwari): Do not need a matrix for this comparison,
@@ -427,7 +427,7 @@ void BanditPAM_orig::swap(
   arma::fmat lcbs(nMedoids, N);
   arma::fmat ucbs(nMedoids, N);
   arma::umat numSamples(nMedoids, N, arma::fill::zeros);
-  float sigmaMinNonZero;
+  float minSigma;
 
   // calculate quantities needed for swap, bestDistances and sigma
   calcBestDistancesSwap(
@@ -455,8 +455,8 @@ void BanditPAM_orig::swap(
     // Otherwise, some candidates could have a 0 confidence interval.
     // This step prevents the overestimated candidates from discarding underestimated candidates,
     // which could lead to suboptimal results.
-    sigmaMinNonZero = arma::min(arma::nonzeros(sigma));
-    sigma.elem(arma::find(sigma == 0.0)).fill(sigmaMinNonZero);
+    minSigma = arma::min(arma::nonzeros(sigma));
+    sigma.elem(arma::find(sigma == 0.0)).fill(minSigma);
 
     // Reset variables when starting a new swap
     candidates.fill(1);

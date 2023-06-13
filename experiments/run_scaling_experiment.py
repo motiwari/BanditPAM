@@ -1,8 +1,6 @@
 import numpy as np
-import time
 
-from scaling_experiment import scaling_experiment_with_k, scaling_experiment_with_n, debug_loss_with_n, \
-    find_loss_mistmatch, run_sklearn, run_banditpam2
+from scaling_experiment import scaling_experiment_with_k, scaling_experiment_with_n
 from scripts.constants import (
     # Algorithms
     BANDITPAM_ORIGINAL_NO_CACHING,
@@ -15,8 +13,6 @@ from scripts.constants import (
     MNIST,
     CIFAR,
 )
-
-np.random.seed(1)
 
 
 def get_loss_function(dataset):
@@ -76,50 +72,10 @@ def run_scaling_experiment_with_n():
                                       algorithms=ALL_BANDITPAMS,
                                       n_medoids=n_medoids,
                                       num_data_list=num_data_list,
-                                      dirname="complexity_debugging",
-                                      num_experiments=2,
+                                      dirname="scaling_with_n",
+                                      num_experiments=3,
                                       )
-
-
-def run_loss_debug_experiment():
-    num_experiments = 1
-    num_medoids = 10
-    num_data_list = [10000]
-    np.random.seed(5)
-    start_time = time.time()
-    sklearn_losses, sklearn_medoids = run_sklearn(dataset_name=MNIST, n_medoids=num_medoids,
-                                                  num_data_list=num_data_list, n_swaps=0,
-                                                  num_experiments=num_experiments)
-    end_time = time.time()
-    print("Time: ", end_time - start_time)
-    print("n swap: ", 100)
-    print("medoids: ", sklearn_medoids)
-
-    for algorithm in [BANDITPAM_VA_CACHING, BANDITPAM_ORIGINAL_CACHING]:
-        np.random.seed(5)
-        banditpam_losses, banditpam_medoids = run_banditpam2(dataset_name=MNIST,
-                                                             loss="L2",
-                                                             algorithm=algorithm,
-                                                             n_medoids=num_medoids,
-                                                             num_data_list=num_data_list,
-                                                             parallelize=False,
-                                                             num_experiments=num_experiments,
-                                                             save_logs=False,
-                                                             n_swaps=0
-                                                             )
-
-        mismatch_indices = np.where(sklearn_losses != banditpam_losses)
-        print("Num mistmatch:      ", len(mismatch_indices[0]))
-        print("Mistmatches:        ", mismatch_indices)
-        print("Sklearn Losses:     ", sklearn_losses)
-        print("BanditPAM Losses:   ", banditpam_losses)
-        print("Loss difference:    ", np.abs(np.sum(sklearn_losses) - np.sum(banditpam_losses)))
-
-        for a, b in zip(sklearn_medoids, banditpam_medoids):
-            print("Sklearn medoids:    ", a)
-            print("BanditPAM medoids:  ", b)
 
 
 if __name__ == "__main__":
     run_scaling_experiment_with_n()
-    # run_loss_debug_experiment()

@@ -235,6 +235,7 @@ def create_scaling_plots(
                     for algorithm in ALL_BANDITPAMS:
                         algorithm_files = glob.glob(os.path.join(log_dir, f"*{algorithm}*{dataset}*"
                                                                           f"{setting}*idx*"))
+                        algorithm_files = list(filter(lambda x: "idx1" not in x, algorithm_files))
                         algorithm_dfs = [pd.read_csv(file) for file in algorithm_files]
                         data = pd.concat(algorithm_dfs)
 
@@ -319,9 +320,9 @@ def create_scaling_plots(
 if __name__ == "__main__":
     create_scaling_plots(datasets=[MNIST],
                          algorithms=[ALL_BANDITPAMS],
-                         x_axes=[NUM_DATA, NUM_MEDOIDS],
-                         y_axes=[SAMPLE_COMPLEXITY, LOSS],
+                         x_axes=[NUM_DATA],
+                         y_axes=[SAMPLE_COMPLEXITY],
                          is_logspace_y=False,
-                         dir_name="complexity_debugging",
+                         dir_name="scaling_with_n",
                          include_error_bar=True,
                          )

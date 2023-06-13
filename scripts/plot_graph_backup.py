@@ -343,7 +343,7 @@ if __name__ == "__main__":
                              x_axes=[NUM_DATA],
                              y_axes=[SAMPLE_COMPLEXITY],
                              is_logspace_y=False,
-                             dir_name="complexity_debugging",
+                             dir_name="scaling_with_n",
                              is_multiple_experiments=True,
                              include_error_bar=True,
                              )
@@ -356,5 +356,5 @@ if __name__ == "__main__":
                              is_logspace_y=False,
                              is_multiple_experiments=True,
                              include_error_bar=True,
-                             dir_name="complexity_debugging"
+                             dir_name="scaling_with_n"
                              )
