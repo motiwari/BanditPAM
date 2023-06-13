@@ -47,7 +47,7 @@ void BanditPAM::fitBanditPAM(
   BanditPAM::build(data, distMat, &medoidIndices, &medoidMatrix);
 
   medoidIndicesBuild = medoidIndices;
-  arma::urowvec assignments(data.n_cols);
+  arma::urowvec assignments(data.n_cols);  // denotes where each data point is assigned to
 
   BanditPAM::swap(data, distMat, &medoidIndices, &medoidMatrix, &assignments);
 
@@ -60,7 +60,9 @@ arma::frowvec BanditPAM::buildSigma(
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const arma::frowvec& bestDistances,
   const bool useAbsolute) {
+
   size_t N = data.n_cols;
+  batchSize = std::min(1000, static_cast<int>(N/4));  // Increase the batch size for more precise estimation of the standard deviation
   arma::uvec referencePoints;
   // TODO(@motiwari): Make this wraparound properly as
   //  last batch_size elements are dropped
@@ -95,6 +97,8 @@ arma::frowvec BanditPAM::buildSigma(
     }
     updated_sigma(i) = arma::stddev(sample);
   }
+
+  batchSize = 100;
   return updated_sigma;
 }
 
@@ -170,6 +174,7 @@ void BanditPAM::build(
   arma::frowvec ucbs(N);
   arma::frowvec numSamples(N, arma::fill::zeros);
   arma::frowvec exactMask(N, arma::fill::zeros);
+  float sigmaMinNonZero;
 
   // TODO(@motiwari): #pragma omp parallel for if (this->parallelize)?
   for (size_t k = 0; k < nMedoids; k++) {
@@ -181,6 +186,13 @@ void BanditPAM::build(
     estimates.fill(0);
     // compute std dev amongst batch of reference points
     sigma = buildSigma(data, distMat, bestDistances, useAbsolute);
+
+    // Replace the zero entries in sigma with the minimum non-zero sigma value.
+    // Otherwise, some candidates could have a 0 confidence interval.
+    // This step prevents the overestimated candidates from discarding underestimated candidates,
+    // which could lead to suboptimal results.
+    sigmaMinNonZero = arma::min(arma::nonzeros(sigma));
+    sigma.elem(arma::find(sigma == 0.0)).fill(sigmaMinNonZero);
 
     while (arma::sum(candidates) > precision) {
       // TODO(@motiwari): Do not need a matrix for this comparison,
@@ -229,7 +241,7 @@ void BanditPAM::build(
         arma::sqrt(adjust / numSamples.cols(targets));
       ucbs.cols(targets) = estimates.cols(targets) + confBoundDelta;
       lcbs.cols(targets) = estimates.cols(targets) - confBoundDelta;
-      candidates = (lcbs < ucbs.min()) && (exactMask == 0);
+      candidates = (lcbs <= ucbs.min()) && (exactMask == 0);
     }
 
     medoidIndices->at(k) = lcbs.index_min();
@@ -262,6 +274,7 @@ arma::fmat BanditPAM::swapSigma(
   size_t N = data.n_cols;
   size_t K = nMedoids;
   arma::fmat updated_sigma(K, N, arma::fill::zeros);
+  batchSize = std::min(1000, static_cast<int>(N/4));  // Increase the batch size for more precise estimation of the standard deviation
   arma::uvec referencePoints;
   // TODO(@motiwari): Make this wraparound properly
   //  as last batch_size elements are dropped
@@ -309,6 +322,8 @@ arma::fmat BanditPAM::swapSigma(
     }
     updated_sigma(k, n) = arma::stddev(sample);
   }
+
+  batchSize = 100;
   return updated_sigma;
 }
 
@@ -341,7 +356,6 @@ arma::fmat BanditPAM::swapTarget(
   // nodes are the candidates and the bottom-level nodes are the corresponding
   // virtual arms.
   // A jagged array might also do the trick.
-
 
   size_t tmpBatchSize = batchSize;
   if (exact > 0) {
@@ -404,6 +418,7 @@ void BanditPAM::swap(
   arma::urowvec* medoidIndices,
   arma::fmat* medoids,
   arma::urowvec* assignments) {
+
   size_t N = data.n_cols;
   size_t p = N;
 
@@ -418,6 +433,7 @@ void BanditPAM::swap(
   arma::fmat lcbs(nMedoids, N);
   arma::fmat ucbs(nMedoids, N);
   arma::umat numSamples(nMedoids, N, arma::fill::zeros);
+  float sigmaMinNonZero;
 
   // calculate quantities needed for swap, bestDistances and sigma
   calcBestDistancesSwap(
@@ -430,6 +446,7 @@ void BanditPAM::swap(
     swapPerformed);
 
   // continue making swaps while loss is decreasing
+//  while (swapPerformed && steps < maxIter) {
   while (swapPerformed && steps < maxIter) {
     steps++;
     permutationIdx = 0;
@@ -441,6 +458,10 @@ void BanditPAM::swap(
       &secondBestDistances,
       assignments);
 
+    // Fill in the zero sigma entries with the non-zero minimum sigma value
+    sigmaMinNonZero = arma::min(arma::nonzeros(sigma));
+    sigma.elem(arma::find(sigma == 0.0)).fill(sigmaMinNonZero);
+
     // Reset variables when starting a new swap
     candidates.fill(1);
     exactMask.fill(0);
@@ -449,6 +470,7 @@ void BanditPAM::swap(
 
     // while there is at least one candidate (float comparison issues)
     while (arma::accu(candidates) > 1.5) {
+//      std::cout << "Candidates: " << arma::accu(candidates) << std::endl;
       // compute exactly if it's been samples more than N times and
       // hasn't been computed exactly already
       arma::umat compute_exactly =
@@ -483,7 +505,7 @@ void BanditPAM::swap(
         lcbs.cols(compute_exactly_targets) = result;
         exactMask.cols(compute_exactly_targets).fill(1);
         numSamples.cols(compute_exactly_targets) += N;
-        candidates = (lcbs < ucbs.min()) && (exactMask == 0);
+        candidates = (lcbs <= ucbs.min()) && (exactMask == 0);
       }
       if (arma::accu(candidates) < precision) {
         break;
@@ -528,7 +550,7 @@ void BanditPAM::swap(
       lcbs.cols(candidate_targets) = estimates.cols(candidate_targets)
         - confBoundDelta;
 
-      candidates = (lcbs < ucbs.min()) && (exactMask == 0);
+      candidates = (lcbs <= ucbs.min()) && (exactMask == 0);
     }
 
     // Perform the medoid switch

@@ -84,7 +84,7 @@ def create_loss_plots(
         if dir_name is None:
             parent_dir = os.path.dirname(os.path.abspath(__file__))
             log_dir_name = "scaling_with_n_cluster" if x_axis == NUM_DATA else "scaling_with_k_cluster"
-            log_dir = os.path.join(parent_dir, "experiments", "logs", log_dir_name)
+            log_dir = os.path.join(parent_dir, "../experiments", "logs", log_dir_name)
         else:
             log_dir = dir_name
 
@@ -191,7 +191,6 @@ def create_scaling_plots(
         is_logspace_y: bool = False,
         include_error_bar: bool = False,
         dir_name: str = None,
-        is_multiple_experiments: bool = False,
 ):
     """
     Plot the scaling experiments from the data stored in the logs file.
@@ -218,45 +217,30 @@ def create_scaling_plots(
         if dir_name is None:
             parent_dir = os.path.dirname(os.path.abspath(__file__))
             log_dir_name = "scaling_with_n_cluster" if x_axis == NUM_DATA else "scaling_with_k_cluster"
-            log_dir = os.path.join(parent_dir, "experiments", "logs", log_dir_name)
+            log_dir = os.path.join(parent_dir, "logs", log_dir_name)
         else:
-            parent_dir = os.path.dirname(os.path.abspath(__file__))
-            log_dir = os.path.join(parent_dir, "experiments", "logs", dir_name)
+            root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            log_dir = os.path.join(root_dir, "logs", dir_name)
 
         for dataset in datasets:
             csv_files = glob.glob(os.path.join(log_dir, f"*{dataset}*"))
-            if is_multiple_experiments:
-                csv_files = list(filter(lambda x: "idx" in x, csv_files))
-            else:
-                csv_files = list(filter(lambda x: "idx" not in x, csv_files))
 
             # list available settings by parsing the log file names
             # for example, "settings" returns ["k5", "k10"] if the experiment used "k = 5" and "k = 10" settings
-            if is_multiple_experiments:
-                settings = list(set([file.split("_")[-2] for file in csv_files]))
-            else:
-                settings = list(set([file.split("_")[-1][:-4] for file in csv_files]))
+            settings = list(set([file.split("_")[-2] for file in csv_files]))
 
             for setting in settings:
                 for y_axis in y_axes:
+                    banditpam_original_losses = None
                     for algorithm in ALL_BANDITPAMS:
-                        if is_multiple_experiments:
-                            algorithm_files = glob.glob(os.path.join(log_dir, f"*{algorithm}*{dataset}*"
-                                                                              f"{setting}*idx*"))
-                        else:
-                            algorithm_files = glob.glob(os.path.join(log_dir, f"*{algorithm}*{dataset}*{setting}*"))
+                        algorithm_files = glob.glob(os.path.join(log_dir, f"*{algorithm}*{dataset}*"
+                                                                          f"{setting}*idx*"))
                         algorithm_dfs = [pd.read_csv(file) for file in algorithm_files]
                         data = pd.concat(algorithm_dfs)
 
-                        # Add a new column 'file_id' to distinguish each file
-                        data['file_id'] = np.repeat(np.arange(len(algorithm_dfs)), [len(df) for df in algorithm_dfs])
-
                         # Calculate the mean of each row across the files
-                        data = data.groupby(data.index).mean()
-                        data_std = data.groupby(data.index).std()
-
-                        # Drop the 'file_id' column as it's not needed anymore
-                        data = data.drop(columns='file_id')
+                        data_mean = data.groupby(data.index).mean()
+                        data_std = data.groupby(data.index).std() / np.sqrt(len(data))
 
                         # Set x axis
                         xlabel = (
@@ -264,28 +248,33 @@ def create_scaling_plots(
                         )
                         if is_logspace_x:
                             xlabel = f"ln({xlabel})"
-
                         x = data[x_axis].tolist()
 
                         # Set y axis
                         if y_axis is LOSS:
-                            y = data[y_axis].tolist()
+                            # Plot the loss divided by that of Original BanaditPam without Caching
+                            y = np.array(data_mean[y_axis].tolist())
+                            if algorithm == BANDITPAM_ORIGINAL_NO_CACHING:
+                                banditpam_original_losses = y.copy()
+                            y /= banditpam_original_losses
                             error = data_std[y_axis].tolist()
                             ylabel = "Final Loss Normalized to BanditPAM ($L/L_{BanditPAM}$)"
                         elif y_axis is SAMPLE_COMPLEXITY:
-                            y = data["total_complexity_with_misc"].tolist()
-                            error = data_std["total_complexity_with_misc"].tolist()
+                            y = data_mean["total_complexity_with_caching"].tolist()
+                            error = data_std["total_complexity_with_caching"].tolist()
                             ylabel = "Sample Complexity"
                         else:
-                            y = data["total_runtime"].tolist()
+                            y = data_mean["total_runtime"].tolist()
                             error = data_std["total_runtime"].tolist()
                             ylabel = "Wall-clock Runtime"
 
                         if is_logspace_y:
                             ylabel = f"ln({ylabel})"
 
-                        x, y = zip(*sorted(zip(x, y), key=lambda pair: pair[0]))  # sort
+                        # Sort the (x, y) pairs by the ascending order of x
+                        x, y = zip(*sorted(zip(x, y), key=lambda pair: pair[0]))
 
+                        # Apply log to x, y and error
                         if is_logspace_x:
                             x = np.log(x)
 
@@ -328,25 +317,11 @@ def create_scaling_plots(
 
 
 if __name__ == "__main__":
-    is_runtime = True
-
-    if is_runtime:
-        create_scaling_plots(datasets=[MNIST, CIFAR],
-                             algorithms=[ALL_BANDITPAMS],
-                             x_axes=[NUM_MEDOIDS, NUM_DATA],
-                             y_axes=[RUNTIME, SAMPLE_COMPLEXITY],
-                             is_logspace_y=False,
-                             is_multiple_experiments=True,
-                             include_error_bar=True,
-                             )
-    else:
-        # Loss
-        create_scaling_plots(datasets=[MNIST, CIFAR],
-                             algorithms=[ALL_BANDITPAMS],
-                             x_axes=[NUM_MEDOIDS, NUM_DATA],
-                             y_axes=[LOSS],
-                             is_logspace_y=False,
-                             is_multiple_experiments=True,
-                             include_error_bar=True,
-                             dir_name="loss"
-                             )
+    create_scaling_plots(datasets=[MNIST],
+                         algorithms=[ALL_BANDITPAMS],
+                         x_axes=[NUM_DATA, NUM_MEDOIDS],
+                         y_axes=[SAMPLE_COMPLEXITY, LOSS],
+                         is_logspace_y=False,
+                         dir_name="complexity_debugging",
+                         include_error_bar=True,
+                         )

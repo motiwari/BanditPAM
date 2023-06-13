@@ -209,13 +209,12 @@ void KMedoids::setParallelize(bool newParallelize) {
 }
 
 size_t KMedoids::getDistanceComputations(const bool includeMisc) const {
+    size_t distanceComputations = numBuildDistanceComputations + numSwapDistanceComputations;
+
     if (includeMisc) {
-        return numMiscDistanceComputations +
-          numBuildDistanceComputations +
-          numSwapDistanceComputations;
+        return distanceComputations + numMiscDistanceComputations;
     } else {
-        return numBuildDistanceComputations +
-          numSwapDistanceComputations;
+        return distanceComputations;
     }
 }
 
@@ -388,10 +387,14 @@ float KMedoids::cachedLoss(
     // TODO(@motiwari): Potential race condition with shearing?
     // T1 begins to write to cache and then T2 access in the middle of write?
     if (cache[(m*i) + reindex[j]] == -1) {
+      // no cache hit! calculate the distance and cache it.
+      numCacheMisses++;
       numCacheWrites++;
       cache[(m*i) + reindex[j]] = (this->*lossFn)(data, i, j);
+    } else {
+      // cache hit!
+      numCacheHits++;
     }
-    numCacheHits++;
     return cache[m*i + reindex[j]];
   }
 

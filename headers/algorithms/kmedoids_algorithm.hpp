@@ -32,8 +32,8 @@ class KMedoids {
     size_t nMedoids = 5,
     const std::string& algorithm = "BanditPAM",
     size_t maxIter = 100,
-    size_t buildConfidence = 3,
-    size_t swapConfidence = 5,
+    size_t buildConfidence = 3,  // 3
+    size_t swapConfidence = 5,  // 5
     bool useCache = true,
     bool usePerm = true,
     size_t cacheWidth = 1000,
@@ -495,10 +495,10 @@ class KMedoids {
   size_t steps = 0;
 
   /// Governs the error rate of each BUILD step in BanditPAM
-  size_t buildConfidence = 1;
+  size_t buildConfidence = 0.1;
 
   /// Governs the error rate of each SWAP step in BanditPAM
-  size_t swapConfidence = 1;
+  size_t swapConfidence = 0.1;
 
   /// Used for debugging only to toggle use of the cache
   bool useCache = true;

@@ -35,7 +35,7 @@ PYBIND11_MODULE(banditpam, m) {
   //  each others' values). The order here much also match that of the
   //  constructor in kmedoids_algorithm.*pp
   cls.def(
-    pybind11::init<int, std::string, int, int, int, bool, bool, int, bool>(),
+    pybind11::init<int, std::string, int, float, float, bool, bool, int, bool>(),
     pybind11::arg("n_medoids") = 5,
     pybind11::arg("algorithm") = "BanditPAM",
     pybind11::arg("max_iter") = 100,
