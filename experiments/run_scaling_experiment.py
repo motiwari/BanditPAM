@@ -1,6 +1,6 @@
 import numpy as np
 
-from scaling_experiment import scaling_experiment_with_k, scaling_experiment_with_n
+from scaling_experiment import scaling_experiment_with_k, scaling_experiment_with_n, sklearn_speed_experiment
 from scripts.constants import (
     # Algorithms
     BANDITPAM_ORIGINAL_NO_CACHING,
@@ -73,9 +73,12 @@ def run_scaling_experiment_with_n():
                                       n_medoids=n_medoids,
                                       num_data_list=num_data_list,
                                       dirname="scaling_with_n",
-                                      num_experiments=3,
-                                      )
+                                      num_experiments=3, )
+
+
+def run_sklearn_speed_experiment():
+    sklearn_speed_experiment()
 
 
 if __name__ == "__main__":
-    run_scaling_experiment_with_n()
+    run_sklearn_speed_experiment()

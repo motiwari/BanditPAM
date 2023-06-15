@@ -11,6 +11,8 @@ ALL_BANDITPAMS = [
     BANDITPAM_VA_NO_CACHING,
 ]
 
+SKLEARN = "SKLEARN"
+
 NUM_DATA = "num_data"
 NUM_MEDOIDS = "num_medoids"
 

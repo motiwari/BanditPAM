@@ -13,7 +13,7 @@ from scripts.constants import (
 )
 
 
-def run_banditpam(algorithm_name, data, n_medoids, loss, cache_width=2000, parallelize=True, n_swaps=100,
+def run_banditpam(algorithm_name, data, n_medoids, loss="L2", cache_width=2000, parallelize=True, n_swaps=100,
                   build_confidence=3,
                   swap_confidence=5):
     if algorithm_name == BANDITPAM_ORIGINAL_NO_CACHING:

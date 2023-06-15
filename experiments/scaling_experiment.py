@@ -1,6 +1,8 @@
 import numpy as np
 import os
 import pandas as pd
+from time import time
+from sklearn_extra import cluster
 
 from run_all_versions import run_banditpam
 from scripts.comparison_utils import print_results, store_results
@@ -8,7 +10,10 @@ from scripts.constants import (
     # Datasets
     MNIST,
     CIFAR,
-    BANDITPAM_ORIGINAL_NO_CACHING,
+
+    # Algorithms
+    BANDITPAM_VA_CACHING,
+    SKLEARN,
 )
 
 
@@ -112,7 +117,6 @@ def scaling_experiment_with_n(dataset_name,
             data_indices = np.random.randint(0, len(dataset), num_data)
             data = dataset[data_indices]
             for algorithm in algorithms:
-                if algorithm is BANDITPAM_ORIGINAL_NO_CACHING and num_data == 55000: continue
                 print("\n<Running ", algorithm, ">")
                 log_name = f"{algorithm}_{dataset_name}_k{n_medoids}_idx{experiment_index}"
                 kmed, runtime = run_banditpam(algorithm, data, n_medoids, loss, cache_width, parallelize)
@@ -122,3 +126,24 @@ def scaling_experiment_with_n(dataset_name,
 
                 if save_logs:
                     store_results(kmed, runtime, log_dir, log_name, num_data, n_medoids)
+
+
+def sklearn_speed_experiment(dataset_name="MNIST", n_medoids=5, num_data_list=[1000, 10000]):
+    dataset = read_dataset(dataset_name)
+    for num_data in num_data_list:
+        print("\nNum data: ", num_data)
+        data_indices = np.random.randint(0, len(dataset), num_data)
+        data = dataset[data_indices]
+
+        for algorithm in [SKLEARN, BANDITPAM_VA_CACHING]:
+            print("\n<Running ", algorithm, ">")
+            if algorithm == SKLEARN:
+                sklearn_kmed = cluster.KMedoids(n_clusters=n_medoids, metric='euclidean', method='pam', init='build',
+                                                max_iter=0)
+                start_time = time()
+                sklearn_kmed.fit(data)
+                end_time = time()
+                print(end_time - start_time)
+            else:
+                kmed, runtime = run_banditpam(algorithm, data, n_medoids)
+                print(runtime)
