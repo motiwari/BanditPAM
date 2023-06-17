@@ -66,14 +66,15 @@ def run_scaling_experiment_with_n():
     for dataset in [MNIST]:
         loss = get_loss_function(dataset)
         num_data_list = get_num_data_list(dataset)
-        for n_medoids in [10]:
+        for n_medoids in [5, 10]:
+            np.random.seed(10)
             scaling_experiment_with_n(dataset_name=dataset,
                                       loss=loss,
                                       algorithms=ALL_BANDITPAMS,
                                       n_medoids=n_medoids,
                                       num_data_list=num_data_list,
                                       dirname="scaling_with_n",
-                                      num_experiments=3,
+                                      num_experiments=10,
                                       )
 
 

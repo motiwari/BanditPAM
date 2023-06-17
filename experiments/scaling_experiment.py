@@ -8,7 +8,6 @@ from scripts.constants import (
     # Datasets
     MNIST,
     CIFAR,
-    BANDITPAM_ORIGINAL_NO_CACHING,
 )
 
 
@@ -105,14 +104,13 @@ def scaling_experiment_with_n(dataset_name,
 
     print("Running sampling complexity experiment with n on ", dataset_name)
 
-    for experiment_index in range(num_experiments):
+    for experiment_index in range(5, num_experiments+5):
         print("\n\nExperiment: ", experiment_index)
         for num_data in num_data_list:
             print("\nNum data: ", num_data)
             data_indices = np.random.randint(0, len(dataset), num_data)
             data = dataset[data_indices]
             for algorithm in algorithms:
-                if algorithm is BANDITPAM_ORIGINAL_NO_CACHING and num_data == 55000: continue
                 print("\n<Running ", algorithm, ">")
                 log_name = f"{algorithm}_{dataset_name}_k{n_medoids}_idx{experiment_index}"
                 kmed, runtime = run_banditpam(algorithm, data, n_medoids, loss, cache_width, parallelize)
