@@ -65,4 +65,4 @@ def store_results(kmed, runtime, log_dir, log_name, num_data, num_medoids):
 
     # Save the updated dataframe back to the CSV file
     log_df.to_csv(log_path, index=False)
-    # print("Saved log to ", log_path)
+    print("Saved log to ", log_path)
