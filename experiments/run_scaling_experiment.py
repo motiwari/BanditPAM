@@ -73,7 +73,7 @@ def run_scaling_experiment_with_n():
                                       algorithms=ALL_BANDITPAMS,
                                       n_medoids=n_medoids,
                                       num_data_list=num_data_list,
-                                      dirname="scaling_with_n",
+                                      dirname="scaling_with_n_cluster",
                                       num_experiments=10,
                                       )
 
