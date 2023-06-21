@@ -26,14 +26,14 @@ def benchmark(data, f, n=1):
         print("{:16s} min={:-10.2f} mean={:-10.2f} ±{:-.2f}"
               .format(k, min, avg, ste))
 
-diss = euclidean_distances(data)
-start = time.time()
-r = fasterpam(diss, 5, random_state=seed)
-end = time.time()
-print("FasterPAM took ", r.n_iter, " iterations")
-meds, lbl = data[r.medoids], r.labels
-verified_loss = np.sqrt(((data - meds[lbl]) ** 2).sum(axis=1)).sum()
 def run_fasterpam(data, seed):
+    diss = euclidean_distances(data)
+    start = time.time()
+    r = fasterpam(diss, 5, random_state=seed)
+    end = time.time()
+    print("FasterPAM took ", r.n_iter, " iterations")
+    meds, lbl = data[r.medoids], r.labels
+    verified_loss = np.sqrt(((data - meds[lbl]) ** 2).sum(axis=1)).sum()
 
     return {
         "time (ms)": (end - start),
