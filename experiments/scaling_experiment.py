@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import pandas as pd
+from glob import glob
 
 from run_all_versions import run_banditpam
 from scripts.comparison_utils import print_results, store_results
@@ -104,7 +105,7 @@ def scaling_experiment_with_n(dataset_name,
 
     print("Running sampling complexity experiment with n on ", dataset_name)
 
-    for experiment_index in range(5, num_experiments+5):
+    for experiment_index in range(5, 5+num_experiments):
         print("\n\nExperiment: ", experiment_index)
         for num_data in num_data_list:
             print("\nNum data: ", num_data)
@@ -113,6 +114,7 @@ def scaling_experiment_with_n(dataset_name,
             for algorithm in algorithms:
                 print("\n<Running ", algorithm, ">")
                 log_name = f"{algorithm}_{dataset_name}_k{n_medoids}_idx{experiment_index}"
+                print(log_name)
                 kmed, runtime = run_banditpam(algorithm, data, n_medoids, loss, cache_width, parallelize)
 
                 if verbose:

@@ -321,7 +321,7 @@ if __name__ == "__main__":
     create_scaling_plots(datasets=[MNIST],
                          algorithms=[ALL_BANDITPAMS],
                          x_axes=[NUM_DATA],
-                         y_axes=[SAMPLE_COMPLEXITY],
+                         y_axes=[SAMPLE_COMPLEXITY, RUNTIME],
                          is_logspace_y=False,
                          dir_name="scaling_with_n",
                          include_error_bar=True,
