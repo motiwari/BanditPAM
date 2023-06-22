@@ -138,76 +138,76 @@ class KMedoidsWrapper : public km::KMedoids {
 /**
  * @brief Binding for the C++ function KMedoids::fit
  */
-void fit_python(pybind11::class_<km::KMedoidsWrapper> *);
+void fit_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::getMedoidsBuild()
  */
-void build_medoids_python(pybind11::class_<km::KMedoidsWrapper> *);
+void build_medoids_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::getMedoidsFinal()
  */
-void medoids_python(pybind11::class_<km::KMedoidsWrapper> *);
+void medoids_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::getLabels()
  */
-void labels_python(pybind11::class_<km::KMedoidsWrapper> *);
+void labels_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::getSteps()
  */
-void steps_python(pybind11::class_<km::KMedoidsWrapper> *);
+void steps_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::calcLoss()
  */
-void loss_python(pybind11::class_<km::KMedoidsWrapper> *);
+void loss_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::calcLoss() (after BUILD step)
  */
-void build_loss_python(pybind11::class_<km::KMedoidsWrapper> *);
+void build_loss_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::getDistanceComputations()
  */
-void distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+void distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 // TODO(@motiwari): Add docstring
-void misc_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+void misc_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 // TODO(@motiwari): Add docstring
 void build_distance_computations_python(
-    pybind11::class_<km::KMedoidsWrapper> *);
+    pybind11::class_<km::KMedoidsWrapper> *cls);
 
 // TODO(@motiwari): Add docstring
-void swap_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *);
+void swap_distance_computations_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::getCacheWrites()
  */
-void cache_writes_python(pybind11::class_<km::KMedoidsWrapper> *);
+void cache_writes_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::getCacheHits()
  */
-void cache_hits_python(pybind11::class_<km::KMedoidsWrapper> *);
+void cache_hits_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::getCacheMisses()
  */
-void cache_misses_python(pybind11::class_<km::KMedoidsWrapper> *);
+void cache_misses_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::getTotalSwapTime()
  */
-void total_swap_time_python(pybind11::class_<km::KMedoidsWrapper> *);
+void total_swap_time_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 
 /**
  * @brief Binding for the C++ function KMedoids::getTimePerSwap()
  */
-void time_per_swap_python(pybind11::class_<km::KMedoidsWrapper> *);
+void time_per_swap_python(pybind11::class_<km::KMedoidsWrapper> *cls);
 }  // namespace km
 #endif  // HEADERS_PYTHON_BINDINGS_KMEDOIDS_PYWRAPPER_HPP_
