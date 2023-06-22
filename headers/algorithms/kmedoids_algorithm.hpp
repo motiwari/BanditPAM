@@ -83,11 +83,11 @@ class KMedoids {
    */
   size_t getSteps() const;
 
-  /**
-   * @brief Returns the number of medoids, k.
-   * 
-   * @returns Current value of k, the number of medoids/clusters
-   */
+    /**
+     * @brief Returns the number of medoids, k.
+     *
+     * @returns Current value of k, the number of medoids/clusters
+     */
   size_t getNMedoids() const;
 
   /**

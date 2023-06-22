@@ -25,17 +25,17 @@ class FastPAM1 : public km::KMedoids {
     const arma::fmat& inputData,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
-  /**
-   * @brief Performs the BUILD step of FastPAM1.
-   * 
-   * Loops over all datapoint and checks each's distance to every other
-   * datapoint in the dataset, then adds the point with the lowest overall
-   * loss to the set of medoids.
-   *
-   * @param data Transposed input data to cluster
-   * @param medoidIndices Array of medoids that is modified in place
-   * as medoids are identified
-   */
+    /**
+     * @brief Performs the BUILD step of FastPAM1.
+     *
+     * Loops over all datapoint and checks each's distance to every other
+     * datapoint in the dataset, then adds the point with the lowest overall
+     * loss to the set of medoids.
+     *
+     * @param data Transposed input data to cluster
+     * @param medoidIndices Array of medoids that is modified in place
+     * as medoids are identified
+     */
   void buildFastPAM1(
     const arma::fmat& data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
