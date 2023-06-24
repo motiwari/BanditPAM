@@ -49,22 +49,19 @@ def compiler_check():
     python for some of the compilation process, even if the user specifies
     another one!
     """
-    try:
-        return (
-            "clang"
-            if "clang" in distutils.sysconfig.get_config_vars()["CC"]
-            else "gcc"
-        )
-    except KeyError:
-        # The 'CC' environment variable hasn't been set.
-        # In this case, search for clang and gcc
-        # Borrowed from https://github.com/clab/dynet/blob/master/setup.py
-        if distutils.spawn.find_executable("clang") is not None:
-            return "clang"
-        elif distutils.spawn.find_executable("gcc") is not None:
-            return "gcc"
+    # Search for compilers that we can use.
+    # Borrowed from https://github.com/clab/dynet/blob/master/setup.py
+    if distutils.spawn.find_executable("cl") is not None:
+        return "msvc"
+    elif distutils.spawn.find_executable("clang") is not None:
+        return "clang"
+    elif distutils.spawn.find_executable("gcc") is not None:
+        return "gcc"
 
-    raise Exception("No C++ compiler was found. Please install LLVM clang.")
+    raise Exception(
+        "No C++ compiler was found. Please ensure you have "
+        "MSVC, LLVM clang, or GCC."
+    )
 
 
 def has_flag(compiler: str, flagname: str):
@@ -95,6 +92,8 @@ def cpp_flag(compiler: str):
     compiler_name = compiler_check()
     if compiler_name == "clang":
         flags = ["-std=c++17", "-std=c++14", "-std=c++11"]
+    elif compiler_name == "msvc":
+        flags = ["/std:c++17"]
     else:
         # Assume gcc
         flags = ["-std=c++17"]
@@ -347,9 +346,8 @@ class BuildExt(build_ext):
     A custom build extension for adding compiler-specific options.
     """
 
-    if sys.platform != "win32":
-        c_opts = {"msvc": ["/EHsc"], "unix": []}
-        l_opts = {"msvc": [], "unix": []}
+    c_opts = {"msvc": ["/EHsc"], "unix": []}
+    l_opts = {"msvc": [], "unix": []}
 
     if sys.platform == "darwin":
         install_check_mac()
@@ -361,7 +359,7 @@ class BuildExt(build_ext):
         darwin_opts = [
             "-stdlib=libc++",
             "-mmacosx-version-min=10.14",
-            "-O3"
+            "-O3",
         ]
         c_opts["unix"] += darwin_opts
         l_opts["unix"] += darwin_opts
@@ -372,55 +370,55 @@ class BuildExt(build_ext):
         linux_opts = ["-O3"]
         c_opts["unix"] += linux_opts
         l_opts["unix"] += linux_opts
+    elif sys.platform == "win32":
+        windows_opts = ["/fsanitize=address"]
+        c_opts["msvc"] += windows_opts
 
     def build_extensions(self):
-        if sys.platform != "win32":
-            ct = self.compiler.compiler_type
+        ct = self.compiler.compiler_type
 
-            opts = self.c_opts.get(ct, [])
-            link_opts = self.l_opts.get(ct, [])
+        opts = self.c_opts.get(ct, [])
+        link_opts = self.l_opts.get(ct, [])
 
-            # TODO(@motiwari): on Windows, these flags are unrecognized
-            opts.append(cpp_flag(self.compiler))
-            opts.append("-O3")
-            if sys.platform == "darwin" and os.environ.get(GHA, False):
-                opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
-                opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
+        # TODO(@motiwari): on Windows, these flags are unrecognized
+        opts.append(cpp_flag(self.compiler))
+        if sys.platform == "darwin" and os.environ.get(GHA, False):
+            opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
+            opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
 
-                opts.append("-lomp")  # Potentially unused?
-                opts.append("-I/usr/local/opt/libomp/include")
-                opts.append("-L/usr/local/opt/libomp/lib")  # Unused?
-            else:
-                opts.append("-fopenmp")
+            opts.append("-lomp")  # Potentially unused?
+            opts.append("-I/usr/local/opt/libomp/include")
+            opts.append("-L/usr/local/opt/libomp/lib")  # Unused?
+        elif sys.platform != "win32":
+            opts.append("-fopenmp")
 
-            compiler_name = compiler_check()
-            if sys.platform == "darwin" and os.environ.get(GHA, False):
-                link_opts.append("-lomp")  # Potentially unused?
-                link_opts.append("-I/usr/local/opt/libomp/include")
-                link_opts.append("-L/usr/local/opt/libomp/lib")  # Unused?
-            else:
-                if compiler_name == "clang":
-                    link_opts.append("-lomp")
-                else:  # gcc
-                    link_opts.append("-lgomp")
+        compiler_name = compiler_check()
+        if sys.platform == "darwin" and os.environ.get(GHA, False):
+            link_opts.append("-lomp")  # Potentially unused?
+            link_opts.append("-I/usr/local/opt/libomp/include")
+            link_opts.append("-L/usr/local/opt/libomp/lib")  # Unused?
+        elif sys.platform != "win32":
+            if compiler_name == "clang":
+                link_opts.append("-lomp")
+            else:  # gcc
+                link_opts.append("-lgomp")
 
-            if ct == "unix":
-                if has_flag(self.compiler, "-fvisibility=hidden"):
-                    opts.append("-fvisibility=hidden")
+        if ct == "unix":
+            if has_flag(self.compiler, "-fvisibility=hidden"):
+                opts.append("-fvisibility=hidden")
 
         for ext in self.extensions:
             ext.define_macros = [
                 ("VERSION_INFO",
                  '"{}"'.format(self.distribution.get_version()))
             ]
-            if sys.platform != "win32":
-                ext.extra_compile_args = opts
-                ext.extra_compile_args += []  # []["-arch", "x86_64"]
+            ext.extra_compile_args = opts
+            ext.extra_compile_args += []  # []["-arch", "x86_64"]
 
-                ext.extra_link_args = link_opts
-                ext.extra_link_args += [
-                    "-v",
-                ]  # "-arch", "x86_64"]
+            ext.extra_link_args = link_opts
+            ext.extra_link_args += [
+                "-v",
+            ]  # "-arch", "x86_64"]
 
         build_ext.build_extensions(self)
 

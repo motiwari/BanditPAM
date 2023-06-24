@@ -24,6 +24,10 @@ CMake Build:
 3) Run `devenv BanditPAM.sln /Build "Release|x64"` after `cmake ..` in a prompt other than Git Bash
 4) The `.exe` will be located in `build/src/Release`
 
-BanditPAM can then be installed via one of the following ways:
-1) Running `pip install banditpam`, OR
-2) Running `pip install .` in the home directory (`/BanditPAM`)
+Python Build:
+1) Add the location of `cl.exe` to PATH in Environment Variables (e.g. `C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64`).
+1) Run `python -m pip install banditpam`, OR
+2) Follow these steps:
+   3) Run `python -m pip install .` in the home directory (`/BanditPAM`)
+   4) Add the file `C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx86\x64\clang_rt.asan_dynamic-x86_64.dll` to `build\lib.win-amd64-cpython-310`
+   5) Run `python -m pip install .` in the home directory (`/BanditPAM`)
