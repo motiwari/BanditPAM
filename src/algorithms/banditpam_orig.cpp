@@ -18,10 +18,11 @@ namespace km {
             std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
         data = arma::trans(inputData);
 
-        // Note: even if we are using a distance matrix, we compute the permutation
+        // Note: even if we are using a distance matrix,
+        // we compute the permutation
         // in the block below because it is used elsewhere in the call stack
-        // TODO(@motiwari): Remove need for data or permutation through when using
-        //  a distance matrix
+        // TODO(@motiwari): Remove need for data or permutation
+        //  through when using a distance matrix
         if (this->useCache) {
             size_t n = data.n_cols;
             size_t m = fmin(n, cacheWidth);
@@ -34,7 +35,7 @@ namespace km {
 
             permutation = arma::randperm(n);
             permutationIdx = 0;
-            reindex = {};  // TODO(@motiwari): Can this intialization be removed?
+            reindex = {};  // TODO(@motiwari): Can this be removed?
             // TODO(@motiwari): Can we parallelize this?
             for (size_t counter = 0; counter < m; counter++) {
                 reindex[permutation[counter]] = counter;

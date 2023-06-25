@@ -53,6 +53,7 @@ namespace km {
             const arma::fmat &inputData,
             const std::string &loss,
             std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
+        std::cout << "c++ beginning" << std::endl;
         numMiscDistanceComputations = 0;
         numBuildDistanceComputations = 0;
         numSwapDistanceComputations = 0;
@@ -62,21 +63,26 @@ namespace km {
 
         if (distMat) {  // User has provided a distance matrix
             if (distMat.value().get().n_cols != distMat.value().get().n_rows) {
-                // TODO(@motiwari): Change this to an assertion that is properly raised
+                // TODO(@motiwari): Change this to an assertion
+                //  that is properly raised
                 throw std::invalid_argument(
                         "Malformed distance matrix provided");
             }
             useDistMat = true;
         } else {
-            // In case the user is running a new problem without a distance matrix
+            // In case the user is running a new problem
+            // without a distance matrix
             // after running a distance matrix problem
             useDistMat = false;
         }
 
         if (inputData.n_rows == 0) {
-            // TODO(@motiwari): Change this to an assertion that is properly raised
+            // TODO(@motiwari): Change this to an assertion
+            //  that is properly raised
             throw std::invalid_argument("Dataset is empty");
         }
+        // TODO(@Adarsh321123): assert that the number of medoids is >=
+        //  than the number of points
         batchSize = fmin(inputData.n_rows, batchSize);
 
         try {
@@ -97,6 +103,7 @@ namespace km {
             std::cout << "Error: Clustering did not run." << std::endl;
             throw e;
         }
+        std::cout << "c++ end" << std::endl;
     }
 
     arma::urowvec KMedoids::getMedoidsBuild() const {
@@ -255,7 +262,8 @@ namespace km {
     }
 
     void KMedoids::setLossFn(std::string loss) {
-        // TODO(@motiwari): On setting this, clear the cache and the average loss,
+        // TODO(@motiwari): On setting this, clear the
+        //  cache and the average loss,
         // assignments, medoids, etc.
         std::for_each(loss.begin(), loss.end(), [](char &c) {
             c = ::tolower(c);  // TODO(@motiwari): Put something before ::
@@ -390,7 +398,8 @@ namespace km {
         // test this is one of the early points in the permutation
         if (reindex.find(j) != reindex.end()) {
             // TODO(@motiwari): Potential race condition with shearing?
-            // T1 begins to write to cache and then T2 access in the middle of write?
+            // T1 begins to write to cache and then T2
+            // access in the middle of write?
             if (cache[(m * i) + reindex[j]] == -1) {
                 numCacheWrites++;
                 cache[(m * i) + reindex[j]] = (this->*lossFn)(data, i, j);

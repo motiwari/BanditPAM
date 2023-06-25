@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
             parallelize,
             seed);
     kmed.fit(data, loss, {});
-    for (auto medoid: kmed.getMedoidsFinal()) {
+    for (auto medoid : kmed.getMedoidsFinal()) {
         std::cout << medoid << ",";
     }
     std::cout << "Final loss: " << kmed.getAverageLoss() << "\n";

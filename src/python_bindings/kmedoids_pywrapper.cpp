@@ -42,8 +42,8 @@ namespace km {
     cls.
 
     def(
-            pybind11::init<int, std::string, int, int, int, bool, bool, int, bool>(),
-            pybind11::arg("n_medoids")
+    pybind11::init<int, std::string, int, int, int, bool, bool, int, bool>(),
+    pybind11::arg("n_medoids")
 
     = 5,
     pybind11::arg("algorithm") = "BanditPAM",

@@ -135,29 +135,40 @@ namespace km {
 
                 // Consider making point i a medoid.
                 // The total loss then contains at least one term, -di,
-                // because the loss contribution for point i is reduced from di to 0
+                // because the loss contribution for point i is
+                // reduced from di to 0
                 deltaTD.fill(-di);
                 // TODO(@motiwari): pragma omp parallel for?
                 for (size_t j = 0; j < data.n_cols; j++) {
                     if (j != i) {
                         dij = (this->*lossFn)(data, i, j);
                         if (dij < bestDistances(j)) {
-                            // Case 1: point i becomes the closest medoid for point j,
-                            // regardless of which medoid j was previously assigned to. deltaTD
-                            // will be negative across ALL possible medoid indices m
+                            // Case 1: point i becomes the closest
+                            // medoid for point j,
+                            // regardless of which medoid j was
+                            // previously assigned to. deltaTD
+                            // will be negative across ALL
+                            // possible medoid indices m
                             deltaTD += (dij - bestDistances(j));
                         } else if (dij < secondBestDistances(j)) {
-                            // Case 2: i. If point i is closer than the second best
-                            // medoid but further than the best medoid (enforced by failing
-                            // the condition for the above if condition), point i will
-                            // become the closest medoid only when we remove its associated
+                            // Case 2: i. If point i is closer
+                            // than the second best
+                            // medoid but further than the best
+                            // medoid (enforced by failing
+                            // the condition for the above if
+                            // condition), point i will
+                            // become the closest medoid only
+                            // when we remove its associated
                             // medoid and add point i
                             deltaTD.at((*assignments)(j)) += (dij -
                                                               bestDistances(j));
                         } else {
-                            // Case 3: dij > secondBestDistances(j). Then the loss for point j
-                            // will not change for any medoid swapped out except for its
-                            // assignment, in which case it moves to its second nearest medoid
+                            // Case 3: dij > secondBestDistances(j).
+                            // Then the loss for point j
+                            // will not change for any medoid swapped
+                            // out except for its
+                            // assignment, in which case it moves to
+                            // its second nearest medoid
                             deltaTD.at((*assignments)(j)) +=
                                     (secondBestDistances(j) - bestDistances(j));
                         }
@@ -166,7 +177,8 @@ namespace km {
 
                 // Determine the best medoid to swap out
                 arma::uword swapOut = deltaTD.index_min();
-                // If the loss change is better than the best loss change so far,
+                // If the loss change is better than
+                // the best loss change so far,
                 // Update our running best statistics
                 if (deltaTD.min() < prevBestChange) {
                     bestChange = deltaTD.min();
@@ -176,7 +188,8 @@ namespace km {
                 }
             }
 
-            // Update the loss and perform the swap if the loss would be improved
+            // Update the loss and perform the swap if
+            // the loss would be improved
             if (bestChange < 0) {
                 (*medoidIndices)(medoidToSwap) = swapIn;
                 calcBestDistancesSwap(

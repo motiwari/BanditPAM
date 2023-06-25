@@ -102,7 +102,8 @@ namespace km {
             for (size_t i = 0; i < data.n_cols; i++) {
                 float total = 0;
                 for (size_t j = 0; j < data.n_cols; j++) {
-                    // compute distance between base point and every other datapoint
+                    // compute distance between base point
+                    // and every other datapoint
                     float cost = (this->*lossFn)(data, i, j);
                     // if x_j is NOT assigned to k: compares this with
                     //   the cached best distance

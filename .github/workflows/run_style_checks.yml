@@ -22,7 +22,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install flake8 pytest
+          python -m pip install flake8 pytest cpplint
           python -m pip install -r requirements.txt
 
       - name: Lint with flake8
@@ -32,8 +32,6 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --exclude headers/carma
 
-      - name: Lint according to .clang-format file
-        uses: DoozyX/clang-format-lint-action@v0.16.2
-        with:
-          source: './headers/algorithms ./headers/python_bindings ./src'
-          clangFormatVersion: 16.0.3
+      - name: Lint with cpplint
+        run: |
+          cpplint --exclude=headers/carma --exclude=build --exclude=R_package --filter=-legal/copyright,-build/c++11,-build/include_subdir --recursive .
