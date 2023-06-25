@@ -37,4 +37,3 @@ jobs:
         with:
           source: './headers/algorithms ./headers/python_bindings ./src'
           clangFormatVersion: 16.0.0
-          style: llvm
