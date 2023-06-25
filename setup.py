@@ -497,7 +497,6 @@ def main():
         # due to build errors.
         libraries = ["armadillo", "omp"]
     elif sys.platform == "win32":
-        # libraries = ["libopenblas", "libarmadillo"]
         libraries = ["libopenblas"]
     else:
         if compiler_name == "clang":
