@@ -53,7 +53,6 @@ namespace km {
             const arma::fmat &inputData,
             const std::string &loss,
             std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
-        std::cout << "c++ beginning" << std::endl;
         numMiscDistanceComputations = 0;
         numBuildDistanceComputations = 0;
         numSwapDistanceComputations = 0;
@@ -103,7 +102,6 @@ namespace km {
             std::cout << "Error: Clustering did not run." << std::endl;
             throw e;
         }
-        std::cout << "c++ end" << std::endl;
     }
 
     arma::urowvec KMedoids::getMedoidsBuild() const {

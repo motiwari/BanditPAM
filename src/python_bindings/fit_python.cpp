@@ -20,7 +20,6 @@ namespace km {
             const pybind11::array_t<float> &inputData,
             const std::string &loss,
             pybind11::kwargs kw) {
-        std::cout << "pybind11 beginning" << std::endl;
         // throw an error if the number of medoids is not specified in either
         // the KMedoids object or the fitPython function
         try {
@@ -56,7 +55,6 @@ namespace km {
             KMedoids::fit(carma::arr_to_mat<float>(inputData), loss,
                           std::nullopt);
         }
-        std::cout << "pybind11 end" << std::endl;
     }
 
     void fit_python(pybind11::class_ <KMedoidsWrapper> *cls) {
