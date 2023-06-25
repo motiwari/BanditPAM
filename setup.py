@@ -49,14 +49,22 @@ def compiler_check():
     python for some of the compilation process, even if the user specifies
     another one!
     """
-    # Search for compilers that we can use.
-    # Borrowed from https://github.com/clab/dynet/blob/master/setup.py
-    if distutils.spawn.find_executable("cl") is not None:
-        return "msvc"
-    elif distutils.spawn.find_executable("clang") is not None:
-        return "clang"
-    elif distutils.spawn.find_executable("gcc") is not None:
-        return "gcc"
+    try:
+        return (
+            "clang"
+            if "clang" in distutils.sysconfig.get_config_vars()["CC"]
+            else "gcc"
+        )
+    except KeyError:
+        # The 'CC' environment variable hasn't been set.
+        # In this case, search for compilers that we can use.
+        # Borrowed from https://github.com/clab/dynet/blob/master/setup.py
+        if distutils.spawn.find_executable("cl") is not None:
+            return "msvc"
+        elif distutils.spawn.find_executable("clang") is not None:
+            return "clang"
+        elif distutils.spawn.find_executable("gcc") is not None:
+            return "gcc"
 
     raise Exception(
         "No C++ compiler was found. Please ensure you have "
@@ -382,6 +390,7 @@ class BuildExt(build_ext):
 
         # TODO(@motiwari): on Windows, these flags are unrecognized
         opts.append(cpp_flag(self.compiler))
+        opts.append("-O3")
         if sys.platform == "darwin" and os.environ.get(GHA, False):
             opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
             opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
@@ -497,7 +506,6 @@ def main():
         # due to build errors.
         libraries = ["armadillo", "omp"]
     elif sys.platform == "win32":
-        # libraries = ["libopenblas", "libarmadillo"]
         libraries = ["libopenblas"]
     else:
         if compiler_name == "clang":
