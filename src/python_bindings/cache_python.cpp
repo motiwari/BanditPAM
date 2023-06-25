@@ -42,7 +42,8 @@ namespace km {
     return KMedoids::getCacheMisses();
   }
 
-  void distance_computations_python(pybind11::class_ <km::KMedoidsWrapper> *cls) {
+  void distance_computations_python(
+          pybind11::class_ <km::KMedoidsWrapper> *cls) {
     cls->def("getDistanceComputations",
              &KMedoidsWrapper::getDistanceComputationsPython);
   }
