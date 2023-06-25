@@ -49,14 +49,22 @@ def compiler_check():
     python for some of the compilation process, even if the user specifies
     another one!
     """
-    # Search for compilers that we can use.
-    # Borrowed from https://github.com/clab/dynet/blob/master/setup.py
-    if distutils.spawn.find_executable("cl") is not None:
-        return "msvc"
-    elif distutils.spawn.find_executable("clang") is not None:
-        return "clang"
-    elif distutils.spawn.find_executable("gcc") is not None:
-        return "gcc"
+    try:
+        return (
+            "clang"
+            if "clang" in distutils.sysconfig.get_config_vars()["CC"]
+            else "gcc"
+        )
+    except KeyError:
+        # The 'CC' environment variable hasn't been set.
+        # In this case, search for compilers that we can use.
+        # Borrowed from https://github.com/clab/dynet/blob/master/setup.py
+        if distutils.spawn.find_executable("cl") is not None:
+            return "msvc"
+        elif distutils.spawn.find_executable("clang") is not None:
+            return "clang"
+        elif distutils.spawn.find_executable("gcc") is not None:
+            return "gcc"
 
     raise Exception(
         "No C++ compiler was found. Please ensure you have "
