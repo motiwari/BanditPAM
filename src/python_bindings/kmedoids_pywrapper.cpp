@@ -16,8 +16,7 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-    PYBIND11_MODULE(banditpam, m
-    ) {
+  PYBIND11_MODULE(banditpam, m) {
     // Module functions
     m.doc() = "BanditPAM Python library, implemented in C++";
 
@@ -94,5 +93,5 @@ namespace km {
     // Swap timing functions
     time_per_swap_python(&cls);
     total_swap_time_python(&cls);
-}
+  }
 }  // namespace km

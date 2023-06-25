@@ -14,19 +14,18 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-    pybind11::array_t <arma::uword>
-    km::KMedoidsWrapper::getMedoidsBuildPython() {
-        if (KMedoids::getMedoidsBuild().size() > 1) {
-            return
-                    carma::row_to_arr<arma::uword>(
-                            KMedoids::getMedoidsBuild()).squeeze();
-        } else {
-            return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsBuild());
-        }
+  pybind11::array_t <arma::uword> km::KMedoidsWrapper::getMedoidsBuildPython() {
+    if (KMedoids::getMedoidsBuild().size() > 1) {
+      return
+              carma::row_to_arr<arma::uword>(
+                      KMedoids::getMedoidsBuild()).squeeze();
+    } else {
+      return carma::row_to_arr<arma::uword>(KMedoids::getMedoidsBuild());
     }
+  }
 
-    void build_medoids_python(pybind11::class_ <KMedoidsWrapper> *cls) {
-        cls->def_property_readonly("build_medoids",
-                                   &KMedoidsWrapper::getMedoidsBuildPython);
-    }
+  void build_medoids_python(pybind11::class_ <KMedoidsWrapper> *cls) {
+    cls->def_property_readonly("build_medoids",
+                               &KMedoidsWrapper::getMedoidsBuildPython);
+  }
 }  // namespace km
