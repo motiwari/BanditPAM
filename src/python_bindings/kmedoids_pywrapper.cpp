@@ -19,12 +19,9 @@ namespace km {
     PYBIND11_MODULE(banditpam, m
     ) {
     // Module functions
-    m.
+    m.doc() = "BanditPAM Python library, implemented in C++";
 
-    doc() = "BanditPAM Python library, implemented in C++";
-
-    m.attr("__version__") =
-    VERSION_INFO;
+    m.attr("__version__") = VERSION_INFO;
     m.def("get_max_threads",  // TODO(@motiwari): change to get_num_threads
     &omp_get_max_threads, "Returns max number of threads");
     m.def("set_num_threads",
@@ -39,13 +36,9 @@ namespace km {
     //  which can lead to undefined behavior (variables being intialized with
     //  each others' values). The order here much also match that of the
     //  constructor in kmedoids_algorithm.*pp
-    cls.
-
-    def(
+    cls.def(
     pybind11::init<int, std::string, int, int, int, bool, bool, int, bool>(),
-    pybind11::arg("n_medoids")
-
-    = 5,
+    pybind11::arg("n_medoids") = 5,
     pybind11::arg("algorithm") = "BanditPAM",
     pybind11::arg("max_iter") = 100,
     pybind11::arg("build_confidence") = 3,

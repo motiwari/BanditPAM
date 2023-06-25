@@ -27,7 +27,7 @@ void BanditPAM::fitBanditPAM(
         size_t m = fmin(n, cacheWidth);
         cache = new float[n * m];
 
-#pragma omp parallel for if (this->parallelize)
+        #pragma omp parallel for if (this->parallelize)
         for (size_t idx = 0; idx < m * n; idx++) {
             cache[idx] = -1;  // TODO(@motiwari): need better value here
         }
@@ -87,7 +87,7 @@ arma::frowvec BanditPAM::buildSigma(
 
     arma::fvec sample(batchSize);
     arma::frowvec updated_sigma(N);
-#pragma omp parallel for if (this->parallelize)
+    #pragma omp parallel for if (this->parallelize)
     for (size_t i = 0; i < N; i++) {
         for (size_t j = 0; j < batchSize; j++) {
             // 0 for MISC
@@ -136,7 +136,7 @@ arma::frowvec BanditPAM::buildTarget(
         referencePoints = arma::randperm(N, tmpBatchSize);
     }
 
-#pragma omp parallel for if (this->parallelize)
+    #pragma omp parallel for if (this->parallelize)
     for (size_t i = 0; i < target->n_rows; i++) {
         float total = 0;
         for (size_t j = 0; j < referencePoints.n_rows; j++) {
@@ -245,7 +245,7 @@ void BanditPAM::build(
         medoids->unsafe_col(k) = data.unsafe_col((*medoidIndices)(k));
 
         // don't need to do this on final iteration
-#pragma omp parallel for if (this->parallelize)
+        #pragma omp parallel for if (this->parallelize)
         for (size_t i = 0; i < N; i++) {
             float cost = KMedoids::cachedLoss(
                     data,
@@ -289,7 +289,7 @@ arma::fmat BanditPAM::swapSigma(
 
     arma::fvec sample(batchSize);
     // for each considered swap
-#pragma omp parallel for if (this->parallelize)
+    #pragma omp parallel for if (this->parallelize)
     for (size_t i = 0; i < K * N; i++) {
         // extract data point of swap
         size_t n = i / K;
@@ -376,7 +376,7 @@ arma::fmat BanditPAM::swapTarget(
     }
 
     // TODO(@motiwari): Declare variables outside of loops
-#pragma omp parallel for if (this->parallelize)
+    #pragma omp parallel for if (this->parallelize)
     for (size_t i = 0; i < T; i++) {
         // TODO(@motiwari): pragma omp parallel for?
         for (size_t j = 0; j < tmpBatchSize; j++) {

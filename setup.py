@@ -9,7 +9,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "4.0.1"
+__version__ = "4.0.2"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = "GITHUB_ACTIONS"
@@ -98,13 +98,11 @@ def cpp_flag(compiler: str):
     The newer version is prefered over c++11 (when it is available).
     """
     compiler_name = compiler_check()
-    if compiler_name == "clang":
-        flags = ["-std=c++17", "-std=c++14", "-std=c++11"]
-    elif compiler_name == "msvc":
-        flags = ["/std:c++17"]
-    else:
-        # Assume gcc
+    if compiler_name == "clang" or compiler_name == "gcc":
         flags = ["-std=c++17"]
+    else:
+        # Assume msvc
+        flags = ["/std:c++17"]  # required for std::optional
 
     for flag in flags:
         if has_flag(compiler, flag):
@@ -378,9 +376,9 @@ class BuildExt(build_ext):
         linux_opts = ["-O3"]
         c_opts["unix"] += linux_opts
         l_opts["unix"] += linux_opts
+    # Currently necessary (unsure why)
     elif sys.platform == "win32":
-        windows_opts = ["/fsanitize=address"]
-        c_opts["msvc"] += windows_opts
+        c_opts["msvc"] += ["/fsanitize=address"]
 
     def build_extensions(self):
         ct = self.compiler.compiler_type
@@ -487,7 +485,7 @@ def main():
                 "/", "usr", "local", "Cellar", "libomp", "15.0.7", "include"
             ),
         ]
-    else:  # WIN32
+    elif sys.platform == "win32":  # WIN32
         include_dirs = [
             get_pybind_include(),
             get_numpy_include(),
@@ -499,6 +497,8 @@ def main():
             os.path.join("headers", "armadillo", "include"),
             os.path.join("headers", "armadillo", "include", "armadillo_bits"),
         ]
+    else:
+        raise Exception("Unrecognized platform")
 
     compiler_name = compiler_check()
     if sys.platform == "darwin" and os.environ.get(GHA, False):
@@ -578,10 +578,9 @@ def main():
     with open(os.path.join("docs", "long_desc.rst"), encoding="utf-8") as f:
         long_description = f.read()
 
-    my_data_files = None
+    my_data_files = [("docs", [os.path.join("docs", "long_desc.rst")])]
     if sys.platform == "win32":
-        my_data_files = [
-            ("docs", [os.path.join("docs", "long_desc.rst")]),
+        my_data_files.append(
             (
                 "",
                 [
@@ -589,12 +588,10 @@ def main():
                         os.getcwd(),
                         r"headers\armadillo\examples\lib_win64"
                         + r"\libopenblas.dll",
-                    )
+                        )
                 ],
-            ),
-        ]
-    else:
-        my_data_files = [("docs", [os.path.join("docs", "long_desc.rst")])]
+            )
+        )
 
     setup(
         name="banditpam",
