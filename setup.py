@@ -382,6 +382,7 @@ class BuildExt(build_ext):
 
         # TODO(@motiwari): on Windows, these flags are unrecognized
         opts.append(cpp_flag(self.compiler))
+        opts.append("-O3")
         if sys.platform == "darwin" and os.environ.get(GHA, False):
             opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
             opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
