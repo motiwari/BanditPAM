@@ -36,3 +36,4 @@ jobs:
         uses: DoozyX/clang-format-lint-action@v0.16.2
         with:
           source: './headers/algorithms ./headers/python_bindings ./src'
+          clangFormatVersion: 16.0.3
