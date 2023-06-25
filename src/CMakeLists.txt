@@ -3,7 +3,7 @@ include_directories(${PROJECT_SOURCE_DIR}/headers/algorithms)
 include_directories(${PROJECT_SOURCE_DIR}/headers/python_bindings)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include)
 include_directories(${PROJECT_SOURCE_DIR}/headers/carma/include/carma_bits)
-# Include directory for windows
+# As per README instructions, we expected the user to have cloned armadillo locally
 if(WIN32)
 include_directories(${PROJECT_SOURCE_DIR}/headers/armadillo/include)
 include_directories(
@@ -30,8 +30,10 @@ elseif(APPLE OR UNIX)
 add_executable(BanditPAM main.cpp )
 endif()
 add_library(
-        BanditPAM_LIB algorithms/kmedoids_algorithm.cpp algorithms/pam.cpp
-        algorithms/banditpam.cpp algorithms/banditpam_orig.cpp
+        BanditPAM_LIB algorithms/kmedoids_algorithm.cpp
+        algorithms/pam.cpp
+        algorithms/banditpam.cpp
+        algorithms/banditpam_orig.cpp
         algorithms/fastpam1.cpp)
 
 target_link_libraries(BanditPAM PUBLIC BanditPAM_LIB)
@@ -41,14 +43,16 @@ target_link_directories(BanditPAM PUBLIC ${OPENBLAS_dir})
 target_link_libraries(BanditPAM_LIB libopenblas)
 endif()
 
-if(UNIX OR APPLE)
+if(APPLE OR UNIX)
 find_package(Armadillo REQUIRED)
 include_directories(${ARMADILLO_INCLUDE_DIRS})
 target_link_libraries(BanditPAM PUBLIC ${ARMADILLO_LIBRARIES})
 endif()
 
 if(WIN32)
+# Windows uses backslashes for paths while Unix systems use forward slashes
 string(REPLACE "/" "\\"  OPENBLAS_dir_win ${OPENBLAS_dir})
+# Copy all DLLs from OPENBLAS_dir_win to the output directory
 add_custom_command(TARGET BanditPAM_LIB POST_BUILD
             COMMAND copy ${OPENBLAS_dir_win}\\*.dll $(OutDir))
 endif()
