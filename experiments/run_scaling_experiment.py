@@ -75,7 +75,7 @@ def run_scaling_experiment_with_n():
                 n_medoids=n_medoids,
                 num_data_list=num_data_list,
                 dirname="scaling_with_n",
-                num_experiments=6,
+                num_experiments=10,
             )
 
 
