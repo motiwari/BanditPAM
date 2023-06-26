@@ -25,8 +25,8 @@ jobs:
       - name: Install Python dependencies 
         run: |
           python -m pip install --upgrade pip
-          pip install pytest
-          pip install -r requirements.txt
+          python -m pip install pytest
+          python -m pip install -r requirements.txt
       - name: Install Armadillo 10.7.5+
         run: |
           cd ~
@@ -45,7 +45,7 @@ jobs:
           cd ~
       - name: Install BanditPAM package
         run: |
-          pip install -vvv -e .
+          python -m pip install -vvv -e .
         env:
           # The default compiler on the Github Ubuntu runners is gcc
           # Would need to make a respective include change for clang 

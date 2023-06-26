@@ -11,7 +11,7 @@ Please ensure the following dependencies are installed:
  - CARMA: via the instructions in [its guide](https://github.com/RUrlus/carma#installation)
  - Python3: if not installed, we recommend installing Python3 via [Anaconda](https://www.anaconda.com/products/individual), which is CPython compiled with `clang`
  - `pip` for your Python3 installation; this should be completed if installing via Anaconda above
- - The necessary python packages: via `pip install -r requirements.txt`
+ - The necessary python packages: via `python -m pip install -r requirements.txt`
 
 (NOT RECOMMENDED): Instead of LLVM's `clang`, you can also use another C++ compiler and point your `CC` environment variable to it. Please ensure this is the same compiler used to compile your Python installation if using CPython. If you open a `python` REPL it will show the compiler used during the language installation:
 
@@ -29,8 +29,8 @@ For the default Python2 installed on Mac, the `Apple clang` compiler is used; fo
 ## BanditPAM Installation
 
 BanditPAM can then be installed via one of the following ways:
-1) Running `pip install banditpam`, OR
-2) Running `pip install .` in the home directory (`/BanditPAM`)
+1) Running `python -m pip install banditpam`, OR
+2) Running `python -m pip install .` in the home directory (`/BanditPAM`)
 
 ## Known Issues 
 The following is a list of issues seen when installing BanditPAM on MacOS. To report a bug, please file an issue at https://github.com/motiwari/BanditPAM/

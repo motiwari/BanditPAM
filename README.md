@@ -24,7 +24,7 @@ Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan
 ```
 
 # Requirements
-# TL;DR run `pip install banditpam` or `install.packages(banditpam)` and jump to the [examples](https://github.com/motiwari/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
+# TL;DR run `python -m pip install banditpam` or `install.packages(banditpam)` and jump to the [examples](https://github.com/motiwari/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
 
 If you have any difficulties, please see the [platform-specific guides](https://github.com/motiwari/BanditPAM#platform-specific-installation-guides) and file a Github issue if you have additional trouble.
 
@@ -41,8 +41,8 @@ If you have any difficulties, please see the [platform-specific guides](https://
 ## Install the repo and its dependencies:
 This can be done either through PyPI (recommended)
 ```python
-/BanditPAM/: pip install -r requirements.txt
-/BanditPAM/: pip install banditpam
+/BanditPAM/: python -m pip install -r requirements.txt
+/BanditPAM/: python -m pip install banditpam
 ```
 OR through the source code via
 ```python
@@ -50,8 +50,8 @@ OR through the source code via
 /BanditPAM/: cd headers/carma
 /BanditPAM/: mkdir build && cd build && cmake -DCARMA_INSTALL_LIB=ON .. && sudo cmake --build . --config Release --target install
 /BanditPAM/: cd ../../..
-/BanditPAM/: pip install -r requirements.txt
-/BanditPAM/: sudo pip install .
+/BanditPAM/: python -m pip install -r requirements.txt
+/BanditPAM/: sudo python -m pip install .
 ```
 
 ### Example 1: Synthetic data from a Gaussian Mixture Model
@@ -201,7 +201,7 @@ The package currently supports a number of distance metrics, including all $L_p$
 
 If you're willing to write a little C++, you only need to add a few lines to [kmedoids_algorithm.cpp](https://github.com/motiwari/BanditPAM/blob/main/src/kmedoids_algorithm.cpp#L560-L615) and [kmedoids_algorithm.hpp](https://github.com/motiwari/BanditPAM/blob/main/headers/kmedoids_algorithm.hpp#L136-L142) to implement your distance metric / pairwise dissimilarity!
 
-Then, be sure to re-install the repository with a `pip install .` (note the trailing `.`).
+Then, be sure to re-install the repository with a `python -m pip install .` (note the trailing `.`).
 
 The maintainers of this repository are working on permitting arbitrary dissimilarity metrics that users write in Python, as well; see [#4](https://github.com/motiwari/BanditPAM/issues/4).
 

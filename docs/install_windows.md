@@ -1,38 +1,30 @@
 # Installation Tutorial for Windows
 
-The following is a description of the installation process of BanditPAM for Windows. This assumes that:
+The following is a more detailed description of the installation process of BanditPAM for Windows.
  
 ## Prerequisites
 Please ensure the following dependencies are installed:
- - A C++ compiler; we recommend LLVM's `clang`: via the [LLVM installation instructions](https://clang.llvm.org/get_started.html)
- - OpenMP: if using LLVM's `clang`, then OpenMP is already enabled
- - `CMake`: via the [CMake installation instructions](https://cmake.org/install/)
- - Armadillo: via the [Armadillo installation instructions](http://arma.sourceforge.net/download.html)
+ - Visual Studio (2022 is recommended) with "Desktop development with C++" workload: via the [Visual Studio download page](https://visualstudio.microsoft.com/vs/)
+ - The Armadillo library: via `git clone https://gitlab.com/conradsnicta/armadillo-code.git armadillo` in the `headers` directory
  - CARMA: via the instructions in [its guide](https://github.com/RUrlus/carma#installation)
- - Python3: if not installed, we recommend installing Python3 via [Anaconda](https://www.anaconda.com/products/individual), which is CPython compiled with `clang`
+ - Python3: if not installed, we recommend installing Python3 via [Anaconda](https://www.anaconda.com/products/individual)
  - `pip` for your Python3 installation: this should be completed if installing via Anaconda above
- - The necessary python packages: via `pip install -r requirements.txt`
- 
- (NOT RECOMMENDED): Instead of LLVM's `clang`, you can also use another C++ compiler and point your `CC` environment variable to it. Please ensure this is the same compiler used to compile your Python installation if using CPython. If you open a `python` REPL it will show the compiler used during the language installation:
-
- ```
- >> python
-Python 3.7.9 (default, Mar  1 2021, 13:32:26)
-[Clang 11.0.0 (clang-1100.0.33.17)] :: Intel Corporation on darwin
-Type "help", "copyright", "credits" or "license" for more information.
-Intel(R) Distribution for Python is brought to you by Intel Corporation.
-Please check out: https://software.intel.com/en-us/python-distribution
-```
-
-Do not attempt to compile the BanditPAM extension with `gcc` if your Python used `clang`, and vice versa.
+ - The necessary python packages: via `python -m pip install -r requirements.txt`
 
 ## BanditPAM Installation
 
-BanditPAM can then be installed via one of the following ways:
-1) Running `pip install banditpam`, OR
-2) Running `pip install .` in the home directory (`/BanditPAM`)
+CMake Build:
 
-## Known Issues 
-The following is a list of issues seen when installing BanditPAM on Windows. To report a bug, please file an issue at https://github.com/motiwari/BanditPAM/
+1) Run `scripts/retrieve_windows_cmake_files.sh` to retrieve the files necessary for the Windows CMake build
+2) Add the Visual Studio IDE location to PATH in Environment Variables (e.g. `C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE`).
+3) Add `${project_dir}\headers\armadillo\examples\lib_win64` to PATH 
+4) Run `devenv BanditPAM.sln /Build "Release|x64"` after `cmake ..` in a prompt other than Git Bash
+5) The `.exe` will be located in `build/src/Release`
 
-- You may run into an error like `error: ‘class arma::Mat<float>’ has no member named ‘n_alloc’`; this is fundamentally due to an [error in CARMA](https://github.com/RUrlus/carma/pull/98). If this isn't fixed by the time you're reading this, follow the fix described in [this issue](https://github.com/motiwari/BanditPAM/issues/169).
+Python Build:
+1) Run `python -m pip install banditpam`, OR
+2) Follow these steps:
+   1) Add the location of `cl.exe` to PATH in Environment Variables (e.g. `C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64`).
+   2) Run `python -m pip install .` in the home directory (`/BanditPAM`)
+   2) Add the file `C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx86\x64\clang_rt.asan_dynamic-x86_64.dll` to `build\lib.win-amd64-cpython-310`
+   3) Run `python -m pip install .` in the home directory (`/BanditPAM`)
