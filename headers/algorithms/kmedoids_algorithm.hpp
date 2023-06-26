@@ -29,16 +29,16 @@ class KMedoids {
   //  arguments in kmedoids_pywrapper.cpp, otherwise undefined behavior can
   //  result (variables being initialized with others' values)
   KMedoids(
-    size_t nMedoids = 5,
-    const std::string& algorithm = "BanditPAM",
-    size_t maxIter = 100,
-    size_t buildConfidence = 3,
-    size_t swapConfidence = 5,
-    bool useCache = true,
-    bool usePerm = true,
-    size_t cacheWidth = 1000,
-    bool parallelize = true,
-    size_t seed = 0);
+          size_t nMedoids = 5,
+          const std::string &algorithm = "BanditPAM",
+          size_t maxIter = 100,
+          size_t buildConfidence = 3,
+          size_t swapConfidence = 5,
+          bool useCache = true,
+          bool usePerm = true,
+          size_t cacheWidth = 1000,
+          bool parallelize = true,
+          size_t seed = 0);
 
   ~KMedoids();
 
@@ -47,59 +47,59 @@ class KMedoids {
    *
    * @param inputData Input data to cluster
    * @param loss The loss function used during medoid computation
-   * 
+   *
    * @throws if the input data is empty.
    */
   void fit(
-    const arma::fmat& inputData,
-    const std::string& loss,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+          const arma::fmat &inputData,
+          const std::string &loss,
+          std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
    * @brief Returns the medoids at the end of the BUILD step.
-   * 
+   *
    * @returns Medoids at the end of the BUILD step
    */
   arma::urowvec getMedoidsBuild() const;
 
   /**
    * @brief Returns the medoids after all SWAP steps have been run.
-   * 
+   *
    * @returns Medoids at the end of all SWAP steps
    */
   arma::urowvec getMedoidsFinal() const;
 
   /**
    * @brief Returns the medoid assignments for each datapoint.
-   * 
+   *
    * @returns Cluster assignment for each point
    */
   arma::urowvec getLabels() const;
 
   /**
    * @brief Returns the number of SWAP steps performed.
-   * 
+   *
    * @returns Number of swap steps performed
    */
   size_t getSteps() const;
 
   /**
    * @brief Returns the number of medoids, k.
-   * 
+   *
    * @returns Current value of k, the number of medoids/clusters
    */
   size_t getNMedoids() const;
 
   /**
    * @brief Sets the number of medoids, k.
-   * 
+   *
    * @param newNMedoids The new number, k, of medoids to use
    */
   void setNMedoids(size_t newNMedoids);
 
   /**
    * @brief Returns the algorithm being used for k-medoids clustering.
-   * 
+   *
    * @returns The name of the algorithm being used
    */
   std::string getAlgorithm() const;
@@ -109,11 +109,11 @@ class KMedoids {
    *
    * @param newAlgorithm The new algorithm to use: "BanditPAM", "PAM", or "FastPAM1"
    */
-  void setAlgorithm(const std::string& newAlgorithm);
+  void setAlgorithm(const std::string &newAlgorithm);
 
   /**
    * @brief Returns the maximum number of SWAP steps during clustering.
-   * 
+   *
    * @returns The maximum number of SWAP steps that can be
    * performed during clustering
    */
@@ -121,7 +121,7 @@ class KMedoids {
 
   /**
    * @brief Sets the maximum number of SWAP steps during clustering.
-   * 
+   *
    * @param newMaxIter New maximum number of iterations to use
    */
   void setMaxIter(size_t newMaxIter);
@@ -129,7 +129,7 @@ class KMedoids {
   /**
    * @brief Returns the buildConfidence, a parameter that affects the width
    * of the confidence intervals during the BUILD step.
-   * 
+   *
    * @returns The current value of buildConfidence
    */
   size_t getBuildConfidence() const;
@@ -139,7 +139,7 @@ class KMedoids {
    * of the confidence intervals during the BUILD step.
    *
    * @param newBuildConfidence The new buildConfidence to use
-   * 
+   *
    * @throws If attempting to set buildConfidence when not using BanditPAM
    */
   void setBuildConfidence(size_t newBuildConfidence);
@@ -147,7 +147,7 @@ class KMedoids {
   /**
    * @brief Returns the swapConfidence, a parameter that affects the width
    * of the confidence intervals during the BUILD step.
-   * 
+   *
    * @returns The current value of swapConfidence
    */
   size_t getSwapConfidence() const;
@@ -157,7 +157,7 @@ class KMedoids {
    * of the confidence intervals during the BUILD step.
    *
    * @param newSwapConfidence The new swapConfidence to use
-   * 
+   *
    * @throws If attempting to set buildConfidence when not using BanditPAM
    */
   void setSwapConfidence(size_t newSwapConfidence);
@@ -180,7 +180,7 @@ class KMedoids {
    * @brief Sets the loss function to use during clustering.
    *
    * @param loss Loss function to be used e.g. "L2"
-   * 
+   *
    * @throws If the loss function is unrecognized
    */
   void setLossFn(std::string loss);
@@ -200,6 +200,15 @@ class KMedoids {
    * @throws If no clustering has been run yet
    */
   float getAverageLoss() const;
+
+  /**
+   * @brief Get the loss at the end of the BUILD step of the algorithm
+   *
+   * @returns The loss at the end of the BUILD step of the algorithm
+   *
+   * @throws If the BUILD step has not been run yet
+   */
+  float getBuildLoss() const;
 
   /**
    * @brief Returns whether a distance cache is being used
@@ -321,7 +330,7 @@ class KMedoids {
   float getTimePerSwap() const;
 
   /// The cache which stores pairwise distance computations
-  float* cache;
+  float *cache;
 
   /// The permutation in which to sample the reference points
   arma::uvec permutation;
@@ -350,118 +359,118 @@ class KMedoids {
    * @param assignments Assignments of datapoints to their closest medoid
    */
   void calcBestDistancesSwap(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    const arma::urowvec* medoidIndices,
-    arma::frowvec* bestDistances,
-    arma::frowvec* secondBestDistances,
-    arma::urowvec* assignments,
-    const bool swapPerformed = true);
+          const arma::fmat &data,
+          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+          const arma::urowvec *medoidIndices,
+          arma::frowvec *bestDistances,
+          arma::frowvec *secondBestDistances,
+          arma::urowvec *assignments,
+          const bool swapPerformed = true);
 
   /**
-   * @brief Calculate the average loss for the given choice of medoids. 
-   * 
+   * @brief Calculate the average loss for the given choice of medoids.
+   *
    * @param data Transposed data to cluster
    * @param medoidIndices Indices of the medoids in the dataset
-   * 
+   *
    * @returns The average loss, i.e., the average distance from each point to its
    * nearest medoid
    */
   float calcLoss(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    const arma::urowvec* medoidIndices);
+          const arma::fmat &data,
+          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+          const arma::urowvec *medoidIndices);
 
   /**
    * @brief A wrapper around the given loss function that caches distances
    * between the given points.
-   * 
+   *
    * NOTE: if you change useCacheFunctionOverride, also change useCache
-   * 
+   *
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
    * @param useCacheFunctionOverride Whether to use the cache in this function (by default, uses value of useCache)
-   * 
+   *
    * @returns The distance between points i and j
    */
   float cachedLoss(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    const size_t i,
-    const size_t j,
-    const size_t category,
-    const bool useCacheFunctionOverride = true);
+          const arma::fmat &data,
+          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+          const size_t i,
+          const size_t j,
+          const size_t category,
+          const bool useCacheFunctionOverride = true);
 
   /// If using an L_p loss, the value of p
   size_t lp;
 
   /**
-   * @brief Computes the Lp distance between the 
+   * @brief Computes the Lp distance between the
    * datapoints of indices i and j in the dataset
    *
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
-   * 
+   *
    * @returns The Lp distance between points i and j
    */
   float LP(
-    const arma::fmat& data,
-    const size_t i,
-    const size_t j) const;
+          const arma::fmat &data,
+          const size_t i,
+          const size_t j) const;
 
   /**
-   * @brief Computes the L-infinity distance between the 
+   * @brief Computes the L-infinity distance between the
    * datapoints of indices i and j in the dataset
    *
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
-   * 
+   *
    * @returns The L-infinity distance between points i and j
    */
-  float LINF(const arma::fmat& data,
-    const size_t i,
-    const size_t j) const;
+  float LINF(const arma::fmat &data,
+             const size_t i,
+             const size_t j) const;
 
   /**
-   * @brief Computes the cosine distance between the 
+   * @brief Computes the cosine distance between the
    * datapoints of indices i and j in the dataset
    *
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
-   * 
+   *
    * @returns The cosine distance between points i and j
    */
-  float cos(const arma::fmat& data,
-    const size_t i,
-    const size_t j) const;
+  float cos(const arma::fmat &data,
+            const size_t i,
+            const size_t j) const;
 
   /**
-   * @brief Computes the Manhattan distance between the 
+   * @brief Computes the Manhattan distance between the
    * datapoints of indices i and j in the dataset
    *
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
-   * 
+   *
    * @returns The Manhattan distance between points i and j
    */
-  float manhattan(const arma::fmat& data,
-    const size_t i,
-    const size_t j) const;
+  float manhattan(const arma::fmat &data,
+                  const size_t i,
+                  const size_t j) const;
 
   /**
-   * @brief Checks whether algorithm choice is valid. The given 
-   * algorithm must be either "BanditPAM", "PAM", or "FastPAM1". 
+   * @brief Checks whether algorithm choice is valid. The given
+   * algorithm must be either "BanditPAM", "PAM", or "FastPAM1".
    *
    * @param algorithm Name of the k-medoids algorithm to use
-   * 
+   *
    * @throws If the algorithm is invalid.
    */
-  void checkAlgorithm(const std::string& algorithm) const;
+  void checkAlgorithm(const std::string &algorithm) const;
 
   /// Number of medoids to use -- the "k" in k-medoids
   size_t nMedoids;
@@ -486,10 +495,10 @@ class KMedoids {
 
   /// Function pointer to the loss function to use
   float (KMedoids::*lossFn)(
-    const arma::fmat& data,
-    const size_t i,
-    const size_t j)
-    const;
+          const arma::fmat &data,
+          const size_t i,
+          const size_t j)
+  const;
 
   /// Number of SWAP steps performed
   size_t steps = 0;
@@ -520,6 +529,9 @@ class KMedoids {
 
   /// Contains the average loss at the last step of the algorithm
   float averageLoss = 0.0;
+
+  /// Contains the loss at the end of the BUILD step of the algorithm
+  float buildLoss = 0.0;
 
   /// Number of points to sample per reference batch
   size_t batchSize = 100;

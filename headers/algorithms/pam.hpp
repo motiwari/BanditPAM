@@ -22,8 +22,8 @@ class PAM : public km::KMedoids {
   * @param inputData Input data to cluster
   */
   void fitPAM(
-  const arma::fmat& inputData,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+          const arma::fmat &inputData,
+          std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
   * @brief Performs the BUILD step of PAM.
@@ -37,9 +37,9 @@ class PAM : public km::KMedoids {
   * as medoids are identified
   */
   void buildPAM(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    arma::urowvec* medoidIndices);
+          const arma::fmat &data,
+          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+          arma::urowvec *medoidIndices);
 
   /**
   * @brief Performs the SWAP steps of BanditPAM.
@@ -55,10 +55,10 @@ class PAM : public km::KMedoids {
   * @param assignments Array of containing the medoid each point is closest to
   */
   void swapPAM(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    arma::urowvec* medoidIndices,
-    arma::urowvec* assignments);
+          const arma::fmat &data,
+          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+          arma::urowvec *medoidIndices,
+          arma::urowvec *assignments);
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_PAM_HPP_

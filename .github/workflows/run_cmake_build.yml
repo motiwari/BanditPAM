@@ -38,6 +38,14 @@ jobs:
           mkdir -p data
           curl -XGET https://motiwari.com/banditpam_data/MNIST_1k.csv > data/MNIST_1k.csv
 
+      - name: Clone for PR
+        if: ${{ github.event_name == 'pull_request' }}
+        run: git clone -b $GITHUB_HEAD_REF https://github.com/motiwari/BanditPAM
+
+      - name: Clone for Push
+        if: ${{ github.event_name != 'pull_request' }}
+        run: git clone -b ${GITHUB_REF#refs/heads/} https://github.com/motiwari/BanditPAM
+
       # On the MacOS machine, when installing from source,
       # we use LLVM Clang
       # TODO(@motiwari): Clean this environment variables up
@@ -50,7 +58,6 @@ jobs:
           export DYLD_LIBRARY_PATH=/usr/local/opt/libomp/lib:/usr/local/opt/libomp/include
           export CC=/usr/local/opt/llvm/bin/clang
           export CXX=/usr/local/opt/llvm/bin/clang++
-          git clone -b ${GITHUB_REF#refs/heads/} https://github.com/motiwari/BanditPAM
           cd BanditPAM
           mkdir build
           cd build

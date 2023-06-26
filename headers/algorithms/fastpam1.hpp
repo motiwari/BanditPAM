@@ -22,12 +22,12 @@ class FastPAM1 : public km::KMedoids {
    * @param inputData Input data to cluster
    */
   void fitFastPAM1(
-    const arma::fmat& inputData,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+          const arma::fmat &inputData,
+          std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
    * @brief Performs the BUILD step of FastPAM1.
-   * 
+   *
    * Loops over all datapoint and checks each's distance to every other
    * datapoint in the dataset, then adds the point with the lowest overall
    * loss to the set of medoids.
@@ -37,16 +37,16 @@ class FastPAM1 : public km::KMedoids {
    * as medoids are identified
    */
   void buildFastPAM1(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    arma::urowvec* medoidIndices);
+          const arma::fmat &data,
+          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+          arma::urowvec *medoidIndices);
 
   /**
    * @brief Performs the SWAP step of FastPAM1.
    *
    * Loops over all (medoid, non-medoid) pairs and computes the change in loss
    * when the points are swapped in and out of the medoid set. Then updates
-   * the list of medoids by performing the swap that would lower the overall 
+   * the list of medoids by performing the swap that would lower the overall
    * loss the most, provided at least one such swap would reduce the loss.
    *
    * @param data Transposed input data to cluster
@@ -55,10 +55,10 @@ class FastPAM1 : public km::KMedoids {
    * @param assignments Array of containing the medoid each point is closest to
    */
   void swapFastPAM1(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    arma::urowvec* medoidIndices,
-    arma::urowvec* assignments);
+          const arma::fmat &data,
+          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+          arma::urowvec *medoidIndices,
+          arma::urowvec *assignments);
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_FASTPAM1_HPP_

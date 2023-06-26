@@ -14,11 +14,11 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-int km::KMedoidsWrapper::getStepsPython() {
-  return KMedoids::getSteps();
-}
+  int km::KMedoidsWrapper::getStepsPython() {
+    return KMedoids::getSteps();
+  }
 
-void steps_python(pybind11::class_<KMedoidsWrapper> *cls) {
-  cls->def_property_readonly("steps", &KMedoidsWrapper::getStepsPython);
-}
+  void steps_python(pybind11::class_ <KMedoidsWrapper> *cls) {
+    cls->def_property_readonly("steps", &KMedoidsWrapper::getStepsPython);
+  }
 }  // namespace km
