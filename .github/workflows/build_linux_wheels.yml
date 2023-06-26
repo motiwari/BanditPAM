@@ -68,7 +68,7 @@ jobs:
 
       - name: Upload to TestPyPI on PR update
         if: ${{ github.event_name == 'pull_request' }}
-      - uses: pypa/gh-action-pypi-publish@v1.4.2
+        uses: pypa/gh-action-pypi-publish@v1.4.2
         with:
           user: __token__
           password: ${{ secrets.TEST_PYPI_APIKEY }}
@@ -76,7 +76,7 @@ jobs:
 
       - name: Upload to PyPI on published release
         if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-      - uses: pypa/gh-action-pypi-publish@v1.4.2
+        uses: pypa/gh-action-pypi-publish@v1.4.2
         with:
           user: __token__
           password: ${{ secrets.PYPI_APIKEY }}
