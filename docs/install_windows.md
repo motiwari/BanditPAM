@@ -9,7 +9,7 @@ Please ensure the following dependencies are installed:
  - CARMA: via the instructions in [its guide](https://github.com/RUrlus/carma#installation)
  - Python3: if not installed, we recommend installing Python3 via [Anaconda](https://www.anaconda.com/products/individual)
  - `pip` for your Python3 installation: this should be completed if installing via Anaconda above
- - The necessary python packages: via `pip install -r requirements.txt`
+ - The necessary python packages: via `python -m pip install -r requirements.txt`
 
 ## BanditPAM Installation
 
