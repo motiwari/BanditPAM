@@ -26,19 +26,23 @@ def read_dataset(dataset_name):
         filename = "cifar10"
         delimiter = ","
 
-    dataset = pd.read_csv(os.path.join("data", f"{filename}.csv"), delimiter=delimiter, header=None).to_numpy()
+    dataset = pd.read_csv(
+        os.path.join("data", f"{filename}.csv"), delimiter=delimiter, header=None
+    ).to_numpy()
     return dataset
 
 
-def scaling_experiment_with_k(dataset_name,
-                              n_medoids_list=None,
-                              algorithms=None,
-                              loss: str = "L2",
-                              verbose=True,
-                              save_logs=True,
-                              cache_width=1000,
-                              dirname="scaling_with_k",
-                              num_experiments=3):
+def scaling_experiment_with_k(
+    dataset_name,
+    n_medoids_list=None,
+    algorithms=None,
+    loss: str = "L2",
+    verbose=True,
+    save_logs=True,
+    cache_width=1000,
+    dirname="scaling_with_k",
+    num_experiments=3,
+):
     """
     Runs a scaling experiment varying the number of medoids (k),
     and stores the results in the appropriate log files.
@@ -64,8 +68,12 @@ def scaling_experiment_with_k(dataset_name,
             print("\nNum medoids: ", n_medoids)
             for algorithm in algorithms:
                 print("Running ", algorithm)
-                log_name = f"{algorithm}_{dataset_name}_n{num_data}_idx{experiment_index}"
-                kmed, runtime = run_banditpam(algorithm, dataset, n_medoids, loss, cache_width)
+                log_name = (
+                    f"{algorithm}_{dataset_name}_n{num_data}_idx{experiment_index}"
+                )
+                kmed, runtime = run_banditpam(
+                    algorithm, dataset, n_medoids, loss, cache_width
+                )
 
                 if verbose:
                     print_results(kmed, runtime)
@@ -74,17 +82,19 @@ def scaling_experiment_with_k(dataset_name,
                     store_results(kmed, runtime, log_dir, log_name, num_data, n_medoids)
 
 
-def scaling_experiment_with_n(dataset_name,
-                              num_data_list,
-                              n_medoids,
-                              algorithms=None,
-                              loss: str = "L2",
-                              verbose=True,
-                              save_logs=True,
-                              cache_width=1000,
-                              dirname="scaling_with_n",
-                              parallelize=True,
-                              num_experiments=3):
+def scaling_experiment_with_n(
+    dataset_name,
+    num_data_list,
+    n_medoids,
+    algorithms=None,
+    loss: str = "L2",
+    verbose=True,
+    save_logs=True,
+    cache_width=1000,
+    dirname="scaling_with_n",
+    parallelize=True,
+    num_experiments=3,
+):
     """
     Runs a scaling experiment varying the number of data points (n),
     and stores the results in the appropriate log files.
@@ -105,7 +115,7 @@ def scaling_experiment_with_n(dataset_name,
 
     print("Running sampling complexity experiment with n on ", dataset_name)
 
-    for experiment_index in range(5, 5+num_experiments):
+    for experiment_index in range(5, 5 + num_experiments):
         print("\n\nExperiment: ", experiment_index)
         for num_data in num_data_list:
             print("\nNum data: ", num_data)
@@ -113,9 +123,13 @@ def scaling_experiment_with_n(dataset_name,
             data = dataset[data_indices]
             for algorithm in algorithms:
                 print("\n<Running ", algorithm, ">")
-                log_name = f"{algorithm}_{dataset_name}_k{n_medoids}_idx{experiment_index}"
+                log_name = (
+                    f"{algorithm}_{dataset_name}_k{n_medoids}_idx{experiment_index}"
+                )
                 print(log_name)
-                kmed, runtime = run_banditpam(algorithm, data, n_medoids, loss, cache_width, parallelize)
+                kmed, runtime = run_banditpam(
+                    algorithm, data, n_medoids, loss, cache_width, parallelize
+                )
 
                 if verbose:
                     print_results(kmed, runtime)

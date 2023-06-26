@@ -78,8 +78,7 @@ class InitializationTests(unittest.TestCase):
         assert kmed.n_medoids == 100, "n_medoids does not match"
         assert kmed.algorithm == "PAM", "algorithm does not match"
         assert kmed.max_iter == 10000, "max_iter does not match"
-        assert kmed.build_confidence == 11000, "build_confidence does not" \
-                                               " match"
+        assert kmed.build_confidence == 11000, "build_confidence does not" " match"
         assert kmed.swap_confidence == 2029, "swap_confidence does not match"
         assert kmed.use_cache, "use_cache does not match"
         assert not kmed.use_perm, "use_perm does not match"

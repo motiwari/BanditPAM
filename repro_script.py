@@ -1,5 +1,7 @@
-from experiments.run_scaling_experiment import (run_scaling_experiment_with_n,
-                                                run_scaling_experiment_with_k)
+from experiments.run_scaling_experiment import (
+    run_scaling_experiment_with_n,
+    run_scaling_experiment_with_k,
+)
 
 # Scaling with n
 run_scaling_experiment_with_n()

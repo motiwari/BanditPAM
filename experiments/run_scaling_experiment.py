@@ -8,7 +8,6 @@ from scripts.constants import (
     BANDITPAM_VA_CACHING,
     BANDITPAM_VA_NO_CACHING,
     ALL_BANDITPAMS,
-
     # Datasets
     MNIST,
     CIFAR,
@@ -51,11 +50,12 @@ def run_scaling_experiment_with_k():
     """
     for dataset in [MNIST, CIFAR]:
         loss = get_loss_function(dataset)
-        scaling_experiment_with_k(dataset_name=dataset,
-                                  loss=loss,
-                                  algorithms=ALL_BANDITPAMS,
-                                  n_medoids_list=[5, 8, 10]
-                                  )
+        scaling_experiment_with_k(
+            dataset_name=dataset,
+            loss=loss,
+            algorithms=ALL_BANDITPAMS,
+            n_medoids_list=[5, 8, 10],
+        )
 
 
 def run_scaling_experiment_with_n():
@@ -68,14 +68,15 @@ def run_scaling_experiment_with_n():
         num_data_list = get_num_data_list(dataset)
         for n_medoids in [5, 10]:
             np.random.seed(14)
-            scaling_experiment_with_n(dataset_name=dataset,
-                                      loss=loss,
-                                      algorithms=ALL_BANDITPAMS,
-                                      n_medoids=n_medoids,
-                                      num_data_list=num_data_list,
-                                      dirname="scaling_with_n",
-                                      num_experiments=6,
-                                      )
+            scaling_experiment_with_n(
+                dataset_name=dataset,
+                loss=loss,
+                algorithms=ALL_BANDITPAMS,
+                n_medoids=n_medoids,
+                num_data_list=num_data_list,
+                dirname="scaling_with_n",
+                num_experiments=6,
+            )
 
 
 if __name__ == "__main__":

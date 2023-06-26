@@ -12,4 +12,3 @@ print(df.describe())
 
 # Save the first 10,000 rows to a new CSV file
 # df_10k.to_csv("mnist_10k.csv", index=False)
-

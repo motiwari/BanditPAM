@@ -8,9 +8,7 @@ from tests.constants import MILLISECONDS_IN_A_SECOND
 
 
 def time_measured_fit(
-    kmed: KMedoids,
-    X: np.array,
-    loss: str = "L2",
+    kmed: KMedoids, X: np.array, loss: str = "L2",
 ):
     start = time.time()
     kmed.fit(X, loss)
@@ -19,10 +17,7 @@ def time_measured_fit(
 
 
 def get_cache_statistics(
-    kmed: KMedoids,
-    X: np.array,
-    loss: str = "L2",
-    cache_width: int = 1000,
+    kmed: KMedoids, X: np.array, loss: str = "L2", cache_width: int = 1000,
 ):
     kmed.cache_width = cache_width
     time = time_measured_fit(kmed, X, loss)
@@ -55,14 +50,18 @@ def main():
             hits_1000,
             misses_1000,
         ) = get_cache_statistics(kmed=kmed, X=X, loss="L2", cache_width=1000)
-        time_750, width_750, writes_750, hits_750, misses_750 = \
-            get_cache_statistics(kmed=kmed, X=X, loss="L2", cache_width=750)
-        time_500, width_500, writes_500, hits_500, misses_500 = \
-            get_cache_statistics(kmed=kmed, X=X, loss="L2", cache_width=500)
-        time_250, width_250, writes_250, hits_250, misses_250 = \
-            get_cache_statistics(kmed=kmed, X=X, loss="L2", cache_width=250)
-        time_0, width_0, writes_0, hits_0, misses_0 = \
-            get_cache_statistics(kmed=kmed, X=X, loss="L2", cache_width=0)
+        time_750, width_750, writes_750, hits_750, misses_750 = get_cache_statistics(
+            kmed=kmed, X=X, loss="L2", cache_width=750
+        )
+        time_500, width_500, writes_500, hits_500, misses_500 = get_cache_statistics(
+            kmed=kmed, X=X, loss="L2", cache_width=500
+        )
+        time_250, width_250, writes_250, hits_250, misses_250 = get_cache_statistics(
+            kmed=kmed, X=X, loss="L2", cache_width=250
+        )
+        time_0, width_0, writes_0, hits_0, misses_0 = get_cache_statistics(
+            kmed=kmed, X=X, loss="L2", cache_width=0
+        )
 
         assert (
             hits_1000 > hits_750 > hits_500 > hits_250 > hits_0
@@ -70,10 +69,10 @@ def main():
         assert (
             misses_1000 < misses_750 < misses_500 < misses_250 < misses_0
         ), "Cache misses should decrease as cache size increases"
-        assert (
-            misses_1000 == 0
-        ), "There should be no cache misses at width=1000 as the" \
-           " whole dataset fits in memory"
+        assert misses_1000 == 0, (
+            "There should be no cache misses at width=1000 as the"
+            " whole dataset fits in memory"
+        )
         assert (
             hits_0 == 0
         ), "There should be no cache hits at width=0 as there is no cache"
@@ -84,8 +83,7 @@ def main():
         assert width_250 == 250, "Cache width should be 250 when set to 250"
         assert width_500 == 500, "Cache width should be 500 when set to 500"
         assert width_750 == 750, "Cache width should be 750 when set to 750"
-        assert width_1000 == 1000, "Cache width should be 1000 when set " \
-                                   "to 1000"
+        assert width_1000 == 1000, "Cache width should be 1000 when set " "to 1000"
 
     def test_parallelization():
         X = np.loadtxt(os.path.join("data", "MNIST_10k.csv"))
@@ -167,12 +165,7 @@ def main():
             bpam_orig_writes,
             bpam_orig_hits,
             bpam_orig_misses,
-        ) = get_cache_statistics(
-            kmed=kmed_orig,
-            X=X,
-            loss="L2",
-            cache_width=1000,
-        )
+        ) = get_cache_statistics(kmed=kmed_orig, X=X, loss="L2", cache_width=1000,)
 
         print(bpam_time, bpam_orig_time)
         print(kmed.time_per_swap, kmed_orig.time_per_swap)

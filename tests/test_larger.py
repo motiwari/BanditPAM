@@ -20,8 +20,8 @@ from constants import (
 
 
 class LargerTests(unittest.TestCase):
-    mnist_70k = pd.read_csv("data/MNIST_70k.csv", sep=" ", header=None)
-    scrna = pd.read_csv("data/scrna_reformat.csv.gz", header=None)
+    mnist_70k = pd.read_csv("../data/MNIST_70k.csv", sep=" ", header=None)
+    scrna = pd.read_csv("../data/scrna_reformat.csv.gz", header=None)
 
     def test_medium_mnist(self):
         """
@@ -74,7 +74,7 @@ class LargerTests(unittest.TestCase):
             # TODO(@motiwari): Timing test will not work
             # need to compute it over number of steps
             self.assertTrue(
-                runtime < (size_multiplier**SCALING_EXPONENT) * base_runtime
+                runtime < (size_multiplier ** SCALING_EXPONENT) * base_runtime
             )
 
     def test_medium_scrna(self):
@@ -132,7 +132,7 @@ class LargerTests(unittest.TestCase):
             # TODO(@motiwari): Timing test will not work
             # need to compute it over number of steps
             self.assertTrue(
-                runtime < (size_multiplier**SCALING_EXPONENT) * base_runtime
+                runtime < (size_multiplier ** SCALING_EXPONENT) * base_runtime
             )
 
 

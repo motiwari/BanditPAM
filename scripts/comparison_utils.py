@@ -16,16 +16,13 @@ def print_results(kmed, runtime):
     print("Cache Hits: {:,}".format(kmed.cache_hits))
     print("Cache Misses: {:,}".format(kmed.cache_misses))
     print(
-        "Total complexity (without misc):",
-        f"{kmed.getDistanceComputations(False):,}"
+        "Total complexity (without misc):", f"{kmed.getDistanceComputations(False):,}"
     )
     print(
-        "Total complexity (with misc):",
-        f"{kmed.getDistanceComputations(True):,}",
+        "Total complexity (with misc):", f"{kmed.getDistanceComputations(True):,}",
     )
     print(
-        "Total complexity (with caching):",
-        f"{complexity_with_caching:,}",
+        "Total complexity (with caching):", f"{complexity_with_caching:,}",
     )
     # print("Runtime per swap:", runtime / kmed.steps)
     print("Total runtime:", runtime)
@@ -47,9 +44,10 @@ def store_results(kmed, runtime, log_dir, log_name, num_data, num_medoids):
         "average_swap_sample_complexity": kmed.swap_distance_computations / kmed.steps,
         "total_complexity_without_misc": kmed.getDistanceComputations(False),
         "total_complexity_with_misc": kmed.getDistanceComputations(True),
-        "total_complexity_with_caching": kmed.getDistanceComputations(True) - kmed.cache_hits,
+        "total_complexity_with_caching": kmed.getDistanceComputations(True)
+        - kmed.cache_hits,
         "runtime_per_swap": runtime / kmed.steps,
-        "total_runtime": runtime
+        "total_runtime": runtime,
     }
     log_pd_row = pd.DataFrame([log_dict])
 
