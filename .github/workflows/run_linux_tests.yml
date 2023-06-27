@@ -1,12 +1,12 @@
 name: Linux - build package and run tests
-on: [push, pull_request]
+on: [ push, pull_request ]
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
     steps:
       - uses: actions/checkout@v2
 
@@ -70,7 +70,7 @@ jobs:
           tar -xzvf data/MNIST_70k.tar.gz -C data
 
       - name: Run smaller suite of test cases
-        run : |
+        run: |
           pytest tests/test_smaller.py 
 
       # - name: Run larger suite of test cases
@@ -86,7 +86,7 @@ jobs:
         run: git clone -b ${GITHUB_REF#refs/heads/} https://github.com/motiwari/BanditPAM
 
       - name: Verify that the C++ executable compiles and runs
-        run : |
+        run: |
           cd BanditPAM
           mkdir build
           cd build
