@@ -1,9 +1,6 @@
-import numpy as np
-import os
 import banditpam
 import time
 
-from scripts.comparison_utils import print_results, store_results
 from scripts.constants import (
     BANDITPAM_ORIGINAL_NO_CACHING,
     BANDITPAM_ORIGINAL_CACHING,

@@ -18,6 +18,7 @@ GHA = "GITHUB_ACTIONS"
 class get_pybind_include(object):
     """
     Helper class to determine the pybind11 include path.
+
     The purpose of this class is to postpone importing pybind11
     until it is actually installed via setup's setup_requires arg,
     so that the ``get_include()`` method can be invoked.
@@ -74,8 +75,8 @@ def compiler_check():
 
 def has_flag(compiler: str, flagname: str):
     """
-    Return a boolean indicating whether a flag name is supported on
-    the specified compiler.
+    Return a boolean indicating whether a flag name is supported on the
+    specified compiler.
     """
     with tempfile.NamedTemporaryFile("w", suffix=".cpp", delete=False) as f:
         f.write("int main (int argc, char **argv) { return 0; }")
@@ -95,6 +96,7 @@ def has_flag(compiler: str, flagname: str):
 def cpp_flag(compiler: str):
     """
     Return the -std=c++[11/14/17] compiler flag.
+
     The newer version is prefered over c++11 (when it is available).
     """
     compiler_name = compiler_check()
@@ -189,9 +191,7 @@ def check_armadillo_install_linux():
     # Since armadillo is a C++ extension, just check if it exists
     cmd = ["find", "/", "-iname", "armadillo"]
     process = subprocess.Popen(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.DEVNULL,
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
     )
     output, _error = process.communicate()
     if output.decode() == "":
@@ -274,9 +274,7 @@ def setup_colab(delete_source=False):
         os.system(
             repo_location
             + os.path.join(
-                "scripts",
-                "colab_files",
-                "colab_install_armadillo.sh",
+                "scripts", "colab_files", "colab_install_armadillo.sh",
             )
         )
         if delete_source:
@@ -416,8 +414,10 @@ class BuildExt(build_ext):
 
         for ext in self.extensions:
             ext.define_macros = [
-                ("VERSION_INFO",
-                 '"{}"'.format(self.distribution.get_version()))
+                (
+                    "VERSION_INFO",
+                    '"{}"'.format(self.distribution.get_version()),
+                )
             ]
             ext.extra_compile_args = opts
             ext.extra_compile_args += []  # []["-arch", "x86_64"]
@@ -472,8 +472,13 @@ def main():
                 "/", "opt", "homebrew", "opt", "armadillo", "include"
             ),
             os.path.join(
-                "/", "opt", "homebrew", "opt", "armadillo", "include",
-                "armadillo_bits"
+                "/",
+                "opt",
+                "homebrew",
+                "opt",
+                "armadillo",
+                "include",
+                "armadillo_bits",
             ),
             # Needed for Mac Github Runners
             # for macos-10.15
@@ -588,7 +593,7 @@ def main():
                         os.getcwd(),
                         r"headers\armadillo\examples\lib_win64"
                         + r"\libopenblas.dll",
-                        )
+                    )
                 ],
             )
         )

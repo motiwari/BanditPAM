@@ -1,12 +1,11 @@
 import numpy as np
 
-from scaling_experiment import scaling_experiment_with_k, scaling_experiment_with_n
+from scaling_experiment import (
+    scaling_experiment_with_k,
+    scaling_experiment_with_n,
+)
 from scripts.constants import (
     # Algorithms
-    BANDITPAM_ORIGINAL_NO_CACHING,
-    BANDITPAM_ORIGINAL_CACHING,
-    BANDITPAM_VA_CACHING,
-    BANDITPAM_VA_NO_CACHING,
     ALL_BANDITPAMS,
     # Datasets
     MNIST,
@@ -29,8 +28,8 @@ def get_loss_function(dataset):
 
 def get_num_data_list(dataset):
     """
-    Returns a list of numbers indicating the different number of data points to run the experiment with,
-    based on the dataset.
+    Returns a list of numbers indicating the different number of data points to
+    run the experiment with, based on the dataset.
 
     :param dataset: A string that represents the name of the dataset
     :return: A numpy array specifying different numbers of data points
@@ -45,8 +44,8 @@ def get_num_data_list(dataset):
 
 def run_scaling_experiment_with_k():
     """
-    Runs scaling experiments varying the number of medoids (k) for the MNIST and CIFAR datasets
-    using all BanditPAM algorithms.
+    Runs scaling experiments varying the number of medoids (k) for the MNIST
+    and CIFAR datasets using all BanditPAM algorithms.
     """
     for dataset in [MNIST, CIFAR]:
         loss = get_loss_function(dataset)
@@ -60,8 +59,8 @@ def run_scaling_experiment_with_k():
 
 def run_scaling_experiment_with_n():
     """
-    Runs scaling experiments varying the number of data points (n) for the MNIST and CIFAR datasets
-    using all BanditPAM algorithms.
+    Runs scaling experiments varying the number of data points (n) for the
+    MNIST and CIFAR datasets using all BanditPAM algorithms.
     """
     for dataset in [MNIST, CIFAR]:
         loss = get_loss_function(dataset)

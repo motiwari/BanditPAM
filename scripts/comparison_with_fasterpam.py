@@ -69,7 +69,7 @@ def run_old_bandit(data, seed):
         n_medoids=5,
         parallelize=True,
         algorithm="BanditPAM_orig",
-        dist_mat=diss
+        dist_mat=diss,
     )
     print(km.algorithm)
     km.seed = seed
@@ -87,10 +87,7 @@ def run_old_bandit(data, seed):
 
 if __name__ == "__main__":
     X, _ = fetch_openml(
-        "mnist_784",
-        version=1,
-        return_X_y=True,
-        as_frame=False,
+        "mnist_784", version=1, return_X_y=True, as_frame=False,
     )
     X = X[:20000]  # at 20k, colab will timeout for BanditPAM
     print(X.shape, type(X))
