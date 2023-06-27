@@ -1,5 +1,5 @@
 name: MacOS - build package and run tests
-on: [push, pull_request]
+on: [ push, pull_request ]
 jobs:
   build:
     runs-on: macos-latest
@@ -7,7 +7,7 @@ jobs:
       fail-fast: false
       matrix:
         # Python 3.11 on Mac errors with "Library not loaded: '@rpath/libarmadillo.11.dylib'"
-        python-version: ["3.7", "3.8", "3.9", "3.10"]  #, "3.11"]
+        python-version: [ "3.7", "3.8", "3.9", "3.10" ]  #, "3.11"]
     steps:
       - uses: actions/checkout@v2
 
@@ -20,7 +20,7 @@ jobs:
       # we use LLVM Clang
       - name: Install MacOS dependencies
         run: |
-          brew install llvm libomp armadillo
+          brew install llvm libomp armadillo bzip2
 
       - name: Install Python dependencies
         run: |
@@ -71,7 +71,7 @@ jobs:
           tar -xzvf data/MNIST_70k.tar.gz -C data
 
       - name: Run smaller suite of test cases
-        run : |
+        run: |
           pytest tests/test_smaller.py
 
       # - name: Run larger suite of test cases
