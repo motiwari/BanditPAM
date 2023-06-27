@@ -10,9 +10,9 @@ BanditPAM.egg-info/
 __pycache__
 banditpam.cpython*
 build/
-data/MNIST_*.csv
+data/MNIST*k.csv
 data/MNIST_CSV.csv
-data/data.csv
+data/data.csvga
 data/scrna*
 data/cifar*
 docs/html
