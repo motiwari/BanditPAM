@@ -11,9 +11,9 @@ __pycache__
 banditpam.cpython*
 build/
 data/MNIST_*.csv
-data/MNIST_CSV.csv
 data/data.csv
 data/scrna*
+data/*.py
 data/cifar*
 docs/html
 docs/latex
