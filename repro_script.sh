@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # 1. Install BanditPAM from the source
-#pip install -r requirements.txt
-pip uninstall -y banditpam
+pip install -r requirements.txt
 pip install -e .
 
 # 2. Install datasets if necessary
