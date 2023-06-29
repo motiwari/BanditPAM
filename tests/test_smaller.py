@@ -13,7 +13,6 @@ from constants import (
 )
 
 
-# TODO(@motiwari): Set seeds
 class SmallerTests(unittest.TestCase):
     small_mnist = pd.read_csv("data/MNIST_100.csv", header=None).to_numpy()
     mnist_70k = pd.read_csv("data/MNIST_70k.csv", sep=" ", header=None)
@@ -132,4 +131,5 @@ class SmallerTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    np.random.seed(0)
     unittest.main()

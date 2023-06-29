@@ -1,5 +1,6 @@
 import unittest
 import pandas as pd
+import numpy as np
 import time
 
 from banditpam import KMedoids
@@ -137,4 +138,5 @@ class LargerTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    np.random.seed(0)
     unittest.main()
