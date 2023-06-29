@@ -1,6 +1,8 @@
 name: MacOS - build wheels
 on: 
   push:
+    branches: # prevents running on tag push
+      - '**'
   pull_request:
   release:
     types:

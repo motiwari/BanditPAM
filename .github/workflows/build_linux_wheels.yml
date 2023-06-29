@@ -1,6 +1,8 @@
 name: Linux - build source distribution and wheels
 on:
   push:
+    branches: # prevents running on tag push
+      - '**'
   pull_request:
   release:
     types:

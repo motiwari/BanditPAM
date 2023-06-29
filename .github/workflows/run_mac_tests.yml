@@ -1,5 +1,9 @@
 name: MacOS - build package and run tests
-on: [push, pull_request]
+on:
+  push:
+    branches:  # prevents running on tag push
+      - '**'
+  pull_request:
 jobs:
   build:
     runs-on: macos-latest
