@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # 1. Install BanditPAM from the source
-pip install -r requirements.txt
-pip install -e .
+#pip install -r requirements.txt
+#pip install -e .
 
 # 2. Install datasets if necessary
 # MNIST
@@ -28,4 +28,4 @@ else
 fi
 
 # 3. Run the experiments
-python experiments/run_scaling_experiment.py
+#python experiments/run_scaling_experiment.py

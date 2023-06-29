@@ -86,9 +86,7 @@ class SmallerTests(unittest.TestCase):
         kmed_5 = KMedoids(n_medoids=5, algorithm="BanditPAM",)
         kmed_5.fit(self.small_mnist, "L2")
 
-        self.assertEqual(
-            sorted(kmed_5.build_medoids.tolist()), [16, 24, 32, 70, 87]
-        )
+        self.assertEqual(sorted(kmed_5.build_medoids.tolist()), [16, 24, 32, 70, 87])
         self.assertEqual(sorted(kmed_5.medoids.tolist()), [23, 30, 49, 70, 99])
 
         kmed_10 = KMedoids(n_medoids=10, algorithm="BanditPAM",)
@@ -99,8 +97,7 @@ class SmallerTests(unittest.TestCase):
             [16, 24, 32, 49, 70, 82, 87, 90, 94, 99],
         )
         self.assertEqual(
-            sorted(kmed_10.medoids.tolist()),
-            [16, 25, 31, 49, 63, 70, 82, 90, 94, 99],
+            sorted(kmed_10.medoids.tolist()), [16, 25, 31, 49, 63, 70, 82, 90, 94, 99],
         )
 
     def test_edge_cases(self):

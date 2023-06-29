@@ -3,9 +3,7 @@ import pandas as pd
 
 
 def print_results(kmed, runtime):
-    complexity_with_caching = (
-        kmed.getDistanceComputations(True) - kmed.cache_hits
-    )
+    complexity_with_caching = kmed.getDistanceComputations(True) - kmed.cache_hits
     print("-----Results-----")
     print("Algorithm:", kmed.algorithm)
     print("Final Medoids:", kmed.medoids)
@@ -18,12 +16,10 @@ def print_results(kmed, runtime):
     print("Cache Hits: {:,}".format(kmed.cache_hits))
     print("Cache Misses: {:,}".format(kmed.cache_misses))
     print(
-        "Total complexity (without misc):",
-        f"{kmed.getDistanceComputations(False):,}",
+        "Total complexity (without misc):", f"{kmed.getDistanceComputations(False):,}",
     )
     print(
-        "Total complexity (with misc):",
-        f"{kmed.getDistanceComputations(True):,}",
+        "Total complexity (with misc):", f"{kmed.getDistanceComputations(True):,}",
     )
     print(
         "Total complexity (with caching):", f"{complexity_with_caching:,}",
@@ -45,8 +41,7 @@ def store_results(kmed, runtime, log_dir, log_name, num_data, num_medoids):
         "cache_writes": kmed.cache_writes,
         "cache_hits": kmed.cache_hits,
         "cache_misses": kmed.cache_misses,
-        "average_swap_sample_complexity": kmed.swap_distance_computations
-        / kmed.steps,
+        "average_swap_sample_complexity": kmed.swap_distance_computations / kmed.steps,
         "total_complexity_without_misc": kmed.getDistanceComputations(False),
         "total_complexity_with_misc": kmed.getDistanceComputations(True),
         "total_complexity_with_caching": kmed.getDistanceComputations(True)
