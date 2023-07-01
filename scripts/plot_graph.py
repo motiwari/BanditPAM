@@ -7,6 +7,7 @@ import pandas as pd
 
 from constants import (
     MNIST,
+    SCRNA,
     # algorithms
     BANDITPAM_ORIGINAL_NO_CACHING,
     ALL_BANDITPAMS,
@@ -40,7 +41,11 @@ def translate_experiment_setting(dataset, setting):
 
 
 def get_x_label(x_axis, is_logspace_x):
-    x_label = "Dataset size ($n$)" if x_axis == NUM_DATA else "Number of medoids ($k$)"
+    x_label = (
+        "Dataset size ($n$)"
+        if x_axis == NUM_DATA
+        else "Number of medoids ($k$)"
+    )
     if is_logspace_x:
         x_label = f"ln({x_label})"
     return x_label
@@ -112,7 +117,8 @@ def get_titles(x_axis, y_axis, y_label, dataset, setting):
     else:
         x_title = "$n$"
     title = (
-        f"{y_title} vs. {x_title} " f"{translate_experiment_setting(dataset, setting)}"
+        f"{y_title} vs. {x_title} "
+        f"{translate_experiment_setting(dataset, setting)}"
     )
 
     return x_title, y_title, title
@@ -157,7 +163,9 @@ def create_scaling_plots(
             )
             log_dir = os.path.join(parent_dir, "logs", log_dir_name)
         else:
-            root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            root_dir = os.path.dirname(
+                os.path.dirname(os.path.abspath(__file__))
+            )
             log_dir = os.path.join(root_dir, "logs", dir_name)
 
         for dataset in datasets:
@@ -174,15 +182,20 @@ def create_scaling_plots(
                     for algorithm in ALL_BANDITPAMS:
                         algorithm_files = glob.glob(
                             os.path.join(
-                                log_dir, f"*{algorithm}*{dataset}*" f"{setting}*idx*",
+                                log_dir,
+                                f"*{algorithm}*{dataset}*" f"{setting}*idx*",
                             )
                         )
-                        algorithm_dfs = [pd.read_csv(file) for file in algorithm_files]
+                        algorithm_dfs = [
+                            pd.read_csv(file) for file in algorithm_files
+                        ]
                         data = pd.concat(algorithm_dfs)
 
                         # Calculate the mean of each row across the files
                         data_mean = data.groupby(data.index).mean()
-                        data_std = data.groupby(data.index).std() / np.sqrt(len(data))
+                        data_std = data.groupby(data.index).std() / np.sqrt(
+                            len(data)
+                        )
 
                         # Set x axis
                         x_label = get_x_label(x_axis, is_logspace_x)
@@ -202,16 +215,25 @@ def create_scaling_plots(
                         )
 
                         # Sort the (x, y) pairs by the ascending order of x
-                        x, y = zip(*sorted(zip(x, y), key=lambda pair: pair[0]))
+                        x, y = zip(
+                            *sorted(zip(x, y), key=lambda pair: pair[0])
+                        )
 
                         plt.scatter(
-                            x, y, color=ALG_TO_COLOR[algorithm], label=algorithm,
+                            x,
+                            y,
+                            color=ALG_TO_COLOR[algorithm],
+                            label=algorithm,
                         )
                         plt.plot(x, y, color=ALG_TO_COLOR[algorithm])
 
                         if include_error_bar:
                             plt.errorbar(
-                                x, y, yerr=np.abs(error), fmt=".", color="black",
+                                x,
+                                y,
+                                yerr=np.abs(error),
+                                fmt=".",
+                                color="black",
                             )
 
                         # Sort the legend entries (labels and handles)
@@ -234,10 +256,10 @@ def create_scaling_plots(
 
 if __name__ == "__main__":
     create_scaling_plots(
-        datasets=[MNIST],
+        datasets=[SCRNA],
         algorithms=[ALL_BANDITPAMS],
         x_axes=[NUM_DATA],
-        y_axes=[SAMPLE_COMPLEXITY, RUNTIME],
+        y_axes=[SAMPLE_COMPLEXITY, RUNTIME, LOSS],
         is_logspace_y=False,
         dir_name="scaling_with_n",
         include_error_bar=True,

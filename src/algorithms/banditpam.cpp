@@ -251,7 +251,7 @@ namespace km {
                 arma::sqrt(adjust / numSamples.cols(targets));
         ucbs.cols(targets) = estimates.cols(targets) + confBoundDelta;
         lcbs.cols(targets) = estimates.cols(targets) - confBoundDelta;
-        candidates = (lcbs < ucbs.min()) && (exactMask == 0);
+        candidates = (lcbs <= ucbs.min()) && (exactMask == 0);
       }
 
       medoidIndices->at(k) = lcbs.index_min();

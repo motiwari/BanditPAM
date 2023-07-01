@@ -38,7 +38,7 @@ def get_num_data_list(dataset):
     if dataset == MNIST:
         num_data = 70000
     else:
-        num_data = 40000
+        num_data = 30000
 
     return np.linspace(10000, num_data, 4, dtype=int)
 
@@ -67,15 +67,15 @@ def run_scaling_experiment_with_n():
         loss = get_loss_function(dataset)
         num_data_list = get_num_data_list(dataset)
         for n_medoids in [5]:
-            np.random.seed(0)
+            np.random.seed(1)
             scaling_experiment_with_n(
                 dataset_name=dataset,
                 loss=loss,
                 algorithms=ALL_BANDITPAMS,
                 n_medoids=n_medoids,
                 num_data_list=num_data_list,
-                dirname="scaling_with_n",
-                num_experiments=10,
+                dirname="scrna",
+                num_experiments=3,
             )
 
 

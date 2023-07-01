@@ -29,8 +29,12 @@ def read_dataset(dataset_name):
         delimiter = None
 
     dataset = pd.read_csv(
-        os.path.join("data", f"{filename}.csv"), delimiter=delimiter, header=None,
+        os.path.join("data", f"{filename}.csv"),
+        delimiter=delimiter,
+        header=None,
     ).to_numpy()
+
+    print(dataset.shape)
     return dataset
 
 
@@ -86,7 +90,9 @@ def scaling_experiment_with_k(
                     print_results(kmed, runtime)
 
                 if save_logs:
-                    store_results(kmed, runtime, log_dir, log_name, num_data, n_medoids)
+                    store_results(
+                        kmed, runtime, log_dir, log_name, num_data, n_medoids
+                    )
 
 
 def scaling_experiment_with_n(
@@ -126,7 +132,7 @@ def scaling_experiment_with_n(
 
     print("Running sampling complexity experiment with n on ", dataset_name)
 
-    for experiment_index in range(num_experiments):
+    for experiment_index in range(2, num_experiments + 2):
         print("\n\nExperiment: ", experiment_index)
         for num_data in num_data_list:
             print("\nNum data: ", num_data)
@@ -149,4 +155,6 @@ def scaling_experiment_with_n(
                     print_results(kmed, runtime)
 
                 if save_logs:
-                    store_results(kmed, runtime, log_dir, log_name, num_data, n_medoids)
+                    store_results(
+                        kmed, runtime, log_dir, log_name, num_data, n_medoids
+                    )
