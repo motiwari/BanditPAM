@@ -83,15 +83,19 @@ class SmallerTests(unittest.TestCase):
         Test BanditPAM on a subset of MNIST with known solutions for both k = 5
         and k = 10, after both the BUILD and SWAP steps.
         """
-        kmed_5 = KMedoids(n_medoids=5, algorithm="BanditPAM",)
+        kmed_5 = KMedoids(
+            n_medoids=5,
+            algorithm="BanditPAM",
+        )
         kmed_5.fit(self.small_mnist, "L2")
 
-        self.assertEqual(
-            sorted(kmed_5.build_medoids.tolist()), [16, 24, 32, 70, 87]
-        )
+        self.assertEqual(sorted(kmed_5.build_medoids.tolist()), [16, 24, 32, 70, 87])
         self.assertEqual(sorted(kmed_5.medoids.tolist()), [23, 30, 49, 70, 99])
 
-        kmed_10 = KMedoids(n_medoids=10, algorithm="BanditPAM",)
+        kmed_10 = KMedoids(
+            n_medoids=10,
+            algorithm="BanditPAM",
+        )
         kmed_10.fit(self.small_mnist, "L2")
 
         self.assertEqual(

@@ -76,7 +76,7 @@ class LargerTests(unittest.TestCase):
             # TODO(@motiwari): Timing test will not work
             # need to compute it over number of steps
             self.assertTrue(
-                runtime < (size_multiplier ** SCALING_EXPONENT) * base_runtime
+                runtime < (size_multiplier**SCALING_EXPONENT) * base_runtime
             )
 
     def test_medium_scrna(self):
@@ -136,7 +136,7 @@ class LargerTests(unittest.TestCase):
             # TODO(@motiwari): Timing test will not work
             # need to compute it over number of steps
             self.assertTrue(
-                runtime < (size_multiplier ** SCALING_EXPONENT) * base_runtime
+                runtime < (size_multiplier**SCALING_EXPONENT) * base_runtime
             )
 
 

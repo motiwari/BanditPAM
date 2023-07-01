@@ -51,9 +51,7 @@ def compiler_check():
     """
     try:
         return (
-            "clang"
-            if "clang" in distutils.sysconfig.get_config_vars()["CC"]
-            else "gcc"
+            "clang" if "clang" in distutils.sysconfig.get_config_vars()["CC"] else "gcc"
         )
     except KeyError:
         # The 'CC' environment variable hasn't been set.
@@ -67,8 +65,7 @@ def compiler_check():
             return "gcc"
 
     raise Exception(
-        "No C++ compiler was found. Please ensure you have "
-        "MSVC, LLVM clang, or GCC."
+        "No C++ compiler was found. Please ensure you have " "MSVC, LLVM clang, or GCC."
     )
 
 
@@ -189,7 +186,9 @@ def check_armadillo_install_linux():
     # Since armadillo is a C++ extension, just check if it exists
     cmd = ["find", "/", "-iname", "armadillo"]
     process = subprocess.Popen(
-        cmd, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
     )
     output, _error = process.communicate()
     if output.decode() == "":
@@ -266,13 +265,14 @@ def setup_colab(delete_source=False):
         repo_location = os.path.join("/", "content", "BanditPAM")
         # Note the space after the git URL to separate the source and target
         os.system(
-            "git clone https://github.com/motiwari/BanditPAM.git "
-            + repo_location
+            "git clone https://github.com/motiwari/BanditPAM.git " + repo_location
         )
         os.system(
             repo_location
             + os.path.join(
-                "scripts", "colab_files", "colab_install_armadillo.sh",
+                "scripts",
+                "colab_files",
+                "colab_install_armadillo.sh",
             )
         )
         if delete_source:
@@ -453,9 +453,7 @@ def main():
             # To include carma when the BanditPAM repo hasnt been initialized
             os.path.join("/", "usr", "local", "include"),
             os.path.join("/", "usr", "local", "include", "carma"),
-            os.path.join(
-                "/", "usr", "local", "include", "carma", "carma_bits"
-            ),
+            os.path.join("/", "usr", "local", "include", "carma", "carma_bits"),
             # When building from source on M1 Macs, may need these dirs
             # Currently, we should never be building from source on an M1 Mac,
             # Only cross-compiling from an Intel Mac
@@ -466,9 +464,7 @@ def main():
             os.path.join("/", "opt", "homebrew", "lib"),
             os.path.join("/", "opt", "homebrew", "opt"),
             os.path.join("/", "opt", "homebrew", "opt", "armadillo"),
-            os.path.join(
-                "/", "opt", "homebrew", "opt", "armadillo", "include"
-            ),
+            os.path.join("/", "opt", "homebrew", "opt", "armadillo", "include"),
             os.path.join(
                 "/",
                 "opt",
@@ -480,13 +476,9 @@ def main():
             ),
             # Needed for Mac Github Runners
             # for macos-10.15
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.2", "include"
-            ),
+            os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.2", "include"),
             # for macos-latest
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.7", "include"
-            ),
+            os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.7", "include"),
         ]
     elif sys.platform == "win32":  # WIN32
         include_dirs = [
@@ -529,12 +521,8 @@ def main():
         ]  # TODO(@motiwari): Modify this based on gcc or clang
         library_dirs = [
             os.path.join("/", "usr", "local", "lib"),
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.2", "lib"
-            ),
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.7", "lib"
-            ),
+            os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.2", "lib"),
+            os.path.join("/", "usr", "local", "Cellar", "libomp", "15.0.7", "lib"),
         ]
         if sys.platform == "darwin" and platform.processor() == "arm":  # M1
             library_dirs.append(
@@ -553,21 +541,15 @@ def main():
                 os.path.join("src", "algorithms", "banditpam.cpp"),
                 os.path.join("src", "algorithms", "banditpam_orig.cpp"),
                 os.path.join("src", "algorithms", "fastpam1.cpp"),
-                os.path.join(
-                    "src", "python_bindings", "kmedoids_pywrapper.cpp"
-                ),
+                os.path.join("src", "python_bindings", "kmedoids_pywrapper.cpp"),
                 os.path.join("src", "python_bindings", "medoids_python.cpp"),
-                os.path.join(
-                    "src", "python_bindings", "build_medoids_python.cpp"
-                ),
+                os.path.join("src", "python_bindings", "build_medoids_python.cpp"),
                 os.path.join("src", "python_bindings", "fit_python.cpp"),
                 os.path.join("src", "python_bindings", "labels_python.cpp"),
                 os.path.join("src", "python_bindings", "steps_python.cpp"),
                 os.path.join("src", "python_bindings", "loss_python.cpp"),
                 os.path.join("src", "python_bindings", "cache_python.cpp"),
-                os.path.join(
-                    "src", "python_bindings", "swap_times_python.cpp"
-                ),
+                os.path.join("src", "python_bindings", "swap_times_python.cpp"),
             ],
             include_dirs=include_dirs,
             library_dirs=library_dirs,
@@ -589,8 +571,7 @@ def main():
                 [
                     os.path.join(
                         os.getcwd(),
-                        r"headers\armadillo\examples\lib_win64"
-                        + r"\libopenblas.dll",
+                        r"headers\armadillo\examples\lib_win64" + r"\libopenblas.dll",
                     )
                 ],
             )
@@ -622,9 +603,7 @@ def main():
             os.path.join("headers", "algorithms", "banditpam.hpp"),
             os.path.join("headers", "algorithms", "fastpam1.hpp"),
             os.path.join("headers", "algorithms", "pam.hpp"),
-            os.path.join(
-                "headers", "python_bindings", "kmedoids_pywrapper.hpp"
-            ),
+            os.path.join("headers", "python_bindings", "kmedoids_pywrapper.hpp"),
         ],
     )
 

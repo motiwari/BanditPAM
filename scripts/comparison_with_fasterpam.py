@@ -23,11 +23,7 @@ def benchmark(data, f, n=1):
         v = np.array(v)
         min, avg = v.min(), v.mean()
         ste = v.std(ddof=1) / np.sqrt(len(v)) if len(v) > 1 else 0.0
-        print(
-            "{:16s} min={:-10.2f} mean={:-10.2f} ±{:-.2f}".format(
-                k, min, avg, ste
-            )
-        )
+        print("{:16s} min={:-10.2f} mean={:-10.2f} ±{:-.2f}".format(k, min, avg, ste))
 
 
 def run_fasterpam(data, seed):
@@ -87,7 +83,10 @@ def run_old_bandit(data, seed):
 
 if __name__ == "__main__":
     X, _ = fetch_openml(
-        "mnist_784", version=1, return_X_y=True, as_frame=False,
+        "mnist_784",
+        version=1,
+        return_X_y=True,
+        as_frame=False,
     )
     X = X[:20000]  # at 20k, colab will timeout for BanditPAM
     print(X.shape, type(X))

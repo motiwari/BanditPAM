@@ -8,7 +8,9 @@ from tests.constants import MILLISECONDS_IN_A_SECOND
 
 
 def time_measured_fit(
-    kmed: KMedoids, X: np.array, loss: str = "L2",
+    kmed: KMedoids,
+    X: np.array,
+    loss: str = "L2",
 ):
     start = time.time()
     kmed.fit(X, loss)
@@ -17,7 +19,10 @@ def time_measured_fit(
 
 
 def get_cache_statistics(
-    kmed: KMedoids, X: np.array, loss: str = "L2", cache_width: int = 1000,
+    kmed: KMedoids,
+    X: np.array,
+    loss: str = "L2",
+    cache_width: int = 1000,
 ):
     kmed.cache_width = cache_width
     time = time_measured_fit(kmed, X, loss)
@@ -95,9 +100,7 @@ def main():
         assert width_250 == 250, "Cache width should be 250 when set to 250"
         assert width_500 == 500, "Cache width should be 500 when set to 500"
         assert width_750 == 750, "Cache width should be 750 when set to 750"
-        assert width_1000 == 1000, (
-            "Cache width should be 1000 when set to " "1000"
-        )
+        assert width_1000 == 1000, "Cache width should be 1000 when set to " "1000"
 
     def test_parallelization():
         X = np.loadtxt(os.path.join("data", "MNIST_10k.csv"))
@@ -180,7 +183,10 @@ def main():
             bpam_orig_hits,
             bpam_orig_misses,
         ) = get_cache_statistics(
-            kmed=kmed_orig, X=X, loss="L2", cache_width=1000,
+            kmed=kmed_orig,
+            X=X,
+            loss="L2",
+            cache_width=1000,
         )
 
         print(bpam_time, bpam_orig_time)

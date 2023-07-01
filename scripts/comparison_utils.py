@@ -1,7 +1,5 @@
 def print_results(kmed, runtime):
-    complexity_with_caching = (
-        kmed.getDistanceComputations(True) - kmed.cache_hits
-    )
+    complexity_with_caching = kmed.getDistanceComputations(True) - kmed.cache_hits
     print("-----Results-----")
     print("Algorithm:", kmed.algorithm)
     print("Final Medoids:", kmed.medoids)
@@ -22,7 +20,8 @@ def print_results(kmed, runtime):
         f"{kmed.getDistanceComputations(True):,}",
     )
     print(
-        "Total complexity (with caching):", f"{complexity_with_caching:,}",
+        "Total complexity (with caching):",
+        f"{complexity_with_caching:,}",
     )
     # print("Runtime per swap:", runtime / kmed.steps)
     print("Total runtime:", runtime)
