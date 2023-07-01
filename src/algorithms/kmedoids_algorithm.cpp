@@ -404,7 +404,6 @@ namespace km {
         numCacheWrites++;
         cache[(m * i) + reindex[j]] = (this->*lossFn)(data, i, j);
       } else {
-        // cache hit!
         numCacheHits++;
       }
       return cache[m * i + reindex[j]];
