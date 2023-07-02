@@ -44,7 +44,7 @@ namespace km {
     pybind11::arg("n_medoids") = 5,
     pybind11::arg("algorithm") = "BanditPAM",
     pybind11::arg("max_iter") = 100,
-    pybind11::arg("build_confidence") = 3,
+    pybind11::arg("build_confidence") = 10,  // 100 resolves tests/test_larger.py stochasticity issues
     pybind11::arg("swap_confidence") = 5,
     // TODO(@motiwari): Verify these options are re-used correctly on reset
     pybind11::arg("use_cache") = true,

@@ -86,6 +86,7 @@ class SmallerTests(unittest.TestCase):
             n_medoids=5,
             algorithm="BanditPAM",
         )
+        kmed_5.seed = 0
         kmed_5.fit(self.small_mnist, "L2")
 
         self.assertEqual(sorted(kmed_5.build_medoids.tolist()), [16, 24, 32, 70, 87])
@@ -95,6 +96,7 @@ class SmallerTests(unittest.TestCase):
             n_medoids=10,
             algorithm="BanditPAM",
         )
+        kmed_10.seed = 0
         kmed_10.fit(self.small_mnist, "L2")
 
         self.assertEqual(
@@ -112,6 +114,7 @@ class SmallerTests(unittest.TestCase):
         empty dataset.
         """
         kmed = KMedoids()
+        kmed.seed = 0
 
         # initialized to empty
         self.assertEqual([], kmed.build_medoids[0].tolist())
