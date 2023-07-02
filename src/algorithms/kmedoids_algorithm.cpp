@@ -402,10 +402,13 @@ namespace km {
       // T1 begins to write to cache and then T2
       // access in the middle of write?
       if (cache[(m * i) + reindex[j]] == -1) {
+        // cache miss! calculate the distance and cache it.
+        numCacheMisses++;
         numCacheWrites++;
         cache[(m * i) + reindex[j]] = (this->*lossFn)(data, i, j);
+      } else {
+        numCacheHits++;
       }
-      numCacheHits++;
       return cache[m * i + reindex[j]];
     }
 

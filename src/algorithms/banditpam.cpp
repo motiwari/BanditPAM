@@ -69,6 +69,10 @@ namespace km {
           const arma::frowvec &bestDistances,
           const bool useAbsolute) {
     size_t N = data.n_cols;
+    // Temporarily increase the batch size
+    // for precise estimation of the standard deviation
+    int originalBatchSize = batchSize;
+    batchSize = std::min(1000, static_cast<int>(N/4));
     arma::uvec referencePoints;
     // TODO(@motiwari): Make this wraparound properly as
     //  last batch_size elements are dropped
@@ -104,6 +108,9 @@ namespace km {
       }
       updated_sigma(i) = arma::stddev(sample);
     }
+    // reset batchSize the original batch size as it's a global variable
+    // used by other functions (e.g. buildTarget, swapTarget)
+    batchSize = originalBatchSize;
     return updated_sigma;
   }
 
@@ -179,6 +186,7 @@ namespace km {
     arma::frowvec ucbs(N);
     arma::frowvec numSamples(N, arma::fill::zeros);
     arma::frowvec exactMask(N, arma::fill::zeros);
+    float minSigma = 0.001;
 
     // TODO(@motiwari): #pragma omp parallel for if (this->parallelize)?
     for (size_t k = 0; k < nMedoids; k++) {
@@ -190,6 +198,15 @@ namespace km {
       estimates.fill(0);
       // compute std dev amongst batch of reference points
       sigma = buildSigma(data, distMat, bestDistances, useAbsolute);
+
+      // Replace the zero entries in sigma with the minimum non-zero
+      // sigma value. Otherwise, some candidates could have
+      // a 0 confidence interval.
+      // This step prevents the overestimated candidates from
+      // discarding underestimated candidates,
+      // which could lead to suboptimal results.
+      minSigma = arma::min(arma::nonzeros(sigma));
+      sigma.elem(arma::find(sigma == 0.0)).fill(minSigma);
 
       while (arma::sum(candidates) > precision) {
         // TODO(@motiwari): Do not need a matrix for this comparison,
@@ -271,6 +288,10 @@ namespace km {
     size_t N = data.n_cols;
     size_t K = nMedoids;
     arma::fmat updated_sigma(K, N, arma::fill::zeros);
+    // temporarily increase the batch size for precise estimation
+    // of the std dev
+    int originalBatchSize = batchSize;
+    batchSize = std::min(1000, static_cast<int>(N/4));
     arma::uvec referencePoints;
     // TODO(@motiwari): Make this wraparound properly
     //  as last batch_size elements are dropped
@@ -319,6 +340,9 @@ namespace km {
       }
       updated_sigma(k, n) = arma::stddev(sample);
     }
+    // reset batchSize the original batch size as it's a global variable
+    // used by other functions (e.g. buildTarget, swapTarget)
+    batchSize = originalBatchSize;
     return updated_sigma;
   }
 
@@ -431,6 +455,7 @@ namespace km {
     arma::fmat lcbs(nMedoids, N);
     arma::fmat ucbs(nMedoids, N);
     arma::umat numSamples(nMedoids, N, arma::fill::zeros);
+    float minSigma = 0.001;
 
     // calculate quantities needed for swap, bestDistances and sigma
     calcBestDistancesSwap(
@@ -453,6 +478,10 @@ namespace km {
                 &bestDistances,
                 &secondBestDistances,
                 assignments);
+
+        // Fill in the zero sigma entries with the non-zero minimum sigma value
+        minSigma = arma::min(arma::nonzeros(sigma));
+        sigma.elem(arma::find(sigma == 0.0)).fill(minSigma);
 
         // Reset variables when starting a new swap
         candidates.fill(1);
@@ -496,7 +525,7 @@ namespace km {
             lcbs.cols(compute_exactly_targets) = result;
             exactMask.cols(compute_exactly_targets).fill(1);
             numSamples.cols(compute_exactly_targets) += N;
-            candidates = (lcbs < ucbs.min()) && (exactMask == 0);
+            candidates = (lcbs <= ucbs.min()) && (exactMask == 0);
           }
           if (arma::accu(candidates) < precision) {
             break;
@@ -544,7 +573,7 @@ namespace km {
           lcbs.cols(candidate_targets) = estimates.cols(candidate_targets)
                                          - confBoundDelta;
 
-          candidates = (lcbs < ucbs.min()) && (exactMask == 0);
+          candidates = (lcbs <= ucbs.min()) && (exactMask == 0);
       }
 
       // Perform the medoid switch
