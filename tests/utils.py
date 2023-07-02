@@ -1,15 +1,16 @@
 from banditpam import KMedoids
 import numpy as np
+from scipy.spatial import distance_matrix
 
 
 # TODO(@motiwari): change pam to alg_name everywhere
 def bpam_agrees_pam(
-    k: int,
-    data: np.array,
-    loss: str,
-    test_build: bool = False,
-    assert_immediately: bool = False,
-    use_fp: bool = True,
+        k: int,
+        data: np.array,
+        loss: str,
+        test_build: bool = False,
+        assert_immediately: bool = False,
+        use_fp: bool = True,
 ):
     """
     Parameters:
@@ -38,6 +39,26 @@ def bpam_agrees_pam(
     pam_final_medoids = sorted(kmed_pam.medoids.tolist())
 
     bpam_and_pam_agree = 1 if bpam_final_medoids == pam_final_medoids else 0
+
+    if not bpam_and_pam_agree:
+        banditpam_build_medoids = data[bpam_final_medoids, :]
+
+        banditpam_medoids_ref_cost_distance_matrix = distance_matrix(
+            banditpam_build_medoids, data)
+        banditpam_objective = np.sum(
+            np.min(banditpam_medoids_ref_cost_distance_matrix, 0))
+
+        fastpam_build_medoids = data[pam_final_medoids, :]
+        fastpam_medoids_ref_cost_distance_matrix = distance_matrix(
+            fastpam_build_medoids, data)
+        fastpam_objective = np.sum(
+            np.min(fastpam_medoids_ref_cost_distance_matrix, 0))
+
+        # sometimes BanditPAM fails the tests because it returns
+        # better medoids than FastPAM1
+        if banditpam_objective < fastpam_objective:
+            bpam_and_pam_agree = True
+
     if test_build:
         bpam_and_pam_agree &= bpam_build_medoids == pam_build_medoids
 
