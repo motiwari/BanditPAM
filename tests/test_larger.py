@@ -20,8 +20,8 @@ from constants import (
 
 
 class LargerTests(unittest.TestCase):
-    mnist_70k = pd.read_csv("data/MNIST_70k.csv", sep=" ", header=None)
-    scrna = pd.read_csv("data/scrna_reformat.csv.gz", header=None)
+    mnist_70k = pd.read_csv("../data/MNIST_70k.csv", sep=" ", header=None)
+    scrna = pd.read_csv("../data/scrna_reformat.csv.gz", header=None)
 
     def test_medium_mnist(self):
         """

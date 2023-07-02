@@ -28,7 +28,8 @@ def bpam_agrees_pam(
     alg_name = "FastPAM1" if use_fp else "PAM"
 
     kmed_bpam = KMedoids(n_medoids=k, algorithm="BanditPAM")
-    kmed_pam = KMedoids(n_medoids=k, algorithm=alg_name)
+    kmed_pam = KMedoids(n_medoids=k, algorithm=alg_name,
+                        build_confidence=80, swap_confidence=80)
     kmed_bpam.fit(data, loss)
     kmed_pam.fit(data, loss)
 
