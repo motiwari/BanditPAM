@@ -26,7 +26,7 @@ def read_dataset(dataset_name):
         delimiter = ","
     else:
         filename = "scrna_reformat"
-        delimiter = None
+        delimiter = ","
 
     dataset = pd.read_csv(
         os.path.join("data", f"{filename}.csv"),
@@ -132,7 +132,7 @@ def scaling_experiment_with_n(
 
     print("Running sampling complexity experiment with n on ", dataset_name)
 
-    for experiment_index in range(2, num_experiments + 2):
+    for experiment_index in range(num_experiments):
         print("\n\nExperiment: ", experiment_index)
         for num_data in num_data_list:
             print("\nNum data: ", num_data)
@@ -148,7 +148,8 @@ def scaling_experiment_with_n(
                 )
                 print(log_name)
                 kmed, runtime = run_banditpam(
-                    algorithm, data, n_medoids, loss, cache_width, parallelize
+                    algorithm, data, n_medoids, loss, cache_width, parallelize,
+                    build_confidence=10, swap_confidence=10,
                 )
 
                 if verbose:

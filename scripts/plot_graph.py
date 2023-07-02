@@ -8,6 +8,7 @@ import pandas as pd
 from constants import (
     MNIST,
     SCRNA,
+    CIFAR,
     # algorithms
     BANDITPAM_ORIGINAL_NO_CACHING,
     ALL_BANDITPAMS,
@@ -256,20 +257,11 @@ def create_scaling_plots(
 
 if __name__ == "__main__":
     create_scaling_plots(
-        datasets=[SCRNA],
+        datasets=[CIFAR],
         algorithms=[ALL_BANDITPAMS],
         x_axes=[NUM_DATA],
         y_axes=[SAMPLE_COMPLEXITY, RUNTIME, LOSS],
         is_logspace_y=False,
-        dir_name="scaling_with_n",
+        dir_name="cifar",
         include_error_bar=True,
-    )
-    create_scaling_plots(
-        datasets=[MNIST],
-        algorithms=[ALL_BANDITPAMS],
-        x_axes=[NUM_DATA],
-        y_axes=[LOSS],
-        is_logspace_y=False,
-        dir_name="scaling_with_n",
-        include_error_bar=False,
     )

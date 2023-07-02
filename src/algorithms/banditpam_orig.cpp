@@ -69,7 +69,9 @@ namespace km {
           const arma::frowvec &bestDistances,
           const bool useAbsolute) {
     size_t N = data.n_cols;
-    // Increase the batch size for precise estimation of the std dev
+    // temporarily increase the batch size for precise estimation
+    // of the std dev
+    int originalBatchSize = batchSize;
     batchSize = std::min(1000, static_cast<int>(N/4));
     arma::uvec referencePoints;
     // TODO(@motiwari): Make this wraparound properly as
@@ -106,7 +108,9 @@ namespace km {
       }
       updated_sigma(i) = arma::stddev(sample);
     }
-    batchSize = 100;
+    // reset batchSize the original batch size as it's a global variable
+    // used by other functions (e.g. buildTarget, swapTarget)
+    batchSize = originalBatchSize;
     return updated_sigma;
   }
 
@@ -182,7 +186,7 @@ namespace km {
     arma::frowvec ucbs(N);
     arma::frowvec numSamples(N, arma::fill::zeros);
     arma::frowvec exactMask(N, arma::fill::zeros);
-    float sigmaMinNonZero;
+    float minSigma = 0.001;
 
     // TODO(@motiwari): #pragma omp parallel for if (this->parallelize)?
     for (size_t k = 0; k < nMedoids; k++) {
@@ -201,8 +205,8 @@ namespace km {
       // This step prevents the overestimated candidates from
       // discarding underestimated candidates,
       // which could lead to suboptimal results.
-      sigmaMinNonZero = arma::min(arma::nonzeros(sigma));
-      sigma.elem(arma::find(sigma == 0.0)).fill(sigmaMinNonZero);
+      minSigma = arma::min(arma::nonzeros(sigma));
+      sigma.elem(arma::find(sigma == 0.0)).fill(minSigma);
 
       while (arma::sum(candidates) > precision) {
         // TODO(@motiwari): Do not need a matrix for this comparison,
@@ -284,7 +288,9 @@ namespace km {
     size_t N = data.n_cols;
     size_t K = nMedoids;
     arma::fmat updated_sigma(K, N, arma::fill::zeros);
-    // Increase the batch size for precise estimation of the std dev
+    // temporarily increase the batch size for precise estimation
+    // of the std dev
+    int originalBatchSize = batchSize;
     batchSize = std::min(1000, static_cast<int>(N/4));
     arma::uvec referencePoints;
     // TODO(@motiwari): Make this wraparound properly
@@ -334,7 +340,9 @@ namespace km {
       }
       updated_sigma(k, n) = arma::stddev(sample);
     }
-    batchSize = 100;
+    // reset batchSize the original batch size as it's a global variable
+    // used by other functions (e.g. buildTarget, swapTarget)
+    batchSize = originalBatchSize;
     return updated_sigma;
   }
 
@@ -427,7 +435,7 @@ namespace km {
     arma::fmat lcbs(nMedoids, N);
     arma::fmat ucbs(nMedoids, N);
     arma::umat numSamples(nMedoids, N, arma::fill::zeros);
-    float sigmaMinNonZero;
+    float minSigma = 0.001;
 
     // calculate quantities needed for swap, bestDistances and sigma
     calcBestDistancesSwap(
@@ -452,8 +460,8 @@ namespace km {
               assignments);
 
       // Fill in the zero sigma entries with the non-zero minimum sigma value
-      sigmaMinNonZero = arma::min(arma::nonzeros(sigma));
-      sigma.elem(arma::find(sigma == 0.0)).fill(sigmaMinNonZero);
+      minSigma = arma::min(arma::nonzeros(sigma));
+      sigma.elem(arma::find(sigma == 0.0)).fill(minSigma);
 
       // Reset variables when starting a new swap
       candidates.fill(1);
