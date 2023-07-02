@@ -9,6 +9,7 @@
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
+#include <cassert>
 
 #include "kmedoids_algorithm.hpp"
 #include "fastpam1.hpp"
@@ -80,8 +81,10 @@ namespace km {
       //  that is properly raised
       throw std::invalid_argument("Dataset is empty");
     }
-    // TODO(@Adarsh321123): assert that the number of medoids is >=
-    //  than the number of points
+
+    assert(("Number of medoids should be less than the number of data points",
+            nMedoids < inputData.n_rows));
+
     batchSize = fmin(inputData.n_rows, batchSize);
 
     try {

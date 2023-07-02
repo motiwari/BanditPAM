@@ -1,5 +1,9 @@
 name: Linux - build package and run tests
-on: [push, pull_request]
+on:
+  push:
+    branches:  # prevents running on tag push
+      - '**'
+  pull_request:
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -72,6 +76,10 @@ jobs:
       - name: Run smaller suite of test cases
         run : |
           pytest tests/test_smaller.py 
+
+      - name: Run tests cases for initialization
+        run : |
+          pytest tests/test_initialization.py 
 
       # - name: Run larger suite of test cases
       #   run : |
