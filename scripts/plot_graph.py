@@ -28,15 +28,21 @@ def extract_algorithm_from_filename(filename):
             return algorithm
 
 
-def translate_experiment_setting(dataset, setting):
+def translate_experiment_setting(dataset, setting, num_seeds):
     """
     Translate a setting into a human-readable format For example, "k5" becomes
     "Num medoids: 5".
     """
     if "k" in setting:
-        return f"({dataset}, ${setting[0]}={setting[1:]}$)"
+        return (
+            f"({dataset}, ${setting[0]}={setting[1:]}$, Seeds ="
+            f" {num_seeds})"
+        )
     elif "n" in setting:
-        return f"({dataset}, ${setting[0]}={setting[1:]}$)"
+        return (
+            f"({dataset}, ${setting[0]}={setting[1:]}$, Seeds "
+            f"= {num_seeds})"
+        )
     else:
         assert False, "Invalid setting"
 
@@ -95,11 +101,11 @@ def get_y_and_error(
         y /= baseline_losses
         error = data_std[y_axis].tolist()
     elif y_axis is SAMPLE_COMPLEXITY:
-        y = data_mean["total_complexity_with_caching"].tolist()
-        error = data_std["total_complexity_with_caching"].tolist()
+        y = data_mean["average_complexity_with_caching"].tolist()
+        error = data_std["average_complexity_with_caching"].tolist()
     else:
-        y = data_mean["total_runtime"].tolist()
-        error = data_std["total_runtime"].tolist()
+        y = data_mean["average_runtime"].tolist()
+        error = data_std["average_runtime"].tolist()
 
     if is_logspace_y:
         y = np.log(y)
@@ -108,7 +114,7 @@ def get_y_and_error(
     return y, error, baseline_losses
 
 
-def get_titles(x_axis, y_axis, y_label, dataset, setting):
+def get_titles(x_axis, y_axis, y_label, dataset, setting, num_seeds):
     if y_axis == LOSS:
         y_title = "$L/L_{BanditPAM}$"
     else:
@@ -119,7 +125,7 @@ def get_titles(x_axis, y_axis, y_label, dataset, setting):
         x_title = "$n$"
     title = (
         f"{y_title} vs. {x_title} "
-        f"{translate_experiment_setting(dataset, setting)}"
+        f"{translate_experiment_setting(dataset, setting, num_seeds)}"
     )
 
     return x_title, y_title, title
@@ -187,6 +193,7 @@ def create_scaling_plots(
                                 f"*{algorithm}*{dataset}*" f"{setting}*idx*",
                             )
                         )
+                        num_seeds = len(algorithm_files)
                         algorithm_dfs = [
                             pd.read_csv(file) for file in algorithm_files
                         ]
@@ -246,7 +253,12 @@ def create_scaling_plots(
                         plt.legend(handles, labels, loc="upper left")
 
                         x_title, y_title, title = get_titles(
-                            x_axis, y_axis, y_label, dataset, setting
+                            x_axis,
+                            y_axis,
+                            y_label,
+                            dataset,
+                            setting,
+                            num_seeds,
                         )
                         plt.title(title)
                         plt.xlabel(x_label)
@@ -262,6 +274,6 @@ if __name__ == "__main__":
         x_axes=[NUM_DATA],
         y_axes=[SAMPLE_COMPLEXITY, RUNTIME, LOSS],
         is_logspace_y=False,
-        dir_name="scaling_with_n",
+        dir_name="scrna",
         include_error_bar=True,
     )

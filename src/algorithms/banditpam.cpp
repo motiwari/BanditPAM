@@ -11,12 +11,15 @@
 #include <unordered_map>
 #include <cmath>
 #include <vector>
+#include <iostream>
 
 namespace km {
   void BanditPAM::fitBanditPAM(
           const arma::fmat &inputData,
           std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
     data = arma::trans(inputData);
+
+    arma::arma_rng::set_seed(0);
 
     // Note: even if we are using a distance matrix, we compute the permutation
     // in the block below because it is used elsewhere in the call stack
@@ -595,6 +598,15 @@ namespace km {
               &secondBestDistances,
               assignments,
               swapPerformed);
+
+       std::cout << "Medoids: ";
+       arma::uword numElements = medoidIndices->n_elem;
+        for (arma::uword i = 0; i < numElements; i++) {
+        std::cout << (*medoidIndices)(i) << " ";
+        }
+        std::cout << std::endl;
+
+      std::cout << "SwapPerformed: " << swapPerformed << std::endl;
     }
   }
 }  // namespace km
