@@ -82,6 +82,6 @@ jobs:
         run : |
           pytest tests/test_initialization.py 
 
-      # - name: Run larger suite of test cases
-      #   run : |
-      #     pytest tests/test_larger.py
+      - name: Run larger suite of test cases
+        run : |
+          pytest tests/test_larger.py
