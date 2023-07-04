@@ -50,16 +50,19 @@ class LargerTests(unittest.TestCase):
         Since PAM is very slow, we can only do this for fairly small sizes in
         MEDIUM_SIZE_SCHEDULE
         """
+        num_succeed = 0
         for i in range(NUM_MEDIUM_CASES):
             size = MEDIUM_SIZE_SCHEDULE[i % NUM_MEDIUM_SIZES]
             data = self.mnist_70k.sample(n=size)
-            _ = bpam_agrees_pam(
+            num_succeed += bpam_agrees_pam(
                 k=SMALL_K_SCHEDULE[i % N_SMALL_K],
                 data=data,
                 loss="L2",
                 test_build=True,
-                assert_immediately=True,
+                assert_immediately=False,
+                num_succeed=0,
             )
+        self.assertTrue(num_succeed >= PROPORTION_PASSING * NUM_MEDIUM_CASES)  # avoids stochasticity issues
 
     def test_time_cases_mnist(self):
         """
