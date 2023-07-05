@@ -108,7 +108,7 @@ namespace km {
       }
       updated_sigma(i) = arma::stddev(sample);
     }
-    // reset batchSize the original batch size as it's a global variable
+    // reset batchSize to the original batch size as it's a global variable
     // used by other functions (e.g. buildTarget, swapTarget)
     batchSize = originalBatchSize;
     return updated_sigma;
@@ -255,7 +255,7 @@ namespace km {
                 arma::sqrt(adjust / numSamples.cols(targets));
         ucbs.cols(targets) = estimates.cols(targets) + confBoundDelta;
         lcbs.cols(targets) = estimates.cols(targets) - confBoundDelta;
-        candidates = (lcbs < ucbs.min()) && (exactMask == 0);
+        candidates = (lcbs <= ucbs.min()) && (exactMask == 0);
       }
 
       medoidIndices->at(k) = lcbs.index_min();
@@ -340,7 +340,7 @@ namespace km {
       }
       updated_sigma(k, n) = arma::stddev(sample);
     }
-    // reset batchSize the original batch size as it's a global variable
+    // reset batchSize to the original batch size as it's a global variable
     // used by other functions (e.g. buildTarget, swapTarget)
     batchSize = originalBatchSize;
     return updated_sigma;
