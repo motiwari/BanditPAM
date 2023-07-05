@@ -21,3 +21,11 @@ for k in [5, 10, 30]:
     print(time.time() - start, "seconds")
     print("Number of SWAP steps:", kmed.steps)
     print(kmed.medoids)
+
+# for k in [5, 10, 30]:
+#     kmed = banditpam.KMedoids(n_medoids=k, algorithm="BanditPAM_orig")
+#     start = time.time()
+#     kmed.fit(X, "L2")
+#     print(time.time() - start, "seconds")
+#     print("Number of SWAP steps:", kmed.steps)
+#     print(kmed.medoids)
