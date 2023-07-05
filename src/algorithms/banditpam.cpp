@@ -606,7 +606,6 @@ namespace km {
         }
         std::cout << std::endl;
 
-      std::cout << "SwapPerformed: " << swapPerformed << std::endl;
     }
   }
 }  // namespace km

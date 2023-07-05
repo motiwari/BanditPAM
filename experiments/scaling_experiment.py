@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import pandas as pd
+from scipy.spatial import distance_matrix
 
 from run_all_versions import run_banditpam
 from scripts.comparison_utils import print_results, store_results
@@ -157,6 +158,17 @@ def debug(
                     parallelize,
                     n_swaps=num_swaps,
                 )
+
+                banditpam_build_medoids = data[kmed.medoids, :]
+
+                banditpam_medoids_ref_cost_distance_matrix = distance_matrix(
+                    banditpam_build_medoids, data
+                )
+                banditpam_objective = np.sum(
+                    np.min(banditpam_medoids_ref_cost_distance_matrix, 0)
+                )
+
+                print("loss: ", banditpam_objective)
 
                 if verbose:
                     print_results(kmed, runtime)

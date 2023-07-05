@@ -14,20 +14,24 @@ def print_results(kmed, runtime):
     print("Build complexity:", f"{kmed.build_distance_computations:,}")
     print("Swap complexity:", f"{kmed.swap_distance_computations:,}")
     print("Number of Swaps", kmed.steps)
-    print("Cache Writes: {:,}".format(kmed.cache_writes))
-    print("Cache Hits: {:,}".format(kmed.cache_hits))
-    print("Cache Misses: {:,}".format(kmed.cache_misses))
+    # print("Cache Writes: {:,}".format(kmed.cache_writes))
+    # print("Cache Hits: {:,}".format(kmed.cache_hits))
+    # print("Cache Misses: {:,}".format(kmed.cache_misses))
+    # print(
+    #     "Total complexity (without misc):",
+    #     f"{kmed.getDistanceComputations(False):,}",
+    # )
+    # print(
+    #     "Total complexity (with misc):",
+    #     f"{kmed.getDistanceComputations(True):,}",
+    # )
+    # print(
+    #     "Total complexity (with caching):",
+    #     f"{complexity_with_caching:,}",
+    # )
     print(
-        "Total complexity (without misc):",
-        f"{kmed.getDistanceComputations(False):,}",
-    )
-    print(
-        "Total complexity (with misc):",
-        f"{kmed.getDistanceComputations(True):,}",
-    )
-    print(
-        "Total complexity (with caching):",
-        f"{complexity_with_caching:,}",
+        "average_complexity_with_caching: ",
+        complexity_with_caching / (kmed.steps + 1),
     )
     # print("Runtime per swap:", runtime / kmed.steps)
     print("Total runtime:", runtime)

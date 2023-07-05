@@ -66,45 +66,52 @@ def run_scaling_experiment_with_k():
 def run_scaling_experiment_with_n():
     """
     Runs scaling experiments varying the number of data points (n) for the
-    MNIST and CIFAR datasets using all BanditPAM algorithms.2
+    MNIST and CIFAR datasets using all BanditPAM algorithms.
     """
     for dataset in [SCRNA]:
         loss = get_loss_function(dataset)
         num_data_list = get_num_data_list(dataset)
         for n_medoids in [5]:
-            np.random.seed(4)
+            np.random.seed(5)
             scaling_experiment_with_n(
                 dataset_name=dataset,
                 loss=loss,
-                algorithms=[BANDITPAM_ORIGINAL_NO_CACHING],
+                algorithms=ALL_BANDITPAMS,
                 n_medoids=n_medoids,
                 num_data_list=num_data_list,
-                dirname="scrna",
-                num_experiments=7,
+                dirname="new_scrna",
+                num_experiments=3,
             )
 
 
 def run_debug():
-    for dataset in [MNIST]:
+    for dataset in [SCRNA]:
         loss = get_loss_function(dataset)
-        num_data_list = [1000]
-        for n_medoids in [5]:
-            np.random.seed(4)
-            debug(
-                dataset_name=dataset,
-                loss=loss,
-                algorithms=[
+        num_data_list = [4000]
+        for i in range(2):
+            for par in [True]:
+                print("----------------------")
+                print("Parallelize: ", par)
+                for algorithm in [
                     BANDITPAM_ORIGINAL_NO_CACHING,
                     BANDITPAM_VA_NO_CACHING,
-                ],
-                n_medoids=n_medoids,
-                num_data_list=num_data_list,
-                dirname="debug",
-                parallelize=False,
-                num_experiments=1,
-                num_swaps=3,
-            )
+                ]:
+                    np.random.seed(4)
+                    print("Algo: ", algorithm)
+                    debug(
+                        dataset_name=dataset,
+                        loss=loss,
+                        algorithms=[algorithm],
+                        n_medoids=5,
+                        num_data_list=num_data_list,
+                        dirname="new_scrna",
+                        parallelize=par,
+                        num_experiments=1,
+                        num_swaps=0,
+                    )
+                print("----------------------")
 
 
 if __name__ == "__main__":
+    # run_scaling_experiment_with_n()
     run_debug()

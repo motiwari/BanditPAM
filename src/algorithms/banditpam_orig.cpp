@@ -554,8 +554,6 @@ namespace km {
         std::cout << (*medoidIndices)(i) << " ";
         }
         std::cout << std::endl;
-
-     std::cout << "SwapPerformed: " << swapPerformed << std::endl;
     }
   }
 }  // namespace km

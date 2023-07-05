@@ -18,7 +18,7 @@ def run_banditpam(
     cache_width=2000,
     parallelize=True,
     n_swaps=100,
-    build_confidence=3,
+    build_confidence=5,
     swap_confidence=5,
 ):
     if algorithm_name == BANDITPAM_ORIGINAL_NO_CACHING:
