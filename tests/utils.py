@@ -10,7 +10,6 @@ def bpam_agrees_pam(
     test_build: bool = False,
     assert_immediately: bool = False,
     use_fp: bool = True,
-    num_succeed: int = 0,
 ):
     """
     Parameters:
@@ -21,7 +20,6 @@ def bpam_agrees_pam(
             after the BUILD step
         assert_immediately: Fail immediately if medoids disagree.
             Set to false to test the proportion of passing tests
-        num_succeed: Number of succeeding tests so far
 
     Returns:
         bpam_and_pam_agree: 1 if BanditPAM and PAM agree, 0 otherwise
