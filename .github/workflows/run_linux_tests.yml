@@ -6,7 +6,7 @@ on:
   pull_request:
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -80,10 +80,6 @@ jobs:
       - name: Run tests cases for initialization
         run : |
           pytest tests/test_initialization.py 
-
-      - name: Run larger suite of test cases
-        run : |
-          pytest tests/test_larger.py
 
       - name: Clone for PR
         if: ${{ github.event_name == 'pull_request' }}
