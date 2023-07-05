@@ -104,9 +104,7 @@ def main():
         assert width_250 == 250, "Cache width should be 250 when set to 250"
         assert width_500 == 500, "Cache width should be 500 when set to 500"
         assert width_750 == 750, "Cache width should be 750 when set to 750"
-        assert (
-            width_1000 == 1000
-        ), "Cache width should be 1000 when set to 1000"
+        assert width_1000 == 1000, "Cache width should be 1k when set to 1k"
 
     def test_parallelization():
         X = np.loadtxt(os.path.join("data", "MNIST_10k.csv"))
