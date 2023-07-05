@@ -38,7 +38,6 @@ class LargerTests(unittest.TestCase):
                 loss="L2",
                 test_build=True,
                 assert_immediately=False,
-                num_succeed=0,
             )
         self.assertTrue(num_succeed >= PROPORTION_PASSING * NUM_MEDIUM_CASES)  # avoids stochasticity issues
 
@@ -60,7 +59,6 @@ class LargerTests(unittest.TestCase):
                 loss="L2",
                 test_build=True,
                 assert_immediately=False,
-                num_succeed=0,
             )
         self.assertTrue(num_succeed >= PROPORTION_PASSING * NUM_MEDIUM_CASES)  # avoids stochasticity issues
 
