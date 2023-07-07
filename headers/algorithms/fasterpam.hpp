@@ -49,7 +49,6 @@ class FasterPAM : public km::KMedoids {
    * @param assignments
    * @param bestDistances
    * @param secondBestDistances
-   * @param Delta_TD_ms
    */
   arma::frowvec calcDeltaTDMs(
     arma::urowvec* assignments,
