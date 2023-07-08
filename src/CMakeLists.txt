@@ -33,7 +33,9 @@ add_library(
         algorithms/pam.cpp
         algorithms/banditpam.cpp
         algorithms/banditpam_orig.cpp
-        algorithms/fastpam1.cpp)
+        algorithms/fastpam1.cpp
+        algorithms/fasterpam.cpp
+        algorithms/banditfasterpam.cpp)
 
 target_link_libraries(BanditPAM PUBLIC BanditPAM_LIB)
 
