@@ -26,7 +26,7 @@ def read_dataset(dataset_name):
         filename = "cifar10"
         delimiter = ","
     else:
-        filename = "scrna_reformat"
+        filename = "scrna5k"
         delimiter = ","
 
     dataset = pd.read_csv(
@@ -238,8 +238,6 @@ def scaling_experiment_with_n(
                     loss,
                     cache_width,
                     parallelize,
-                    build_confidence=10,
-                    swap_confidence=10,
                 )
 
                 if verbose:
@@ -247,5 +245,10 @@ def scaling_experiment_with_n(
 
                 if save_logs:
                     store_results(
-                        kmed, runtime, log_dir, log_name, num_data, n_medoids
+                        kmed,
+                        runtime,
+                        log_dir,
+                        log_name,
+                        num_data,
+                        n_medoids,
                     )

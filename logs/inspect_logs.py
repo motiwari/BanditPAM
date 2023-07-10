@@ -14,7 +14,7 @@ from scripts.constants import (
 #     BANDITPAM_VA_CACHING,
 # ]:
 #     print(algorithm)
-#     csv_files = glob(f"scrna/*{algorithm}*")
+#     csv_files = glob(f"scrna_backup/*{algorithm}*")
 #     algorithm_dfs = [pd.read_csv(file) for file in csv_files]
 #     data = pd.concat(algorithm_dfs)
 #
@@ -32,7 +32,7 @@ for i in [0, 1, 2, 4, 5, 6]:
         BANDITPAM_VA_CACHING,
     ]:
         print(algorithm)
-        csv_file = glob(f"scrna/*{algorithm}*idx{i}*")[0]
+        csv_file = glob(f"scrna_backup/*{algorithm}*idx{i}*")[0]
         csv = pd.read_csv(csv_file)
         print(csv["number_of_swaps"])
     print("--------------------")

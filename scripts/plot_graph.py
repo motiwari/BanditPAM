@@ -274,6 +274,6 @@ if __name__ == "__main__":
         x_axes=[NUM_DATA],
         y_axes=[SAMPLE_COMPLEXITY, RUNTIME, LOSS],
         is_logspace_y=False,
-        dir_name="scrna",
+        dir_name="new_scrna",
         include_error_bar=True,
     )

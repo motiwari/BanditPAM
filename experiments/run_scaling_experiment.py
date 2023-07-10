@@ -72,46 +72,42 @@ def run_scaling_experiment_with_n():
         loss = get_loss_function(dataset)
         num_data_list = get_num_data_list(dataset)
         for n_medoids in [5]:
-            np.random.seed(5)
+            np.random.seed(0)
             scaling_experiment_with_n(
                 dataset_name=dataset,
                 loss=loss,
                 algorithms=ALL_BANDITPAMS,
                 n_medoids=n_medoids,
                 num_data_list=num_data_list,
-                dirname="new_scrna",
-                num_experiments=3,
+                dirname="scrna",
+                num_experiments=10,
+                parallelize=False,
             )
 
 
-def run_debug():
+def run_debug_scrna():
     for dataset in [SCRNA]:
         loss = get_loss_function(dataset)
-        num_data_list = [4000]
-        for i in range(2):
-            for par in [True]:
-                print("----------------------")
-                print("Parallelize: ", par)
-                for algorithm in [
-                    BANDITPAM_ORIGINAL_NO_CACHING,
-                    BANDITPAM_VA_NO_CACHING,
-                ]:
-                    np.random.seed(4)
-                    print("Algo: ", algorithm)
-                    debug(
-                        dataset_name=dataset,
-                        loss=loss,
-                        algorithms=[algorithm],
-                        n_medoids=5,
-                        num_data_list=num_data_list,
-                        dirname="new_scrna",
-                        parallelize=par,
-                        num_experiments=1,
-                        num_swaps=0,
-                    )
-                print("----------------------")
+        num_data_list = [3000]
+        for par in [False]:
+            print("\n\n\n\nParallelize: ", par)
+            num_iters = 5 if par else 2
+
+            for _ in range(num_iters):
+                np.random.seed(0)
+                debug(
+                    dataset_name=dataset,
+                    loss=loss,
+                    algorithms=[BANDITPAM_VA_NO_CACHING],
+                    n_medoids=5,
+                    num_data_list=num_data_list,
+                    dirname="new_scrna",
+                    parallelize=par,
+                    num_experiments=1,
+                    num_swaps=5,
+                    save_logs=False,
+                )
 
 
 if __name__ == "__main__":
-    # run_scaling_experiment_with_n()
-    run_debug()
+    run_scaling_experiment_with_n()
