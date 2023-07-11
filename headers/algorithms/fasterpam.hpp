@@ -93,39 +93,39 @@ class FasterPAM : public km::KMedoids {
   * @brief Performs an initialize swap if k > 1
   *
   * @param mat Array of distances between the data points.
-  * @param med Array of medoid indices created from uniform random
+  * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
   */
   std::tuple<float, std::vector<Rec>> initialAssignment(
       const arma::fmat& mat,
-      arma::urowvec med);
+      arma::urowvec medoidIndices);
 
   /**
   * @brief Checks for inconsistencies in distance assignments
   *
   * @param mat Array of distances between the data points.
-  * @param med Array of medoid indices created from uniform random
+  * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
   * @param data Input data to cluster
   */
   void debugAssertAssignment(
       const arma::fmat& mat,
-      arma::urowvec med,
+      arma::urowvec medoidIndices,
       std::vector<Rec>& data);
 
   /**
   * @brief Finds the single best medoid within the data
   *
   * @param mat Array of distances between the data points.
-  * @param assi Array of containing the medoid each point is closest to
-  * @param med Array of medoid indices created from uniform random
+  * @param assignments Array of containing the medoid each point is closest to
+  * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
   * @param m Index of medoid to start seara potential contribution: is there a way to use bandits to get the guaranteed right answer instead of doing naive uniform random sampling?ching with
    */
   std::tuple<bool, float> chooseMedoidWithinPartition(
       const arma::fmat& mat,
-      arma::urowvec assi,
-      arma::urowvec& med,
+      arma::urowvec assignments,
+      arma::urowvec& medoidIndices,
       size_t m);
 
   /**
@@ -156,7 +156,7 @@ class FasterPAM : public km::KMedoids {
   * @brief Update the DistancePair with distance to the second nearest medoid
   *
   * @param mat Array of distances between the data points.
-  * @param med Array of medoid indices created from uniform random
+  * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
   * @param n Number of rows in the dataset
   * @param b Medoid index
@@ -165,7 +165,7 @@ class FasterPAM : public km::KMedoids {
   */
   DistancePair updateSecondNearest(
       const arma::fmat& mat,
-      arma::urowvec med,
+      arma::urowvec medoidIndices,
       size_t n,
       size_t b,
       size_t o,
@@ -175,7 +175,7 @@ class FasterPAM : public km::KMedoids {
   * @brief Execute a swap and adjust losses and distances accordingly
   *
   * @param mat Array of distances between the data points.
-  * @param med Array of medoid indices created from uniform random
+  * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
   * @param data Input data to cluster
   * @param b Medoid index
@@ -183,7 +183,7 @@ class FasterPAM : public km::KMedoids {
   */
   float doSwap(
       const arma::fmat& mat,
-      arma::urowvec& med,
+      arma::urowvec& medoidIndices,
       std::vector<Rec>& data,
       size_t b,
       size_t j);
@@ -194,15 +194,15 @@ class FasterPAM : public km::KMedoids {
   *
   * @param inputData Input data to cluster
   * @param mat Array of distances between the data points.
-  * @param med Array of medoid indices created from uniform random
+  * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
-  * @param assi Array of containing the medoid each point is closest to
+  * @param assignments Array of containing the medoid each point is closest to
   */
   std::tuple<float, arma::urowvec, size_t, size_t> swapFasterPAM(
     const arma::fmat &inputData,
     const arma::fmat& mat,
-    arma::urowvec& med,
-    arma::urowvec assi);
+    arma::urowvec& medoidIndices,
+    arma::urowvec assignments);
   // TODO(@Adarsh321123): fix 2 vs 4 spaces
 };
 }  // namespace km
