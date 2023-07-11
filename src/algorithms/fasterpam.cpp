@@ -12,194 +12,350 @@
 
 #include "fasterpam.hpp"
 
+#include <tuple>
 #include <armadillo>
-#include <unordered_map>
+#include <vector>
+#include <cassert>
+#include <random>
+#include <time.h> // TODO(@Adarsh321123): remove this
+#include <sys/time.h> // TODO(@Adarsh321123): remove this
+
+double get_wall_time(){ // TODO(@Adarsh321123): remove this
+  struct timeval time;
+  if (gettimeofday(&time,NULL)){
+    //  Handle error
+    return 0;
+  }
+  return (double)time.tv_sec + (double)time.tv_usec * .000001;
+}
 
 namespace km {
+DistancePair::DistancePair(size_t i, float d) {
+  this->i = i;
+  this->d = d;
+}
+
+DistancePair DistancePair::empty() {
+  return DistancePair(std::numeric_limits<size_t>::max(), 0.0);
+}
+
+Rec::Rec() : near(0, 0.0), seco(0, 0.0) {}
+
+Rec::Rec(size_t i1, float d1, size_t i2, float d2)
+    : near(i1, d1), seco(i2, d2)
+{
+}
+
+Rec Rec::empty() {
+  return Rec(
+      DistancePair::empty().i,
+      DistancePair::empty().d,
+      DistancePair::empty().i,
+      DistancePair::empty().d
+  );
+}
+
 void FasterPAM::fitFasterPAM(
   const arma::fmat& inputData,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
-  data = arma::trans(inputData);
-  arma::urowvec medoidIndices(nMedoids);
-  FasterPAM::buildFasterPAM(data, distMat, &medoidIndices);
+  // FasterPAM requires a distance matrix
+  // so, we will now compute one
+  arma::fmat mat(inputData.n_rows, inputData.n_rows);
+  for (int m = 0; m < inputData.n_rows; m++) {
+    for (int n = m; n < inputData.n_rows; n++) {
+      // TODO:(@Adarsh321123): change snake case to camel case
+      // TODO(@Adarsh321123): implement and test multiple distances
+      // TODO(@Adarsh321123): add lots of comments
+      float dist = arma::norm(inputData.row(m) - inputData.row(n), 2);
+      mat(m, n) = dist;
+      mat(n, m) = dist;
+    }
+  }
+  double wall0 = get_wall_time(); // TODO(@Adarsh321123): remove this
+  // TODO(@Adarsh321123): test timing for FasterPAM without distance matrix computation time
+  // TODO(@Adarsh321123): refactor names (i.e. meds -> medoidIndices)
+  // TODO(@Adarsh321123): don't use vector when possible, (i.e. use arma::urowvec for medoidIndices)
+  std::vector<size_t> meds = randomInitialization(inputData.n_rows, nMedoids);
   steps = 0;
-  medoidIndicesBuild = medoidIndices;
-  arma::urowvec assignments(data.n_cols);
-  FasterPAM::swapFasterPAM(data, distMat, &medoidIndices, &assignments);
+//  medoidIndicesBuild = meds; // TODO: come back to this once using arma::urowvec
+  size_t n = mat.n_rows;
+  std::vector<size_t> assi(n);
+  for (size_t i = 0; i < n; i++) {
+    assi[i] = 0;
+  }
+  // TODO(@Adarsh321123): make it so no need for things to be returned (i.e. change things like averageLoss)
+  // TODO(@Adarsh321123): pass assi by reference so no need to pass back?
+  std::tuple<float, std::vector<size_t>, size_t, size_t> paramsFasterPAM = FasterPAM::swapFasterPAM(inputData, mat, meds, assi);
+  double wall1 = get_wall_time(); // TODO(@Adarsh321123): remove this
+  float loss = std::get<0>(paramsFasterPAM) / inputData.n_rows;
+  assi = std::get<1>(paramsFasterPAM);
+  size_t iter = std::get<2>(paramsFasterPAM);
+  size_t swaps = std::get<3>(paramsFasterPAM);
+  std::cout << "FasterPAM final loss: " << loss << std::endl;
+  std::cout << "FasterPAM swaps performed: " << swaps << std::endl;
+  std::cout << "Medoids: " << std::endl;
+  for (size_t i = 0; i < meds.size(); i++) {
+    std::cout << i << " -> " << meds[i] << std::endl;
+  }
+  std::cout << "Wall Clock Time: " << wall1 - wall0 << "\n"; // TODO(@Adarsh321123): remove this
 
-  medoidIndicesFinal = medoidIndices;
-  labels = assignments;
+//  medoidIndicesFinal = meds; // TODO: come back to this once using arma::urowvec
+//  labels = assi; // TODO: come back to this once using arma::urowvec
 }
 
-void FasterPAM::buildFasterPAM(
-  const arma::fmat& data,
-  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  arma::urowvec* medoidIndices) {
-  size_t N = data.n_cols;
-  arma::frowvec estimates(N, arma::fill::zeros);
-  arma::frowvec bestDistances(N);
-  bestDistances.fill(std::numeric_limits<float>::infinity());
-  for (size_t k = 0; k < nMedoids; k++) {
-    float minDistance = std::numeric_limits<float>::infinity();
-    size_t best = 0;
-    for (size_t i = 0; i < data.n_cols; i++) {
-      float total = 0;
-      for (size_t j = 0; j < data.n_cols; j++) {
-        float cost = (this->*lossFn)(data, i, j);
-        // compares this with the cached best distance
-        if (bestDistances(j) < cost) {
-          cost = bestDistances(j);
+std::vector<size_t> FasterPAM::randomInitialization(
+  size_t n,
+  size_t k) {
+  // from https://stackoverflow.com/questions/288739/generate-random-numbers-uniformly-over-an-entire-range
+  const size_t range_from = 0;
+  const size_t range_to = n-1;
+  std::random_device rand_dev;
+  std::mt19937 generator(rand_dev());
+  std::uniform_int_distribution<size_t> distr(range_from, range_to);
+  std::vector<size_t> res(k);
+  for (size_t i = 0; i < k; i++) {
+    res[i] = distr(generator);
+  }
+  return res;
+}
+
+std::tuple<float, std::vector<Rec>> FasterPAM::initialAssignment(
+  const arma::fmat& mat,
+  std::vector<size_t> med) {
+  size_t n = mat.n_rows;
+  size_t k = med.size();
+  assert(("Dissimilarity matrix is not square",
+          mat.n_rows == mat.n_cols));
+  assert(("N is too large", n <= std::numeric_limits<size_t>::max()));
+  assert(("invalid N", k > 0 && k < std::numeric_limits<size_t>::max()));
+  assert(("k must be at most N", k <= n));
+  std::vector<Rec> data(mat.n_rows);
+  for (size_t i = 0; i < mat.n_rows; i++) {
+    data[i] = Rec::empty();
+  }
+
+  size_t firstcenter = med[0];
+  float loss = 0.0;
+  for (size_t i = 0; i < data.size(); i++) {
+    Rec& cur = data[i];
+    cur = Rec(0, mat(i, firstcenter), std::numeric_limits<size_t>::max(), 0.0);
+    for (size_t m = 1; m < med.size(); m++) {
+      size_t me = med[m];
+      float d = mat(i, me);
+      if (d < cur.near.d || i == me) {
+        cur.seco = cur.near;
+        cur.near = DistancePair(m, d);
+      } else if (cur.seco.i == std::numeric_limits<size_t>::max() || d < cur.seco.d) {
+        cur.seco = DistancePair(m, d);
+      }
+    }
+    loss += cur.near.d;
+  }
+  return {loss, data};
+}
+
+void FasterPAM::debugAssertAssignment(
+  const arma::fmat& mat,
+  std::vector<size_t> med,
+  std::vector<Rec>& data) {
+  for (size_t o = 0; o < mat.n_rows; o++) {
+    assert(("primary assignment inconsistent", mat(o, med[data[o].near.i]) == data[o].near.d));
+    assert(("secondary assignment inconsistent", mat(o, med[data[o].seco.i]) == data[o].seco.d));
+    assert(("nearest is farther than second nearest", data[o].near.d <= data[o].seco.d));
+  }
+}
+
+std::tuple<bool, float> FasterPAM::chooseMedoidWithinPartition(
+  const arma::fmat& mat,
+  std::vector<size_t> assi,
+  std::vector<size_t>& med,
+  size_t m) {
+  size_t first = med[m];
+  size_t best = first;
+  float sumb = 0.0;
+  for (size_t i = 0; i < assi.size(); i++) {
+    size_t a = assi[i];
+    if (first != i && a == m) {
+      sumb += mat(first, i);
+    }
+  }
+  for (size_t j = 0; j < assi.size(); j++) {
+    size_t aj = assi[j];
+    if (j != first && aj == m) {
+      float sumj = 0.0;
+      for (size_t i = 0; i < assi.size(); i++) {
+        size_t ai = assi[i];
+        if (i != j && ai == m) {
+          sumj += mat(j, i);
         }
-        total += cost;
       }
-      if (total < minDistance) {
-        minDistance = total;
-        best = i;
-      }
-    }
-    (*medoidIndices)(k) = best;
-
-    // update the medoid assignment and best_distance for this datapoint
-    for (size_t l = 0; l < N; l++) {
-      float cost = (this->*lossFn)(data, l, (*medoidIndices)(k));
-      if (cost < bestDistances(l)) {
-        bestDistances(l) = cost;
+      if (sumj < sumb) {
+        best = j;
+        sumb = sumj;
       }
     }
   }
+  med[m] = best;
+  return {best != first, sumb};
 }
 
-arma::frowvec FasterPAM::calcDeltaTDMs(
-  arma::urowvec* assignments,
-  arma::frowvec* bestDistances,
-  arma::frowvec* secondBestDistances) {
-  arma::frowvec Delta_TD_ms(nMedoids, arma::fill::zeros);
-  for (size_t i = 0; i < data.n_cols; i++) {
-    // Find which medoid point i is assigned to
-    size_t m = (*assignments)(i);
-
-    // Update \Delta_TD(ms) with -best(i) + secondBestDistances(i)
-    Delta_TD_ms(m) += -(*bestDistances)(i) + (*secondBestDistances)(i);
+void FasterPAM::updateRemovalLoss(std::vector<Rec>& data, std::vector<float>& loss) {
+  for (size_t i = 0; i < loss.size(); i++) {
+    loss[i] = 0.0;
   }
-  return Delta_TD_ms;
+  for (Rec rec : data) {
+    loss[rec.near.i] += rec.seco.d - rec.near.d;
+  }
 }
 
-void FasterPAM::swapFasterPAM(
-  const arma::fmat& data,
-  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  arma::urowvec* medoidIndices,
-  arma::urowvec* assignments) {
-  size_t N = data.n_cols;
-  arma::frowvec bestDistances(N);
-  arma::frowvec secondBestDistances(N);
+std::tuple<float, size_t> FasterPAM::findBestSwap(
+  const arma::fmat& mat,
+  std::vector<float>& removal_loss,
+  std::vector<Rec>& data,
+  size_t j) {
+  std::vector<float> ploss = removal_loss;
+  float acc = 0.0;
+  for (size_t o = 0; o < data.size(); o++) {
+    Rec reco = data[o];
+    float djo = mat(j, o);
+    if (djo < reco.near.d) {
+      acc += djo - reco.near.d;
+      ploss[reco.near.i] += reco.near.d - reco.seco.d;
+    } else if (djo < reco.seco.d) {
+      ploss[reco.near.i] += djo - reco.seco.d;
+    }
+  }
+  auto it = std::min_element(std::begin(ploss), std::end(ploss));
+  size_t b = std::distance(std::begin(ploss), it);
+  float bloss = *it;
+  return {bloss + acc, b};
+}
 
-  // TODO(@motiwari): This is O(kn). Can remove by carrying through assignments from the BUILD step, but that will be
-  //  O(kn) too. Since we only do this O(kn) once, we can amortize it over all eager SWAP steps.
-  KMedoids::calcBestDistancesSwap(
-    data,
-    distMat,
-    medoidIndices,
-    &bestDistances,
-    &secondBestDistances,
-    assignments);
+DistancePair FasterPAM::updateSecondNearest(
+  const arma::fmat& mat,
+  std::vector<size_t> med,
+  size_t n,
+  size_t b,
+  size_t o,
+  float djo) {
+  DistancePair s = DistancePair(b, djo);
+  for (size_t i = 0; i < med.size(); i++) {
+    size_t mi = med[i];
+    if (i == n || i == b) {
+      continue;
+    }
+    float d = mat(o, mi);
+    if (d < s.d) {
+      s = DistancePair(i, d);
+    }
+  }
+  return s;
+}
 
-  bool converged{false};
-  size_t x_last{data.n_cols};
+float FasterPAM::doSwap(
+  const arma::fmat& mat,
+  std::vector<size_t>& med,
+  std::vector<Rec>& data,
+  size_t b,
+  size_t j) {
+  size_t n = mat.n_rows;
+  assert(("invalid medoid number",
+          b < med.size()));
+  assert(("invalid object number",
+          j < n));
+  med[b] = j;
+  float loss = 0.0;
+  for (size_t o = 0; o < data.size(); o++) {
+    Rec& reco = data[o];
+    if (o == j) {
+      if (reco.near.i != b) {
+        reco.seco = reco.near;
+      }
+      reco.near = DistancePair(b, 0);
+      continue;
+    }
+    float djo = mat(j, o);
+    if (reco.near.i == b) {
+      if (djo < reco.seco.d) {
+        reco.near = DistancePair(b, djo);
+      } else {
+        reco.near = reco.seco;
+        reco.seco = updateSecondNearest(mat, med, reco.near.i, b, o, djo);
+      }
+    } else {
+      if (djo < reco.near.d) {
+        reco.seco = reco.near;
+        reco.near = DistancePair(b, djo);
+      } else if (djo < reco.seco.d) {
+        reco.seco = DistancePair(b, djo);
+      } else if (reco.seco.i == b) {
+        reco.seco = updateSecondNearest(mat, med, reco.near.i, b, o, djo);
+      }
+    }
+    loss += reco.near.d;
+  }
+  return loss;
+}
 
-  // Calculate initial removal loss for each medoid. This function modifies Delat_TD_ms in place
-  arma::frowvec Delta_TD_ms_initial = FasterPAM::calcDeltaTDMs(
-    assignments,
-    &bestDistances,
-    &secondBestDistances);
-
-  arma::frowvec Delta_TD_ms;
+std::tuple<float, std::vector<size_t>, size_t, size_t> FasterPAM::swapFasterPAM(
+  const arma::fmat &inputData,
+  const arma::fmat& mat,
+  std::vector<size_t>& med,
+  std::vector<size_t> assi) {
+  size_t n = mat.n_rows; // TODO(@Adarsh321123): remove duplication with that of fit function
+  // TODO: don't need to find k here since nMedoids is known, same for other vars when applicable
+  size_t k = med.size();
+  if (k == 1) {
+    std::tuple<bool, float> paramsMedoid = chooseMedoidWithinPartition(mat, assi, med, 0);
+    bool swapped = std::get<0>(paramsMedoid);
+    float loss = std::get<1>(paramsMedoid);
+    return {loss, assi, 1, (swapped) ? 1 : 0};
+  }
+  std::tuple<float, std::vector<Rec>> paramsAssi = initialAssignment(mat, med);
+  float loss = std::get<0>(paramsAssi);
+  std::vector<Rec> data = std::get<1>(paramsAssi);
+  debugAssertAssignment(mat, med, data);
+  std::vector<float> removal_loss(k);
+  for (size_t i = 0; i < k; i++) {
+    removal_loss[i] = 0.0;
+  }
+  updateRemovalLoss(data, removal_loss);
+  size_t lastswap = n;
+  size_t n_swaps = 0;
   size_t iter = 0;
-  while (iter < maxIter && !converged) {
-    for (size_t candidate = 0; candidate < data.n_cols; candidate++) {
-      if (candidate == x_last) {
-        converged = true;
+  while (iter < maxIter) {
+    iter++;
+    size_t swaps_before = n_swaps;
+    for (size_t j = 0; j < n; j++) {
+      if (j == lastswap) {
         break;
       }
-      float Delta_TD_candidate = 0;
-      Delta_TD_ms = Delta_TD_ms_initial; // TODO(@motiwari): Ensure this is copy assignment
-
-      // NOTE: Can probably sample this loop
-      for (size_t reference = 0; reference < data.n_cols; reference++) {
-        float d_cr = KMedoids::cachedLoss(
-            data,
-            distMat,
-            reference,
-            candidate,
-            0);  // 0 for MISC
-
-        size_t nearest = (*assignments)(reference);
-        if (d_cr < bestDistances(reference)) {
-          // When nearest(o) is removed, the loss of point reference is second(o). The two lines below, when summed together,
-          // properly do the bookkeeping so that the loss of point reference will now become d_cr. This is why we add d_cr and
-          // subtract off second(o).
-          Delta_TD_candidate += d_cr - bestDistances(reference);
-          Delta_TD_ms(nearest) += bestDistances(reference) - secondBestDistances(reference);
-        } else if (d_cr < secondBestDistances(reference)) {
-          // Every point has been assigned to its second closest medoid. If we remove the nearest medoid and add
-          // point candidate in here, then the updated change in loss for removing the nearest medoid will be
-          // d_cr - second(o), since the reference point reference will be assigned to candidate when candidate is added and nearest(o)
-          // is removed. In the initial Delta_TMs, we added a +second(o) to the loss for assigning point reference to its
-          // second closest medoid when nearest(o) is removed.
-          Delta_TD_ms(nearest) += d_cr - secondBestDistances(reference);
-        }
+      if (j == med[data[j].near.i]) {
+        continue;
       }
-
-      arma::uword best_m_idx = Delta_TD_ms.index_min();
-      // -0.01 to avoid precision errors
-      // TODO(@motiwari): Move 0.01 to a constants file
-//      std::cout << "\n\n";
-//      std::cout << "Delta_TD_ms: " << Delta_TD_ms;
-//      std::cout << "Delta_TD_candidate: " << Delta_TD_candidate << "\n";
-
-      // TODO(@motiwari): This -0.1 / N should be moved to an approximate comparison
-      // TODO(@motiwari): Right now explicitly prevent from swapping with itself, but should never happpen...
-      if (Delta_TD_ms(best_m_idx) + Delta_TD_candidate < -0.001 && (*medoidIndices)(best_m_idx) != candidate) {
-        // Perform Swap
-
-
-        std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with " << candidate << "\n";
-        iter++;
-        (*medoidIndices)(best_m_idx) = candidate;
-
-        // TODO(@motiwari): This is O(kn) per swap. Instead, we could do a single pass over all kn pairs and keep a
-        //  heap of all k distances to medoids per datapoint. That way we will have all the proper j-th nearest medoids
-        //  which are necessary for this eager swapping out of medoids. This would incur O(kn) space though.
-        //  We should also see how Schubert does this... I believe his algorithm is also O(kn).
-        KMedoids::calcBestDistancesSwap(
-            data,
-            distMat,
-            medoidIndices,
-            &bestDistances,
-            &secondBestDistances,
-            assignments);
-
-        // Update \Delta_TD_m's. This function modifies Delat_TD_ms in place
-        Delta_TD_ms_initial = FasterPAM::calcDeltaTDMs(
-          assignments,
-          &bestDistances,
-          &secondBestDistances);
-
-        x_last = candidate;
+      std::tuple<float, size_t> paramsSwap = findBestSwap(mat, removal_loss, data, j);
+      float change = std::get<0>(paramsSwap);
+      size_t b = std::get<1>(paramsSwap);
+      if (change >= 0) {
+        continue;
       }
+      n_swaps++;
+      lastswap = j;
+      float newloss = doSwap(mat, med, data, b, j);
+      if (newloss >= loss) {
+        break;
+      }
+      loss = newloss;
+      updateRemovalLoss(data, removal_loss);
+    }
+    if (n_swaps == swaps_before) {
+      break;
     }
   }
-  steps = iter;
-
-  // Call it one last time to update the loss
-  // This is O(kn) but amortized over all eager SWAP steps
-  // TODO(@motiwari): make this a call to calcLoss instead
-  KMedoids::calcBestDistancesSwap(
-    data,
-    distMat,
-    medoidIndices,
-    &bestDistances,
-    &secondBestDistances,
-    assignments,
-    false); // no swap performed, update loss
+  assi.clear();
+  for (const auto& x : data) {
+    assi.push_back(static_cast<size_t>(x.near.i));
+  }
+  return { loss, assi, iter, n_swaps };
 }
 }  // namespace km
