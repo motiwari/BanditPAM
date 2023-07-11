@@ -71,7 +71,6 @@ void FasterPAM::fitFasterPAM(
   for (int m = 0; m < data.n_cols; m++) {
     for (int n = m; n < data.n_cols; n++) {
       // TODO(@Adarsh321123): add lots of comments
-      // TODO(@Adarsh321123): ensure that output from main is correct
       float dist = (this->*lossFn)(data, m, n);
       mat(m, n) = dist;
       mat(n, m) = dist;
@@ -83,26 +82,14 @@ void FasterPAM::fitFasterPAM(
   medoidIndicesBuild = medoidIndices;
   size_t n = mat.n_rows;
   arma::urowvec assignments(n, arma::fill::zeros);
-  // TODO(@Adarsh321123): make it so no need for things to be returned (i.e. change things like averageLoss)
-  // TODO(@Adarsh321123): pass assi by reference so no need to pass back?
-  // TODO(@Adarsh321123): use pointer and references in parameters and arguments like other algorithms
-  std::tuple<float, arma::urowvec, size_t, size_t> paramsFasterPAM = FasterPAM::swapFasterPAM(data, mat, medoidIndices, assignments);
+  std::tuple<arma::urowvec, size_t> paramsFasterPAM = FasterPAM::swapFasterPAM(data, mat, medoidIndices, assignments);
   double wall1 = get_wall_time(); // TODO(@Adarsh321123): remove this
-  float loss = std::get<0>(paramsFasterPAM) / data.n_cols;
-  assignments = std::get<1>(paramsFasterPAM);
-  size_t iter = std::get<2>(paramsFasterPAM);
-  size_t swaps = std::get<3>(paramsFasterPAM);
-  std::cout << "FasterPAM final loss: " << loss << std::endl;
-  std::cout << "FasterPAM swaps performed: " << swaps << std::endl;
-  std::cout << "Medoids: " << std::endl;
-  for (size_t i = 0; i < medoidIndices.size(); i++) {
-    std::cout << i << " -> " << medoidIndices[i] << std::endl;
-  }
+  assignments = std::get<0>(paramsFasterPAM);
+  size_t swaps = std::get<1>(paramsFasterPAM);
   std::cout << "Wall Clock Time: " << wall1 - wall0 << "\n"; // TODO(@Adarsh321123): remove this
-
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
-  steps = iter;
+  steps = swaps;
 }
 
 arma::urowvec FasterPAM::randomInitialization(
@@ -297,17 +284,18 @@ float FasterPAM::doSwap(
   return loss;
 }
 
-std::tuple<float, arma::urowvec, size_t, size_t> FasterPAM::swapFasterPAM(
+std::tuple<arma::urowvec, size_t> FasterPAM::swapFasterPAM(
   const arma::fmat &data,
   const arma::fmat& mat,
   arma::urowvec& medoidIndices,
   arma::urowvec assignments) {
-  size_t n = mat.n_rows; // TODO(@Adarsh321123): remove duplication with that of fit function
+  size_t n = mat.n_rows;
   if (nMedoids == 1) {
     std::tuple<bool, float> paramsMedoid = chooseMedoidWithinPartition(mat, assignments, medoidIndices, 0);
     bool swapped = std::get<0>(paramsMedoid);
     float loss = std::get<1>(paramsMedoid);
-    return {loss, assignments, 1, (swapped) ? 1 : 0};
+    averageLoss = loss / data.n_cols;
+    return {assignments, (swapped) ? 1 : 0};
   }
   std::tuple<float, std::vector<Rec>> paramsAssi = initialAssignment(mat, medoidIndices);
   float loss = std::get<0>(paramsAssi);
@@ -352,6 +340,7 @@ std::tuple<float, arma::urowvec, size_t, size_t> FasterPAM::swapFasterPAM(
     const auto& x = distanceData[i];
     assignments[i] = static_cast<size_t>(x.near.i);
   }
-  return { loss, assignments, iter, nSwaps };
+  averageLoss = loss / data.n_cols;
+  return { assignments, nSwaps };
 }
 }  // namespace km

@@ -196,7 +196,7 @@ class FasterPAM : public km::KMedoids {
   * sampling step that is modified in place as better medoids are identified
   * @param assignments Array of containing the medoid each point is closest to
   */
-  std::tuple<float, arma::urowvec, size_t, size_t> swapFasterPAM(
+  std::tuple<arma::urowvec, size_t> swapFasterPAM(
     const arma::fmat &data,
     const arma::fmat& mat,
     arma::urowvec& medoidIndices,
