@@ -63,7 +63,6 @@ void FasterPAM::fitFasterPAM(
   arma::fmat mat(inputData.n_rows, inputData.n_rows);
   for (int m = 0; m < inputData.n_rows; m++) {
     for (int n = m; n < inputData.n_rows; n++) {
-      // TODO:(@Adarsh321123): change snake case to camel case
       // TODO(@Adarsh321123): implement and test multiple distances
       // TODO(@Adarsh321123): add lots of comments
       float dist = arma::norm(inputData.row(m) - inputData.row(n), 2);
@@ -72,7 +71,6 @@ void FasterPAM::fitFasterPAM(
     }
   }
   double wall0 = get_wall_time(); // TODO(@Adarsh321123): remove this
-  // TODO(@Adarsh321123): test timing for FasterPAM without distance matrix computation time
   // TODO(@Adarsh321123): refactor names (i.e. meds -> medoidIndices)
   // TODO(@Adarsh321123): don't use vector when possible, (i.e. use arma::urowvec for medoidIndices)
   std::vector<size_t> meds = randomInitialization(inputData.n_rows, nMedoids);
@@ -107,11 +105,11 @@ std::vector<size_t> FasterPAM::randomInitialization(
   size_t n,
   size_t k) {
   // from https://stackoverflow.com/questions/288739/generate-random-numbers-uniformly-over-an-entire-range
-  const size_t range_from = 0;
-  const size_t range_to = n-1;
-  std::random_device rand_dev;
-  std::mt19937 generator(rand_dev());
-  std::uniform_int_distribution<size_t> distr(range_from, range_to);
+  const size_t rangeFrom = 0;
+  const size_t rangeTo = n-1;
+  std::random_device randDev;
+  std::mt19937 generator(randDev());
+  std::uniform_int_distribution<size_t> distr(rangeFrom, rangeTo);
   std::vector<size_t> res(k);
   for (size_t i = 0; i < k; i++) {
     res[i] = distr(generator);
@@ -134,11 +132,11 @@ std::tuple<float, std::vector<Rec>> FasterPAM::initialAssignment(
     data[i] = Rec::empty();
   }
 
-  size_t firstcenter = med[0];
+  size_t firstCenter = med[0];
   float loss = 0.0;
   for (size_t i = 0; i < data.size(); i++) {
     Rec& cur = data[i];
-    cur = Rec(0, mat(i, firstcenter), std::numeric_limits<size_t>::max(), 0.0);
+    cur = Rec(0, mat(i, firstCenter), std::numeric_limits<size_t>::max(), 0.0);
     for (size_t m = 1; m < med.size(); m++) {
       size_t me = med[m];
       float d = mat(i, me);
@@ -210,10 +208,10 @@ void FasterPAM::updateRemovalLoss(std::vector<Rec>& data, std::vector<float>& lo
 
 std::tuple<float, size_t> FasterPAM::findBestSwap(
   const arma::fmat& mat,
-  std::vector<float>& removal_loss,
+  std::vector<float>& removalLoss,
   std::vector<Rec>& data,
   size_t j) {
-  std::vector<float> ploss = removal_loss;
+  std::vector<float> ploss = removalLoss;
   float acc = 0.0;
   for (size_t o = 0; o < data.size(); o++) {
     Rec reco = data[o];
@@ -315,40 +313,40 @@ std::tuple<float, std::vector<size_t>, size_t, size_t> FasterPAM::swapFasterPAM(
   float loss = std::get<0>(paramsAssi);
   std::vector<Rec> data = std::get<1>(paramsAssi);
   debugAssertAssignment(mat, med, data);
-  std::vector<float> removal_loss(k);
+  std::vector<float> removalLoss(k);
   for (size_t i = 0; i < k; i++) {
-    removal_loss[i] = 0.0;
+    removalLoss[i] = 0.0;
   }
-  updateRemovalLoss(data, removal_loss);
-  size_t lastswap = n;
-  size_t n_swaps = 0;
+  updateRemovalLoss(data, removalLoss);
+  size_t lastSwap = n;
+  size_t nSwaps = 0;
   size_t iter = 0;
   while (iter < maxIter) {
     iter++;
-    size_t swaps_before = n_swaps;
+    size_t swapsBefore = nSwaps;
     for (size_t j = 0; j < n; j++) {
-      if (j == lastswap) {
+      if (j == lastSwap) {
         break;
       }
       if (j == med[data[j].near.i]) {
         continue;
       }
-      std::tuple<float, size_t> paramsSwap = findBestSwap(mat, removal_loss, data, j);
+      std::tuple<float, size_t> paramsSwap = findBestSwap(mat, removalLoss, data, j);
       float change = std::get<0>(paramsSwap);
       size_t b = std::get<1>(paramsSwap);
       if (change >= 0) {
         continue;
       }
-      n_swaps++;
-      lastswap = j;
-      float newloss = doSwap(mat, med, data, b, j);
-      if (newloss >= loss) {
+      nSwaps++;
+      lastSwap = j;
+      float newLoss = doSwap(mat, med, data, b, j);
+      if (newLoss >= loss) {
         break;
       }
-      loss = newloss;
-      updateRemovalLoss(data, removal_loss);
+      loss = newLoss;
+      updateRemovalLoss(data, removalLoss);
     }
-    if (n_swaps == swaps_before) {
+    if (nSwaps == swapsBefore) {
       break;
     }
   }
@@ -356,6 +354,6 @@ std::tuple<float, std::vector<size_t>, size_t, size_t> FasterPAM::swapFasterPAM(
   for (const auto& x : data) {
     assi.push_back(static_cast<size_t>(x.near.i));
   }
-  return { loss, assi, iter, n_swaps };
+  return { loss, assi, iter, nSwaps };
 }
 }  // namespace km

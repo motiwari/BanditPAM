@@ -1,7 +1,6 @@
 #ifndef HEADERS_ALGORITHMS_FASTERPAM_HPP_
 #define HEADERS_ALGORITHMS_FASTERPAM_HPP_
 
-#include <limits>
 #include <tuple>
 #include <armadillo>
 #include <vector>
