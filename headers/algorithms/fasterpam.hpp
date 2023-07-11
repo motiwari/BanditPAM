@@ -15,7 +15,7 @@ namespace km {
  * @brief Contains indices and distances to certain medoids
  */
 class DistancePair {
-public:
+ public:
   size_t i;
   float d;
 
@@ -29,16 +29,17 @@ public:
 
   /**
   * @brief Initialize an empty DistancePair
+  *
+  * @returns Empty DistancePair with max i value and 0 for d
   */
   static DistancePair empty();
 };
 
-// TODO(@Adarsh321123): should there be space between the inside code and the left side (same with cpp file itself)?
 /**
  * @brief Contains DistancePairs to nearest and second nearest medoids
  */
 class Rec {
-public:
+ public:
   DistancePair near;
   DistancePair seco;
 
@@ -61,6 +62,8 @@ public:
 
   /**
   * @brief Initialize an empty Rec
+  *
+  * @returns Empty Rec with max i value and 0 for d for near and seco
   */
   static Rec empty();
 };
@@ -83,6 +86,8 @@ class FasterPAM : public km::KMedoids {
   * @brief Performs uniform random sampling to initialize the k medoids.
   *
   * @param n Number of rows in the dataset
+  *
+  * @returns Array of medoid indices created from uniform random sampling
   */
   arma::urowvec randomInitialization(
       size_t n);
@@ -93,6 +98,8 @@ class FasterPAM : public km::KMedoids {
   * @param mat Array of distances between the data points.
   * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
+  *
+  * @returns Tuple of the loss and distances
   */
   std::tuple<float, std::vector<Rec>> initialAssignment(
       const arma::fmat& mat,
@@ -119,7 +126,9 @@ class FasterPAM : public km::KMedoids {
   * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
   * @param m Index of medoid to start seara potential contribution: is there a way to use bandits to get the guaranteed right answer instead of doing naive uniform random sampling?ching with
-   */
+  *
+  * @returns Tuple of whether a better medoid was found and the loss change
+  */
   std::tuple<bool, float> chooseMedoidWithinPartition(
       const arma::fmat& mat,
       arma::urowvec assignments,
@@ -143,6 +152,8 @@ class FasterPAM : public km::KMedoids {
   * @param removal_loss Array of losses for each medoid
   * @param distanceData Input data of distances to medoids
   * @param j Row in distance matrix to use for distance calculations
+  *
+  * @returns Tuple of the loss change and the index of the best swap
   */
   std::tuple<float, size_t> findBestSwap(
       const arma::fmat& mat,
@@ -160,6 +171,8 @@ class FasterPAM : public km::KMedoids {
   * @param b Medoid index
   * @param o Row in distance matrix to use for distance calculations
   * @param djo Current distance to second nearest medoid
+  *
+  * @returns Updated DistancePair for second nearest
   */
   DistancePair updateSecondNearest(
       const arma::fmat& mat,
@@ -178,6 +191,8 @@ class FasterPAM : public km::KMedoids {
   * @param distanceData Input data of distances to medoids
   * @param b Medoid index
   * @param j Row in distance matrix to use for distance calculations
+  *
+  * @returns Loss change from swap
   */
   float doSwap(
       const arma::fmat& mat,
@@ -186,7 +201,6 @@ class FasterPAM : public km::KMedoids {
       size_t b,
       size_t j);
 
-  // TODO(@Adarsh321123): add returns to docstring (throughout)?
   /**
   * @brief Performs the SWAP steps of FasterPAM.
   *
@@ -195,13 +209,14 @@ class FasterPAM : public km::KMedoids {
   * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
   * @param assignments Array of containing the medoid each point is closest to
+  *
+  * @returns Tuple of the new assignments and the number of swaps performed
   */
   std::tuple<arma::urowvec, size_t> swapFasterPAM(
     const arma::fmat &data,
     const arma::fmat& mat,
     arma::urowvec& medoidIndices,
     arma::urowvec assignments);
-  // TODO(@Adarsh321123): fix 2 vs 4 spaces
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_FASTERPAM_HPP_
