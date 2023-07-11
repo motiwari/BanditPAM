@@ -83,11 +83,9 @@ class FasterPAM : public km::KMedoids {
   * @brief Performs uniform random sampling to initialize the k medoids.
   *
   * @param n Number of rows in the dataset
-  * @param k Number of medoids to initialize
   */
   arma::urowvec randomInitialization(
-      size_t n,
-      size_t k);
+      size_t n);
 
   /**
   * @brief Performs an initialize swap if k > 1

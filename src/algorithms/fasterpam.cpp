@@ -77,7 +77,7 @@ void FasterPAM::fitFasterPAM(
     }
   }
   double wall0 = get_wall_time(); // TODO(@Adarsh321123): remove this
-  arma::urowvec medoidIndices = randomInitialization(inputData.n_rows, nMedoids);
+  arma::urowvec medoidIndices = randomInitialization(inputData.n_rows);
   steps = 0;
   medoidIndicesBuild = medoidIndices;
   size_t n = mat.n_rows;
@@ -105,17 +105,15 @@ void FasterPAM::fitFasterPAM(
 }
 
 arma::urowvec FasterPAM::randomInitialization(
-  size_t n,
-  size_t k) {
+  size_t n) {
   // from https://stackoverflow.com/questions/288739/generate-random-numbers-uniformly-over-an-entire-range
   const size_t rangeFrom = 0;
   const size_t rangeTo = n-1;
   std::random_device randDev;
   std::mt19937 generator(randDev());
   std::uniform_int_distribution<size_t> distr(rangeFrom, rangeTo);
-  // TODO(@Adarsh321123): use fill method when possible
-  arma::urowvec res(k);
-  for (size_t i = 0; i < k; i++) {
+  arma::urowvec res(nMedoids);
+  for (size_t i = 0; i < nMedoids; i++) {
     res[i] = distr(generator);
   }
   return res;
@@ -125,12 +123,11 @@ std::tuple<float, std::vector<Rec>> FasterPAM::initialAssignment(
   const arma::fmat& mat,
   arma::urowvec medoidIndices) {
   size_t n = mat.n_rows;
-  size_t k = medoidIndices.size();
   assert(("Dissimilarity matrix is not square",
           mat.n_rows == mat.n_cols));
   assert(("N is too large", n <= std::numeric_limits<size_t>::max()));
-  assert(("invalid N", k > 0 && k < std::numeric_limits<size_t>::max()));
-  assert(("k must be at most N", k <= n));
+  assert(("invalid N", nMedoids > 0 && nMedoids < std::numeric_limits<size_t>::max()));
+  assert(("k must be at most N", nMedoids <= n));
   std::vector<Rec> data(mat.n_rows);
   for (size_t i = 0; i < mat.n_rows; i++) {
     data[i] = Rec::empty();
@@ -204,9 +201,7 @@ std::tuple<bool, float> FasterPAM::chooseMedoidWithinPartition(
 void FasterPAM::updateRemovalLoss(
   std::vector<Rec>& data,
   arma::frowvec& loss) {
-  for (size_t i = 0; i < loss.size(); i++) {
-    loss[i] = 0.0;
-  }
+  loss.fill(0.0);
   for (Rec rec : data) {
     loss[rec.near.i] += rec.seco.d - rec.near.d;
   }
@@ -307,9 +302,7 @@ std::tuple<float, arma::urowvec, size_t, size_t> FasterPAM::swapFasterPAM(
   arma::urowvec& medoidIndices,
   arma::urowvec assignments) {
   size_t n = mat.n_rows; // TODO(@Adarsh321123): remove duplication with that of fit function
-  // TODO: don't need to find k here since nMedoids is known, same for other vars when applicable
-  size_t k = medoidIndices.size();
-  if (k == 1) {
+  if (nMedoids == 1) {
     std::tuple<bool, float> paramsMedoid = chooseMedoidWithinPartition(mat, assignments, medoidIndices, 0);
     bool swapped = std::get<0>(paramsMedoid);
     float loss = std::get<1>(paramsMedoid);
@@ -319,10 +312,7 @@ std::tuple<float, arma::urowvec, size_t, size_t> FasterPAM::swapFasterPAM(
   float loss = std::get<0>(paramsAssi);
   std::vector<Rec> data = std::get<1>(paramsAssi);
   debugAssertAssignment(mat, medoidIndices, data);
-  arma::frowvec removalLoss(k);
-  for (size_t i = 0; i < k; i++) {
-    removalLoss[i] = 0.0;
-  }
+  arma::frowvec removalLoss(nMedoids, arma::fill::zeros);
   updateRemovalLoss(data, removalLoss);
   size_t lastSwap = n;
   size_t nSwaps = 0;
