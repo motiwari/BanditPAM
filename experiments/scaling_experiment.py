@@ -26,7 +26,7 @@ def read_dataset(dataset_name):
         filename = "cifar10"
         delimiter = ","
     else:
-        filename = "scrna5k"
+        filename = "scrna_reformat"
         delimiter = ","
 
     dataset = pd.read_csv(
