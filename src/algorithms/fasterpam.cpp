@@ -30,7 +30,9 @@ double get_wall_time(){ // TODO(@Adarsh321123): remove this
 }
 
 namespace km {
-DistancePair::DistancePair(size_t i, float d) {
+DistancePair::DistancePair(
+  size_t i,
+  float d) {
   this->i = i;
   this->d = d;
 }
@@ -41,7 +43,11 @@ DistancePair DistancePair::empty() {
 
 Rec::Rec() : near(0, 0.0), seco(0, 0.0) {}
 
-Rec::Rec(size_t i1, float d1, size_t i2, float d2)
+Rec::Rec(
+  size_t i1,
+  float d1,
+  size_t i2,
+  float d2)
     : near(i1, d1), seco(i2, d2)
 {
 }
@@ -72,18 +78,15 @@ void FasterPAM::fitFasterPAM(
   }
   double wall0 = get_wall_time(); // TODO(@Adarsh321123): remove this
   // TODO(@Adarsh321123): refactor names (i.e. meds -> medoidIndices)
-  // TODO(@Adarsh321123): don't use vector when possible, (i.e. use arma::urowvec for medoidIndices)
-  std::vector<size_t> meds = randomInitialization(inputData.n_rows, nMedoids);
+  arma::urowvec meds = randomInitialization(inputData.n_rows, nMedoids);
   steps = 0;
-//  medoidIndicesBuild = meds; // TODO: come back to this once using arma::urowvec
+  medoidIndicesBuild = meds;
   size_t n = mat.n_rows;
-  std::vector<size_t> assi(n);
-  for (size_t i = 0; i < n; i++) {
-    assi[i] = 0;
-  }
+  arma::urowvec assi(n, arma::fill::zeros);
   // TODO(@Adarsh321123): make it so no need for things to be returned (i.e. change things like averageLoss)
   // TODO(@Adarsh321123): pass assi by reference so no need to pass back?
-  std::tuple<float, std::vector<size_t>, size_t, size_t> paramsFasterPAM = FasterPAM::swapFasterPAM(inputData, mat, meds, assi);
+  // TODO(@Adarsh321123): use pointer and references in parameters and arguments like other algorithms
+  std::tuple<float, arma::urowvec, size_t, size_t> paramsFasterPAM = FasterPAM::swapFasterPAM(inputData, mat, meds, assi);
   double wall1 = get_wall_time(); // TODO(@Adarsh321123): remove this
   float loss = std::get<0>(paramsFasterPAM) / inputData.n_rows;
   assi = std::get<1>(paramsFasterPAM);
@@ -97,11 +100,11 @@ void FasterPAM::fitFasterPAM(
   }
   std::cout << "Wall Clock Time: " << wall1 - wall0 << "\n"; // TODO(@Adarsh321123): remove this
 
-//  medoidIndicesFinal = meds; // TODO: come back to this once using arma::urowvec
-//  labels = assi; // TODO: come back to this once using arma::urowvec
+  medoidIndicesFinal = meds;
+  labels = assi;
 }
 
-std::vector<size_t> FasterPAM::randomInitialization(
+arma::urowvec FasterPAM::randomInitialization(
   size_t n,
   size_t k) {
   // from https://stackoverflow.com/questions/288739/generate-random-numbers-uniformly-over-an-entire-range
@@ -110,7 +113,8 @@ std::vector<size_t> FasterPAM::randomInitialization(
   std::random_device randDev;
   std::mt19937 generator(randDev());
   std::uniform_int_distribution<size_t> distr(rangeFrom, rangeTo);
-  std::vector<size_t> res(k);
+  // TODO(@Adarsh321123): use fill method when possible
+  arma::urowvec res(k);
   for (size_t i = 0; i < k; i++) {
     res[i] = distr(generator);
   }
@@ -119,7 +123,7 @@ std::vector<size_t> FasterPAM::randomInitialization(
 
 std::tuple<float, std::vector<Rec>> FasterPAM::initialAssignment(
   const arma::fmat& mat,
-  std::vector<size_t> med) {
+  arma::urowvec med) {
   size_t n = mat.n_rows;
   size_t k = med.size();
   assert(("Dissimilarity matrix is not square",
@@ -154,7 +158,7 @@ std::tuple<float, std::vector<Rec>> FasterPAM::initialAssignment(
 
 void FasterPAM::debugAssertAssignment(
   const arma::fmat& mat,
-  std::vector<size_t> med,
+  arma::urowvec med,
   std::vector<Rec>& data) {
   for (size_t o = 0; o < mat.n_rows; o++) {
     assert(("primary assignment inconsistent", mat(o, med[data[o].near.i]) == data[o].near.d));
@@ -165,8 +169,8 @@ void FasterPAM::debugAssertAssignment(
 
 std::tuple<bool, float> FasterPAM::chooseMedoidWithinPartition(
   const arma::fmat& mat,
-  std::vector<size_t> assi,
-  std::vector<size_t>& med,
+  arma::urowvec assi,
+  arma::urowvec& med,
   size_t m) {
   size_t first = med[m];
   size_t best = first;
@@ -197,7 +201,9 @@ std::tuple<bool, float> FasterPAM::chooseMedoidWithinPartition(
   return {best != first, sumb};
 }
 
-void FasterPAM::updateRemovalLoss(std::vector<Rec>& data, std::vector<float>& loss) {
+void FasterPAM::updateRemovalLoss(
+  std::vector<Rec>& data,
+  arma::frowvec& loss) {
   for (size_t i = 0; i < loss.size(); i++) {
     loss[i] = 0.0;
   }
@@ -208,10 +214,10 @@ void FasterPAM::updateRemovalLoss(std::vector<Rec>& data, std::vector<float>& lo
 
 std::tuple<float, size_t> FasterPAM::findBestSwap(
   const arma::fmat& mat,
-  std::vector<float>& removalLoss,
+  arma::frowvec& removalLoss,
   std::vector<Rec>& data,
   size_t j) {
-  std::vector<float> ploss = removalLoss;
+  arma::frowvec ploss = removalLoss;
   float acc = 0.0;
   for (size_t o = 0; o < data.size(); o++) {
     Rec reco = data[o];
@@ -231,7 +237,7 @@ std::tuple<float, size_t> FasterPAM::findBestSwap(
 
 DistancePair FasterPAM::updateSecondNearest(
   const arma::fmat& mat,
-  std::vector<size_t> med,
+  arma::urowvec med,
   size_t n,
   size_t b,
   size_t o,
@@ -252,7 +258,7 @@ DistancePair FasterPAM::updateSecondNearest(
 
 float FasterPAM::doSwap(
   const arma::fmat& mat,
-  std::vector<size_t>& med,
+  arma::urowvec& med,
   std::vector<Rec>& data,
   size_t b,
   size_t j) {
@@ -295,11 +301,11 @@ float FasterPAM::doSwap(
   return loss;
 }
 
-std::tuple<float, std::vector<size_t>, size_t, size_t> FasterPAM::swapFasterPAM(
+std::tuple<float, arma::urowvec, size_t, size_t> FasterPAM::swapFasterPAM(
   const arma::fmat &inputData,
   const arma::fmat& mat,
-  std::vector<size_t>& med,
-  std::vector<size_t> assi) {
+  arma::urowvec& med,
+  arma::urowvec assi) {
   size_t n = mat.n_rows; // TODO(@Adarsh321123): remove duplication with that of fit function
   // TODO: don't need to find k here since nMedoids is known, same for other vars when applicable
   size_t k = med.size();
@@ -313,7 +319,7 @@ std::tuple<float, std::vector<size_t>, size_t, size_t> FasterPAM::swapFasterPAM(
   float loss = std::get<0>(paramsAssi);
   std::vector<Rec> data = std::get<1>(paramsAssi);
   debugAssertAssignment(mat, med, data);
-  std::vector<float> removalLoss(k);
+  arma::frowvec removalLoss(k);
   for (size_t i = 0; i < k; i++) {
     removalLoss[i] = 0.0;
   }
@@ -350,9 +356,10 @@ std::tuple<float, std::vector<size_t>, size_t, size_t> FasterPAM::swapFasterPAM(
       break;
     }
   }
-  assi.clear();
-  for (const auto& x : data) {
-    assi.push_back(static_cast<size_t>(x.near.i));
+
+  for (size_t i = 0; i < data.size(); i++) {
+    const auto& x = data[i];
+    assi[i] = static_cast<size_t>(x.near.i);
   }
   return { loss, assi, iter, nSwaps };
 }

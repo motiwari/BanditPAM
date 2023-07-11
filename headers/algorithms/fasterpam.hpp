@@ -85,7 +85,7 @@ class FasterPAM : public km::KMedoids {
   * @param n Number of rows in the dataset
   * @param k Number of medoids to initialize
   */
-  std::vector<size_t> randomInitialization(
+  arma::urowvec randomInitialization(
       size_t n,
       size_t k);
 
@@ -98,7 +98,7 @@ class FasterPAM : public km::KMedoids {
   */
   std::tuple<float, std::vector<Rec>> initialAssignment(
       const arma::fmat& mat,
-      std::vector<size_t> med);
+      arma::urowvec med);
 
   /**
   * @brief Checks for inconsistencies in distance assignments
@@ -110,7 +110,7 @@ class FasterPAM : public km::KMedoids {
   */
   void debugAssertAssignment(
       const arma::fmat& mat,
-      std::vector<size_t> med,
+      arma::urowvec med,
       std::vector<Rec>& data);
 
   /**
@@ -124,8 +124,8 @@ class FasterPAM : public km::KMedoids {
    */
   std::tuple<bool, float> chooseMedoidWithinPartition(
       const arma::fmat& mat,
-      std::vector<size_t> assi,
-      std::vector<size_t>& med,
+      arma::urowvec assi,
+      arma::urowvec& med,
       size_t m);
 
   /**
@@ -136,7 +136,7 @@ class FasterPAM : public km::KMedoids {
   */
   void updateRemovalLoss(
       std::vector<Rec>& data,
-      std::vector<float>& loss);
+      arma::frowvec& loss);
 
   /**
   * @brief Find the index of the best swap and its loss change
@@ -148,7 +148,7 @@ class FasterPAM : public km::KMedoids {
   */
   std::tuple<float, size_t> findBestSwap(
       const arma::fmat& mat,
-      std::vector<float>& removal_loss,
+      arma::frowvec& removal_loss,
       std::vector<Rec>& data,
       size_t j);
 
@@ -165,7 +165,7 @@ class FasterPAM : public km::KMedoids {
   */
   DistancePair updateSecondNearest(
       const arma::fmat& mat,
-      std::vector<size_t> med,
+      arma::urowvec med,
       size_t n,
       size_t b,
       size_t o,
@@ -183,7 +183,7 @@ class FasterPAM : public km::KMedoids {
   */
   float doSwap(
       const arma::fmat& mat,
-      std::vector<size_t>& med,
+      arma::urowvec& med,
       std::vector<Rec>& data,
       size_t b,
       size_t j);
@@ -198,11 +198,11 @@ class FasterPAM : public km::KMedoids {
   * sampling step that is modified in place as better medoids are identified
   * @param assi Array of containing the medoid each point is closest to
   */
-  std::tuple<float, std::vector<size_t>, size_t, size_t> swapFasterPAM(
+  std::tuple<float, arma::urowvec, size_t, size_t> swapFasterPAM(
     const arma::fmat &inputData,
     const arma::fmat& mat,
-    std::vector<size_t>& med,
-    std::vector<size_t> assi);
+    arma::urowvec& med,
+    arma::urowvec assi);
   // TODO(@Adarsh321123): fix 2 vs 4 spaces
 };
 }  // namespace km
