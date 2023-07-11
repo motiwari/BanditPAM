@@ -104,12 +104,12 @@ class FasterPAM : public km::KMedoids {
   * @param mat Array of distances between the data points.
   * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
-  * @param data Input data to cluster
+  * @param distanceData Input data of distances to medoids
   */
   void debugAssertAssignment(
       const arma::fmat& mat,
       arma::urowvec medoidIndices,
-      std::vector<Rec>& data);
+      std::vector<Rec>& distanceData);
 
   /**
   * @brief Finds the single best medoid within the data
@@ -129,11 +129,11 @@ class FasterPAM : public km::KMedoids {
   /**
   * @brief Updates the loss change of a potential swap
   *
-  * @param data Input data to cluster
+  * @param distanceData Input data of distances to medoids
   * @param loss Array of losses for each medoid
   */
   void updateRemovalLoss(
-      std::vector<Rec>& data,
+      std::vector<Rec>& distanceData,
       arma::frowvec& loss);
 
   /**
@@ -141,13 +141,13 @@ class FasterPAM : public km::KMedoids {
   *
   * @param mat Array of distances between the data points.
   * @param removal_loss Array of losses for each medoid
-  * @param data Input data to cluster
+  * @param distanceData Input data of distances to medoids
   * @param j Row in distance matrix to use for distance calculations
   */
   std::tuple<float, size_t> findBestSwap(
       const arma::fmat& mat,
       arma::frowvec& removal_loss,
-      std::vector<Rec>& data,
+      std::vector<Rec>& distanceData,
       size_t j);
 
   /**
@@ -175,14 +175,14 @@ class FasterPAM : public km::KMedoids {
   * @param mat Array of distances between the data points.
   * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
-  * @param data Input data to cluster
+  * @param distanceData Input data of distances to medoids
   * @param b Medoid index
   * @param j Row in distance matrix to use for distance calculations
   */
   float doSwap(
       const arma::fmat& mat,
       arma::urowvec& medoidIndices,
-      std::vector<Rec>& data,
+      std::vector<Rec>& distanceData,
       size_t b,
       size_t j);
 
@@ -190,14 +190,14 @@ class FasterPAM : public km::KMedoids {
   /**
   * @brief Performs the SWAP steps of FasterPAM.
   *
-  * @param inputData Input data to cluster
+  * @param data Input data to cluster
   * @param mat Array of distances between the data points.
   * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
   * @param assignments Array of containing the medoid each point is closest to
   */
   std::tuple<float, arma::urowvec, size_t, size_t> swapFasterPAM(
-    const arma::fmat &inputData,
+    const arma::fmat &data,
     const arma::fmat& mat,
     arma::urowvec& medoidIndices,
     arma::urowvec assignments);
