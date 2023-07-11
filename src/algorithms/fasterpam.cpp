@@ -70,10 +70,9 @@ void FasterPAM::fitFasterPAM(
   arma::fmat mat(data.n_cols, data.n_cols);
   for (int m = 0; m < data.n_cols; m++) {
     for (int n = m; n < data.n_cols; n++) {
-      // TODO(@Adarsh321123): implement and test multiple distances
       // TODO(@Adarsh321123): add lots of comments
       // TODO(@Adarsh321123): ensure that output from main is correct
-      float dist = arma::norm(data.col(m) - data.col(n), 2);
+      float dist = (this->*lossFn)(data, m, n);
       mat(m, n) = dist;
       mat(n, m) = dist;
     }
