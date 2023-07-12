@@ -18,7 +18,8 @@ namespace km {
  * for a particular set of input data.
  *
  * @param nMedoids Number of medoids to use and clusters to create
- * @param algorithm Algorithm used to find medoids: "BanditPAM", "PAM", or "FastPAM1"
+ * @param algorithm Algorithm used to find medoids: "BanditPAM",
+ * "BanditPAM_orig", "PAM", "FastPAM1", "FasterPAM", or "BanditFasterPAM"
  * @param maxIter The maximum number of SWAP steps the algorithm runs
  * @param buildConfidence Parameter that affects the width of BUILD confidence intervals
  * @param swapConfidence Parameter that affects the width of SWAP confidence intervals
@@ -107,7 +108,8 @@ class KMedoids {
   /**
    * @brief Sets the algorithm being used for k-medoids clustering.
    *
-   * @param newAlgorithm The new algorithm to use: "BanditPAM", "PAM", or "FastPAM1"
+   * @param newAlgorithm The new algorithm to use: "BanditPAM",
+   * "BanditPAM_orig", "PAM", "FastPAM1", "FasterPAM", or "BanditFasterPAM"
    */
   void setAlgorithm(const std::string &newAlgorithm);
 
@@ -464,7 +466,8 @@ class KMedoids {
 
   /**
    * @brief Checks whether algorithm choice is valid. The given
-   * algorithm must be either "BanditPAM", "PAM", or "FastPAM1".
+   * algorithm must be either "BanditPAM", "BanditPAM_orig", "PAM", "FastPAM1",
+   * "FasterPAM", or "BanditFasterPAM".
    *
    * @param algorithm Name of the k-medoids algorithm to use
    *
