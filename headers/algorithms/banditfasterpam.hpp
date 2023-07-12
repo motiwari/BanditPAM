@@ -26,20 +26,14 @@ class BanditFasterPAM : public km::KMedoids {
     std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
-  * @brief Performs the BUILD step of BanditFasterPAM.
+  * @brief Performs uniform random sampling to initialize the k medoids.
   *
-  * Loops over all datapoint and checks each's distance to every other
-  * datapoint in the dataset, then adds the point with the lowest overall
-  * loss to the set of medoids.
+  * @param n Number of rows in the dataset
   *
-  * @param data Transposed input data to cluster
-  * @param medoidIndices Array of medoids that is modified in place
-  * as medoids are identified
-  */
-  void buildBanditFasterPAM(
-    const arma::fmat& data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    arma::urowvec* medoidIndices);
+  * @returns Array of medoid indices created from uniform random sampling
+   */
+  arma::urowvec randomInitialization(
+      size_t n);
 
   /**
    * @brief: TODO

@@ -20,7 +20,6 @@ void BanditFasterPAM::fitBanditFasterPAM(
   const arma::fmat& inputData,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   data = arma::trans(inputData);
-  arma::urowvec medoidIndices(nMedoids);
 
   // Note: even if we are using a distance matrix, we compute the permutation
   // in the block below because it is used elsewhere in the call stack
@@ -46,8 +45,9 @@ void BanditFasterPAM::fitBanditFasterPAM(
     }
   }
 
-
-  BanditFasterPAM::buildBanditFasterPAM(data, distMat, &medoidIndices);
+  // BanditFasterPAM uses uniform random sampling instead of BUILD since
+  // SWAP is so fast that it is not worth it to use BUILD
+  arma::urowvec medoidIndices = randomInitialization(data.n_cols);
   steps = 0;
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
@@ -57,43 +57,22 @@ void BanditFasterPAM::fitBanditFasterPAM(
   labels = assignments;
 }
 
-// TODO(@motiwari): consolidate this function which is identical to several other BUILD fns
-void BanditFasterPAM::buildBanditFasterPAM(
-  const arma::fmat& data,
-  std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  arma::urowvec* medoidIndices) {
-  size_t N = data.n_cols;
-  arma::frowvec estimates(N, arma::fill::zeros);
-  arma::frowvec bestDistances(N);
-  bestDistances.fill(std::numeric_limits<float>::infinity());
-  for (size_t k = 0; k < nMedoids; k++) {
-    float minDistance = std::numeric_limits<float>::infinity();
-    size_t best = 0;
-    for (size_t i = 0; i < data.n_cols; i++) {
-      float total = 0;
-      for (size_t j = 0; j < data.n_cols; j++) {
-        float cost = (this->*lossFn)(data, i, j);
-        // compares this with the cached best distance
-        if (bestDistances(j) < cost) {
-          cost = bestDistances(j);
-        }
-        total += cost;
-      }
-      if (total < minDistance) {
-        minDistance = total;
-        best = i;
-      }
-    }
-    (*medoidIndices)(k) = best;
-
-    // update the medoid assignment and best_distance for this datapoint
-    for (size_t l = 0; l < N; l++) {
-      float cost = (this->*lossFn)(data, l, (*medoidIndices)(k));
-      if (cost < bestDistances(l)) {
-        bestDistances(l) = cost;
-      }
-    }
+arma::urowvec BanditFasterPAM::randomInitialization(
+    size_t n) {
+  // from https://stackoverflow.com/questions/288739/generate-random-numbers-uniformly-over-an-entire-range
+  const size_t rangeFrom = 0;
+  const size_t rangeTo = n-1;
+  // create a random device
+  std::random_device randDev;
+  std::mt19937 generator(randDev());
+  std::uniform_int_distribution<size_t> distr(rangeFrom, rangeTo);
+  // generate k random numbers
+  arma::urowvec res(nMedoids);
+  for (size_t i = 0; i < nMedoids; i++) {
+    res[i] = distr(generator);
   }
+
+  return res;
 }
 
 arma::frowvec BanditFasterPAM::calcDeltaTDMs(
@@ -338,8 +317,8 @@ void BanditFasterPAM::swapBanditFasterPAM(
 //        std::cout << "Computed  " << numSamples << " for candidate " << candidate << "\n";
         if (total_Delta_TD_ms(best_m_idx) + candidate_ucb < -0.0001  && (*medoidIndices)(best_m_idx) != candidate) {
           // Perform Swap
-          std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with "
-                    << candidate << "\n";
+//          std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with "
+//                    << candidate << "\n";
           iter++;
           (*medoidIndices)(best_m_idx) = candidate;
 
