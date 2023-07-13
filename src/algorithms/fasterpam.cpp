@@ -31,7 +31,6 @@ namespace km {
     medoidIndicesBuild = medoidIndices;
     size_t n = data.n_cols;
     arma::urowvec assignments(n);
-    assignments.fill(std::numeric_limits<size_t>::max());
     arma::urowvec secondAssignments(n);
     secondAssignments.fill(std::numeric_limits<size_t>::max());
     std::tuple<arma::urowvec, size_t> paramsFasterPAM = FasterPAM::swapFasterPAM(data, distMat, medoidIndices, assignments, secondAssignments);
@@ -72,7 +71,6 @@ namespace km {
     size_t firstCenter = medoidIndices[0];
     float loss = 0.0;
     for (size_t i = 0; i < n; i++) {
-      // TODO: add more comments
       float distNear = KMedoids::cachedLoss(data, distMat, i,
                                         firstCenter, 2);
       (*assignments)(i) = 0;
@@ -84,7 +82,7 @@ namespace km {
         float d = KMedoids::cachedLoss(data, distMat, i,
                                        me, 2);
         // determine how to fill the second nearest distance
-        if (d < (*bestDistances)(i) || i == me) { // TODO: include second condition in BanditFasterPAM?
+        if (d < (*bestDistances)(i) || i == me) {
           (*secondAssignments)(i) = (*assignments)(i);
           (*secondBestDistances)(i) = (*bestDistances)(i);
           (*assignments)(i) = m;
@@ -149,7 +147,7 @@ namespace km {
     arma::frowvec& loss,
     arma::urowvec *assignments) {
     loss.fill(0.0);
-    for (size_t i = 0; i < loss.n_elem; i++) {
+    for (size_t i = 0; i < (*bestDistances).n_elem; i++) {
       loss[(*assignments)(i)] += (*secondBestDistances)(i) - (*bestDistances)(i);
     }
   }
@@ -163,7 +161,7 @@ namespace km {
     arma::urowvec *assignments) {
     arma::frowvec ploss = removalLoss;
     float acc = 0.0;
-    for (size_t o = 0; o < removalLoss.n_elem; o++) {
+    for (size_t o = 0; o < (*bestDistances).n_elem; o++) {
       float djo = KMedoids::cachedLoss(data, distMat, o,
                                        j, 2);
       if (djo < (*bestDistances)(o)) {
@@ -279,7 +277,8 @@ namespace km {
     arma::urowvec secondAssignments) {
     size_t n = assignments.n_elem;
     // run a simplified algorithm if k = 1
-    if (nMedoids == 1) { // TODO: can we remove this for standardization?
+    if (nMedoids == 1) {
+      assignments.fill(0);
       std::tuple<bool, float> paramsMedoid = chooseMedoidWithinPartition(distMat, assignments, medoidIndices, 0);
       bool swapped = std::get<0>(paramsMedoid);
       float loss = std::get<1>(paramsMedoid);
@@ -287,6 +286,7 @@ namespace km {
       return {assignments, (swapped) ? 1 : 0};
     }
 
+    assignments.fill(std::numeric_limits<size_t>::max());
     arma::frowvec bestDistances(n, arma::fill::zeros);
     arma::frowvec secondBestDistances(n, arma::fill::zeros);
     float loss = initialAssignment(data, distMat, medoidIndices, &bestDistances, &secondBestDistances, &assignments, &secondAssignments);

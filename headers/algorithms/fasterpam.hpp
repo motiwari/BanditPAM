@@ -11,7 +11,6 @@
 
 
 namespace km {
-// TODO: change docstrings to not use Rec anymore
 /**
  * @brief Contains all necessary FasterPAM functions
  */
@@ -36,7 +35,6 @@ class FasterPAM : public km::KMedoids {
   arma::urowvec randomInitialization(
       size_t n);
 
-  // TODO: update docstring(throughout)
   /**
   * @brief Performs an initialize swap if k > 1
   *
@@ -44,7 +42,7 @@ class FasterPAM : public km::KMedoids {
   * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
   *
-  * @returns Tuple of the loss and distances
+  * @returns Loss after initial assignment
   */
   float initialAssignment(
       const arma::fmat &data,
@@ -74,8 +72,10 @@ class FasterPAM : public km::KMedoids {
   /**
   * @brief Updates the loss change of a potential swap
   *
-  * @param distanceData Input data of distances to medoids
+  * @param bestDistances Array of best distances for each point
+  * @param secondBestDistances Array of second best distances for each point
   * @param loss Array of losses for each medoid
+  * @param assignments Array of containing the medoid each point is closest to
   */
   void updateRemovalLoss(
       arma::frowvec *bestDistances,
@@ -87,8 +87,10 @@ class FasterPAM : public km::KMedoids {
   * @brief Find the index of the best swap and its loss change
   *
   * @param removal_loss Array of losses for each medoid
-  * @param distanceData Input data of distances to medoids
+  * @param bestDistances Array of best distances for each point
+  * @param secondBestDistances Array of second best distances for each point
   * @param j Row in distance matrix to use for distance calculations
+  * @param assignments Array of containing the medoid each point is closest to
   *
   * @returns Tuple of the loss change and the index of the best swap
   */
@@ -101,7 +103,7 @@ class FasterPAM : public km::KMedoids {
       arma::urowvec *assignments);
 
   /**
-  * @brief Update the DistancePair with distance to the second nearest medoid
+  * @brief Update the second nearest medoid and the distance to it
   *
   * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
@@ -110,7 +112,7 @@ class FasterPAM : public km::KMedoids {
   * @param o Row in distance matrix to use for distance calculations
   * @param djo Current distance to second nearest medoid
   *
-  * @returns Updated DistancePair for second nearest
+  * @returns Tuple of updated second nearest medoid and distance to it
   */
   std::tuple<size_t, float> updateSecondNearest(
       std::optional<std::reference_wrapper<const arma::fmat>> distMat,
@@ -125,7 +127,11 @@ class FasterPAM : public km::KMedoids {
   *
   * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
-  * @param distanceData Input data of distances to medoids
+  * @param bestDistances Array of best distances for each point
+  * @param secondBestDistances Array of second best distances for each point
+  * @param assignments Array of containing the medoid each point is closest to
+  * @param secondAssignments Array of containing the medoid each point is
+  * closest to after the one in assignments array
   * @param b Medoid index
   * @param j Row in distance matrix to use for distance calculations
   *
@@ -148,6 +154,8 @@ class FasterPAM : public km::KMedoids {
   * @param medoidIndices Array of medoid indices created from uniform random
   * sampling step that is modified in place as better medoids are identified
   * @param assignments Array of containing the medoid each point is closest to
+  * @param secondAssignments Array of containing the medoid each point is
+  * closest to after the one in assignments array
   *
   * @returns Tuple of the new assignments and the number of swaps performed
   */
