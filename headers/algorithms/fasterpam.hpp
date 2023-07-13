@@ -11,63 +11,7 @@
 
 
 namespace km {
-/**
- * @brief Contains indices and distances to certain medoids
- */
-class DistancePair {
- public:
-  size_t i;
-  float d;
-
-  /**
-  * @brief Constructor that initializes i and d to the passed arguments
-  *
-  * @param i Index of the medoid corresponding to a data point
-  * @param d Distance from data point to medoid
-  */
-  DistancePair(size_t i, float d);
-
-  /**
-  * @brief Initialize an empty DistancePair
-  *
-  * @returns Empty DistancePair with max i value and 0 for d
-  */
-  static DistancePair empty();
-};
-
-/**
- * @brief Contains DistancePairs to nearest and second nearest medoids
- */
-class Rec {
- public:
-  DistancePair near;
-  DistancePair seco;
-
-  /**
-  * @brief Default constructor that initializes i and d with 0 and 0.0
-  */
-  Rec();
-
-  /**
-  * @brief Constructor that initializes i and d to the passed arguments
-  *
-  * This applies to both the nearest and second nearest DistancePairs
-  *
-  * @param i1 Index of the medoid corresponding to the first data point
-  * @param d1 Distance from first data point to nearest medoid
-  * @param i2 Index of the medoid corresponding to the second data point
-  * @param d2 Distance from second data point to second nearest medoid
-  */
-  Rec(size_t i1, float d1, size_t i2, float d2);
-
-  /**
-  * @brief Initialize an empty Rec
-  *
-  * @returns Empty Rec with max i value and 0 for d for near and seco
-  */
-  static Rec empty();
-};
-
+// TODO: change docstrings to not use Rec anymore
 /**
  * @brief Contains all necessary FasterPAM functions
  */
@@ -92,6 +36,7 @@ class FasterPAM : public km::KMedoids {
   arma::urowvec randomInitialization(
       size_t n);
 
+  // TODO: update docstring(throughout)
   /**
   * @brief Performs an initialize swap if k > 1
   *
@@ -101,10 +46,14 @@ class FasterPAM : public km::KMedoids {
   *
   * @returns Tuple of the loss and distances
   */
-  std::tuple<float, std::vector<Rec>> initialAssignment(
+  float initialAssignment(
       const arma::fmat &data,
       std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-      arma::urowvec medoidIndices);
+      arma::urowvec medoidIndices,
+      arma::frowvec *bestDistances,
+      arma::frowvec *secondBestDistances,
+      arma::urowvec *assignments,
+      arma::urowvec *secondAssignments);
 
   /**
   * @brief Finds the single best medoid within the data
@@ -129,8 +78,10 @@ class FasterPAM : public km::KMedoids {
   * @param loss Array of losses for each medoid
   */
   void updateRemovalLoss(
-      std::vector<Rec>& distanceData,
-      arma::frowvec& loss);
+      arma::frowvec *bestDistances,
+      arma::frowvec *secondBestDistances,
+      arma::frowvec& loss,
+      arma::urowvec *assignments);
 
   /**
   * @brief Find the index of the best swap and its loss change
@@ -144,8 +95,10 @@ class FasterPAM : public km::KMedoids {
   std::tuple<float, size_t> findBestSwap(
       std::optional<std::reference_wrapper<const arma::fmat>> distMat,
       arma::frowvec& removal_loss,
-      std::vector<Rec>& distanceData,
-      size_t j);
+      arma::frowvec *bestDistances,
+      arma::frowvec *secondBestDistances,
+      size_t j,
+      arma::urowvec *assignments);
 
   /**
   * @brief Update the DistancePair with distance to the second nearest medoid
@@ -159,7 +112,7 @@ class FasterPAM : public km::KMedoids {
   *
   * @returns Updated DistancePair for second nearest
   */
-  DistancePair updateSecondNearest(
+  std::tuple<size_t, float> updateSecondNearest(
       std::optional<std::reference_wrapper<const arma::fmat>> distMat,
       arma::urowvec medoidIndices,
       size_t n,
@@ -181,7 +134,10 @@ class FasterPAM : public km::KMedoids {
   float doSwap(
       std::optional<std::reference_wrapper<const arma::fmat>> distMat,
       arma::urowvec& medoidIndices,
-      std::vector<Rec>& distanceData,
+      arma::frowvec *bestDistances,
+      arma::frowvec *secondBestDistances,
+      arma::urowvec *assignments,
+      arma::urowvec *secondAssignments,
       size_t b,
       size_t j);
 
@@ -199,7 +155,8 @@ class FasterPAM : public km::KMedoids {
     const arma::fmat &data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     arma::urowvec& medoidIndices,
-    arma::urowvec assignments);
+    arma::urowvec assignments,
+    arma::urowvec secondAsignments);
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_FASTERPAM_HPP_
