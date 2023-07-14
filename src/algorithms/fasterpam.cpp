@@ -305,6 +305,7 @@ namespace km {
           break;
         }
 
+        // skip this iteration since candidate is already a medoid
         if (j == medoidIndices[assignments(j)]) {
           continue;
         }
