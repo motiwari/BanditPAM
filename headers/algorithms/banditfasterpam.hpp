@@ -35,6 +35,7 @@ class BanditFasterPAM : public km::KMedoids {
   arma::urowvec randomInitialization(
       size_t n);
 
+  // TODO: finish all these docstrings
   /**
    * @brief: TODO
    *
@@ -50,7 +51,7 @@ class BanditFasterPAM : public km::KMedoids {
     arma::frowvec* bestDistances,
     arma::frowvec* secondBestDistances);
 
-  float swapSigma(
+  std::tuple<float, arma::fvec> swapSigma(
     const size_t candidate,
     const arma::fmat& data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,

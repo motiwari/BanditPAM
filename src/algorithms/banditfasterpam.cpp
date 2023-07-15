@@ -45,13 +45,18 @@ void BanditFasterPAM::fitBanditFasterPAM(
     }
   }
 
+  steps = 0;
   // BanditFasterPAM uses uniform random sampling instead of BUILD since
   // SWAP is so fast that it is not worth it to use BUILD
   arma::urowvec medoidIndices = randomInitialization(data.n_cols);
-  steps = 0;
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
-  BanditFasterPAM::swapBanditFasterPAM(data, distMat, &medoidIndices, &assignments);
+  // we should swap even if k = 1 because we used uniform random sampling
+  BanditFasterPAM::swapBanditFasterPAM(
+      data,
+      distMat,
+      &medoidIndices,
+      &assignments);
 
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
@@ -88,7 +93,7 @@ arma::frowvec BanditFasterPAM::calcDeltaTDMs(
   return Delta_TD_ms / N;
 }
 
-float BanditFasterPAM::swapSigma(
+std::tuple<float, arma::fvec> BanditFasterPAM::swapSigma(
   const size_t candidate,
   const arma::fmat& data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
@@ -112,7 +117,12 @@ float BanditFasterPAM::swapSigma(
     referencePoints = arma::randperm(N, batchSize);
   }
 
-  arma::fvec sample(batchSize, arma::fill::zeros);
+  arma::fvec candidateSamples(batchSize, arma::fill::zeros);
+  arma::fmat medoidSamples(nMedoids, batchSize, arma::fill::zeros);
+  // since each row of medoidSamples will have a different number of elements
+  // due to differing numbers of points that are assigned to each medoid,
+  // we need to keep track of the next index to update for each medoid
+  arma::fvec medoidSamplesIndex(nMedoids, arma::fill::zeros);
   // calculate change in loss for some subset of the data
   #pragma omp parallel for if (this->parallelize)
   for (size_t ref = 0; ref < batchSize; ref++) {
@@ -121,10 +131,15 @@ float BanditFasterPAM::swapSigma(
         KMedoids::cachedLoss(data, distMat, candidate, referencePoints(ref), 0);
 
     if (cost < (*bestDistances)(ref)) {
-      sample(ref) = cost - (*bestDistances)(ref);
+      candidateSamples(ref) = cost - (*bestDistances)(ref);
+    } else if (cost < (*secondBestDistances)(ref)) {
+      size_t k = (*assignments)(ref);
+      medoidSamples(k, medoidSamplesIndex(k)) = cost - (*bestDistances)(ref);
+      medoidSamplesIndex(k)++;
     }
   }
-  return arma::stddev(sample);
+
+  return {arma::stddev(candidateSamples), arma::stddev(medoidSamples, 0, 1)};
 }
 
 std::tuple<float, arma::frowvec> BanditFasterPAM::swapTarget(
@@ -204,6 +219,13 @@ void BanditFasterPAM::swapBanditFasterPAM(
   size_t K = nMedoids;
   arma::frowvec bestDistances(N);
   arma::frowvec secondBestDistances(N);
+  arma::urowvec candidates(nMedoids, arma::fill::ones);
+  arma::urowvec exactMask(nMedoids, arma::fill::zeros);
+  arma::frowvec estimates(nMedoids, arma::fill::zeros);
+  arma::frowvec Delta_TD_ms_given_candidate_result;
+  arma::frowvec lcbs(nMedoids);
+  arma::frowvec ucbs(nMedoids);
+  arma::urowvec numSamples(nMedoids, arma::fill::zeros);
 
   // TODO(@motiwari): This is O(kn). Can remove by carrying through assignments from the BUILD step, but that will be
   //  O(kn) too. Since we only do this O(kn) once, we can amortize it over all eager SWAP steps.
@@ -216,7 +238,6 @@ void BanditFasterPAM::swapBanditFasterPAM(
     &secondBestDistances,
     assignments);
 
-  bool converged{false};
   size_t x_last{N};
 
   // Calculate initial removal loss for each medoid
@@ -227,23 +248,26 @@ void BanditFasterPAM::swapBanditFasterPAM(
 
 
   size_t iter = 0;
-  while (iter < maxIter && !converged) {
-    for (size_t candidate = 0; candidate < data.n_cols; candidate++) {
-      if (candidate == x_last) {
-        converged = true;
+  size_t nSwaps = 0;
+  while (iter < maxIter) {
+    iter++;
+    permutationIdx = 0;
+    size_t swapsBefore = nSwaps;
+
+    for (size_t candidate = 0; candidate < N; candidate++) {
+      if (candidate == x_last) {  // no improvements found
         break;
       }
 
-      float candidate_estimate{0};
-      float candidate_lcb{0};
-      float candidate_ucb{0};
-      float candidate_sigma{0};
-      size_t numSamples{0};
+      arma::frowvec Delta_TD_ms = Delta_TD_ms_initial;
 
-      arma::frowvec Delta_TD_ms_given_candidate(nMedoids, arma::fill::zeros);
+      // skip this iteration since candidate is already a medoid
+      if (candidate == (*medoidIndices)((*assignments)(candidate))) {
+        continue;
+      }
 
       // Calculate sigma for constructing CIs
-      candidate_sigma = swapSigma(
+      std::tuple<float, arma::fvec> sigmas = swapSigma(
         candidate,
         data,
         distMat,
@@ -251,11 +275,35 @@ void BanditFasterPAM::swapBanditFasterPAM(
         &secondBestDistances,
         assignments);
 
-      bool continue_sampling{true};
+      float candidate_sigma = std::get<0>(sigmas);
+      arma::fvec medoid_sigmas = std::get<1>(sigmas);
 
-      // While still possible to get < -0.01, keep sampling
-      while (continue_sampling) {
-        if (numSamples + batchSize >= N) {
+      // Reset variables when starting a new swap
+      candidates.fill(1);
+      exactMask.fill(0);
+      estimates.fill(0);
+      numSamples.fill(0);
+
+      // while there is at least one candidate (float comparison issues)
+      while (arma::accu(candidates) > 1.5) {
+        // compute exactly if it's been samples more than N times and
+        // hasn't been computed exactly already
+        arma::urowvec compute_exactly =
+            ((numSamples + batchSize) >= N) != (exactMask);
+
+        // TODO: update all comments
+        // Get unique candidate medoids from the candidates (second index)
+        // Store all k x T in estimates
+        // TODO(@motiwari): Move this declaration outside loop
+        // Need unique values over second index
+        // Sum the different columns
+        // if any index appears in at least one, compute it exactly
+        // TODO(@motiwari): make sure we're only computing exactly
+        // for the relevant candidates
+        arma::uvec compute_exactly_targets =
+            arma::find(arma::sum(compute_exactly, 0) >= 1);
+
+        if (compute_exactly_targets.size() > 0) {
           std::tuple<float, arma::frowvec> result = swapTarget(
               data,
               distMat,
@@ -266,67 +314,88 @@ void BanditFasterPAM::swapBanditFasterPAM(
               1); // exact
 
           float candidate_result = std::get<0>(result);
-          candidate_estimate = candidate_result;
-          candidate_ucb = candidate_result;
-          candidate_lcb = candidate_result;
-          Delta_TD_ms_given_candidate = std::get<1>(result);
-          continue_sampling = false; // Unnecessary because
-          numSamples += N;
-        } else {
-          std::tuple<float, arma::frowvec> result = swapTarget(
-            data,
-            distMat,
-            candidate,
-            &bestDistances,
-            &secondBestDistances,
-            assignments,
-            0); // not exact
+          Delta_TD_ms_given_candidate_result = std::get<1>(result);
+          Delta_TD_ms_given_candidate_result += candidate_result; // add shared accumulator to each arm
 
-          float candidate_result = std::get<0>(result);
-          Delta_TD_ms_given_candidate = ((numSamples * Delta_TD_ms_given_candidate) + (std::get<1>(result) * batchSize)) / (numSamples + batchSize);
-          candidate_estimate = ((numSamples * candidate_estimate) + (candidate_result * batchSize)) / (numSamples + batchSize);
-          numSamples += batchSize;
-
-          float adjust = swapConfidence + std::log(N) + std::log(nMedoids);
-
-          // TODO(@motiwari): 5 is a fudge factor. Really, we should consider each of Delta_TD_ms_given_candidate as an
-          //  r.v. and create a new confidence bound on the difference.
-
-          float confBoundDelta = 5 * candidate_sigma * std::sqrt(adjust / numSamples);
-          candidate_ucb = candidate_estimate + confBoundDelta;
-          candidate_lcb = candidate_estimate - confBoundDelta;
-
-//          std::cout << "Bounds are " << candidate_lcb << " to " << candidate_ucb << "\n";
+          // result will be k x T
+          // Now update the correct indices
+          estimates.cols(compute_exactly_targets) = Delta_TD_ms_given_candidate_result;
+          ucbs.cols(compute_exactly_targets) = Delta_TD_ms_given_candidate_result;
+          lcbs.cols(compute_exactly_targets) = Delta_TD_ms_given_candidate_result;
+          exactMask.cols(compute_exactly_targets).fill(1);
+          numSamples.cols(compute_exactly_targets) += N;
+          candidates = (lcbs < ucbs.min()) && (exactMask == 0);
         }
-        arma::frowvec total_Delta_TD_ms(nMedoids);
-        total_Delta_TD_ms = Delta_TD_ms_initial + Delta_TD_ms_given_candidate;
-//        std::cout << "\n\n";
-//        std::cout << "Initial Delta_TD_ms: " << Delta_TD_ms_initial;
-//        std::cout << "Delta_TD_ms_given_candidate" << Delta_TD_ms_given_candidate;
-//        std::cout << "total Delta TD ms" << total_Delta_TD_ms;
-//        std::cout << "Bounds are " << candidate_lcb << " to " << candidate_ucb;
-//        std::cout << "\n\n";
-        arma::uword best_m_idx = total_Delta_TD_ms.index_min();
-        continue_sampling = total_Delta_TD_ms(best_m_idx) + candidate_lcb < - 0.01;
-        // -0.01 to avoid precision errors
-        // TODO(@motiwari): Move 0.01 to a constants file
-        // TODO(@motiwari): This is not a statistically correct comparison. The Delta_TD_ms are also a r.v., with their
-        //  source of randomness the subsampled data used to update it. Right now, we just compare to sigma and fiddle
-        //  with sigma to get a reasonable CI
-        // TODO(@motiwari): This -0.1 / N should be moved to an approximate comparison
-//        std::cout << "Computed  " << numSamples << " for candidate " << candidate << "\n";
-        if (total_Delta_TD_ms(best_m_idx) + candidate_ucb < -0.0001  && (*medoidIndices)(best_m_idx) != candidate) {
-          // Perform Swap
-//          std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with "
-//                    << candidate << "\n";
-          iter++;
-          (*medoidIndices)(best_m_idx) = candidate;
+        if (arma::accu(candidates) < precision) {
+          break;
+        }
 
-          // TODO(@motiwari): This is O(kn) per swap. Instead, we could do a single pass over all kn pairs and keep a
-          //  heap of all k distances to medoids per datapoint. That way we will have all the proper j-th nearest medoids
-          //  which are necessary for this eager swapping out of medoids. This would incur O(kn) space though.
-          //  We should also see how Schubert does this... I believe his algorithm is also O(kn).
-          KMedoids::calcBestDistancesSwap(
+        // candidate_targets should be of size k
+        // Sum the different columns
+        // if any index appears in at least one column, sample it
+        arma::uvec candidate_targets = arma::find(
+            arma::sum(candidates, 0) >= 1);
+
+        // TODO: do we need to pass in candidate_targets?
+        std::tuple<float, arma::frowvec> result = swapTarget(
+          data,
+          distMat,
+          candidate,
+          &bestDistances,
+          &secondBestDistances,
+          assignments,
+          0); // not exact
+
+        float candidate_result = std::get<0>(result);
+        Delta_TD_ms_given_candidate_result = std::get<1>(result);
+        Delta_TD_ms_given_candidate_result += candidate_result; // add shared accumulator to each arm
+
+        // TODO: ensure that correct columns are accessed
+        estimates.cols(candidate_targets) =
+            ((numSamples.cols(candidate_targets)
+              % estimates.cols(candidate_targets))
+             + (Delta_TD_ms_given_candidate_result.cols(candidate_targets) * batchSize)) / (batchSize +
+             numSamples.cols(
+                 candidate_targets));
+
+        // numSamples should be k x N
+        // select the T of N columns that are candidates
+        numSamples.cols(candidate_targets) += batchSize;
+
+        // use the sum of variances formula to get the variance of each arm
+        float candidate_variance = pow(candidate_sigma, 2);
+        arma::fvec medoid_variances = arma::square(medoid_sigmas);
+        medoid_variances += candidate_variance;
+        // construct CIs for each arm using the sum of variances
+        double criticalValue = 1.96;  // assume samples follow normal distribution
+        arma::fmat confBoundDelta = criticalValue * arma::sqrt(medoid_variances / batchSize);
+
+        ucbs.cols(candidate_targets) = estimates.cols(candidate_targets)
+                               + confBoundDelta;
+        lcbs.cols(candidate_targets) = estimates.cols(candidate_targets)
+                                       - confBoundDelta;
+
+        candidates = (lcbs < ucbs.min()) && (exactMask == 0);
+      }
+
+      arma::uword best_m_idx = lcbs.index_min();
+      // TODO(@motiwari): This is not a statistically correct comparison. The Delta_TD_ms are also a r.v., with their
+      //  source of randomness the subsampled data used to update it. Right now, we just compare to sigma and fiddle
+      //  with sigma to get a reasonable CI
+      // TODO(@motiwari): This -0.1 / N should be moved to an approximate comparison
+      //        std::cout << "Computed  " << numSamples << " for candidate " << candidate << "\n";
+      if (Delta_TD_ms_given_candidate_result(best_m_idx) + ucbs(best_m_idx) < -0.0001  && (*medoidIndices)(best_m_idx) != candidate) {
+        // Perform Swap
+        //          std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (*medoidIndices)(best_m_idx) << ") with "
+        //                    << candidate << "\n";
+        nSwaps++;
+        (*medoidIndices)(best_m_idx) = candidate;
+
+        // TODO(@motiwari): This is O(kn) per swap. Instead, we could do a single pass over all kn pairs and keep a
+        //  heap of all k distances to medoids per datapoint. That way we will have all the proper j-th nearest medoids
+        //  which are necessary for this eager swapping out of medoids. This would incur O(kn) space though.
+        //  We should also see how Schubert does this... I believe his algorithm is also O(kn).
+        KMedoids::calcBestDistancesSwap(
             data,
             distMat,
             medoidIndices,
@@ -334,19 +403,23 @@ void BanditFasterPAM::swapBanditFasterPAM(
             &secondBestDistances,
             assignments);
 
-          // Update \Delta_TD_m's. This function modifies Delat_TD_ms in place
-          Delta_TD_ms_initial = BanditFasterPAM::calcDeltaTDMs(
+        // Update \Delta_TD_m's. This function modifies Delta_TD_ms in place
+        Delta_TD_ms_initial = BanditFasterPAM::calcDeltaTDMs(
             assignments,
             &bestDistances,
             &secondBestDistances);
 
-          x_last = candidate;
-          break;  // Don't sample this arm any more, sample next datapoint
-        }
+        x_last = candidate;
+        break;  // Don't sample this arm any more, sample next datapoint
       }
     }
+    // If no swaps were performed, we are done
+    // this conditional ensures we do not converge prematurely
+    if (nSwaps == swapsBefore) {
+      break;
+    }
   }
-  steps = iter;
+  steps = nSwaps;
 
   // Call it one last time to update the loss
   // This is O(kn) but amortized over all eager SWAP steps
