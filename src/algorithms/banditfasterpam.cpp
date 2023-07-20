@@ -31,10 +31,8 @@ namespace km {
 void BanditFasterPAM::fitBanditFasterPAM(
   const arma::fmat& inputData,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
-  data = arma::trans(inputData);
-
   double wall0 = get_wall_time_3();
-
+  data = arma::trans(inputData);
   // Note: even if we are using a distance matrix, we compute the permutation
   // in the block below because it is used elsewhere in the call stack
   // TODO(@motiwari): Remove need for data or permutation through when using
@@ -81,20 +79,20 @@ void BanditFasterPAM::fitBanditFasterPAM(
 
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
-  if (nMedoids > 1) {
-    BanditFasterPAM::swap(
-        data,
-        distMat,
-        &medoidIndices,
-        &medoidMatrix,
-        &assignments);
-  }
-
-  double wall1 = get_wall_time_3();
-  std::cout << "Wall Clock Time: " << wall1 - wall0 << "\n";
+  // we should swap even if k = 1 since we used uniform random sampling to
+  // initialize the one medoid
+  BanditFasterPAM::swap(
+      data,
+      distMat,
+      &medoidIndices,
+      &medoidMatrix,
+      &assignments);
 
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
+
+  double wall1 = get_wall_time_3();
+  std::cout << "Wall Clock Time: " << wall1 - wall0 << "\n";
 }
 
 void BanditFasterPAM::randomInitialization(
@@ -232,9 +230,9 @@ arma::fmat BanditFasterPAM::swapTarget(
     referencePoints = arma::randperm(N, tmpBatchSize);
   }
 
-float best = 0;
-float second = 0;
-std::string results_string = "";
+//float best = 0;
+//float second = 0;
+//std::string results_string = "";
 // TODO(@motiwari): Declare variables outside of loops
 #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < T; i++) {
@@ -248,8 +246,8 @@ std::string results_string = "";
               referencePoints(j),
               2);  // 2 for SWAP
       size_t k = (*assignments)(referencePoints(j));
-      best = (*bestDistances)(referencePoints(j));
-      second = (*secondBestDistances)(referencePoints(j));
+//      best = (*bestDistances)(referencePoints(j));
+//      second = (*secondBestDistances)(referencePoints(j));
       if (cost < (*bestDistances)(referencePoints(j))) {
         // We might be able to change this to
         // .eachrow(every column but k)
@@ -266,14 +264,14 @@ std::string results_string = "";
                     (*secondBestDistances)(referencePoints(j))) -
           std::fmin(cost, (*bestDistances)(referencePoints(j)));
 
-      results_string = "";
-      for (size_t i = 0; i < results.n_rows; i++) {
-        for (size_t j = 0; j < T; j++) {
-          results_string += std::to_string(results(i, j)) + " ";
-        }
-        results_string += "\n";
-      }
-      size_t irrelevant = 0;
+//      results_string = "";
+//      for (size_t i = 0; i < results.n_rows; i++) {
+//        for (size_t j = 0; j < T; j++) {
+//          results_string += std::to_string(results(i, j)) + " ";
+//        }
+//        results_string += "\n";
+//      }
+//      size_t irrelevant = 0;
     }
   }
 
@@ -291,6 +289,7 @@ void BanditFasterPAM::swap(
     arma::urowvec *assignments) {
   size_t N = data.n_cols;
   size_t p = N;
+  bool continueSampling = true;
 
   arma::fmat sigma(nMedoids, N, arma::fill::zeros);
 
@@ -315,11 +314,16 @@ void BanditFasterPAM::swap(
       swapPerformed);
 
   size_t iter = 0;
+  // no need to go back to previous data points for k = 1
+  // so cap maxIter at N for k = 1 if needed
+  if (nMedoids == 1) {
+    maxIter = std::min(N, maxIter);
+  }
   // continue making swaps while loss is decreasing
   while (iter < maxIter) {
     // first pass as an easy implementation
     // TODO(@Adarsh321123): optimize this later with a single column vector
-    size_t activeColumn = iter % N;  // TODO: should this be here?
+    size_t activeColumn = iter % N;
 
     iter++;
     permutationIdx = 0;
@@ -359,8 +363,8 @@ void BanditFasterPAM::swap(
 
     for (size_t col = 0; col < candidates.n_cols; col++) {
       if (col == activeColumn) {
-        // Fill all columns except the active column with zeros
-        candidates.col(col).fill(1);  // only this column is a valid candidate
+        // only the active column can have valid candidates
+        candidates.col(col).fill(1);
       }
     }
 
@@ -375,11 +379,11 @@ void BanditFasterPAM::swap(
     exactMask.fill(0);
     estimates.fill(0);
     numSamples.fill(0);
+    continueSampling = true;
     ucbs.fill(std::numeric_limits<float>::infinity());
     lcbs.fill(std::numeric_limits<float>::infinity());
 
-    // while there is at least one candidate (float comparison issues)
-    while (arma::accu(candidates) > 1.5) {
+    while (continueSampling) {
       // compute exactly if it's been samples more than N times and
       // hasn't been computed exactly already
       arma::umat compute_exactly =
@@ -434,35 +438,76 @@ void BanditFasterPAM::swap(
 
         numSamples.cols(compute_exactly_targets) += N;
 
-        std::string ucbs_string = "";
-        for (size_t i = 0; i < ucbs.n_rows; i++) {
-          for (size_t j = 0; j < 5; j++) {
-            ucbs_string += std::to_string(ucbs(i, j)) + " ";
-          }
-          ucbs_string += "\n";
-        }
+//        std::string ucbs_string = "";
+//        for (size_t i = 0; i < ucbs.n_rows; i++) {
+//          for (size_t j = 0; j < 5; j++) {
+//            ucbs_string += std::to_string(ucbs(i, j)) + " ";
+//          }
+//          ucbs_string += "\n";
+//        }
+//
+//        std::string lcbs_string = "";
+//        for (size_t i = 0; i < lcbs.n_rows; i++) {
+//          for (size_t j = 0; j < 5; j++) {
+//            lcbs_string += std::to_string(lcbs(i, j)) + " ";
+//          }
+//          lcbs_string += "\n";
+//        }
 
-        std::string lcbs_string = "";
-        for (size_t i = 0; i < lcbs.n_rows; i++) {
-          for (size_t j = 0; j < 5; j++) {
-            lcbs_string += std::to_string(lcbs(i, j)) + " ";
-          }
-          lcbs_string += "\n";
-        }
+//        std::cout << ucbs_string << std::endl;
+//        std::cout << lcbs_string << std::endl;
 
+        // keep sampling an arm if one of the following are true:
+        // (a) the arm is overlapping with 0
+        // (b) the arm is below 0 but overlapping with other arms
+        // this means that if an arm is above 0, we stop sampling it
         candidates = ((ucbs > 0) && (lcbs < 0) && (exactMask == 0)) ||
                      ((ucbs < 0) && (lcbs < ucbs.min()) && (exactMask == 0));
 
-        std::string candidates_string_after = "";
-        for (size_t i = 0; i < candidates.n_rows; i++) {
-          for (size_t j = 0; j < 5; j++) {
-            candidates_string_after += std::to_string(candidates(i, j)) + " ";
-          }
-          candidates_string_after += "\n";
+//        std::string candidates_string_after = "";
+//        for (size_t i = 0; i < candidates.n_rows; i++) {
+//          for (size_t j = 0; j < 5; j++) {
+//            candidates_string_after += std::to_string(candidates(i, j)) + " ";
+//          }
+//          candidates_string_after += "\n";
+//        }
+
+        // stop sampling if no candidates remain
+        if (arma::accu(candidates) == 0) {
+          continueSampling = false;
         }
-        size_t irrelevant2 = 0;
+
+        // if k = 1, then we need to stop sampling if the arm is below 0
+        if (nMedoids == 1 && ucbs(0, activeColumn) < 0) {
+          continueSampling = false;
+        }
+
+        // if an arm is below 0 and disjoint with all other arms,
+        // then we break out of the while loop to perform a swap with that arm
+        if (nMedoids != 1) {
+          bool didBreak = false;
+          for (size_t i = 0; i < nMedoids; i++) {  // for each arm
+            didBreak = false;
+            for (size_t j = 0; j < nMedoids; j++) {  // for all other arms
+              if (i != j) {
+                if (ucbs(i, activeColumn) < 0 && ucbs(i, activeColumn) < lcbs(j, activeColumn)) {
+                  continue;
+                } else {
+                  didBreak = true;
+                  break;  // this arm is not disjoint so we should try the next one
+                }
+              }
+            }
+            if (!didBreak) { // this arm is disjoint with all other arms
+              continueSampling = false;
+              break;
+            }
+          }
+        }
       }
-      if (arma::accu(candidates) < precision) {
+      // no need to continue sampling if doing the exact computation changed
+      // the continueSampling flag
+      if (!continueSampling) {
         break;
       }
 
@@ -550,13 +595,13 @@ void BanditFasterPAM::swap(
       swapConfidence = 1000000; // TODO: Remove this
       adjust = swapConfidence + arma::log(adjust);
 
-      std::string adjust_string = "";
-      for (size_t i = 0; i < nMedoids; i++) {
-        for (size_t j = 0; j < candidate_targets.size(); j++) {
-          adjust_string += std::to_string(adjust(i, j)) + " ";
-        }
-        adjust_string += "\n";
-      }
+//      std::string adjust_string = "";
+//      for (size_t i = 0; i < nMedoids; i++) {
+//        for (size_t j = 0; j < candidate_targets.size(); j++) {
+//          adjust_string += std::to_string(adjust(i, j)) + " ";
+//        }
+//        adjust_string += "\n";
+//      }
 
       arma::fmat confBoundDelta = 10000 * sigma.cols(candidate_targets) %  // TODO: remove 10000
                                   arma::sqrt(adjust / numSamples.cols(
@@ -590,12 +635,10 @@ void BanditFasterPAM::swap(
 //        lcbs_string += "\n";
 //      }
 
-      // keep sampling if one of the following are true:
-      // (a) at least one arm is overlapping with 0
-      // (b) some arms are below 0 but overlap with others
+      // keep sampling an arm if one of the following are true:
+      // (a) the arm is overlapping with 0
+      // (b) the arm is below 0 but overlapping with other arms
       // this means that if an arm is above 0, we stop sampling it
-      // it also means that if an arm is below 0 but disjoint from the lowest
-      // arm below 0, we stop sampling it
       candidates = ((ucbs > 0) && (lcbs < 0) && (exactMask == 0)) ||
                    ((ucbs < 0) && (lcbs < ucbs.min()) && (exactMask == 0));
 
@@ -606,16 +649,47 @@ void BanditFasterPAM::swap(
 //        }
 //        candidates_string_after += "\n";
 //      }
-//      size_t irrelevant2 = 0;
+
+      // stop sampling if no candidates remain
+      if (arma::accu(candidates) == 0) {
+        continueSampling = false;
+      }
+
+      // if k = 1, then we need to stop sampling if the arm is below 0
+      if (nMedoids == 1 && ucbs(0, activeColumn) < 0) {
+        continueSampling = false;
+      }
+
+      // if an arm is below 0 and disjoint with all other arms,
+      // then we break out of the while loop to perform a swap with that arm
+      if (nMedoids != 1) {
+        bool didBreak = false;
+        for (size_t i = 0; i < nMedoids; i++) {  // for each arm
+          didBreak = false;
+          for (size_t j = 0; j < nMedoids; j++) {  // for all other arms
+            if (i != j) {
+              if (ucbs(i, activeColumn) < 0 && ucbs(i, activeColumn) < lcbs(j, activeColumn)) {
+                continue;
+              } else {
+                didBreak = true;
+                break;  // this arm is not disjoint so we should try the next one
+              }
+            }
+          }
+          if (!didBreak) { // this arm is disjoint with all other arms
+            continueSampling = false;
+            break;
+          }
+        }
+      }
     }
 
     // Perform the medoid switch
     arma::uword newMedoid = lcbs.index_min();
     size_t k = newMedoid % nMedoids;
     size_t n = newMedoid / nMedoids;
-    // it is possible to have no candidate remaining, in which case we must
-    // ensure that the change in less is negative
-    swapPerformed = (*medoidIndices)(k) != n && lcbs.min() < 0;
+    // we must ensure that the change in loss is negative
+    swapPerformed = (*medoidIndices)(k) != n && ucbs(newMedoid) < 0;
 
     if (swapPerformed) {
       steps++;
