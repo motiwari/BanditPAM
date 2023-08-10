@@ -31,12 +31,17 @@ int bpam_num_threads() {
 //// Create a new KMedoids object.
 ////
 //// @return an external ptr (Rcpp::XPtr) to a KMedoids object instance.
-// [[Rcpp::export(.KMedoids__new)]] 
-SEXP KMedoids__new(IntegerVector k, CharacterVector alg, IntegerVector max_iter, IntegerVector build_confidence, IntegerVector swap_confidence) {
-  
+// [[Rcpp::export(.KMedoids__new)]]
+SEXP KMedoids__new(IntegerVector k, CharacterVector alg, IntegerVector max_iter, IntegerVector build_confidence, IntegerVector swap_confidence, LogicalVector parallelize) {
+
   // create a pointer to an KMedoids object and wrap it
   // as an external pointer
-  XPtr<km::KMedoids> ptr( new km::KMedoids((size_t) k[0], (std::string) alg[0], (size_t) max_iter[0], (size_t) build_confidence[0], (size_t) swap_confidence[0]), true );
+  XPtr<km::KMedoids> ptr( new km::KMedoids((size_t) k[0], (std::string) alg[0], (size_t) max_iter[0], (size_t) build_confidence[0], (size_t) swap_confidence[0]), true);
+
+  if (parallelize.size() == 1 && parallelize[0] == false) {
+    ptr->setParallelize(false);
+  }
+
   // return the external pointer to the R side
   return ptr;
 }
@@ -187,7 +192,7 @@ SEXP KMedoids__get_statistic(SEXP xp, IntegerVector what) {
   // grab the object as a XPtr (smart pointer)
   XPtr<km::KMedoids> ptr(xp);
   switch (what[0]) {
-  case 1: 
+  case 1:
     return wrap(ptr->getDistanceComputations(false));
   case 2:
     return wrap(ptr->getDistanceComputations(true));
@@ -205,5 +210,16 @@ SEXP KMedoids__get_statistic(SEXP xp, IntegerVector what) {
     return wrap(ptr->getCacheMisses());
   }
   //stop("Unexpected argument value %i in argument what for get_statistic!", what[0]);
-  return R_NilValue; 
+  return R_NilValue;
+}
+
+//// Return the if parallelize is enabled or not
+////
+//// @param xp the km::KMedoids Object XPtr
+// [[Rcpp::export(.KMedoids__get_parallelize)]]
+SEXP KMedoids__get_parallelize(SEXP xp) {
+  // grab the object as a XPtr (smart pointer)
+  XPtr<km::KMedoids> ptr(xp);
+
+  return wrap(ptr->getParallelize());
 }

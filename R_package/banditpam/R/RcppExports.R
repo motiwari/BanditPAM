@@ -7,8 +7,8 @@ bpam_num_threads <- function() {
     .Call('_banditpam_bpam_num_threads', PACKAGE = 'banditpam')
 }
 
-.KMedoids__new <- function(k, alg, max_iter, build_confidence, swap_confidence) {
-    .Call('_banditpam_KMedoids__new', PACKAGE = 'banditpam', k, alg, max_iter, build_confidence, swap_confidence)
+.KMedoids__new <- function(k, alg, max_iter, build_confidence, swap_confidence, parallelize) {
+    .Call('_banditpam_KMedoids__new', PACKAGE = 'banditpam', k, alg, max_iter, build_confidence, swap_confidence, parallelize)
 }
 
 .KMedoids__fit <- function(xp, data, loss, distMat = NULL) {
@@ -61,5 +61,9 @@ bpam_num_threads <- function() {
 
 .KMedoids__get_statistic <- function(xp, what) {
     .Call('_banditpam_KMedoids__get_statistic', PACKAGE = 'banditpam', xp, what)
+}
+
+.KMedoids__get_parallelize <- function(xp) {
+    .Call('_banditpam_KMedoids__get_parallelize', PACKAGE = 'banditpam', xp)
 }
 
