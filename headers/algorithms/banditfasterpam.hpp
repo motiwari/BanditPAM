@@ -55,7 +55,8 @@ public:
       std::optional<std::reference_wrapper<const arma::fmat>> distMat,
       const arma::frowvec *bestDistances,
       const arma::frowvec *secondBestDistances,
-      const arma::urowvec *assignments);
+      const arma::urowvec *assignments,
+      const size_t activeColumn);
 
   /**
    * @brief Estimates the mean reward for each arm in SWAP step.

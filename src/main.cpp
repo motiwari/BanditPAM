@@ -21,7 +21,8 @@ int main(int argc, char *argv[]) {
   size_t k;
   int opt;
   int prev_ind;
-  size_t maxIter = 100;
+  size_t maxIter = 10;
+//  size_t maxIter = 100;
   size_t buildConfidence = 3;
   size_t swapConfidence = 5;
   std::string loss = "L2";
@@ -33,10 +34,11 @@ int main(int argc, char *argv[]) {
   int seed = 0;
   int num_data = 0;
   bool parallelize = false;
+  std::string algorithm_name = "BanditPAM";
 
   // TODO(@motiwari): Use a variadic function signature for this instead
   while (prev_ind = optind,
-          (opt = getopt(argc, argv, "f:l:k:v:s:cpnw:")) != -1) {
+          (opt = getopt(argc, argv, "f:l:k:v:s:cpnw:a:")) != -1) {
     if (optind == prev_ind + 2 && *optarg == '-') {
       opt = ':';
       --optind;
@@ -75,6 +77,9 @@ int main(int argc, char *argv[]) {
       case 'w':
         parallelize = true;
         break;
+      case 'a':
+        algorithm_name = optarg;
+        break;
       case '?':
         printf("unknown option: %c\n", optopt);
         return ARGUMENT_ERROR_CODE;
@@ -109,7 +114,7 @@ int main(int argc, char *argv[]) {
 
   km::KMedoids kmed(
           k,
-          "BanditPAM",
+          algorithm_name,
           maxIter,
           buildConfidence,
           swapConfidence,

@@ -75,7 +75,8 @@ void BanditFasterPAM::fitBanditFasterPAM(
 //    medoidIndices_string += std::to_string(medoidIndices(i)) + " ";
 //  }
 
-  buildLoss = KMedoids::calcLoss(data, distMat, &medoidIndices);
+  // TODO(@Adarsh321123): uncomment later
+//  buildLoss = KMedoids::calcLoss(data, distMat, &medoidIndices);
 
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
@@ -122,7 +123,8 @@ arma::fmat BanditFasterPAM::swapSigma(
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     const arma::frowvec *bestDistances,
     const arma::frowvec *secondBestDistances,
-    const arma::urowvec *assignments) {
+    const arma::urowvec *assignments,
+    const size_t activeColumn) {
   size_t N = data.n_cols;
   size_t K = nMedoids;
   arma::fmat updated_sigma(K, N, arma::fill::zeros);
@@ -148,6 +150,12 @@ arma::fmat BanditFasterPAM::swapSigma(
   for (size_t i = 0; i < K * N; i++) {
     // extract data point of swap
     size_t n = i / K;
+
+    // no need to calculate the sigma for non-active columns
+    if (n != activeColumn) {
+      continue;
+    }
+
     size_t k = i % K;
 
     // calculate change in loss for some subset of the data
@@ -321,6 +329,7 @@ void BanditFasterPAM::swap(
   }
   // continue making swaps while loss is decreasing
   while (iter < maxIter) {
+    double wall0 = get_wall_time_3();
     // first pass as an easy implementation
     // TODO(@Adarsh321123): optimize this later with a single column vector
     size_t activeColumn = iter % N;
@@ -333,7 +342,8 @@ void BanditFasterPAM::swap(
         distMat,
         &bestDistances,
         &secondBestDistances,
-        assignments);
+        assignments,
+        activeColumn);
 
 //    std::string sigma_string = "";
 //    for (size_t i = 0; i < sigma.n_rows; i++) {
@@ -343,19 +353,13 @@ void BanditFasterPAM::swap(
 //      sigma_string += "\n";
 //    }
 
-    for (size_t col = 0; col < sigma.n_cols; col++) {
-      if (col != activeColumn) {
-        // Fill all columns except the active column with zeros
-        sigma.col(col).fill(0.0);
-      }
-    }
+//    std::cout << "sigma_string:" << sigma_string << std::endl;
 
-//    sigma_string = "";
-//    for (size_t i = 0; i < sigma.n_rows; i++) {
-//      for (size_t j = 0; j < 5; j++) {
-//        sigma_string += std::to_string(sigma(i, j)) + " ";
+//    for (size_t col = 0; col < sigma.n_cols; col++) {
+//      if (col != activeColumn) {
+//        // Fill all columns except the active column with zeros
+//        sigma.col(col).fill(0.0);
 //      }
-//      sigma_string += "\n";
 //    }
 
     // Reset variables when starting a new swap
@@ -389,13 +393,39 @@ void BanditFasterPAM::swap(
       arma::umat compute_exactly =
           ((numSamples + batchSize) >= N) != (exactMask);
 
+//      std::string numSamples_string_before_5 = "";
+//      for (size_t i = 0; i < numSamples.n_rows; i++) {
+//        for (size_t j = iter - 1; j < iter + 4; j++) {
+//          numSamples_string_before_5 += std::to_string(numSamples(i, j)) + " ";
+//        }
+//        numSamples_string_before_5 += "\n";
+//      }
+
+//      std::cout << "numSamples_string_before_5" << numSamples_string_before_5 << std::endl;
+
+//      std::string exactMask_string_before_5 = "";
+//      for (size_t i = 0; i < numSamples.n_rows; i++) {
+//        for (size_t j = iter - 1; j < iter + 4; j++) {
+//          exactMask_string_before_5 += std::to_string(exactMask(i, j)) + " ";
+//        }
+//        exactMask_string_before_5 += "\n";
+//      }
+
+//      std::cout << "exactMask_string_before_5" << exactMask_string_before_5 << std::endl;
+//
+////      if (iter == 823) {
 //      std::string compute_exactly_string = "";
 //      for (size_t i = 0; i < compute_exactly.n_rows; i++) {
-//        for (size_t j = 0; j < 5; j++) {
+//        for (size_t j = iter - 1; j < iter + 4; j++) {
 //          compute_exactly_string += std::to_string(compute_exactly(i, j)) + " ";
 //        }
 //        compute_exactly_string += "\n";
 //      }
+//      std::cout << "compute_exactly_string: " << compute_exactly_string << std::endl;
+//      }
+
+
+
 
       // Get unique candidate medoids from the candidates (second index)
       // Store all k x T in estimates
@@ -408,12 +438,15 @@ void BanditFasterPAM::swap(
       arma::uvec compute_exactly_targets =
           arma::find(arma::sum(compute_exactly, 0) >= 1);
 
-//      std::string compute_exactly_targets_string = "";
-//      for (size_t i = 0; i < compute_exactly_targets.n_rows; i++) {
-//        for (size_t j = 0; j < compute_exactly_targets.n_cols; j++) {
-//          compute_exactly_targets_string += std::to_string(compute_exactly_targets(i, j)) + " ";
+//      if (iter == 823) {
+//        std::string compute_exactly_targets_string = "";
+//        for (size_t i = 0; i < compute_exactly_targets.n_rows; i++) {
+//          for (size_t j = 0; j < compute_exactly_targets.n_cols; j++) {
+//            compute_exactly_targets_string += std::to_string(compute_exactly_targets(i, j)) + " ";
+//          }
+//          compute_exactly_targets_string += "\n";
 //        }
-//        compute_exactly_targets_string += "\n";
+//        std::cout << "compute_exactly_targets_string" << compute_exactly_targets_string << std::endl;
 //      }
 
       if (compute_exactly_targets.size() > 0) {
@@ -438,24 +471,15 @@ void BanditFasterPAM::swap(
 
         numSamples.cols(compute_exactly_targets) += N;
 
-//        std::string ucbs_string = "";
-//        for (size_t i = 0; i < ucbs.n_rows; i++) {
-//          for (size_t j = 0; j < 5; j++) {
-//            ucbs_string += std::to_string(ucbs(i, j)) + " ";
+//        if (iter == 823) {
+//          std::string numSamples_inside_string = "";
+//          for (size_t i = 0; i < numSamples.n_rows; i++) {
+//            for (size_t j = iter - 1; j < iter + 9; j++) {
+//              numSamples_inside_string += std::to_string(numSamples(i, j)) + " ";
+//            }
+//            numSamples_inside_string += "\n";
 //          }
-//          ucbs_string += "\n";
 //        }
-//
-//        std::string lcbs_string = "";
-//        for (size_t i = 0; i < lcbs.n_rows; i++) {
-//          for (size_t j = 0; j < 5; j++) {
-//            lcbs_string += std::to_string(lcbs(i, j)) + " ";
-//          }
-//          lcbs_string += "\n";
-//        }
-
-//        std::cout << ucbs_string << std::endl;
-//        std::cout << lcbs_string << std::endl;
 
         // keep sampling an arm if one of the following are true:
         // (a) the arm is overlapping with 0
@@ -464,27 +488,47 @@ void BanditFasterPAM::swap(
         candidates = ((ucbs > 0) && (lcbs < 0) && (exactMask == 0)) ||
                      ((ucbs < 0) && (lcbs < ucbs.min()) && (exactMask == 0));
 
-//        std::string candidates_string_after = "";
-//        for (size_t i = 0; i < candidates.n_rows; i++) {
-//          for (size_t j = 0; j < 5; j++) {
-//            candidates_string_after += std::to_string(candidates(i, j)) + " ";
+//        if (iter == 823) {
+//          std::string ucbs_string = "";
+//          for (size_t i = 0; i < ucbs.n_rows; i++) {
+//            for (size_t j = 820; j < 826; j++) {
+//              ucbs_string += std::to_string(ucbs(i, j)) + " ";
+//            }
+//            ucbs_string += "\n";
 //          }
-//          candidates_string_after += "\n";
+//
+//          std::string lcbs_string = "";
+//          for (size_t i = 0; i < lcbs.n_rows; i++) {
+//            for (size_t j = 820; j < 826; j++) {
+//              lcbs_string += std::to_string(lcbs(i, j)) + " ";
+//            }
+//            lcbs_string += "\n";
+//          }
+//
+//          std::string candidates_string_after = "";
+//          for (size_t i = 0; i < candidates.n_rows; i++) {
+//            for (size_t j = 820; j < 826; j++) {
+//              candidates_string_after += std::to_string(candidates(i, j)) + " ";
+//            }
+//            candidates_string_after += "\n";
+//          }
+//
+//          std::cout << ucbs_string << std::endl;
+//          std::cout << lcbs_string << std::endl;
+//          std::cout << candidates_string_after << std::endl;
 //        }
 
         // stop sampling if no candidates remain
         if (arma::accu(candidates) == 0) {
           continueSampling = false;
         }
-
         // if k = 1, then we need to stop sampling if the arm is below 0
-        if (nMedoids == 1 && ucbs(0, activeColumn) < 0) {
+        else if (nMedoids == 1 && ucbs(0, activeColumn) < 0) {
           continueSampling = false;
         }
-
         // if an arm is below 0 and disjoint with all other arms,
         // then we break out of the while loop to perform a swap with that arm
-        if (nMedoids != 1) {
+        else if (nMedoids != 1) {
           bool didBreak = false;
           for (size_t i = 0; i < nMedoids; i++) {  // for each arm
             didBreak = false;
@@ -517,6 +561,22 @@ void BanditFasterPAM::swap(
       arma::uvec candidate_targets = arma::find(
           arma::sum(candidates, 0) >= 1);
 
+//      std::string candidates_string_after_3 = "";
+//      for (size_t i = 0; i < candidates.n_rows; i++) {
+//        for (size_t j = 0; j < 10; j++) {
+//          candidates_string_after_3 += std::to_string(candidates(i, j)) + " ";
+//        }
+//        candidates_string_after_3 += "\n";
+//      }
+//
+//      std::string candidates_targets_string_after_3 = "";
+//      for (size_t i = 0; i < candidate_targets.n_rows; i++) {
+//        for (size_t j = 0; j < candidate_targets.n_cols; j++) {
+//          candidates_targets_string_after_3 += std::to_string(candidate_targets(i, j)) + " ";
+//        }
+//        candidates_targets_string_after_3 += "\n";
+//      }
+
       // result will be k x T
       arma::fmat result = swapTarget(
           data,
@@ -530,35 +590,54 @@ void BanditFasterPAM::swap(
 
 //      std::string result_string = "";
 //      for (size_t i = 0; i < result.n_rows; i++) {
-//        for (size_t j = 0; j < result.n_cols; j++) {
+//        for (size_t j = 820; j < 826; j++) {
 //          result_string += std::to_string(result(i, j)) + " ";
 //        }
 //        result_string += "\n";
 //      }
+
+//      std::string candidates_string_after_2 = "";
+//      for (size_t i = 0; i < candidates.n_rows; i++) {
+//        for (size_t j = 820; j < 826; j++) {
+//          candidates_string_after_2 += std::to_string(candidates(i, j)) + " ";
+//        }
+//        candidates_string_after_2 += "\n";
+//      }
 //
 //      std::string candidate_targets_string_before = "";
 //      for (size_t i = 0; i < candidate_targets.n_rows; i++) {
-//        for (size_t j = 0; j < candidate_targets.n_cols; j++) {
+//        for (size_t j = 820; j < 826; j++) {
 //          candidate_targets_string_before += std::to_string(candidate_targets(i, j)) + " ";
 //        }
 //        candidate_targets_string_before += "\n";
 //      }
-//
-//      std::string numSamples_before_string = "";
-//      for (size_t i = 0; i < numSamples.n_rows; i++) {
-//        for (size_t j = 0; j < 5; j++) {
-//          numSamples_before_string += std::to_string(numSamples(i, j)) + " ";
+
+      //std::cout << result_string << std::endl;
+      //std::cout << candidates_string_after_2 << std::endl;
+      //std::cout << candidate_targets_string_before << std::endl;
+
+//      if (iter == 823) {
+//        std::string numSamples_before_string = "";
+//        for (size_t i = 0; i < numSamples.n_rows; i++) {
+//          for (size_t j = 820; j < 826; j++) {
+//            numSamples_before_string += std::to_string(numSamples(i, j)) + " ";
+//          }
+//          numSamples_before_string += "\n";
 //        }
-//        numSamples_before_string += "\n";
-//      }
 //
+//        std::cout << "numSamples_before_string" << numSamples_before_string << std::endl;
+//      }
+
+
+
 //      std::string estimates_before_string = "";
 //      for (size_t i = 0; i < estimates.n_rows; i++) {
-//        for (size_t j = 0; j < 5; j++) {
+//        for (size_t j = 820; j < 826; j++) {
 //          estimates_before_string += std::to_string(estimates(i, j)) + " ";
 //        }
 //        estimates_before_string += "\n";
 //      }
+      //std::cout << estimates_before_string << std::endl;
 
       // candidate_targets should be of size T, 1
       estimates.cols(candidate_targets) =
@@ -570,40 +649,52 @@ void BanditFasterPAM::swap(
 
 //      std::string estimates_after_string = "";
 //      for (size_t i = 0; i < estimates.n_rows; i++) {
-//        for (size_t j = 0; j < 5; j++) {
+//        for (size_t j = 820; j < 826; j++) {
 //          estimates_after_string += std::to_string(estimates(i, j)) + " ";
 //        }
 //        estimates_after_string += "\n";
 //      }
 
+      //std::cout << estimates_after_string << std::endl;
+
       // numSamples should be k x N
       // select the T of N columns that are candidates
       numSamples.cols(candidate_targets) += batchSize;
 
-//      std::string numSamples_after_string = "";
-//      for (size_t i = 0; i < numSamples.n_rows; i++) {
-//        for (size_t j = 0; j < 5; j++) {
-//          numSamples_after_string += std::to_string(numSamples(i, j)) + " ";
+//      if (iter == 823) {
+//        std::string numSamples_after_string = "";
+//        for (size_t i = 0; i < numSamples.n_rows; i++) {
+//          for (size_t j = 820; j < 826; j++) {
+//            numSamples_after_string += std::to_string(numSamples(i, j)) + " ";
+//          }
+//          numSamples_after_string += "\n";
 //        }
-//        numSamples_after_string += "\n";
+//
+//        std::cout << "numSamples_after_string" << numSamples_after_string << std::endl;
 //      }
+
+
 
       arma::fmat adjust(nMedoids, candidate_targets.size());
       // TODO(@motiwari): Move this ::fill to the previous line
       adjust.fill(p);
       // Assume swapConfidence is given in logspace
-      swapConfidence = 1000000; // TODO: Remove this
-      adjust = swapConfidence + arma::log(adjust);
+//      swapConfidence = 0.5; // TODO: Remove this
+//      adjust = swapConfidence + arma::log(adjust);
+      adjust = 0.5 + arma::log(adjust); // TODO: revert
+//      adjust = 0.00001 + arma::log(adjust); // TODO: revert
 
 //      std::string adjust_string = "";
 //      for (size_t i = 0; i < nMedoids; i++) {
-//        for (size_t j = 0; j < candidate_targets.size(); j++) {
+//        for (size_t j = 800; j < candidate_targets.size(); j++) {
 //          adjust_string += std::to_string(adjust(i, j)) + " ";
 //        }
 //        adjust_string += "\n";
 //      }
 
-      arma::fmat confBoundDelta = 10000 * sigma.cols(candidate_targets) %  // TODO: remove 10000
+      //std::cout << adjust_string << std::endl;
+
+      arma::fmat confBoundDelta = sigma.cols(candidate_targets) %
                                   arma::sqrt(adjust / numSamples.cols(
                                                           candidate_targets));
       ucbs.cols(candidate_targets) = estimates.cols(candidate_targets)
@@ -613,27 +704,17 @@ void BanditFasterPAM::swap(
 
 //      std::string confBoundDelta_string = "";
 //      for (size_t i = 0; i < confBoundDelta.n_rows; i++) {
-//        for (size_t j = 0; j < confBoundDelta.n_cols; j++) {
+//        for (size_t j = 800; j < confBoundDelta.n_cols; j++) {
 //          confBoundDelta_string += std::to_string(confBoundDelta(i, j)) + " ";
 //        }
 //        confBoundDelta_string += "\n";
 //      }
-//
-//      std::string ucbs_string = "";
-//      for (size_t i = 0; i < ucbs.n_rows; i++) {
-//        for (size_t j = 0; j < 5; j++) {
-//          ucbs_string += std::to_string(ucbs(i, j)) + " ";
-//        }
-//        ucbs_string += "\n";
-//      }
-//
-//      std::string lcbs_string = "";
-//      for (size_t i = 0; i < lcbs.n_rows; i++) {
-//        for (size_t j = 0; j < 5; j++) {
-//          lcbs_string += std::to_string(lcbs(i, j)) + " ";
-//        }
-//        lcbs_string += "\n";
-//      }
+
+
+
+      //std::cout << confBoundDelta_string << std::endl;
+//      std::cout << ucbs_string << std::endl;
+//      std::cout << lcbs_string << std::endl;
 
       // keep sampling an arm if one of the following are true:
       // (a) the arm is overlapping with 0
@@ -642,27 +723,48 @@ void BanditFasterPAM::swap(
       candidates = ((ucbs > 0) && (lcbs < 0) && (exactMask == 0)) ||
                    ((ucbs < 0) && (lcbs < ucbs.min()) && (exactMask == 0));
 
-//      std::string candidates_string_after = "";
-//      for (size_t i = 0; i < candidates.n_rows; i++) {
-//        for (size_t j = 0; j < 5; j++) {
-//          candidates_string_after += std::to_string(candidates(i, j)) + " ";
+//      if (iter == 823) {
+//        std::string ucbs_string = "";
+//        for (size_t i = 0; i < ucbs.n_rows; i++) {
+//          for (size_t j = 820; j < 826; j++) {
+//            ucbs_string += std::to_string(ucbs(i, j)) + " ";
+//          }
+//          ucbs_string += "\n";
 //        }
-//        candidates_string_after += "\n";
+//
+//        std::string lcbs_string = "";
+//        for (size_t i = 0; i < lcbs.n_rows; i++) {
+//          for (size_t j = 820; j < 826; j++) {
+//            lcbs_string += std::to_string(lcbs(i, j)) + " ";
+//          }
+//          lcbs_string += "\n";
+//        }
+//
+//        std::string candidates_string_after = "";
+//        for (size_t i = 0; i < candidates.n_rows; i++) {
+//          for (size_t j = 820; j < 826; j++) {
+//            candidates_string_after += std::to_string(candidates(i, j)) + " ";
+//          }
+//          candidates_string_after += "\n";
+//        }
+//
+//        std::cout << ucbs_string << std::endl;
+//        std::cout << lcbs_string << std::endl;
+//        std::cout << candidates_string_after << std::endl;
 //      }
 
+//      double wall0 = get_wall_time_3();
       // stop sampling if no candidates remain
       if (arma::accu(candidates) == 0) {
         continueSampling = false;
       }
-
       // if k = 1, then we need to stop sampling if the arm is below 0
-      if (nMedoids == 1 && ucbs(0, activeColumn) < 0) {
+      else if (nMedoids == 1 && ucbs(0, activeColumn) < 0) {
         continueSampling = false;
       }
-
       // if an arm is below 0 and disjoint with all other arms,
       // then we break out of the while loop to perform a swap with that arm
-      if (nMedoids != 1) {
+      else if (nMedoids != 1) {
         bool didBreak = false;
         for (size_t i = 0; i < nMedoids; i++) {  // for each arm
           didBreak = false;
@@ -682,6 +784,8 @@ void BanditFasterPAM::swap(
           }
         }
       }
+//      double wall1 = get_wall_time_3();
+//      std::cout << "Condition time" << wall1 - wall0 << std::endl;
     }
 
     // Perform the medoid switch
@@ -691,6 +795,10 @@ void BanditFasterPAM::swap(
     // we must ensure that the change in loss is negative
     swapPerformed = (*medoidIndices)(k) != n && ucbs(newMedoid) < 0;
 
+    if (!swapPerformed) { // TODO: remove
+      std::cout << "No swap performed" << std::endl;
+    }
+
     if (swapPerformed) {
       steps++;
       // Perform Swap
@@ -699,20 +807,35 @@ void BanditFasterPAM::swap(
 
       (*medoidIndices)(k) = n;
       medoids->col(k) = data.col((*medoidIndices)(k));
+
+      double wall0_calc = get_wall_time_3();
+      calcBestDistancesSwap(
+          data,
+          distMat,
+          medoidIndices,
+          &bestDistances,
+          &secondBestDistances,
+          assignments,
+          swapPerformed);
+      double wall1_calc = get_wall_time_3();
+      std::cout << "Time for calcBestDistancesSwap: " << wall1_calc - wall0_calc << std::endl;
     }
 
-    if (!swapPerformed) { // TODO: remove
-      std::cout << "No swap performed" << std::endl;
+    // TODO(@Adarsh321123): this is necessary right now since
+    //  calcBestDistancesSwap is only run when a swap is performed, but find a
+    //  cleaner way to do this
+    if (!swapPerformed) {
+      // We have converged; update the final loss
+      averageLoss = arma::accu(bestDistances) / data.n_cols;
     }
 
-    calcBestDistancesSwap(
-        data,
-        distMat,
-        medoidIndices,
-        &bestDistances,
-        &secondBestDistances,
-        assignments,
-        swapPerformed);
+    std::cout << "Sample complexity (swaps) = " << numSwapDistanceComputations << std::endl;
+    std::cout << "Sample complexity (miscs) = " << numMiscDistanceComputations << std::endl;
+    double wall1 = get_wall_time_3();
+    std::cout << "Time for iteration: " << wall1 - wall0 << std::endl;
+
+//    double iter_end = get_wall_time_3();
+//    std::cout << "Time for iteration: " << iter_end - iter_start << std::endl;
   }
 }
 }  // namespace km

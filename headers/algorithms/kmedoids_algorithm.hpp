@@ -537,7 +537,8 @@ class KMedoids {
   float buildLoss = 0.0;
 
   /// Number of points to sample per reference batch
-  size_t batchSize = 100;
+  size_t batchSize = 5000;
+//  size_t batchSize = 100;
 
   /// The number of non-cache distance computations we compute
   /// in the BUILD step. For debugging only.

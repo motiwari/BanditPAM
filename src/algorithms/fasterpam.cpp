@@ -17,11 +17,24 @@
 #include <vector>
 #include <cassert>
 #include <random>
+#include <string>
+#include <time.h>
+#include <sys/time.h>
+
+double get_wall_time_4(){
+  struct timeval time;
+  if (gettimeofday(&time,NULL)){
+    //  Handle error
+    return 0;
+  }
+  return (double)time.tv_sec + (double)time.tv_usec * .000001;
+}
 
 namespace km {
   void FasterPAM::fitFasterPAM(
     const arma::fmat& inputData,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
+    double wall0 = get_wall_time_4();
     useCache = false; // this allows cachedLoss to work appropriately
     data = arma::trans(inputData);
     // FasterPAM uses uniform random sampling instead of BUILD since
@@ -39,6 +52,9 @@ namespace km {
     medoidIndicesFinal = medoidIndices;
     labels = assignments;
     steps = swaps;
+
+    double wall1 = get_wall_time_4();
+    std::cout << "Wall Clock Time: " << wall1 - wall0 << "\n";
   }
 
   arma::urowvec FasterPAM::randomInitialization(
@@ -48,7 +64,9 @@ namespace km {
     const size_t rangeTo = n-1;
     // create a random device
     std::random_device randDev;
-    std::mt19937 generator(randDev());
+    //  std::mt19937 generator(randDev());  // TODO: uncomment
+    // Use the provided seed to initialize the random number generator
+    std::mt19937 generator(0); // TODO: remove
     std::uniform_int_distribution<size_t> distr(rangeFrom, rangeTo);
     // generate k random numbers
     arma::urowvec res(nMedoids);
@@ -72,24 +90,24 @@ namespace km {
     float loss = 0.0;
     for (size_t i = 0; i < n; i++) {
       float distNear = KMedoids::cachedLoss(data, distMat, i,
-                                        firstCenter, 2);
+                                        firstCenter, 0);
       (*assignments)(i) = 0;
       (*bestDistances)(i) = distNear;
       (*secondAssignments)(i) = std::numeric_limits<size_t>::max();
       (*secondBestDistances)(i) = 0.0;
       for (size_t m = 1; m < medoidIndices.size(); m++) {
         size_t me = medoidIndices[m];
-        float d = KMedoids::cachedLoss(data, distMat, i,
-                                       me, 2);
+        float cost = KMedoids::cachedLoss(data, distMat, i,
+                                       me, 0);
         // determine how to fill the second nearest distance
-        if (d < (*bestDistances)(i) || i == me) {
+        if (cost < (*bestDistances)(i) || i == me) {
           (*secondAssignments)(i) = (*assignments)(i);
           (*secondBestDistances)(i) = (*bestDistances)(i);
           (*assignments)(i) = m;
-          (*bestDistances)(i) = d;
-        } else if ((*secondAssignments)(i) == std::numeric_limits<size_t>::max() || d < (*secondBestDistances)(i)) {
+          (*bestDistances)(i) = cost;
+        } else if ((*secondAssignments)(i) == std::numeric_limits<size_t>::max() || cost < (*secondBestDistances)(i)) {
           (*secondAssignments)(i) = m;
-          (*secondBestDistances)(i) = d;
+          (*secondBestDistances)(i) = cost;
         }
       }
 
@@ -137,6 +155,9 @@ namespace km {
       }
     }
 
+    std::cout << "Swapped medoid index " << first << " with "
+              << best << "\n";
+
     medoidIndices[m] = best;
     return {best != first, sumb};
   }
@@ -157,13 +178,13 @@ namespace km {
     arma::frowvec& removalLoss,
     arma::frowvec *bestDistances,
     arma::frowvec *secondBestDistances,
-    size_t j,
+    size_t candidate,
     arma::urowvec *assignments) {
     arma::frowvec ploss = removalLoss;
     float acc = 0.0;
     for (size_t o = 0; o < (*bestDistances).n_elem; o++) {
       float djo = KMedoids::cachedLoss(data, distMat, o,
-                                       j, 2);
+                                       candidate, 2);
       if (djo < (*bestDistances)(o)) {
         acc += djo - (*bestDistances)(o);
         ploss[(*assignments)(o)] += (*bestDistances)(o) - (*secondBestDistances)(o);
@@ -174,31 +195,31 @@ namespace km {
 
     // Find the medoid with the minimum change in loss
     auto it = std::min_element(std::begin(ploss), std::end(ploss));
-    size_t b = std::distance(std::begin(ploss), it);
+    size_t best_m_idx = std::distance(std::begin(ploss), it);
     float bloss = *it;
-    return {bloss + acc, b};
+    return {bloss + acc, best_m_idx};
   }
 
   std::tuple<size_t, float> FasterPAM::updateSecondNearest(
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     arma::urowvec medoidIndices,
     size_t n,
-    size_t b,
+    size_t best_m_idx,
     size_t o,
     float djo) {
-    size_t secondMedoid = b;
+    size_t secondMedoid = best_m_idx;
     float secondDistance = djo;
     for (size_t i = 0; i < medoidIndices.size(); i++) {
       size_t mi = medoidIndices[i];
-      if (i == n || i == b) {
+      if (i == n || i == best_m_idx) {
         continue;
       }
 
-      float d = KMedoids::cachedLoss(data, distMat, o,
-                                     mi, 2);
-      if (d < secondDistance) {
+      float cost = KMedoids::cachedLoss(data, distMat, o,
+                                     mi, 0);
+      if (cost < secondDistance) {
         secondMedoid = i;
-        secondDistance = d;
+        secondDistance = cost;
       }
     }
 
@@ -212,38 +233,41 @@ namespace km {
     arma::frowvec *secondBestDistances,
     arma::urowvec *assignments,
     arma::urowvec *secondAssignments,
-    size_t b,
-    size_t j) {
+    size_t best_m_idx,
+    size_t candidate) {
     size_t n = (*bestDistances).size();
     assert(("invalid medoid number",
-            b < medoidIndices.size()));
+            best_m_idx < medoidIndices.size()));
     assert(("invalid object number",
-            j < n));
-    medoidIndices[b] = j;
+            candidate < n));
+    // Perform Swap
+    std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (medoidIndices)(best_m_idx) << ") with "
+              << candidate << "\n";
+    medoidIndices[best_m_idx] = candidate;
     float loss = 0.0;
     // update the distances and loss from doing the swap
     for (size_t o = 0; o < n; o++) {
-      if (o == j) {
-        if ((*assignments)(o) != b) {
+      if (o == candidate) {
+        if ((*assignments)(o) != best_m_idx) {
           (*secondAssignments)(o) = (*assignments)(o);
           (*secondBestDistances)(o) = (*bestDistances)(o);
         }
 
-        (*assignments)(o) = b;
+        (*assignments)(o) = best_m_idx;
         (*bestDistances)(o) = 0;
         continue;
       }
 
       float djo = KMedoids::cachedLoss(data, distMat, o,
-                                       j, 2);
-      if ((*assignments)(o) == b) {
+                                       candidate, 0);
+      if ((*assignments)(o) == best_m_idx) {
         if (djo < (*secondBestDistances)(o)) {
-          (*assignments)(o) = b;
+          (*assignments)(o) = best_m_idx;
           (*bestDistances)(o) = djo;
         } else {
           (*assignments)(o) = (*secondAssignments)(o);
           (*bestDistances)(o) = (*secondBestDistances)(o);
-          std::tuple<size_t, float> paramsSecond = updateSecondNearest(distMat, medoidIndices, (*assignments)(o), b, o, djo);
+          std::tuple<size_t, float> paramsSecond = updateSecondNearest(distMat, medoidIndices, (*assignments)(o), best_m_idx, o, djo);
           (*secondAssignments)(o) = std::get<0>(paramsSecond);
           (*secondBestDistances)(o) = std::get<1>(paramsSecond);
         }
@@ -251,13 +275,13 @@ namespace km {
         if (djo < (*bestDistances)(o)) {
           (*secondAssignments)(o) = (*assignments)(o);
           (*secondBestDistances)(o) = (*bestDistances)(o);
-          (*assignments)(o) = b;
+          (*assignments)(o) = best_m_idx;
           (*bestDistances)(o) = djo;
         } else if (djo < (*secondBestDistances)(o)) {
-          (*secondAssignments)(o) = b;
+          (*secondAssignments)(o) = best_m_idx;
           (*secondBestDistances)(o) = djo;
-        } else if ((*secondAssignments)(o) == b) {
-          std::tuple<size_t, float> paramsSecond = updateSecondNearest(distMat, medoidIndices, (*assignments)(o), b, o, djo);
+        } else if ((*secondAssignments)(o) == best_m_idx) {
+          std::tuple<size_t, float> paramsSecond = updateSecondNearest(distMat, medoidIndices, (*assignments)(o), best_m_idx, o, djo);
           (*secondAssignments)(o) = std::get<0>(paramsSecond);
           (*secondBestDistances)(o) = std::get<1>(paramsSecond);
         }
@@ -281,8 +305,13 @@ namespace km {
       assignments.fill(0);
       std::tuple<bool, float> paramsMedoid = chooseMedoidWithinPartition(distMat, assignments, medoidIndices, 0);
       bool swapped = std::get<0>(paramsMedoid);
+      if (!swapped) {
+        std::cout << "No swap performed" << std::endl;
+      }
       float loss = std::get<1>(paramsMedoid);
       averageLoss = loss / data.n_cols;
+      std::cout << "Sample complexity (swaps) = " << numSwapDistanceComputations << std::endl;
+      std::cout << "Sample complexity (miscs) = " << numMiscDistanceComputations << std::endl;
       return {assignments, (swapped) ? 1 : 0};
     }
 
@@ -298,34 +327,60 @@ namespace km {
 
     // run the main SWAP algorithm until convergence
     while (iter < maxIter) {
-      iter++;
+//      std::cout << "Starting while loop at " << iter << " iterations" << std::endl;
+//      std::cout << "maxIter: " << maxIter << std::endl;
       size_t swapsBefore = nSwaps;
-      for (size_t j = 0; j < n; j++) {
-        if (j == lastSwap) {
+      for (size_t candidate = 0; candidate < n; candidate++) {
+        double wall0 = get_wall_time_4();
+//        double iter_start = get_wall_time_4();
+        if (candidate == lastSwap) {
           break;
         }
 
         // skip this iteration since candidate is already a medoid
-        if (j == medoidIndices[assignments(j)]) {
+        if (candidate == medoidIndices[assignments(candidate)]) {
           continue;
         }
 
-        std::tuple<float, size_t> paramsSwap = findBestSwap(distMat, removalLoss, &bestDistances, &secondBestDistances, j, &assignments);
+        std::tuple<float, size_t> paramsSwap = findBestSwap(distMat, removalLoss, &bestDistances, &secondBestDistances, candidate, &assignments);
         float change = std::get<0>(paramsSwap);
-        size_t b = std::get<1>(paramsSwap);
+        size_t best_m_idx = std::get<1>(paramsSwap);
         if (change >= 0) {
+          iter++;
+//          std::cout << "iter: " << iter << std::endl;
+//          double iter_end = get_wall_time_4();
+//          std::cout << "Time for iteration: " << iter_end - iter_start << std::endl;
+          std::cout << "No swap performed" << std::endl;
+          std::cout << "Sample complexity (swaps) = " << numSwapDistanceComputations << std::endl;
+          std::cout << "Sample complexity (miscs) = " << numMiscDistanceComputations << std::endl;
+          double wall1 = get_wall_time_4();
+          std::cout << "Time for iteration: " << wall1 - wall0 << std::endl;
+          if (iter >= maxIter) {
+            break;
+          }
           continue;
         }
 
         nSwaps++;
-        lastSwap = j;
-        float newLoss = doSwap(distMat, medoidIndices, &bestDistances, &secondBestDistances, &assignments, &secondAssignments, b, j);
+        lastSwap = candidate;
+//        std::cout << "iter: " << iter << std::endl;
+        float newLoss = doSwap(distMat, medoidIndices, &bestDistances, &secondBestDistances, &assignments, &secondAssignments, best_m_idx, candidate);
         if (newLoss >= loss) {
           break;
         }
 
         loss = newLoss;
         updateRemovalLoss(&bestDistances, &secondBestDistances, removalLoss, &assignments);
+        iter++;
+        std::cout << "Sample complexity (swaps) = " << numSwapDistanceComputations << std::endl;
+        std::cout << "Sample complexity (miscs) = " << numMiscDistanceComputations << std::endl;
+        double wall1 = get_wall_time_4();
+        std::cout << "Time for iteration: " << wall1 - wall0 << std::endl;
+//        double iter_end = get_wall_time_4();
+//        std::cout << "Time for iteration: " << iter_end - iter_start << std::endl;
+        if (iter >= maxIter) {
+          break;
+        }
       }
 
       if (nSwaps == swapsBefore) {
