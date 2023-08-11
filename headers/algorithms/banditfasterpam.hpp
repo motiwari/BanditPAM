@@ -82,6 +82,35 @@ public:
       const arma::urowvec *assignments,
       const bool exact);
 
+  // TODO(@Adarsh321123): write docstrings
+  void calcBestDistancesSwapInitial(
+      const arma::fmat &data,
+      std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+      const arma::urowvec *medoidIndices,
+      arma::frowvec *bestDistances,
+      arma::frowvec *secondBestDistances,
+      arma::urowvec *assignments,
+      arma::urowvec *secondAssignments,
+      const bool swapPerformed);
+
+  std::tuple<size_t, float> updateSecondNearest(
+      std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+      const arma::urowvec *medoidIndices,
+      size_t n,
+      size_t k,
+      size_t o,
+      float djo);
+
+  void calcBestDistancesSwapWithFPOptimizations(
+      std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+      const arma::urowvec *medoidIndices,
+      arma::frowvec *bestDistances,
+      arma::frowvec *secondBestDistances,
+      arma::urowvec *assignments,
+      arma::urowvec *secondAssignments,
+      size_t k,
+      size_t n);
+
   /**
   * @brief Performs the SWAP step of BanditPAM.
   *
@@ -103,7 +132,8 @@ public:
       std::optional<std::reference_wrapper<const arma::fmat>> distMat,
       arma::urowvec *medoidIndices,
       arma::fmat *medoids,
-      arma::urowvec *assignments);
+      arma::urowvec *assignments,
+      arma::urowvec *secondAssignments);
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_BANDITFASTERPAM_HPP_

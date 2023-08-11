@@ -31,6 +31,7 @@ namespace km {
 void BanditFasterPAM::fitBanditFasterPAM(
   const arma::fmat& inputData,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
+  // TODO(@Adarsh321123): remove armadillo debugging code
   double wall0 = get_wall_time_3();
   data = arma::trans(inputData);
   // Note: even if we are using a distance matrix, we compute the permutation
@@ -80,6 +81,9 @@ void BanditFasterPAM::fitBanditFasterPAM(
 
   medoidIndicesBuild = medoidIndices;
   arma::urowvec assignments(data.n_cols);
+  assignments.fill(std::numeric_limits<size_t>::max());
+  arma::urowvec secondAssignments(data.n_cols);
+  secondAssignments.fill(std::numeric_limits<size_t>::max());
   // we should swap even if k = 1 since we used uniform random sampling to
   // initialize the one medoid
   BanditFasterPAM::swap(
@@ -87,7 +91,8 @@ void BanditFasterPAM::fitBanditFasterPAM(
       distMat,
       &medoidIndices,
       &medoidMatrix,
-      &assignments);
+      &assignments,
+      &secondAssignments);
 
   medoidIndicesFinal = medoidIndices;
   labels = assignments;
@@ -289,12 +294,130 @@ arma::fmat BanditFasterPAM::swapTarget(
   return results;
 }
 
+void BanditFasterPAM::calcBestDistancesSwapInitial(
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma::urowvec *medoidIndices,
+    arma::frowvec *bestDistances,
+    arma::frowvec *secondBestDistances,
+    arma::urowvec *assignments,
+    arma::urowvec *secondAssignments,
+    const bool swapPerformed) {
+#pragma omp parallel for if (this->parallelize)
+  for (size_t i = 0; i < data.n_cols; i++) {
+    float best = std::numeric_limits<float>::infinity();
+    float second = std::numeric_limits<float>::infinity();
+    for (size_t k = 0; k < medoidIndices->n_cols; k++) {
+      // 0 for MISC
+      float cost =
+          KMedoids::cachedLoss(data, distMat, i,
+                               (*medoidIndices)(k), 0);
+      if (cost < best || i == (*medoidIndices)(k)) {
+        (*secondAssignments)(i) = (*assignments)(i);
+        (*assignments)(i) = k;
+        second = best;
+        best = cost;
+      } else if ((*secondAssignments)(i) == std::numeric_limits<size_t>::max() || cost < second) {
+        (*secondAssignments)(i) = k;
+        second = cost;
+      }
+    }
+    (*bestDistances)(i) = best;
+    (*secondBestDistances)(i) = second;
+  }
+
+  if (!swapPerformed) {
+    // We have converged; update the final loss
+    averageLoss = arma::accu(*bestDistances) / data.n_cols;
+  }
+}
+
+std::tuple<size_t, float> BanditFasterPAM::updateSecondNearest(
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma::urowvec *medoidIndices,
+    size_t n,
+    size_t k,
+    size_t o,
+    float djo) {
+  size_t secondMedoid = k;
+  float secondDistance = djo;
+  for (size_t i = 0; i < (*medoidIndices).size(); i++) {
+    size_t mi = (*medoidIndices)(i);
+    if (i == n || i == k) {
+      continue;
+    }
+
+    float cost = KMedoids::cachedLoss(data, distMat, o,
+                                      mi, 0);
+    if (cost < secondDistance) {
+      secondMedoid = i;
+      secondDistance = cost;
+    }
+  }
+
+  return {secondMedoid, secondDistance};
+}
+
+void BanditFasterPAM::calcBestDistancesSwapWithFPOptimizations(
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma::urowvec *medoidIndices,
+    arma::frowvec *bestDistances,
+    arma::frowvec *secondBestDistances,
+    arma::urowvec *assignments,
+    arma::urowvec *secondAssignments,
+    size_t k,
+    size_t n) {
+  // update the distances from doing the swap
+  for (size_t o = 0; o < (*bestDistances).size(); o++) {
+    if (o == n) {
+      if ((*assignments)(o) != k) {
+        (*secondAssignments)(o) = (*assignments)(o);
+        (*secondBestDistances)(o) = (*bestDistances)(o);
+      }
+
+      (*assignments)(o) = k;
+      (*bestDistances)(o) = 0;
+      continue;
+    }
+
+    float djo = KMedoids::cachedLoss(data, distMat, o,
+                                     n, 0);
+    if ((*assignments)(o) == k) {
+      if (djo < (*secondBestDistances)(o)) {
+        (*assignments)(o) = k;
+        (*bestDistances)(o) = djo;
+      } else {
+        (*assignments)(o) = (*secondAssignments)(o);
+        (*bestDistances)(o) = (*secondBestDistances)(o);
+        std::tuple<size_t, float> paramsSecond = updateSecondNearest(distMat, medoidIndices, (*assignments)(o), k, o, djo);
+        (*secondAssignments)(o) = std::get<0>(paramsSecond);
+        (*secondBestDistances)(o) = std::get<1>(paramsSecond);
+      }
+    } else {
+      if (djo < (*bestDistances)(o)) {
+        (*secondAssignments)(o) = (*assignments)(o);
+        (*secondBestDistances)(o) = (*bestDistances)(o);
+        (*assignments)(o) = k;
+        (*bestDistances)(o) = djo;
+      } else if (djo < (*secondBestDistances)(o)) {
+        (*secondAssignments)(o) = k;
+        (*secondBestDistances)(o) = djo;
+      } else if ((*secondAssignments)(o) == k) {
+        std::tuple<size_t, float> paramsSecond = updateSecondNearest(distMat, medoidIndices, (*assignments)(o), k, o, djo);
+        (*secondAssignments)(o) = std::get<0>(paramsSecond);
+        (*secondBestDistances)(o) = std::get<1>(paramsSecond);
+      }
+    }
+  }
+}
+
 void BanditFasterPAM::swap(
     const arma::fmat &data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
     arma::urowvec *medoidIndices,
     arma::fmat *medoids,
-    arma::urowvec *assignments) {
+    arma::urowvec *assignments,
+    arma::urowvec *secondAssignments) {
   size_t N = data.n_cols;
   size_t p = N;
   bool continueSampling = true;
@@ -311,14 +434,16 @@ void BanditFasterPAM::swap(
   arma::fmat ucbs(nMedoids, N);
   arma::umat numSamples(nMedoids, N, arma::fill::zeros);
 
+  // TODO(@Adarsh3221123): see if this can be consolidated in the existing calcBestDistancesSwap
   // calculate quantities needed for swap, bestDistances and sigma
-  calcBestDistancesSwap(
+  calcBestDistancesSwapInitial(
       data,
       distMat,
       medoidIndices,
       &bestDistances,
       &secondBestDistances,
       assignments,
+      secondAssignments,
       swapPerformed);
 
   size_t iter = 0;
@@ -681,8 +806,7 @@ void BanditFasterPAM::swap(
       // Assume swapConfidence is given in logspace
 //      swapConfidence = 0.5; // TODO: Remove this
 //      adjust = swapConfidence + arma::log(adjust);
-      adjust = 0.5 + arma::log(adjust); // TODO: revert
-//      adjust = 0.00001 + arma::log(adjust); // TODO: revert
+      adjust = 0.1 + arma::log(adjust);
 
 //      std::string adjust_string = "";
 //      for (size_t i = 0; i < nMedoids; i++) {
@@ -809,16 +933,17 @@ void BanditFasterPAM::swap(
       medoids->col(k) = data.col((*medoidIndices)(k));
 
       double wall0_calc = get_wall_time_3();
-      calcBestDistancesSwap(
-          data,
-          distMat,
-          medoidIndices,
-          &bestDistances,
-          &secondBestDistances,
-          assignments,
-          swapPerformed);
+      calcBestDistancesSwapWithFPOptimizations(
+        distMat,
+        medoidIndices,
+        &bestDistances,
+        &secondBestDistances,
+        assignments,
+        secondAssignments,
+        k,
+        n);
       double wall1_calc = get_wall_time_3();
-      std::cout << "Time for calcBestDistancesSwap: " << wall1_calc - wall0_calc << std::endl;
+      std::cout << "Time for calcBestDistancesSwapWithFPOptimizations: " << wall1_calc - wall0_calc << std::endl;
     }
 
     // TODO(@Adarsh321123): this is necessary right now since
