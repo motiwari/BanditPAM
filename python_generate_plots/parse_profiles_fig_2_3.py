@@ -4,33 +4,12 @@ In particular, plots the scaling of BanditPAM vs. N for various dataset sizes N.
 Used to demonstrate O(NlogN) scaling.
 '''
 
-import sys
 import os
-import pstats
 import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-
-from generate_config import write_exp
-import constants
-
-# Possible line numbers for the empty_counter fn
-FN_NAME_1 = 'data_utils.py:129(empty_counter)'
-FN_NAME_2 = 'data_utils.py:141(empty_counter)'
-FN_NAME_3 = 'data_utils.py:142(empty_counter)'
-
-def showx():
-    '''
-    Convenience function for plotting matplotlib plots and closing on key press.
-    '''
-
-    plt.draw()
-    plt.pause(1)
-    input("<Hit Enter To Close>")
-    plt.close()
-
 
 def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap, title = "Insert title", take_log = True):
     '''
@@ -39,6 +18,7 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
 
     Requires the array of distance calls for the algo, for each k, N, and seed.
     '''
+    # TODO: shouldnt be called dcalls_array, should be called something like runtimes
     assert fix_k_or_N == 'N' or fix_k_or_N == 'k', "Bad slice param"
 
     # Determine what we're fixing and what we're plotting the scaling against
@@ -83,56 +63,7 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
             # Plot line of best fit
             sl, icpt, r_val, p_val, _ = sp.stats.linregress(Nks_plot, means)
             x_min, x_max = plt.xlim()
-            y_min, y_max = plt.ylim()
             plt.plot([x_min, x_max], [x_min * sl + icpt, x_max * sl + icpt], color='black', label='Linear fit, slope=%0.3f'%(sl))
-
-            # if build_or_swap == 'build':
-            #     # Plot reference kN^2 line here in build step for PAM
-            #     plt.plot([x_min, x_max], [np.log10(kN) + x_min * 2, np.log10(kN) + x_max * 2], color='red', label='$kn^2$ PAM scaling')
-            # elif build_or_swap == 'swap':
-            #     # Plot reference N^2 line here in build step for PAM + FP1
-            #     # (no dependence on k)
-            #     plt.plot([x_min, x_max], [x_min * 2, x_max * 2], color='red', label='$kn^2$ PAM scaling')
-            # else:
-
-            # TODO(@Adarsh321123): update this comment?
-            # Reference lines for PAM (kn^2) and FastPAM1 (n^2)
-            # NOTE: We add the intercept from the line of best fit on BanditPAM to account
-            # for the overhead of starting the algorithms and extrapolate
-            # using the expected scaling. This is a generous estimate, since
-            # the intercept is negative. The guidelines are accurate up to
-            # a constant, depending on the actual constant in front of the
-            # O(n^2) or O(kn^2) scaling, but the slope -- importantly -- is
-            # always 2
-            # if title == "MNIST, $d = l_2, k = 3$":
-            #     P_icpt = constants.MNIST_L2_k5_P_baseline_icpt
-            #     FP1_icpt = constants.MNIST_L2_k5_FP1_baseline_icpt
-            #     x0 = constants.MNIST_L2_k5_x_0
-            # elif title == "MNIST, $d = l_2, k = 5$":
-            #     P_icpt = constants.MNIST_L2_k10_P_baseline_icpt
-            #     FP1_icpt = constants.MNIST_L2_k10_FP1_baseline_icpt
-            #     x0 = constants.MNIST_L2_k10_x_0
-            # elif title == "MNIST, $d =$ cosine, $k = 3$":
-            #     P_icpt = constants.MNIST_cosine_k5_P_baseline_icpt
-            #     FP1_icpt = constants.MNIST_cosine_k5_FP1_baseline_icpt
-            #     x0 = constants.MNIST_cosine_k5_x_0
-            # elif "scRNA, $d = l_1, k = 3$":
-            #     P_icpt = constants.scRNA_L1_k5_P_baseline_icpt
-            #     FP1_icpt = constants.scRNA_L1_k5_FP1_baseline_icpt
-            #     x0 = constants.scRNA_L1_k5_x_0
-            # else:
-            #     raise Exception("Don't have constant intercepts")
-            #
-            #
-            # print(kN, P_icpt, FP1_icpt)
-            # plt.plot([x_min, x_max], [FP1_icpt + (x_min - x0) * 2, FP1_icpt + (x_max - x0) * 2], color='blue', linestyle=':', label='$n^2$ FasterPAM scaling')
-            #
-            # # x = np.linspace(x_min, x_min + 0.1, 256, endpoint = True)
-            # # y = np.exp(x) - 50
-            # # y = 10 ** x - 8500
-            # # plt.plot(x, y, color='blue', linestyle=':', label='$n^2$ FasterPAM scaling')
-            #
-            # plt.plot([x_min, x_max], [P_icpt + np.log10(kN) + (x_min - x0) * 2, P_icpt + np.log10(kN) + (x_max - x0) * 2], color='orange', linestyle='-.', label='$kn^2$ PAM scaling')
 
             print("Slope is:", sl, "Intercept is:", icpt)
 
@@ -145,6 +76,7 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
             raise Exception("Fixing N and plotting vs. k not yet supported")
 
         plt.xlabel("$\log_{10}(n)$")
+        # TODO: update based on if using log or not
         plt.ylabel("$\log_{10}$(runtime (s))")
 
         # Modify these lines based on dataset
@@ -196,8 +128,9 @@ def show_plots(fix_k_or_N, build_or_swap, Ns, ks, seeds, algo, dataset, metric, 
         - weighting the distance calls between the build step and swap step as
             necessary
     '''
+    # TODO: shouldn't be called build_or_swap
     runtimes = np.zeros((len(ks), len(Ns), len(seeds)))
-    log_prefix = 'profiles/' + dir_ + '/p-'
+    log_prefix = 'profiles/' + dir_ + '/L-'
     time_prefix = 'profiles/' + dir_ + '/t-'
 
     # Gather data
@@ -212,30 +145,22 @@ def show_plots(fix_k_or_N, build_or_swap, Ns, ks, seeds, algo, dataset, metric, 
                 logfile = log_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
                     '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
 
+                if not os.path.exists(time_fname):
+                    raise Exception("Warning: timefile not found for ", time_fname)
+                if not os.path.exists(logfile):
+                    raise Exception("Warning: logfile not found for ", logfile)
+
                 rt = get_runtime(time_fname)
                 T = get_swap_T(logfile)
                 print(N, k, seed, T, k, rt)
 
                 # Set the data
-
                 runtimes[k_idx, N_idx, seed_idx] = rt / T
-                if not os.path.exists(time_fname):
-                    raise Exception("Warning: profile not found for ", time_fname)
-                if not os.path.exists(logfile):
-                    raise Exception("Warning: profile not found for ", logfile)
 
     plot_slice_sns(runtimes, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap, title = title)
 
 def main():
     algo = 'bfp'
-
-    #### for HOC4
-    # dataset = 'HOC4'
-    # metric = 'PRECOMP'
-    # Ns = [1000, 2000, 3000, 3360]
-    # ks = [2]
-    # seeds = range(42, 52)
-    # dir_ = 'HOC4_PRECOMP_k2k3_paper'
 
     # #### for MNIST L2, k = 3
     # dataset = 'MNIST'
@@ -272,6 +197,7 @@ def main():
     # show_plots('k', 'weighted_T', Ns, ks, seeds, algo, dataset, metric, dir_, title = title)
 
     #### for scRNA, L1, K = 3
+    # TODO: check if it works now with L instead of p
     dataset = 'SCRNA'
     metric = 'L1'
     Ns = [5000, 7500, 10000, 12500, 15000, 17500, 20000]
@@ -281,6 +207,7 @@ def main():
     title = "scRNA, $d = l_1, k = 3$"
     show_plots('k', 'weighted_T', Ns, ks, seeds, algo, dataset, metric, dir_, title = title)
 
+    # TODO: do we need all of these?
     # show_plots('k', 'build', Ns, ks, seeds, algos, dataset, metric, dir_)
     # show_plots('k', 'swap', Ns, ks, seeds, algos, dataset, metric, dir_)
     # show_plots('k', 'weighted', Ns, ks, seeds, algos, dataset, metric, dir_)

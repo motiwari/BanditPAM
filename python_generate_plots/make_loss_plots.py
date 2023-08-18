@@ -1,5 +1,5 @@
 '''
-Compare the losses of BanditPAM and various baselines: PAM, FastPAM, EM, CLARANS
+Compare the losses of BanditFasterPAM, FasterPAM, and PAM.
 Used to generate Figure 1(a) of the paper.
 '''
 
@@ -12,10 +12,8 @@ def get_file_loss(file_):
     '''
     Get the final loss of an experiment from the logfile
     '''
-    if 'bfp' in file_ or 'fp' in file_ or 'naive_v1' in file_:
-        num_lines = 4
-    else:
-        num_lines = 2
+    # the final loss is on the 4th line of the logfile
+    num_lines = 4
 
     with open(file_, 'r') as fin:
         line_idx = 0
@@ -114,21 +112,6 @@ def verify_optimization_paths():
                 print(naive_swaps)
                 print(ucb_swaps)
 
-def get_FP_loss(N, seed):
-    '''
-    Get the losses from running FastPAM. These were manually obtained by using
-    the ELKI GUI implementation of FastPAM.
-    '''
-
-    with open('ELKI/manual_fastpam_losses.txt', 'r') as fin:
-        prefix = "N=" + str(N) + ",seed=" + str(seed + 42)+":"
-        line = fin.readline()
-        while line[:len(prefix)] != prefix:
-            line = fin.readline()
-
-        fp_loss = float(line.split(':')[-1])/N
-        return fp_loss
-
 def make_plots():
     '''
     Make a plot showing the relative losses of BanditPAM, EM, CLARANS, and
@@ -138,9 +121,7 @@ def make_plots():
     loss_dir = 'profiles/Loss_plots_paper_20k/'
 
     algos = ['naive_v1', 'bfp', 'fp']
-    # algos = ['bfp', 'fp']
     seeds = range(10)
-    # Ns = [5000, 7500, 10000, 12500, 15000, 17500, 20000]
     Ns = [5000, 7500, 10000]
     k = 5
 
@@ -173,6 +154,7 @@ def make_plots():
 
     losses = np.zeros((len(Ns), len(algos) + 1, len(seeds)))
 
+    # TODO: update the filenames
     for N_idx, N in enumerate(Ns):
         for algo_idx, algo in enumerate(algos):
             for seed_idx, seed in enumerate(seeds):
@@ -225,5 +207,7 @@ def make_plots():
 
 if __name__ == "__main__":
     loss_dir = 'profiles/Loss_plots_paper_20k/'
+    # TODO: verify for FasterPAM? but we need to use the same uniform random sampling seed for that
     # verify_optimization_paths()
+    # TODO: combine with parse_profiles?
     make_plots()

@@ -4,22 +4,12 @@ In particular, plots the scaling of BanditPAM vs. N for various dataset sizes N.
 Used to demonstrate O(NlogN) scaling.
 '''
 
-import sys
 import os
-import pstats
 import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import snakevizcode
-
-from generate_config import write_exp
-
-# Possible line numbers for the empty_counter fn
-FN_NAME_1 = 'data_utils.py:129(empty_counter)'
-FN_NAME_2 = 'data_utils.py:141(empty_counter)'
-FN_NAME_3 = 'data_utils.py:142(empty_counter)'
 
 def verify_logfiles():
     '''
@@ -117,21 +107,7 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
             # Plot line of best fit
             sl, icpt, r_val, p_val, _ = sp.stats.linregress(Nks_plot, means)
             x_min, x_max = plt.xlim()
-            y_min, y_max = plt.ylim()
             plt.plot([x_min, x_max], [x_min * sl + icpt, x_max * sl + icpt], color='black', label='Linear fit, slope=%0.3f'%(sl))
-
-            # if build_or_swap == 'build':
-            #     # Plot reference kN^2 line here in build step for PAM
-            #     plt.plot([x_min, x_max], [np.log10(kN) + x_min * 2, np.log10(kN) + x_max * 2], color='red', label='$kn^2$ PAM scaling')
-            # elif build_or_swap == 'swap':
-            #     # Plot reference N^2 line here in build step for PAM + FP1
-            #     # (no dependence on k)
-            #     plt.plot([x_min, x_max], [x_min * 2, x_max * 2], color='red', label='$kn^2$ PAM scaling')
-            # else:
-            #     # weighted reference line for
-            #     plt.plot([x_min, x_max], [(x_min) * 2, (x_max) * 2], color='#f781bf', linestyle=':', label='$n^2$ FastPAM1 scaling')
-            #     plt.plot([x_min, x_max], [np.log10(kN) + (x_min) * 2, np.log10(kN) + (x_max) * 2], color='#4daf4a', linestyle='-.', label='$kn^2$ PAM scaling')
-
 
             print("Slope is:", sl)
 
@@ -144,6 +120,7 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
             raise Exception("Fixing N and plotting vs. k not yet supported")
 
         plt.xlabel("$\log_{10}(n)$")
+        # TODO: update based on if using log or not
         plt.ylabel("$\log_{10}$(average # of distance computations per step)")
 
         # Modify these lines based on dataset
@@ -195,94 +172,45 @@ def show_plots(fix_k_or_N, build_or_swap, Ns, ks, seeds, algos, dataset, metric,
     '''
     dcalls_array = np.zeros((len(ks), len(Ns), len(seeds)))
 
-    if build_or_swap == 'build':
-        prefix = 'profiles/' + dir_ + '/p-B-'
-    elif build_or_swap == 'swap':
-        prefix = 'profiles/' + dir_ + '/p-S-'
-    elif build_or_swap == 'weighted' or build_or_swap == 'weighted_T':
+    # TODO: just have one clause for exception and remove this pass
+    if build_or_swap == 'weighted' or build_or_swap == 'weighted_T':
         pass
     else:
         raise Exception("Error pi")
 
+    # TODO: use os.path.join?
     log_prefix = 'profiles/' + dir_ + '/L-'
 
     # Gather data
     for algo in algos:
-        assert algo in ['ucb', 'naive_v1', 'bfp'], "Bad algo yo"
+        assert algo in ['bfp', 'fp', 'naive_v1'], "Bad algo input"
         for N_idx, N in enumerate(Ns):
             for k_idx, k in enumerate(ks):
                 for seed_idx, seed in enumerate(seeds):
+                    # TODO: can't we just remove this if since all code is weighted or weighted_T
                     if build_or_swap == 'weighted' or build_or_swap == 'weighted_T':
-                        prefix = 'profiles/' + dir_ + '/p-'
-
-                        build_prefix = prefix + 'B-'
-                        build_profile_name = build_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
-                            '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
-
-                        swap_prefix = prefix + 'S-'
-                        swap_profile_name = swap_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
-                            '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
+                        prefix = 'profiles/' + dir_ + '/L-'
 
                         logfile = log_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
                             '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
 
                         if not os.path.exists(logfile):
-                            raise Exception("Warning: Log file not found for ", logfile)
+                            raise Exception("Warning: logfile not found for ", logfile)
 
                         T = get_swap_T(logfile)
                         dist_comps = get_dist_comps(logfile)
                         print(T, dist_comps, k)
-
-                        # if build_or_swap == 'weighted':
-                        #     dcalls_array[k_idx][N_idx][seed_idx] += dist_comps # build + avg(swap)
-                        # elif build_or_swap == 'weighted_T':
-                        #     dcalls_array[k_idx][N_idx][seed_idx] += dist_comps / T # (build + swap) / T
-                        # else:
-                        #     raise Exception("blank")
 
                         if build_or_swap == 'weighted_T':
                             dcalls_array[k_idx][N_idx][seed_idx] += dist_comps / T
                         else:
                             raise Exception("blank")
 
-                    else:
-                        # TODO(@Adarsh321123): remove all non weighted_T stuff?
-                        assert build_or_swap == 'build' or build_or_swap == 'swap', "Error with build_or_swap"
-                        profile_fname = prefix + algo + '-False-BS-v-0-k-' + str(k) + \
-                            '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
-                        if os.path.exists(profile_fname):
-                            p = pstats.Stats(profile_fname)
-                            for row in snakevizcode.table_rows(p):
-                                if FN_NAME_1 in row or FN_NAME_2 in row or FN_NAME_3 in row:
-                                    dcalls = row[0][1]
-                                    if build_or_swap == 'build':
-                                        dcalls_array[k_idx][N_idx][seed_idx] = dcalls
-                                    elif build_or_swap == 'swap':
-                                        logfile = log_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
-                                            '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
-                                        T = get_swap_T(logfile)
-                                        dcalls_array[k_idx][N_idx][seed_idx] = dcalls / T
-                                    else:
-                                        raise Exception("Averaging method not supported")
-                        else:
-                            print("Warning: profile not found for ", profile_fname)
-
     # Show data
     for algo in algos:
         plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap)
 
 def main():
-
-
-    ######## HOC4, Tree edit distance (precomputed), k = 2 and k = 3
-    # algos = ['ucb']
-    # dataset = 'HOC4'
-    # metric = 'PRECOMP'
-    # Ns = [1000, 2000, 3000, 3360]
-    # ks = [2]
-    # seeds = range(42, 52)
-    # dir_ = 'HOC4_PRECOMP_k2k3_paper'
-
     ######## CIFAR, L1 distance, k = 2
     dataset = 'CIFAR'
     metric = 'L1'
@@ -347,7 +275,7 @@ def main():
 
 
 if __name__ == '__main__':
+    # TODO: verify btwn BFP and FP?
     # verify_logfiles()
     print("FILES VERIFIED\n\n")
     main()
-    # TODO(@Adarsh321123): use C++ dist comps instead of profiler?

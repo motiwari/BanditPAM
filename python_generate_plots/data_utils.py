@@ -10,17 +10,11 @@ There are 5 functions that call d and therefore require the an explicit metric:
 - medoid_swap
 '''
 
-import os
-import sys
 import numpy as np
 import mnist
-import matplotlib.pyplot as plt
 import argparse
-import pandas as pd
-import pickle
 
 from zss import simple_distance, Node
-from sklearn.manifold import TSNE
 from scipy.spatial.distance import cosine
 from sklearn.metrics import pairwise_distances
 from keras.datasets import cifar10
@@ -32,7 +26,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 DECIMAL_DIGITS = 5
 SIGMA_DIVISOR = 1
-
+# TODO: remove unnecessary functions
 def get_args(arguments):
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -60,7 +54,7 @@ def load_data(args):
     if args.dataset == 'MNIST':
         N = 70000
         m = 28
-        sigma = 0.7
+        sigma = 0.7 # TODO: do we need sigma?
         train_images = mnist.train_images()
         train_labels = mnist.train_labels()
 
@@ -78,16 +72,10 @@ def load_data(args):
         # Normalizing images
         return total_images.reshape(N, m * m) / 255, total_labels, sigma
     elif args.dataset == "SCRNA":
-        file = './data/scrna_reformat.csv'
+        file = '../data/scrna_reformat.csv'
         data_ = np.loadtxt(file, delimiter=',')
         sigma = 25
         return data_, None, sigma
-    elif args.dataset == "SCRNAPCA":
-        file = 'person1/fresh_68k_pbmc_donor_a_filtered_gene_bc_matrices/analysis_csv/pca/projection.csv'
-        df = pd.read_csv(file, sep=',', index_col = 0)
-        np_arr = df.to_numpy()
-        sigma = 0.01
-        return np_arr, None, sigma
     elif args.dataset == "CIFAR":
         # TODO(@Adarsh321123): later explain where to find dataset so no need to download each time?
         N = 60000
