@@ -119,10 +119,15 @@ def plot_slice_sns(data_array, fix_k_or_N, Ns, ks, algo, seeds, runtime_plot, ti
         elif fix_k_or_N == 'N':
             raise Exception("Fixing N and plotting vs. k not yet supported")
 
-        plt.xlabel("$\log_{10}(n)$")
+        # Set axis labels based on whether we're taking the log
+        # and whether we're plotting runtime or distance computations
+        xlabel_str = ""
         ylabel_str = ""
         if take_log:
+            xlabel_str = "$\log_{10}(n)$"
             ylabel_str += "$\log_{10}$("
+        else:
+            xlabel_str = "$n$"
 
         if runtime_plot:
             ylabel_str += "runtime (s)"
@@ -133,6 +138,7 @@ def plot_slice_sns(data_array, fix_k_or_N, Ns, ks, algo, seeds, runtime_plot, ti
             ylabel_str += ")"
 
         plt.ylabel(ylabel_str)
+        plt.xlabel(xlabel_str)
 
         plt.title(title)
         plt.savefig('figures/' + title.replace("$", '') + '.pdf')
@@ -197,10 +203,10 @@ def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_p
             necessary
     '''
     data_array = np.zeros((len(ks), len(Ns), len(seeds)))
-    log_prefix = 'profiles/' + dir_ + '/p-' # TODO: change back to L
+    log_prefix = 'profiles/' + dir_ + '/L-'
 
     # Gather data
-    assert algo in ['bfp'], "Bad algo input" # TODO: test
+    assert algo in ['bfp'], "Bad algo input"
     for N_idx, N in enumerate(Ns):
         for k_idx, k in enumerate(ks):
             for seed_idx, seed in enumerate(seeds):
@@ -223,7 +229,7 @@ def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_p
                         raise Exception("Warning: timefile not found for ", time_fname)
 
                     rt = get_runtime(time_fname)
-                    print(N, k, seed, T, k, rt)
+                    print(N, k, seed, T, rt)
 
                     # Set the data
                     data_array[k_idx, N_idx, seed_idx] = rt / T
@@ -246,16 +252,16 @@ def main():
     # dataset = 'CIFAR'
     # metric = 'L1'
     # ks = [2]
-    # dir_ = 'CIFAR_L1_k2_paper_20k'
+    # dir_ = 'CIFAR_L1_k2_paper'
     # title = "CIFAR, $d = l_1$, $k = 2$"
     # runtime_plot = False
 
     ######## Figure 2 (a): MNIST, L2, k = 3
-    # dataset = 'MNIST'
-    # metric = 'L2'
-    # ks = [3]
-    # dir_ = 'MNIST_L2_k3_paper'
-    # title = "MNIST, $d = l_2, k = 3$"
+    dataset = 'MNIST'
+    metric = 'L2'
+    ks = [3]
+    dir_ = 'MNIST_L2_k3_paper'
+    title = "MNIST, $d = l_2, k = 3$"
 
     ######## Figure 2 (b): MNIST, L2, k = 5
     # dataset = 'MNIST'
@@ -272,11 +278,11 @@ def main():
     # title = "MNIST, $d =$ cosine, $k = 3$"
 
     ######## Figure 3 (b): SCRNA, L1, k = 3
-    dataset = 'SCRNA'
-    metric = 'L1'
-    ks = [3]
-    dir_ = 'SCRNA_L1_k3_paper_20k'
-    title = "scRNA, $d = l_1, k = 3$"
+    # dataset = 'SCRNA'
+    # metric = 'L1'
+    # ks = [3]
+    # dir_ = 'SCRNA_L1_k3_paper'
+    # title = "scRNA, $d = l_1, k = 3$"
 
     show_plots('k', Ns, ks, seeds, algo, dataset, metric, dir_, runtime_plot, title = title)
 

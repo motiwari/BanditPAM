@@ -94,7 +94,7 @@
 #     pool = mp.Pool()
 #     for exp in imported_config.experiments:
 #         args = remap_args(args, exp)
-#         medoids_fname = os.path.join('profiles','Loss_plots_paper_20k', 'L-' + get_filename(exp, args))
+#         medoids_fname = os.path.join('profiles','Loss_plots_paper', 'L-' + get_filename(exp, args))
 #
 #         if os.path.exists(medoids_fname) and not args.force:
 #             # Experiments have already been conducted

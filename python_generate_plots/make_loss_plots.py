@@ -118,7 +118,7 @@ def make_plots():
     FastPAM, normalized to PAM's loss. Used for Figure 1(a) of the paper.
     '''
 
-    loss_dir = 'profiles/Loss_plots_paper_20k/'
+    loss_dir = 'profiles/Loss_plots_paper/'
 
     algos = ['naive_v1', 'bfp', 'fp']
     seeds = range(10)
@@ -206,7 +206,7 @@ def make_plots():
 
 
 if __name__ == "__main__":
-    loss_dir = 'profiles/Loss_plots_paper_20k/'
+    loss_dir = 'profiles/Loss_plots_paper/'
     # TODO: verify for FasterPAM? but we need to use the same uniform random sampling seed for that
     # verify_optimization_paths()
     # TODO: combine with parse_profiles?

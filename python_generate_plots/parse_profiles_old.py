@@ -208,7 +208,7 @@
 #     ks = [2]
 #     seeds = range(42, 72)
 #     algos = ['bfp']
-#     dir_ = 'CIFAR_L1_k2_paper_20k'
+#     dir_ = 'CIFAR_L1_k2_paper'
 #
 #     #### for MNIST L2, k = 5
 #     # dataset = 'MNIST'
