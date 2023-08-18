@@ -56,7 +56,7 @@ def verify_logfiles():
                 else:
                     print("OK: Results for", u_lfile, n_lfile, "agree")
 
-def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap, take_log = True):
+def plot_slice_sns(data_array, fix_k_or_N, Ns, ks, algo, seeds, runtime_plot, title ="Insert title", take_log = True):
     '''
     Plots the number of distance calls vs. N, for various algorithms, seeds,
     values of k, and weightings between build and swap.
@@ -76,10 +76,10 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
     for kN_idx, kN in enumerate(kNs):
         if fix_k_or_N == 'k':
             if take_log:
-                np_data = np.log10(dcalls_array)
+                np_data = np.log10(data_array)
                 Nks_plot = np.log10(Nks)
             else:
-                np_data = dcalls_array
+                np_data = data_array
                 Nks_plot = Nks
 
             sns.set()
@@ -109,7 +109,7 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
             x_min, x_max = plt.xlim()
             plt.plot([x_min, x_max], [x_min * sl + icpt, x_max * sl + icpt], color='black', label='Linear fit, slope=%0.3f'%(sl))
 
-            print("Slope is:", sl)
+            print("Slope is:", sl, "Intercept is:", icpt)
 
             # Manually modify legend labels for prettiness
             handles, labels = ax.get_legend_handles_labels()
@@ -120,12 +120,22 @@ def plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap,
             raise Exception("Fixing N and plotting vs. k not yet supported")
 
         plt.xlabel("$\log_{10}(n)$")
-        # TODO: update based on if using log or not
-        plt.ylabel("$\log_{10}$(average # of distance computations per step)")
+        ylabel_str = ""
+        if take_log:
+            ylabel_str += "$\log_{10}$("
 
-        # Modify these lines based on dataset
-        plt.title("CIFAR, $d = l_1$, $k = 2$")
-        plt.savefig('figures/CIFAR, d = l_1, k = 2.pdf')
+        if runtime_plot:
+            ylabel_str += "runtime (s)"
+        else:
+            ylabel_str += "average # of distance computations per step"
+
+        if take_log:
+            ylabel_str += ")"
+
+        plt.ylabel(ylabel_str)
+
+        plt.title(title)
+        plt.savefig('figures/' + title.replace("$", '') + '.pdf')
 
 def get_dist_comps(logfile):
     '''
@@ -152,10 +162,26 @@ def get_swap_T(logfile):
         while line[:10] != 'Num Swaps:':
             line = fin.readline()
 
-        T = int(line.split(' ')[-1])
+        T = int(line.split(':')[-1])
     return T
 
-def show_plots(fix_k_or_N, build_or_swap, Ns, ks, seeds, algos, dataset, metric, dir_):
+
+def get_runtime(timefile):
+    '''
+    Get the runtime of an experiment, from parsing the timefile
+    '''
+
+    with open(timefile, 'r') as fin:
+        line = fin.readline()
+        print(line)
+        while line[:8] != 'Runtime:':
+            print(line)
+            line = fin.readline()
+
+        runtime = float(line.split(':')[-1].strip())
+    return runtime
+
+def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_plot, title = "Insert title"):
     '''
     A function which mines the number of distance calls for each experiment,
     from the dumped profiles. Creates a numpy array with the distance call
@@ -170,112 +196,94 @@ def show_plots(fix_k_or_N, build_or_swap, Ns, ks, seeds, algos, dataset, metric,
         - weighting the distance calls between the build step and swap step as
             necessary
     '''
-    dcalls_array = np.zeros((len(ks), len(Ns), len(seeds)))
-
-    # TODO: just have one clause for exception and remove this pass
-    if build_or_swap == 'weighted' or build_or_swap == 'weighted_T':
-        pass
-    else:
-        raise Exception("Error pi")
-
-    # TODO: use os.path.join?
-    log_prefix = 'profiles/' + dir_ + '/L-'
+    data_array = np.zeros((len(ks), len(Ns), len(seeds)))
+    log_prefix = 'profiles/' + dir_ + '/p-' # TODO: change back to L
 
     # Gather data
-    for algo in algos:
-        assert algo in ['bfp', 'fp', 'naive_v1'], "Bad algo input"
-        for N_idx, N in enumerate(Ns):
-            for k_idx, k in enumerate(ks):
-                for seed_idx, seed in enumerate(seeds):
-                    # TODO: can't we just remove this if since all code is weighted or weighted_T
-                    if build_or_swap == 'weighted' or build_or_swap == 'weighted_T':
-                        prefix = 'profiles/' + dir_ + '/L-'
+    assert algo in ['bfp'], "Bad algo input" # TODO: test
+    for N_idx, N in enumerate(Ns):
+        for k_idx, k in enumerate(ks):
+            for seed_idx, seed in enumerate(seeds):
+                # Get the number of swaps or distance computations
+                logfile = log_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
+                          '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
 
-                        logfile = log_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
-                            '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
+                if not os.path.exists(logfile):
+                    raise Exception("Warning: logfile not found for ", logfile)
 
-                        if not os.path.exists(logfile):
-                            raise Exception("Warning: logfile not found for ", logfile)
+                T = get_swap_T(logfile)
 
-                        T = get_swap_T(logfile)
-                        dist_comps = get_dist_comps(logfile)
-                        print(T, dist_comps, k)
+                if runtime_plot:
+                    # Get the time
+                    time_prefix = 'profiles/' + dir_ + '/t-'
+                    time_fname = time_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
+                        '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
 
-                        if build_or_swap == 'weighted_T':
-                            dcalls_array[k_idx][N_idx][seed_idx] += dist_comps / T
-                        else:
-                            raise Exception("blank")
+                    if not os.path.exists(time_fname):
+                        raise Exception("Warning: timefile not found for ", time_fname)
 
-    # Show data
-    for algo in algos:
-        plot_slice_sns(dcalls_array, fix_k_or_N, Ns, ks, algo, seeds, build_or_swap)
+                    rt = get_runtime(time_fname)
+                    print(N, k, seed, T, k, rt)
+
+                    # Set the data
+                    data_array[k_idx, N_idx, seed_idx] = rt / T
+                else:
+                    dist_comps = get_dist_comps(logfile)
+                    print(T, dist_comps, k)
+
+                    # Set the data
+                    data_array[k_idx][N_idx][seed_idx] += dist_comps / T
+
+    plot_slice_sns(data_array, fix_k_or_N, Ns, ks, algo, seeds, runtime_plot, title = title)
 
 def main():
-    ######## CIFAR, L1 distance, k = 2
-    dataset = 'CIFAR'
-    metric = 'L1'
+    algo = 'bfp'
     Ns = [5000, 7500, 10000, 12500, 15000, 17500, 20000]
-    ks = [2]
     seeds = range(42, 72)
-    algos = ['bfp']
-    dir_ = 'CIFAR_L1_k2_paper_20k'
+    runtime_plot = True
 
-    #### for MNIST L2, k = 5
-    # dataset = 'MNIST'
-    # metric = 'L2'
-    # Ns = [10000, 20000, 40000, 70000]
-    # ks = [5]
-    # seeds = range(42, 52)
-    # dir_ = 'MNIST_L2_k5_paper'
-
-    ### for MNIST L2, k = 10
-    # dataset = 'MNIST'
-    # metric = 'L2'
-    # Ns = [3000, 10000, 30000, 70000]
-    # ks = [10]
-    # seeds = range(42, 52)
-    # dir_ = 'MNIST_L2_k10_paper'
-
-    ##### for MNIST COSINE
-    # dataset = 'MNIST'
-    # metric = 'COSINE'
-    # Ns = [3000, 10000, 20000, 40000]
-    # ks = [5]
-    # seeds = range(42, 52)
-    # dir_ = 'MNIST_COSINE_k5_paper'
-
-    #### for scRNAPCA, L2, K = 10
-    # dataset = 'SCRNAPCA'
-    # metric = 'L2'
-    # Ns = [10000, 20000, 30000, 40000]
-    # ks = [10]
-    # seeds = range(42, 52)
-    # dir_ = 'SCRNAPCA_L2_k10_paper' # NOTE: SCRNA_PCA_paper_more_some_incomplete contains data for some more values of N.
-
-    #### for scRNAPCA, L2, K = 5
-    # dataset = 'SCRNAPCA'
-    # metric = 'L2'
-    # Ns = [10000, 20000, 30000, 40000]
-    # ks = [5]
-    # seeds = range(42, 52)
-    # dir_ = 'SCRNAPCA_L2_k5_paper'
-
-    #### for scRNA, L1, K = 5
-    # dataset = 'SCRNA'
+    ######## Figure 1 (b): CIFAR, L1, k = 2
+    # dataset = 'CIFAR'
     # metric = 'L1'
-    # Ns = [10000, 20000, 30000, 40000]
-    # ks = [5]
-    # seeds = range(42, 52)
-    # dir_ = 'SCRNA_L1_paper'
+    # ks = [2]
+    # dir_ = 'CIFAR_L1_k2_paper_20k'
+    # title = "CIFAR, $d = l_1$, $k = 2$"
+    # runtime_plot = False
 
-    # show_plots('k', 'build', Ns, ks, seeds, algos, dataset, metric, dir_)
-    # show_plots('k', 'swap', Ns, ks, seeds, algos, dataset, metric, dir_)
-    # show_plots('k', 'weighted', Ns, ks, seeds, algos, dataset, metric, dir_)
-    show_plots('k', 'weighted_T', Ns, ks, seeds, algos, dataset, metric, dir_)
+    ######## Figure 2 (a): MNIST, L2, k = 3
+    # dataset = 'MNIST'
+    # metric = 'L2'
+    # ks = [3]
+    # dir_ = 'MNIST_L2_k3_paper'
+    # title = "MNIST, $d = l_2, k = 3$"
+
+    ######## Figure 2 (b): MNIST, L2, k = 5
+    # dataset = 'MNIST'
+    # metric = 'L2'
+    # ks = [5]
+    # dir_ = 'MNIST_L2_k5_paper'
+    # title = "MNIST, $d = l_2, k = 5$"
+
+    ######## Figure 3 (a): MNIST, cosine, k = 3
+    # dataset = 'MNIST'
+    # metric = 'cosine'
+    # ks = [3]
+    # dir_ = 'MNIST_COSINE_k3_paper'
+    # title = "MNIST, $d =$ cosine, $k = 3$"
+
+    ######## Figure 3 (b): SCRNA, L1, k = 3
+    dataset = 'SCRNA'
+    metric = 'L1'
+    ks = [3]
+    dir_ = 'SCRNA_L1_k3_paper_20k'
+    title = "scRNA, $d = l_1, k = 3$"
+
+    show_plots('k', Ns, ks, seeds, algo, dataset, metric, dir_, runtime_plot, title = title)
 
 
 if __name__ == '__main__':
     # TODO: verify btwn BFP and FP?
     # verify_logfiles()
     print("FILES VERIFIED\n\n")
+    # import ipdb; ipdb.set_trace()
     main()
