@@ -3,6 +3,7 @@ Compare the losses of BanditFasterPAM, FasterPAM, and PAM.
 Used to generate Figure 1(a) of the paper.
 '''
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -24,108 +25,57 @@ def get_file_loss(file_):
         final_loss = line.split(' ')[-1]
         return float(final_loss)
 
-def get_swaps(file_):
+def verify_logfiles():
     '''
-    Get the number of swaps performed in an experiment from the logfile.
+    Verifies that BanditFasterPAM returns the same SWAP medoid assignments as
+    FasterPAM, by parsing the logfiles. Note that the same seed must be used for
+    both algorithms to ensure that the uniform random sampling is the same.
     '''
+    # currently, the loss plot is the only plot where both BanditFasterPAM and
+    # FasterPAM are run on the same dataset
+    parent_dirs = [
+        'logs/Loss_plots_paper',
+    ]
+    for parent_dir in parent_dirs:
+        bfp_logfiles = [os.path.join(parent_dir, x) for x in os.listdir(parent_dir) if os.path.isfile(os.path.join(parent_dir, x)) and x != '.DS_Store' and x[:5] == 'L-bfp']
+        for bfp_lfile in sorted(bfp_logfiles):
+            fp_lfile = bfp_lfile.replace('bfp', 'fp')
+            if not os.path.exists(fp_lfile):
+                print("Warning: no FasterPAM experiment", fp_lfile)
+            else:
+                disagreement = False
+                with open(bfp_lfile, 'r') as fin1:
+                    with open(fp_lfile, 'r') as fin2:
+                        l1_1 = fin1.readline().strip().split(",")
+                        l1_2 = fin1.readline().strip().split(",")
 
-    with open(file_, 'r') as fin:
-        swaps = []
-        line = fin.readline()
-        while line.strip() != 'Swap Logstring:': # Need to get past the 'swap:' line in build logstring
-            line = fin.readline()
+                        l2_1 = fin2.readline().strip().split(",")
+                        l2_2 = fin2.readline().strip().split(",")
 
-        while line.strip() != 'swap:':
-            line = fin.readline()
+                        # NOTE: This is a stricter condition than necessary, enforcing both build and swap agreement instead of just swap
+                        if sorted(l1_2) != sorted(l2_2):
+                            disagreement = True
 
-        line = fin.readline()
-        while line:
-            medoids_swapped = line.split(' ')[-1].strip()
-            swaps.append(medoids_swapped)
-            line = fin.readline()
-
-        last_old_medoid = medoids_swapped.split(',')[0]
-        last_new_medoid = medoids_swapped.split(',')[1].strip()
-        assert last_old_medoid == last_new_medoid, "The last swap should try to swap a medoid with itself"
-        return swaps
-
-def get_build_meds(file_):
-    '''
-    Get the medoids returned by just the BUILD step for an experiment, from its
-    logfile.
-    '''
-
-    with open(file_, 'r') as fin:
-        line = fin.readline()
-    return line.strip()
-
-
-def get_swap_meds(file_):
-    '''
-    Get the final medoids returned by the SWAP step for an experiment, from
-    its logfile.
-    '''
-
-    with open(file_, 'r') as fin:
-        line = fin.readline()
-        line = fin.readline()
-    return line.strip()
-
-def verify_optimization_paths():
-    '''
-    Verifies that BanditPAM followed the exact same optimization path as PAM, by
-    parsing the logfiles of both experiments.
-    '''
-
-    loss_dir = 'profiles/Loss_plots_paper/'
-
-    algos = ['naive_v1', 'ucb']
-    seeds = range(10)
-    Ns = [500, 1000, 1500, 2000, 2500, 3000]
-    k = 5
-
-    for N_idx, N in enumerate(Ns):
-        for seed_idx, seed in enumerate(seeds):
-            ucb_filename = loss_dir + 'L-ucb-False-BS-v-0-k-' + str(k) + '-N-' + str(N) + '-s-' + str(seed + 42) + '-d-MNIST-m-L2-w-'
-            naive_filename = loss_dir + 'L-naive_v1-False-BS-v-0-k-' + str(k) + '-N-' + str(N) + '-s-' + str(seed + 42) + '-d-MNIST-m-L2-w-'
-
-            ucb_built = get_build_meds(ucb_filename)
-            ucb_swapped = get_swap_meds(ucb_filename)
-            ucb_swaps = get_swaps(ucb_filename)
-
-            naive_built = get_build_meds(naive_filename)
-            naive_swapped = get_swap_meds(naive_filename)
-            naive_swaps = get_swaps(naive_filename)
-
-            if ucb_built != naive_built:
-                print("Build medoids disagree on " + str(N) + ',' + str(seed))
-                print(naive_built)
-                print(ucb_built)
-
-            if ucb_swapped != naive_swapped:
-                print("Build medoids disagree on " + str(N) + ',' + str(seed))
-                print(naive_swapped)
-                print(ucb_swapped)
-
-            if ucb_swaps != naive_swaps:
-                print("Build medoids disagree on " + str(N) + ',' + str(seed))
-                print(naive_swaps)
-                print(ucb_swaps)
+                if disagreement:
+                    print("\n")
+                    print(sorted(l1_2))
+                    print(sorted(l2_2))
+                    print("ERROR: Results for", bfp_lfile, fp_lfile, "disagree!!")
+                else:
+                    print("OK: Results for", bfp_lfile, fp_lfile, "agree")
 
 def make_plots():
     '''
-    Make a plot showing the relative losses of BanditPAM, EM, CLARANS, and
-    FastPAM, normalized to PAM's loss. Used for Figure 1(a) of the paper.
+    Make a plot showing the relative losses of BanditPAM and
+    FasterPAM, normalized to PAM's loss. Used for Figure 1(a) of the paper.
     '''
 
-    loss_dir = 'profiles/Loss_plots_paper/'
+    loss_dir = 'logs/Loss_plots_paper/'
 
     algos = ['naive_v1', 'bfp', 'fp']
     seeds = range(10)
     Ns = [5000, 7500, 10000]
     k = 5
-
-    mult_jitter = 20
 
     alg_to_legend = {
         'naive_v1' : 'PAM',
@@ -133,7 +83,6 @@ def make_plots():
         'fp': 'FasterPAM',
     }
 
-    ADD_JITTER = 75
     alg_to_add_jitter = {
         'naive_v1' : 0,
         'bfp' : 0,
@@ -154,7 +103,7 @@ def make_plots():
 
     losses = np.zeros((len(Ns), len(algos) + 1, len(seeds)))
 
-    # TODO: update the filenames
+    # TODO: update the filenames in the directories and code
     for N_idx, N in enumerate(Ns):
         for algo_idx, algo in enumerate(algos):
             for seed_idx, seed in enumerate(seeds):
@@ -206,8 +155,7 @@ def make_plots():
 
 
 if __name__ == "__main__":
-    loss_dir = 'profiles/Loss_plots_paper/'
-    # TODO: verify for FasterPAM? but we need to use the same uniform random sampling seed for that
-    # verify_optimization_paths()
-    # TODO: combine with parse_profiles?
+    # verify that BanditFasterPAM and FasterPAM make the same swaps
+    # verify_logfiles()
+    print("FILES VERIFIED\n\n")
     make_plots()

@@ -1,5 +1,5 @@
 '''
-Code to automatically parse the profiles produced from running experiments.
+Code to automatically parse the logs produced from running experiments.
 In particular, plots the scaling of BanditPAM vs. N for various dataset sizes N.
 Used to demonstrate O(NlogN) scaling.
 '''
@@ -10,51 +10,6 @@ import scipy as sp
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-
-def verify_logfiles():
-    '''
-    Verifies that BanditPAM returns the same BUILD and SWAP medoid assignments
-    as PAM, by parsing the logfiles.
-    '''
-
-    parent_dirs = [
-        # 'profiles/HOC4_PRECOMP_k2k3_paper',
-        # 'profiles/MNIST_COSINE_k5_paper',
-        # 'profiles/MNIST_L2_k10_paper',
-        # 'profiles/MNIST_L2_k5_paper',
-        # 'profiles/SCRNAPCA_L2_k10_paper',
-        # 'profiles/SCRNAPCA_L2_k5_paper',
-        # 'profiles/SCRNA_L1_paper',
-        # 'profiles/Loss_plots_paper',
-        'profiles/profiles',
-    ]
-    for parent_dir in parent_dirs:
-        ucb_logfiles = [os.path.join(parent_dir, x) for x in os.listdir(parent_dir) if os.path.isfile(os.path.join(parent_dir, x)) and x != '.DS_Store' and x[:5] == 'L-ucb']
-        for u_lfile in sorted(ucb_logfiles):
-            n_lfile = u_lfile.replace('ucb', 'naive_v1')
-            if not os.path.exists(n_lfile):
-                print("Warning: no naive experiment", n_lfile)
-            else:
-                disagreement = False
-                with open(u_lfile, 'r') as fin1:
-                    with open(n_lfile, 'r') as fin2:
-                        l1_1 = fin1.readline().strip().split(",")
-                        l1_2 = fin1.readline().strip().split(",")
-
-                        l2_1 = fin2.readline().strip().split(",")
-                        l2_2 = fin2.readline().strip().split(",")
-
-                        # NOTE: This is a stricter condition than necessary, enforcing both build and swap agreement instead of just swap
-                        if sorted(l1_2) != sorted(l2_2):
-                            disagreement = True
-
-                if disagreement:
-                    print("\n")
-                    print(sorted(l1_2))
-                    print(sorted(l2_2))
-                    print("ERROR: Results for", u_lfile, n_lfile, "disagree!!")
-                else:
-                    print("OK: Results for", u_lfile, n_lfile, "agree")
 
 def plot_slice_sns(data_array, fix_k_or_N, Ns, ks, algo, seeds, runtime_plot, title ="Insert title", take_log = True):
     '''
@@ -190,11 +145,11 @@ def get_runtime(timefile):
 def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_plot, title = "Insert title"):
     '''
     A function which mines the number of distance calls for each experiment,
-    from the dumped profiles. Creates a numpy array with the distance call
+    from the dumped logs. Creates a numpy array with the distance call
     counts.
 
     It does this by:
-        - first, identifying the filenames where the experiment profiles and
+        - first, identifying the filenames where the experiment
             logfiles are stored (the logfile is used for the number of swap
             steps)
         - searching each profile (build and swap) for the number of distance
@@ -203,7 +158,7 @@ def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_p
             necessary
     '''
     data_array = np.zeros((len(ks), len(Ns), len(seeds)))
-    log_prefix = 'profiles/' + dir_ + '/L-'
+    log_prefix = 'logs/' + dir_ + '/L-'
 
     # Gather data
     assert algo in ['bfp'], "Bad algo input"
@@ -221,7 +176,8 @@ def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_p
 
                 if runtime_plot:
                     # Get the time
-                    time_prefix = 'profiles/' + dir_ + '/t-'
+                    time_prefix = 'logs/' + dir_ + '/t-'
+                    # TODO: update the filenames in the directories and code
                     time_fname = time_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
                         '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
 
@@ -288,8 +244,4 @@ def main():
 
 
 if __name__ == '__main__':
-    # TODO: verify btwn BFP and FP?
-    # verify_logfiles()
-    print("FILES VERIFIED\n\n")
-    # import ipdb; ipdb.set_trace()
     main()

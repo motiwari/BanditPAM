@@ -14,7 +14,8 @@ import importlib
 import multiprocessing as mp
 import copy
 import traceback
-
+import sys
+import os
 import banditpam
 from data_utils import *
 from timeit import default_timer as timer
@@ -23,12 +24,11 @@ def remap_args(args, exp):
     '''
     Parses a config line (as a list) into an args variable (a Namespace).
     '''
-    args.verbose = exp[1]  # TODO(@Adarsh321123): test this for accuracy, also look at where this is used in original and see if we have those
-    args.num_medoids = exp[2]
-    args.sample_size = exp[3]
-    args.seed = exp[4]
-    args.dataset = exp[5]
-    args.metric = exp[6]
+    args.num_medoids = exp[1]
+    args.sample_size = exp[2]
+    args.seed = exp[3]
+    args.dataset = exp[4]
+    args.metric = exp[5]
     return args
 
 def get_filename(exp, args):
@@ -36,7 +36,6 @@ def get_filename(exp, args):
     Create the filename suffix for an experiment, given its configuration.
     '''
     return exp[0] + \
-        '-v-' + str(args.verbose) + \
         '-k-' + str(args.num_medoids) + \
         '-N-' + str(args.sample_size) + \
         '-s-' + str(args.seed) + \
@@ -61,7 +60,7 @@ def run_exp(args, object_name, prof_fname, time):
     given logfile (and potentially timefile).
     '''
     # Load the dataset of size N
-    total_images, total_labels, sigma = load_data(args)
+    total_images = load_data(args)
     np.random.seed(args.seed)
     imgs = total_images[np.random.choice(len(total_images), size = args.sample_size, replace = False)]
 
@@ -72,8 +71,8 @@ def run_exp(args, object_name, prof_fname, time):
         end = timer()
         print("Runtime:", end - start)
         slash_idx = prof_fname.find('/')
-        # t_name = os.path.join('profiles', 'REAL_10k_SCRNA_L1_k3_paper', 't' + prof_fname[slash_idx + 2:]) # Ignore the /L
-        t_name = os.path.join('profiles', 't' + prof_fname[slash_idx + 2:]) # Ignore the /L
+        # t_name = os.path.join('logs', 'REAL_10k_SCRNA_L1_k3_paper', 't' + prof_fname[slash_idx + 2:]) # Ignore the /L
+        t_name = os.path.join('logs', 't' + prof_fname[slash_idx + 2:]) # Ignore the /L
         with open(t_name, 'w+') as fout:
             fout.write("Runtime:" + str(end - start) + "\n")
     else:
@@ -88,7 +87,7 @@ def run_exp(args, object_name, prof_fname, time):
     final_loss = object_name.average_loss
     # there are no BFP build dist comps because we use uniform random sampling
     dist_comps = object_name.swap_distance_computations
-    # prof_fname = os.path.join('profiles', 'REAL_10k_SCRNA_L1_k3_paper', prof_fname[slash_idx:])
+    # prof_fname = os.path.join('logs', 'REAL_10k_SCRNA_L1_k3_paper', prof_fname[slash_idx:])
     write_medoids(prof_fname, built_medoids, swapped_medoids, num_swaps, final_loss, dist_comps)
 
 def main(sys_args):
@@ -110,7 +109,7 @@ def main(sys_args):
         # TODO: Namespace parameters and defaults need to change
         #  e.g. build_ao_swap should be removed since irrelevant
         args = remap_args(args, exp)
-        log_fname = os.path.join('profiles', 'L-' + get_filename(exp, args))
+        log_fname = os.path.join('logs', 'L-' + get_filename(exp, args))
 
         # TODO: won't work without dir_ folder
         if os.path.exists(log_fname) and not args.force:
@@ -154,6 +153,4 @@ def main(sys_args):
     print("Finished")
 
 if __name__ == "__main__":
-    # TODO: shouldn't we called "profiles" directory anymore
-    import ipdb; ipdb.set_trace()
     main(sys.argv)

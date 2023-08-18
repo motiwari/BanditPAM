@@ -8,8 +8,7 @@ def write_exp(algo, k, N, seed, dataset, metric):
     Takes the experiment variables and outputs a string description
     to go into a config file.
     '''
-    # TODO: allow verbosity to be a variable?
-    return "\t['" + algo + "', 0, " + str(k) + ", " + str(N) + \
+    return "\t['" + algo + "', " + str(k) + ", " + str(N) + \
         ", " + str(seed) + ", '" + dataset + "', '" + metric + "'],\n"
 
 def main():
