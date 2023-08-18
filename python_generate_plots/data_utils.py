@@ -13,6 +13,9 @@ import cv2
 ssl._create_default_https_context = ssl._create_unverified_context
 
 def get_args(arguments):
+    """
+    Retrieve command-line arguments.
+    """
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('-k', '--num_medoids', help = 'Number of medoids', type = int, default = 3)

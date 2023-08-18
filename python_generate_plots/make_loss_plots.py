@@ -31,7 +31,7 @@ def verify_logfiles():
     FasterPAM, by parsing the logfiles. Note that the same seed must be used for
     both algorithms to ensure that the uniform random sampling is the same.
     '''
-    # currently, the loss plot is the only plot where both BanditFasterPAM and
+    # Currently, the loss plot is the only plot where both BanditFasterPAM and
     # FasterPAM are run on the same dataset
     parent_dirs = [
         'logs/Loss_plots_paper',
@@ -52,7 +52,7 @@ def verify_logfiles():
                         l2_1 = fin2.readline().strip().split(",")
                         l2_2 = fin2.readline().strip().split(",")
 
-                        # NOTE: This is a stricter condition than necessary, enforcing both build and swap agreement instead of just swap
+                        # compare the swaps performed
                         if sorted(l1_2) != sorted(l2_2):
                             disagreement = True
 
@@ -103,11 +103,14 @@ def make_plots():
 
     losses = np.zeros((len(Ns), len(algos) + 1, len(seeds)))
 
-    # TODO: update the filenames in the directories and code
     for N_idx, N in enumerate(Ns):
         for algo_idx, algo in enumerate(algos):
             for seed_idx, seed in enumerate(seeds):
-                filename = loss_dir + 'L-' + algo + '-False-BS-v-0-k-' + str(k) + '-N-' + str(N) + '-s-' + str(seed + 42) + '-d-MNIST-m-L2-w-'
+                filename = loss_dir + 'L-' + algo + '-k-' + str(k) + '-N-' + str(N) + '-s-' + str(seed + 42) + '-d-MNIST-m-L2-w-'
+
+                if not os.path.exists(filename):
+                    raise Exception("Warning: logfile not found for ", filename)
+
                 losses[N_idx, algo_idx, seed_idx] = get_file_loss(filename)
 
 
@@ -156,6 +159,6 @@ def make_plots():
 
 if __name__ == "__main__":
     # verify that BanditFasterPAM and FasterPAM make the same swaps
-    # verify_logfiles()
+    verify_logfiles()
     print("FILES VERIFIED\n\n")
     make_plots()

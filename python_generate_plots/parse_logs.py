@@ -1,7 +1,6 @@
 '''
 Code to automatically parse the logs produced from running experiments.
-In particular, plots the scaling of BanditPAM vs. N for various dataset sizes N.
-Used to demonstrate O(NlogN) scaling.
+Used to generate Figures 1(b) - 3(b) of the paper.
 '''
 
 import os
@@ -13,10 +12,11 @@ import seaborn as sns
 
 def plot_slice_sns(data_array, fix_k_or_N, Ns, ks, algo, seeds, runtime_plot, title ="Insert title", take_log = True):
     '''
-    Plots the number of distance calls vs. N, for various algorithms, seeds,
-    values of k, and weightings between build and swap.
+    Plots the number of distance calls vs. N or wall clock runtime vs. N, for
+    various seeds, values of k, and datasets.
 
-    Requires the array of distance calls for the algo, for each k, N, and seed.
+    Requires the array of distance calls or runtimes for the algo, for each k,
+    N, and seed.
     '''
     assert fix_k_or_N == 'N' or fix_k_or_N == 'k', "Bad slice param"
 
@@ -144,18 +144,17 @@ def get_runtime(timefile):
 
 def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_plot, title = "Insert title"):
     '''
-    A function which mines the number of distance calls for each experiment,
-    from the dumped logs. Creates a numpy array with the distance call
-    counts.
+    A function which mines the number of distance calls or runtime for each
+    experiment, from the dumped logs. Creates a numpy array with the distance
+    call or runtime counts.
 
     It does this by:
         - first, identifying the filenames where the experiment
-            logfiles are stored (the logfile is used for the number of swap
-            steps)
-        - searching each profile (build and swap) for the number of distance
-            calls
-        - weighting the distance calls between the build step and swap step as
-            necessary
+            logs are stored (the logfile is used for the number of swap
+            steps and the timefile is used for the runtime)
+        - searching each logfile for the number of distance
+            calls (if not making a runtime plot)
+        - weighting the distance calls or runtime between the swap steps
     '''
     data_array = np.zeros((len(ks), len(Ns), len(seeds)))
     log_prefix = 'logs/' + dir_ + '/L-'
@@ -165,8 +164,8 @@ def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_p
     for N_idx, N in enumerate(Ns):
         for k_idx, k in enumerate(ks):
             for seed_idx, seed in enumerate(seeds):
-                # Get the number of swaps or distance computations
-                logfile = log_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
+                # Get the number of swaps
+                logfile = log_prefix + algo + '-k-' + str(k) + \
                           '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
 
                 if not os.path.exists(logfile):
@@ -175,10 +174,10 @@ def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_p
                 T = get_swap_T(logfile)
 
                 if runtime_plot:
-                    # Get the time
+                    # Get the runtime
                     time_prefix = 'logs/' + dir_ + '/t-'
-                    # TODO: update the filenames in the directories and code
-                    time_fname = time_prefix + algo + '-False-BS-v-0-k-' + str(k) + \
+
+                    time_fname = time_prefix + algo + '-k-' + str(k) + \
                         '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
 
                     if not os.path.exists(time_fname):
@@ -190,6 +189,7 @@ def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_p
                     # Set the data
                     data_array[k_idx, N_idx, seed_idx] = rt / T
                 else:
+                    # Get the number of distance computations
                     dist_comps = get_dist_comps(logfile)
                     print(T, dist_comps, k)
 
@@ -199,6 +199,10 @@ def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_p
     plot_slice_sns(data_array, fix_k_or_N, Ns, ks, algo, seeds, runtime_plot, title = title)
 
 def main():
+    '''
+    Make a plot showing either the number of distance computations or the
+    runtime vs. N for BanditFasterPAM.
+    '''
     algo = 'bfp'
     Ns = [5000, 7500, 10000, 12500, 15000, 17500, 20000]
     seeds = range(42, 72)
