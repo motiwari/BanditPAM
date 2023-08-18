@@ -129,6 +129,9 @@ namespace km {
         }
       }
     }
+    bool swapPerformed = (*medoidIndices)(medoidToSwap) != best;
     (*medoidIndices)(medoidToSwap) = best;
+    // We have converged; update the final loss
+    averageLoss = arma::accu(bestDistances) / data.n_cols;
   }
 }  // namespace km

@@ -34,6 +34,7 @@ void BanditFasterPAM::fitBanditFasterPAM(
   // TODO(@Adarsh321123): remove armadillo debugging code
   double wall0 = get_wall_time_3();
   data = arma::trans(inputData);
+  std::cout << "maxIter = " << maxIter << std::endl;
   // Note: even if we are using a distance matrix, we compute the permutation
   // in the block below because it is used elsewhere in the call stack
   // TODO(@motiwari): Remove need for data or permutation through when using
@@ -150,6 +151,7 @@ arma::fmat BanditFasterPAM::swapSigma(
   }
 
   arma::fvec sample(batchSize);
+//  std::cout << "batchSize: " << batchSize << std::endl;
 // for each considered swap
 #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < K * N; i++) {
@@ -160,6 +162,8 @@ arma::fmat BanditFasterPAM::swapSigma(
     if (n != activeColumn) {
       continue;
     }
+
+//    std::cout << "i'm here" << std::endl;
 
     size_t k = i % K;
 
@@ -187,6 +191,7 @@ arma::fmat BanditFasterPAM::swapSigma(
     }
     updated_sigma(k, n) = arma::stddev(sample);
   }
+//  std::cout << "just finished swapSigma. misc: " << numMiscDistanceComputations << std::endl;
   return updated_sigma;
 }
 
@@ -303,15 +308,24 @@ void BanditFasterPAM::calcBestDistancesSwapInitial(
     arma::urowvec *assignments,
     arma::urowvec *secondAssignments,
     const bool swapPerformed) {
+//  std::cout << "data.n_cols: " << data.n_cols << std::endl;
+//  std::cout << "medoidIndices->n_cols: " << medoidIndices->n_cols << std::endl;
+  int count = 0;
+//  std::cout << "1" << std::endl;
 #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < data.n_cols; i++) {
+//    std::cout << "2" << std::endl;
     float best = std::numeric_limits<float>::infinity();
     float second = std::numeric_limits<float>::infinity();
+//    std::cout << "3" << std::endl;
     for (size_t k = 0; k < medoidIndices->n_cols; k++) {
+//      std::cout << "4" << std::endl;
       // 0 for MISC
       float cost =
           KMedoids::cachedLoss(data, distMat, i,
                                (*medoidIndices)(k), 0);
+//      std::cout << "5" << std::endl;
+      count++;
       if (cost < best || i == (*medoidIndices)(k)) {
         (*secondAssignments)(i) = (*assignments)(i);
         (*assignments)(i) = k;
@@ -326,6 +340,8 @@ void BanditFasterPAM::calcBestDistancesSwapInitial(
     (*secondBestDistances)(i) = second;
   }
 
+//  std::cout << "just finished calcBestDistancesSwapInitial. misc: " << numMiscDistanceComputations << std::endl;
+//  std::cout << "ran cachedLoss this many times: " << count << std::endl;
   if (!swapPerformed) {
     // We have converged; update the final loss
     averageLoss = arma::accu(*bestDistances) / data.n_cols;
@@ -842,7 +858,7 @@ void BanditFasterPAM::swap(
 
       // keep sampling an arm if one of the following are true:
       // (a) the arm is overlapping with 0
-      // (b) the arm is below 0 but overlapping with other arms
+      // (b) the arm is below 0 but overlapping with the best arm so far
       // this means that if an arm is above 0, we stop sampling it
       candidates = ((ucbs > 0) && (lcbs < 0) && (exactMask == 0)) ||
                    ((ucbs < 0) && (lcbs < ucbs.min()) && (exactMask == 0));
@@ -946,18 +962,14 @@ void BanditFasterPAM::swap(
       std::cout << "Time for calcBestDistancesSwapWithFPOptimizations: " << wall1_calc - wall0_calc << std::endl;
     }
 
-    // TODO(@Adarsh321123): this is necessary right now since
-    //  calcBestDistancesSwap is only run when a swap is performed, but find a
-    //  cleaner way to do this
-    if (!swapPerformed) {
-      // We have converged; update the final loss
-      averageLoss = arma::accu(bestDistances) / data.n_cols;
-    }
+
 
     std::cout << "Sample complexity (swaps) = " << numSwapDistanceComputations << std::endl;
     std::cout << "Sample complexity (miscs) = " << numMiscDistanceComputations << std::endl;
     double wall1 = get_wall_time_3();
     std::cout << "Time for iteration: " << wall1 - wall0 << std::endl;
+
+    averageLoss = arma::accu(bestDistances) / data.n_cols;
 
 //    double iter_end = get_wall_time_3();
 //    std::cout << "Time for iteration: " << iter_end - iter_start << std::endl;
