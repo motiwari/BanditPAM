@@ -3,11 +3,9 @@
  * @date 2021-07-25
  *
  * Contains a C++ implementation of the BanditFasterPAM algorithm.
- * The original BanditFasterPAM papers are:
+ * The original FasterPAM paper is:
  * 1) Erich Schubert and Peter J. Rousseeuw: Fast and Eager k-Medoids Clustering:
  *  O(k) Runtime Improvement of the PAM, CLARA, and CLARANS Algorithms
- * 2) Erich Schubert and Peter J. Rousseeuw: Faster k-Medoids Clustering:
- *  Improving the PAM, CLARA, and CLARANS Algorithms
  */
 
 #include "banditfasterpam.hpp"
@@ -343,7 +341,6 @@ void BanditFasterPAM::calcBestDistancesSwapInitial(
 //  std::cout << "just finished calcBestDistancesSwapInitial. misc: " << numMiscDistanceComputations << std::endl;
 //  std::cout << "ran cachedLoss this many times: " << count << std::endl;
   if (!swapPerformed) {
-    // We have converged; update the final loss
     averageLoss = arma::accu(*bestDistances) / data.n_cols;
   }
 }

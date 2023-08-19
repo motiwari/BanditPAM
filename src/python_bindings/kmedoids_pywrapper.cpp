@@ -46,7 +46,7 @@ namespace km {
     pybind11::arg("use_cache") = true,
     pybind11::arg("use_perm") = true,
     pybind11::arg("cache_width") = 1000,
-    pybind11::arg("parallelize") = true);
+    pybind11::arg("parallelize") = false);
 
     // Properties
     cls.def_property("n_medoids",

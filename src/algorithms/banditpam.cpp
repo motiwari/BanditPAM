@@ -566,6 +566,7 @@ namespace km {
               &secondBestDistances,
               assignments,
               swapPerformed);
+      averageLoss = arma::accu(bestDistances) / data.n_cols;
     }
   }
 }  // namespace km
