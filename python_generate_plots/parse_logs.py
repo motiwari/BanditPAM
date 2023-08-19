@@ -166,7 +166,7 @@ def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_p
             for seed_idx, seed in enumerate(seeds):
                 # Get the number of swaps
                 logfile = log_prefix + algo + '-k-' + str(k) + \
-                          '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
+                          '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric
 
                 if not os.path.exists(logfile):
                     raise Exception("Warning: logfile not found for ", logfile)
@@ -178,7 +178,7 @@ def show_plots(fix_k_or_N, Ns, ks, seeds, algo, dataset, metric, dir_, runtime_p
                     time_prefix = 'logs/' + dir_ + '/t-'
 
                     time_fname = time_prefix + algo + '-k-' + str(k) + \
-                        '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric + '-w-'
+                        '-N-' + str(N) + '-s-' + str(seed) + '-d-' + dataset + '-m-' + metric
 
                     if not os.path.exists(time_fname):
                         raise Exception("Warning: timefile not found for ", time_fname)

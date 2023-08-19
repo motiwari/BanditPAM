@@ -106,7 +106,7 @@ def make_plots():
     for N_idx, N in enumerate(Ns):
         for algo_idx, algo in enumerate(algos):
             for seed_idx, seed in enumerate(seeds):
-                filename = loss_dir + 'L-' + algo + '-k-' + str(k) + '-N-' + str(N) + '-s-' + str(seed + 42) + '-d-MNIST-m-L2-w-'
+                filename = loss_dir + 'L-' + algo + '-k-' + str(k) + '-N-' + str(N) + '-s-' + str(seed + 42) + '-d-MNIST-m-L2'
 
                 if not os.path.exists(filename):
                     raise Exception("Warning: logfile not found for ", filename)

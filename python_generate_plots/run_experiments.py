@@ -89,7 +89,7 @@ def main(sys_args):
     Note that PAM and FasterPAM experiments are only run for loss comparison
     (in Figure 1(a)).
     '''
-    output_dir = "testing3"
+    output_dir = "MNIST_L2_k3_paper" # change this based on the experiment
     args = get_args(sys.argv[1:]) # Uses default values for now as placeholder to instantiate args
 
     imported_config = importlib.import_module(args.exp_config.strip('.py'))
