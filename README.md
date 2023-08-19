@@ -1,225 +1,140 @@
 # BanditPAM: Almost Linear-Time $k$-Medoids Clustering
 
-[![Linux - build package and run tests](https://github.com/motiwari/BanditPAM/actions/workflows/run_linux_tests.yml/badge.svg?branch=main)](https://github.com/motiwari/BanditPAM/actions/workflows/run_linux_tests.yml)
-[![Linux - build source distribution and wheels](https://github.com/motiwari/BanditPAM/actions/workflows/build_linux_wheels.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/build_linux_wheels.yml)
-[![MacOS - build package and run tests](https://github.com/motiwari/BanditPAM/actions/workflows/run_mac_tests.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_mac_tests.yml)
-[![MacOS - build wheels](https://github.com/motiwari/BanditPAM/actions/workflows/build_mac_wheels.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/build_mac_wheels.yml)
-[![Run CMake build on MacOS](https://github.com/motiwari/BanditPAM/actions/workflows/run_cmake_build.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_cmake_build.yml)
-[![Run style checks](https://github.com/motiwari/BanditPAM/actions/workflows/run_style_checks.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_style_checks.yml)
+## Dear Reviewer
 
-This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf). The code can be called directly from Python, R, or C++.
+We thank you for your time in reviewing our submission.
+We understand that you are performing a service to the community.
+In order to ensure that review of this code is as easy as possible, we have:
+- Heavily commented and documented the code
+- Included an overview of the codebase and the files
+- Described in detail how to reproduce our results.
 
-If you use this software, please cite:
+Thank you for reviewing our submission!
 
-Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, Ilan Shomorony. "BanditPAM: Almost Linear Time *k*-medoids Clustering via Multi-Armed Bandits" Advances in Neural Information Processing Systems (NeurIPS) 2020.
+If you have any difficulties, please see the platform-specific guides in the `docs` folder (i.e `docs/install_*.md`).
 
-```python
-@inproceedings{BanditPAM,
-  title={BanditPAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits},
-  author={Tiwari, Mo and Zhang, Martin J and Mayclin, James and Thrun, Sebastian and Piech, Chris and Shomorony, Ilan},
-  booktitle={Advances in Neural Information Processing Systems},
-  pages={368--374},
-  year={2020}
-}
-```
+# Introduction
+
+Throughout this repo, an "experiment" refers to a specific $k$-medoids problem
+we wish to solve. Each experiment in this repository is specified by a number of
+parameters:
+- algorithm (bfp, also known as BanditFasterPAM, fp, also known as FasterPAM, or naive_v1, which refers to PAM)
+- num_medoids (k, e.g. 5)
+- dataset subsample size (N, e.g. 20,000)
+- dataset (e.g. MNIST)
+- random seed (e.g. 42)
+- metric (e.g. L2)
+
+When an experiment is conducted, the C++ code of an algorithm is run and we take note
+of statistics such as the number of distance computations, swaps steps, and wall clock 
+time.
+
+Logfiles are written for every plotting experiment. These logfiles contain
+information about the medoids assigned after the BUILD step (or uniform random sampling),
+the final medoids chosen after the SWAP step, the final loss, the number of swaps performed,
+and the number of distance computations made. Timefiles are written for Fig 2 (a) - 3 (b).
+The logfiles are prefixed with `L-` and timefiles are prefixed with `t-`.
+
+All logfiles and timefiles necessary to recreate the plots in the paper are
+provided in the `/python_generate_plots/logs/` directory. We also include instructions on how to
+create these logfiles and timefiles from scratch (see below).
 
 # Requirements
-# TL;DR run `python -m pip install banditpam` or `install.packages(banditpam)` and jump to the [examples](https://github.com/motiwari/BanditPAM#example-1-synthetic-data-from-a-gaussian-mixture-model). 
 
-If you have any difficulties, please see the [platform-specific guides](https://github.com/motiwari/BanditPAM#platform-specific-installation-guides) and file a Github issue if you have additional trouble.
+This code requires `python >= 3.7` and `pip >= 20.1.1`. All other packages are
+in `requirements.txt` and can be installed via `python -m pip install -r requirements.txt`.
 
-## Further Reading
-* [Full paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf)
-* [3-minute summary video](https://crossminds.ai/video/bandit-pam-almost-linear-time-k-medoids-clustering-via-multi-armed-bandits-5fb88782b0a3f6412973b646/)
-* [Blog post](https://ai.stanford.edu/blog/banditpam/)
-* [Code](https://github.com/motiwari/BanditPAM)
-* [PyPI](https://pypi.org/project/banditpam/)
-* [Documentation](https://banditpam.readthedocs.io/en/latest)
+If you are using a virtualenv, please ensure that you are able to run
+`python --version` and `python -m pip --version` from your virtualenv. There are known
+issues with virtualenvs on macOS, unrelated to this work (for example, openssl
+errors that manifest with errors like `cannot import name md5`). See
+https://stackoverflow.com/questions/59123154/importerror-cannot-import-name-md5
 
-# Python Quickstart
+## BanditFasterPAM vs. BanditPAM++ Comparison
+- Run `chmod +x comparison.sh && ./comparison.sh`
+- The script will install this package's requirements, install the package itself, download necessary datasets, and run the experiment.
+  - Note: Installing the Python wheels on an M1 Mac is currently unsupported. If you encounter this issue, we recommend installing the package from source as noted in `docs/install_mac.md`.
 
-## Install the repo and its dependencies:
-This can be done either through PyPI (recommended)
-```python
-/BanditPAM/: python -m pip install -r requirements.txt
-/BanditPAM/: python -m pip install banditpam
-```
-OR through the source code via
-```python
-/BanditPAM/: git submodule update --init --recursive
-/BanditPAM/: cd headers/carma
-/BanditPAM/: mkdir build && cd build && cmake -DCARMA_INSTALL_LIB=ON .. && sudo cmake --build . --config Release --target install
-/BanditPAM/: cd ../../..
-/BanditPAM/: python -m pip install -r requirements.txt
-/BanditPAM/: sudo python -m pip install .
-```
+## Required Datasets
 
-### Example 1: Synthetic data from a Gaussian Mixture Model
+A number of datasets are required to recreate the plots from the paper. See
+below for instructions on how to acquire the datasets.
 
-```python
-from banditpam import KMedoids
-import numpy as np
-import matplotlib.pyplot as plt
+### MNIST
 
-# Generate data from a Gaussian Mixture Model with the given means:
-np.random.seed(0)
-n_per_cluster = 40
-means = np.array([[0,0], [-5,5], [5,5]])
-X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
+`python -m pip install mnist` will install the `mnist` python package from
+https://pypi.org/project/mnist/ and will enable loading of the MNIST dataset.
 
-# Fit the data with BanditPAM:
-kmed = KMedoids(n_medoids=3, algorithm="BanditPAM")
-kmed.fit(X, 'L2')
+### SCRNA
 
-print(kmed.average_loss)  # prints 1.2482391595840454
-print(kmed.labels)  # prints cluster assignments [0] * 40 + [1] * 40 + [2] * 40
+The single-cell RNA (SCRNA) sequence dataset used in the paper can be downloaded
+using the `chmod +x comparison.sh && ./comparison.sh` command mentioned above.
 
-# Visualize the data and the medoids:
-for p_idx, point in enumerate(X):
-    if p_idx in map(int, kmed.medoids):
-        plt.scatter(X[p_idx, 0], X[p_idx, 1], color='red', s = 40)
-    else:
-        plt.scatter(X[p_idx, 0], X[p_idx, 1], color='blue', s = 10)
+### CIFAR-10
 
-plt.show()
-```
+`python -m pip install tensorflow` will install the `tensorflow` python package
+and, therefore, the `cifar10` dataset from Keras.
 
-![png](README_files/README_7_0.png)
+# Running Multiple Experiments
 
-### Example 2: MNIST and its medoids visualized via t-SNE
+It is possible to run multiple experiments at once to obtain their logfiles and timefiles.
+`run_experiments.py` takes in an experiment config,
+which contains a list of experiments to run, and will run each of them.
 
-```python
-# Start in the repository root directory, i.e. '/BanditPAM/'.
-from banditpam import KMedoids
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.manifold import TSNE
+To generate an experiment config programmatically, use `python generate_config.py`.
+The auto-generated config will be stored in `auto_exp_config.py`. Different sets
+of experiments (e.g. for MNIST, SCRNA, etc.) can be generated by (un)commenting
+the relevant lines of `generate_config.py`. All of the experiments can then be
+run via:
 
-# Load the 1000-point subset of MNIST and calculate its t-SNE embeddings for visualization:
-X = pd.read_csv('data/MNIST_1k.csv', sep=' ', header=None).to_numpy()
-X_tsne = TSNE(n_components=2).fit_transform(X)
+`python run_experiments.py -e auto_exp_config.py`
 
-# Fit the data with BanditPAM:
-kmed = KMedoids(n_medoids=10, algorithm="BanditPAM")
-kmed.fit(X, 'L2')
+Note that the `output_dir` variable in `run_experiments.py` can be modified to change the directory the
+logfiles and timefiles are stored in.
 
-# Visualize the data and the medoids via t-SNE:
-for p_idx, point in enumerate(X):
-    if p_idx in map(int, kmed.medoids):
-        plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='red', s = 40)
-    else:
-        plt.scatter(X_tsne[p_idx, 0], X_tsne[p_idx, 1], color='blue', s = 5)
+# Creating The Figures
 
-plt.show()
-```
+All of the necessary logfiles and timefiles to recreate the figures from the paper are already
+included in this zip archive. Instructions on recreating each plot are below:
 
-# R Examples
+To remake Figure 1(a), run `python make_loss_plots.py`. This retrieves the final
+losses for each algorithm from the corresponding logfiles.
 
-Please see [here](https://github.com/motiwari/BanditPAM/tree/main/R_package/banditpam).
+To remake Figures 1(b) - 3(b), run `python parse_logs.py`, (un)commenting
+the code for the necessary specific set of experiments in `main()` and changing
+the `dir_` variable to where the logfiles and timefiles are stored.
 
-## Documentation
+# Information About Each File
 
-Documentation for BanditPAM can be found on [read the docs](https://banditpam.readthedocs.io/).
+## Algorithms
+- `src/algorithms/banditfasterpam.cpp` : implementation of BanditFasterPAM
+- `src/algorithms/banditpam.cpp` : implementation of BanditPAM++
+- `src/algorithms/banditpam_orig.cpp` : implementation of BanditPAM
+- `src/algorithms/fasterpam.cpp` : implementation of FasterPAM
+- `src/algorithms/fastpam1.cpp` : implementation of FastPAM1
+- `src/algorithms/kmedoids_algorithm.cpp` : common code for all algorithms
+- `src/algorithms/pam.cpp` : implementation of PAM
+- `src/python_bindings`: python bindings for the C++ algorithms
+- `src/main`: main function for running the C++ algorithms
+- `headers/algorithms` and `headers/python_bindings`: headers for the C++ algorithms and python bindings
 
-## Building the C++ executable from source
+## Running plotting experiments
+- `python_generate_plots/generate_config.py` : used to programatically generate a list of experiments
+  to run
+- `python_generate_plots/auto_exp_config.py`: experiment configs automatically generated by
+  `python_generate_plots/generate_config.py`, for use with `python_generate_plots/run_experiments.py`
+- `python_generate_plots/run_experiments.py` : runs the experiments listed in `python_generate_plots/auto_exp_config.py`
+- `python_generate_plots/data_utils.py` : Common functions for data loading and argument retrieval
+- `python_generate_plots/parse_logs.py` : Parses the logfiles and timefiles generated by `run_experiments.py` to create Fig 1 (b) - 3(b)
+- `python_generate_plots/make_loss_plots.py` : Parses the logfiles generated by `run_experiments.py` to create Fig 1 (a)
 
-Please note that it is *NOT* necessary to build the C++ executable from source to use the Python code above. However, if you would like to use the C++ executable directly, follow the instructions below.
+## Running comparison experiment
+- `comparison.sh` : Bash script to run the comparison
+- `scripts/compare_banditpam_versions.py`: Python script to compare BanditFasterPAM and BanditPAM++
+- `scripts/comparison_utils.py`: Utility to print the result of different algorithms
 
-### Option 1: Building with Docker
-
-We highly recommend building using Docker. One can download and install Docker by following instructions at the [Docker install page](https://docs.docker.com/get-docker/). Once you have Docker installed and the Docker Daemon is running, run the following commands:
-
-```
-/BanditPAM/scripts/docker$ chmod +x env_setup.sh
-/BanditPAM/scripts/docker$ ./env_setup.sh
-/BanditPAM/scripts/docker$ ./run_docker.sh
-```
-
-which will start a Docker instance with the necessary dependencies. Then:
-
-```
-/BanditPAM$ mkdir build && cd build
-/BanditPAM/build$ cmake .. && make
-```
-
-This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
-
-### Option 2: Installing requirements and building directly
-Building this repository requires four external requirements:
-* [CMake](https://cmake.org/download/) >= 3.17
-* [Armadillo](http://arma.sourceforge.net/download.html) >= 10.5.3 
-* [OpenMP](https://www.openmp.org/resources/openmp-compilers-tools/) >= 2.5 (OpenMP is supported by default on most Linux platforms, and can be downloaded through [homebrew](https://brew.sh/) on MacOS)
-* [CARMA](https://github.com/RUrlus/carma) >= 0.6.2
-
-If installing these requirements from source, one can generally use the following procedure to install each requirement from the library's root folder (with `armadillo` used as an example here):
-```
-/armadillo$ mkdir build && cd build
-/armadillo/build$ cmake .. && make && sudo make install
-```
-
-Note that `CARMA` has different installation instructions; see [its instructions](https://github.com/RUrlus/carma#installation).
-
-####  Platform-specific installation guides
-Further installation information for [MacOS](docs/install_mac.md), [Linux](docs/install_linux.md), and [Windows](docs/install_windows.md) is available in the [docs folder](docs). Ensure all the requirements above are installed and then run:
-
-```
-/BanditPAM$ mkdir build && cd build
-/BanditPAM/build$ cmake .. && make
-```
-
-This will create an executable named `BanditPAM` in `BanditPAM/build/src`.
-
-## C++ Usage
-
-Once the executable has been built, it can be invoked with:
-```
-/BanditPAM/build/src/BanditPAM -f [path/to/input.csv] -k [number of clusters]
-```
-
-* `-f` is mandatory and specifies the path to the dataset
-* `-k` is mandatory and specifies the number of clusters with which to fit the data
-
-For example, if you ran `./env_setup.sh` and downloaded the MNIST dataset, you could run:
-
-```
-/BanditPAM/build/src/BanditPAM -f ../data/MNIST_1k.csv -k 10
-```
-
-The expected output in the command line will be:
-```
-Medoids: 694,168,306,714,324,959,527,251,800,737
-```
-
-## Implementing a custom distance metric
-
-One of the advantages of $k$-medoids is that it works with arbitrary distance metrics; in fact, your "metric" need not even be a real metric -- it can be negative, asymmetric, and/or not satisfy the triangle inequality or homogeneity. Any pairwise dissimilarity function works with $k$-medoids.
-
-This also allows for clustering of "exotic" objects like trees, graphs, natural language, and more -- settings where running $k$-means wouldn't even make sense. We talk about one such setting in the [full paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf).
-
-The package currently supports a number of distance metrics, including all $L_p$ losses and cosine distance.
-
-If you're willing to write a little C++, you only need to add a few lines to [kmedoids_algorithm.cpp](https://github.com/motiwari/BanditPAM/blob/main/src/kmedoids_algorithm.cpp#L560-L615) and [kmedoids_algorithm.hpp](https://github.com/motiwari/BanditPAM/blob/main/headers/kmedoids_algorithm.hpp#L136-L142) to implement your distance metric / pairwise dissimilarity!
-
-Then, be sure to re-install the repository with a `python -m pip install .` (note the trailing `.`).
-
-The maintainers of this repository are working on permitting arbitrary dissimilarity metrics that users write in Python, as well; see [#4](https://github.com/motiwari/BanditPAM/issues/4).
-
-## Testing
-
-To run the full suite of tests, run in the root directory:
-
-```
-/BanditPAM$ python -m unittest discover -s tests
-```
-
-Alternatively, to run a "smaller" set of tests, from the main repo folder run `python tests/test_smaller.py` or `python tests/test_larger.py` to run a set of longer, more intensive tests.
-## Credits
-
-Mo Tiwari wrote the original Python implementation of BanditPAM and many features of the C++ implementation. Mo now maintains the C++ implementation.
-
-James Mayclin developed the initial C++ implementation of BanditPAM.
-
-The original BanditPAM paper was published by Mo Tiwari, Martin Jinye Zhang, James Mayclin, Sebastian Thrun, Chris Piech, and Ilan Shomorony.
-
-We would like to thank Jerry Quinn, David Durst, Geet Sethi, and Max Horton for helpful guidance regarding the C++ implementation.
+## Miscellaneous
+- `requirements.txt` : Specification of packages to install via
+  `python -m pip install -r requirements.txt`
+- `setup.py`: Used to install the python package locally via `python -m pip install .`
+- `docs`: Contains platform-specific installation guides and a `.rst` description of the codebase
