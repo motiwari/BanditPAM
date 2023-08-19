@@ -82,7 +82,21 @@ public:
       const arma::urowvec *assignments,
       const bool exact);
 
-  // TODO(@Adarsh321123): write docstrings
+  /**
+   * @brief Calculates the best and second best distances for each datapoint to
+   * the medoids in the current set of medoids. Also updates best and second
+   * best assignments and loss.
+   *
+   * @param data Transposed data to cluster
+   * @param medoidIndices Array of medoid indices corresponding to dataset entries
+   * @param bestDistances Array of best distances from each point to previous set
+   * of medoids
+   * @param secondBestDistances Array of second smallest distances from each
+   * point to previous set of medoids
+   * @param assignments Assignments of datapoints to their closest medoid
+   * @param secondAssignments Assignments of datapoints to their second closest
+   * medoid
+   */
   void calcBestDistancesSwapInitial(
       const arma::fmat &data,
       std::optional<std::reference_wrapper<const arma::fmat>> distMat,
@@ -93,6 +107,17 @@ public:
       arma::urowvec *secondAssignments,
       const bool swapPerformed);
 
+  /**
+   * @brief Updates the second best medoid and distance for a given point.
+   *
+   * @param medoidIndices Array of medoid indices corresponding to dataset entries
+   * @param n Non-medoid that was just swapped in
+   * @param k Medoid that was just swapped out
+   * @param o Index of current datapoint in consideration
+   * @param djo Distance from o to n
+   *
+   * @returns Tuple of second best medoid and distance
+   */
   std::tuple<size_t, float> updateSecondNearest(
       std::optional<std::reference_wrapper<const arma::fmat>> distMat,
       const arma::urowvec *medoidIndices,
@@ -101,6 +126,22 @@ public:
       size_t o,
       float djo);
 
+  /**
+   * @brief Calculates the best and second best distances for each datapoint to
+   * the medoids in the current set of medoids. Also updates best and second
+   * best assignments and loss.
+   *
+   * @param medoidIndices Array of medoid indices corresponding to dataset entries
+   * @param bestDistances Array of best distances from each point to previous set
+   * of medoids
+   * @param secondBestDistances Array of second smallest distances from each
+   * point to previous set of medoids
+   * @param assignments Assignments of datapoints to their closest medoid
+   * @param secondAssignments Assignments of datapoints to their second closest
+   * medoid
+   * @param k Medoid that was just swapped out
+   * @param n Non-medoid that was just swapped in
+   */
   void calcBestDistancesSwapWithFPOptimizations(
       std::optional<std::reference_wrapper<const arma::fmat>> distMat,
       const arma::urowvec *medoidIndices,

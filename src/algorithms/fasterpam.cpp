@@ -18,27 +18,14 @@
 #include <cassert>
 #include <random>
 #include <string>
-#include <time.h>
-#include <sys/time.h>
-
-double get_wall_time_4(){
-  struct timeval time;
-  if (gettimeofday(&time,NULL)){
-    //  Handle error
-    return 0;
-  }
-  return (double)time.tv_sec + (double)time.tv_usec * .000001;
-}
 
 namespace km {
   void FasterPAM::fitFasterPAM(
     const arma::fmat& inputData,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
-    double wall0 = get_wall_time_4();
     useCache = false; // this allows cachedLoss to work appropriately
     data = arma::trans(inputData);
-    // FasterPAM uses uniform random sampling instead of BUILD since
-    // SWAP is so fast that it is not worth it to use BUILD
+
     arma::urowvec medoidIndices = randomInitialization(data.n_cols);
     steps = 0;
     medoidIndicesBuild = medoidIndices;
@@ -46,15 +33,13 @@ namespace km {
     arma::urowvec assignments(n);
     arma::urowvec secondAssignments(n);
     secondAssignments.fill(std::numeric_limits<size_t>::max());
+
     std::tuple<arma::urowvec, size_t> paramsFasterPAM = FasterPAM::swapFasterPAM(data, distMat, medoidIndices, assignments, secondAssignments);
     assignments = std::get<0>(paramsFasterPAM);
     size_t swaps = std::get<1>(paramsFasterPAM);
     medoidIndicesFinal = medoidIndices;
     labels = assignments;
     steps = swaps;
-
-    double wall1 = get_wall_time_4();
-    std::cout << "Wall Clock Time: " << wall1 - wall0 << "\n";
   }
 
   arma::urowvec FasterPAM::randomInitialization(
@@ -64,9 +49,9 @@ namespace km {
     const size_t rangeTo = n-1;
     // create a random device
     std::random_device randDev;
-    //  std::mt19937 generator(randDev());  // TODO: uncomment
     // Use the provided seed to initialize the random number generator
-    std::mt19937 generator(0); // TODO: remove
+    std::mt19937 generator(0); // Use for comparison with FasterPAM
+    //    std::mt19937 generator(randDev());
     std::uniform_int_distribution<size_t> distr(rangeFrom, rangeTo);
     // generate k random numbers
     arma::urowvec res(nMedoids);
@@ -85,6 +70,9 @@ namespace km {
     arma::frowvec *secondBestDistances,
     arma::urowvec *assignments,
     arma::urowvec *secondAssignments) {
+    // this function is similar to calcBestDistancesSwap, but it has slightly
+    // different conditional logic and also updates secondAssignments (useful
+    // later on)
     size_t n = data.n_cols;
     size_t firstCenter = medoidIndices[0];
     float loss = 0.0;
@@ -122,6 +110,9 @@ namespace km {
     arma::urowvec assignments,
     arma::urowvec& medoidIndices,
     size_t m) {
+    // used for the k=1 case
+    // essentially PAM's BUILD
+
     size_t first = medoidIndices[m];
     size_t best = first;
     float sumb = 0.0;
@@ -155,9 +146,6 @@ namespace km {
       }
     }
 
-    std::cout << "Swapped medoid index " << first << " with "
-              << best << "\n";
-
     medoidIndices[m] = best;
     return {best != first, sumb};
   }
@@ -167,6 +155,7 @@ namespace km {
     arma::frowvec *secondBestDistances,
     arma::frowvec& loss,
     arma::urowvec *assignments) {
+    // update the loss if one were to remove the current medoid
     loss.fill(0.0);
     for (size_t i = 0; i < (*bestDistances).n_elem; i++) {
       loss[(*assignments)(i)] += (*secondBestDistances)(i) - (*bestDistances)(i);
@@ -207,6 +196,8 @@ namespace km {
     size_t best_m_idx,
     size_t o,
     float djo) {
+    // after making a swap, we need to update the second nearest medoid and
+    // second nearest distance accordingly
     size_t secondMedoid = best_m_idx;
     float secondDistance = djo;
     for (size_t i = 0; i < medoidIndices.size(); i++) {
@@ -235,18 +226,23 @@ namespace km {
     arma::urowvec *secondAssignments,
     size_t best_m_idx,
     size_t candidate) {
+    // this function is similar to calcBestDistancesSwap, but it is highly
+    // optimized.
+    // this is because it doesn't compute all kn distances; it only computes
+    // n distances and then calls updateSecondNearest if needed
+
     size_t n = (*bestDistances).size();
     assert(("invalid medoid number",
             best_m_idx < medoidIndices.size()));
     assert(("invalid object number",
             candidate < n));
     // Perform Swap
-    std::cout << "Swapped medoid index " << best_m_idx << " (medoid " << (medoidIndices)(best_m_idx) << ") with "
-              << candidate << "\n";
     medoidIndices[best_m_idx] = candidate;
     float loss = 0.0;
     // update the distances and loss from doing the swap
     for (size_t o = 0; o < n; o++) {
+      // special case where the index is the non-medoid we just swapped to become
+      // the medoid
       if (o == candidate) {
         if ((*assignments)(o) != best_m_idx) {
           (*secondAssignments)(o) = (*assignments)(o);
@@ -305,13 +301,8 @@ namespace km {
       assignments.fill(0);
       std::tuple<bool, float> paramsMedoid = chooseMedoidWithinPartition(distMat, assignments, medoidIndices, 0);
       bool swapped = std::get<0>(paramsMedoid);
-      if (!swapped) {
-        std::cout << "No swap performed" << std::endl;
-      }
       float loss = std::get<1>(paramsMedoid);
       averageLoss = loss / data.n_cols;
-      std::cout << "Sample complexity (swaps) = " << numSwapDistanceComputations << std::endl;
-      std::cout << "Sample complexity (miscs) = " << numMiscDistanceComputations << std::endl;
       return {assignments, (swapped) ? 1 : 0};
     }
 
@@ -327,12 +318,8 @@ namespace km {
 
     // run the main SWAP algorithm until convergence
     while (iter < maxIter) {
-//      std::cout << "Starting while loop at " << iter << " iterations" << std::endl;
-//      std::cout << "maxIter: " << maxIter << std::endl;
       size_t swapsBefore = nSwaps;
       for (size_t candidate = 0; candidate < n; candidate++) {
-        double wall0 = get_wall_time_4();
-//        double iter_start = get_wall_time_4();
         if (candidate == lastSwap) {
           break;
         }
@@ -347,14 +334,6 @@ namespace km {
         size_t best_m_idx = std::get<1>(paramsSwap);
         if (change >= 0) {
           iter++;
-//          std::cout << "iter: " << iter << std::endl;
-//          double iter_end = get_wall_time_4();
-//          std::cout << "Time for iteration: " << iter_end - iter_start << std::endl;
-          std::cout << "No swap performed" << std::endl;
-          std::cout << "Sample complexity (swaps) = " << numSwapDistanceComputations << std::endl;
-          std::cout << "Sample complexity (miscs) = " << numMiscDistanceComputations << std::endl;
-          double wall1 = get_wall_time_4();
-          std::cout << "Time for iteration: " << wall1 - wall0 << std::endl;
           if (iter >= maxIter) {
             break;
           }
@@ -363,7 +342,6 @@ namespace km {
 
         nSwaps++;
         lastSwap = candidate;
-//        std::cout << "iter: " << iter << std::endl;
         float newLoss = doSwap(distMat, medoidIndices, &bestDistances, &secondBestDistances, &assignments, &secondAssignments, best_m_idx, candidate);
         if (newLoss >= loss) {
           break;
@@ -372,12 +350,6 @@ namespace km {
         loss = newLoss;
         updateRemovalLoss(&bestDistances, &secondBestDistances, removalLoss, &assignments);
         iter++;
-        std::cout << "Sample complexity (swaps) = " << numSwapDistanceComputations << std::endl;
-        std::cout << "Sample complexity (miscs) = " << numMiscDistanceComputations << std::endl;
-        double wall1 = get_wall_time_4();
-        std::cout << "Time for iteration: " << wall1 - wall0 << std::endl;
-//        double iter_end = get_wall_time_4();
-//        std::cout << "Time for iteration: " << iter_end - iter_start << std::endl;
         if (iter >= maxIter) {
           break;
         }
