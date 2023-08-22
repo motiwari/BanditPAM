@@ -15,7 +15,7 @@ Please ensure the following dependencies are installed:
 
 CMake Build:
 
-1) Run `scripts/retrieve_windows_cmake_files.sh` to retrieve the files necessary for the Windows CMake build
+1) Run `cd scripts` and then `sh retrieve_windows_cmake_files.sh` to retrieve the files necessary for the Windows CMake build
 2) Add the Visual Studio IDE location to PATH in Environment Variables (e.g. `C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE`).
 3) Add `${project_dir}\headers\armadillo\examples\lib_win64` to PATH 
 4) Run `devenv BanditPAM.sln /Build "Release|x64"` after `cmake ..` in a prompt other than Git Bash

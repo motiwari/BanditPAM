@@ -23,11 +23,7 @@ def benchmark(data, f, n=1):
         v = np.array(v)
         min, avg = v.min(), v.mean()
         ste = v.std(ddof=1) / np.sqrt(len(v)) if len(v) > 1 else 0.0
-        print(
-            "{:16s} min={:-10.2f} mean={:-10.2f} ±{:-.2f}".format(
-                k, min, avg, ste
-            )
-        )
+        print("{:16s} min={:-10.2f} mean={:-10.2f} ±{:-.2f}".format(k, min, avg, ste))
 
 
 def run_fasterpam(data, seed):
@@ -69,7 +65,7 @@ def run_old_bandit(data, seed):
         n_medoids=5,
         parallelize=True,
         algorithm="BanditPAM_orig",
-        dist_mat=diss
+        dist_mat=diss,
     )
     print(km.algorithm)
     km.seed = seed

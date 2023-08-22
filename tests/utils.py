@@ -28,6 +28,7 @@ def bpam_agrees_pam(
 
     kmed_bpam = KMedoids(n_medoids=k, algorithm="BanditPAM")
     kmed_pam = KMedoids(n_medoids=k, algorithm=alg_name)
+    kmed_bpam.seed = 0
     kmed_bpam.fit(data, loss)
     kmed_pam.fit(data, loss)
 

@@ -15,12 +15,16 @@
 #include "kmedoids_algorithm.hpp"
 #include "kmedoids_pywrapper.hpp"
 
+// from https://github.com/pybind/python_example/blob/master/src/main.cpp
+#define STRINGIFY(x) #x
+#define MACRO_STRINGIFY(x) STRINGIFY(x)
+
 namespace km {
   PYBIND11_MODULE(banditpam, m) {
     // Module functions
     m.doc() = "BanditPAM Python library, implemented in C++";
 
-    m.attr("__version__") = VERSION_INFO;
+    m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
     m.def("get_max_threads",  // TODO(@motiwari): change to get_num_threads
     &omp_get_max_threads, "Returns max number of threads");
     m.def("set_num_threads",
@@ -40,7 +44,7 @@ namespace km {
     pybind11::arg("n_medoids") = 5,
     pybind11::arg("algorithm") = "BanditPAM",
     pybind11::arg("max_iter") = 100,
-    pybind11::arg("build_confidence") = 3,
+    pybind11::arg("build_confidence") = 10,  // 100 fixes stochasticity issues
     pybind11::arg("swap_confidence") = 5,
     // TODO(@motiwari): Verify these options are re-used correctly on reset
     pybind11::arg("use_cache") = true,

@@ -9,6 +9,7 @@
 #include <armadillo>
 #include <unordered_map>
 #include <regex>
+#include <cassert>
 
 #include "kmedoids_algorithm.hpp"
 #include "fastpam1.hpp"
@@ -80,8 +81,10 @@ namespace km {
       //  that is properly raised
       throw std::invalid_argument("Dataset is empty");
     }
-    // TODO(@Adarsh321123): assert that the number of medoids is >=
-    //  than the number of points
+
+    assert(("Number of medoids should be less than the number of data points",
+            nMedoids < inputData.n_rows));
+
     batchSize = fmin(inputData.n_rows, batchSize);
 
     try {
@@ -399,10 +402,13 @@ namespace km {
       // T1 begins to write to cache and then T2
       // access in the middle of write?
       if (cache[(m * i) + reindex[j]] == -1) {
+        // cache miss! calculate the distance and cache it.
+        numCacheMisses++;
         numCacheWrites++;
         cache[(m * i) + reindex[j]] = (this->*lossFn)(data, i, j);
+      } else {
+        numCacheHits++;
       }
-      numCacheHits++;
       return cache[m * i + reindex[j]];
     }
 

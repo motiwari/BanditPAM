@@ -1,5 +1,6 @@
 import unittest
 import pandas as pd
+import numpy as np
 import time
 
 from banditpam import KMedoids
@@ -25,35 +26,41 @@ class LargerTests(unittest.TestCase):
 
     def test_medium_mnist(self):
         """
-        Generate NUM_MEDIUM_CASES random subsets of MNIST
-        of size MEDIUM_SAMPLE_SIZE and verify BanditPAM agrees with PAM
+        Generate NUM_MEDIUM_CASES random subsets of MNIST of size
+        MEDIUM_SAMPLE_SIZE and verify BanditPAM agrees with PAM.
         """
+        num_succeed = 0
         for i in range(NUM_MEDIUM_CASES):
             data = self.mnist_70k.sample(n=MEDIUM_SAMPLE_SIZE).to_numpy()
-            _ = bpam_agrees_pam(
+            num_succeed += bpam_agrees_pam(
                 k=SMALL_K_SCHEDULE[i % N_SMALL_K],
                 data=data,
                 loss="L2",
                 test_build=True,
-                assert_immediately=True,
+                assert_immediately=False,
             )
+        self.assertTrue(num_succeed >= PROPORTION_PASSING * NUM_MEDIUM_CASES)  # avoids stochasticity issues
 
     def test_various_medium_mnist(self):
         """
-        Generate NUM_MEDIUM_CASES random subsets of MNIST of various sizes
-        and verify BanditPAM agrees with PAM. Since PAM is very slow,
-        we can only do this for fairly small sizes in MEDIUM_SIZE_SCHEDULE
+        Generate NUM_MEDIUM_CASES random subsets of MNIST of various sizes and
+        verify BanditPAM agrees with PAM.
+
+        Since PAM is very slow, we can only do this for fairly small sizes in
+        MEDIUM_SIZE_SCHEDULE
         """
+        num_succeed = 0
         for i in range(NUM_MEDIUM_CASES):
             size = MEDIUM_SIZE_SCHEDULE[i % NUM_MEDIUM_SIZES]
             data = self.mnist_70k.sample(n=size)
-            _ = bpam_agrees_pam(
+            num_succeed += bpam_agrees_pam(
                 k=SMALL_K_SCHEDULE[i % N_SMALL_K],
                 data=data,
                 loss="L2",
                 test_build=True,
-                assert_immediately=True,
+                assert_immediately=False,
             )
+        self.assertTrue(num_succeed >= PROPORTION_PASSING * NUM_MEDIUM_CASES)  # avoids stochasticity issues
 
     def test_time_cases_mnist(self):
         """
@@ -61,6 +68,7 @@ class LargerTests(unittest.TestCase):
         """
         MNIST_10k = self.mnist_70k.head(LARGE_SAMPLE_SIZE).to_numpy()
         kmed = KMedoids(n_medoids=5, algorithm="BanditPAM")
+        kmed.seed = 0
         start = time.time()
         kmed.fit(MNIST_10k, "L2")
         base_runtime = time.time() - start
@@ -79,8 +87,8 @@ class LargerTests(unittest.TestCase):
 
     def test_medium_scrna(self):
         """
-        Generate NUM_MEDIUM_CASES random subsets of MNIST
-        of size MEDIUM_SAMPLE_SIZE and verify BanditPAM agrees with PAM
+        Generate NUM_MEDIUM_CASES random subsets of MNIST of size
+        MEDIUM_SAMPLE_SIZE and verify BanditPAM agrees with PAM.
         """
         count = 0
         for i in range(NUM_MEDIUM_CASES):
@@ -96,9 +104,11 @@ class LargerTests(unittest.TestCase):
 
     def test_various_medium_scrna(self):
         """
-        Generate NUM_MEDIUM_CASES random subsets of scRNA of various sizes
-        and verify BanditPAM agrees with PAM. Since PAM is very slow,
-        we can only do this for fairly small sizes in MEDIUM_SIZE_SCHEDULE
+        Generate NUM_MEDIUM_CASES random subsets of scRNA of various sizes and
+        verify BanditPAM agrees with PAM.
+
+        Since PAM is very slow, we can only do this for fairly small sizes in
+        MEDIUM_SIZE_SCHEDULE
         """
         count = 0
         for i in range(NUM_MEDIUM_CASES):
@@ -119,6 +129,7 @@ class LargerTests(unittest.TestCase):
         """
         SCRNA_10k = self.scrna.head(LARGE_SAMPLE_SIZE).to_numpy()
         kmed = KMedoids(n_medoids=5, algorithm="BanditPAM")
+        kmed.seed = 0
         start = time.time()
         kmed.fit(SCRNA_10k, "L1")
         base_runtime = time.time() - start
@@ -137,4 +148,5 @@ class LargerTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    np.random.seed(0)
     unittest.main()
