@@ -72,10 +72,9 @@ class BanditPAM_orig : public km::KMedoids {
    * as medoids are identified
    * @param medoids Matrix that contains the coordinates of each medoid
    */
-  void build(
-    const arma::fmat &data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    arma::urowvec *medoidIndices, arma::fmat *medoids);
+  void build(const arma::fmat &data,
+             std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+             arma::urowvec *medoidIndices, arma::fmat *medoids);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -134,11 +133,10 @@ class BanditPAM_orig : public km::KMedoids {
    * learns which datapoints will be unlikely to be good candidates
    * @param assignments Array of containing the medoid each point is closest to
    */
-  void swap(
-    const arma::fmat &data,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    arma::urowvec *medoidIndices, arma::fmat *medoids,
-    arma::urowvec *assignments);
+  void swap(const arma::fmat &data,
+            std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+            arma::urowvec *medoidIndices, arma::fmat *medoids,
+            arma::urowvec *assignments);
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_BANDITPAM_ORIG_HPP_

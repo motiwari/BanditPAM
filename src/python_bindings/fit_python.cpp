@@ -16,10 +16,9 @@
 #include "kmedoids_pywrapper.hpp"
 
 namespace km {
-void km::KMedoidsWrapper::fitPython(
-  const pybind11::array_t<float> &inputData,
-  const std::string &loss,
-  pybind11::kwargs kw) {
+void km::KMedoidsWrapper::fitPython(const pybind11::array_t<float> &inputData,
+                                    const std::string &loss,
+                                    pybind11::kwargs kw) {
   // throw an error if the number of medoids is not specified in either
   // the KMedoids object or the fitPython function
   try {

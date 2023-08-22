@@ -96,8 +96,7 @@ void FastPAM1::buildFastPAM1(
 void FastPAM1::swapFastPAM1(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  arma::urowvec *medoidIndices,
-  arma::urowvec *assignments) {
+  arma::urowvec *medoidIndices, arma::urowvec *assignments) {
   float bestChange = 0;
   float prevBestChange = 0;
   size_t swapIn = 0;

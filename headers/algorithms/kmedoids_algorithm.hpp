@@ -31,17 +31,10 @@ class KMedoids {
   // NOTE: The order of arguments in this constructor must match that of the
   //  arguments in kmedoids_pywrapper.cpp, otherwise undefined behavior can
   //  result (variables being initialized with others' values)
-  KMedoids(
-    size_t nMedoids = 5,
-    const std::string &algorithm = "BanditPAM",
-    size_t maxIter = 100,
-    size_t buildConfidence = 3,
-    size_t swapConfidence = 5,
-    bool useCache = true,
-    bool usePerm = true,
-    size_t cacheWidth = 1000,
-    bool parallelize = true,
-    size_t seed = 0);
+  KMedoids(size_t nMedoids = 5, const std::string &algorithm = "BanditPAM",
+           size_t maxIter = 100, size_t buildConfidence = 3,
+           size_t swapConfidence = 5, bool useCache = true, bool usePerm = true,
+           size_t cacheWidth = 1000, bool parallelize = true, size_t seed = 0);
 
   ~KMedoids();
 
@@ -53,9 +46,8 @@ class KMedoids {
    *
    * @throws if the input data is empty.
    */
-  void fit(
-    const arma::fmat &inputData, const std::string &loss,
-    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+  void fit(const arma::fmat &inputData, const std::string &loss,
+           std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
    * @brief Returns the medoids at the end of the BUILD step.
@@ -415,10 +407,7 @@ class KMedoids {
    *
    * @returns The Lp distance between points i and j
    */
-  float LP(
-    const arma::fmat &data,
-    const size_t i,
-    const size_t j) const;
+  float LP(const arma::fmat &data, const size_t i, const size_t j) const;
 
   /**
    * @brief Computes the L-infinity distance between the
@@ -430,10 +419,7 @@ class KMedoids {
    *
    * @returns The L-infinity distance between points i and j
    */
-  float LINF(
-    const arma::fmat &data,
-    const size_t i,
-    const size_t j) const;
+  float LINF(const arma::fmat &data, const size_t i, const size_t j) const;
 
   /**
    * @brief Computes the cosine distance between the
@@ -445,10 +431,7 @@ class KMedoids {
    *
    * @returns The cosine distance between points i and j
    */
-  float cos(
-    const arma::fmat &data,
-    const size_t i,
-    const size_t j) const;
+  float cos(const arma::fmat &data, const size_t i, const size_t j) const;
 
   /**
    * @brief Computes the Manhattan distance between the
@@ -460,10 +443,7 @@ class KMedoids {
    *
    * @returns The Manhattan distance between points i and j
    */
-  float manhattan(
-    const arma::fmat &data,
-    const size_t i,
-    const size_t j) const;
+  float manhattan(const arma::fmat &data, const size_t i, const size_t j) const;
 
   /**
    * @brief Checks whether algorithm choice is valid. The given
@@ -497,10 +477,8 @@ class KMedoids {
   arma::urowvec medoidIndicesFinal;
 
   /// Function pointer to the loss function to use
-  float (KMedoids::*lossFn)(
-    const arma::fmat &data,
-    const size_t i,
-    const size_t j) const;
+  float (KMedoids::*lossFn)(const arma::fmat &data, const size_t i,
+                            const size_t j) const;
 
   /// Number of SWAP steps performed
   size_t steps = 0;

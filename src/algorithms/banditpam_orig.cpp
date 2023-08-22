@@ -62,8 +62,7 @@ void BanditPAM_orig::fitBanditPAM_orig(
 arma::frowvec BanditPAM_orig::buildSigma(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  const arma::frowvec &bestDistances,
-  const bool useAbsolute) {
+  const arma::frowvec &bestDistances, const bool useAbsolute) {
   size_t N = data.n_cols;
   // temporarily increase the batch size for precise estimation
   // of the std dev
@@ -112,10 +111,8 @@ arma::frowvec BanditPAM_orig::buildSigma(
 arma::frowvec BanditPAM_orig::buildTarget(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  const arma::uvec *target,
-  const arma::frowvec *bestDistances,
-  const bool useAbsolute,
-  const bool exact = false) {
+  const arma::uvec *target, const arma::frowvec *bestDistances,
+  const bool useAbsolute, const bool exact = false) {
   size_t N = data.n_cols;
   size_t tmpBatchSize = batchSize;
   if (exact) {
@@ -161,8 +158,7 @@ arma::frowvec BanditPAM_orig::buildTarget(
 void BanditPAM_orig::build(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  arma::urowvec *medoidIndices,
-  arma::fmat *medoids) {
+  arma::urowvec *medoidIndices, arma::fmat *medoids) {
   size_t N = data.n_cols;
   arma::frowvec N_mat(N);
   N_mat.fill(N);
@@ -259,8 +255,7 @@ void BanditPAM_orig::build(
 arma::fmat BanditPAM_orig::swapSigma(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  const arma::frowvec *bestDistances,
-  const arma::frowvec *secondBestDistances,
+  const arma::frowvec *bestDistances, const arma::frowvec *secondBestDistances,
   const arma::urowvec *assignments) {
   size_t N = data.n_cols;
   size_t K = nMedoids;
@@ -324,12 +319,9 @@ arma::fmat BanditPAM_orig::swapSigma(
 arma::fvec BanditPAM_orig::swapTarget(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  const arma::urowvec *medoidIndices,
-  const arma::uvec *targets,
-  const arma::frowvec *bestDistances,
-  const arma::frowvec *secondBestDistances,
-  const arma::urowvec *assignments,
-  const bool exact = false) {
+  const arma::urowvec *medoidIndices, const arma::uvec *targets,
+  const arma::frowvec *bestDistances, const arma::frowvec *secondBestDistances,
+  const arma::urowvec *assignments, const bool exact = false) {
   size_t N = data.n_cols;
   arma::fvec estimates(targets->n_rows, arma::fill::zeros);
 

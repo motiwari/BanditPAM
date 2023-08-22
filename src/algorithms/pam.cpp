@@ -82,8 +82,7 @@ void PAM::buildPAM(
 void PAM::swapPAM(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  arma::urowvec *medoidIndices,
-  arma::urowvec *assignments) {
+  arma::urowvec *medoidIndices, arma::urowvec *assignments) {
   float minDistance = std::numeric_limits<float>::infinity();
   size_t best = 0;
   size_t medoidToSwap = 0;

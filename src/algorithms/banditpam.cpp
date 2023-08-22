@@ -61,8 +61,7 @@ void BanditPAM::fitBanditPAM(
 arma::frowvec BanditPAM::buildSigma(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  const arma::frowvec &bestDistances,
-  const bool useAbsolute) {
+  const arma::frowvec &bestDistances, const bool useAbsolute) {
   size_t N = data.n_cols;
   // Temporarily increase the batch size
   // for precise estimation of the standard deviation
@@ -111,10 +110,8 @@ arma::frowvec BanditPAM::buildSigma(
 arma::frowvec BanditPAM::buildTarget(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  const arma::uvec *target,
-  const arma::frowvec *bestDistances,
-  const bool useAbsolute,
-  const bool exact = false) {
+  const arma::uvec *target, const arma::frowvec *bestDistances,
+  const bool useAbsolute, const bool exact = false) {
   size_t N = data.n_cols;
   size_t tmpBatchSize = batchSize;
   if (exact) {
@@ -257,8 +254,7 @@ void BanditPAM::build(
 arma::fmat BanditPAM::swapSigma(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  const arma::frowvec *bestDistances,
-  const arma::frowvec *secondBestDistances,
+  const arma::frowvec *bestDistances, const arma::frowvec *secondBestDistances,
   const arma::urowvec *assignments) {
   size_t N = data.n_cols;
   size_t K = nMedoids;
@@ -322,12 +318,9 @@ arma::fmat BanditPAM::swapSigma(
 arma::fmat BanditPAM::swapTarget(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  const arma::urowvec *medoidIndices,
-  const arma::uvec *targets,
-  const arma::frowvec *bestDistances,
-  const arma::frowvec *secondBestDistances,
-  const arma::urowvec *assignments,
-  const bool exact = false) {
+  const arma::urowvec *medoidIndices, const arma::uvec *targets,
+  const arma::frowvec *bestDistances, const arma::frowvec *secondBestDistances,
+  const arma::urowvec *assignments, const bool exact = false) {
   const size_t N = data.n_cols;
   const size_t T = targets->n_rows;
   arma::fmat results(nMedoids, T, arma::fill::zeros);
@@ -403,8 +396,7 @@ arma::fmat BanditPAM::swapTarget(
 void BanditPAM::swap(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  arma::urowvec *medoidIndices,
-  arma::fmat *medoids,
+  arma::urowvec *medoidIndices, arma::fmat *medoids,
   arma::urowvec *assignments) {
   size_t N = data.n_cols;
   size_t p = N;

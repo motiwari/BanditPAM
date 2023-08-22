@@ -41,16 +41,13 @@ PYBIND11_MODULE(banditpam, m) {
   //  constructor in kmedoids_algorithm.*pp
   cls.def(
     pybind11::init<int, std::string, int, int, int, bool, bool, int, bool>(),
-    pybind11::arg("n_medoids") = 5,
-    pybind11::arg("algorithm") = "BanditPAM",
+    pybind11::arg("n_medoids") = 5, pybind11::arg("algorithm") = "BanditPAM",
     pybind11::arg("max_iter") = 100,
     pybind11::arg("build_confidence") = 10,  // 100 fixes stochasticity issues
     pybind11::arg("swap_confidence") = 5,
     // TODO(@motiwari): Verify these options are re-used correctly on reset
-    pybind11::arg("use_cache") = true,
-    pybind11::arg("use_perm") = true,
-    pybind11::arg("cache_width") = 1000,
-    pybind11::arg("parallelize") = true);
+    pybind11::arg("use_cache") = true, pybind11::arg("use_perm") = true,
+    pybind11::arg("cache_width") = 1000, pybind11::arg("parallelize") = true);
 
   // Properties
   cls.def_property("n_medoids", &KMedoidsWrapper::getNMedoids,

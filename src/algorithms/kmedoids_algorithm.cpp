@@ -21,17 +21,10 @@ namespace km {
 // NOTE: The order of arguments in this constructor must match that of the
 // arguments in kmedoids_pywrapper.cpp, otherwise undefined behavior can
 // result (variables being initialized with others' values)
-KMedoids::KMedoids(
-  size_t nMedoids,
-  const std::string &algorithm,
-  size_t maxIter,
-  size_t buildConfidence,
-  size_t swapConfidence,
-  bool useCache,
-  bool usePerm,
-  size_t cacheWidth,
-  bool parallelize,
-  size_t seed)
+KMedoids::KMedoids(size_t nMedoids, const std::string &algorithm,
+                   size_t maxIter, size_t buildConfidence,
+                   size_t swapConfidence, bool useCache, bool usePerm,
+                   size_t cacheWidth, bool parallelize, size_t seed)
   : nMedoids(nMedoids),
     algorithm(algorithm),
     maxIter(maxIter),
@@ -51,8 +44,7 @@ KMedoids::KMedoids(
 KMedoids::~KMedoids() {}
 
 void KMedoids::fit(
-  const arma::fmat &inputData,
-  const std::string &loss,
+  const arma::fmat &inputData, const std::string &loss,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat) {
   numMiscDistanceComputations = 0;
   numBuildDistanceComputations = 0;
@@ -316,9 +308,7 @@ float KMedoids::calcLoss(
 float KMedoids::cachedLoss(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  const size_t i,
-  const size_t j,
-  const size_t category,
+  const size_t i, const size_t j, const size_t category,
   const bool useCacheFunctionOverride) {
   // TODO(@motiwari): Change category to an enum
   if (category == 0) {  // MISC
@@ -375,32 +365,24 @@ float KMedoids::getAverageLoss() const { return averageLoss; }
 
 float KMedoids::getBuildLoss() const { return buildLoss; }
 
-float KMedoids::LP(
-  const arma::fmat &data,
-  const size_t i,
-  const size_t j) const {
+float KMedoids::LP(const arma::fmat &data, const size_t i,
+                   const size_t j) const {
   return arma::norm(data.col(i) - data.col(j), lp);
 }
 
-float KMedoids::LINF(
-  const arma::fmat &data,
-  const size_t i,
-  const size_t j) const {
+float KMedoids::LINF(const arma::fmat &data, const size_t i,
+                     const size_t j) const {
   return arma::max(arma::abs(data.col(i) - data.col(j)));
 }
 
-float KMedoids::cos(
-  const arma::fmat &data,
-  const size_t i,
-  const size_t j) const {
+float KMedoids::cos(const arma::fmat &data, const size_t i,
+                    const size_t j) const {
   return 1 - (arma::dot(data.col(i), data.col(j)) /
               (arma::norm(data.col(i)) * arma::norm(data.col(j))));
 }
 
-float KMedoids::manhattan(
-  const arma::fmat &data,
-  const size_t i,
-  const size_t j) const {
+float KMedoids::manhattan(const arma::fmat &data, const size_t i,
+                          const size_t j) const {
   return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
 }  // namespace km

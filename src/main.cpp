@@ -104,17 +104,10 @@ int main(int argc, char *argv[]) {
     data.resize(num_data, data.n_cols);
   }
 
-  km::KMedoids kmed(
-    k,
-    "BanditPAM",
-    maxIter,
-    buildConfidence,
-    swapConfidence,
-    useCache,
-    usePerm,
-    1000,  // Cache Width
-    parallelize,
-    seed);
+  km::KMedoids kmed(k, "BanditPAM", maxIter, buildConfidence, swapConfidence,
+                    useCache, usePerm,
+                    1000,  // Cache Width
+                    parallelize, seed);
   kmed.fit(data, loss, {});
   for (auto medoid : kmed.getMedoidsFinal()) {
     std::cout << medoid << ",";
