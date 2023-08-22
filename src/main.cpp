@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 
   // TODO(@motiwari): Use a variadic function signature for this instead
   while (prev_ind = optind,
-          (opt = getopt(argc, argv, "f:l:k:v:s:cpnw:")) != -1) {
+         (opt = getopt(argc, argv, "f:l:k:v:s:cpnw:")) != -1) {
     if (optind == prev_ind + 2 && *optarg == '-') {
       opt = ':';
       --optind;
@@ -83,14 +83,12 @@ int main(int argc, char *argv[]) {
 
   try {
     if (!f_flag) {
-      throw std::invalid_argument(
-              "Error: Must specify input file via -f flag");
+      throw std::invalid_argument("Error: Must specify input file via -f flag");
     } else if (!k_flag) {
       throw std::invalid_argument(
-              "Error: Must specify number of clusters via -k flag");
+        "Error: Must specify number of clusters via -k flag");
     } else if (!std::filesystem::exists(input_name)) {
-      throw std::invalid_argument(
-              "Error: The file does not exist");
+      throw std::invalid_argument("Error: The file does not exist");
     }
   } catch (std::invalid_argument &e) {
     std::cout << e.what() << std::endl;
@@ -101,23 +99,22 @@ int main(int argc, char *argv[]) {
   data.load(input_name);
 
   if (num_data < 0) {
-    throw std::invalid_argument(
-            "Error: num_data passed was less than 0");
+    throw std::invalid_argument("Error: num_data passed was less than 0");
   } else if (num_data != 0) {
     data.resize(num_data, data.n_cols);
   }
 
   km::KMedoids kmed(
-          k,
-          "BanditPAM",
-          maxIter,
-          buildConfidence,
-          swapConfidence,
-          useCache,
-          usePerm,
-          1000,  // Cache Width
-          parallelize,
-          seed);
+    k,
+    "BanditPAM",
+    maxIter,
+    buildConfidence,
+    swapConfidence,
+    useCache,
+    usePerm,
+    1000,  // Cache Width
+    parallelize,
+    seed);
   kmed.fit(data, loss, {});
   for (auto medoid : kmed.getMedoidsFinal()) {
     std::cout << medoid << ",";

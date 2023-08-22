@@ -7,7 +7,6 @@
 #include <fstream>
 #include <iostream>
 
-
 #include "kmedoids_algorithm.hpp"
 
 namespace km {
@@ -22,8 +21,8 @@ class BanditPAM : public km::KMedoids {
    * @param inputData Input data to cluster
    */
   void fitBanditPAM(
-          const arma::fmat &inputData,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+    const arma::fmat &inputData,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -37,10 +36,9 @@ class BanditPAM : public km::KMedoids {
    * @returns Estimate of each arm's standard deviation
    */
   arma::frowvec buildSigma(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          const arma::frowvec &bestDistances,
-          const bool useAbsolute);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma::frowvec &bestDistances, const bool useAbsolute);
 
   /**
    * @brief Estimates the mean reward for each arm in the BUILD steps.
@@ -55,12 +53,10 @@ class BanditPAM : public km::KMedoids {
    * @returns Estimate of each arm's change in loss
    */
   arma::frowvec buildTarget(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          const arma::uvec *target,
-          const arma::frowvec *bestDistances,
-          const bool useAbsolute,
-          const bool exact);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma::uvec *target, const arma::frowvec *bestDistances,
+    const bool useAbsolute, const bool exact);
 
   /**
    * @brief Performs the BUILD step of BanditPAM.
@@ -77,10 +73,9 @@ class BanditPAM : public km::KMedoids {
    * @param medoids Matrix that contains the coordinates of each medoid
    */
   void build(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          arma::urowvec *medoidIndices,
-          arma::fmat *medoids);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    arma::urowvec *medoidIndices, arma::fmat *medoids);
 
   /**
    * @brief Empirical estimation of standard deviation of arm returns
@@ -88,17 +83,17 @@ class BanditPAM : public km::KMedoids {
    *
    * @param data Transposed input data to cluster
    * @param bestDistances Contains best distances from each point to medoids
-   * @param secondBestDistances Contains second best distances from each point to medoids
+   * @param secondBestDistances Contains second best distances from each point
+   * to medoids
    * @param assignments Assignments of datapoints to their closest medoid
    *
    * @returns Estimate of each arm's standard deviation
    */
   arma::fmat swapSigma(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          const arma::frowvec *bestDistances,
-          const arma::frowvec *secondBestDistances,
-          const arma::urowvec *assignments);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma::frowvec *bestDistances,
+    const arma::frowvec *secondBestDistances, const arma::urowvec *assignments);
 
   /**
    * @brief Estimates the mean reward for each arm in SWAP step.
@@ -108,44 +103,42 @@ class BanditPAM : public km::KMedoids {
    * as medoids are swapped in and out
    * @param targets Set of potential swaps to be evaluated
    * @param bestDistances Contains best distances from each point to medoids
-   * @param secondBestDistances Contains second best distances from each point to medoids
+   * @param secondBestDistances Contains second best distances from each point
+   * to medoids
    * @param assignments Assignments of datapoints to their closest medoid
    * @param exact false if using standard batch size; true otherwise
    *
    * @returns Estimate of each arm's change in loss
    */
   arma::fmat swapTarget(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          const arma::urowvec *medoidIndices,
-          const arma::uvec *targets,
-          const arma::frowvec *bestDistances,
-          const arma::frowvec *secondBestDistances,
-          const arma::urowvec *assignments,
-          const bool exact);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma::urowvec *medoidIndices, const arma::uvec *targets,
+    const arma::frowvec *bestDistances,
+    const arma::frowvec *secondBestDistances, const arma::urowvec *assignments,
+    const bool exact);
 
   /**
-  * @brief Performs the SWAP step of BanditPAM.
-  *
-  * Draws batch size reference points with replacement and uses the estimated
-  * reward of performing a (medoid, non-medoid) swap. Constructs
-  * confidence intervals for expected loss when performing the swap,
-  * and continues drawing reference points until the best candidate's
-  * confidence interval is disjoint from all others.
-  *
-  * @param data Transposed input data to cluster
-  * @param medoidIndices Array of medoid indices created from the BUILD step
-  * that is modified in place as better medoids are identified
-  * @param medoids Matrix of possible medoids that is updated as the bandit
-  * learns which datapoints will be unlikely to be good candidates
-  * @param assignments Array of containing the medoid each point is closest to
-  */
+   * @brief Performs the SWAP step of BanditPAM.
+   *
+   * Draws batch size reference points with replacement and uses the estimated
+   * reward of performing a (medoid, non-medoid) swap. Constructs
+   * confidence intervals for expected loss when performing the swap,
+   * and continues drawing reference points until the best candidate's
+   * confidence interval is disjoint from all others.
+   *
+   * @param data Transposed input data to cluster
+   * @param medoidIndices Array of medoid indices created from the BUILD step
+   * that is modified in place as better medoids are identified
+   * @param medoids Matrix of possible medoids that is updated as the bandit
+   * learns which datapoints will be unlikely to be good candidates
+   * @param assignments Array of containing the medoid each point is closest to
+   */
   void swap(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          arma::urowvec *medoidIndices,
-          arma::fmat *medoids,
-          arma::urowvec *assignments);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    arma::urowvec *medoidIndices, arma::fmat *medoids,
+    arma::urowvec *assignments);
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_BANDITPAM_HPP_
