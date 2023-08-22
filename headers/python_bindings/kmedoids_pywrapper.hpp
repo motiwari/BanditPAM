@@ -28,9 +28,8 @@ class KMedoidsWrapper : public km::KMedoids {
    * @param loss The loss function used during medoid computation
    * @param k The number of medoids to compute
    */
-  void fitPython(
-    const pybind11::array_t<float> &inputData,
-    const std::string &loss, pybind11::kwargs kw);
+  void fitPython(const pybind11::array_t<float> &inputData,
+                 const std::string &loss, pybind11::kwargs kw);
 
   /**
    * @brief Returns the build medoids
