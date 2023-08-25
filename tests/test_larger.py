@@ -39,7 +39,9 @@ class LargerTests(unittest.TestCase):
                 test_build=True,
                 assert_immediately=False,
             )
-        self.assertTrue(num_succeed >= PROPORTION_PASSING * NUM_MEDIUM_CASES)  # avoids stochasticity issues
+        self.assertTrue(
+            num_succeed >= PROPORTION_PASSING * NUM_MEDIUM_CASES
+        )  # avoids stochasticity issues
 
     def test_various_medium_mnist(self):
         """
@@ -60,7 +62,9 @@ class LargerTests(unittest.TestCase):
                 test_build=True,
                 assert_immediately=False,
             )
-        self.assertTrue(num_succeed >= PROPORTION_PASSING * NUM_MEDIUM_CASES)  # avoids stochasticity issues
+        self.assertTrue(
+            num_succeed >= PROPORTION_PASSING * NUM_MEDIUM_CASES
+        )  # avoids stochasticity issues
 
     def test_time_cases_mnist(self):
         """

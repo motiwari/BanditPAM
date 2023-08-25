@@ -89,7 +89,9 @@ class SmallerTests(unittest.TestCase):
         kmed_5.seed = 0
         kmed_5.fit(self.small_mnist, "L2")
 
-        self.assertEqual(sorted(kmed_5.build_medoids.tolist()), [16, 24, 32, 70, 87])
+        self.assertEqual(
+            sorted(kmed_5.build_medoids.tolist()), [16, 24, 32, 70, 87]
+        )
         self.assertEqual(sorted(kmed_5.medoids.tolist()), [23, 30, 49, 70, 99])
 
         kmed_10 = KMedoids(
