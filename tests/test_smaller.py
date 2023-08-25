@@ -1,6 +1,7 @@
 import unittest
 import pandas as pd
 import numpy as np
+import sys
 
 from banditpam import KMedoids
 from utils import bpam_agrees_pam
@@ -16,7 +17,10 @@ from constants import (
 class SmallerTests(unittest.TestCase):
     small_mnist = pd.read_csv("data/MNIST_100.csv", header=None).to_numpy()
     mnist_70k = pd.read_csv("data/MNIST_70k.csv", sep=" ", header=None)
-    scrna = pd.read_csv("data/scrna_reformat.csv.gz", header=None)
+    if sys.platform == "win32":
+        scrna = pd.read_csv("data/scrna_reformat.csv.gz", header=None, dtype='float16')  # float16 for less memory usage
+    else:
+        scrna = pd.read_csv("data/scrna_reformat.csv.gz", header=None)
 
     def test_small_mnist(self):
         """
