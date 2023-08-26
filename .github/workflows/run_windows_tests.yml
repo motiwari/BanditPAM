@@ -1,5 +1,9 @@
 name: Windows - build package and run tests
-on: [push, pull_request]
+on:
+  push:
+    branches:  # prevents running on tag push
+      - '**'
+  pull_request:
 jobs:
   build:
     runs-on: windows-latest
@@ -16,11 +20,11 @@ jobs:
 
       - name: Clone for PR
         if: ${{ github.event_name == 'pull_request' }}
-        run: git clone -b $env:GITHUB_HEAD_REF https://github.com/motiwari/BanditPAM
+        run: git clone -b $GITHUB_HEAD_REF https://github.com/motiwari/BanditPAM
 
       - name: Clone for Push
         if: ${{ github.event_name != 'pull_request' }}
-        run: git clone -b ($env:GITHUB_REF -replace '^refs/heads/', '') https://github.com/motiwari/BanditPAM
+        run: git clone -b ${GITHUB_REF#refs/heads/} https://github.com/motiwari/BanditPAM
 
       - name: Downloading data files for tests
         shell: bash
@@ -93,6 +97,7 @@ jobs:
           cd BanditPAM
           python tests/test_smaller.py
 
-      # - name: Run larger suite of test cases
-      #   run : |
-      #     python tests/test_larger.py
+      - name: Run tests cases for initialization
+        run: |
+          cd BanditPAM
+          python tests/test_initialization.py
