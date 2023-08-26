@@ -26,5 +26,5 @@ Python Build:
 2) Follow these steps:
    1) Add the location of `cl.exe` to PATH in Environment Variables (e.g. `C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64`).
    2) Run `python -m pip install .` in the home directory (`/BanditPAM`)
-   2) Add the file `C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx86\x64\clang_rt.asan_dynamic-x86_64.dll` to `build\lib.win-amd64-cpython-310`
-   3) Run `python -m pip install .` in the home directory (`/BanditPAM`)
+   3) Run `cd scripts && sh retrieve_windows_python_files.sh && cd ..`
+   4) Run `python -m pip install .` in the home directory (`/BanditPAM`)
