@@ -1,5 +1,9 @@
 name: Windows - build package and run tests
-on: [push, pull_request]
+on:
+  push:
+    branches:  # prevents running on tag push
+      - '**'
+  pull_request:
 jobs:
   build:
     runs-on: windows-latest
@@ -93,6 +97,7 @@ jobs:
           cd BanditPAM
           python tests/test_smaller.py
 
-      # - name: Run larger suite of test cases
-      #   run : |
-      #     python tests/test_larger.py
+      - name: Run tests cases for initialization
+        run: |
+          cd BanditPAM
+          python tests/test_initialization.py
