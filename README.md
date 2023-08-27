@@ -216,7 +216,7 @@ To run the full suite of tests, run in the root directory:
 Alternatively, to run a "smaller" set of tests, from the main repo folder run `python tests/test_smaller.py` or `python tests/test_larger.py` to run a set of longer, more intensive tests.
 ## Credits
 
-Mo Tiwari wrote the original Python implementation of BanditPAM and many features of the C++ implementation. Mo now maintains the C++ implementation.
+Mo Tiwari wrote the original Python implementation of BanditPAM and many features of the C++ implementation. Mo and Adarsh Kumarappan now maintain the implementations.
 
 James Mayclin developed the initial C++ implementation of BanditPAM.
 
