@@ -1,0 +1,78 @@
+name: Linux - build source distribution and wheels
+on:
+  push:
+  pull_request:
+  release:
+    types:
+      - published
+jobs:
+  build_sdist:
+    name: Build source distribution (SDist)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      # Note: The dependencies below are not strictly necessary,
+      # They just make things easier for our install_checks
+      # in our setup.py when building the sdist on Ubuntu
+      - name: Install Ubuntu dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential checkinstall libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev 
+          sudo apt install -y clang-format cppcheck
+
+      # See note above
+      - name: Install Python dependencies 
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest
+          python -m pip install -r requirements.txt
+
+      - name: Build sdist
+        run: python setup.py sdist --formats=gztar,zip
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: |
+            dist/*.tar.gz
+            # dist/*.zip # We can only upload one sdist per release
+
+  build_wheels:
+    needs: [build_sdist]
+    name: Build wheels on ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.12.0
+        env:
+          CIBW_BUILD_VERBOSITY: 3
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: wheelhouse/*.whl
+
+  upload_pypi:
+    needs: [build_wheels, build_sdist]
+    runs-on: ubuntu-latest
+    # TODO: RBF
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: artifact
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@v1.4.2
+        with:
+          user: __token__
+          # For PyPI
+          password: ${{ secrets.PYPI_APIKEY }}
+          # For TestPyPI. TODO: RBF
+#          password: ${{ secrets.TEST_PYPI_APIKEY }}
+#          repository_url: https://test.pypi.org/legacy/
