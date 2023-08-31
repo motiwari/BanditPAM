@@ -69,7 +69,7 @@ def run_old_bandit(data, seed):
         n_medoids=5,
         parallelize=True,
         algorithm="BanditPAM_orig",
-        dist_mat=diss
+        dist_mat=diss,
     )
     print(km.algorithm)
     km.seed = seed

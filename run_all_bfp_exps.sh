@@ -24,5 +24,9 @@ else
     gunzip data/scrna_reformat.csv.gz
 fi
 
-# 3. Run the experiments
+# 3. Run the BFP vs BP++ comparison experiments
 python scripts/compare_banditpam_versions.py
+
+# 4. Run the BFP plotting experiments
+cd python_generate_plots
+python make_all_plots.py

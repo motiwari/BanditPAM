@@ -1,19 +1,35 @@
-'''
+"""
 Convenience code to automatically generate a list of experiments to run.
+
 Default output is to auto_exp_config.py.
-'''
+"""
+
 
 def write_exp(algo, k, N, seed, dataset, metric):
-    '''
-    Takes the experiment variables and outputs a string description
-    to go into a config file.
-    '''
-    return "\t['" + algo + "', " + str(k) + ", " + str(N) + \
-        ", " + str(seed) + ", '" + dataset + "', '" + metric + "'],\n"
+    """
+    Takes the experiment variables and outputs a string description to go into
+    a config file.
+    """
+    return (
+        "\t['"
+        + algo
+        + "', "
+        + str(k)
+        + ", "
+        + str(N)
+        + ", "
+        + str(seed)
+        + ", '"
+        + dataset
+        + "', '"
+        + metric
+        + "'],\n"
+    )
+
 
 def main():
     # Possible algos are ['bfp', 'fp', 'naive_v1']
-    algos = ['bfp']
+    algos = ["bfp"]
     seeds = range(30)
 
     ######## Figure 1 (a): loss plots
@@ -31,8 +47,8 @@ def main():
     # ks = [2]
 
     ######## Figure 2 (a): MNIST, L2, k = 3
-    dataset = 'MNIST'
-    metric = 'L2'
+    dataset = "MNIST"
+    metric = "L2"
     Ns = [5000, 7500, 10000, 12500, 15000, 17500, 20000]
     ks = [3]
 
@@ -54,7 +70,7 @@ def main():
     # Ns = [5000, 7500, 10000, 12500, 15000, 17500, 20000]
     # ks = [3]
 
-    with open('auto_exp_config.py', 'w+') as fout:
+    with open("auto_exp_config.py", "w+") as fout:
         fout.write("experiments = [\n")
         for k in ks:
             for seed in seeds:
@@ -64,6 +80,7 @@ def main():
                         if exp is not None:
                             fout.write(exp)
         fout.write("]")
+
 
 if __name__ == "__main__":
     main()

@@ -13,7 +13,7 @@ def print_results(kmed, runtime):
     )
     print(
         "Total complexity (without misc):",
-        f"{kmed.getDistanceComputations(False):,}"
+        f"{kmed.getDistanceComputations(False):,}",
     )
     print(
         "Total complexity (with misc):",
