@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">banditpam</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0-1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0-2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,6 +95,7 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 <li><p><a href="#method-KMedoids-get_algorithm"><code>KMedoids$get_algorithm()</code></a></p></li>
 <li><p><a href="#method-KMedoids-fit"><code>KMedoids$fit()</code></a></p></li>
 <li><p><a href="#method-KMedoids-get_medoids_final"><code>KMedoids$get_medoids_final()</code></a></p></li>
+<li><p><a href="#method-KMedoids-get_labels"><code>KMedoids$get_labels()</code></a></p></li>
 <li><p><a href="#method-KMedoids-get_statistic"><code>KMedoids$get_statistic()</code></a></p></li>
 <li><p><a href="#method-KMedoids-print"><code>KMedoids$print()</code></a></p></li>
 <li><p><a href="#method-KMedoids-clone"><code>KMedoids$clone()</code></a></p></li>
@@ -188,10 +189,22 @@ The loss function, "lp" (for p integer &gt; 0) or one of "manhattan", "cosine", 
 <p>a vector indices of the final mediods</p>
 </div>
 
+</div><p></p><hr><a id="method-KMedoids-get_labels"></a><div class="section">
+<h3 id="method-get-labels-">Method <code>get_labels()</code><a class="anchor" aria-label="anchor" href="#method-get-labels-"></a></h3>
+<p>Return the cluster labels after clustering</p><div class="section">
+<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">get_labels</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div>
+
+<div class="section">
+<h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
+<p>a vector of the cluster labels for the observations</p>
+</div>
+
 </div><p></p><hr><a id="method-KMedoids-get_statistic"></a><div class="section">
 <h3 id="method-get-statistic-">Method <code>get_statistic()</code><a class="anchor" aria-label="anchor" href="#method-get-statistic-"></a></h3>
 <p>Get the specified statistic after clustering</p><div class="section">
-<h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
+<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">get_statistic</span><span class="op">(</span><span class="va">what</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -213,7 +226,7 @@ or <code>"cache_misses"</code></p></dd>
 </div><p></p><hr><a id="method-KMedoids-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Printer.</p><div class="section">
-<h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
+<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -229,7 +242,7 @@ or <code>"cache_misses"</code></p></dd>
 </div><p></p><hr><a id="method-KMedoids-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
-<h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
+<h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">KMedoids</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 

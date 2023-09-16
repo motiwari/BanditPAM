@@ -19,6 +19,10 @@ bpam_num_threads <- function() {
     .Call('_banditpam_KMedoids__get_medoids_final', PACKAGE = 'banditpam', xp)
 }
 
+.KMedoids__get_labels <- function(xp) {
+    .Call('_banditpam_KMedoids__get_labels', PACKAGE = 'banditpam', xp)
+}
+
 .KMedoids__get_k <- function(xp) {
     .Call('_banditpam_KMedoids__get_k', PACKAGE = 'banditpam', xp)
 }
