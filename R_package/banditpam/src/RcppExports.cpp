@@ -50,13 +50,24 @@ BEGIN_RCPP
 END_RCPP
 }
 // KMedoids__get_medoids_final
-SEXP KMedoids__get_medoids_final(SEXP xp);
+Rcpp::IntegerVector KMedoids__get_medoids_final(SEXP xp);
 RcppExport SEXP _banditpam_KMedoids__get_medoids_final(SEXP xpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
     rcpp_result_gen = Rcpp::wrap(KMedoids__get_medoids_final(xp));
+    return rcpp_result_gen;
+END_RCPP
+}
+// KMedoids__get_labels
+Rcpp::IntegerVector KMedoids__get_labels(SEXP xp);
+RcppExport SEXP _banditpam_KMedoids__get_labels(SEXP xpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
+    rcpp_result_gen = Rcpp::wrap(KMedoids__get_labels(xp));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -188,6 +199,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_banditpam_KMedoids__new", (DL_FUNC) &_banditpam_KMedoids__new, 5},
     {"_banditpam_KMedoids__fit", (DL_FUNC) &_banditpam_KMedoids__fit, 4},
     {"_banditpam_KMedoids__get_medoids_final", (DL_FUNC) &_banditpam_KMedoids__get_medoids_final, 1},
+    {"_banditpam_KMedoids__get_labels", (DL_FUNC) &_banditpam_KMedoids__get_labels, 1},
     {"_banditpam_KMedoids__get_k", (DL_FUNC) &_banditpam_KMedoids__get_k, 1},
     {"_banditpam_KMedoids__set_k", (DL_FUNC) &_banditpam_KMedoids__set_k, 2},
     {"_banditpam_KMedoids__get_max_iter", (DL_FUNC) &_banditpam_KMedoids__get_max_iter, 1},

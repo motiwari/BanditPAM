@@ -21,7 +21,7 @@ Here's a BibTeX entry:
 
 ## Installation
 
-`banditpam` can be installed from CRAN like any other package.
+`banditpam` can be installed from CRAN like any other package. 
 
 ## Example
 
@@ -43,6 +43,8 @@ meds <- obj$get_medoids_final()
 ## Plot the results
 plot(X[, 1], X[, 2])
 points(X[meds, 1], X[meds, 2], col = "red", pch = 19)
+## Retrieve cluster labels
+clusters <- obj$get_labels()
 ##
 ## One can query some statistics too; see help("KMedoids")
 ##
