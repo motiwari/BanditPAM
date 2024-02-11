@@ -229,7 +229,11 @@ void KMedoids::setLossFn(std::string loss) {
   } else if (loss == "euclidean") {
     lossFn = &KMedoids::LP;
     lp = 2;
-  } else {
+  } else if (loss == "pearson") {
+    lossFn = &KMedoids::pearson;
+  } else if (loss == "spearman") {
+    lossFn = &KMedoids::spearman;
+  }else {
     throw std::invalid_argument("Error: unrecognized loss function");
   }
 }
@@ -384,5 +388,30 @@ float KMedoids::cos(const arma::fmat &data, const size_t i,
 float KMedoids::manhattan(const arma::fmat &data, const size_t i,
                           const size_t j) const {
   return arma::accu(arma::abs(data.col(i) - data.col(j)));
+}
+
+float KMedoids::pearson(const arma::fmat &data, const size_t i, const size_t j) const {
+  const arma::fvec& xi = data.col(i);
+  const arma::fvec& xj = data.col(j);
+  float mean_i = arma::mean(xi);
+  float mean_j = arma::mean(xj);
+  float numerator = arma::dot(xi - mean_i, xj - mean_j);
+  float denominator = std::sqrt(arma::dot(xi - mean_i, xi - mean_i) * arma::dot(xj - mean_j, xj - mean_j));
+  return numerator / denominator;
+}
+
+arma::fvec KMedoids::rank(const arma::fvec& vec) const {
+  arma::uvec sortedIndices = arma::sort_index(vec);
+  arma::fvec ranks(vec.size());
+  for (size_t i = 0; i < vec.size(); ++i) {
+      ranks(sortedIndices(i)) = i + 1;
+  }
+  return ranks;
+}
+
+float KMedoids::spearman(const arma::fmat &data, const size_t i, const size_t j) const {
+  arma::fvec rank_i = rank(data.col(i));
+  arma::fvec rank_j = rank(data.col(j));
+  return pearson(arma::join_rows(rank_i, rank_j), 0, 1);
 }
 }  // namespace km
