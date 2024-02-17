@@ -231,6 +231,8 @@ void KMedoids::setLossFn(std::string loss) {
     lp = 2;
   } else if (loss == "pearson") {
     lossFn = &KMedoids::pearson;
+  } else if (loss == "clip") {
+    lossFn = &KMedoids::clippedCos;
   } else if (loss == "spearman") {
     lossFn = &KMedoids::spearman;
   }else {
@@ -385,6 +387,19 @@ float KMedoids::cos(const arma::fmat &data, const size_t i,
               (arma::norm(data.col(i)) * arma::norm(data.col(j))));
 }
 
+float KMedoids::clippedCos(const arma::fmat &data, const size_t i,
+                    const size_t j) const {
+  // Calculate the cosine distance
+  float cos = (arma::dot(data.col(i), data.col(j)) /
+                           (arma::norm(data.col(i)) * arma::norm(data.col(j))));
+  
+  if (cos < 0.3) {
+    return 1; // Cosine distance is too large, so we consider the similarity as zero
+  } else {
+    return 1 - cos; // Cosine distance is within the threshold, return it
+  }
+}
+
 float KMedoids::manhattan(const arma::fmat &data, const size_t i,
                           const size_t j) const {
   return arma::accu(arma::abs(data.col(i) - data.col(j)));
@@ -397,7 +412,7 @@ float KMedoids::pearson(const arma::fmat &data, const size_t i, const size_t j) 
   float mean_j = arma::mean(xj);
   float numerator = arma::dot(xi - mean_i, xj - mean_j);
   float denominator = std::sqrt(arma::dot(xi - mean_i, xi - mean_i) * arma::dot(xj - mean_j, xj - mean_j));
-  return numerator / denominator;
+  return 1 - numerator / denominator;
 }
 
 arma::fvec KMedoids::rank(const arma::fvec& vec) const {

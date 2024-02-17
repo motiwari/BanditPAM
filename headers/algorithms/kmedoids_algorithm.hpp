@@ -467,6 +467,7 @@ class KMedoids {
    * @returns The Pearson correlation between points i and j
    */
   float pearson(const arma::fmat &data, const size_t i, const size_t j) const;
+  float clippedCos(const arma::fmat &data, const size_t i, const size_t j) const;
 
   /**
    * @brief Computes the Spearman correlation between the
