@@ -442,9 +442,11 @@ def main():
             "headers",
             os.path.join("headers", "algorithms"),
             os.path.join("headers", "python_bindings"),
-            os.path.join("headers", "carma", "include"),
-            os.path.join("headers", "carma", "include", "carma_bits"),
+            os.path.join("../", "carma", "include"),
+            # os.path.join("headers", "carma", "include"),
+            # os.path.join("headers", "carma", "include", "carma_bits"),
             os.path.join("/", "usr", "local", "include"),
+        
         ]
     elif sys.platform == "darwin":  # OSX
         include_dirs = [
@@ -574,8 +576,9 @@ def main():
                 os.path.join(
                     "src", "python_bindings", "swap_times_python.cpp"
                 ),
+                
             ],
-            include_dirs=include_dirs,
+            include_dirs=include_dirs + ["../carma/include"],
             library_dirs=library_dirs,
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
