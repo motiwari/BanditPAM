@@ -30,7 +30,7 @@ If you have any difficulties, please see the [platform-specific guides](https://
 
 ## Further Reading
 * [Full paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf)
-* [3-minute summary video](https://crossminds.ai/video/bandit-pam-almost-linear-time-k-medoids-clustering-via-multi-armed-bandits-5fb88782b0a3f6412973b646/)
+* [3-minute summary video](https://slideslive.com/38936275/banditpam-almost-linear-time-kmedoids-clustering-via-multiarmed-bandits)
 * [Blog post](https://ai.stanford.edu/blog/banditpam/)
 * [Code](https://github.com/motiwari/BanditPAM)
 * [PyPI](https://pypi.org/project/banditpam/)
