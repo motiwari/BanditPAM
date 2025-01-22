@@ -23,7 +23,7 @@ KMedoids <- R6::R6Class( "KMedoids"
     xptr = NA,
     algorithm = NULL
   )
-, 
+,
   active = list(
     #' @field k (`integer(1)`)\cr
     #' The number of medoids/clusters to create
@@ -66,7 +66,7 @@ KMedoids <- R6::R6Class( "KMedoids"
     }
    ,
     #' @field loss_fn (`character(1)`)\cr
-    #' The loss function, "lp" (for p integer > 0) or one of "manhattan", "cosine", "inf" or "euclidean"    
+    #' The loss function, "lp" (for p integer > 0) or one of "manhattan", "cosine", "inf" or "euclidean"
     loss_fn = function(value) {
       if (missing(value)) {
         .Call('_banditpam_KMedoids__get_loss_fn', PACKAGE = 'banditpam', private$xptr)
@@ -80,16 +80,18 @@ KMedoids <- R6::R6Class( "KMedoids"
     #' @description
     #' Create a new KMedoids object
     #' @param k number of medoids/clusters to create, default 5
-    #' @param algorithm the algorithm to use, one of "BanditPAM", "PAM", "FastPAM1" 
+    #' @param algorithm the algorithm to use, one of "BanditPAM", "PAM", "FastPAM1"
     #' @param max_iter the maximum number of SWAP steps the algorithm runs, default 1000
     #' @param build_conf parameter that affects the width of BUILD confidence intervals, default 1000
     #' @param swap_conf parameter that affects the width of SWAP confidence intervals, default 10000
+    #' @param parallelize use parallelization
     #' @return a KMedoids object which can be used to fit the banditpam algorithm to data
     initialize = function(k = 5L, algorithm = c("BanditPAM", "PAM", "FastPAM1"),
-                          max_iter = 1000L, build_conf = 1000, swap_conf = 10000L) {
+                          max_iter = 1000L, build_conf = 1000, swap_conf = 10000L,
+                          parallelize = TRUE) {
       algorithm <- match.arg(algorithm)
       private$algorithm <- algorithm
-      private$xptr <- .Call('_banditpam_KMedoids__new', PACKAGE = 'banditpam', k, algorithm, max_iter, build_conf, swap_conf)
+      private$xptr <- .Call('_banditpam_KMedoids__new', PACKAGE = 'banditpam', k, algorithm, max_iter, build_conf, swap_conf, parallelize)
     }
    ,
 
@@ -100,7 +102,7 @@ KMedoids <- R6::R6Class( "KMedoids"
       private$algorithm
     }
    ,
-    
+
     #' @description
     #' Fit the KMedoids algorthm given the data and loss. It is advisable to set the seed before calling this method for reproducible results.
     #' @param data the data matrix
@@ -149,6 +151,13 @@ KMedoids <- R6::R6Class( "KMedoids"
       }
       .Call('_banditpam_KMedoids__get_statistic', PACKAGE = 'banditpam', private$xptr, what_index)
     }
+   ,
+   #' @description
+   #' Return if parallelize is enabled
+   #' @return true or false
+   get_parallelize = function() {
+     .Call('_banditpam_KMedoids__get_parallelize', PACKAGE = 'banditpam', private$xptr)
+   }
    ,
 
     #' @description

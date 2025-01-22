@@ -47,6 +47,7 @@ The loss function, "lp" (for p integer > 0) or one of "manhattan", "cosine", "in
 \item \href{#method-KMedoids-get_medoids_final}{\code{KMedoids$get_medoids_final()}}
 \item \href{#method-KMedoids-get_labels}{\code{KMedoids$get_labels()}}
 \item \href{#method-KMedoids-get_statistic}{\code{KMedoids$get_statistic()}}
+\item \href{#method-KMedoids-get_parallelize}{\code{KMedoids$get_parallelize()}}
 \item \href{#method-KMedoids-print}{\code{KMedoids$print()}}
 \item \href{#method-KMedoids-clone}{\code{KMedoids$clone()}}
 }
@@ -62,7 +63,8 @@ Create a new KMedoids object
   algorithm = c("BanditPAM", "PAM", "FastPAM1"),
   max_iter = 1000L,
   build_conf = 1000,
-  swap_conf = 10000L
+  swap_conf = 10000L,
+  parallelize = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -78,6 +80,8 @@ Create a new KMedoids object
 \item{\code{build_conf}}{parameter that affects the width of BUILD confidence intervals, default 1000}
 
 \item{\code{swap_conf}}{parameter that affects the width of SWAP confidence intervals, default 10000}
+
+\item{\code{parallelize}}{use parallelization}
 }
 \if{html}{\out{</div>}}
 }
@@ -164,6 +168,19 @@ or \code{"cache_misses"}}
 \item{\code{return}}{the statistic}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-KMedoids-get_parallelize"></a>}}
+\if{latex}{\out{\hypertarget{method-KMedoids-get_parallelize}{}}}
+\subsection{Method \code{get_parallelize()}}{
+Return if parallelize is enabled
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{KMedoids$get_parallelize()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+true or false
 }
 }
 \if{html}{\out{<hr>}}
