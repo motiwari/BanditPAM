@@ -8,3 +8,4 @@ pkgdown$
 src/*.o
 src/*.so
 inst/misc/*
+^\.github$
