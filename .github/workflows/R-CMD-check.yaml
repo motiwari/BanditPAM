@@ -15,10 +15,6 @@ jobs:
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
-    defaults:
-      run:
-        working-directory: R_package/banditpam
-
     strategy:
       fail-fast: false
       matrix:
@@ -51,5 +47,6 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
         with:
+          path: R_package/banditpam
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
