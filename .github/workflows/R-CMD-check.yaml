@@ -17,7 +17,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: R_package/bandipam
+        working-directory: R_package/banditpam
 
     strategy:
       fail-fast: false
