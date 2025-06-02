@@ -1,5 +1,9 @@
 # banditpam <img src="man/figures/logo.png" align="right" />
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/motiwari/BanditPAM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 We provide an R interface to the high-performance implementation of
 [banditpam](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf),
 a $k$-medoids clustering algorithm.
