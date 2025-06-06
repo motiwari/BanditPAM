@@ -65,7 +65,7 @@ jobs:
           cd BanditPAM
           mkdir build
           cd build
-          sudo CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake ..
+          sudo CC=/opt/homebrew/opt/llvm/bin/clang CXX=/opt/homebrew/opt/llvm/bin/clang++ cmake ..
           sudo make
           src/BanditPAM -f ../data/MNIST_1k.csv -k 5 -l L2
         env:
