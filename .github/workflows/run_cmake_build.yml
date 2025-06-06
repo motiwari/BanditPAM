@@ -60,8 +60,8 @@ jobs:
           export LDFLAGS="-L/usr/local/opt/llvm/lib, -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
           export CPPFLAGS="-I/usr/local/opt/llvm/include"
           export DYLD_LIBRARY_PATH=/usr/local/opt/libomp/lib:/usr/local/opt/libomp/include
-          export CC=/usr/local/opt/llvm/bin/clang
-          export CXX=/usr/local/opt/llvm/bin/clang++
+          export CC=/opt/homebrew/opt/llvm/bin/clang
+          export CXX=/opt/homebrew/opt/llvm/bin/clang++
           cd BanditPAM
           mkdir build
           cd build
