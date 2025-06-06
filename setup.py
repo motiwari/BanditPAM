@@ -516,9 +516,10 @@ def main():
         libraries = ["libopenblas"]
     else:
         if compiler_name == "clang":
-            libraries = ["armadillo", "omp"]
+            # TODO(@motiwari): Perhaps change this to c++ when we also update cpp_args below
+            libraries = ["armadillo", "omp", "stdc++"]
         else:  # gcc
-            libraries = ["armadillo", "gomp"]
+            libraries = ["armadillo", "gomp", "stdc++"]
 
     cpp_args = None
     if sys.platform == "win32":
