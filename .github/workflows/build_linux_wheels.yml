@@ -35,7 +35,7 @@ jobs:
       - name: Build sdist
         run: python setup.py sdist --formats=gztar,zip
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           path: |
             dist/*.tar.gz
