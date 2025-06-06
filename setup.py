@@ -9,7 +9,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "4.0.4"
+__version__ = "5.0.0"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = "GITHUB_ACTIONS"
@@ -50,6 +50,19 @@ def compiler_check():
     python for some of the compilation process, even if the user specifies
     another one!
     """
+    if sys.platform == "darwin":
+        # Note: On Mac, we should always use LLVM clang
+        # because Apple's clang does not support OpenMP
+        # and we need OpenMP to parallelize the code
+        # Note: distutils.sysconfig.get_config_vars() works for Python 3.11+, but we need to use os.environ for Python 3.10
+        if "clang" not in distutils.sysconfig.get_config_vars()["CC"] and "clang" not in dict(os.environ)["CC"]:
+            raise Exception(
+                "Need to install LLVM clang! \
+                Please run `brew install llvm`"
+            )
+        return "clang"
+
+    # For all platforms
     try:
         return (
             "clang"
@@ -155,9 +168,10 @@ def install_check_mac():
     # Make sure numpy is installed
     check_numpy_installation()
 
-    # Check that libomp, and armadillo are installed
+    # Check that libomp, armadillo, and openblas are installed
     check_brew_package("libomp")
     check_brew_package("armadillo")
+    check_brew_package("openblas")
 
     # Because we don't want to force M1 users to compile from source,
     # we build wheels on Github Runners via Github Actions. In
@@ -222,7 +236,7 @@ def check_linux_package_installation(pkg_name: str):
             Please ensure all dependencies are installed \
             via your package manager (apt, yum, etc.): \
             build-essential checkinstall \
-            libncursesw5-dev libssl-dev libsqlite3-dev tk-dev \
+            libssl-dev libsqlite3-dev tk-dev \
             libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
             % (pkg_name)
         )
@@ -238,7 +252,6 @@ def install_ubuntu_pkgs():
         "apt install -y \
         build-essential \
         checkinstall \
-        libncursesw5-dev \
         libssl-dev \
         libsqlite3-dev \
         libgdbm-dev \
@@ -314,7 +327,6 @@ def install_check_ubuntu():
     dependencies = [
         "build-essential",
         "checkinstall",
-        "libncursesw5-dev",
         "libssl-dev",
         "libsqlite3-dev",
         "tk-dev",
@@ -347,6 +359,21 @@ def is_ubuntu():
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     output, _error = process.communicate()
     return "Ubuntu" in output.decode()
+
+
+def get_package_prefix(package=None):
+    assert package is not None, "Package name must be provided"
+    try:
+        result = subprocess.run(
+            ["brew", "--prefix", package],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+        )
+        return result.stdout.strip().decode()
+    except subprocess.CalledProcessError as e:
+        print("Error running brew:", e.stderr)
+        return None
 
 
 class BuildExt(build_ext):
@@ -385,36 +412,55 @@ class BuildExt(build_ext):
     def build_extensions(self):
         ct = self.compiler.compiler_type
 
-        opts = self.c_opts.get(ct, [])
+        comp_opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
 
         # TODO(@motiwari): on Windows, these flags are unrecognized
-        opts.append(cpp_flag(self.compiler))
-        opts.append("-O3")
-        if sys.platform == "darwin" and os.environ.get(GHA, False):
-            opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
-            opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
+        comp_opts.append(cpp_flag(self.compiler))
+        comp_opts.append("-O3")
 
-            opts.append("-lomp")  # Potentially unused?
-            opts.append("-I/usr/local/opt/libomp/include")
-            opts.append("-L/usr/local/opt/libomp/lib")  # Unused?
+        if sys.platform == "darwin":
+            for package in ["armadillo", "libomp", "openblas"]:
+                package_prefix = get_package_prefix(package)
+                link_opts.append(f"-Wl,-rpath,{package_prefix}/lib")
+
+            if os.environ.get(GHA, False):
+                # We are inside a Github Runner on a Mac.
+                comp_opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
+                comp_opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
+
+                comp_opts.append("-lomp")  # Potentially unused?
+                comp_opts.append("-lopenblas")  # Potentially unused?
+
+                # TODO(@motiwari): include armadillo here?
+
+                for package in ["libomp", "openblas"]:
+                    package_prefix = get_package_prefix(package)
+                    comp_opts.append("-I{}/include".format(package_prefix))
+                    comp_opts.append("-L{}/lib".format(package_prefix))
         elif sys.platform != "win32":
-            opts.append("-fopenmp")
+            comp_opts.append("-fopenmp")
 
         compiler_name = compiler_check()
-        if sys.platform == "darwin" and os.environ.get(GHA, False):
-            link_opts.append("-lomp")  # Potentially unused?
-            link_opts.append("-I/usr/local/opt/libomp/include")
-            link_opts.append("-L/usr/local/opt/libomp/lib")  # Unused?
-        elif sys.platform != "win32":
-            if compiler_name == "clang":
+        if sys.platform == "darwin":
+            if compiler_name == "gcc":
                 link_opts.append("-lomp")
-            else:  # gcc
+            else:
+                link_opts.append("-lomp")
+        elif sys.platform == "linux" or sys.platform == "linux2":
+            if compiler_name == "gcc":
                 link_opts.append("-lgomp")
+            else:
+                # Both clang and Apple's clang should use libomp
+                link_opts.append("-lomp")
+        else:
+            # On Windows
+            # TODO(@motiwari): Fix this
+            pass
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
-                opts.append("-fvisibility=hidden")
+                comp_opts.append("-fvisibility=hidden")
 
         for ext in self.extensions:
             ext.define_macros = [
@@ -423,7 +469,7 @@ class BuildExt(build_ext):
                     '"{}"'.format(self.distribution.get_version()),
                 )
             ]
-            ext.extra_compile_args = opts
+            ext.extra_compile_args = comp_opts
             ext.extra_compile_args += []  # []["-arch", "x86_64"]
 
             ext.extra_link_args = link_opts
@@ -472,6 +518,7 @@ def main():
             os.path.join("/", "opt", "homebrew", "lib"),
             os.path.join("/", "opt", "homebrew", "opt"),
             os.path.join("/", "opt", "homebrew", "opt", "armadillo"),
+            os.path.join("/", "opt", "homebrew", "opt", "openblas"),
             os.path.join(
                 "/", "opt", "homebrew", "opt", "armadillo", "include"
             ),
@@ -484,16 +531,10 @@ def main():
                 "include",
                 "armadillo_bits",
             ),
-            # Needed for Mac Github Runners
-            # for macos-10.15
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.2", "include"
-            ),
-            # for macos-latest
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.7", "include"
-            ),
         ]
+        for package in ["armadillo", "openblas", "libomp"]:
+            package_prefix = get_package_prefix(package)
+            include_dirs.append(os.path.join(package_prefix, "include"))
     elif sys.platform == "win32":  # WIN32
         include_dirs = [
             get_pybind_include(),
@@ -513,16 +554,16 @@ def main():
     if sys.platform == "darwin" and os.environ.get(GHA, False):
         # On Mac Github Runners, we should NOT include gomp or omp here
         # due to build errors.
-        libraries = ["armadillo", "omp"]
+        libraries = ["armadillo", "openblas"]
     elif sys.platform == "win32":
         libraries = ["libopenblas"]
     else:
-        if compiler_name == "clang":
-            libraries = ["armadillo", "omp"]
-        else:  # gcc
-            libraries = ["armadillo", "gomp"]
+        if compiler_name == "gcc":
+            # TODO(@motiwari): Perhaps change this to c++ when we also update cpp_args below
+            libraries = ["armadillo", "gomp", "stdc++"]
+        else:  # clang
+            libraries = ["armadillo", "omp", "stdc++"]
 
-    cpp_args = None
     if sys.platform == "win32":
         cpp_args = ["/std:c++17"]
         library_dirs = [
@@ -535,20 +576,22 @@ def main():
         ]  # TODO(@motiwari): Modify this based on gcc or clang
         library_dirs = [
             os.path.join("/", "usr", "local", "lib"),
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.2", "lib"
-            ),
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.7", "lib"
-            ),
         ]
-        if sys.platform == "darwin" and platform.processor() == "arm":  # M1
-            library_dirs.append(
-                os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
-            )
-            library_dirs.append(
-                os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib")
-            )
+        if sys.platform == "darwin":
+            for package in ["armadillo", "libomp", "openblas"]:
+                package_prefix = get_package_prefix(package)
+                library_dirs.append(os.path.join(package_prefix, "lib"))
+
+            if platform.processor() == "arm":  # M1
+                library_dirs.append(
+                    os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
+                )
+                library_dirs.append(
+                    os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib")
+                )
+                library_dirs.append(
+                    os.path.join("/", "opt", "homebrew", "opt", "openblas", "lib")
+                )
 
     ext_modules = [
         Extension(
@@ -580,7 +623,7 @@ def main():
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
             extra_compile_args=cpp_args,
-            extra_link_args=[],  # Wrong pass (BuildExt sets extra_link_args)
+            extra_link_args=["-vvvv"],  # Wrong pass (BuildExt sets extra_link_args)
         )
     ]
 
