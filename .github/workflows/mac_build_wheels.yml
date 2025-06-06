@@ -9,7 +9,7 @@ on:
       - published
 jobs:
   build_wheels_macos:
-    name: Build wheels on macos-latest
+    name: Build wheels on macos-13
     runs-on: macos-13
     strategy:
       fail-fast: false

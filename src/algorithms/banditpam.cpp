@@ -201,9 +201,8 @@ void BanditPAM::build(
         ((numSamples + batchSize) >= N_mat) != exactMask;
       if (arma::accu(compute_exactly) > 0) {
         arma::uvec targets = find(compute_exactly);
-        arma::frowvec result =
-          buildTarget(data, distMat, &targets, &bestDistances, useAbsolute,
-                      (true ? N > 0 : false));
+        arma::frowvec result = buildTarget(data, distMat, &targets,
+                                           &bestDistances, useAbsolute, true);
         estimates.cols(targets) = result;
         ucbs.cols(targets) = result;
         lcbs.cols(targets) = result;
@@ -457,9 +456,7 @@ void BanditPAM::swap(
       if (compute_exactly_targets.size() > 0) {
         arma::fmat result =
           swapTarget(data, distMat, medoidIndices, &compute_exactly_targets,
-                     &bestDistances, &secondBestDistances, assignments,
-                     (true ? N > 0 : false));
-
+                     &bestDistances, &secondBestDistances, assignments, true);
         // result will be k x T
         // Now update the correct indices
         estimates.cols(compute_exactly_targets) = result;

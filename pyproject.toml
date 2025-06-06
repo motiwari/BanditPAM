@@ -1,3 +1,21 @@
+[project]
+license = {text = "MIT"}
+version = "6.0.0"
+name = "banditpam"
+requires-python = ">= 3.10"
+authors = [
+  {name = "Mo Tiwari", email = "mohittiwarinyc@gmail.com"},
+  {name = "Balasubramanian Narasimhan", email = "naras@stanford.edu"},
+]
+maintainers = [
+  {name = "Mo Tiwari", email = "mohittiwarinyc@gmail.com"},
+  {name = "Balasubramanian Narasimhan", email = "naras@stanford.edu"},
+]
+readme = "README.md"
+description = "BanditPAM: A state-of-the-art, high-performance k-medoids algorithm."
+
+
+
 [tool.cibuildwheel]
 
 [tool.cibuildwheel.linux]
@@ -8,6 +26,8 @@ before-all = [
 
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "universal2", "arm64"]
+build = ["*cp311*arm64*"]
+skip = ["*x86_64*"]
 
 # Get dependencies
 before-all = [
@@ -24,9 +44,9 @@ before-all = [
 
 # Adding /usr/local/lib because that's where armadillo is installed from the repo
 repair-wheel-command = [
-    "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib:/usr/local/opt/armadillo/lib:/usr/local/lib:/usr/local/opt/libomp/lib:/usr/local/Cellar/libomp/15.0.2/lib:/usr/local/Cellar/libomp/15.0.7/lib delocate-listdeps --depending {wheel}",
-    "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib:/usr/local/opt/armadillo/lib:/usr/local/lib:/usr/local/opt/libomp/lib:/usr/local/Cellar/libomp/15.0.2/lib:/usr/local/Cellar/libomp/15.0.7/lib delocate-listdeps {wheel}",
-    "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib:/usr/local/opt/armadillo/lib:/usr/local/lib:/usr/local/opt/libomp/lib:/usr/local/Cellar/libomp/15.0.2/lib:/usr/local/Cellar/libomp/15.0.7/lib delocate-wheel -v -w {dest_dir} {wheel}"
+    "delocate-listdeps --depending {wheel}",
+    "delocate-listdeps {wheel}",
+    "delocate-wheel -v -w {dest_dir} {wheel}"
 ]
 
 
