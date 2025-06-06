@@ -222,7 +222,7 @@ def check_linux_package_installation(pkg_name: str):
             Please ensure all dependencies are installed \
             via your package manager (apt, yum, etc.): \
             build-essential checkinstall \
-            libncursesw5-dev libssl-dev libsqlite3-dev tk-dev \
+            libssl-dev libsqlite3-dev tk-dev \
             libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
             % (pkg_name)
         )
@@ -238,7 +238,6 @@ def install_ubuntu_pkgs():
         "apt install -y \
         build-essential \
         checkinstall \
-        libncursesw5-dev \
         libssl-dev \
         libsqlite3-dev \
         libgdbm-dev \
@@ -314,7 +313,6 @@ def install_check_ubuntu():
     dependencies = [
         "build-essential",
         "checkinstall",
-        "libncursesw5-dev",
         "libssl-dev",
         "libsqlite3-dev",
         "tk-dev",
