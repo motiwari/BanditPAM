@@ -9,7 +9,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "4.0.4"
+__version__ = "5.0.0"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = "GITHUB_ACTIONS"
@@ -155,9 +155,10 @@ def install_check_mac():
     # Make sure numpy is installed
     check_numpy_installation()
 
-    # Check that libomp, and armadillo are installed
+    # Check that libomp, armadillo, and openblas are installed
     check_brew_package("libomp")
     check_brew_package("armadillo")
+    check_brew_package("openblas")
 
     # Because we don't want to force M1 users to compile from source,
     # we build wheels on Github Runners via Github Actions. In
@@ -347,6 +348,22 @@ def is_ubuntu():
     return "Ubuntu" in output.decode()
 
 
+def get_package_prefix(package=None):
+    assert package is not None, "Package name must be provided"
+    try:
+        result = subprocess.run(
+            ["brew", "--prefix", package],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+            text=True,  # ensures output is returned as a string
+        )
+        return result.stdout.strip()
+    except subprocess.CalledProcessError as e:
+        print("Error running brew:", e.stderr)
+        return None
+
+
 class BuildExt(build_ext):
     """
     A custom build extension for adding compiler-specific options.
@@ -395,17 +412,19 @@ class BuildExt(build_ext):
             opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
 
             opts.append("-lomp")  # Potentially unused?
-            opts.append("-I/usr/local/opt/libomp/include")
-            opts.append("-L/usr/local/opt/libomp/lib")  # Unused?
+            opts.append("-lopenblas")  # Potentially unused?
+
+            # TODO(@motiwari): include armadillo here?
+            for package in ["libomp", "openblas"]:
+                package_prefix = get_package_prefix(package)
+                opts.append("-I{}/include".format(package_prefix))
+                opts.append("-L{}/lib".format(package_prefix))
+
         elif sys.platform != "win32":
             opts.append("-fopenmp")
 
         compiler_name = compiler_check()
-        if sys.platform == "darwin" and os.environ.get(GHA, False):
-            link_opts.append("-lomp")  # Potentially unused?
-            link_opts.append("-I/usr/local/opt/libomp/include")
-            link_opts.append("-L/usr/local/opt/libomp/lib")  # Unused?
-        elif sys.platform != "win32":
+        if sys.platform != "win32":
             if compiler_name == "clang":
                 link_opts.append("-lomp")
             else:  # gcc
@@ -471,6 +490,7 @@ def main():
             os.path.join("/", "opt", "homebrew", "lib"),
             os.path.join("/", "opt", "homebrew", "opt"),
             os.path.join("/", "opt", "homebrew", "opt", "armadillo"),
+            os.path.join("/", "opt", "homebrew", "opt", "openblas"),
             os.path.join(
                 "/", "opt", "homebrew", "opt", "armadillo", "include"
             ),
@@ -512,7 +532,7 @@ def main():
     if sys.platform == "darwin" and os.environ.get(GHA, False):
         # On Mac Github Runners, we should NOT include gomp or omp here
         # due to build errors.
-        libraries = ["armadillo", "omp"]
+        libraries = ["armadillo", "omp", "openblas"]
     elif sys.platform == "win32":
         libraries = ["libopenblas"]
     else:
@@ -548,6 +568,9 @@ def main():
             )
             library_dirs.append(
                 os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib")
+            )
+            library_dirs.append(
+                os.path.join("/", "opt", "homebrew", "opt", "openblas", "lib")
             )
 
     ext_modules = [
