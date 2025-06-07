@@ -508,16 +508,9 @@ def main():
                 "include",
                 "armadillo_bits",
             ),
-            # Needed for Mac Github Runners
-            # for macos-10.15
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.2", "include"
-            ),
-            # for macos-latest
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.7", "include"
-            ),
         ]
+        libomp_prefix = get_package_prefix("libomp")
+        include_dirs.append(os.path.join(libomp_prefix, "include"))
     elif sys.platform == "win32":  # WIN32
         include_dirs = [
             get_pybind_include(),
@@ -559,23 +552,20 @@ def main():
         ]  # TODO(@motiwari): Modify this based on gcc or clang
         library_dirs = [
             os.path.join("/", "usr", "local", "lib"),
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.2", "lib"
-            ),
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.7", "lib"
-            ),
         ]
-        if sys.platform == "darwin" and platform.processor() == "arm":  # M1
-            library_dirs.append(
-                os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
-            )
-            library_dirs.append(
-                os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib")
-            )
-            library_dirs.append(
-                os.path.join("/", "opt", "homebrew", "opt", "openblas", "lib")
-            )
+        if sys.platform == "darwin":
+            libomp_prefix = get_package_prefix("libomp")
+            library_dirs.append(os.path.join(libomp_prefix, "lib"))
+            if platform.processor() == "arm":  # M1
+                library_dirs.append(
+                    os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
+                )
+                library_dirs.append(
+                    os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib")
+                )
+                library_dirs.append(
+                    os.path.join("/", "opt", "homebrew", "opt", "openblas", "lib")
+                )
 
     ext_modules = [
         Extension(
