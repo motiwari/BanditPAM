@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       # On the MacOS machine, when installing from source,
       # we use LLVM Clang

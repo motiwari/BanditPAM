@@ -36,14 +36,14 @@ jobs:
     needs: [build_wheels_macos]
     runs-on: ubuntu-latest # Can only upload from Linux containers
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: artifact
           path: dist
 
       - name: Upload to TestPyPI on PR update
         if: ${{ github.event_name == 'pull_request' }}
-        uses: pypa/gh-action-pypi-publish@v1.4.2
+        uses: pypa/gh-action-pypi-publish@v.1.12.4
         with:
           user: __token__
           password: ${{ secrets.TEST_PYPI_APIKEY }}
@@ -51,7 +51,7 @@ jobs:
 
       - name: Upload to PyPI on published release
         if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-        uses: pypa/gh-action-pypi-publish@v1.4.2
+        uses: pypa/gh-action-pypi-publish@v.1.12.4
         with:
           user: __token__
           password: ${{ secrets.PYPI_APIKEY }}
