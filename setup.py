@@ -412,6 +412,7 @@ class BuildExt(build_ext):
                 link_opts.append(f"-Wl,-rpath,{package_prefix}/lib")
 
             if os.environ.get(GHA, False):
+                print("Inside a Github Action on a Mac Runner")
                 # We are inside a Github Runner on a Mac.
                 comp_opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
                 comp_opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
@@ -420,8 +421,12 @@ class BuildExt(build_ext):
                 comp_opts.append("-lopenblas")  # Potentially unused?
 
                 # TODO(@motiwari): include armadillo here?
+
+                # export LDFLAGS = "-L/opt/homebrew/opt/libomp/lib"
+                # export CPPFLAGS = "-I/opt/homebrew/opt/libomp/include"
                 for package in ["libomp", "openblas"]:
                     package_prefix = get_package_prefix(package)
+                    print("Package prefix is ", package_prefix)
                     comp_opts.append("-I{}/include".format(package_prefix))
                     comp_opts.append("-L{}/lib".format(package_prefix))
         elif sys.platform != "win32":
