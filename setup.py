@@ -531,7 +531,7 @@ def main():
     if sys.platform == "darwin" and os.environ.get(GHA, False):
         # On Mac Github Runners, we should NOT include gomp or omp here
         # due to build errors.
-        libraries = ["armadillo", "omp", "openblas"]
+        libraries = ["armadillo", "openblas"]
     elif sys.platform == "win32":
         libraries = ["libopenblas"]
     else:
