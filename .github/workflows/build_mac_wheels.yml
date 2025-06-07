@@ -10,11 +10,11 @@ on:
 jobs:
   build_wheels_macos:
     name: Build wheels on macos-latest
-    runs-on: macos-latest
+    runs-on: macos-13
     strategy:
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install MacOS dependencies
         run: |
