@@ -357,7 +357,7 @@ def get_package_prefix(package=None):
             stderr=subprocess.PIPE,
             check=True,
         )
-        return result.stdout.strip()
+        return result.stdout.strip().decode()
     except subprocess.CalledProcessError as e:
         print("Error running brew:", e.stderr)
         return None
