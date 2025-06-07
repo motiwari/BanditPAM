@@ -429,11 +429,21 @@ class BuildExt(build_ext):
             comp_opts.append("-fopenmp")
 
         compiler_name = compiler_check()
-        if sys.platform != "win32":
+        if sys.platform == "darwin":
             if compiler_name == "clang":
                 link_opts.append("-lomp")
-            else:  # gcc
+            else:
                 link_opts.append("-lgomp")
+        elif sys.platform == "linux" or sys.platform == "linux2":
+            if compiler_name == "gcc":
+                link_opts.append("-lgomp")
+            else:
+                # Both clang and Apple's clang should use libomp
+                link_opts.append("-lomp")
+        else:
+            # On Windows
+            # TODO(@motiwari): Fix this
+            pass
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
@@ -531,7 +541,7 @@ def main():
     if sys.platform == "darwin" and os.environ.get(GHA, False):
         # On Mac Github Runners, we should NOT include gomp or omp here
         # due to build errors.
-        libraries = ["armadillo", "openblas"]
+        libraries = ["armadillo", "omp", "openblas"]
     elif sys.platform == "win32":
         libraries = ["libopenblas"]
     else:
