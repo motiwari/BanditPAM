@@ -407,12 +407,11 @@ class BuildExt(build_ext):
         comp_opts.append("-O3")
 
         if sys.platform == "darwin":
-            for package in ["armadillo", "openblas"]:
+            for package in ["armadillo", "libomp", "openblas"]:
                 package_prefix = get_package_prefix(package)
                 link_opts.append(f"-Wl,-rpath,{package_prefix}/lib")
 
             if os.environ.get(GHA, False):
-                print("Inside a Github Action on a Mac Runner")
                 # We are inside a Github Runner on a Mac.
                 comp_opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
                 comp_opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
@@ -422,8 +421,6 @@ class BuildExt(build_ext):
 
                 # TODO(@motiwari): include armadillo here?
 
-                # export LDFLAGS = "-L/opt/homebrew/opt/libomp/lib"
-                # export CPPFLAGS = "-I/opt/homebrew/opt/libomp/include"
                 for package in ["libomp", "openblas"]:
                     package_prefix = get_package_prefix(package)
                     comp_opts.append("-I{}/include".format(package_prefix))
@@ -550,7 +547,6 @@ def main():
         else:  # gcc
             libraries = ["armadillo", "gomp", "stdc++"]
 
-    cpp_args = None
     if sys.platform == "win32":
         cpp_args = ["/std:c++17"]
         library_dirs = [
@@ -611,7 +607,7 @@ def main():
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
             extra_compile_args=cpp_args,
-            extra_link_args=[],  # Wrong pass (BuildExt sets extra_link_args)
+            extra_link_args=["-vvvv"],  # Wrong pass (BuildExt sets extra_link_args)
         )
     ]
 
