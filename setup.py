@@ -356,7 +356,6 @@ def get_package_prefix(package=None):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             check=True,
-            text=True,  # ensures output is returned as a string
         )
         return result.stdout.strip()
     except subprocess.CalledProcessError as e:
@@ -400,28 +399,33 @@ class BuildExt(build_ext):
     def build_extensions(self):
         ct = self.compiler.compiler_type
 
-        opts = self.c_opts.get(ct, [])
+        comp_opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
 
         # TODO(@motiwari): on Windows, these flags are unrecognized
-        opts.append(cpp_flag(self.compiler))
-        opts.append("-O3")
-        if sys.platform == "darwin" and os.environ.get(GHA, False):
-            # We are inside a Github Runner on a Mac.
-            opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
-            opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
+        comp_opts.append(cpp_flag(self.compiler))
+        comp_opts.append("-O3")
 
-            opts.append("-lomp")  # Potentially unused?
-            opts.append("-lopenblas")  # Potentially unused?
-
-            # TODO(@motiwari): include armadillo here?
-            for package in ["libomp", "openblas"]:
+        if sys.platform == "darwin":
+            for package in ["armadillo", "openblas"]:
                 package_prefix = get_package_prefix(package)
-                opts.append("-I{}/include".format(package_prefix))
-                opts.append("-L{}/lib".format(package_prefix))
+                link_opts.append(f"-Wl,-rpath,{package_prefix}/lib")
 
+            if os.environ.get(GHA, False):
+                # We are inside a Github Runner on a Mac.
+                comp_opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
+                comp_opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
+
+                comp_opts.append("-lomp")  # Potentially unused?
+                comp_opts.append("-lopenblas")  # Potentially unused?
+
+                # TODO(@motiwari): include armadillo here?
+                for package in ["libomp", "openblas"]:
+                    package_prefix = get_package_prefix(package)
+                    comp_opts.append("-I{}/include".format(package_prefix))
+                    comp_opts.append("-L{}/lib".format(package_prefix))
         elif sys.platform != "win32":
-            opts.append("-fopenmp")
+            comp_opts.append("-fopenmp")
 
         compiler_name = compiler_check()
         if sys.platform != "win32":
@@ -432,7 +436,7 @@ class BuildExt(build_ext):
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
-                opts.append("-fvisibility=hidden")
+                comp_opts.append("-fvisibility=hidden")
 
         for ext in self.extensions:
             ext.define_macros = [
@@ -441,7 +445,7 @@ class BuildExt(build_ext):
                     '"{}"'.format(self.distribution.get_version()),
                 )
             ]
-            ext.extra_compile_args = opts
+            ext.extra_compile_args = comp_opts
             ext.extra_compile_args += []  # []["-arch", "x86_64"]
 
             ext.extra_link_args = link_opts
