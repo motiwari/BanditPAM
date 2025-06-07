@@ -430,10 +430,10 @@ class BuildExt(build_ext):
 
         compiler_name = compiler_check()
         if sys.platform == "darwin":
-            if compiler_name == "clang":
-                link_opts.append("-lomp")
-            else:
+            if compiler_name == "gcc":
                 link_opts.append("-lgomp")
+            else:
+                link_opts.append("-lomp")
         elif sys.platform == "linux" or sys.platform == "linux2":
             if compiler_name == "gcc":
                 link_opts.append("-lgomp")
