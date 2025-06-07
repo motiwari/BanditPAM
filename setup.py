@@ -509,8 +509,9 @@ def main():
                 "armadillo_bits",
             ),
         ]
-        libomp_prefix = get_package_prefix("libomp")
-        include_dirs.append(os.path.join(libomp_prefix, "include"))
+        for package in ["armadillo", "openblas", "libomp"]:
+            package_prefix = get_package_prefix(package)
+            include_dirs.append(os.path.join(package_prefix, "include"))
     elif sys.platform == "win32":  # WIN32
         include_dirs = [
             get_pybind_include(),
@@ -554,8 +555,10 @@ def main():
             os.path.join("/", "usr", "local", "lib"),
         ]
         if sys.platform == "darwin":
-            libomp_prefix = get_package_prefix("libomp")
-            library_dirs.append(os.path.join(libomp_prefix, "lib"))
+            for package in ["armadillo", "libomp", "openblas"]:
+                package_prefix = get_package_prefix(package)
+                library_dirs.append(os.path.join(package_prefix, "lib"))
+
             if platform.processor() == "arm":  # M1
                 library_dirs.append(
                     os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
