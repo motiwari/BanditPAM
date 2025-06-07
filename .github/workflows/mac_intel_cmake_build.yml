@@ -23,8 +23,8 @@ jobs:
           cd ~
           git clone https://gitlab.com/conradsnicta/armadillo-code.git
           cd armadillo-code
-          sudo cmake .
-          sudo make install
+          cmake .
+          make install
 
       - name: Install carma
         run: |
@@ -33,8 +33,8 @@ jobs:
           cd carma
           mkdir build
           cd build
-          sudo cmake -DCARMA_INSTALL_LIB=ON ..
-          sudo cmake --build . --config Release --target install
+          cmake -DCARMA_INSTALL_LIB=ON ..
+          cmake --build . --config Release --target install
           cd ~
 
       - name: Downloading data files for tests
@@ -65,8 +65,8 @@ jobs:
           cd BanditPAM
           mkdir build
           cd build
-          sudo CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake ..
-          sudo make
+          CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake ..
+          make
           src/BanditPAM -f ../data/MNIST_1k.csv -k 5 -l L2
         env:
           CPLUS_INCLUDE_PATH: /usr/local/include/carma:/usr/local/Cellar/libomp/15.0.2/include:/usr/local/Cellar/libomp/15.0.7/include
