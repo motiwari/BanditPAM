@@ -426,7 +426,6 @@ class BuildExt(build_ext):
                 # export CPPFLAGS = "-I/opt/homebrew/opt/libomp/include"
                 for package in ["libomp", "openblas"]:
                     package_prefix = get_package_prefix(package)
-                    print("Package prefix is ", package_prefix)
                     comp_opts.append("-I{}/include".format(package_prefix))
                     comp_opts.append("-L{}/lib".format(package_prefix))
         elif sys.platform != "win32":
