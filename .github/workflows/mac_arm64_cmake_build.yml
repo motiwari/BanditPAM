@@ -1,4 +1,4 @@
-name: Run CMake build on MacOS
+name: Mac ARM64 - Run CMake Build and Tests
 on:
   push:
     branches:  # prevents running on tag push
@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       # On the MacOS machine, when installing from source,
       # we use LLVM Clang
@@ -55,17 +55,17 @@ jobs:
       # TODO(@motiwari): Clean this environment variables up
       - name: Verify that the C++ executable compiles and runs
         run : |
-          echo 'export PATH="/usr/local/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
+          echo 'export PATH="/usr/local/opt/llvm/bin:/opt/homebrew/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
           source /Users/runner/.bash_profile
           export LDFLAGS="-L/usr/local/opt/llvm/lib, -L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++"
           export CPPFLAGS="-I/usr/local/opt/llvm/include"
           export DYLD_LIBRARY_PATH=/usr/local/opt/libomp/lib:/usr/local/opt/libomp/include
-          export CC=/usr/local/opt/llvm/bin/clang
-          export CXX=/usr/local/opt/llvm/bin/clang++
+          export CC=/opt/homebrew/opt/llvm/bin/clang
+          export CXX=/opt/homebrew/opt/llvm/bin/clang++
           cd BanditPAM
           mkdir build
           cd build
-          sudo CC=/usr/local/opt/llvm/bin/clang CXX=/usr/local/opt/llvm/bin/clang++ cmake ..
+          sudo CC=/opt/homebrew/opt/llvm/bin/clang CXX=/opt/homebrew/opt/llvm/bin/clang++ cmake ..
           sudo make
           src/BanditPAM -f ../data/MNIST_1k.csv -k 5 -l L2
         env:

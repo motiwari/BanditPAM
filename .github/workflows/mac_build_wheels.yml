@@ -10,25 +10,33 @@ on:
 jobs:
   build_wheels_macos:
     name: Build wheels on macos-latest
-    runs-on: macos-latest
+    runs-on: macos-13
     strategy:
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
+      # Force compilation with LLVM's clang because Apple clang doesn't work well
       - name: Install MacOS dependencies
         run: |
-          brew install libomp armadillo
+          brew install libomp armadillo llvm
 
       # Note: CIBW only supports CPython 3.8 and newer for universal2 and arm64 wheels
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.0
+        uses: pypa/cibuildwheel@v2.23.3
         env:
+          MACOSX_DEPLOYMENT_TARGET: 13
           CIBW_ARCHS_MACOS: x86_64 arm64 universal2
-          CIBW_BUILD: cp*
+          CIBW_BUILD: cp310* cp311* cp312* cp313*
           CIBW_BUILD_VERBOSITY: 3
+          CC: /usr/local/opt/llvm/bin/clang
+          CXX: /usr/local/opt/llvm/bin/clang++
+          CMAKE_C_COMPILER: /usr/local/opt/llvm/bin/clang
+          CMAKE_CXX_COMPILER: /usr/local/opt/llvm/bin/clang++
+          LDFLAGS: -L/usr/local/opt/llvm/lib
+          CPPFLAGS: -I/usr/local/opt/llvm/include
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
 
@@ -36,14 +44,14 @@ jobs:
     needs: [build_wheels_macos]
     runs-on: ubuntu-latest # Can only upload from Linux containers
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: artifact
           path: dist
 
       - name: Upload to TestPyPI on PR update
         if: ${{ github.event_name == 'pull_request' }}
-        uses: pypa/gh-action-pypi-publish@v1.4.2
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.TEST_PYPI_APIKEY }}
@@ -51,7 +59,7 @@ jobs:
 
       - name: Upload to PyPI on published release
         if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-        uses: pypa/gh-action-pypi-publish@v1.4.2
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_APIKEY }}
