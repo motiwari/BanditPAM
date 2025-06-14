@@ -447,7 +447,7 @@ class BuildExt(build_ext):
             comp_opts.append("-fopenmp")
 
         compiler_name = compiler_check()
-        if sys.platform == "darwin":
+        # if sys.platform == "darwin":
             # if compiler_name == "gcc":
             #      link_opts.append("-lomp")
             # else:
