@@ -440,9 +440,10 @@ class BuildExt(build_ext):
                     package_prefix = get_package_prefix(package)
                     lib_static = os.path.join(package_prefix, "lib", package + ".a")
                     link_opts.append(lib_static)
-                    link_opts += ["lpthread", "-lm"]
+                    link_opts += ["-lm"]
                     comp_opts.append("-I{}/include".format(package_prefix))
                     comp_opts.append("-L{}/lib".format(package_prefix))
+        elif sys.platform == "linux":
         elif sys.platform != "win32":
             comp_opts.append("-fopenmp")
 
@@ -454,10 +455,10 @@ class BuildExt(build_ext):
             #     link_opts.append("-lomp")
         if sys.platform == "linux" or sys.platform == "linux2":
             if compiler_name == "gcc":
-                link_opts.append("-lgomp")
+                link_opts += ["-lgomp", "-lm", "-lpthread"]
             else:
                 # Both clang and Apple's clang should use libomp
-                link_opts.append("-lomp")
+                link_opts += ["-lomp", "-lm", "-lpthread"]
         else:
             # On Windows
             # TODO(@motiwari): Fix this
