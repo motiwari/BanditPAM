@@ -436,14 +436,15 @@ class BuildExt(build_ext):
 
                 # TODO(@motiwari): include armadillo here?
 
+                link_opts += ["-lm"]
                 for package in ["libomp"]:
                     package_prefix = get_package_prefix(package)
                     lib_static = os.path.join(package_prefix, "lib", package + ".a")
                     link_opts.append(lib_static)
-                    link_opts += ["-lm"]
                     comp_opts.append("-I{}/include".format(package_prefix))
                     comp_opts.append("-L{}/lib".format(package_prefix))
         elif sys.platform == "linux":
+            link_opts += ["-lm", "-lpthread"]
         elif sys.platform != "win32":
             comp_opts.append("-fopenmp")
 
