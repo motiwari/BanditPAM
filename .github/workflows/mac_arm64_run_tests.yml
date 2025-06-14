@@ -7,6 +7,13 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    env:
+      CC: /opt/homebrew/opt/llvm/bin/clang
+      CXX: /opt/homebrew/opt/llvm/bin/clang++
+      CMAKE_C_COMPILER: /opt/homebrew/opt/llvm/bin/clang
+      CMAKE_CXX_COMPILER: /opt/homebrew/opt/llvm/bin/clang++
+      LDFLAGS: -L/opt/homebrew/opt/llvm/lib
+      CPPFLAGS: -I/opt/homebrew/opt/llvm/include
     strategy:
       fail-fast: false
       matrix:

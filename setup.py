@@ -1,4 +1,3 @@
-import platform
 import sys
 import os
 import tempfile
@@ -9,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "5.0.0"
+__version__ = "5.0.1"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = "GITHUB_ACTIONS"
@@ -54,8 +53,10 @@ def compiler_check():
         # Note: On Mac, we should always use LLVM clang
         # because Apple's clang does not support OpenMP
         # and we need OpenMP to parallelize the code
-        # Note: distutils.sysconfig.get_config_vars() works for Python 3.11+, but we need to use os.environ for Python 3.10
-        if "clang" not in distutils.sysconfig.get_config_vars()["CC"] and "clang" not in dict(os.environ)["CC"]:
+        # NOTE: distutils.sysconfig.get_config_vars() works for Python 3.11+,
+        #  but we need to use os.environ for Python 3.10
+        if "clang" not in distutils.sysconfig.get_config_vars()["CC"] and \
+                "clang" not in dict(os.environ)["CC"]:
             raise Exception(
                 "Need to install LLVM clang! \
                 Please run `brew install llvm`"
@@ -168,7 +169,7 @@ def install_check_mac():
     # Make sure numpy is installed
     check_numpy_installation()
 
-    # Check that libomp, armadillo, and openblas are installed
+    # Check that libomp, armadillo are installed
     check_brew_package("libomp")
     check_brew_package("armadillo")
     check_brew_package("openblas")
@@ -181,7 +182,7 @@ def install_check_mac():
     # LLVM clang to support multithreading via OpenMP
     # TODO(@motiwari): Check if the arm64 wheels are not multithreaded
     # TODO(@motiwari): Check if the universal2 wheels are not multithreaded
-    # when installed on Intel Mac
+    #  when installed on Intel Macs
     if not os.environ.get(GHA, False):
         # If we are NOT running inside a Github action,
         # check that LLVM clang is installed
@@ -409,7 +410,7 @@ class BuildExt(build_ext):
     elif sys.platform == "win32":
         c_opts["msvc"] += ["/fsanitize=address"]
 
-    def build_extensions(self):
+    def build_extensions(self):  # noqa: C901
         ct = self.compiler.compiler_type
 
         comp_opts = self.c_opts.get(ct, [])
@@ -420,21 +421,22 @@ class BuildExt(build_ext):
         comp_opts.append("-O3")
 
         if sys.platform == "darwin":
-            for package in ["armadillo", "libomp", "openblas"]:
+            for package in ["armadillo", "libomp"]:
                 package_prefix = get_package_prefix(package)
                 link_opts.append(f"-Wl,-rpath,{package_prefix}/lib")
 
             if os.environ.get(GHA, False):
                 # We are inside a Github Runner on a Mac.
-                comp_opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
-                comp_opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
+
+                # NOTE: The next two lines NEED TO BE TOGETHER
+                comp_opts.append("-Xpreprocessor")
+                comp_opts.append("-fopenmp")
 
                 comp_opts.append("-lomp")  # Potentially unused?
-                comp_opts.append("-lopenblas")  # Potentially unused?
 
                 # TODO(@motiwari): include armadillo here?
 
-                for package in ["libomp", "openblas"]:
+                for package in ["libomp"]:
                     package_prefix = get_package_prefix(package)
                     comp_opts.append("-I{}/include".format(package_prefix))
                     comp_opts.append("-L{}/lib".format(package_prefix))
@@ -503,7 +505,6 @@ def main():
             os.path.join("headers", "carma", "include", "carma"),
             os.path.join("headers", "carma", "include", "carma", "carma"),
             # To include carma when the BanditPAM repo hasnt been initialized
-            os.path.join("/", "usr", "local", "include"),
             os.path.join("/", "usr", "local", "include", "carma"),
             os.path.join(
                 "/", "usr", "local", "include", "carma", "carma_bits"
@@ -512,11 +513,6 @@ def main():
             # Currently, we should never be building from source on an M1 Mac,
             # Only cross-compiling from an Intel Mac
             # TODO(@motiwari): Remove extraneous directories
-            os.path.join("/", "opt", "homebrew"),
-            os.path.join("/", "opt", "homebrew", "bin"),
-            os.path.join("/", "opt", "homebrew", "include"),
-            os.path.join("/", "opt", "homebrew", "lib"),
-            os.path.join("/", "opt", "homebrew", "opt"),
             os.path.join("/", "opt", "homebrew", "opt", "armadillo"),
             os.path.join("/", "opt", "homebrew", "opt", "openblas"),
             os.path.join(
@@ -532,7 +528,7 @@ def main():
                 "armadillo_bits",
             ),
         ]
-        for package in ["armadillo", "openblas", "libomp"]:
+        for package in ["armadillo", "libomp"]:
             package_prefix = get_package_prefix(package)
             include_dirs.append(os.path.join(package_prefix, "include"))
     elif sys.platform == "win32":  # WIN32
@@ -552,14 +548,12 @@ def main():
 
     compiler_name = compiler_check()
     if sys.platform == "darwin" and os.environ.get(GHA, False):
-        # On Mac Github Runners, we should NOT include gomp or omp here
-        # due to build errors.
-        libraries = ["armadillo", "openblas"]
+        libraries = ["armadillo", "omp"]
     elif sys.platform == "win32":
         libraries = ["libopenblas"]
     else:
         if compiler_name == "gcc":
-            # TODO(@motiwari): Perhaps change this to c++ when we also update cpp_args below
+            # TODO(@motiwari): Change to c++ when we update cpp_args below?
             libraries = ["armadillo", "gomp", "stdc++"]
         else:  # clang
             libraries = ["armadillo", "omp", "stdc++"]
@@ -573,25 +567,10 @@ def main():
     else:
         cpp_args = [
             "-static-libstdc++"
-        ]  # TODO(@motiwari): Modify this based on gcc or clang
+        ]  # TODO(@motiwari): Modify this based on GCC or Clang
         library_dirs = [
             os.path.join("/", "usr", "local", "lib"),
         ]
-        if sys.platform == "darwin":
-            for package in ["armadillo", "libomp", "openblas"]:
-                package_prefix = get_package_prefix(package)
-                library_dirs.append(os.path.join(package_prefix, "lib"))
-
-            if platform.processor() == "arm":  # M1
-                library_dirs.append(
-                    os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
-                )
-                library_dirs.append(
-                    os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib")
-                )
-                library_dirs.append(
-                    os.path.join("/", "opt", "homebrew", "opt", "openblas", "lib")
-                )
 
     ext_modules = [
         Extension(
@@ -623,7 +602,8 @@ def main():
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
             extra_compile_args=cpp_args,
-            extra_link_args=["-vvvv"],  # Wrong pass (BuildExt sets extra_link_args)
+            # Not passed? (BuildExt sets extra_link_args)
+            extra_link_args=["-vvvv"],
         )
     ]
 
@@ -652,8 +632,6 @@ def main():
         maintainer="Mo Tiwari",
         author_email="motiwari@stanford.edu",
         url="https://github.com/motiwari/BanditPAM",
-        description="BanditPAM: A state-of-the-art, \
-            high-performance k-medoids algorithm.",
         long_description=long_description,
         ext_modules=ext_modules,
         setup_requires=["pybind11>=2.5.0", "numpy>=1.18"],
@@ -661,11 +639,6 @@ def main():
         include_package_data=True,
         cmdclass={"build_ext": BuildExt},
         zip_safe=False,
-        classifiers=[
-            "Programming Language :: Python :: 3",
-            "License :: OSI Approved :: MIT License",
-            "Operating System :: OS Independent",
-        ],
         headers=[
             os.path.join("headers", "algorithms", "kmedoids_algorithm.hpp"),
             os.path.join("headers", "algorithms", "banditpam.hpp"),
