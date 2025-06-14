@@ -432,12 +432,15 @@ class BuildExt(build_ext):
                 comp_opts.append("-Xpreprocessor")
                 comp_opts.append("-fopenmp")
 
-                comp_opts.append("-lomp")  # Potentially unused?
+                # comp_opts.append("-lomp")  # Potentially unused?
 
                 # TODO(@motiwari): include armadillo here?
 
                 for package in ["libomp"]:
                     package_prefix = get_package_prefix(package)
+                    lib_static = os.path.join(package_prefix, "lib", package + ".a")
+                    link_opts.append(lib_static)
+                    link_opts += ["lpthread", "-lm"]
                     comp_opts.append("-I{}/include".format(package_prefix))
                     comp_opts.append("-L{}/lib".format(package_prefix))
         elif sys.platform != "win32":
@@ -445,10 +448,10 @@ class BuildExt(build_ext):
 
         compiler_name = compiler_check()
         if sys.platform == "darwin":
-            if compiler_name == "gcc":
-                link_opts.append("-lomp")
-            else:
-                link_opts.append("-lomp")
+            # if compiler_name == "gcc":
+            #      link_opts.append("-lomp")
+            # else:
+            #     link_opts.append("-lomp")
         elif sys.platform == "linux" or sys.platform == "linux2":
             if compiler_name == "gcc":
                 link_opts.append("-lgomp")
