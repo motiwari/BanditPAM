@@ -20,21 +20,23 @@ jobs:
       - name: Install MacOS dependencies
         run: |
           brew install libomp armadillo llvm
+          brew link llvm --force
+
 
       # Note: CIBW only supports CPython 3.8 and newer for universal2 and arm64 wheels
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.23.3
         env:
-          MACOSX_DEPLOYMENT_TARGET: 13
-          CIBW_ARCHS_MACOS: x86_64 arm64 universal2
-          CIBW_BUILD: cp310* cp311* cp312* cp313*
-          CIBW_BUILD_VERBOSITY: 3
-          CC: /usr/local/opt/llvm/bin/clang
-          CXX: /usr/local/opt/llvm/bin/clang++
-          CMAKE_C_COMPILER: /usr/local/opt/llvm/bin/clang
-          CMAKE_CXX_COMPILER: /usr/local/opt/llvm/bin/clang++
-          LDFLAGS: -L/usr/local/opt/llvm/lib
-          CPPFLAGS: -I/usr/local/opt/llvm/include
+          MACOSX_DEPLOYMENT_TARGET: "13"
+          CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
+          CIBW_BUILD: "cp310* cp311* cp312* cp313*"
+          CIBW_BUILD_VERBOSITY: "3"
+          CC: "/usr/local/opt/llvm/bin/clang"
+          CXX: "/usr/local/opt/llvm/bin/clang++"
+          CMAKE_C_COMPILER: "/usr/local/opt/llvm/bin/clang"
+          CMAKE_CXX_COMPILER: "/usr/local/opt/llvm/bin/clang++"
+          LDFLAGS: "-L/usr/local/opt/llvm/lib -L/usr/local/opt/libomp/lib"
+          CPPFLAGS: "-I/usr/local/opt/llvm/include -I/usr/local/opt/libomp/include"
 
       - uses: actions/upload-artifact@v4
         with:
