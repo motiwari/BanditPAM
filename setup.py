@@ -452,7 +452,7 @@ class BuildExt(build_ext):
             #      link_opts.append("-lomp")
             # else:
             #     link_opts.append("-lomp")
-        elif sys.platform == "linux" or sys.platform == "linux2":
+        if sys.platform == "linux" or sys.platform == "linux2":
             if compiler_name == "gcc":
                 link_opts.append("-lgomp")
             else:
