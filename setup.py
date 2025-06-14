@@ -567,7 +567,7 @@ def main():
     else:
         cpp_args = [
             "-static-libstdc++"
-        ]  # TODO(@motiwari): Modify this based on gcc or clang
+        ]  # TODO(@motiwari): Modify this based on GCC or Clang
         library_dirs = [
             os.path.join("/", "usr", "local", "lib"),
         ]
