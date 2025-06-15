@@ -1,6 +1,6 @@
 [project]
 license = {text = "MIT"}
-version = "6.0.0"
+version = "6.0.1"
 name = "banditpam"
 requires-python = ">= 3.10"
 authors = [
@@ -26,8 +26,6 @@ before-all = [
 
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "universal2", "arm64"]
-build = ["*cp311*arm64*"]
-skip = ["*x86_64*"]
 
 # Get dependencies
 before-all = [

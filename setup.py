@@ -8,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "5.0.1"
+__version__ = "6.0.1"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = "GITHUB_ACTIONS"
@@ -421,7 +421,7 @@ class BuildExt(build_ext):
         comp_opts.append("-O3")
 
         if sys.platform == "darwin":
-            for package in ["armadillo", "libomp"]:
+            for package in ["armadillo"]:  # "libomp"
                 package_prefix = get_package_prefix(package)
                 link_opts.append(f"-Wl,-rpath,{package_prefix}/lib")
 
@@ -432,29 +432,40 @@ class BuildExt(build_ext):
                 comp_opts.append("-Xpreprocessor")
                 comp_opts.append("-fopenmp")
 
-                comp_opts.append("-lomp")  # Potentially unused?
+                # comp_opts.append("-lomp")  # Potentially unused?
 
                 # TODO(@motiwari): include armadillo here?
 
+                libomp_prefix = get_package_prefix("libomp")
+                libomp_static = os.path.join(libomp_prefix, "lib", "libomp.a")
+
+                comp_opts += [f"-I{os.path.join(libomp_prefix, 'include')}"]
+                link_opts += [libomp_static, "-lm"]
+                link_opts.append("-Wl,-force_load," + libomp_static)
+
+                link_opts += ["-lm"]
                 for package in ["libomp"]:
                     package_prefix = get_package_prefix(package)
                     comp_opts.append("-I{}/include".format(package_prefix))
-                    comp_opts.append("-L{}/lib".format(package_prefix))
+                    comp_opts.append("-L{}/lib".format(package_prefix))  # Remove?
+                    link_opts.append("-L{}/lib".format(package_prefix))
+        elif sys.platform == "linux":
+            link_opts += ["-lm", "-lpthread"]
         elif sys.platform != "win32":
             comp_opts.append("-fopenmp")
 
         compiler_name = compiler_check()
-        if sys.platform == "darwin":
+        # if sys.platform == "darwin":
+            # if compiler_name == "gcc":
+            #      link_opts.append("-lomp")
+            # else:
+            #     link_opts.append("-lomp")
+        if sys.platform == "linux" or sys.platform == "linux2":
             if compiler_name == "gcc":
-                link_opts.append("-lomp")
-            else:
-                link_opts.append("-lomp")
-        elif sys.platform == "linux" or sys.platform == "linux2":
-            if compiler_name == "gcc":
-                link_opts.append("-lgomp")
+                link_opts += ["-lgomp", "-lm", "-lpthread"]
             else:
                 # Both clang and Apple's clang should use libomp
-                link_opts.append("-lomp")
+                link_opts += ["-lomp", "-lm", "-lpthread"]
         else:
             # On Windows
             # TODO(@motiwari): Fix this
@@ -477,7 +488,8 @@ class BuildExt(build_ext):
             ext.extra_link_args = link_opts
             ext.extra_link_args += [
                 "-v",
-            ]  # "-arch", "x86_64"]
+            ] # "-arch", "x86_64"]
+            ext.extra_link_args =  link_opts
 
         build_ext.build_extensions(self)
 
@@ -548,7 +560,9 @@ def main():
 
     compiler_name = compiler_check()
     if sys.platform == "darwin" and os.environ.get(GHA, False):
-        libraries = ["armadillo", "omp"]
+        # Do NOT link omp here because it'll add an -lomp flag to dynamically link it
+        #  (and we want to statically link it)
+        libraries = ["armadillo"]
     elif sys.platform == "win32":
         libraries = ["libopenblas"]
     else:
