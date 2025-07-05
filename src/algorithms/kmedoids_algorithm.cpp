@@ -216,21 +216,30 @@ void KMedoids::setLossFn(std::string loss) {
   std::for_each(loss.begin(), loss.end(), [](char &c) {
     c = ::tolower(c);  // TODO(@motiwari): Put something before ::
   });
-  // TODO(@motiwari): Change this to a switch
+  
+  // Check for L-p norms first
   if (std::regex_match(loss, std::regex("l\\d*"))) {
     lossFn = &KMedoids::LP;
     lp = stoi(loss.substr(1));
-  } else if (loss == "manhattan") {
-    lossFn = &KMedoids::manhattan;
-  } else if (loss == "cos" || loss == "cosine") {
-    lossFn = &KMedoids::cos;
-  } else if (loss == "inf") {
-    lossFn = &KMedoids::LINF;
-  } else if (loss == "euclidean") {
-    lossFn = &KMedoids::LP;
-    lp = 2;
   } else {
-    throw std::invalid_argument("Error: unrecognized loss function");
+    switch (loss) {
+      case "manhattan":
+        lossFn = &KMedoids::manhattan;
+        break;
+      case "cos":
+      case "cosine":
+        lossFn = &KMedoids::cos;
+        break;
+      case "inf":
+        lossFn = &KMedoids::LINF;
+        break;
+      case "euclidean":
+        lossFn = &KMedoids::LP;
+        lp = 2;
+        break;
+      default:
+        throw std::invalid_argument("Error: unrecognized loss function");
+    }
   }
 }
 
