@@ -18,6 +18,12 @@
 #include "banditpam_orig.hpp"
 
 namespace km {
+enum class AlgorithmStep {
+  MISC,
+  BUILD,
+  SWAP
+};
+
 // NOTE: The order of arguments in this constructor must match that of the
 // arguments in kmedoids_pywrapper.cpp, otherwise undefined behavior can
 // result (variables being initialized with others' values)
@@ -286,9 +292,8 @@ void KMedoids::calcBestDistancesSwap(
     float best = std::numeric_limits<float>::infinity();
     float second = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < medoidIndices->n_cols; k++) {
-      // 0 for MISC
       float cost =
-        KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k), 0);
+        KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k), AlgorithmStep::MISC);
       if (cost < best) {
         (*assignments)(i) = k;
         second = best;
@@ -319,7 +324,7 @@ float KMedoids::calcLoss(
     for (size_t k = 0; k < nMedoids; k++) {
       float currCost =
         KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k),
-                             0);  // 0 for Misc
+                             AlgorithmStep::MISC);
       if (currCost < cost) {
         cost = currCost;
       }
@@ -334,17 +339,16 @@ float KMedoids::calcLoss(
 float KMedoids::cachedLoss(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-  const size_t i, const size_t j, const size_t category,
-  const bool useCacheFunctionOverride) {
-  // TODO(@motiwari): Change category to an enum
-  if (category == 0) {  // MISC
+  const size_t i, const size_t j, AlgorithmStep step,
+  const bool useCacheFunctionOverride = true) {
+  if (step == AlgorithmStep::MISC) {
     numMiscDistanceComputations++;
-  } else if (category == 1) {  // BUILD
+  } else if (step == AlgorithmStep::BUILD) {
     numBuildDistanceComputations++;
-  } else if (category == 2) {  // SWAP
+  } else if (step == AlgorithmStep::SWAP) {
     numSwapDistanceComputations++;
   } else {
-    // TODO(@motiwari): Throw exception
+    throw std::invalid_argument("Unknown AlgorithmStep in KMedoids::cachedLoss");
   }
 
   if (this->useDistMat) {
