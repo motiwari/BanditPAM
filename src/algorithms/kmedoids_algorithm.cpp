@@ -209,24 +209,6 @@ size_t KMedoids::getTotalSwapTime() const { return totalSwapTime; }
 
 float KMedoids::getTimePerSwap() const { return totalSwapTime / steps; }
 
-LossType KMedoids::getLossType(const std::string &loss) const {
-  if (loss == "manhattan") {
-    return LossType::MANHATTAN;
-  } else if (loss == "cos") {
-    return LossType::COS;
-  } else if (loss == "cosine") {
-    return LossType::COSINE;
-  } else if (loss == "inf") {
-    return LossType::INF;
-  } else if (loss == "euclidean") {
-    return LossType::EUCLIDEAN;
-  } else if (std::regex_match(loss, std::regex("l\\d*"))) {
-    return LossType::LP_NORM;
-  } else {
-    return LossType::UNKNOWN;
-  }
-}
-
 void KMedoids::setLossFn(std::string loss) {
   // TODO(@motiwari): On setting this, clear the
   //  cache and the average loss,
