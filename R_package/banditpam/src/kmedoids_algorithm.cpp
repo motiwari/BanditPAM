@@ -292,18 +292,17 @@ void KMedoids::setLossFn(std::string loss) {
   }
 }
 
-std::string KMedoids::getLossFn() const {
-  // TODO(@motiwari): make the strings constants
+LossType KMedoids::getLossFn() const {
   if (lossFn == &KMedoids::manhattan) {
-      return "manhattan";
+    return LossType::MANHATTAN;
   } else if (lossFn == &KMedoids::cos) {
-    return "cosine";
+    return LossType::COS;
   } else if (lossFn == &KMedoids::LINF) {
-    return "L-infinity";
+    return LossType::INF;
   } else if (lossFn == &KMedoids::LP) {
-    return "L" + std::to_string(lp);
+    return LossType::LP_NORM;
   } else {
-    throw std::invalid_argument("Error: Loss Function Undefined!");
+    return LossType::UNKNOWN;
   }
 }
 
@@ -321,9 +320,8 @@ void KMedoids::calcBestDistancesSwap(
     banditpam_float best = std::numeric_limits<banditpam_float>::infinity();
     banditpam_float second = std::numeric_limits<banditpam_float>::infinity();
     for (size_t k = 0; k < medoidIndices->n_cols; k++) {
-      // 0 for MISC
       banditpam_float cost =
-          KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k), 0);
+          KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k), AlgorithmStep::MISC);
       if (cost < best) {
         (*assignments)(i) = k;
         second = best;
@@ -357,7 +355,7 @@ banditpam_float KMedoids::calcLoss(
         distMat,
         i,
         (*medoidIndices)(k),
-        0);  // 0 for Misc
+        AlgorithmStep::MISC);
       if (currCost < cost) {
         cost = currCost;
       }
@@ -374,18 +372,18 @@ banditpam_float KMedoids::cachedLoss(
   std::optional<std::reference_wrapper<const arma_mat>> distMat,
   const size_t i,
   const size_t j,
-  const size_t category,
+  const AlgorithmStep step,
   const bool useCacheFunctionOverride
   ) {
     // TODO(@motiwari): Change category to an enum
-    if (category == 0) {  // MISC
+    if (step == AlgorithmStep::MISC) {
         numMiscDistanceComputations++;
-    } else if (category == 1) {  // BUILD
+    } else if (step == AlgorithmStep::BUILD) {
         numBuildDistanceComputations++;
-    } else if (category == 2) {  // SWAP
+    } else if (step == AlgorithmStep::SWAP) {
         numSwapDistanceComputations++;
     } else {
-        // TODO(@motiwari): Throw exception
+    throw std::invalid_argument("Unknown AlgorithmStep in KMedoids::cachedLoss");
     }
 
   if (this->useDistMat) {

@@ -85,9 +85,8 @@ arma_rowvec BanditPAM_orig::buildSigma(
   #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
-      // 0 for MISC
       banditpam_float cost =
-          KMedoids::cachedLoss(data, distMat, i, referencePoints(j), 0);
+          KMedoids::cachedLoss(data, distMat, i, referencePoints(j), AlgorithmStep::MISC);
       if (useAbsolute) {
         sample(j) = cost;
       } else {
@@ -140,7 +139,7 @@ arma_rowvec BanditPAM_orig::buildTarget(
               distMat,
               (*target)(i),
               referencePoints(j),
-              1);  // 1 for BUILD
+              AlgorithmStep::BUILD);
       if (useAbsolute) {
         total += cost;
       } else {
@@ -246,7 +245,7 @@ void BanditPAM_orig::build(
         distMat,
         i,
         (*medoidIndices)(k),
-        0);  // 0 for MISC
+        AlgorithmStep::MISC);
       if (cost < bestDistances(i)) {
         bestDistances(i) = cost;
       }
@@ -293,7 +292,7 @@ arma_mat BanditPAM_orig::swapSigma(
     for (size_t j = 0; j < batchSize; j++) {
       // 0 for MISC when estimating sigma
       banditpam_float cost =
-          KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 0);
+          KMedoids::cachedLoss(data, distMat, n, referencePoints(j), AlgorithmStep::MISC);
 
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
@@ -358,9 +357,8 @@ arma_vec BanditPAM_orig::swapTarget(
     size_t k = (*targets)(i) % medoidIndices->n_cols;
     // calculate total loss for some subset of the data
     for (size_t j = 0; j < tmpBatchSize; j++) {
-      // 2 for SWAP
       banditpam_float cost =
-          KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 2);
+          KMedoids::cachedLoss(data, distMat, n, referencePoints(j), AlgorithmStep::SWAP);
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
           total += cost;

@@ -29,6 +29,15 @@ enum class LossType {
 };
 
 /**
+ * @brief Enum for different distance categories
+ */
+enum class AlgorithmStep {
+  MISC,
+  BUILD,
+  SWAP
+};
+
+/**
  * @brief KMedoids class. Creates a KMedoids object that can be used to find the
  * medoids for a particular set of input data.
  *
@@ -406,7 +415,7 @@ class KMedoids {
   float cachedLoss(
     const arma::fmat &data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    const size_t i, const size_t j, const size_t category,
+    const size_t i, const size_t j, AlgorithmStep step,
     const bool useCacheFunctionOverride = true);
 
   /// If using an L_p loss, the value of p

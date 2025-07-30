@@ -389,7 +389,7 @@ class KMedoids {
     std::optional<std::reference_wrapper<const arma_mat>> distMat,
     const size_t i,
     const size_t j,
-    const size_t category,
+    const AlgorithmStep step,
     const bool useCacheFunctionOverride = true);
 
   /// If using an L_p loss, the value of p
