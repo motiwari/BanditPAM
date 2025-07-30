@@ -11,8 +11,23 @@
 #include <functional>
 #include <unordered_map>
 #include <string>
+#include <regex>
 
 namespace km {
+
+/**
+ * @brief Enum for different loss function types
+ */
+enum class LossType {
+  MANHATTAN,
+  COS,
+  COSINE,
+  INF,
+  EUCLIDEAN,
+  LP_NORM,
+  UNKNOWN
+};
+
 /**
  * @brief KMedoids class. Creates a KMedoids object that can be used to find the
  * medoids for a particular set of input data.
@@ -454,6 +469,30 @@ class KMedoids {
    * @throws If the algorithm is invalid.
    */
   void checkAlgorithm(const std::string &algorithm) const;
+
+  /**
+   * @brief Converts a string loss function name to LossType enum
+   * 
+   * @param loss The loss function string
+   * @returns The corresponding LossType enum value
+   */
+  LossType getLossType(const std::string &loss) const {
+    if (loss == "manhattan") {
+      return LossType::MANHATTAN;
+    } else if (loss == "cos") {
+      return LossType::COS;
+    } else if (loss == "cosine") {
+      return LossType::COSINE;
+    } else if (loss == "inf") {
+      return LossType::INF;
+    } else if (loss == "euclidean") {
+      return LossType::EUCLIDEAN;
+    } else if (std::regex_match(loss, std::regex("l\\d*"))) {
+      return LossType::LP_NORM;
+    } else {
+      return LossType::UNKNOWN;
+    }
+  }
 
   /// Number of medoids to use -- the "k" in k-medoids
   size_t nMedoids;
