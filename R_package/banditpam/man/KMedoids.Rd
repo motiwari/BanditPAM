@@ -45,6 +45,7 @@ The loss function, "lp" (for p integer > 0) or one of "manhattan", "cosine", "in
 \item \href{#method-KMedoids-get_algorithm}{\code{KMedoids$get_algorithm()}}
 \item \href{#method-KMedoids-fit}{\code{KMedoids$fit()}}
 \item \href{#method-KMedoids-get_medoids_final}{\code{KMedoids$get_medoids_final()}}
+\item \href{#method-KMedoids-get_labels}{\code{KMedoids$get_labels()}}
 \item \href{#method-KMedoids-get_statistic}{\code{KMedoids$get_statistic()}}
 \item \href{#method-KMedoids-get_parallelize}{\code{KMedoids$get_parallelize()}}
 \item \href{#method-KMedoids-print}{\code{KMedoids$print()}}
@@ -133,6 +134,19 @@ Return the final medoid indices after clustering
 
 \subsection{Returns}{
 a vector indices of the final mediods
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-KMedoids-get_labels"></a>}}
+\if{latex}{\out{\hypertarget{method-KMedoids-get_labels}{}}}
+\subsection{Method \code{get_labels()}}{
+Return the cluster labels after clustering
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{KMedoids$get_labels()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+a vector of the cluster labels for the observations
 }
 }
 \if{html}{\out{<hr>}}

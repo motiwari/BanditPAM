@@ -1,6 +1,8 @@
 name: Linux - build source distribution and wheels
 on:
   push:
+    branches: # prevents running on tag push
+      - '**'
   pull_request:
   release:
     types:
@@ -10,7 +12,7 @@ jobs:
     name: Build source distribution (SDist)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -20,8 +22,7 @@ jobs:
       - name: Install Ubuntu dependencies
         run: |
           sudo apt update
-          sudo apt install -y build-essential checkinstall libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev 
-          sudo apt install -y clang-format cppcheck
+          sudo apt install -y build-essential checkinstall libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev clang-format cppcheck
 
       # See note above
       - name: Install Python dependencies 
@@ -33,8 +34,9 @@ jobs:
       - name: Build sdist
         run: python setup.py sdist --formats=gztar,zip
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
+          name: artifact-sdist
           path: |
             dist/*.tar.gz
             # dist/*.zip # We can only upload one sdist per release
@@ -44,35 +46,43 @@ jobs:
     name: Build wheels on ubuntu-latest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.0
+        uses: pypa/cibuildwheel@v2.23.2
         env:
+          CIBW_BUILD: cp310* cp311* cp312* cp313*
           CIBW_BUILD_VERBOSITY: 3
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           path: wheelhouse/*.whl
+          name: artifact-${{ matrix.python-version }}-${{ matrix.arch }}
 
   upload_pypi:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    # TODO: RBF
-    if: github.event_name == 'release' && github.event.action == 'published'
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          pattern: artifact-*
           path: dist
+          merge-multiple: true
 
-      - uses: pypa/gh-action-pypi-publish@v1.4.2
+
+      - name: Upload to TestPyPI on PR update
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
-          # For PyPI
+          password: ${{ secrets.TEST_PYPI_APIKEY }}
+          repository_url: https://test.pypi.org/legacy/
+
+      - name: Upload to PyPI on published release
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
           password: ${{ secrets.PYPI_APIKEY }}
-          # For TestPyPI. TODO: RBF
-#          password: ${{ secrets.TEST_PYPI_APIKEY }}
-#          repository_url: https://test.pypi.org/legacy/

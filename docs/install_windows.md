@@ -15,7 +15,7 @@ Please ensure the following dependencies are installed:
 
 CMake Build:
 
-1) Run `scripts/retrieve_windows_cmake_files.sh` to retrieve the files necessary for the Windows CMake build
+1) Run `cd scripts` and then `sh retrieve_windows_cmake_files.sh` to retrieve the files necessary for the Windows CMake build
 2) Add the Visual Studio IDE location to PATH in Environment Variables (e.g. `C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE`).
 3) Add `${project_dir}\headers\armadillo\examples\lib_win64` to PATH 
 4) Run `devenv BanditPAM.sln /Build "Release|x64"` after `cmake ..` in a prompt other than Git Bash
@@ -26,5 +26,5 @@ Python Build:
 2) Follow these steps:
    1) Add the location of `cl.exe` to PATH in Environment Variables (e.g. `C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64`).
    2) Run `python -m pip install .` in the home directory (`/BanditPAM`)
-   2) Add the file `C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx86\x64\clang_rt.asan_dynamic-x86_64.dll` to `build\lib.win-amd64-cpython-310`
-   3) Run `python -m pip install .` in the home directory (`/BanditPAM`)
+   3) Run `cd scripts && sh retrieve_windows_python_files.sh && cd ..`
+   4) Run `python -m pip install .` in the home directory (`/BanditPAM`)

@@ -66,6 +66,14 @@ ggplot(data = d) +
   geom_point(aes(x, y), data = dd, color = "red")
 ```
 
+To obtain the cluster labels of each observations, one can use the
+`get_labels()` method on the object:
+
+```{r}
+head(obj$get_labels())
+tail(obj$get_labels())
+```
+
 We can also change the loss function and see how the mediods change.
 
 ```{r}

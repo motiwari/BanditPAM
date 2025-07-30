@@ -7,9 +7,8 @@
 #'
 #' @name banditpam-package
 #' @useDynLib banditpam
-#' @docType package
 #' @author Balasubramanian Narasimhan and Mo Tiwari
 #' @keywords package
-NULL
+"_PACKAGE"
 
 catn <- function(...) cat(..., "\n")

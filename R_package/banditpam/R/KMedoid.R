@@ -125,6 +125,14 @@ KMedoids <- R6::R6Class( "KMedoids"
    ,
 
     #' @description
+    #' Return the cluster labels after clustering
+    #' @return a vector of the cluster labels for the observations
+    get_labels = function() {
+      .Call('_banditpam_KMedoids__get_labels', PACKAGE = 'banditpam', private$xptr)
+    }
+   ,
+
+    #' @description
     #' Get the specified statistic after clustering
     #' @param what a string which should one of `"dist_computations"`, `"dist_computations_and_misc"`,
     #' `"misc_dist"`, `"build_dist"`, `"swap_dist"`, `"cache_writes"`, `"cache_hits"`,

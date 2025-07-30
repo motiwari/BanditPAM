@@ -1,7 +1,7 @@
-pandoc: 3.1.1
+pandoc: 3.1.7
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   kmediods: kmediods.html
-last_built: 2023-03-14T18:31Z
+last_built: 2023-09-16T00:52Z
 

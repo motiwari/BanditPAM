@@ -9,7 +9,6 @@
 
 #include "kmedoids_algorithm.hpp"
 
-
 namespace km {
 /**
  * @brief Contains all necessary FastPAM1 functions.
@@ -22,8 +21,8 @@ class FastPAM1 : public km::KMedoids {
    * @param inputData Input data to cluster
    */
   void fitFastPAM1(
-          const arma::fmat &inputData,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+    const arma::fmat &inputData,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
    * @brief Performs the BUILD step of FastPAM1.
@@ -37,9 +36,9 @@ class FastPAM1 : public km::KMedoids {
    * as medoids are identified
    */
   void buildFastPAM1(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          arma::urowvec *medoidIndices);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    arma::urowvec *medoidIndices);
 
   /**
    * @brief Performs the SWAP step of FastPAM1.
@@ -55,10 +54,9 @@ class FastPAM1 : public km::KMedoids {
    * @param assignments Array of containing the medoid each point is closest to
    */
   void swapFastPAM1(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          arma::urowvec *medoidIndices,
-          arma::urowvec *assignments);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    arma::urowvec *medoidIndices, arma::urowvec *assignments);
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_FASTPAM1_HPP_

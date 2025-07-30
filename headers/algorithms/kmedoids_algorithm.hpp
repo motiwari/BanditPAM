@@ -11,34 +11,54 @@
 #include <functional>
 #include <unordered_map>
 #include <string>
+#include <regex>
 
 namespace km {
+
 /**
- * @brief KMedoids class. Creates a KMedoids object that can be used to find the medoids
- * for a particular set of input data.
+ * @brief Enum for different loss function types
+ */
+enum class LossType {
+  MANHATTAN,
+  COS,
+  COSINE,
+  INF,
+  EUCLIDEAN,
+  LP_NORM,
+  UNKNOWN
+};
+
+/**
+ * @brief Enum for different distance categories
+ */
+enum class AlgorithmStep {
+  MISC,
+  BUILD,
+  SWAP
+};
+
+/**
+ * @brief KMedoids class. Creates a KMedoids object that can be used to find the
+ * medoids for a particular set of input data.
  *
  * @param nMedoids Number of medoids to use and clusters to create
- * @param algorithm Algorithm used to find medoids: "BanditPAM", "PAM", or "FastPAM1"
+ * @param algorithm Algorithm used to find medoids: "BanditPAM", "PAM", or
+ * "FastPAM1"
  * @param maxIter The maximum number of SWAP steps the algorithm runs
- * @param buildConfidence Parameter that affects the width of BUILD confidence intervals
- * @param swapConfidence Parameter that affects the width of SWAP confidence intervals
+ * @param buildConfidence Parameter that affects the width of BUILD confidence
+ * intervals
+ * @param swapConfidence Parameter that affects the width of SWAP confidence
+ * intervals
  */
 class KMedoids {
  public:
   // NOTE: The order of arguments in this constructor must match that of the
   //  arguments in kmedoids_pywrapper.cpp, otherwise undefined behavior can
   //  result (variables being initialized with others' values)
-  KMedoids(
-          size_t nMedoids = 5,
-          const std::string &algorithm = "BanditPAM",
-          size_t maxIter = 100,
-          size_t buildConfidence = 3,
-          size_t swapConfidence = 5,
-          bool useCache = true,
-          bool usePerm = true,
-          size_t cacheWidth = 1000,
-          bool parallelize = true,
-          size_t seed = 0);
+  KMedoids(size_t nMedoids = 5, const std::string &algorithm = "BanditPAM",
+           size_t maxIter = 100, size_t buildConfidence = 3,
+           size_t swapConfidence = 5, bool useCache = true, bool usePerm = true,
+           size_t cacheWidth = 1000, bool parallelize = true, size_t seed = 0);
 
   ~KMedoids();
 
@@ -50,10 +70,8 @@ class KMedoids {
    *
    * @throws if the input data is empty.
    */
-  void fit(
-          const arma::fmat &inputData,
-          const std::string &loss,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat);
+  void fit(const arma::fmat &inputData, const std::string &loss,
+           std::optional<std::reference_wrapper<const arma::fmat>> distMat);
 
   /**
    * @brief Returns the medoids at the end of the BUILD step.
@@ -107,7 +125,8 @@ class KMedoids {
   /**
    * @brief Sets the algorithm being used for k-medoids clustering.
    *
-   * @param newAlgorithm The new algorithm to use: "BanditPAM", "PAM", or "FastPAM1"
+   * @param newAlgorithm The new algorithm to use: "BanditPAM", "PAM", or
+   * "FastPAM1"
    */
   void setAlgorithm(const std::string &newAlgorithm);
 
@@ -344,28 +363,26 @@ class KMedoids {
   /// Determines whether we use a user-provided distance matrix
   bool useDistMat = false;
 
-
  protected:
   /**
    * @brief Calculates the best and second best distances for each datapoint to
    * the medoids in the current set of medoids.
    *
    * @param data Transposed data to cluster
-   * @param medoidIndices Array of medoid indices corresponding to dataset entries
-   * @param bestDistances Array of best distances from each point to previous set
-   * of medoids
+   * @param medoidIndices Array of medoid indices corresponding to dataset
+   * entries
+   * @param bestDistances Array of best distances from each point to previous
+   * set of medoids
    * @param secondBestDistances Array of second smallest distances from each
    * point to previous set of medoids
    * @param assignments Assignments of datapoints to their closest medoid
    */
   void calcBestDistancesSwap(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          const arma::urowvec *medoidIndices,
-          arma::frowvec *bestDistances,
-          arma::frowvec *secondBestDistances,
-          arma::urowvec *assignments,
-          const bool swapPerformed = true);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma::urowvec *medoidIndices, arma::frowvec *bestDistances,
+    arma::frowvec *secondBestDistances, arma::urowvec *assignments,
+    const bool swapPerformed = true);
 
   /**
    * @brief Calculate the average loss for the given choice of medoids.
@@ -373,13 +390,13 @@ class KMedoids {
    * @param data Transposed data to cluster
    * @param medoidIndices Indices of the medoids in the dataset
    *
-   * @returns The average loss, i.e., the average distance from each point to its
-   * nearest medoid
+   * @returns The average loss, i.e., the average distance from each point to
+   * its nearest medoid
    */
   float calcLoss(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          const arma::urowvec *medoidIndices);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const arma::urowvec *medoidIndices);
 
   /**
    * @brief A wrapper around the given loss function that caches distances
@@ -390,17 +407,16 @@ class KMedoids {
    * @param data Transposed data to cluster
    * @param i Index of first datapoint
    * @param j Index of second datapoint
-   * @param useCacheFunctionOverride Whether to use the cache in this function (by default, uses value of useCache)
+   * @param useCacheFunctionOverride Whether to use the cache in this function
+   * (by default, uses value of useCache)
    *
    * @returns The distance between points i and j
    */
   float cachedLoss(
-          const arma::fmat &data,
-          std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-          const size_t i,
-          const size_t j,
-          const size_t category,
-          const bool useCacheFunctionOverride = true);
+    const arma::fmat &data,
+    std::optional<std::reference_wrapper<const arma::fmat>> distMat,
+    const size_t i, const size_t j, AlgorithmStep step,
+    const bool useCacheFunctionOverride = true);
 
   /// If using an L_p loss, the value of p
   size_t lp;
@@ -415,10 +431,7 @@ class KMedoids {
    *
    * @returns The Lp distance between points i and j
    */
-  float LP(
-          const arma::fmat &data,
-          const size_t i,
-          const size_t j) const;
+  float LP(const arma::fmat &data, const size_t i, const size_t j) const;
 
   /**
    * @brief Computes the L-infinity distance between the
@@ -430,9 +443,7 @@ class KMedoids {
    *
    * @returns The L-infinity distance between points i and j
    */
-  float LINF(const arma::fmat &data,
-             const size_t i,
-             const size_t j) const;
+  float LINF(const arma::fmat &data, const size_t i, const size_t j) const;
 
   /**
    * @brief Computes the cosine distance between the
@@ -444,9 +455,7 @@ class KMedoids {
    *
    * @returns The cosine distance between points i and j
    */
-  float cos(const arma::fmat &data,
-            const size_t i,
-            const size_t j) const;
+  float cos(const arma::fmat &data, const size_t i, const size_t j) const;
 
   /**
    * @brief Computes the Manhattan distance between the
@@ -458,9 +467,43 @@ class KMedoids {
    *
    * @returns The Manhattan distance between points i and j
    */
-  float manhattan(const arma::fmat &data,
-                  const size_t i,
-                  const size_t j) const;
+  float manhattan(const arma::fmat &data, const size_t i, const size_t j) const;
+    
+  /**
+   * @brief Assigns ranks to each element in the input vector.
+   * Smallest element receives rank 1, the next 2, and so on.
+   * Ties are assigned the average of the ranks they would encompass.
+   *
+   * @param vec A vector containing the elements to be ranked.
+   *
+   * @returns A vector of the same size as `vec`, with each element replaced by its rank.
+   */
+  arma::fvec rank(const arma::fvec& vec) const;
+
+  /**
+   * @brief Computes the Pearson correlation between the
+   * datapoints of indices i and j in the dataset
+   *
+   * @param data Transposed data to cluster
+   * @param i Index of first datapoint
+   * @param j Index of second datapoint
+   *
+   * @returns The Pearson correlation between points i and j
+   */
+  float pearson(const arma::fmat &data, const size_t i, const size_t j) const;
+  float clippedCos(const arma::fmat &data, const size_t i, const size_t j) const;
+
+  /**
+   * @brief Computes the Spearman correlation between the
+   * datapoints of indices i and j in the dataset
+   *
+   * @param data Transposed data to cluster
+   * @param i Index of first datapoint
+   * @param j Index of second datapoint
+   *
+   * @returns The Spearman correlation between points i and j
+   */
+  float spearman(const arma::fmat &data, const size_t i, const size_t j) const;
 
   /**
    * @brief Checks whether algorithm choice is valid. The given
@@ -471,6 +514,30 @@ class KMedoids {
    * @throws If the algorithm is invalid.
    */
   void checkAlgorithm(const std::string &algorithm) const;
+
+  /**
+   * @brief Converts a string loss function name to LossType enum
+   * 
+   * @param loss The loss function string
+   * @returns The corresponding LossType enum value
+   */
+  LossType getLossType(const std::string &loss) const {
+    if (loss == "manhattan") {
+      return LossType::MANHATTAN;
+    } else if (loss == "cos") {
+      return LossType::COS;
+    } else if (loss == "cosine") {
+      return LossType::COSINE;
+    } else if (loss == "inf") {
+      return LossType::INF;
+    } else if (loss == "euclidean") {
+      return LossType::EUCLIDEAN;
+    } else if (std::regex_match(loss, std::regex("l\\d*"))) {
+      return LossType::LP_NORM;
+    } else {
+      return LossType::UNKNOWN;
+    }
+  }
 
   /// Number of medoids to use -- the "k" in k-medoids
   size_t nMedoids;
@@ -494,11 +561,8 @@ class KMedoids {
   arma::urowvec medoidIndicesFinal;
 
   /// Function pointer to the loss function to use
-  float (KMedoids::*lossFn)(
-          const arma::fmat &data,
-          const size_t i,
-          const size_t j)
-  const;
+  float (KMedoids::*lossFn)(const arma::fmat &data, const size_t i,
+                            const size_t j) const;
 
   /// Number of SWAP steps performed
   size_t steps = 0;

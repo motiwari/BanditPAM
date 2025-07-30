@@ -1,4 +1,10 @@
-def print_results(kmed, runtime):
+from banditpam import KMedoids
+
+
+def print_results(kmed: KMedoids, runtime: float):
+    complexity_with_caching = (
+        kmed.getDistanceComputations(True) - kmed.cache_hits
+    )
     print("-----Results-----")
     print("Algorithm:", kmed.algorithm)
     print("Final Medoids:", kmed.medoids)
@@ -7,17 +13,24 @@ def print_results(kmed, runtime):
     print("Build complexity:", f"{kmed.build_distance_computations:,}")
     print("Swap complexity:", f"{kmed.swap_distance_computations:,}")
     print("Number of Swaps", kmed.steps)
+    print("Cache Writes: {:,}".format(kmed.cache_writes))
+    print("Cache Hits: {:,}".format(kmed.cache_hits))
+    print("Cache Misses: {:,}".format(kmed.cache_misses))
     print(
         "Average Swap Sample Complexity:",
         f"{kmed.swap_distance_computations / kmed.steps:,}",
     )
     print(
         "Total complexity (without misc):",
-        f"{kmed.getDistanceComputations(False):,}"
+        f"{kmed.getDistanceComputations(False):,}",
     )
     print(
         "Total complexity (with misc):",
         f"{kmed.getDistanceComputations(True):,}",
     )
-    print("Runtime per swap:", runtime / kmed.steps)
+    print(
+        "Total complexity (with caching):",
+        f"{complexity_with_caching:,}",
+    )
     print("Total runtime:", runtime)
+    print("Runtime per swap:", runtime / kmed.steps)

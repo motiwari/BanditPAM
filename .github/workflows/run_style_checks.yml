@@ -1,16 +1,20 @@
 name: Run style checks
-on: [push, pull_request]
+on:
+  push:
+    branches:  # prevents running on tag push
+      - '**'
+  pull_request:
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.13"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5.6.0
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -32,6 +36,18 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=79 --statistics --exclude headers/carma
 
-      - name: Lint with cpplint
-        run: |
-          cpplint --exclude=headers/carma --exclude=build --exclude=R_package --filter=-legal/copyright,-build/c++11,-build/include_subdir --recursive .
+      - name: Lint with clang-format
+        uses: cpp-linter/cpp-linter-action@v2.6.0
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          style: file
+          tidy-checks: '-*'  # disable clang-tidy checks
+          version: 16
+          ignore: R_package  # TODO: remove this as part of #240
+          files-changed-only: false
+
+      - name: Exit if necessary
+        if: steps.linter.outputs.checks-failed > 0
+        run: exit 1

@@ -1,57 +1,35 @@
 name: Windows - build package and run tests
-on: [push, pull_request] # This test is currently disabled until we can build Armadillo on Windows
+on:
+  push:
+    branches:  # prevents running on tag push
+      - '**'
+  pull_request:
 jobs:
   build:
     runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5.6.0
         with:
           python-version: ${{ matrix.python-version }}
-      # - name: Install Windows dependencies
-      #   run: |
-      #     cmake --version
-      # - name: Install CPython from Anaconda # TODO: Need to update CMake? # TODO: See https://docs.conda.io/projects/conda/en/latest/user-guide/install/windows.html
-      #   run: |
-      #     curl -XGET https://repo.anaconda.com/archive/Anaconda3-2021.11-Windows-x86_64.exe > Anaconda3-2021.11-Windows-x86_64.exe
-      #     start /wait "" "Anaconda3-latest-Windows-x86_64.exe" /InstallationType=JustMe /AddToPath=1 /RegisterPython=1 /S /D=%UserProfile%\Anaconda3
-      #     conda create -n "$p{{ matrix.python-version }}" python=${{ matrix.python-version }}
-      #     conda activate p${{ matrix.python-version }}
-      - name: Install Python dependencies 
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install pytest
-          python -m pip install -r requirements.txt
-      - name: Install Armadillo 10.7.5+
-        run: |
-          cd ~
-          git clone https://gitlab.com/conradsnicta/armadillo-code.git
-          cd armadillo-code
-          cmake .
-      - name: Install carma
-        run: |
-          cd ~
-          git clone https://github.com/RUrlus/carma.git
-          cd carma
-          mkdir build
-          cd build
-          cmake -DCARMA_INSTALL_LIB=ON ..
-          cmake --build . --config Release --target install
-          cd ~
-      - name: Install BanditPAM package
-        run: |
-          python -m pip install -vvv -e .
-        env:
-          # The default compiler on the Github Ubuntu runners is gcc
-          # Would need to make a respective include change for clang 
-          CPLUS_INCLUDE_PATH: /usr/local/include/carma
+
+      - name: Clone for PR
+        if: ${{ github.event_name == 'pull_request' }}
+        run: git clone -b $env:GITHUB_HEAD_REF https://github.com/motiwari/BanditPAM
+
+      - name: Clone for Push
+        if: ${{ github.event_name != 'pull_request' }}
+        run: git clone -b ($env:GITHUB_REF -replace '^refs/heads/', '') https://github.com/motiwari/BanditPAM
+
       - name: Downloading data files for tests
+        shell: bash
         run: |
+          cd BanditPAM
           mkdir -p data
           curl -XGET https://motiwari.com/banditpam_data/scRNA_1k.csv > data/scRNA_1k.csv
           curl -XGET https://motiwari.com/banditpam_data/scrna_reformat.csv.gz > data/scrna_reformat.csv.gz
@@ -61,18 +39,65 @@ jobs:
           tar -xzvf data/MNIST_10k.tar.gz -C data
           curl -XGET https://motiwari.com/banditpam_data/MNIST_70k.tar.gz > data/MNIST_70k.tar.gz
           tar -xzvf data/MNIST_70k.tar.gz -C data
+
+      - name: Install Armadillo 10.7.5+
+        run: |
+          cd BanditPAM/headers
+          git clone https://gitlab.com/conradsnicta/armadillo-code.git armadillo
+          cd armadillo
+          cmake .
+          C:/"Program Files"/"Microsoft Visual Studio"/2022/Enterprise/Common7/IDE/devenv armadillo.sln /Build "Release|x64"
+
+      - name: Add environment variables
+        run: |
+          Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.36.32532\bin\HostX86\x86"
+
+      - name: Install carma
+        run: |
+          cd BanditPAM/headers
+          git clone https://github.com/RUrlus/carma.git
+          cd carma
+          mkdir build
+          cd build
+          cmake -DCARMA_INSTALL_LIB=ON ..
+          cmake --build . --config Release --target install
+          cd ../../..
+
+      - name: Verify that the C++ executable compiles and runs  # Building C++ first to avoid armadillo include issues
+        run: |
+          cd BanditPAM/scripts
+          sh retrieve_windows_cmake_files.sh
+          cd ..
+          mkdir build
+          cd build
+          cmake ..
+          C:/"Program Files"/"Microsoft Visual Studio"/2022/Enterprise/Common7/IDE/devenv BanditPAM.sln /Build "Release|x64"
+          cd src/Release
+          .\BanditPAM.exe -f ../../../data/MNIST_1k.csv -k 5
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install --upgrade pip setuptools wheel
+
+      - name: Install BanditPAM package
+        run: |
+          cd BanditPAM
+          # The flags are necessary to ignore the pyproject.toml
+          # See https://github.com/pypa/pip/issues/9738
+          python -m pip install -vvvv --no-use-pep517 .
+          cd scripts
+          sh retrieve_windows_python_files.sh
+          cd ..
+          python -m pip install -vvvv --no-use-pep517 .
+
       - name: Run smaller suite of test cases
-        run : |
-          pytest tests/test_smaller.py 
-      # - name: Run larger suite of test cases
-      #   run : |
-      #     pytest tests/test_larger.py 
-      # - name: Verify that the C++ executable compiles and runs
-      #   run : |
-      #     git clone -b ${GITHUB_REF#refs/heads/} https://github.com/motiwari/BanditPAM
-      #     cd BanditPAM
-      #     mkdir build
-      #     cd build
-      #     cmake ..
-      #     make
-      #     src/BanditPAM -f ../data/MNIST_1k.csv -k 5
+        run: |
+          cd BanditPAM
+          python tests/test_smaller.py
+
+      - name: Run tests cases for initialization
+        run: |
+          cd BanditPAM
+          python tests/test_initialization.py

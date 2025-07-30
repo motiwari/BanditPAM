@@ -71,7 +71,7 @@ void KMedoids__fit(SEXP xp, arma::mat data, std::vector< std::string > loss, SEX
 ////
 //// @param xp the km::KMedoids Object XPtr
 // [[Rcpp::export(.KMedoids__get_medoids_final)]]
-SEXP KMedoids__get_medoids_final(SEXP xp) {
+Rcpp::IntegerVector KMedoids__get_medoids_final(SEXP xp) {
   // grab the object as a XPtr (smart pointer)
   XPtr<km::KMedoids> ptr(xp);
   // Turn 0-based indices into 1-based indices for R
@@ -79,7 +79,22 @@ SEXP KMedoids__get_medoids_final(SEXP xp) {
   for (auto i = medoidIndices.begin(), e = medoidIndices.end(); i != e; ++i) {
     (*i)++;
   }
-  return wrap(medoidIndices);
+  return Rcpp::IntegerVector(medoidIndices.begin(), medoidIndices.end());
+}
+
+//// Return the final labels
+////
+//// @param xp the km::KMedoids Object XPtr
+// [[Rcpp::export(.KMedoids__get_labels)]]
+Rcpp::IntegerVector KMedoids__get_labels(SEXP xp) {
+  // grab the object as a XPtr (smart pointer)
+  XPtr<km::KMedoids> ptr(xp);
+  // Turn 0-based indices into 1-based indices for R
+  arma::urowvec obsLabels = ptr->getLabels();
+  for (auto i = obsLabels.begin(), e = obsLabels.end(); i != e; ++i) {
+    (*i)++;
+  }
+  return Rcpp::IntegerVector(obsLabels.begin(), obsLabels.end());
 }
 
 //// Return the number of medoids property k
