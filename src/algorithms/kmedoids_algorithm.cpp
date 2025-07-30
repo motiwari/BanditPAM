@@ -316,7 +316,7 @@ float KMedoids::cachedLoss(
   const arma::fmat &data,
   std::optional<std::reference_wrapper<const arma::fmat>> distMat,
   const size_t i, const size_t j, AlgorithmStep step,
-  const bool useCacheFunctionOverride = true) {
+  const bool useCacheFunctionOverride) {
   if (step == AlgorithmStep::MISC) {
     numMiscDistanceComputations++;
   } else if (step == AlgorithmStep::BUILD) {
