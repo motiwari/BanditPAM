@@ -2,6 +2,7 @@
 % Please edit documentation in R/BanditPAM-package.R
 \docType{package}
 \name{banditpam-package}
+\alias{banditpam}
 \alias{banditpam-package}
 \title{banditpam is a package for fast clustering using medoids}
 \description{
@@ -9,6 +10,13 @@ banditpam is a high-performance package for almost
 linear-time k-medoids clustering. The methods are described in
 Tiwari, et al. 2020 (Advances in Neural Information Processing Systems
 33).
+}
+\seealso{
+Useful links:
+\itemize{
+  \item Report bugs at \url{https://github.com/motiwari/BanditPAM/issues}
+}
+
 }
 \author{
 Balasubramanian Narasimhan and Mo Tiwari

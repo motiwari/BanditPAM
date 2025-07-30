@@ -25,7 +25,7 @@ copyright = "2021, Mo Tiwari"
 author = "Mo Tiwari"
 
 # The full version, including alpha/beta/rc tags
-release = "2.0.0"
+release = "6.0.2"
 
 
 # -- General configuration ---------------------------------------------------

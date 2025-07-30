@@ -14,21 +14,33 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
+      # Force compilation with LLVM's clang because Apple clang doesn't work well
       - name: Install MacOS dependencies
         run: |
-          brew install libomp armadillo
+          brew install libomp armadillo llvm
+          brew link llvm --force
+          brew link armadillo --force
+
 
       # Note: CIBW only supports CPython 3.8 and newer for universal2 and arm64 wheels
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.0
+        uses: pypa/cibuildwheel@v2.23.3
         env:
-          CIBW_ARCHS_MACOS: x86_64 arm64 universal2
-          CIBW_BUILD: cp*
-          CIBW_BUILD_VERBOSITY: 3
+          MACOSX_DEPLOYMENT_TARGET: "14"
+          CIBW_ARCHS_MACOS: "x86_64 arm64 universal2"
 
-      - uses: actions/upload-artifact@v2
+          CIBW_BUILD: "cp310* cp311* cp312* cp313*"
+          CIBW_BUILD_VERBOSITY: "3"
+          CC: "/opt/homebrew/opt/llvm/bin/clang"
+          CXX: "/opt/homebrew/opt/llvm/bin/clang++"
+          CMAKE_C_COMPILER: "/opt/homebrew/opt/llvm/bin/clang"
+          CMAKE_CXX_COMPILER: "/opt/homebrew/opt/llvm/bin/clang++"
+          LDFLAGS: "-L/opt/homebrew/opt/llvm/lib -L/opt/homebrew/opt/libomp/lib"
+          CPPFLAGS: "-I/opt/homebrew/opt/llvm/include -I/opt/homebrew/opt/libomp/include"
+
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
 
@@ -36,14 +48,14 @@ jobs:
     needs: [build_wheels_macos]
     runs-on: ubuntu-latest # Can only upload from Linux containers
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: artifact
           path: dist
 
       - name: Upload to TestPyPI on PR update
         if: ${{ github.event_name == 'pull_request' }}
-        uses: pypa/gh-action-pypi-publish@v1.4.2
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.TEST_PYPI_APIKEY }}
@@ -51,7 +63,7 @@ jobs:
 
       - name: Upload to PyPI on published release
         if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
-        uses: pypa/gh-action-pypi-publish@v1.4.2
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_APIKEY }}

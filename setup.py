@@ -1,4 +1,3 @@
-import platform
 import sys
 import os
 import tempfile
@@ -9,7 +8,7 @@ from setuptools.command.build_ext import build_ext
 import distutils.sysconfig
 import distutils.spawn
 
-__version__ = "4.0.4"
+__version__ = "6.0.2"
 
 # TODO(@motiwari): Move this to a separate file
 GHA = "GITHUB_ACTIONS"
@@ -50,6 +49,21 @@ def compiler_check():
     python for some of the compilation process, even if the user specifies
     another one!
     """
+    if sys.platform == "darwin":
+        # Note: On Mac, we should always use LLVM clang
+        # because Apple's clang does not support OpenMP
+        # and we need OpenMP to parallelize the code
+        # NOTE: distutils.sysconfig.get_config_vars() works for Python 3.11+,
+        #  but we need to use os.environ for Python 3.10
+        if "clang" not in distutils.sysconfig.get_config_vars()["CC"] and \
+                "clang" not in dict(os.environ)["CC"]:
+            raise Exception(
+                "Need to install LLVM clang! \
+                Please run `brew install llvm`"
+            )
+        return "clang"
+
+    # For all platforms
     try:
         return (
             "clang"
@@ -155,9 +169,10 @@ def install_check_mac():
     # Make sure numpy is installed
     check_numpy_installation()
 
-    # Check that libomp, and armadillo are installed
+    # Check that libomp, armadillo are installed
     check_brew_package("libomp")
     check_brew_package("armadillo")
+    check_brew_package("openblas")
 
     # Because we don't want to force M1 users to compile from source,
     # we build wheels on Github Runners via Github Actions. In
@@ -167,7 +182,7 @@ def install_check_mac():
     # LLVM clang to support multithreading via OpenMP
     # TODO(@motiwari): Check if the arm64 wheels are not multithreaded
     # TODO(@motiwari): Check if the universal2 wheels are not multithreaded
-    # when installed on Intel Mac
+    #  when installed on Intel Macs
     if not os.environ.get(GHA, False):
         # If we are NOT running inside a Github action,
         # check that LLVM clang is installed
@@ -222,7 +237,7 @@ def check_linux_package_installation(pkg_name: str):
             Please ensure all dependencies are installed \
             via your package manager (apt, yum, etc.): \
             build-essential checkinstall \
-            libncursesw5-dev libssl-dev libsqlite3-dev tk-dev \
+            libssl-dev libsqlite3-dev tk-dev \
             libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev"
             % (pkg_name)
         )
@@ -238,7 +253,6 @@ def install_ubuntu_pkgs():
         "apt install -y \
         build-essential \
         checkinstall \
-        libncursesw5-dev \
         libssl-dev \
         libsqlite3-dev \
         libgdbm-dev \
@@ -314,7 +328,6 @@ def install_check_ubuntu():
     dependencies = [
         "build-essential",
         "checkinstall",
-        "libncursesw5-dev",
         "libssl-dev",
         "libsqlite3-dev",
         "tk-dev",
@@ -347,6 +360,21 @@ def is_ubuntu():
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     output, _error = process.communicate()
     return "Ubuntu" in output.decode()
+
+
+def get_package_prefix(package=None):
+    assert package is not None, "Package name must be provided"
+    try:
+        result = subprocess.run(
+            ["brew", "--prefix", package],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+        )
+        return result.stdout.strip().decode()
+    except subprocess.CalledProcessError as e:
+        print("Error running brew:", e.stderr)
+        return None
 
 
 class BuildExt(build_ext):
@@ -382,39 +410,70 @@ class BuildExt(build_ext):
     elif sys.platform == "win32":
         c_opts["msvc"] += ["/fsanitize=address"]
 
-    def build_extensions(self):
+    def build_extensions(self):  # noqa: C901
         ct = self.compiler.compiler_type
 
-        opts = self.c_opts.get(ct, [])
+        comp_opts = self.c_opts.get(ct, [])
         link_opts = self.l_opts.get(ct, [])
 
         # TODO(@motiwari): on Windows, these flags are unrecognized
-        opts.append(cpp_flag(self.compiler))
-        opts.append("-O3")
-        if sys.platform == "darwin" and os.environ.get(GHA, False):
-            opts.append("-Xpreprocessor")  # NEEDS TO BE WITH NEXT LINE
-            opts.append("-fopenmp")  # NEEDS TO BE WITH PREVIOUS LINE
+        comp_opts.append(cpp_flag(self.compiler))
+        comp_opts.append("-O3")
 
-            opts.append("-lomp")  # Potentially unused?
-            opts.append("-I/usr/local/opt/libomp/include")
-            opts.append("-L/usr/local/opt/libomp/lib")  # Unused?
+        if sys.platform == "darwin":
+            for package in ["armadillo"]:  # "libomp"
+                package_prefix = get_package_prefix(package)
+                link_opts.append(f"-Wl,-rpath,{package_prefix}/lib")
+
+            if os.environ.get(GHA, False):
+                # We are inside a Github Runner on a Mac.
+
+                # NOTE: The next two lines NEED TO BE TOGETHER
+                comp_opts.append("-Xpreprocessor")
+                comp_opts.append("-fopenmp")
+
+                # comp_opts.append("-lomp")  # Potentially unused?
+
+                # TODO(@motiwari): include armadillo here?
+
+                libomp_prefix = get_package_prefix("libomp")
+                libomp_static = os.path.join(libomp_prefix, "lib", "libomp.a")
+
+                comp_opts += [f"-I{os.path.join(libomp_prefix, 'include')}"]
+                link_opts += [libomp_static, "-lm"]
+                link_opts.append("-Wl,-force_load," + libomp_static)
+
+                link_opts += ["-lm"]
+                for package in ["libomp"]:
+                    package_prefix = get_package_prefix(package)
+                    comp_opts.append("-I{}/include".format(package_prefix))
+                    comp_opts.append("-L{}/lib".format(package_prefix))  # Remove?
+                    link_opts.append("-L{}/lib".format(package_prefix))
+        elif sys.platform == "linux":
+            link_opts += ["-lm", "-lpthread"]
         elif sys.platform != "win32":
-            opts.append("-fopenmp")
+            comp_opts.append("-fopenmp")
 
         compiler_name = compiler_check()
-        if sys.platform == "darwin" and os.environ.get(GHA, False):
-            link_opts.append("-lomp")  # Potentially unused?
-            link_opts.append("-I/usr/local/opt/libomp/include")
-            link_opts.append("-L/usr/local/opt/libomp/lib")  # Unused?
-        elif sys.platform != "win32":
-            if compiler_name == "clang":
-                link_opts.append("-lomp")
-            else:  # gcc
-                link_opts.append("-lgomp")
+        # if sys.platform == "darwin":
+            # if compiler_name == "gcc":
+            #      link_opts.append("-lomp")
+            # else:
+            #     link_opts.append("-lomp")
+        if sys.platform == "linux" or sys.platform == "linux2":
+            if compiler_name == "gcc":
+                link_opts += ["-lgomp", "-lm", "-lpthread"]
+            else:
+                # Both clang and Apple's clang should use libomp
+                link_opts += ["-lomp", "-lm", "-lpthread"]
+        else:
+            # On Windows
+            # TODO(@motiwari): Fix this
+            pass
 
         if ct == "unix":
             if has_flag(self.compiler, "-fvisibility=hidden"):
-                opts.append("-fvisibility=hidden")
+                comp_opts.append("-fvisibility=hidden")
 
         for ext in self.extensions:
             ext.define_macros = [
@@ -423,13 +482,14 @@ class BuildExt(build_ext):
                     '"{}"'.format(self.distribution.get_version()),
                 )
             ]
-            ext.extra_compile_args = opts
+            ext.extra_compile_args = comp_opts
             ext.extra_compile_args += []  # []["-arch", "x86_64"]
 
             ext.extra_link_args = link_opts
             ext.extra_link_args += [
                 "-v",
-            ]  # "-arch", "x86_64"]
+            ] # "-arch", "x86_64"]
+            ext.extra_link_args =  link_opts
 
         build_ext.build_extensions(self)
 
@@ -459,7 +519,6 @@ def main():
             os.path.join("headers", "carma", "include", "carma"),
             os.path.join("headers", "carma", "include", "carma", "carma"),
             # To include carma when the BanditPAM repo hasnt been initialized
-            os.path.join("/", "usr", "local", "include"),
             os.path.join("/", "usr", "local", "include", "carma"),
             os.path.join(
                 "/", "usr", "local", "include", "carma", "carma_bits"
@@ -468,12 +527,8 @@ def main():
             # Currently, we should never be building from source on an M1 Mac,
             # Only cross-compiling from an Intel Mac
             # TODO(@motiwari): Remove extraneous directories
-            os.path.join("/", "opt", "homebrew"),
-            os.path.join("/", "opt", "homebrew", "bin"),
-            os.path.join("/", "opt", "homebrew", "include"),
-            os.path.join("/", "opt", "homebrew", "lib"),
-            os.path.join("/", "opt", "homebrew", "opt"),
             os.path.join("/", "opt", "homebrew", "opt", "armadillo"),
+            os.path.join("/", "opt", "homebrew", "opt", "openblas"),
             os.path.join(
                 "/", "opt", "homebrew", "opt", "armadillo", "include"
             ),
@@ -486,16 +541,10 @@ def main():
                 "include",
                 "armadillo_bits",
             ),
-            # Needed for Mac Github Runners
-            # for macos-10.15
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.2", "include"
-            ),
-            # for macos-latest
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.7", "include"
-            ),
         ]
+        for package in ["armadillo", "libomp"]:
+            package_prefix = get_package_prefix(package)
+            include_dirs.append(os.path.join(package_prefix, "include"))
     elif sys.platform == "win32":  # WIN32
         include_dirs = [
             get_pybind_include(),
@@ -513,18 +562,18 @@ def main():
 
     compiler_name = compiler_check()
     if sys.platform == "darwin" and os.environ.get(GHA, False):
-        # On Mac Github Runners, we should NOT include gomp or omp here
-        # due to build errors.
-        libraries = ["armadillo", "omp"]
+        # Do NOT link omp here because it'll add an -lomp flag to dynamically link it
+        #  (and we want to statically link it)
+        libraries = ["armadillo"]
     elif sys.platform == "win32":
         libraries = ["libopenblas"]
     else:
-        if compiler_name == "clang":
-            libraries = ["armadillo", "omp"]
-        else:  # gcc
-            libraries = ["armadillo", "gomp"]
+        if compiler_name == "gcc":
+            # TODO(@motiwari): Change to c++ when we update cpp_args below?
+            libraries = ["armadillo", "gomp", "stdc++"]
+        else:  # clang
+            libraries = ["armadillo", "omp", "stdc++"]
 
-    cpp_args = None
     if sys.platform == "win32":
         cpp_args = ["/std:c++17"]
         library_dirs = [
@@ -534,23 +583,10 @@ def main():
     else:
         cpp_args = [
             "-static-libstdc++"
-        ]  # TODO(@motiwari): Modify this based on gcc or clang
+        ]  # TODO(@motiwari): Modify this based on GCC or Clang
         library_dirs = [
             os.path.join("/", "usr", "local", "lib"),
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.2", "lib"
-            ),
-            os.path.join(
-                "/", "usr", "local", "Cellar", "libomp", "15.0.7", "lib"
-            ),
         ]
-        if sys.platform == "darwin" and platform.processor() == "arm":  # M1
-            library_dirs.append(
-                os.path.join("/", "opt", "homebrew", "opt", "armadillo", "lib")
-            )
-            library_dirs.append(
-                os.path.join("/", "opt", "homebrew", "opt", "libomp", "lib")
-            )
 
     ext_modules = [
         Extension(
@@ -583,7 +619,8 @@ def main():
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
             extra_compile_args=cpp_args,
-            extra_link_args=[],  # Wrong pass (BuildExt sets extra_link_args)
+            # Not passed? (BuildExt sets extra_link_args)
+            extra_link_args=["-vvvv"],
         )
     ]
 
@@ -612,8 +649,6 @@ def main():
         maintainer="Mo Tiwari",
         author_email="motiwari@stanford.edu",
         url="https://github.com/motiwari/BanditPAM",
-        description="BanditPAM: A state-of-the-art, \
-            high-performance k-medoids algorithm.",
         long_description=long_description,
         ext_modules=ext_modules,
         setup_requires=["pybind11>=2.5.0", "numpy>=1.18"],
@@ -621,11 +656,6 @@ def main():
         include_package_data=True,
         cmdclass={"build_ext": BuildExt},
         zip_safe=False,
-        classifiers=[
-            "Programming Language :: Python :: 3",
-            "License :: OSI Approved :: MIT License",
-            "Operating System :: OS Independent",
-        ],
         headers=[
             os.path.join("headers", "algorithms", "kmedoids_algorithm.hpp"),
             os.path.join("headers", "algorithms", "banditpam.hpp"),

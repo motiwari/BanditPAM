@@ -87,9 +87,8 @@ arma::frowvec BanditPAM::buildSigma(
 #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
-      // 0 for MISC
       float cost =
-        KMedoids::cachedLoss(data, distMat, i, referencePoints(j), 0);
+        KMedoids::cachedLoss(data, distMat, i, referencePoints(j), AlgorithmStep::MISC);
       if (useAbsolute) {
         sample(j) = cost;
       } else {
@@ -139,7 +138,7 @@ arma::frowvec BanditPAM::buildTarget(
     for (size_t j = 0; j < referencePoints.n_rows; j++) {
       float cost =
         KMedoids::cachedLoss(data, distMat, (*target)(i), referencePoints(j),
-                             1);  // 1 for BUILD
+                             AlgorithmStep::BUILD);
       if (useAbsolute) {
         total += cost;
       } else {
@@ -201,9 +200,8 @@ void BanditPAM::build(
         ((numSamples + batchSize) >= N_mat) != exactMask;
       if (arma::accu(compute_exactly) > 0) {
         arma::uvec targets = find(compute_exactly);
-        arma::frowvec result =
-          buildTarget(data, distMat, &targets, &bestDistances, useAbsolute,
-                      (true ? N > 0 : false));
+        arma::frowvec result = buildTarget(data, distMat, &targets,
+                                           &bestDistances, useAbsolute, true);
         estimates.cols(targets) = result;
         ucbs.cols(targets) = result;
         lcbs.cols(targets) = result;
@@ -241,7 +239,7 @@ void BanditPAM::build(
 #pragma omp parallel for if (this->parallelize)
     for (size_t i = 0; i < N; i++) {
       float cost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k),
-                                        0);  // 0 for MISC
+                                        AlgorithmStep::MISC);
       if (cost < bestDistances(i)) {
         bestDistances(i) = cost;
       }
@@ -288,9 +286,8 @@ arma::fmat BanditPAM::swapSigma(
 
     // calculate change in loss for some subset of the data
     for (size_t j = 0; j < batchSize; j++) {
-      // 0 for MISC when estimating sigma
       float cost =
-        KMedoids::cachedLoss(data, distMat, n, referencePoints(j), 0);
+        KMedoids::cachedLoss(data, distMat, n, referencePoints(j), AlgorithmStep::MISC);
 
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
@@ -370,7 +367,7 @@ arma::fmat BanditPAM::swapTarget(
     for (size_t j = 0; j < tmpBatchSize; j++) {
       float cost =
         KMedoids::cachedLoss(data, distMat, (*targets)(i), referencePoints(j),
-                             2);  // 2 for SWAP
+                             AlgorithmStep::SWAP);
       size_t k = (*assignments)(referencePoints(j));
       if (cost < (*bestDistances)(referencePoints(j))) {
         // We might be able to change this to
@@ -457,9 +454,7 @@ void BanditPAM::swap(
       if (compute_exactly_targets.size() > 0) {
         arma::fmat result =
           swapTarget(data, distMat, medoidIndices, &compute_exactly_targets,
-                     &bestDistances, &secondBestDistances, assignments,
-                     (true ? N > 0 : false));
-
+                     &bestDistances, &secondBestDistances, assignments, true);
         // result will be k x T
         // Now update the correct indices
         estimates.cols(compute_exactly_targets) = result;

@@ -1,11 +1,16 @@
 # BanditPAM: Almost Linear-Time $k$-Medoids Clustering
 
-[![Linux - build package and run tests](https://github.com/motiwari/BanditPAM/actions/workflows/run_linux_tests.yml/badge.svg?branch=main)](https://github.com/motiwari/BanditPAM/actions/workflows/run_linux_tests.yml)
-[![Linux - build source distribution and wheels](https://github.com/motiwari/BanditPAM/actions/workflows/build_linux_wheels.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/build_linux_wheels.yml)
-[![MacOS - build package and run tests](https://github.com/motiwari/BanditPAM/actions/workflows/run_mac_tests.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_mac_tests.yml)
-[![MacOS - build wheels](https://github.com/motiwari/BanditPAM/actions/workflows/build_mac_wheels.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/build_mac_wheels.yml)
-[![Run CMake build on MacOS](https://github.com/motiwari/BanditPAM/actions/workflows/run_cmake_build.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_cmake_build.yml)
+[![Linux - build package and run tests](https://github.com/motiwari/BanditPAM/actions/workflows/linux_run_tests.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/linux_run_tests.yml)
+[![Linux - build source distribution and wheels](https://github.com/motiwari/BanditPAM/actions/workflows/linux_build_wheels.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/linux_build_wheels.yml)
+[![Mac ARM64 - build package and run tests](https://github.com/motiwari/BanditPAM/actions/workflows/mac_arm64_run_tests.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/mac_arm64_run_tests.yml)
+[![Mac ARM64 - Run CMake Build and Tests](https://github.com/motiwari/BanditPAM/actions/workflows/mac_arm64_cmake_build.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/mac_arm64_cmake_build.yml)
+[![Mac Intel - build package and run tests](https://github.com/motiwari/BanditPAM/actions/workflows/mac_intel_run_tests.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/mac_intel_run_tests.yml)
+[![Mac Intel - Run CMake Build and Tests](https://github.com/motiwari/BanditPAM/actions/workflows/mac_intel_cmake_build.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/mac_intel_cmake_build.yml)
+[![MacOS - build wheels](https://github.com/motiwari/BanditPAM/actions/workflows/mac_build_wheels.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/mac_build_wheels.yml)
+[![pages-build-deployment](https://github.com/motiwari/BanditPAM/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/pages/pages-build-deployment)
+[![R-CMD-check.yaml](https://github.com/motiwari/BanditPAM/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/R-CMD-check.yaml)
 [![Run style checks](https://github.com/motiwari/BanditPAM/actions/workflows/run_style_checks.yml/badge.svg)](https://github.com/motiwari/BanditPAM/actions/workflows/run_style_checks.yml)
+
 
 This repo contains a high-performance implementation of BanditPAM from [BanditPAM: Almost Linear-Time k-Medoids Clustering](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf). The code can be called directly from Python, R, or C++.
 
@@ -30,7 +35,7 @@ If you have any difficulties, please see the [platform-specific guides](https://
 
 ## Further Reading
 * [Full paper](https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf)
-* [3-minute summary video](https://crossminds.ai/video/bandit-pam-almost-linear-time-k-medoids-clustering-via-multi-armed-bandits-5fb88782b0a3f6412973b646/)
+* [3-minute summary video](https://slideslive.com/38936275/banditpam-almost-linear-time-kmedoids-clustering-via-multiarmed-bandits)
 * [Blog post](https://ai.stanford.edu/blog/banditpam/)
 * [Code](https://github.com/motiwari/BanditPAM)
 * [PyPI](https://pypi.org/project/banditpam/)

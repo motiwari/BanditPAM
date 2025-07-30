@@ -11,8 +11,32 @@
 #include <functional>
 #include <unordered_map>
 #include <string>
+#include <regex>
 
 namespace km {
+
+/**
+ * @brief Enum for different loss function types
+ */
+enum class LossType {
+  MANHATTAN,
+  COS,
+  COSINE,
+  INF,
+  EUCLIDEAN,
+  LP_NORM,
+  UNKNOWN
+};
+
+/**
+ * @brief Enum for different distance categories
+ */
+enum class AlgorithmStep {
+  MISC,
+  BUILD,
+  SWAP
+};
+
 /**
  * @brief KMedoids class. Creates a KMedoids object that can be used to find the
  * medoids for a particular set of input data.
@@ -391,7 +415,7 @@ class KMedoids {
   float cachedLoss(
     const arma::fmat &data,
     std::optional<std::reference_wrapper<const arma::fmat>> distMat,
-    const size_t i, const size_t j, const size_t category,
+    const size_t i, const size_t j, AlgorithmStep step,
     const bool useCacheFunctionOverride = true);
 
   /// If using an L_p loss, the value of p
@@ -490,6 +514,30 @@ class KMedoids {
    * @throws If the algorithm is invalid.
    */
   void checkAlgorithm(const std::string &algorithm) const;
+
+  /**
+   * @brief Converts a string loss function name to LossType enum
+   * 
+   * @param loss The loss function string
+   * @returns The corresponding LossType enum value
+   */
+  LossType getLossType(const std::string &loss) const {
+    if (loss == "manhattan") {
+      return LossType::MANHATTAN;
+    } else if (loss == "cos") {
+      return LossType::COS;
+    } else if (loss == "cosine") {
+      return LossType::COSINE;
+    } else if (loss == "inf") {
+      return LossType::INF;
+    } else if (loss == "euclidean") {
+      return LossType::EUCLIDEAN;
+    } else if (std::regex_match(loss, std::regex("l\\d*"))) {
+      return LossType::LP_NORM;
+    } else {
+      return LossType::UNKNOWN;
+    }
+  }
 
   /// Number of medoids to use -- the "k" in k-medoids
   size_t nMedoids;

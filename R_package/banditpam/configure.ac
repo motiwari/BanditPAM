@@ -30,7 +30,7 @@ fi
 
 if test `uname -s` = "Darwin"
 then
-  if command -v brew &> /dev/null
+  if command -v brew > /dev/null 2>&1
   then
     HOMEBREW_LIBOMP_PREFIX=`brew --prefix libomp`
   else
@@ -50,7 +50,7 @@ then
     R_HAS_OPENMP='FALSE'
     echo '*****************************************************************************************'
     echo '         OpenMP is unavailable on this Mac OSX system. Speed may be suboptimal.          '
-    echo '         To use all CPU cores, you should install OpenMP by running\n                    '
+    echo '         To use all CPU cores, you should install OpenMP by running                      '
     echo '             brew install libomp                                                         '
     echo '*****************************************************************************************'
   fi
