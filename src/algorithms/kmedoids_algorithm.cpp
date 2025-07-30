@@ -18,11 +18,6 @@
 #include "banditpam_orig.hpp"
 
 namespace km {
-enum class AlgorithmStep {
-  MISC,
-  BUILD,
-  SWAP
-};
 
 // NOTE: The order of arguments in this constructor must match that of the
 // arguments in kmedoids_pywrapper.cpp, otherwise undefined behavior can
