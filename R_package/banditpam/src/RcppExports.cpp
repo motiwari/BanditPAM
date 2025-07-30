@@ -22,8 +22,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // KMedoids__new
-SEXP KMedoids__new(IntegerVector k, CharacterVector alg, IntegerVector max_iter, IntegerVector build_confidence, IntegerVector swap_confidence);
-RcppExport SEXP _banditpam_KMedoids__new(SEXP kSEXP, SEXP algSEXP, SEXP max_iterSEXP, SEXP build_confidenceSEXP, SEXP swap_confidenceSEXP) {
+SEXP KMedoids__new(IntegerVector k, CharacterVector alg, IntegerVector max_iter, IntegerVector build_confidence, IntegerVector swap_confidence, LogicalVector parallelize);
+RcppExport SEXP _banditpam_KMedoids__new(SEXP kSEXP, SEXP algSEXP, SEXP max_iterSEXP, SEXP build_confidenceSEXP, SEXP swap_confidenceSEXP, SEXP parallelizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -32,7 +32,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< IntegerVector >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type build_confidence(build_confidenceSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type swap_confidence(swap_confidenceSEXP);
-    rcpp_result_gen = Rcpp::wrap(KMedoids__new(k, alg, max_iter, build_confidence, swap_confidence));
+    Rcpp::traits::input_parameter< LogicalVector >::type parallelize(parallelizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(KMedoids__new(k, alg, max_iter, build_confidence, swap_confidence, parallelize));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -193,10 +194,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// KMedoids__get_parallelize
+SEXP KMedoids__get_parallelize(SEXP xp);
+RcppExport SEXP _banditpam_KMedoids__get_parallelize(SEXP xpSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type xp(xpSEXP);
+    rcpp_result_gen = Rcpp::wrap(KMedoids__get_parallelize(xp));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_banditpam_bpam_num_threads", (DL_FUNC) &_banditpam_bpam_num_threads, 0},
-    {"_banditpam_KMedoids__new", (DL_FUNC) &_banditpam_KMedoids__new, 5},
+    {"_banditpam_KMedoids__new", (DL_FUNC) &_banditpam_KMedoids__new, 6},
     {"_banditpam_KMedoids__fit", (DL_FUNC) &_banditpam_KMedoids__fit, 4},
     {"_banditpam_KMedoids__get_medoids_final", (DL_FUNC) &_banditpam_KMedoids__get_medoids_final, 1},
     {"_banditpam_KMedoids__get_labels", (DL_FUNC) &_banditpam_KMedoids__get_labels, 1},
@@ -211,6 +223,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_banditpam_KMedoids__get_loss_fn", (DL_FUNC) &_banditpam_KMedoids__get_loss_fn, 1},
     {"_banditpam_KMedoids__set_loss_fn", (DL_FUNC) &_banditpam_KMedoids__set_loss_fn, 2},
     {"_banditpam_KMedoids__get_statistic", (DL_FUNC) &_banditpam_KMedoids__get_statistic, 2},
+    {"_banditpam_KMedoids__get_parallelize", (DL_FUNC) &_banditpam_KMedoids__get_parallelize, 1},
     {NULL, NULL, 0}
 };
 

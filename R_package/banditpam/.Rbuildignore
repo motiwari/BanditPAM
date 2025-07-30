@@ -8,4 +8,5 @@ pkgdown$
 src/*.o
 src/*.so
 inst/misc/*
+^\.Rproj\.user$
 ^\.github$
