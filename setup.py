@@ -614,7 +614,7 @@ def main():
                 ),
                 
             ],
-            include_dirs=include_dirs + ["../carma/include"],
+            include_dirs=include_dirs,
             library_dirs=library_dirs,
             libraries=libraries,
             language="c++1z",  # TODO: modify this based on cpp_flag(compiler)
