@@ -87,8 +87,8 @@ arma::frowvec BanditPAM::buildSigma(
 #pragma omp parallel for if (this->parallelize)
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
-      float cost =
-        KMedoids::cachedLoss(data, distMat, i, referencePoints(j), AlgorithmStep::MISC);
+      float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j),
+                                        AlgorithmStep::MISC);
       if (useAbsolute) {
         sample(j) = cost;
       } else {
@@ -136,9 +136,8 @@ arma::frowvec BanditPAM::buildTarget(
   for (size_t i = 0; i < target->n_rows; i++) {
     float total = 0;
     for (size_t j = 0; j < referencePoints.n_rows; j++) {
-      float cost =
-        KMedoids::cachedLoss(data, distMat, (*target)(i), referencePoints(j),
-                             AlgorithmStep::BUILD);
+      float cost = KMedoids::cachedLoss(
+        data, distMat, (*target)(i), referencePoints(j), AlgorithmStep::BUILD);
       if (useAbsolute) {
         total += cost;
       } else {
@@ -286,8 +285,8 @@ arma::fmat BanditPAM::swapSigma(
 
     // calculate change in loss for some subset of the data
     for (size_t j = 0; j < batchSize; j++) {
-      float cost =
-        KMedoids::cachedLoss(data, distMat, n, referencePoints(j), AlgorithmStep::MISC);
+      float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j),
+                                        AlgorithmStep::MISC);
 
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
@@ -365,9 +364,8 @@ arma::fmat BanditPAM::swapTarget(
   for (size_t i = 0; i < T; i++) {
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t j = 0; j < tmpBatchSize; j++) {
-      float cost =
-        KMedoids::cachedLoss(data, distMat, (*targets)(i), referencePoints(j),
-                             AlgorithmStep::SWAP);
+      float cost = KMedoids::cachedLoss(
+        data, distMat, (*targets)(i), referencePoints(j), AlgorithmStep::SWAP);
       size_t k = (*assignments)(referencePoints(j));
       if (cost < (*bestDistances)(referencePoints(j))) {
         // We might be able to change this to

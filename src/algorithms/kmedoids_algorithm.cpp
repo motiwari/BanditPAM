@@ -268,8 +268,8 @@ void KMedoids::calcBestDistancesSwap(
     float best = std::numeric_limits<float>::infinity();
     float second = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < medoidIndices->n_cols; k++) {
-      float cost =
-        KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k), AlgorithmStep::MISC);
+      float cost = KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k),
+                                        AlgorithmStep::MISC);
       if (cost < best) {
         (*assignments)(i) = k;
         second = best;
@@ -298,9 +298,8 @@ float KMedoids::calcLoss(
   for (size_t i = 0; i < data.n_cols; i++) {
     float cost = std::numeric_limits<float>::infinity();
     for (size_t k = 0; k < nMedoids; k++) {
-      float currCost =
-        KMedoids::cachedLoss(data, distMat, i, (*medoidIndices)(k),
-                             AlgorithmStep::MISC);
+      float currCost = KMedoids::cachedLoss(
+        data, distMat, i, (*medoidIndices)(k), AlgorithmStep::MISC);
       if (currCost < cost) {
         cost = currCost;
       }
@@ -324,7 +323,8 @@ float KMedoids::cachedLoss(
   } else if (step == AlgorithmStep::SWAP) {
     numSwapDistanceComputations++;
   } else {
-    throw std::invalid_argument("Unknown AlgorithmStep in KMedoids::cachedLoss");
+    throw std::invalid_argument(
+      "Unknown AlgorithmStep in KMedoids::cachedLoss");
   }
 
   if (this->useDistMat) {
@@ -388,15 +388,16 @@ float KMedoids::cos(const arma::fmat &data, const size_t i,
 }
 
 float KMedoids::clippedCos(const arma::fmat &data, const size_t i,
-                    const size_t j) const {
+                           const size_t j) const {
   // Calculate the cosine distance
   float cos = (arma::dot(data.col(i), data.col(j)) /
-                           (arma::norm(data.col(i)) * arma::norm(data.col(j))));
-  
+               (arma::norm(data.col(i)) * arma::norm(data.col(j))));
+
   if (cos < 0.3) {
-    return 1; // Cosine distance is too large, so we consider the similarity as zero
+    return 1;  // Cosine distance is too large, so we consider the similarity as
+               // zero
   } else {
-    return 1 - cos; // Cosine distance is within the threshold, return it
+    return 1 - cos;  // Cosine distance is within the threshold, return it
   }
 }
 
@@ -405,26 +406,29 @@ float KMedoids::manhattan(const arma::fmat &data, const size_t i,
   return arma::accu(arma::abs(data.col(i) - data.col(j)));
 }
 
-float KMedoids::pearson(const arma::fmat &data, const size_t i, const size_t j) const {
-  const arma::fvec& xi = data.col(i);
-  const arma::fvec& xj = data.col(j);
+float KMedoids::pearson(const arma::fmat &data, const size_t i,
+                        const size_t j) const {
+  const arma::fvec &xi = data.col(i);
+  const arma::fvec &xj = data.col(j);
   float mean_i = arma::mean(xi);
   float mean_j = arma::mean(xj);
   float numerator = arma::dot(xi - mean_i, xj - mean_j);
-  float denominator = std::sqrt(arma::dot(xi - mean_i, xi - mean_i) * arma::dot(xj - mean_j, xj - mean_j));
+  float denominator = std::sqrt(arma::dot(xi - mean_i, xi - mean_i) *
+                                arma::dot(xj - mean_j, xj - mean_j));
   return 1 - numerator / denominator;
 }
 
-arma::fvec KMedoids::rank(const arma::fvec& vec) const {
+arma::fvec KMedoids::rank(const arma::fvec &vec) const {
   arma::uvec sortedIndices = arma::sort_index(vec);
   arma::fvec ranks(vec.size());
   for (size_t i = 0; i < vec.size(); ++i) {
-      ranks(sortedIndices(i)) = i + 1;
+    ranks(sortedIndices(i)) = i + 1;
   }
   return ranks;
 }
 
-float KMedoids::spearman(const arma::fmat &data, const size_t i, const size_t j) const {
+float KMedoids::spearman(const arma::fmat &data, const size_t i,
+                         const size_t j) const {
   arma::fvec rank_i = rank(data.col(i));
   arma::fvec rank_j = rank(data.col(j));
   return pearson(arma::join_rows(rank_i, rank_j), 0, 1);

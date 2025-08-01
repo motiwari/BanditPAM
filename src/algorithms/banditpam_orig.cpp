@@ -89,8 +89,8 @@ arma::frowvec BanditPAM_orig::buildSigma(
   for (size_t i = 0; i < N; i++) {
     for (size_t j = 0; j < batchSize; j++) {
       // 0 for MISC
-      float cost =
-        KMedoids::cachedLoss(data, distMat, i, referencePoints(j), km::AlgorithmStep::MISC);
+      float cost = KMedoids::cachedLoss(data, distMat, i, referencePoints(j),
+                                        km::AlgorithmStep::MISC);
       if (useAbsolute) {
         sample(j) = cost;
       } else {
@@ -138,9 +138,8 @@ arma::frowvec BanditPAM_orig::buildTarget(
   for (size_t i = 0; i < target->n_rows; i++) {
     float total = 0;
     for (size_t j = 0; j < referencePoints.n_rows; j++) {
-      float cost =
-        KMedoids::cachedLoss(data, distMat, (*target)(i), referencePoints(j),
-                             AlgorithmStep::BUILD);
+      float cost = KMedoids::cachedLoss(
+        data, distMat, (*target)(i), referencePoints(j), AlgorithmStep::BUILD);
       if (useAbsolute) {
         total += cost;
       } else {
@@ -288,8 +287,8 @@ arma::fmat BanditPAM_orig::swapSigma(
 
     // calculate change in loss for some subset of the data
     for (size_t j = 0; j < batchSize; j++) {
-      float cost =
-        KMedoids::cachedLoss(data, distMat, n, referencePoints(j), AlgorithmStep::MISC);
+      float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j),
+                                        AlgorithmStep::MISC);
 
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
@@ -353,8 +352,8 @@ arma::fvec BanditPAM_orig::swapTarget(
     size_t k = (*targets)(i) % medoidIndices->n_cols;
     // calculate total loss for some subset of the data
     for (size_t j = 0; j < tmpBatchSize; j++) {
-      float cost =
-        KMedoids::cachedLoss(data, distMat, n, referencePoints(j), AlgorithmStep::SWAP);
+      float cost = KMedoids::cachedLoss(data, distMat, n, referencePoints(j),
+                                        AlgorithmStep::SWAP);
       if (k == (*assignments)(referencePoints(j))) {
         if (cost < (*secondBestDistances)(referencePoints(j))) {
           total += cost;
