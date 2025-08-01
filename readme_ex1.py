@@ -18,9 +18,8 @@ print(kmed.labels)  # prints cluster assignments [0] * 40 + [1] * 40 + [2] * 40
 # Visualize the data and the medoids:
 for p_idx, point in enumerate(X):
     if p_idx in map(int, kmed.medoids):
-        plt.scatter(X[p_idx, 0], X[p_idx, 1], color='red', s = 40)
+        plt.scatter(X[p_idx, 0], X[p_idx, 1], color='red', s=40)
     else:
-        plt.scatter(X[p_idx, 0], X[p_idx, 1], color='blue', s = 10)
+        plt.scatter(X[p_idx, 0], X[p_idx, 1], color='blue', s=10)
 
 plt.show()
-
