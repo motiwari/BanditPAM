@@ -502,9 +502,8 @@ def main():
             "headers",
             os.path.join("headers", "algorithms"),
             os.path.join("headers", "python_bindings"),
-            os.path.join("../", "carma", "include"),
-            # os.path.join("headers", "carma", "include"),
-            # os.path.join("headers", "carma", "include", "carma_bits"),
+            os.path.join("headers", "carma", "include"),
+            os.path.join("headers", "carma", "include", "carma_bits"),
             os.path.join("/", "usr", "local", "include"),
         
         ]

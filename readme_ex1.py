@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 # Generate data from a Gaussian Mixture Model with the given means:
 np.random.seed(0)
 n_per_cluster = 40
-means = np.array([[0,0], [-5,5], [5,5]])
+means = np.array([[0, 0], [-5, 5], [5, 5]])
 X = np.vstack([np.random.randn(n_per_cluster, 2) + mu for mu in means])
 
 # Fit the data with BanditPAM:
