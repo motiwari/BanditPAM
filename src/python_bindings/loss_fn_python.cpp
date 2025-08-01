@@ -34,4 +34,4 @@ std::string km::KMedoidsWrapper::getLossFn() const {
       throw std::invalid_argument("Error: Loss Function Undefined!");
   }
 }
-}  // namespace km 
+}  // namespace km

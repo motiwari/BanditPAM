@@ -447,7 +447,8 @@ class BuildExt(build_ext):
                 for package in ["libomp"]:
                     package_prefix = get_package_prefix(package)
                     comp_opts.append("-I{}/include".format(package_prefix))
-                    comp_opts.append("-L{}/lib".format(package_prefix))  # Remove?
+                    # Remove addition to comp_opts?
+                    comp_opts.append("-L{}/lib".format(package_prefix))
                     link_opts.append("-L{}/lib".format(package_prefix))
         elif sys.platform == "linux":
             link_opts += ["-lm", "-lpthread"]
@@ -456,10 +457,10 @@ class BuildExt(build_ext):
 
         compiler_name = compiler_check()
         # if sys.platform == "darwin":
-            # if compiler_name == "gcc":
-            #      link_opts.append("-lomp")
-            # else:
-            #     link_opts.append("-lomp")
+        #     if compiler_name == "gcc":
+        #         link_opts.append("-lomp")
+        #     else:
+        #         link_opts.append("-lomp")
         if sys.platform == "linux" or sys.platform == "linux2":
             if compiler_name == "gcc":
                 link_opts += ["-lgomp", "-lm", "-lpthread"]
@@ -488,8 +489,8 @@ class BuildExt(build_ext):
             ext.extra_link_args = link_opts
             ext.extra_link_args += [
                 "-v",
-            ] # "-arch", "x86_64"]
-            ext.extra_link_args =  link_opts
+            ]  # "-arch", "x86_64"]
+            ext.extra_link_args = link_opts
 
         build_ext.build_extensions(self)
 
@@ -502,11 +503,9 @@ def main():
             "headers",
             os.path.join("headers", "algorithms"),
             os.path.join("headers", "python_bindings"),
-            os.path.join("../", "carma", "include"),
-            # os.path.join("headers", "carma", "include"),
-            # os.path.join("headers", "carma", "include", "carma_bits"),
+            os.path.join("headers", "carma", "include"),
+            os.path.join("headers", "carma", "include", "carma_bits"),
             os.path.join("/", "usr", "local", "include"),
-        
         ]
     elif sys.platform == "darwin":  # OSX
         include_dirs = [
@@ -562,8 +561,8 @@ def main():
 
     compiler_name = compiler_check()
     if sys.platform == "darwin" and os.environ.get(GHA, False):
-        # Do NOT link omp here because it'll add an -lomp flag to dynamically link it
-        #  (and we want to statically link it)
+        # Do NOT link omp here because it'll add an -lomp flag to
+        #  dynamically link it (and we want to statically link it)
         libraries = ["armadillo"]
     elif sys.platform == "win32":
         libraries = ["libopenblas"]
@@ -612,7 +611,6 @@ def main():
                 os.path.join(
                     "src", "python_bindings", "swap_times_python.cpp"
                 ),
-                
             ],
             include_dirs=include_dirs,
             library_dirs=library_dirs,

@@ -31,11 +31,7 @@ enum class LossType {
 /**
  * @brief Enum for different distance categories
  */
-enum class AlgorithmStep {
-  MISC,
-  BUILD,
-  SWAP
-};
+enum class AlgorithmStep { MISC, BUILD, SWAP };
 
 /**
  * @brief KMedoids class. Creates a KMedoids object that can be used to find the
@@ -468,7 +464,7 @@ class KMedoids {
    * @returns The Manhattan distance between points i and j
    */
   float manhattan(const arma::fmat &data, const size_t i, const size_t j) const;
-    
+
   /**
    * @brief Assigns ranks to each element in the input vector.
    * Smallest element receives rank 1, the next 2, and so on.
@@ -476,9 +472,10 @@ class KMedoids {
    *
    * @param vec A vector containing the elements to be ranked.
    *
-   * @returns A vector of the same size as `vec`, with each element replaced by its rank.
+   * @returns A vector of the same size as `vec`, with each element replaced by
+   * its rank.
    */
-  arma::fvec rank(const arma::fvec& vec) const;
+  arma::fvec rank(const arma::fvec &vec) const;
 
   /**
    * @brief Computes the Pearson correlation between the
@@ -491,7 +488,8 @@ class KMedoids {
    * @returns The Pearson correlation between points i and j
    */
   float pearson(const arma::fmat &data, const size_t i, const size_t j) const;
-  float clippedCos(const arma::fmat &data, const size_t i, const size_t j) const;
+  float clippedCos(const arma::fmat &data, const size_t i,
+                   const size_t j) const;
 
   /**
    * @brief Computes the Spearman correlation between the
@@ -517,7 +515,7 @@ class KMedoids {
 
   /**
    * @brief Converts a string loss function name to LossType enum
-   * 
+   *
    * @param loss The loss function string
    * @returns The corresponding LossType enum value
    */
