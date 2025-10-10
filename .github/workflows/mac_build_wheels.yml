@@ -19,7 +19,7 @@ jobs:
       # Force compilation with LLVM's clang because Apple clang doesn't work well
       - name: Install MacOS dependencies
         run: |
-          brew install libomp armadillo llvm
+          brew install libomp armadillo llvm carma
           brew link llvm --force
           brew link armadillo --force
 

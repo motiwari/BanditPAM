@@ -104,5 +104,11 @@ PYBIND11_MODULE(banditpam, m) {
   // Swap timing functions
   time_per_swap_python(&cls);
   total_swap_time_python(&cls);
+
+  // Sparse matrix support
+  cls.def("fit_sparse", &KMedoidsWrapper::fit_sparse,
+        "Fit K-Medoids model to sparse data");
+  cls.def("predict_sparse", &KMedoidsWrapper::predict_sparse,
+        "Predict cluster labels for new sparse data points");
 }
 }  // namespace km

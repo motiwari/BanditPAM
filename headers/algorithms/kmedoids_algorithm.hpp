@@ -359,6 +359,13 @@ class KMedoids {
   /// Determines whether we use a user-provided distance matrix
   bool useDistMat = false;
 
+  /**
+   * @brief Returns the data matrix.
+   *
+   * @returns The data matrix
+   */
+  arma::fmat getData() const;
+
  protected:
   /**
    * @brief Calculates the best and second best distances for each datapoint to

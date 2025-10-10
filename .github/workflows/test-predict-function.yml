@@ -32,11 +32,12 @@ jobs:
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install setuptools wheel pybind11 numpy
+        pip install setuptools wheel pybind11 numpy carma
     
     - name: Build BanditPAM
       run: |
         export GITHUB_ACTIONS=true
+        export CPLUS_INCLUDE_PATH=/usr/local/include/carma
         python setup.py build_ext --inplace
     
     - name: Test Predict Function

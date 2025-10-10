@@ -600,6 +600,9 @@ def main():
                     "src", "python_bindings", "kmedoids_pywrapper.cpp"
                 ),
                 os.path.join("src", "python_bindings", "predict_python.cpp"),
+                os.path.join(
+                    "src", "python_bindings", "sparse_support_python.cpp"
+                ),
                 os.path.join("src", "python_bindings", "medoids_python.cpp"),
                 os.path.join(
                     "src", "python_bindings", "build_medoids_python.cpp"
@@ -647,13 +650,37 @@ def main():
         maintainer="Mo Tiwari",
         author_email="motiwari@stanford.edu",
         url="https://github.com/motiwari/BanditPAM",
+        description="BanditPAM: Almost Linear-Time k-Medoids Clustering",
         long_description=long_description,
+        long_description_content_type="text/x-rst",
         ext_modules=ext_modules,
-        setup_requires=["pybind11>=3.0.0", "numpy>=1.18"],
+        setup_requires=["pybind11>=3.0.0", "numpy>=1.18.0"],
+        install_requires=["numpy>=1.18.0"],
+        extras_require={
+            'plotting': ['matplotlib>=3.0.0'],
+            'examples': ['pandas>=1.0.0', 'scikit-learn>=0.24.0', 'matplotlib>=3.0.0'],
+            'dev': ['pytest>=6.0.0', 'black', 'flake8']
+        },
         data_files=my_data_files,
         include_package_data=True,
         cmdclass={"build_ext": BuildExt},
         zip_safe=False,
+        python_requires=">=3.7",
+        classifiers=[
+            "Development Status :: 4 - Beta",
+            "Intended Audience :: Developers",
+            "Intended Audience :: Science/Research",
+            "License :: OSI Approved :: MIT License",
+            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: 3.7",
+            "Programming Language :: Python :: 3.8",
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
+            "Programming Language :: Python :: 3.11",
+            "Programming Language :: C++",
+            "Topic :: Scientific/Engineering",
+            "Topic :: Scientific/Engineering :: Artificial Intelligence",
+        ],
         headers=[
             os.path.join("headers", "algorithms", "kmedoids_algorithm.hpp"),
             os.path.join("headers", "algorithms", "banditpam.hpp"),
