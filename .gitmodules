@@ -14,3 +14,6 @@
 [submodule "headers/carma"]
 	path = headers/carma
 	url = https://github.com/RUrlus/carma.git
+[submodule "src/python_bindings/headers/carma"]
+	path = src/python_bindings/headers/carma
+	url = https://github.com/RUrlus/carma.git
