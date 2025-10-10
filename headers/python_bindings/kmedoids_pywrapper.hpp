@@ -132,6 +132,13 @@ class KMedoidsWrapper : public km::KMedoids {
    * The average time per swap step by the last call to .fit()
    */
   float getTimePerSwapPython();
+
+  void predict(const arma::Mat<double> &X_new);
+  const std::vector<size_t>& get_predict_labels() const;
+
+
+  private:
+  std::vector<size_t> labels_predict;   
 };
 
 // TODO(@motiwari): Encapsulate these

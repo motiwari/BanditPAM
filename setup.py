@@ -599,6 +599,7 @@ def main():
                 os.path.join(
                     "src", "python_bindings", "kmedoids_pywrapper.cpp"
                 ),
+                os.path.join("src", "python_bindings", "predict_python.cpp"),
                 os.path.join("src", "python_bindings", "medoids_python.cpp"),
                 os.path.join(
                     "src", "python_bindings", "build_medoids_python.cpp"

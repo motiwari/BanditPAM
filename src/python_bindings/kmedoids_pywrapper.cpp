@@ -82,6 +82,16 @@ PYBIND11_MODULE(banditpam, m) {
   loss_python(&cls);
   build_loss_python(&cls);
 
+  // Predict function binding
+  cls.def("predict", [](KMedoidsWrapper& self, const pybind11::array_t<double>& X_new) {
+    // Convert numpy array to Armadillo matrix
+    auto X_new_mat = carma::arr_to_mat<double>(X_new);
+    self.predict(X_new_mat);
+  }, "Predict cluster labels for new data points", pybind11::arg("X_new"));
+
+  cls.def_property_readonly("labels_predict", &KMedoidsWrapper::get_predict_labels,
+    "Cluster labels for predicted data points");
+
   // Cache functions
   distance_computations_python(&cls);
   misc_distance_computations_python(&cls);
