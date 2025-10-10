@@ -62,7 +62,7 @@ def test_predict_functionality():
         print("✓ Successfully fitted the model")
         
         # Get the final medoids
-        medoids = kmedoids.medoids_final
+        medoids = kmedoids.medoids
         print(f"✓ Final medoids: {medoids}")
         
         # Test predict function
