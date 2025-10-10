@@ -34,7 +34,7 @@ def test_predict_functionality():
     cluster2 = np.random.normal([5, 5], 0.5, (n_samples//3, n_features))
     cluster3 = np.random.normal([10, 0], 0.5, (n_samples//3, n_features))
     
-    X_train = np.vstack([cluster1, cluster2, cluster3]).astype(np.float64)
+    X_train = np.vstack([cluster1, cluster2, cluster3]).astype(np.float32)
     
     print(f"Training data shape: {X_train.shape}")
     print(f"Training data type: {X_train.dtype}")
@@ -45,7 +45,7 @@ def test_predict_functionality():
         [5.1, 5.1],    # Should go to cluster 1 (near cluster2)
         [10.1, 0.1],   # Should go to cluster 2 (near cluster3)
         [2.5, 2.5],    # Should go to cluster 0 (between cluster1 and cluster2, closer to cluster1)
-    ]).astype(np.float64)
+    ]).astype(np.float32)
     
     print(f"Test data shape: {X_test.shape}")
     print(f"Test data:\n{X_test}")
@@ -111,7 +111,7 @@ def test_error_handling():
         
         # Test 1: Predict without fitting
         try:
-            X_test = np.random.random((5, 2)).astype(np.float64)
+            X_test = np.random.random((5, 2)).astype(np.float32)
             kmedoids.predict(X_test)
             print("✗ Should have raised error for unfitted model")
             return False
@@ -120,8 +120,8 @@ def test_error_handling():
         
         # Test 2: Wrong feature dimensions
         try:
-            X_train = np.random.random((50, 3)).astype(np.float64)
-            X_test = np.random.random((5, 2)).astype(np.float64)  # Wrong number of features
+            X_train = np.random.random((50, 3)).astype(np.float32)
+            X_test = np.random.random((5, 2)).astype(np.float32)  # Wrong number of features
             
             kmedoids.fit(X_train, "L2")
             kmedoids.predict(X_test)
@@ -143,11 +143,11 @@ def test_different_loss_functions():
     # Create simple data
     X_train = np.array([
         [0, 0], [1, 1], [10, 10], [11, 11]
-    ]).astype(np.float64)
+    ]).astype(np.float32)
     
     X_test = np.array([
         [0.5, 0.5], [10.5, 10.5]
-    ]).astype(np.float64)
+    ]).astype(np.float32)
     
     loss_functions = ["L1", "L2", "euclidean", "manhattan"]
     

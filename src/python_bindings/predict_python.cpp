@@ -4,7 +4,7 @@
 #include <iostream>
 #include <limits>
 
-void KMedoidsWrapper::predict(const arma::Mat<double> &X_new) {
+void KMedoidsWrapper::predict(const arma::fmat &X_new) {
     // Check if model has been fitted
     if (this->medoidIndicesFinal.empty()) {
         throw std::runtime_error("Model has not been fitted yet. Call fit() first.");

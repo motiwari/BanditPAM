@@ -133,7 +133,7 @@ class KMedoidsWrapper : public km::KMedoids {
    */
   float getTimePerSwapPython();
 
-  void predict(const arma::Mat<double> &X_new);
+  void predict(const arma::fmat &X_new);
   const std::vector<size_t>& get_predict_labels() const;
 
 

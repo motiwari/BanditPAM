@@ -400,7 +400,7 @@ class BuildExt(build_ext):
         c_opts["unix"] += darwin_opts
         l_opts["unix"] += darwin_opts
     elif sys.platform == "linux" or sys.platform == "linux2":
-        if is_ubuntu():
+        if is_ubuntu() and not os.environ.get("GITHUB_ACTIONS", False):
             install_check_ubuntu()
 
         linux_opts = ["-O3"]
