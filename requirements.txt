@@ -1,12 +1,20 @@
 # Core dependencies
-pybind11>=3.0.0
 numpy>=1.18.0
+pybind11>=2.10.0
 
-# Optional dependencies for examples and testing
+# Build dependencies
+setuptools>=45.0.0
+wheel
+
+# Optional dependencies for examples and development
+# These can be installed with: pip install banditpam[all]
 matplotlib>=3.0.0
 pandas>=1.0.0
 scikit-learn>=0.24.0
 
-# Development dependencies (only needed for building from source)
-# cmake>=3.17.0  # System dependency, not pip installable
-# setuptools>=45.0.0  # Usually included with Python
+# Development dependencies  
+# Install with: pip install banditpam[dev]
+pytest>=6.0.0
+black
+flake8
+mypy

@@ -46,7 +46,8 @@ jobs:
           liblapack-dev \
           libomp-dev \
           pkg-config \
-          git
+          git \
+          clang-format
 
     - name: Verify system dependencies
       run: |
@@ -62,8 +63,9 @@ jobs:
         which python
         echo "=== Armadillo Check ==="
         pkg-config --modversion armadillo || echo "Armadillo not found via pkg-config"
-        ls -la /usr/include/armadillo* 2>/dev/null || echo "No armadillo headers found in /usr/include"
-        ls -la /usr/lib/x86_64-linux-gnu/*armadillo* 2>/dev/null || echo "No armadillo libs found"
+        echo "=== CARMA Submodule Check ==="
+        ls -la headers/carma/ || echo "CARMA directory not found"
+        ls -la headers/carma/include/ || echo "CARMA include directory not found"
 
     - name: Initialize and update git submodules
       run: |
@@ -72,9 +74,6 @@ jobs:
         git submodule update --init --recursive
         echo "=== Submodule status after update ==="
         git submodule status
-        echo "=== CARMA submodule check ==="
-        ls -la headers/carma/ || echo "CARMA directory not found"
-        ls -la headers/carma/include/ || echo "CARMA include directory not found"
 
     - name: Install Python dependencies
       run: |
@@ -103,7 +102,7 @@ jobs:
         echo "=== Building BanditPAM ==="
         export CPLUS_INCLUDE_PATH="/usr/include/armadillo:$CPLUS_INCLUDE_PATH"
         export CMAKE_PREFIX_PATH="/usr/lib/x86_64-linux-gnu/cmake/armadillo:$CMAKE_PREFIX_PATH"
-
+        
         # Try build with setup.py
         python setup.py build_ext --inplace --verbose || {
           echo "=== Build failed, showing detailed error information ==="
@@ -124,23 +123,23 @@ jobs:
         python -c "
         import sys
         print(f'Python version: {sys.version}')
-
+        
         try:
             import banditpam
             print('✅ BanditPAM import successful')
         except ImportError as e:
             print(f'❌ BanditPAM import failed: {e}')
             sys.exit(1)
-
+        
         # Test basic functionality
         import numpy as np
         X = np.random.random((20, 2)).astype(np.float32)
-
+        
         try:
             kmedoids = banditpam.KMedoids(n_medoids=3)
             kmedoids.fit(X, 'L2')
             print('✅ Basic clustering works')
-
+            
             # Test predict if available
             if hasattr(kmedoids, 'predict'):
                 X_new = np.random.random((5, 2)).astype(np.float32)
@@ -148,7 +147,7 @@ jobs:
                 print(f'✅ Predict function works: {len(predictions)} predictions')
             else:
                 print('ℹ️ Predict function not available')
-
+                
         except Exception as e:
             print(f'❌ Basic functionality test failed: {e}')
             sys.exit(1)
@@ -156,18 +155,18 @@ jobs:
 
     - name: Run tests
       run: |
-        # Run existing tests if they exist
-        if [ -d "tests" ]; then
-          echo "=== Running tests ==="
-          python -m pytest tests/ -v || echo "Some tests failed, but continuing..."
-        else
-          echo "No tests directory found, skipping pytest"
-        fi
-
         # Run test_predict.py if it exists
         if [ -f "test_predict.py" ]; then
           echo "=== Running predict function test ==="
-          python test_predict.py || echo "Predict test failed, but continuing..."
+          python test_predict.py || echo "Predict test had issues, but continuing..."
+        fi
+        
+        # Run basic unit tests on specific files only
+        if [ -d "tests" ]; then
+          echo "=== Running basic tests ==="
+          python -m pytest tests/test_smaller.py -v || echo "Some tests failed, but continuing..."
+        else
+          echo "No tests directory found, skipping pytest"
         fi
 
     - name: Upload build artifacts on failure

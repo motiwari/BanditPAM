@@ -18,17 +18,16 @@ __version__ = "6.0.3"
 
 # System detection
 IS_WINDOWS = platform.system() == "Windows"
-IS_MACOS = platform.system() == "Darwin"
+IS_MACOS = platform.system() == "Darwin"  
 IS_LINUX = platform.system() == "Linux"
 IS_GITHUB_ACTIONS = os.environ.get("GITHUB_ACTIONS", "false").lower() == "true"
-
 
 def check_system_requirements():
     """Check and report system requirements."""
     requirements = {
         "cmake": {"cmd": "cmake --version", "version_pattern": r"version (\d+\.\d+)"},
         "make": {
-            "cmd": "make --version" if not IS_WINDOWS else "nmake /?",
+            "cmd": "make --version" if not IS_WINDOWS else "nmake /?", 
             "optional": IS_WINDOWS,
         },
         "git": {"cmd": "git --version", "version_pattern": r"version (\d+\.\d+)"},
@@ -49,7 +48,6 @@ def check_system_requirements():
                 missing_requirements.append(tool)
 
     return missing_requirements
-
 
 def install_system_requirements():
     """Attempt to install missing system requirements."""
@@ -75,26 +73,21 @@ def install_system_requirements():
 
     return False
 
-
 def get_pybind_include():
     """Get pybind11 include directory."""
     try:
         import pybind11
-
         return pybind11.get_include()
     except ImportError:
         return None
-
 
 def get_numpy_include():
     """Get numpy include directory."""
     try:
         import numpy as np
-
         return np.get_include()
     except ImportError:
         return None
-
 
 def find_armadillo():
     """Find Armadillo installation."""
@@ -103,7 +96,7 @@ def find_armadillo():
         "/usr/include/armadillo",
         "/usr/local/include/armadillo",
         "/opt/homebrew/include/armadillo",  # M1 Mac
-        "/usr/local/Cellar/armadillo",  # Intel Mac
+        "/usr/local/Cellar/armadillo",     # Intel Mac
     ]
 
     if IS_WINDOWS:
@@ -120,24 +113,22 @@ def find_armadillo():
 
     return None
 
-
 class BanditPAMBuildExt(build_ext):
     """Custom build extension for BanditPAM."""
 
     def build_extensions(self):
         # Check system requirements
         missing_reqs = check_system_requirements()
-        if missing_reqs:
+        if missing_reqs and not IS_GITHUB_ACTIONS:
             print(f"\n❌ Missing system requirements: {', '.join(missing_reqs)}")
             print("\n🔧 Please install the missing requirements and try again.")
             install_system_requirements()
-            if not IS_GITHUB_ACTIONS:  # Don't fail in CI, let it try anyway
-                sys.exit(1)
+            sys.exit(1)
 
         # Setup compiler flags
         c_opts = {
             "msvc": ["/EHsc", "/std:c++17", "/O2"],
-            "unix": ["-std=c++17", "-O3", "-ffast-math", "-march=native"],
+            "unix": ["-std=c++17", "-O3", "-ffast-math"],
         }
 
         l_opts = {"msvc": [], "unix": []}
@@ -145,8 +136,6 @@ class BanditPAMBuildExt(build_ext):
         # Platform-specific configurations
         if self.compiler.compiler_type == "msvc":
             c_opts["msvc"].extend(["/DWIN32", "/D_WINDOWS", "/DNOMINMAX"])
-            if IS_GITHUB_ACTIONS:
-                c_opts["msvc"].remove("-march=native")  # Remove for CI
         else:
             c_opts["unix"].extend(["-fPIC", "-Wno-unused-function"])
             if IS_MACOS:
@@ -173,6 +162,10 @@ class BanditPAMBuildExt(build_ext):
                 c_opts["unix"].extend(["-fopenmp"])
                 l_opts["unix"].extend(["-fopenmp"])
 
+        # Don't use -march=native in GitHub Actions
+        if IS_GITHUB_ACTIONS and "-march=native" in c_opts["unix"]:
+            c_opts["unix"].remove("-march=native")
+
         # Apply flags to all extensions
         ct = self.compiler.compiler_type
         opts = c_opts.get(ct, [])
@@ -193,30 +186,39 @@ class BanditPAMBuildExt(build_ext):
                 ext.include_dirs.append(numpy_include)
             if armadillo_include:
                 ext.include_dirs.append(armadillo_include)
-                ext.libraries.extend(["armadillo"])
+                if not IS_WINDOWS:
+                    ext.libraries.extend(["armadillo"])
 
         super().build_extensions()
-
 
 def get_extensions():
     """Define extensions to build."""
 
-    # Source files
+    # ALL source files - this was missing many files in your version
     source_files = [
         "src/algorithms/kmedoids_algorithm.cpp",
-        "src/algorithms/pam.cpp",
+        "src/algorithms/pam.cpp", 
         "src/algorithms/banditpam.cpp",
         "src/algorithms/banditpam_orig.cpp",
         "src/algorithms/fastpam1.cpp",
         "src/python_bindings/kmedoids_pywrapper.cpp",
         "src/python_bindings/predict_python.cpp",
         "src/python_bindings/sparse_support_python.cpp",
+        "src/python_bindings/medoids_python.cpp",
+        "src/python_bindings/build_medoids_python.cpp",
+        "src/python_bindings/loss_python.cpp",
+        "src/python_bindings/build_loss_python.cpp",
+        "src/python_bindings/distance_computations_python.cpp",
+        "src/python_bindings/misc_distance_computations_python.cpp",
+        "src/python_bindings/cache_python.cpp",
+        "src/python_bindings/time_per_swap_python.cpp",
+        "src/python_bindings/total_swap_time_python.cpp"
     ]
 
     # Include directories
     include_dirs = [
         "headers/algorithms",
-        "headers/python_bindings",
+        "headers/python_bindings", 
         "headers/carma/include",
         get_pybind_include(),
     ]
@@ -234,12 +236,11 @@ def get_extensions():
         source_files,
         include_dirs=include_dirs,
         libraries=libraries,
-        language="c++",
+        language='c++',
         cxx_std=17,
     )
 
     return [ext]
-
 
 def main():
     """Main setup function."""
@@ -268,10 +269,12 @@ def main():
             "Documentation": "https://banditpam.readthedocs.io/",
             "Source Code": "https://github.com/motiwari/BanditPAM",
         },
+
         # Package configuration
         packages=find_packages(),
         ext_modules=get_extensions(),
         cmdclass={"build_ext": BanditPAMBuildExt},
+
         # Dependencies
         python_requires=">=3.8",
         setup_requires=[
@@ -290,16 +293,17 @@ def main():
             "dev": ["pytest>=6.0.0", "black", "flake8", "mypy"],
             "all": ["matplotlib>=3.0.0", "pandas>=1.0.0", "scikit-learn>=0.24.0"],
         },
+
         # Metadata
         classifiers=[
             "Development Status :: 4 - Beta",
-            "Intended Audience :: Developers",
+            "Intended Audience :: Developers", 
             "Intended Audience :: Science/Research",
             "License :: OSI Approved :: MIT License",
             "Operating System :: OS Independent",
             "Programming Language :: Python :: 3",
             "Programming Language :: Python :: 3.8",
-            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.9", 
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
             "Programming Language :: Python :: 3.12",
@@ -312,7 +316,6 @@ def main():
         zip_safe=False,
         include_package_data=True,
     )
-
 
 if __name__ == "__main__":
     main()
