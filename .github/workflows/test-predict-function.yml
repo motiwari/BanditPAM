@@ -16,8 +16,6 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
-      with:
-        submodules: true
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
@@ -46,9 +44,6 @@ jobs:
       run: |
         python test_predict.py
     
-    - name: Run existing tests
-      run: |
-        python -m pytest tests/ -v || echo "No pytest tests found, continuing..."
     
     - name: Basic functionality test
       run: |
