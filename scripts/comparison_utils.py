@@ -2,9 +2,7 @@ from banditpam import KMedoids
 
 
 def print_results(kmed: KMedoids, runtime: float):
-    complexity_with_caching = (
-        kmed.getDistanceComputations(True) - kmed.cache_hits
-    )
+    complexity_with_caching = kmed.getDistanceComputations(True) - kmed.cache_hits
     print("-----Results-----")
     print("Algorithm:", kmed.algorithm)
     print("Final Medoids:", kmed.medoids)

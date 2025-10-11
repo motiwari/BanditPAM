@@ -74,41 +74,134 @@ PYBIND11_MODULE(banditpam, m) {
                    &KMedoidsWrapper::setSeed);
 
   // Other functions
-  medoids_python(&cls);
-  build_medoids_python(&cls);
-  labels_python(&cls);
-  steps_python(&cls);
-  fit_python(&cls);
-  loss_python(&cls);
-  build_loss_python(&cls);
+  cls.def("fit", &KMedoidsWrapper::fitPython, "Fit K-Medoids model to data");
+  cls.def_property_readonly("medoids", &KMedoidsWrapper::getMedoidsFinalPython,
+                            "Final medoids");
+  cls.def_property_readonly(
+    "build_medoids", &KMedoidsWrapper::getMedoidsBuildPython, "Build medoids");
+  cls.def_property_readonly("labels", &KMedoidsWrapper::getLabelsPython,
+                            "Cluster assignments");
+  cls.def_property_readonly("steps", &KMedoidsWrapper::getStepsPython,
+                            "Number of swap steps");
+  cls.def_property_readonly("loss", &KMedoidsWrapper::getLossPython,
+                            "Average loss");
+  cls.def_property_readonly("build_loss", &KMedoidsWrapper::getBuildLossPython,
+                            "Loss after build step");
+  cls.def_property_readonly("distance_computations",
+                            &KMedoidsWrapper::getDistanceComputationsPython,
+                            "Number of distance computations");
+  cls.def_property_readonly("misc_distance_computations",
+                            &KMedoidsWrapper::getMiscDistanceComputationsPython,
+                            "Number of misc distance computations");
+  cls.def_property_readonly(
+    "build_distance_computations",
+    &KMedoidsWrapper::getBuildDistanceComputationsPython,
+    "Number of build distance computations");
+  cls.def_property_readonly("swap_distance_computations",
+                            &KMedoidsWrapper::getSwapDistanceComputationsPython,
+                            "Number of swap distance computations");
+  cls.def_property_readonly("cache_writes",
+                            &KMedoidsWrapper::getCacheWritesPython,
+                            "Number of cache writes");
+  cls.def_property_readonly("cache_hits", &KMedoidsWrapper::getCacheHitsPython,
+                            "Number of cache hits");
+  cls.def_property_readonly("cache_misses",
+                            &KMedoidsWrapper::getCacheMissesPython,
+                            "Number of cache misses");
+  cls.def_property_readonly(
+    "time_per_swap", &KMedoidsWrapper::getTimePerSwapPython, "Time per swap");
+  cls.def_property_readonly("total_swap_time",
+                            &KMedoidsWrapper::getTotalSwapTimePython,
+                            "Total swap time");
 
   // Predict function binding
-  cls.def("predict", [](KMedoidsWrapper& self, const pybind11::array_t<float>& X_new) {
-    // Convert numpy array to Armadillo float matrix
-    auto X_new_mat = carma::arr_to_mat<float>(X_new);
-    self.predict(X_new_mat);
-  }, "Predict cluster labels for new data points", pybind11::arg("X_new"));
+  cls.def(
+    "predict",
+    [](KMedoidsWrapper& self, const pybind11::array_t<float>& X_new) {
+      // Convert numpy array to Armadillo float matrix
+      auto X_new_mat = carma::arr_to_mat<float>(X_new);
+      self.predict(X_new_mat);
+    },
+    "Predict cluster labels for new data points", pybind11::arg("X_new"));
 
-  cls.def_property_readonly("labels_predict", &KMedoidsWrapper::get_predict_labels,
-    "Cluster labels for predicted data points");
-
-  // Cache functions
-  distance_computations_python(&cls);
-  misc_distance_computations_python(&cls);
-  build_distance_computations_python(&cls);
-  swap_distance_computations_python(&cls);
-  cache_writes_python(&cls);
-  cache_hits_python(&cls);
-  cache_misses_python(&cls);
-
-  // Swap timing functions
-  time_per_swap_python(&cls);
-  total_swap_time_python(&cls);
+  cls.def_property_readonly("labels_predict",
+                            &KMedoidsWrapper::get_predict_labels,
+                            "Cluster labels for predicted data points");
 
   // Sparse matrix support
   cls.def("fit_sparse", &KMedoidsWrapper::fit_sparse,
-        "Fit K-Medoids model to sparse data");
+          "Fit K-Medoids model to sparse data");
   cls.def("predict_sparse", &KMedoidsWrapper::predict_sparse,
-        "Predict cluster labels for new sparse data points");
+          "Predict cluster labels for new sparse data points");
+}
+void KMedoidsWrapper::fitPython(
+  const pybind11::array_t<float>& inputData,
+  const std::string& loss,
+  pybind11::kwargs kw) {
+    try {
+        fit(carma::arr_to_mat<float>(inputData), loss, std::nullopt);
+    } catch (const std::exception& e) {
+        throw std::runtime_error(e.what());
+    }
+}
+
+pybind11::array_t<arma::uword> KMedoidsWrapper::getMedoidsBuildPython() {
+    return carma::row_to_arr(getMedoidsBuild());
+}
+
+pybind11::array_t<arma::uword> KMedoidsWrapper::getMedoidsFinalPython() {
+    return carma::row_to_arr(getMedoidsFinal());
+}
+
+pybind11::array_t<arma::uword> KMedoidsWrapper::getLabelsPython() {
+    return carma::row_to_arr(getLabels());
+}
+
+int KMedoidsWrapper::getStepsPython() {
+    return getSteps();
+}
+
+float KMedoidsWrapper::getLossPython() {
+    return getAverageLoss();
+}
+
+float KMedoidsWrapper::getBuildLossPython() {
+    return getBuildLoss();
+}
+
+size_t KMedoidsWrapper::getDistanceComputationsPython(const bool includeMisc) {
+    return getDistanceComputations(includeMisc);
+}
+
+size_t KMedoidsWrapper::getMiscDistanceComputationsPython() {
+    return getMiscDistanceComputations();
+}
+
+size_t KMedoidsWrapper::getBuildDistanceComputationsPython() {
+    return getBuildDistanceComputations();
+}
+
+size_t KMedoidsWrapper::getSwapDistanceComputationsPython() {
+    return getSwapDistanceComputations();
+}
+
+size_t KMedoidsWrapper::getCacheWritesPython() {
+    return getCacheWrites();
+}
+
+size_t KMedoidsWrapper::getCacheHitsPython() {
+    return getCacheHits();
+}
+
+size_t KMedoidsWrapper::getCacheMissesPython() {
+    return getCacheMisses();
+}
+
+size_t KMedoidsWrapper::getTotalSwapTimePython() {
+    return getTotalSwapTime();
+}
+
+float KMedoidsWrapper::getTimePerSwapPython() {
+    return getTimePerSwap();
 }
 }  // namespace km

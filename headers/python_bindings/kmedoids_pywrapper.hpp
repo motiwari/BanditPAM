@@ -134,8 +134,7 @@ class KMedoidsWrapper : public km::KMedoids {
   float getTimePerSwapPython();
 
   void predict(const arma::fmat &X_new);
-  const std::vector<size_t>& get_predict_labels() const;
-
+  const std::vector<size_t> &get_predict_labels() const;
 
  private:
   std::vector<size_t> labels_predict;
@@ -144,7 +143,7 @@ class KMedoidsWrapper : public km::KMedoids {
   size_t sparse_n_cols = 0;
 
  public:
-  void fit_sparse(pybind11::object sparse_matrix, const std::string& loss_fn);
+  void fit_sparse(pybind11::object sparse_matrix, const std::string &loss_fn);
   void predict_sparse(pybind11::object sparse_matrix_new);
 };
 

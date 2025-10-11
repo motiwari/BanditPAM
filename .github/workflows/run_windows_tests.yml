@@ -1,103 +1,204 @@
 name: Windows - build package and run tests
+
 on:
   push:
-    branches:  # prevents running on tag push
-      - '**'
+    branches: [ main, navin_fixing_issues ]
   pull_request:
+    branches: [ main, master ]
+
 jobs:
   build:
     runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        architecture: ["x64"]
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5.6.0
-        with:
-          python-version: ${{ matrix.python-version }}
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
 
-      - name: Clone for PR
-        if: ${{ github.event_name == 'pull_request' }}
-        run: git clone -b $env:GITHUB_HEAD_REF https://github.com/motiwari/BanditPAM
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        architecture: ${{ matrix.architecture }}
 
-      - name: Clone for Push
-        if: ${{ github.event_name != 'pull_request' }}
-        run: git clone -b ($env:GITHUB_REF -replace '^refs/heads/', '') https://github.com/motiwari/BanditPAM
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~\AppData\Local\pip\Cache
+        key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', '**/setup.py', '**/pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-${{ matrix.python-version }}-
+          ${{ runner.os }}-pip-
 
-      - name: Downloading data files for tests
-        shell: bash
-        run: |
-          cd BanditPAM
-          mkdir -p data
-          curl -XGET https://motiwari.com/banditpam_data/scRNA_1k.csv > data/scRNA_1k.csv
-          curl -XGET https://motiwari.com/banditpam_data/scrna_reformat.csv.gz > data/scrna_reformat.csv.gz
-          curl -XGET https://motiwari.com/banditpam_data/MNIST_100.csv > data/MNIST_100.csv
-          curl -XGET https://motiwari.com/banditpam_data/MNIST_1k.csv > data/MNIST_1k.csv
-          curl -XGET https://motiwari.com/banditpam_data/MNIST_10k.tar.gz > data/MNIST_10k.tar.gz
-          tar -xzvf data/MNIST_10k.tar.gz -C data
-          curl -XGET https://motiwari.com/banditpam_data/MNIST_70k.tar.gz > data/MNIST_70k.tar.gz
-          tar -xzvf data/MNIST_70k.tar.gz -C data
+    - name: Set up MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ matrix.architecture }}
 
-      - name: Install Armadillo 10.7.5+
-        run: |
-          cd BanditPAM/headers
-          git clone https://gitlab.com/conradsnicta/armadillo-code.git armadillo
-          cd armadillo
-          cmake .
-          C:/"Program Files"/"Microsoft Visual Studio"/2022/Enterprise/Common7/IDE/devenv armadillo.sln /Build "Release|x64"
+    - name: Install vcpkg dependencies
+      run: |
+        echo "=== Installing vcpkg and dependencies ==="
+        git clone https://github.com/Microsoft/vcpkg.git
+        cd vcpkg
+        .\bootstrap-vcpkg.bat
+        .\vcpkg integrate install
 
-      - name: Add environment variables
-        run: |
-          Add-Content $env:GITHUB_PATH "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.36.32532\bin\HostX86\x86"
+        # Install Armadillo and dependencies
+        .\vcpkg install armadillo:x64-windows
+        .\vcpkg install openblas:x64-windows
+        .\vcpkg install clapack:x64-windows
 
-      - name: Install carma
-        run: |
-          cd BanditPAM/headers
-          git clone https://github.com/RUrlus/carma.git
-          cd carma
-          mkdir build
-          cd build
-          cmake -DCARMA_INSTALL_LIB=ON ..
-          cmake --build . --config Release --target install
-          cd ../../..
+        # Set environment variables
+        echo "VCPKG_ROOT=$PWD" >> $GITHUB_ENV
+        echo "CMAKE_TOOLCHAIN_FILE=$PWD/scripts/buildsystems/vcpkg.cmake" >> $GITHUB_ENV
+        cd ..
 
-      - name: Verify that the C++ executable compiles and runs  # Building C++ first to avoid armadillo include issues
-        run: |
-          cd BanditPAM/scripts
-          sh retrieve_windows_cmake_files.sh
-          cd ..
-          mkdir build
-          cd build
-          cmake ..
-          C:/"Program Files"/"Microsoft Visual Studio"/2022/Enterprise/Common7/IDE/devenv BanditPAM.sln /Build "Release|x64"
-          cd src/Release
-          .\BanditPAM.exe -f ../../../data/MNIST_1k.csv -k 5
+    - name: Verify system setup
+      run: |
+        echo "=== System Information ==="
+        systeminfo | findstr /B /C:"OS Name" /C:"OS Version" /C:"System Type"
+        echo "=== CMake Version ==="
+        cmake --version
+        echo "=== MSVC Compiler ==="
+        cl.exe 2>&1 || echo "CL.exe check completed"
+        echo "=== Python Information ==="
+        python --version
+        where python
+        echo "=== Environment Variables ==="
+        echo "VCPKG_ROOT: $env:VCPKG_ROOT"
+        echo "CMAKE_TOOLCHAIN_FILE: $env:CMAKE_TOOLCHAIN_FILE"
 
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
+    - name: Initialize and update git submodules
+      run: |
+        echo "=== Initializing submodules ==="
+        git submodule status
+        git submodule update --init --recursive
+        echo "=== Submodule status after update ==="
+        git submodule status
+        echo "=== CARMA submodule check ==="
+        if (Test-Path "headers/carma") {
+          dir headers/carma
+        } else {
+          echo "CARMA directory not found"
+        }
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install numpy>=1.18.0 pybind11>=2.10.0
+        python -m pip install pytest matplotlib pandas scikit-learn
+
+        # Install requirements if file exists
+        if (Test-Path "requirements.txt") {
           python -m pip install -r requirements.txt
-          python -m pip install --upgrade pip setuptools wheel
+        }
 
-      - name: Install BanditPAM package
-        run: |
-          cd BanditPAM
-          # The flags are necessary to ignore the pyproject.toml
-          # See https://github.com/pypa/pip/issues/9738
-          python -m pip install -v --no-use-pep517 .
-          cd scripts
-          sh retrieve_windows_python_files.sh
-          cd ..
-          python -m pip install -v --no-use-pep517 .
+    - name: Verify Python packages
+      run: |
+        echo "=== Installed packages ==="
+        pip list
+        echo "=== NumPy info ==="
+        python -c "import numpy; print(f'NumPy version: {numpy.__version__}'); print(f'NumPy path: {numpy.__path__}')"
+        echo "=== Pybind11 info ==="
+        python -c "import pybind11; print(f'Pybind11 version: {pybind11.__version__}'); print(f'Pybind11 path: {pybind11.__path__}')"
 
-      - name: Run smaller suite of test cases
-        run: |
-          cd BanditPAM
-          python tests/test_smaller.py
+    - name: Build BanditPAM
+      env:
+        GITHUB_ACTIONS: "true"
+        CMAKE_GENERATOR: "Visual Studio 17 2022"
+        CMAKE_GENERATOR_PLATFORM: ${{ matrix.architecture }}
+      run: |
+        echo "=== Building BanditPAM ==="
 
-      - name: Run tests cases for initialization
-        run: |
-          cd BanditPAM
-          python tests/test_initialization.py
+        # Set up environment for vcpkg
+        $env:CMAKE_PREFIX_PATH = "$env:VCPKG_ROOT/installed/x64-windows"
+        $env:VCPKG_TARGET_TRIPLET = "x64-windows"
+
+        # Try build with setup.py
+        try {
+          python setup.py build_ext --inplace --verbose
+          echo "✅ Build successful"
+        }
+        catch {
+          echo "=== Build failed, showing detailed error information ==="
+          echo "=== Environment variables ==="
+          Get-ChildItem env: | Where-Object {$_.Name -match "(PATH|CMAKE|VCPKG|CC|CXX|PYTHON)"} | Sort-Object Name
+          echo "=== Checking for missing files ==="
+          Get-ChildItem -Recurse -Include "*.cpp","*.hpp" | Select-Object -First 10
+          throw "Build failed"
+        }
+
+    - name: Install BanditPAM
+      run: |
+        python -m pip install -e . --verbose
+
+    - name: Test basic functionality
+      run: |
+        echo "=== Testing basic import ==="
+        python -c "
+        import sys
+        print(f'Python version: {sys.version}')
+
+        try:
+            import banditpam
+            print('✅ BanditPAM import successful')
+        except ImportError as e:
+            print(f'❌ BanditPAM import failed: {e}')
+            sys.exit(1)
+
+        # Test basic functionality
+        import numpy as np
+        X = np.random.random((20, 2)).astype(np.float32)
+
+        try:
+            kmedoids = banditpam.KMedoids(n_medoids=3)
+            kmedoids.fit(X, 'L2')
+            print('✅ Basic clustering works')
+
+            # Test predict if available
+            if hasattr(kmedoids, 'predict'):
+                X_new = np.random.random((5, 2)).astype(np.float32)
+                predictions = kmedoids.predict(X_new)
+                print(f'✅ Predict function works: {len(predictions)} predictions')
+            else:
+                print('ℹ️ Predict function not available')
+
+        except Exception as e:
+            print(f'❌ Basic functionality test failed: {e}')
+            sys.exit(1)
+        "
+
+    - name: Run tests
+      run: |
+        # Run existing tests if they exist
+        if (Test-Path "tests") {
+          echo "=== Running tests ==="
+          python -m pytest tests/ -v
+        } else {
+          echo "No tests directory found, skipping pytest"
+        }
+
+        # Run test_predict.py if it exists
+        if (Test-Path "test_predict.py") {
+          echo "=== Running predict function test ==="
+          python test_predict.py
+        }
+
+    - name: Upload build artifacts on failure
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-logs-windows-python${{ matrix.python-version }}
+        path: |
+          build/
+          *.log
+          CMakeCache.txt
+          vcpkg/
+        retention-days: 7

@@ -1,8 +1,8 @@
 [build-system]
 requires = [
-    "setuptools>=45",
+    "setuptools>=45.0.0",
     "wheel",
-    "pybind11>=3.0.0",
+    "pybind11>=2.10.0",
     "numpy>=1.18.0",
 ]
 build-backend = "setuptools.build_meta"
@@ -26,24 +26,25 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: C++",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dependencies = [
     "numpy>=1.18.0",
+    "pybind11>=2.10.0",
 ]
 
 [project.optional-dependencies]
 plotting = ["matplotlib>=3.0.0"]
 examples = ["pandas>=1.0.0", "scikit-learn>=0.24.0", "matplotlib>=3.0.0"]
-dev = ["pytest>=6.0.0", "black", "flake8", "mypy"]
+dev = ["pytest>=6.0.0", "black", "flake8", "mypy", "clang-format"]
 all = ["matplotlib>=3.0.0", "pandas>=1.0.0", "scikit-learn>=0.24.0"]
 
 [project.urls]
@@ -53,7 +54,39 @@ Repository = "https://github.com/motiwari/BanditPAM"
 "Bug Tracker" = "https://github.com/motiwari/BanditPAM/issues"
 
 [tool.setuptools]
-packages = []  # No Python packages, just C++ extension
+packages = [] # No Python packages, just C++ extension
 
 [tool.setuptools.dynamic]
 version = {attr = "setup.__version__"}
+
+# Black code formatting configuration
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+# Flake8 configuration
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+
+# MyPy configuration
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
