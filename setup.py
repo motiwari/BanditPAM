@@ -18,7 +18,7 @@ __version__ = "6.0.3"
 
 # System detection
 IS_WINDOWS = platform.system() == "Windows"
-IS_MACOS = platform.system() == "Darwin"  
+IS_MACOS = platform.system() == "Darwin"
 IS_LINUX = platform.system() == "Linux"
 IS_GITHUB_ACTIONS = os.environ.get("GITHUB_ACTIONS", "false").lower() == "true"
 
@@ -49,30 +49,6 @@ def check_system_requirements():
 
     return missing_requirements
 
-def install_system_requirements():
-    """Attempt to install missing system requirements."""
-    print("Attempting to install system requirements...")
-
-    if IS_MACOS:
-        print("On macOS, please install dependencies using Homebrew:")
-        print("  brew install cmake armadillo libomp")
-        return False
-    elif IS_LINUX:
-        print("On Linux, please install dependencies using your package manager:")
-        print(
-            "  Ubuntu/Debian: sudo apt-get install cmake build-essential libarmadillo-dev libomp-dev"
-        )
-        print("  CentOS/RHEL: sudo yum install cmake gcc-c++ armadillo-devel")
-        return False
-    elif IS_WINDOWS:
-        print("On Windows, please install dependencies:")
-        print("  - Install Visual Studio Build Tools or Visual Studio with C++ support")
-        print("  - Install CMake from https://cmake.org/download/")
-        print("  - Consider using vcpkg for C++ libraries")
-        return False
-
-    return False
-
 def get_pybind_include():
     """Get pybind11 include directory."""
     try:
@@ -91,26 +67,22 @@ def get_numpy_include():
 
 def find_armadillo():
     """Find Armadillo installation."""
-    # Common locations for Armadillo
     search_paths = [
         "/usr/include/armadillo",
         "/usr/local/include/armadillo",
-        "/opt/homebrew/include/armadillo",  # M1 Mac
-        "/usr/local/Cellar/armadillo",     # Intel Mac
+        "/opt/homebrew/include/armadillo",
+        "/usr/local/Cellar/armadillo",
     ]
 
     if IS_WINDOWS:
-        search_paths.extend(
-            [
-                "C:/vcpkg/installed/x64-windows/include/armadillo",
-                "C:/Program Files/Armadillo/include",
-            ]
-        )
+        search_paths.extend([
+            "C:/vcpkg/installed/x64-windows/include/armadillo",
+            "C:/Program Files/Armadillo/include",
+        ])
 
     for path in search_paths:
         if os.path.exists(path):
             return os.path.dirname(path)
-
     return None
 
 class BanditPAMBuildExt(build_ext):
@@ -121,8 +93,6 @@ class BanditPAMBuildExt(build_ext):
         missing_reqs = check_system_requirements()
         if missing_reqs and not IS_GITHUB_ACTIONS:
             print(f"\n❌ Missing system requirements: {', '.join(missing_reqs)}")
-            print("\n🔧 Please install the missing requirements and try again.")
-            install_system_requirements()
             sys.exit(1)
 
         # Setup compiler flags
@@ -141,30 +111,9 @@ class BanditPAMBuildExt(build_ext):
             if IS_MACOS:
                 c_opts["unix"].extend(["-stdlib=libc++", "-mmacosx-version-min=10.14"])
                 l_opts["unix"].extend(["-stdlib=libc++", "-mmacosx-version-min=10.14"])
-
-                # OpenMP handling for macOS
-                if shutil.which("brew"):
-                    try:
-                        result = subprocess.run(
-                            ["brew", "--prefix", "libomp"],
-                            capture_output=True,
-                            text=True,
-                        )
-                        if result.returncode == 0:
-                            omp_path = result.stdout.strip()
-                            c_opts["unix"].extend(
-                                [f"-I{omp_path}/include", "-Xpreprocessor", "-fopenmp"]
-                            )
-                            l_opts["unix"].extend([f"-L{omp_path}/lib", "-lomp"])
-                    except:
-                        pass
             elif IS_LINUX:
                 c_opts["unix"].extend(["-fopenmp"])
                 l_opts["unix"].extend(["-fopenmp"])
-
-        # Don't use -march=native in GitHub Actions
-        if IS_GITHUB_ACTIONS and "-march=native" in c_opts["unix"]:
-            c_opts["unix"].remove("-march=native")
 
         # Apply flags to all extensions
         ct = self.compiler.compiler_type
@@ -194,7 +143,7 @@ class BanditPAMBuildExt(build_ext):
 def get_extensions():
     """Define extensions to build."""
 
-    # ALL source files - this was missing many files in your version
+    # Only files that actually exist
     source_files = [
         "src/algorithms/kmedoids_algorithm.cpp",
         "src/algorithms/pam.cpp", 
@@ -202,18 +151,26 @@ def get_extensions():
         "src/algorithms/banditpam_orig.cpp",
         "src/algorithms/fastpam1.cpp",
         "src/python_bindings/kmedoids_pywrapper.cpp",
+    ]
+
+    # Check if optional files exist and add them
+    optional_files = [
         "src/python_bindings/predict_python.cpp",
         "src/python_bindings/sparse_support_python.cpp",
         "src/python_bindings/medoids_python.cpp",
         "src/python_bindings/build_medoids_python.cpp",
         "src/python_bindings/loss_python.cpp",
-        "src/python_bindings/build_loss_python.cpp",
-        "src/python_bindings/distance_computations_python.cpp",
-        "src/python_bindings/misc_distance_computations_python.cpp",
         "src/python_bindings/cache_python.cpp",
-        "src/python_bindings/time_per_swap_python.cpp",
-        "src/python_bindings/total_swap_time_python.cpp"
+        "src/python_bindings/fit_python.cpp",
+        "src/python_bindings/labels_python.cpp",
+        "src/python_bindings/loss_fn_python.cpp",
+        "src/python_bindings/steps_python.cpp",
+        "src/python_bindings/swap_times_python.cpp"
     ]
+
+    for file in optional_files:
+        if os.path.exists(file):
+            source_files.append(file)
 
     # Include directories
     include_dirs = [
@@ -221,6 +178,7 @@ def get_extensions():
         "headers/python_bindings", 
         "headers/carma/include",
         get_pybind_include(),
+        get_numpy_include()
     ]
 
     # Filter out None values
@@ -244,38 +202,24 @@ def get_extensions():
 
 def main():
     """Main setup function."""
-
-    # Read long description
     long_description = ""
     readme_path = Path("README.md")
     if readme_path.exists():
         with open(readme_path, "r", encoding="utf-8") as f:
             long_description = f.read()
 
-    # Setup configuration
     setup(
         name="banditpam",
         version=__version__,
         author="Mo Tiwari",
         author_email="motiwari@stanford.edu",
-        maintainer="Mo Tiwari",
-        maintainer_email="motiwari@stanford.edu",
         description="BanditPAM: Almost Linear-Time k-Medoids Clustering",
         long_description=long_description,
         long_description_content_type="text/markdown",
         url="https://github.com/motiwari/BanditPAM",
-        project_urls={
-            "Bug Tracker": "https://github.com/motiwari/BanditPAM/issues",
-            "Documentation": "https://banditpam.readthedocs.io/",
-            "Source Code": "https://github.com/motiwari/BanditPAM",
-        },
-
-        # Package configuration
         packages=find_packages(),
         ext_modules=get_extensions(),
         cmdclass={"build_ext": BanditPAMBuildExt},
-
-        # Dependencies
         python_requires=">=3.8",
         setup_requires=[
             "setuptools>=45.0.0",
@@ -293,8 +237,6 @@ def main():
             "dev": ["pytest>=6.0.0", "black", "flake8", "mypy"],
             "all": ["matplotlib>=3.0.0", "pandas>=1.0.0", "scikit-learn>=0.24.0"],
         },
-
-        # Metadata
         classifiers=[
             "Development Status :: 4 - Beta",
             "Intended Audience :: Developers", 
