@@ -89,11 +89,13 @@ class BanditPAMBuildExt(build_ext):
     """Custom build extension for BanditPAM."""
 
     def build_extensions(self):
-        # Check system requirements
-        missing_reqs = check_system_requirements()
-        if missing_reqs and not IS_GITHUB_ACTIONS:
-            print(f"\n❌ Missing system requirements: {', '.join(missing_reqs)}")
-            sys.exit(1)
+        # Check system requirements only in non-CI environments
+        if not IS_GITHUB_ACTIONS:
+            missing_reqs = check_system_requirements()
+            if missing_reqs:
+                print(f"\n❌ Missing system requirements: {', '.join(missing_reqs)}")
+                print("\n🔧 Please install the missing requirements and try again.")
+                sys.exit(1)
 
         # Setup compiler flags
         c_opts = {
@@ -114,6 +116,10 @@ class BanditPAMBuildExt(build_ext):
             elif IS_LINUX:
                 c_opts["unix"].extend(["-fopenmp"])
                 l_opts["unix"].extend(["-fopenmp"])
+
+        # Don't use -march=native in GitHub Actions
+        if IS_GITHUB_ACTIONS and "-march=native" in c_opts.get("unix", []):
+            c_opts["unix"].remove("-march=native")
 
         # Apply flags to all extensions
         ct = self.compiler.compiler_type
@@ -142,8 +148,8 @@ class BanditPAMBuildExt(build_ext):
 
 def get_extensions():
     """Define extensions to build."""
-
-    # Only files that actually exist
+    
+    # Core algorithm files that definitely exist
     source_files = [
         "src/algorithms/kmedoids_algorithm.cpp",
         "src/algorithms/pam.cpp", 
@@ -153,10 +159,9 @@ def get_extensions():
         "src/python_bindings/kmedoids_pywrapper.cpp",
     ]
 
-    # Check if optional files exist and add them
+    # Add optional files if they exist
     optional_files = [
         "src/python_bindings/predict_python.cpp",
-        "src/python_bindings/sparse_support_python.cpp",
         "src/python_bindings/medoids_python.cpp",
         "src/python_bindings/build_medoids_python.cpp",
         "src/python_bindings/loss_python.cpp",
@@ -165,21 +170,36 @@ def get_extensions():
         "src/python_bindings/labels_python.cpp",
         "src/python_bindings/loss_fn_python.cpp",
         "src/python_bindings/steps_python.cpp",
-        "src/python_bindings/swap_times_python.cpp"
+        "src/python_bindings/swap_times_python.cpp",
+        "src/python_bindings/sparse_support_python.cpp"
     ]
 
     for file in optional_files:
         if os.path.exists(file):
             source_files.append(file)
+            print(f"✓ Including optional file: {file}")
 
     # Include directories
     include_dirs = [
         "headers/algorithms",
         "headers/python_bindings", 
-        "headers/carma/include",
-        get_pybind_include(),
-        get_numpy_include()
     ]
+
+    # Add CARMA if submodule exists
+    if os.path.exists("headers/carma/include"):
+        include_dirs.append("headers/carma/include")
+        print("✓ CARMA submodule found, including")
+    else:
+        print("⚠ CARMA submodule not found")
+
+    # Add pybind11 and numpy includes
+    pybind_include = get_pybind_include()
+    numpy_include = get_numpy_include()
+    
+    if pybind_include:
+        include_dirs.append(pybind_include)
+    if numpy_include:
+        include_dirs.append(numpy_include)
 
     # Filter out None values
     include_dirs = [d for d in include_dirs if d is not None]
@@ -202,24 +222,38 @@ def get_extensions():
 
 def main():
     """Main setup function."""
+    
+    # Read long description
     long_description = ""
     readme_path = Path("README.md")
     if readme_path.exists():
         with open(readme_path, "r", encoding="utf-8") as f:
             long_description = f.read()
 
+    # Setup configuration
     setup(
         name="banditpam",
         version=__version__,
         author="Mo Tiwari",
         author_email="motiwari@stanford.edu",
+        maintainer="Mo Tiwari",
+        maintainer_email="motiwari@stanford.edu",
         description="BanditPAM: Almost Linear-Time k-Medoids Clustering",
         long_description=long_description,
         long_description_content_type="text/markdown",
         url="https://github.com/motiwari/BanditPAM",
+        project_urls={
+            "Bug Tracker": "https://github.com/motiwari/BanditPAM/issues",
+            "Documentation": "https://banditpam.readthedocs.io/",
+            "Source Code": "https://github.com/motiwari/BanditPAM",
+        },
+
+        # Package configuration
         packages=find_packages(),
         ext_modules=get_extensions(),
         cmdclass={"build_ext": BanditPAMBuildExt},
+
+        # Dependencies
         python_requires=">=3.8",
         setup_requires=[
             "setuptools>=45.0.0",
@@ -237,6 +271,8 @@ def main():
             "dev": ["pytest>=6.0.0", "black", "flake8", "mypy"],
             "all": ["matplotlib>=3.0.0", "pandas>=1.0.0", "scikit-learn>=0.24.0"],
         },
+
+        # Metadata
         classifiers=[
             "Development Status :: 4 - Beta",
             "Intended Audience :: Developers", 
