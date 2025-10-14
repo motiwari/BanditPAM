@@ -1,56 +1,92 @@
-[project]
-license = {text = "MIT"}
-version = "6.0.2"
-name = "banditpam"
-requires-python = ">= 3.10"
-authors = [
-  {name = "Mo Tiwari", email = "mohittiwarinyc@gmail.com"},
-  {name = "Balasubramanian Narasimhan", email = "naras@stanford.edu"},
-]
-maintainers = [
-  {name = "Mo Tiwari", email = "mohittiwarinyc@gmail.com"},
-  {name = "Balasubramanian Narasimhan", email = "naras@stanford.edu"},
-]
-readme = "README.md"
-description = "BanditPAM: A state-of-the-art, high-performance k-medoids algorithm."
-
-
-
-[tool.cibuildwheel]
-
-[tool.cibuildwheel.linux]
-# Get dependencies
-before-all = [
-    "scripts/docker/cibw_before_all_linux.sh",
-]
-
-[tool.cibuildwheel.macos]
-archs = ["x86_64", "universal2", "arm64"]
-
-# Get dependencies
-before-all = [
-    "scripts/docker/cibw_before_all_macos.sh",
-]
-
-# The Anaconda version of szip is out of date, and since it appears first in the DYLD_LIBRARY_PATH, you may need to upgrade it with "conda install -c csdms-stack szip"
-# Also see https://cibuildwheel.readthedocs.io/en/stable/faq/#macos-passing-dyld_library_path-to-delocate and https://github.com/pypa/cibuildwheel/issues/816
-# NOTE: We removed the --require-archs {delocate_archs} from the delocate-wheel command temporarily. Even when building all MacOS wheels at once, it throws an error.
-#repair-wheel-command = [
-#    "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib delocate-listdeps {wheel}",
-#    "DYLD_LIBRARY_PATH=/usr/local/Cellar/armadillo/10.8.1/lib delocate-wheel --require-archs {delocate_archs} -w {dest_dir} {wheel}"
-#]
-
-# Adding /usr/local/lib because that's where armadillo is installed from the repo
-repair-wheel-command = [
-    "delocate-listdeps --depending {wheel}",
-    "delocate-listdeps {wheel}",
-    "delocate-wheel -v -w {dest_dir} {wheel}"
-]
-
-
 [build-system]
 requires = [
-    "setuptools>=42",
-    "numpy",
-    "pybind11",
+    "setuptools>=45.0.0",
+    "wheel",
+    "pybind11>=2.10.0",
+    "numpy>=1.18.0",
 ]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "banditpam"
+dynamic = ["version"]
+description = "BanditPAM: Almost Linear-Time k-Medoids Clustering"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Mo Tiwari", email = "motiwari@stanford.edu"}
+]
+maintainers = [
+    {name = "Mo Tiwari", email = "motiwari@stanford.edu"}
+]
+keywords = ["clustering", "k-medoids", "machine-learning", "bandit-algorithms"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: C++",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.18.0",
+    "pybind11>=2.10.0",
+]
+
+[project.optional-dependencies]
+plotting = ["matplotlib>=3.0.0"]
+examples = ["pandas>=1.0.0", "scikit-learn>=0.24.0", "matplotlib>=3.0.0"]
+dev = ["pytest>=6.0.0", "black", "flake8", "mypy", "clang-format"]
+all = ["matplotlib>=3.0.0", "pandas>=1.0.0", "scikit-learn>=0.24.0"]
+
+[project.urls]
+Homepage = "https://github.com/motiwari/BanditPAM"
+Documentation = "https://banditpam.readthedocs.io"
+Repository = "https://github.com/motiwari/BanditPAM"
+"Bug Tracker" = "https://github.com/motiwari/BanditPAM/issues"
+
+[tool.setuptools]
+packages = [] # No Python packages, just C++ extension
+
+[tool.setuptools.dynamic]
+version = {attr = "setup.__version__"}
+
+# Black code formatting configuration
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+)/
+'''
+
+# Flake8 configuration
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+
+# MyPy configuration
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

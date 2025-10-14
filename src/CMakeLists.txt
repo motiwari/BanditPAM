@@ -33,7 +33,9 @@ add_library(
         algorithms/pam.cpp
         algorithms/banditpam.cpp
         algorithms/banditpam_orig.cpp
-        algorithms/fastpam1.cpp)
+        algorithms/fastpam1.cpp
+        python_bindings/predict_python.cpp
+        python_bindings/sparse_support_python.cpp)
 
 target_link_libraries(BanditPAM PUBLIC BanditPAM_LIB)
 

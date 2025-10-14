@@ -1,5 +1,20 @@
-pandas>=0.24.1
-pybind11>=3.0.0
-numpy>=1.16.2
-matplotlib>=3.2.1
-myst-parser>=0.16.0
+# Core dependencies
+numpy>=1.18.0
+pybind11>=2.10.0
+
+# Build dependencies
+setuptools>=45.0.0
+wheel
+
+# Optional dependencies for examples and development
+# These can be installed with: pip install banditpam[all]
+matplotlib>=3.0.0
+pandas>=1.0.0
+scikit-learn>=0.24.0
+
+# Development dependencies  
+# Install with: pip install banditpam[dev]
+pytest>=6.0.0
+black
+flake8
+mypy

@@ -104,6 +104,8 @@ arma::urowvec KMedoids::getMedoidsFinal() const { return medoidIndicesFinal; }
 
 arma::urowvec KMedoids::getLabels() const { return labels; }
 
+arma::fmat KMedoids::getData() const { return data; }
+
 size_t KMedoids::getSteps() const { return steps; }
 
 size_t KMedoids::getNMedoids() const { return nMedoids; }
