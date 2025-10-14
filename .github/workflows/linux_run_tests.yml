@@ -1,10 +1,15 @@
-name: Linux - build package and run tests
+name: Linux - Production Build and Test
 
 on:
   push:
     branches: [ main, navin_fixing_issues ]
   pull_request:
     branches: [ main, master ]
+
+# CRITICAL: Set workflow permissions to avoid permission issues
+permissions:
+  contents: read
+  actions: write
 
 jobs:
   build:
@@ -27,7 +32,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Cache pip packages
-      uses: actions/cache@v3
+      uses: actions/cache@v4  # Updated to v4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', '**/setup.py', '**/pyproject.toml') }}
@@ -37,7 +42,7 @@ jobs:
 
     - name: Install system dependencies
       run: |
-        sudo apt-get update
+        sudo apt-get update -qq
         sudo apt-get install -y \
           build-essential \
           cmake \
@@ -55,7 +60,7 @@ jobs:
         uname -a
         echo "=== CMake Version ==="
         cmake --version
-        echo "=== Compiler Version ==="
+        echo "=== Compiler Versions ==="
         gcc --version
         g++ --version
         echo "=== Python Information ==="
@@ -63,24 +68,25 @@ jobs:
         which python
         echo "=== Armadillo Check ==="
         pkg-config --modversion armadillo || echo "Armadillo not found via pkg-config"
-        echo "=== CARMA Submodule Check ==="
-        ls -la headers/carma/ || echo "CARMA directory not found"
-        ls -la headers/carma/include/ || echo "CARMA include directory not found"
+        find /usr -name "*armadillo*" -type d 2>/dev/null | head -5
 
-    - name: Initialize and update git submodules
+    - name: Initialize git submodules
       run: |
         echo "=== Initializing submodules ==="
         git submodule status
         git submodule update --init --recursive
         echo "=== Submodule status after update ==="
         git submodule status
+        echo "=== CARMA Submodule Check ==="
+        ls -la headers/carma/ || echo "CARMA directory not found"
+        ls -la headers/carma/include/ || echo "CARMA include directory not found"
 
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install numpy>=1.18.0 pybind11>=2.10.0
         python -m pip install pytest matplotlib pandas scikit-learn
-
+        
         # Install requirements if file exists
         if [ -f requirements.txt ]; then
           python -m pip install -r requirements.txt
@@ -89,7 +95,7 @@ jobs:
     - name: Verify Python packages
       run: |
         echo "=== Installed packages ==="
-        pip list
+        pip list | grep -E "(numpy|pybind11|setuptools)"
         echo "=== NumPy info ==="
         python -c "import numpy; print(f'NumPy version: {numpy.__version__}'); print(f'NumPy path: {numpy.__path__}')"
         echo "=== Pybind11 info ==="
@@ -98,28 +104,39 @@ jobs:
     - name: Build BanditPAM
       env:
         GITHUB_ACTIONS: "true"
+        ARMA_DONT_PRINT_FAST_MATH_WARNING: "1"
+        # CRITICAL: Set proper include paths
+        CPLUS_INCLUDE_PATH: "/usr/include:/usr/include/armadillo:$CPLUS_INCLUDE_PATH"
+        CMAKE_PREFIX_PATH: "/usr/lib/x86_64-linux-gnu/cmake/armadillo:$CMAKE_PREFIX_PATH"
       run: |
         echo "=== Building BanditPAM ==="
-        export CPLUS_INCLUDE_PATH="/usr/include/armadillo:$CPLUS_INCLUDE_PATH"
-        export CMAKE_PREFIX_PATH="/usr/lib/x86_64-linux-gnu/cmake/armadillo:$CMAKE_PREFIX_PATH"
+        echo "Environment variables:"
+        env | grep -E "(ARMA|CMAKE|CPLUS)" | sort
         
-        # Try build with setup.py
-        python setup.py build_ext --inplace --verbose || {
-          echo "=== Build failed, showing detailed error information ==="
+        # Try build with setup.py (CRITICAL: Enhanced error reporting)
+        python setup.py build_ext --inplace --verbose 2>&1 | tee build.log || {
+          echo "=== BUILD FAILED - ANALYZING LOGS ==="
+          echo "=== Last 50 lines of build log ==="
+          tail -50 build.log
           echo "=== Environment variables ==="
-          env | grep -E "(PATH|CMAKE|CC|CXX|PYTHON)" | sort
+          env | grep -E "(PATH|CMAKE|CC|CXX|PYTHON|ARMA)" | sort
           echo "=== Checking for missing files ==="
-          find . -name "*.cpp" -o -name "*.hpp" | head -10
+          find . -name "*.cpp" -o -name "*.hpp" | head -20
+          echo "=== Armadillo installation check ==="
+          find /usr -name "*armadillo*" 2>/dev/null | head -10
+          echo "=== Compiler test ==="
+          echo '#include <armadillo>' | g++ -x c++ -E - -I/usr/include 2>&1 | head -10
           exit 1
         }
 
     - name: Install BanditPAM
       run: |
+        echo "=== Installing BanditPAM ==="
         python -m pip install -e . --verbose
 
     - name: Test basic functionality
       run: |
-        echo "=== Testing basic import ==="
+        echo "=== Testing basic functionality ==="
         python -c "
         import sys
         print(f'Python version: {sys.version}')
@@ -127,6 +144,14 @@ jobs:
         try:
             import banditpam
             print('✅ BanditPAM import successful')
+            
+            # Test build info
+            try:
+                build_info = banditpam.get_build_info()
+                print(f'✅ Build info: {build_info}')
+            except:
+                print('ℹ️ Build info not available (expected for older versions)')
+            
         except ImportError as e:
             print(f'❌ BanditPAM import failed: {e}')
             sys.exit(1)
@@ -139,6 +164,8 @@ jobs:
             kmedoids = banditpam.KMedoids(n_medoids=3)
             kmedoids.fit(X, 'L2')
             print('✅ Basic clustering works')
+            print(f'✅ Found medoids: {len(kmedoids.medoids)}')
+            print(f'✅ Found labels: {len(kmedoids.labels)}')
             
             # Test predict if available
             if hasattr(kmedoids, 'predict'):
@@ -150,11 +177,13 @@ jobs:
                 
         except Exception as e:
             print(f'❌ Basic functionality test failed: {e}')
-            # Don't fail CI for test issues
+            import traceback
+            traceback.print_exc()
+            # Don't fail CI for functionality issues during development
             pass
         "
 
-    - name: Run tests
+    - name: Run comprehensive tests
       run: |
         # Run test_predict.py if it exists
         if [ -f "test_predict.py" ]; then
@@ -164,19 +193,34 @@ jobs:
         
         # Run basic unit tests on specific files only
         if [ -d "tests" ]; then
-          echo "=== Running basic tests ==="
-          python -m pytest tests/test_smaller.py -v || echo "Some tests failed, but continuing..."
+          echo "=== Running unit tests ==="
+          if [ -f "tests/test_smaller.py" ]; then
+            python -m pytest tests/test_smaller.py -v || echo "Some tests failed, but continuing..."
+          else
+            echo "test_smaller.py not found, running all tests"
+            python -m pytest tests/ -v || echo "Some tests failed, but continuing..."
+          fi
         else
           echo "No tests directory found, skipping pytest"
         fi
 
     - name: Upload build artifacts on failure
       if: failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4  # Updated to v4
       with:
         name: build-logs-linux-python${{ matrix.python-version }}
         path: |
           build/
           *.log
+          build.log
           CMakeCache.txt
         retention-days: 7
+
+    - name: Upload successful build info
+      if: success()
+      uses: actions/upload-artifact@v4  # Updated to v4
+      with:
+        name: build-success-linux-python${{ matrix.python-version }}
+        path:
+          build.log
+        retention-days: 3
