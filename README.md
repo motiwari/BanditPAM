@@ -61,6 +61,12 @@ This can be done either through PyPI (recommended)
 /BanditPAM/: python -m pip install -r requirements.txt
 /BanditPAM/: python -m pip install banditpam
 ```
+OR for Python >= 3.xx + virtual environment (through PyPI)
+```python
+/BanditPAM/: python3 -m venv . ; source ./bin/activate
+/BanditPAM/: python3 -m pip install -r requirements.txt
+/BanditPAM/: python3 -m pip install banditpam
+```
 OR through the source code via
 ```python
 /BanditPAM/: git submodule update --init --recursive
