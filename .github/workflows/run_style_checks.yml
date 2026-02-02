@@ -45,7 +45,7 @@ jobs:
           style: file
           tidy-checks: '-*'  # disable clang-tidy checks
           version: 16
-          ignore: R_package  # TODO: remove this as part of #240
+          ignore: headers/carma|headers/carma-stable  # Ignore third-party code only
           files-changed-only: false
 
       - name: Exit if necessary
