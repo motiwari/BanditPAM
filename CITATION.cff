@@ -1,0 +1,75 @@
+
+cff-version: 1.2.0
+title: "BanditPAM: Almost Linear-Time k-Medoids Clustering"
+message: "If you use this software, please cite both papers below."
+type: software
+authors:
+  - family-names: Tiwari
+    given-names: Mo
+  - family-names: Zhang
+    given-names: Martin Jinye
+  - family-names: Mayclin
+    given-names: James
+  - family-names: Thrun
+    given-names: Sebastian
+  - family-names: Piech
+    given-names: Chris
+  - family-names: Shomorony
+    given-names: Ilan
+repository-code: "https://github.com/motiwari/BanditPAM"
+url: "https://banditpam.readthedocs.io/"
+license: MIT
+keywords:
+  - k-medoids
+  - clustering
+  - machine-learning
+  - multi-armed-bandits
+  - algorithm
+
+preferred-citation:
+  type: conference-paper
+  title: "BanditPAM: Almost Linear Time k-medoids Clustering via Multi-Armed Bandits"
+  authors:
+    - family-names: Tiwari
+      given-names: Mo
+    - family-names: Zhang
+      given-names: Martin Jinye
+    - family-names: Mayclin
+      given-names: James
+    - family-names: Thrun
+      given-names: Sebastian
+    - family-names: Piech
+      given-names: Chris
+    - family-names: Shomorony
+      given-names: Ilan
+  collection-title: "Advances in Neural Information Processing Systems"
+  collection-type: proceedings
+  year: 2020
+  volume: 33
+  start: 368
+  end: 374
+  url: "https://proceedings.neurips.cc/paper/2020/file/73b817090081cef1bca77232f4532c5d-Paper.pdf"
+
+references:
+  - type: conference-paper
+    title: "BanditPAM++: Faster k-medoids Clustering"
+    authors:
+      - family-names: Tiwari
+        given-names: Mo
+      - family-names: Kang
+        given-names: Ryan
+      - family-names: Lee
+        given-names: Donghyun
+      - family-names: Thrun
+        given-names: Sebastian
+      - family-names: Shomorony
+        given-names: Ilan
+      - family-names: Zhang
+        given-names: Martin Jinye
+    collection-title: "Advances in Neural Information Processing Systems"
+    collection-type: proceedings
+    year: 2023
+    volume: 36
+    start: 73371
+    end: 73382
+    url: "https://proceedings.neurips.cc/paper_files/paper/2023/file/e885e5bc6e13b9dd8f80bc5482b1fa2f-Paper-Conference.pdf"
