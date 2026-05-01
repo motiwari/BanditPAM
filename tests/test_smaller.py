@@ -1,3 +1,4 @@
+import math
 import unittest
 import pandas as pd
 import numpy as np
@@ -133,6 +134,56 @@ class SmallerTests(unittest.TestCase):
 
         # error on trying to fit on empy
         self.assertRaises(ValueError, kmed.fit, np.array([]), "L2")
+
+    def test_swap_timing_stats(self):
+        """
+        After fit(), total_swap_time (ms) and time_per_swap are consistent.
+
+        For BanditPAM, BanditPAM_orig, and PAM, each SWAP outer iteration is
+        timed once and matches ``steps``, so time_per_swap * steps equals
+        total_swap_time (ms).
+
+        FastPAM1 counts ``steps`` as outer refinement iterations while timing
+        multiple inner swaps per call; we only assert types and non-negativity.
+        """
+        data = self.small_mnist
+        for algo in ("BanditPAM", "BanditPAM_orig", "FastPAM1", "PAM"):
+            with self.subTest(algorithm=algo):
+                kmed = KMedoids(n_medoids=5, algorithm=algo, max_iter=100)
+                kmed.seed = 0
+                kmed.fit(data, "L2")
+                total_ms = kmed.total_swap_time
+                tps = kmed.time_per_swap
+                n_swaps = kmed.steps
+                self.assertIsInstance(total_ms, int)
+                self.assertIsInstance(tps, float)
+                self.assertGreaterEqual(total_ms, 0)
+                self.assertGreaterEqual(tps, 0.0)
+                if total_ms == 0:
+                    self.assertEqual(tps, 0.0)
+
+                if algo == "FastPAM1":
+                    continue
+
+                if n_swaps == 0:
+                    self.assertEqual(total_ms, 0)
+                    self.assertEqual(tps, 0.0)
+                    continue
+
+                reconstructed = tps * float(n_swaps)
+                ok = math.isclose(
+                    reconstructed,
+                    float(total_ms),
+                    rel_tol=1e-5,
+                    abs_tol=1e-4,
+                )
+                self.assertTrue(
+                    ok,
+                    msg=(
+                        f"{algo}: time_per_swap * steps = {reconstructed}, "
+                        f"total_swap_time = {total_ms}, steps = {n_swaps}"
+                    ),
+                )
 
 
 if __name__ == "__main__":

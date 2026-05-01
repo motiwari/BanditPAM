@@ -8,6 +8,7 @@
 #include "banditpam_orig.hpp"
 
 #include <armadillo>
+#include <chrono>
 #include <unordered_map>
 #include <cmath>
 #include <vector>
@@ -403,6 +404,7 @@ void BanditPAM_orig::swap(
 
   // continue making swaps while loss is decreasing
   while (swapPerformed && steps < maxIter) {
+    const auto swap_step_start = std::chrono::steady_clock::now();
     steps++;
     permutationIdx = 0;
 
@@ -475,6 +477,11 @@ void BanditPAM_orig::swap(
     }
     calcBestDistancesSwap(data, distMat, medoidIndices, &bestDistances,
                           &secondBestDistances, assignments, swapPerformed);
+    const auto swap_step_end = std::chrono::steady_clock::now();
+    totalSwapTime += std::chrono::duration_cast<std::chrono::milliseconds>(
+                        swap_step_end - swap_step_start)
+                        .count();
+    swapTimingIterations++;
   }
 }
 }  // namespace km

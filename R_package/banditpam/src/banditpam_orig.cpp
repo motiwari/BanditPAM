@@ -7,6 +7,7 @@
 
 #include "banditpam_orig.hpp"
 
+#include <chrono>
 #include <unordered_map>
 #include <cmath>
 
@@ -414,6 +415,7 @@ void BanditPAM_orig::swap(
 
   // continue making swaps while loss is decreasing
   while (swapPerformed && steps < maxIter) {
+    const auto swap_step_start = std::chrono::steady_clock::now();
     steps++;
     permutationIdx = 0;
 
@@ -504,6 +506,11 @@ void BanditPAM_orig::swap(
       &secondBestDistances,
       assignments,
       swapPerformed);
+    const auto swap_step_end = std::chrono::steady_clock::now();
+    totalSwapTime += std::chrono::duration_cast<std::chrono::milliseconds>(
+                        swap_step_end - swap_step_start)
+                        .count();
+    swapTimingIterations++;
   }
 }
 }  // namespace km
