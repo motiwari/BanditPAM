@@ -622,8 +622,11 @@ class KMedoids {
   /// need to compute. For debugging only.
   size_t numCacheMisses = 0;
 
-  /// The number of milliseconds taken per swap step, on average
+  /// Total milliseconds spent in timed swap iterations (see swapTimingIterations)
   size_t totalSwapTime = 0;
+
+  /// Number of timed swap iterations that contributed to totalSwapTime
+  size_t swapTimingIterations = 0;
 };
 }  // namespace km
 #endif  // HEADERS_ALGORITHMS_KMEDOIDS_ALGORITHM_HPP_

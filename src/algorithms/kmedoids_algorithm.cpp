@@ -53,6 +53,8 @@ void KMedoids::fit(
   numCacheWrites = 0;
   numCacheHits = 0;
   numCacheMisses = 0;
+  totalSwapTime = 0;
+  swapTimingIterations = 0;
 
   if (distMat) {  // User has provided a distance matrix
     if (distMat.value().get().n_cols != distMat.value().get().n_rows) {
@@ -208,7 +210,13 @@ size_t KMedoids::getCacheMisses() const { return numCacheMisses; }
 
 size_t KMedoids::getTotalSwapTime() const { return totalSwapTime; }
 
-float KMedoids::getTimePerSwap() const { return totalSwapTime / steps; }
+float KMedoids::getTimePerSwap() const {
+  if (swapTimingIterations == 0) {
+    return 0.0f;
+  }
+  return static_cast<float>(totalSwapTime) /
+         static_cast<float>(swapTimingIterations);
+}
 
 void KMedoids::setLossFn(std::string loss) {
   // TODO(@motiwari): On setting this, clear the

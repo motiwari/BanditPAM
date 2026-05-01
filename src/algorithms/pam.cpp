@@ -12,6 +12,7 @@
 #include "pam.hpp"
 
 #include <armadillo>
+#include <chrono>
 #include <unordered_map>
 
 namespace km {
@@ -30,7 +31,13 @@ void PAM::fitPAM(
   while (i < maxIter && medoidChange) {
     auto previous(medoidIndices);
     if (nMedoids > 1) {
+      const auto swap_step_start = std::chrono::steady_clock::now();
       PAM::swapPAM(data, distMat, &medoidIndices, &assignments);
+      const auto swap_step_end = std::chrono::steady_clock::now();
+      totalSwapTime += std::chrono::duration_cast<std::chrono::milliseconds>(
+                          swap_step_end - swap_step_start)
+                          .count();
+      swapTimingIterations++;
     }
 
     medoidChange = arma::any(medoidIndices != previous);

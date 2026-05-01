@@ -58,6 +58,8 @@ void KMedoids::fit(
   numCacheWrites = 0;
   numCacheHits = 0;
   numCacheMisses = 0;
+  totalSwapTime = 0;
+  swapTimingIterations = 0;
 
   if (distMat) {  // User has provided a distance matrix
     if (distMat.value().get().n_cols != distMat.value().get().n_rows) {
@@ -257,7 +259,11 @@ size_t KMedoids::getTotalSwapTime() const {
 }
 
 banditpam_float KMedoids::getTimePerSwap() const {
-  return totalSwapTime / steps;
+  if (swapTimingIterations == 0) {
+    return 0;
+  }
+  return static_cast<banditpam_float>(totalSwapTime) /
+         static_cast<banditpam_float>(swapTimingIterations);
 }
 
 void KMedoids::setLossFn(std::string loss) {

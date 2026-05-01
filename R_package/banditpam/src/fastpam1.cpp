@@ -12,6 +12,7 @@
 
 #include "fastpam1.hpp"
 
+#include <chrono>
 #include <unordered_map>
 
 namespace km {
@@ -120,6 +121,7 @@ void FastPAM1::swapFastPAM1(
   banditpam_float dij = 0;
 
   while (swapPerformed && iter < maxIter) {
+    const auto swap_step_start = std::chrono::steady_clock::now();
     iter++;
     // TODO(@motiwari): pragma omp parallel for?
     for (size_t i = 0; i < data.n_cols; i++) {
@@ -180,6 +182,11 @@ void FastPAM1::swapFastPAM1(
     } else {
       swapPerformed = false;
     }
+    const auto swap_step_end = std::chrono::steady_clock::now();
+    totalSwapTime += std::chrono::duration_cast<std::chrono::milliseconds>(
+                        swap_step_end - swap_step_start)
+                        .count();
+    swapTimingIterations++;
   }
 }
 }  // namespace km

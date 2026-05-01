@@ -14,6 +14,7 @@
 #include "fastpam1.hpp"
 
 #include <armadillo>
+#include <chrono>
 #include <unordered_map>
 
 namespace km {
@@ -118,6 +119,7 @@ void FastPAM1::swapFastPAM1(
   float dij = 0;
 
   while (swapPerformed && iter < maxIter) {
+    const auto swap_step_start = std::chrono::steady_clock::now();
     bestChange = 0;
     deltaTD.zeros();
     iter++;
@@ -188,6 +190,11 @@ void FastPAM1::swapFastPAM1(
     } else {
       swapPerformed = false;
     }
+    const auto swap_step_end = std::chrono::steady_clock::now();
+    totalSwapTime += std::chrono::duration_cast<std::chrono::milliseconds>(
+                        swap_step_end - swap_step_start)
+                        .count();
+    swapTimingIterations++;
   }
 }
 }  // namespace km
